@@ -114,11 +114,11 @@ export default {
 <style scoped lang="scss">
 #sideMenuButton {
   position: fixed;
-  top: 0.5rem;
-  left: 0.5rem;
-  font-size: 2.5rem;
-  height: 2.5rem;
-  width: 2.5rem;
+  top: 0.2rem;
+  left: 0.2rem;
+  font-size: 2rem;
+  height: 2rem;
+  width: 2rem;
   z-index: 1001;
 }
 #sideCloseMenuButton {

@@ -1,15 +1,29 @@
 <template>
   <div>
-    <BIconThreeDotsVertical
+    <Menu
+      id="overlay_menu"
+      ref="menu"
+      class="ren"
+      :model="model"
+      :popup="true"
+    />
+    <Button
       id="menu-toggle"
-      type="button"
-      label="Toggle"
+      :class="'p-button-rounded p-button-text ' + position"
       aria-haspopup="true"
       aria-controls="overlay_menu"
-      :class="position"
+      label="Toggle"
       @click="toggle"
-    />
-    <Menu id="overlay_menu" ref="menu" :model="items" :popup="true" />
+    >
+      <BIconThreeDotsVertical />
+    </Button>
+    <!-- <Button
+      type="button"
+      label="Toggle"
+      @click="toggle"
+      aria-haspopup="true"
+      aria-controls="overlay_menu"
+    /> -->
   </div>
 </template>
 
@@ -38,21 +52,29 @@ export default {
   watch: {},
 
   async created() {},
-  methods: {},
+  methods: {
+    toggle(event) {
+      this.$refs.menu.toggle(event);
+    },
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 #menu-toggle {
-  font-size: 1rem;
+  font-size: 1.5rem;
   z-index: 1002;
   position: absolute;
+  padding: 0;
+  // height: 2rem;
+  // text-align: center;
+  // width: 2rem;
 }
 .topright {
-  top: 1rem;
+  top: 0.5rem;
 }
 .right {
-  right: 1rem;
+  right: 0.5rem;
 }
 </style>

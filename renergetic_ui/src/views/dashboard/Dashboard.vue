@@ -1,5 +1,5 @@
 <template>
-  <DotMenu />
+  <DotMenu :model="menuModel" />
   <div id="dashboard-wrapper"><Grafana :url="dashboardUrl" /></div>
   <!-- <Carousel   :value="data"    :num-visible="3"   :num-scroll="1"  :responsive-options="responsiveOptions" >
     <template #header>   <h5>Basic</h5>    </template>
@@ -11,18 +11,29 @@
       </div>
     </template>
   </Dock>
+  <DeleteDashboard
+    v-if="dashboard != null"
+    :id="dashboard.id"
+    ref="deleteDashboard"
+    :label="dashboard.label"
+  />
 </template>
 <script>
 // import Carousel from "primevue/carousel";
 import Grafana from "../../components/dashboard/Grafana.vue";
+import DeleteDashboard from "../../components/dashboard/DeleteDashboard.vue";
 import Dock from "primevue/dock";
 import DotMenu from "../../components/miscellaneous/DotMenu.vue";
 
 export default {
   name: "Dashboard",
-  components: { Dock, DotMenu, Grafana /* Carousel */ },
+  components: { Dock, DotMenu, Grafana, DeleteDashboard /* Carousel */ },
   data() {
-    return { dashboards: {}, dashboard: null, dashboardMenu: [] };
+    return {
+      dashboards: {},
+      dashboard: null,
+      dashboardMenu: [],
+    };
   },
   computed: {
     dashboardUrl() {
@@ -30,6 +41,19 @@ export default {
         return this.dashboard.url;
       }
       return null;
+    },
+    menuModel() {
+      if (this.dashboard != null)
+        return [
+          {
+            label: this.$t("menu.delete_dashboard"),
+            icon: "pi pi-fw pi-minus-circle",
+            command: () => {
+              this.$refs.deleteDashboard.delete();
+            },
+          },
+        ];
+      return [];
     },
     // isLoading() {
     //   return this.$store.getters["spinner/isLoading"];
@@ -67,7 +91,7 @@ export default {
         return [];
       }
       return this.dashboards.map((dashboardItem) => {
-        let to = `/dashboard/${dashboardItem.id}`;
+        let to = `/dashboard/view/${dashboardItem.id}`;
         return {
           // label: this.$t("menu.group_list"),
           label: dashboardItem.label,
@@ -99,6 +123,13 @@ export default {
     font-weight: bolder;
     cursor: pointer;
     width: inherit !important;
+  }
+  .p-dock,
+  .p-dock-action {
+    height: inherit !important;
+  }
+  .p-dock-item-current * {
+    color: yellow !important;
   }
 }
 </style>
