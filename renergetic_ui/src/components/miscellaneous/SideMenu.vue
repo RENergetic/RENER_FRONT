@@ -59,8 +59,8 @@ export default {
       if (this.dashboards.length == 0) {
         return [];
       }
-      return this.dashboards.map((dashboardItem) => {
-        let to = `/dashboard/${dashboardItem.id}`;
+      var items = this.dashboards.map((dashboardItem) => {
+        let to = `/dashboard/view/${dashboardItem.id}`;
         return {
           // label: this.$t("menu.group_list"),
           label: dashboardItem.label,
@@ -71,6 +71,16 @@ export default {
           },
         };
       });
+      items.append({
+        // label: this.$t("menu.group_list"),
+        label: this.$t("menu.add_dashboard"),
+        icon: "pi pi-fw pi-plus",
+        to: "DashboadAdd",
+        command: () => {
+          this.$router.push("DashboadAdd");
+        },
+      });
+      return items;
     },
     initMenu() {
       return [

@@ -1,23 +1,36 @@
 <template>
-  <div>
-    current dashboard: {{ $route.params.dashboard_id }}
-    {{ $route.params }}
-    todo: toolbar{{ $store.getters["view/dashboards"] }}
+  <div id="dashboard">
+    <iframe v-if="url != null" :src="url"></iframe>
   </div>
 </template>
 <script>
 export default {
   name: "Grafana",
   components: {},
-  computed: {
-    // isLoading() {
-    //   return this.$store.getters["spinner/isLoading"];
-    // },
+  props: {
+    url: {
+      type: String,
+      default: null,
+    },
   },
-  watch: {},
+  // data() {
+  //   return {};
+  // },
+
   mounted() {},
   methods: {},
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+#dashboard iframe {
+  width: 100%;
+  height: 100%;
+}
+#dashboard {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: inline-block;
+}
+</style>
