@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "../views/Home.vue";
+import dashboardRoutes from "./dashboard";
 
 const routes = [
   {
@@ -23,16 +24,6 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/RenAbout.vue"),
   },
   {
-    path: "/dashboard/:dashboard_id?",
-    name: "Dashboard",
-    props: {
-      dashboard_id: "aaa",
-      dashboards: "bb",
-    },
-    meta: { isAuthenticated: true },
-    component: () => import("../views/dashboard/Dashboard.vue"),
-  },
-  {
     path: "/profile/:username?",
     name: "Profile",
     meta: { isAuthenticated: true },
@@ -44,6 +35,7 @@ const routes = [
     meta: { isAuthenticated: false },
     component: () => import("../views/RenAbout.vue"),
   },
+  ...dashboardRoutes,
 ];
 function timeout(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));

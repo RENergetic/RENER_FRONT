@@ -1,5 +1,6 @@
 import Keycloak from "keycloak-js";
 // https://www.keycloak.org/docs/11.0/securing_apps/#usage-2
+//https://stackoverflow.com/questions/65398657/keycloak-and-node-js-how-to-keep-user-logged-in-after-keycloak-access-token-get
 // var session = require("express-session");
 // var memoryStore = new session.MemoryStore();
 let initOptions = {

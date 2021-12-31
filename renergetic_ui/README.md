@@ -3,6 +3,10 @@
 TODO:
  "@vue/cli-plugin-unit-jest": "~5.0.0-rc.1",
  todo: global loading spinner
+
+ https://babeljs.io/blog/2020/07/13/the-state-of-babel-eslint
+
+https://www.primefaces.org/primevue/showcas
 ## Project setup
 ```
 npm install

@@ -4,10 +4,8 @@
     <ConfirmDialog></ConfirmDialog>
     <SideMenu />
     <router-view />
-    <Footer>
-      <template #right>
-        <!-- <div style="margin: auto">{{ standName }}</div> -->
-      </template>
+    <Footer style="display: none">
+      <template #right> </template>
     </Footer>
   </div>
 </template>
