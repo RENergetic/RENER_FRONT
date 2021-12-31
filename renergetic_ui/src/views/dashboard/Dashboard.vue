@@ -1,6 +1,6 @@
 <template>
+  <DotMenu />
   <div id="dashboard-wrapper"><Grafana :url="dashboardUrl" /></div>
-
   <!-- <Carousel   :value="data"    :num-visible="3"   :num-scroll="1"  :responsive-options="responsiveOptions" >
     <template #header>   <h5>Basic</h5>    </template>
     <template #item="slotProps">      <div>data: {{ slotProps.data.name }}</div>    </template>  </Carousel> -->
@@ -16,10 +16,11 @@
 // import Carousel from "primevue/carousel";
 import Grafana from "../../components/dashboard/Grafana.vue";
 import Dock from "primevue/dock";
+import DotMenu from "../../components/miscellaneous/DotMenu.vue";
 
 export default {
   name: "Dashboard",
-  components: { Dock, Grafana /* Carousel */ },
+  components: { Dock, DotMenu, Grafana /* Carousel */ },
   data() {
     return { dashboards: {}, dashboard: null, dashboardMenu: [] };
   },
@@ -85,6 +86,9 @@ export default {
 
 <style lang="scss">
 #dashboard-wrapper {
+  top: 5vh;
+  left: 0;
+  position: absolute;
   width: 100%;
   height: 90vh;
 }

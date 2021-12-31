@@ -71,13 +71,13 @@ export default {
           },
         };
       });
-      items.append({
+      items.push({
         // label: this.$t("menu.group_list"),
         label: this.$t("menu.add_dashboard"),
         icon: "pi pi-fw pi-plus",
-        to: "DashboadAdd",
+        to: "/dashboard/add",
         command: () => {
-          this.$router.push("DashboadAdd");
+          this.$router.push({ name: "DashboadAdd" });
         },
       });
       return items;

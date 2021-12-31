@@ -21,5 +21,8 @@ export default {
     locationList: (state /* getters*/) => {
       return state.locationList;
     },
+    dashboards: (state /* getters*/) => {
+      return state.dashboards;
+    },
   },
 };

@@ -61,18 +61,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-#dashboard-wrapper {
-  width: 100%;
-  height: 90vh;
-}
-.ren-dock {
-  a {
-    text-decoration: none;
-    color: grey;
-    font-weight: bolder;
-    cursor: pointer;
-    width: inherit !important;
-  }
-}
-</style>
+<style lang="scss"></style>
