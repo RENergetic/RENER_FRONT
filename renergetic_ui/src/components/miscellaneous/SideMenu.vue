@@ -82,6 +82,20 @@ export default {
       });
       return items;
     },
+
+    heatMapItems() {
+      return [
+        {
+          // label: this.$t("menu.group_list"),
+          label: this.$t("menu.add_heatmap"),
+          icon: "pi pi-fw pi-plus",
+          to: "/dashboard/heatmap/add",
+          command: () => {
+            this.$router.push({ name: "DashboadAdd" });
+          },
+        },
+      ];
+    },
     initMenu() {
       return [
         {
@@ -96,6 +110,11 @@ export default {
           command: () => {
             this.$router.push("/profile");
           },
+        },
+        {
+          label: this.$t("menu.heatmaps"),
+          icon: "pi pi-fw pi-chart-line",
+          items: this.heatMapItems(),
         },
       ];
     },

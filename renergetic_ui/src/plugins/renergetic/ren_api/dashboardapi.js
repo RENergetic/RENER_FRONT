@@ -39,8 +39,10 @@ export default class DashboardApi extends RestComponent {
   delete(id) {
     //validate
     // TODO:
+    return new Promise((resolve) => {
+      resolve(id);
+    });
 
-    return id;
     // return this.axios
     //   .get(`/api/dashboard`, {
     //     headers: { "Content-type": "application/json; charset=UTF-8" },

@@ -12,10 +12,10 @@
       :class="'p-button-rounded p-button-text ' + position"
       aria-haspopup="true"
       aria-controls="overlay_menu"
-      label="Toggle"
+      icon="pi pi-ellipsis-v"
       @click="toggle"
     >
-      <BIconThreeDotsVertical />
+      <!-- <BIconThreeDotsVertical /> -->
     </Button>
     <!-- <Button
       type="button"
@@ -29,12 +29,12 @@
 
 <script>
 import Menu from "primevue/menu";
-import { BIconThreeDotsVertical } from "bootstrap-icons-vue";
+// import { BIconThreeDotsVertical } from "bootstrap-icons-vue";
 export default {
   name: "DotMenu",
   components: {
     Menu,
-    BIconThreeDotsVertical,
+    // BIconThreeDotsVertical,
   },
   props: {
     model: {

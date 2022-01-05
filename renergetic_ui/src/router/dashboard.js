@@ -13,6 +13,13 @@ var dashboardRoutes = [
     meta: { isAuthenticated: true },
     component: () => import("../views/dashboard/DashboardAdd.vue"),
   },
+  {
+    path: "/dashboard/heatmap/add",
+    name: "HeatMapCreator",
+    props: {},
+    meta: { isAuthenticated: true },
+    component: () => import("../views/dashboard/HeatMapCreator.vue"),
+  },
 ];
 
 export default dashboardRoutes;

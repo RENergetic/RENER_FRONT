@@ -14,8 +14,10 @@ import "primevue/resources/themes/saga-green/theme.css";
 // theme showcase: https://www.primefaces.org/primevue/showcase/
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
+//https://www.primefaces.org/primevue/showcase/#/primeflex
 import "primeflex/primeflex.css";
 import "./assets/style/ren.scss";
+import VueKonva from "vue-konva";
 
 import Tooltip from "primevue/tooltip";
 import ToastService from "primevue/toastservice";
@@ -27,6 +29,8 @@ import ConfirmationService from "primevue/confirmationservice";
 //initialize app
 const app = createApp(App);
 app.use(i18n);
+//TODO: if normal user?
+app.use(VueKonva);
 // app.use(PrimeVue, { locale: PrimeLocale });
 app.use(PrimeVue);
 app.use(PrimeImport);

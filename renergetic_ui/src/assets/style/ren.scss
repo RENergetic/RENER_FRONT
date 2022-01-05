@@ -6,7 +6,9 @@ body {
     background-color: lightgrey;
 }
 .ren {
-  
+    .tile{
+        margin: 0.15rem;
+    }
     .p-inputtext {
         width: $inputwidth;
     }
@@ -171,3 +173,4 @@ body {
 .ren.p-menu-overlay {
     min-width: 15rem !important; 
 }
+
