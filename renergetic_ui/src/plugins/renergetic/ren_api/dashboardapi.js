@@ -84,4 +84,7 @@ export default class DashboardApi extends RestComponent {
     //     console.error("list  entity error" + error.message);
     //   });
   }
+  addHeatMap(heatmap) {
+    console.info(heatmap);
+  }
 }

@@ -1,9 +1,9 @@
-export class MapArea {
-  constructor(id, imgurl, areas = null) {
+export class HeatMap {
+  constructor(id, imgUrl, areas = null) {
     if (areas != null) this.areas = areas;
     else this.areas = [];
     this.id = id;
-    this.imgurl = imgurl;
+    this.imgUrl = imgUrl;
     //TODO: set some label
     this.label = id;
   }

@@ -41,6 +41,7 @@
 export default {
   name: "Dashboard",
   components: {},
+  emits: ["UpdateMenu"],
   data() {
     return { name: "", url: "", label: "" };
   },
@@ -50,12 +51,14 @@ export default {
   mounted() {},
   methods: {
     async submit() {
-      var dashoard = { name: this.name, label: this.label, url: this.url };
-      this.$ren.dashboardApi.add(dashoard).then((id) => {
-        dashoard.id = id;
-        this.$store.commit("view/dashboardsAdd", dashoard);
-        //todo: emit event
+      var dashboard = { name: this.name, label: this.label, url: this.url };
+      await this.$ren.dashboardApi.add(dashboard).then((id) => {
+        dashboard.id = id;
+        this.$store.commit("view/dashboardsAdd", dashboard);
+        this.$emit("UpdateMenu", null);
+        this.$router.back();
       });
+      //tODO: catch error
     },
   },
 };

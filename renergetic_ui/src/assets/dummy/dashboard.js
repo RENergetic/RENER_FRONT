@@ -1,4 +1,4 @@
-var dummyList = async () => [
+var dummyList = [
   {
     id: "1",
     label: "Dashboard 1",
@@ -13,28 +13,27 @@ var dummyList = async () => [
   },
 ];
 //TODO: timestamp
-var informationTiles = async () => {
-  return [
-    {
-      id: "1",
-      items: [
-        {
-          id: "id1",
-          value: 0.05,
-          unit: "kWh",
-          description: "avg",
-          icon: "electricity",
-        },
-        {
-          id: "id2",
-          value: 1.05,
-          unit: "kWh",
-          description: "total",
-          icon: "electricity",
-        },
-      ],
-    },
-  ];
-};
+//async () => {return
+var informationTiles = [
+  {
+    id: "1",
+    items: [
+      {
+        id: "id1",
+        value: 0.05,
+        unit: "kWh",
+        description: "avg",
+        icon: "electricity",
+      },
+      {
+        id: "id2",
+        value: 1.05,
+        unit: "kWh",
+        description: "total",
+        icon: "electricity",
+      },
+    ],
+  },
+];
 
 export { dummyList, informationTiles };

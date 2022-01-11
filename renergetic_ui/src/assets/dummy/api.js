@@ -31,7 +31,15 @@ class DashboardApi {
       resolve(dashboard.id);
     });
   }
-
+  async addHeatMap(heatmap) {
+    let l = await this.listHeatMap();
+    heatmap.id = Math.floor(Math.random() * 150);
+    l.push(heatmap);
+    storage.update(`${DASHBOARD_KEY}.heatmap_list`, l);
+    return new Promise((resolve) => {
+      resolve(heatmap.id);
+    });
+  }
   delete(id) {
     return new Promise((resolve) => {
       resolve(id);

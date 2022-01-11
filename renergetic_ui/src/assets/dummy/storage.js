@@ -23,7 +23,11 @@ class Storage {
   }
   async get(k, defaultValue = null) {
     let d = this.data[k];
-    return d == null ? defaultValue() : d;
+    return d == null
+      ? (async () => {
+          return defaultValue;
+        })()
+      : d;
   }
 }
 var storage = new Storage();
