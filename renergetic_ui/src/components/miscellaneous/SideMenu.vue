@@ -47,14 +47,19 @@ export default {
   },
 
   async created() {
-    this.$ren.dashboardApi.list().then((dashboards) => {
-      this.dashboards = dashboards;
-      this.$store.commit("view/dashboards", dashboards);
-      this.menuModel = this.initMenu();
-    });
     this.menuModel = this.initMenu();
+    this.reload();
   },
   methods: {
+    async reload() {
+      this.$ren.dashboardApi.list().then((dashboards) => {
+        this.dashboards = dashboards;
+        this.$store.commit("view/dashboards", dashboards);
+        let menu = this.initMenu();
+        console.info(menu);
+        this.menuModel = menu;
+      });
+    },
     dashboardItems() {
       if (this.dashboards.length == 0) {
         return [];
@@ -102,6 +107,14 @@ export default {
           label: this.$t("menu.dashboards"),
           icon: "pi pi-fw pi-chart-line",
           items: this.dashboardItems(),
+        },
+        {
+          label: this.$t("menu.information_panel"),
+          icon: "pi pi-fw pi-th-large",
+          to: "/panel",
+          command: () => {
+            this.$router.push("/panel");
+          },
         },
         {
           label: this.$t("menu.profile"),

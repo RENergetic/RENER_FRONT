@@ -2,8 +2,8 @@
   <div>
     <Toast />
     <ConfirmDialog></ConfirmDialog>
-    <SideMenu />
-    <router-view />
+    <SideMenu ref="sideMenu" />
+    <router-view @update-menu="updateMenu()" />
     <Footer style="display: none">
       <template #right> </template>
     </Footer>
@@ -29,7 +29,11 @@ export default {
   },
   watch: {},
   mounted() {},
-  methods: {},
+  methods: {
+    updateMenu() {
+      this.$refs.sideMenu.reload();
+    },
+  },
 };
 </script>
 
