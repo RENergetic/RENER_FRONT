@@ -1,7 +1,7 @@
 export default {
   namespaced: true,
   state: {
-    dashboards: {},
+    dashboards: [],
     locationList: ["en-EN"],
   },
   mutations: {
@@ -10,7 +10,8 @@ export default {
       state.dashboards = payload;
     },
     dashboardsAdd(state, payload) {
-      state.dashboards[payload.id] = payload;
+      //TODO: verify if there is no duplicate id
+      state.dashboards.push(payload);
     },
     locationList(state, payload) {
       // console.info(payload);

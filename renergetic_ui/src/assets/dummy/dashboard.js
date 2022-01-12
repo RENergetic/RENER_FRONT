@@ -36,4 +36,46 @@ var informationTiles = [
   },
 ];
 
-export { dummyList, informationTiles };
+var heatmaps = [
+  {
+    areas: [
+      {
+        points: [
+          [125.58000000000001, 227.01000000000002],
+          [196.42000000000002, 75.67],
+          [322, 180.32000000000002],
+        ],
+        id: "area_1",
+        value: "area_1",
+        label: "area_1",
+        dashboardId: null,
+      },
+      {
+        points: [
+          [421.82000000000005, 191.59],
+          [524.86, 133.63000000000002],
+          [589.26, 222.18],
+        ],
+        id: "area_2",
+        value: "area_2",
+        label: "area_2",
+        dashboardId: null,
+      },
+      {
+        points: [
+          [718.0600000000001, 164.22],
+          [759.9200000000001, 74.06],
+          [827.5400000000001, 111.09],
+        ],
+        id: "area_3",
+        value: "area_3",
+        label: "area_3",
+        dashboardId: null,
+      },
+    ],
+    id: 80,
+    imgUrl: "http://localhost:8080/put.jpg",
+    label: "heatmap_0",
+  },
+];
+export { dummyList, informationTiles, heatmaps };

@@ -47,7 +47,8 @@ export default function (Vue) {
     routes,
   });
 
-  router.beforeEach(async (to /*, from*/) => {
+  router.beforeEach(async (to, from) => {
+    to.meta.from = from;
     if (to.meta.isAuthenticated) {
       let keycloak = Vue.config.globalProperties.$keycloak;
       if (!keycloak.isInitialized()) {

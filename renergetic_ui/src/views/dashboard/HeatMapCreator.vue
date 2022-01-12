@@ -100,11 +100,6 @@
         <Button :label="$t('view.button.cancel')" @click="cancel" />
       </div>
     </div>
-    <div class="p-field p-grid">
-      <div v-if="inspectionId">
-        {{ $t("view.current_inspection", { inspection_id: inspectionId }) }}
-      </div>
-    </div>
 
     <ProgressSpinner
       v-if="spinner"

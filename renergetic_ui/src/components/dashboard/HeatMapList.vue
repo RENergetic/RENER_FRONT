@@ -1,5 +1,6 @@
 <template>
   <div class="p-grid">
+    {{ heatMapList }}
     <div class="p-col-8">
       <Card>
         <template #title> HeatMap view </template>
@@ -7,12 +8,17 @@
           <Listbox
             v-model="selectedArea"
             :options="heatMapList"
-            option-label="label"
             style="width: 15rem"
+            option-label="label"
           >
-            <template #optiongroup="slotProps">
+            <template #option="slotProps">
               <div class="p-d-flex p-ai-center country-item">
-                <div>{{ slotProps.option }}</div>
+                <div>{{ slotProps.option.label }}</div>
+                <i
+                  class="pi pi-times"
+                  style="fontsize: 2rem"
+                  @click="view(slotProps.option)"
+                />
               </div>
             </template>
           </Listbox>
@@ -22,25 +28,27 @@
   </div>
 </template>
 <script>
-// import Listbox from "primevue/listbox";
+import Listbox from "primevue/listbox";
 // import { MapArea } from "../../plugins/model/Area";
 
 import Card from "primevue/card";
 export default {
   name: "HeatMapList",
-  components: { Card },
+  components: { Card, Listbox },
   data() {
     return {
       heatMapList: [],
       selectedArea: null,
     };
   },
-
   async mounted() {
     this.heatMapList = await this.$ren.dashboardApi.listHeatMap();
   },
   methods: {
-    onClick() {},
+    view(selected) {
+      let to = `/dashboard/heatmap/view/${selected.id}`;
+      this.$router.push(to);
+    },
   },
 };
 </script>
