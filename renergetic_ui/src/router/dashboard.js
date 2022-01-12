@@ -21,7 +21,7 @@ var dashboardRoutes = [
     component: () => import("../views/dashboard/HeatMapCreator.vue"),
   },
   {
-    path: "/dashboard/heatmap/view",
+    path: "/dashboard/heatmap/view/:id?",
     name: "HeatMapView",
     props: {},
     meta: { isAuthenticated: true },
