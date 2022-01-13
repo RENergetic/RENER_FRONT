@@ -37,6 +37,7 @@ export default {
       visible: false,
       menuModel: [],
       dashboards: [],
+      informationPanels: [],
       isAdmin: false, //this.$store.getters["user/isAdmin"],
     };
   },
@@ -59,6 +60,43 @@ export default {
         console.info(menu);
         this.menuModel = menu;
       });
+
+      this.$ren.dashboardApi
+        .informationPanelList(this.$route.params.id)
+        .then((informationPanels) => {
+          this.informationPanels = informationPanels;
+          this.$store.commit("view/informationPanels", informationPanels);
+          let menu = this.initMenu();
+          this.menuModel = menu;
+        });
+      //todo: catch
+    },
+    panelItems() {
+      if (this.informationPanels.length == 0) {
+        return [];
+      }
+      var items = this.informationPanels.map((panel) => {
+        let to = `/panel/view/${panel.id}`;
+        return {
+          // label: this.$t("menu.group_list"),
+          label: panel.label,
+          icon: "pi pi-fw pi-align-left",
+          to: to,
+          command: () => {
+            this.$router.push(to);
+          },
+        };
+      });
+      items.push({
+        //tODO:
+        label: this.$t("menu.add_information_panel") + "todo: ",
+        icon: "pi pi-fw pi-plus",
+        to: "/panel/add",
+        command: () => {
+          this.$router.push({ name: "InformationPanelCreator" });
+        },
+      });
+      return items;
     },
     dashboardItems() {
       if (this.dashboards.length == 0) {
@@ -119,11 +157,8 @@ export default {
         },
         {
           label: this.$t("menu.information_panel"),
-          icon: "pi pi-fw pi-th-large",
-          to: "/panel",
-          command: () => {
-            this.$router.push("/panel");
-          },
+          icon: "pi pi-fw pi-chart-line",
+          items: this.panelItems(),
         },
         {
           label: this.$t("menu.profile"),

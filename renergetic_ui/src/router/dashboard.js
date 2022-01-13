@@ -35,7 +35,7 @@ var dashboardRoutes = [
     component: () => import("../views/dashboard/HeatMapListView.vue"),
   },
   {
-    path: "/panel/:panelId?",
+    path: "/panel/view/:id?",
     name: "InformationPanel",
     meta: { isAuthenticated: true },
     component: () => import("../views/dashboard/InformationPanel.vue"),

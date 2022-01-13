@@ -1,4 +1,4 @@
-import { dummyList, informationTiles, heatmaps } from "./dashboard.js";
+import { dummyList, informationPanels, heatmaps } from "./dashboard.js";
 import storage from "./storage.js";
 const DASHBOARD_KEY = "dashboard";
 class DashboardApi {
@@ -15,12 +15,12 @@ class DashboardApi {
   async getInformationPanel(panelId) {
     let tiles = await storage.get(
       `${DASHBOARD_KEY}.panel_list`,
-      informationTiles
+      informationPanels
     );
     return tiles.find((it) => it.id == panelId);
   }
   informationPanelList() {
-    return storage.get(`${DASHBOARD_KEY}.panel_list`, informationTiles);
+    return storage.get(`${DASHBOARD_KEY}.panel_list`, informationPanels);
   }
   async add(dashboard) {
     let l = await this.list();

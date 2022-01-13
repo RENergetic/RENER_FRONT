@@ -14,23 +14,73 @@ var dummyList = [
 ];
 //TODO: timestamp
 //async () => {return
-var informationTiles = [
+var informationPanels = [
   {
     id: "1",
-    items: [
+    label: "testname",
+    tiles: [
       {
-        id: "id1",
-        value: 0.05,
-        unit: "kWh",
-        description: "avg",
-        icon: "electricity",
+        id: "1",
+        title: null,
+        col: 2,
+        items: [
+          {
+            id: "id1",
+            value: 0.05,
+            unit: "kWh",
+            description: "avg",
+            icon: "electricity",
+          },
+          {
+            id: "id2",
+            value: 1.05,
+            unit: "kWh",
+            description: "total",
+            icon: "electricity",
+          },
+        ],
       },
       {
-        id: "id2",
-        value: 1.05,
-        unit: "kWh",
-        description: "total",
-        icon: "electricity",
+        id: "2",
+        title: null,
+        col: 2,
+        items: [
+          {
+            id: "id1",
+            value: 0.05,
+            unit: "kWh",
+            description: "avg",
+            icon: "electricity",
+          },
+          {
+            id: "id2",
+            value: 1.05,
+            unit: "kWh",
+            description: "total",
+            icon: "electricity",
+          },
+        ],
+      },
+      {
+        id: "3",
+        title: null,
+        col: 2,
+        items: [
+          {
+            id: "id1",
+            value: 0.05,
+            unit: "kWh",
+            description: "avg",
+            icon: "electricity",
+          },
+          {
+            id: "id2",
+            value: 1.05,
+            unit: "kWh",
+            description: "total",
+            icon: "electricity",
+          },
+        ],
       },
     ],
   },
@@ -78,4 +128,4 @@ var heatmaps = [
     label: "heatmap_0",
   },
 ];
-export { dummyList, informationTiles, heatmaps };
+export { dummyList, informationPanels, heatmaps };

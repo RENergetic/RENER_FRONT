@@ -66,7 +66,7 @@ export default function (Vue) {
       // const basePath = window.location.toString();
       if (!keycloak.authenticated) {
         const basePath = window.location.toString();
-        var path = basePath.slice(0, -1) + to.path;
+        var path = basePath; // basePath.slice(0, -1) + to.path;
         // The page is protected and the user is not authenticated. Force a login.
         //"http://localhost:8080" + to.path
         keycloak.login({ redirectUri: path });

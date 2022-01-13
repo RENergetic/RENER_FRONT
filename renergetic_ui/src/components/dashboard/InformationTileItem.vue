@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div>{{ tileItem.value }} {{ tileItem.unit }}</div>
-    <div
-      v-if="tileItem.icon != null"
-      id="tileicon"
-      :style="
-        'background-image: url(\'../../assets/' + tileItem.icon + '.png\')'
-      "
-    ></div>
-    <div>{{ tileItem.description }}</div>
+    <div>
+      <span> value: {{ tileItem.value }} {{ tileItem.unit }}</span>
+      <span
+        v-if="tileItem.icon != null"
+        id="tileicon"
+        :style="'background-image: url(' + icons[tileItem.icon] + ')'"
+      ></span>
+    </div>
+    <div>description {{ tileItem.description }}</div>
   </div>
 </template>
 <script>
@@ -20,12 +20,18 @@ export default {
   props: {
     tileItem: {
       type: Object,
-      default: null,
+      default: () => null,
     },
   },
-  // data() {
-  //   return {};
-  // },
+  data() {
+    return {
+      icons: {
+        battery: require(`../../assets/img/tileicons/battery.png`),
+        electricity: require(`../../assets/img/tileicons/electricity.png`),
+        heat: require(`../../assets/img/tileicons/heat.png`),
+      },
+    };
+  },
 
   mounted() {},
   methods: {},
@@ -33,10 +39,13 @@ export default {
 </script>
 
 <style lang="scss">
+span {
+  display: inline-block;
+}
 #tileicon {
   width: 1rem;
   height: 1rem;
-  display: inherit;
+  // display: inherit;
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;

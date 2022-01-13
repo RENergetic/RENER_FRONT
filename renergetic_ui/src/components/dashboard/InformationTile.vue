@@ -1,49 +1,37 @@
-<template>
+<template class="p-col-2">
   <Card>
-    <template v-if="mArea != null" #title>
-      {{ $t("view.edit_area") }}
-      <i class="pi pi-times" style="fontsize: 2rem" @click="deleteArea()" />
-    </template>
-    <template v-if="mArea != null" #content>
-      <!-- {{ area.id }} -->
-      <div class="p-field p-grid">
-        <label for="heatmapLabel">
-          {{ $t("heatmap.label") }}
-        </label>
-        <InputText id="heatmapLabel" v-model="mArea.label" />
+    <!-- :class="`p-col-${col}`" -->
+    <template v-if="tile != null" #content>
+      <div v-for="item in tile.items" :key="item.id">
+        <InformationTileItem :tile-item="item"></InformationTileItem>
       </div>
     </template>
   </Card>
 </template>
 <script>
 import Card from "primevue/card";
+import InformationTileItem from "./InformationTileItem.vue";
 export default {
   name: "InformationTile",
-  components: { Card },
+  components: { Card, InformationTileItem },
   props: {
-    url: {
-      type: String,
-      default: null,
+    tile: {
+      type: Object,
+      default: () => null,
     },
   },
   // data() {
   //   return {};
   // },
+  computed: {
+    col: function () {
+      return this.tile == null || this.tile.col == null ? 2 : this.tile.col;
+    },
+  },
 
   mounted() {},
   methods: {},
 };
 </script>
 
-<style lang="scss">
-#dashboard iframe {
-  width: 100%;
-  height: 100%;
-}
-#dashboard {
-  position: relative;
-  height: 100%;
-  width: 100%;
-  display: inline-block;
-}
-</style>
+<style lang="scss"></style>
