@@ -5,7 +5,7 @@
 * for visual studio read: todo link to vscode md file, verify vsconfig
 * .env - file containing default environmental config properties for vuejs app (endpoints, ports etc)
 * .env.local - local  .env file, not included in git 
-* docs -> project's documentation files [link]('./docs/docs.md')
+* docs -> project's documentation files [link](./docs/docs.md)
 
 TODO:
  "@vue/cli-plugin-unit-jest": "~5.0.0-rc.1",

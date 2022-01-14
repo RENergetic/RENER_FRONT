@@ -1,46 +1,49 @@
 <template>
-  <div class="card">
-    <!--name-->
-    <div class="p-field p-grid">
-      <label for="dasboardName" class="p-col-fixed">
-        {{ $t("dashboard.name") }}
-      </label>
-      <div class="p-col">
-        <InputText id="dasboardName" v-model="name" />
+  <Card>
+    <div class="card">
+      <!--name-->
+      <div class="p-field p-grid">
+        <label for="dasboardName" class="p-col-fixed">
+          {{ $t("dashboard.name") }}
+        </label>
+        <div class="p-col">
+          <InputText id="dasboardName" v-model="name" />
+        </div>
       </div>
-    </div>
-    <!--url-->
-    <div class="p-field p-grid">
-      <label for="dasboardUrl" class="p-col-fixed">
-        {{ $t("dashboard.url") }}
-      </label>
-      <div class="p-col">
-        <InputText id="dasboardUrl" v-model="url" />
+      <!--url-->
+      <div class="p-field p-grid">
+        <label for="dasboardUrl" class="p-col-fixed">
+          {{ $t("dashboard.url") }}
+        </label>
+        <div class="p-col">
+          <InputText id="dasboardUrl" v-model="url" />
+        </div>
       </div>
-    </div>
-    <div class="p-field p-grid">
-      <label for="dasboardLabel" class="p-col-fixed">
-        {{ $t("dashboard.label") }}
-      </label>
-      <div class="p-col">
-        <InputText id="dasboardLabel" v-model="label" />
+      <div class="p-field p-grid">
+        <label for="dasboardLabel" class="p-col-fixed">
+          {{ $t("dashboard.label") }}
+        </label>
+        <div class="p-col">
+          <InputText id="dasboardLabel" v-model="label" />
+        </div>
       </div>
-    </div>
 
-    <div class="p-field p-grid">
-      <div class="p-col">
-        <!-- <Button label="Submit" /> -->
-      </div>
-      <div class="p-col">
-        <Button :label="$t('view.button.submit')" @click="submit" />
+      <div class="p-field p-grid">
+        <div class="p-col">
+          <!-- <Button label="Submit" /> -->
+        </div>
+        <div class="p-col">
+          <Button :label="$t('view.button.submit')" @click="submit" />
+        </div>
       </div>
     </div>
-  </div>
+  </Card>
 </template>
 <script>
+import Card from "primevue/card";
 export default {
   name: "Dashboard",
-  components: {},
+  components: { Card },
   emits: ["UpdateMenu"],
   data() {
     return { name: "", url: "", label: "" };

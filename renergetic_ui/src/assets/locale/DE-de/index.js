@@ -7,7 +7,7 @@ const de = {
   // "view": view,
   menu: menu,
   view: view,
-  ...model,
+  model: model,
   ...primeview,
 };
 export default de;
