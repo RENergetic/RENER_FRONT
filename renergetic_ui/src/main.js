@@ -27,6 +27,7 @@ import ConfirmationService from "primevue/confirmationservice";
 // const emitter = mitt()
 
 //initialize app
+
 const app = createApp(App);
 app.use(i18n);
 //TODO: if normal user?

@@ -1,41 +1,75 @@
 <template>
-  <div v-if="panel != null" class="p-grid">
-    <div v-for="tile in panel.tiles" :key="tile.id" :class="tileClass(tile)">
-      <InformationTile :tile="tile"></InformationTile>
+  <div>
+    <div v-if="panel">
+      <Button
+        id="menu-toggle"
+        :style="'float: right'"
+        :class="'p-button-rounded p-button-text ' + position"
+        aria-haspopup="true"
+        aria-controls="overlay_menu"
+        icon="pi pi-ellipsis-v"
+        @click="toggle"
+      />
+      <div class="grid-stack">
+        <InformationTile v-for="tile in tiles" :key="tile.id" :tile="tile" />
+      </div>
+      <div class="grid-stack">
+        <test-component
+          v-for="widget in tiles"
+          :key="widget.id"
+          :widget="widget"
+        />
+      </div>
     </div>
+
+    <!--  <div class="p-grid">
+   <div>
+        
+      </div>
+    </div> -->
+    <!-- 
+    <div class="grid-stack">
+      <div v-for="tile in tiles" :key="tile.id">
+        <div class="grid-stack-item">
+          <div class="grid-stack-item-content">
+          <InformationTile :tile="tile"></InformationTile>  
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <!-- <div class="grid-stack">
+      <div
+        v-for="tile in tiles"
+        :key="tile.id"
+        :class="'grid-stack-item'"
+        :gs-w="gridWidth(tile)"
+      >
+        <div class="grid-stack-item-content">Item 2 wider</div>
+      </div>
+    </div> -->
   </div>
 </template>
 <script>
-// import Carousel from "primevue/carousel";
 import InformationTile from "../../components/dashboard/InformationTile.vue";
-
+// import TestComponent from "../../components/dashboard/TestComponent.vue";
+import { GridStack } from "gridstack";
+// THEN to get HTML5 drag&drop
+import "gridstack/dist/h5/gridstack-dd-native";
+import "gridstack/dist/gridstack.min.css";
 export default {
   name: "Dashboard",
   components: { InformationTile },
   data() {
     return {
       panel: null,
+      grid: null,
     };
   },
   computed: {
-    dashboardUrl() {
-      if (this.dashboard) {
-        return this.dashboard.url;
-      }
-      return null;
-    },
-    menuModel() {
-      if (this.dashboard != null)
-        return [
-          {
-            label: this.$t("menu.delete_dashboard"),
-            icon: "pi pi-fw pi-minus-circle",
-            command: () => {
-              this.$refs.deleteDashboard.delete();
-            },
-          },
-        ];
-      return [];
+    tiles: function () {
+      var t = this.panel != null ? this.panel.tiles : [];
+      return t;
+      // return JSON.parse(JSON.stringify(t));
     },
   },
   watch: {},
@@ -47,11 +81,23 @@ export default {
       });
     //todo: catch
   },
-  mounted() {},
+  updated() {
+    // console.info(this.tiles);
+    if (this.grid != null) this.grid.destroy(false);
+    this.grid = GridStack.init({ float: true });
+    window.grid = this.grid;
+  },
   methods: {
-    tileClass(tile) {
+    // tileClass(tile) {
+    //   return tile.col == null ? 2 : tile.col;
+    // },
+    gridWidth(tile) {
       return tile.col == null ? 2 : tile.col;
     },
+    toggle() {
+      if (this.grid != null) this.grid.disable();
+    },
+
     getColor(item) {
       if (item.id == this.$route.params.dashboard_id) {
         return "color:green";

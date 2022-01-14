@@ -20,6 +20,8 @@ var informationPanels = [
     label: "testname",
     tiles: [
       {
+        x: 0,
+        y: 0,
         id: "1",
         title: null,
         col: 2,
@@ -42,19 +44,21 @@ var informationPanels = [
       },
       {
         id: "2",
+        x: 4,
+        y: 0,
         title: null,
         col: 2,
         items: [
           {
             id: "id1",
-            value: 0.05,
+            value: 20.05,
             unit: "kWh",
             description: "avg",
             icon: "electricity",
           },
           {
             id: "id2",
-            value: 1.05,
+            value: 21.05,
             unit: "kWh",
             description: "total",
             icon: "electricity",
@@ -65,17 +69,19 @@ var informationPanels = [
         id: "3",
         title: null,
         col: 2,
+        x: 8,
+        y: 0,
         items: [
           {
             id: "id1",
-            value: 0.05,
+            value: 30.05,
             unit: "kWh",
             description: "avg",
             icon: "electricity",
           },
           {
             id: "id2",
-            value: 1.05,
+            value: 3.05,
             unit: "kWh",
             description: "total",
             icon: "electricity",
