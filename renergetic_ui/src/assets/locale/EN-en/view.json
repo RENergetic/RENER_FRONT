@@ -1,6 +1,12 @@
 {
     "dashboards": "Dashboards",
+    "dashboard_delete": "Delete dashboard",
+    "dashboard_delete_confirm":"Are you sure you want to remove dashboard: {label}",
     "heatmap_area_delete": "Delete heatmap",
     "heatmap_area_delete_confirm": "Are you sure you want to remove heatmap: {label}",
-    "profile": "Profile" 
+    "profile": "Profile" ,
+    "button":{
+        "submit":"submit"
+    }
+    
 }
