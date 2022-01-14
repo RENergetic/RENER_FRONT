@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ tileItem }}
     <div>
       <span> value: {{ tileItem.value }} {{ tileItem.unit }}</span>
       <span

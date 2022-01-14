@@ -1,6 +1,7 @@
 <template>
   <div class="grid-stack-item" v-bind="gridStackAttributes">
     <Card :class="'grid-stack-item-content'">
+      <template #title> {tile} </template>
       <template v-if="tile != null" #content>
         <InformationTileItem
           v-for="item in tile.items"
@@ -30,14 +31,23 @@ export default {
     col: function () {
       return this.tile == null || this.tile.col == null ? 2 : this.tile.col;
     },
+    layout: function () {
+      console.info(this.tile.layout);
+      return this.tile != null && this.tile.layout != null
+        ? this.tile.layout
+        : (() => ({}))();
+    },
     gridStackAttributes() {
+      //TODO: other attributes?
+      //https://github.com/gridstack/gridstack.js/tree/master/doc#grid-attributes
+      // example with an old version https://codesandbox.io/s/grid-stack-js-integration-with-vuejs-72mrn?file=/src/App.vue
       return {
         id: this.tile.id,
-        "data-gs-id": this.tile.id,
-        "data-gs-x": this.tile.x,
-        "data-gs-y": this.tile.y,
-        "data-gs-width": 2,
-        "data-gs-height": 1,
+        "gs-id": this.tile.id,
+        "gs-x": this.layout.x,
+        "gs-y": this.layout.y,
+        "gs-w": this.layout.w,
+        "gs-h": this.layout.h,
       };
     },
   },

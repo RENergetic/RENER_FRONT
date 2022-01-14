@@ -20,8 +20,7 @@ var informationPanels = [
     label: "testname",
     tiles: [
       {
-        x: 0,
-        y: 0,
+        layout: { x: 0, y: 0, h: 3, w: 3 },
         id: "1",
         title: null,
         col: 2,
