@@ -1,0 +1,6 @@
+{
+    "dashboards": "Dashboards",
+    "heatmap_area_delete": "Delete heatmap",
+    "heatmap_area_delete_confirm": "Are you sure you want to remove heatmap: {label}",
+    "profile": "Profile" 
+}

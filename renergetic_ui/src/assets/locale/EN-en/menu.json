@@ -1,4 +1,6 @@
 {
+    "add_dashboard": "Add dashboard",
     "dashboards": "Dashboards",
+    "delete_dashboard": "Delete dashboard",
     "profile": "Profile"
 }
