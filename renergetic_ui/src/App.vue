@@ -3,7 +3,7 @@
     <Toast />
     <ConfirmDialog></ConfirmDialog>
     <SideMenu ref="sideMenu" />
-    <router-view @update-menu="updateMenu()" />
+    <router-view :class="layout()" @update-menu="updateMenu()" />
     <Footer style="display: none">
       <template #right> </template>
     </Footer>
@@ -30,6 +30,11 @@ export default {
   watch: {},
   mounted() {},
   methods: {
+    layout() {
+      let layout =
+        this.$route.meta.layout == null ? "standard" : this.$route.meta.layout;
+      return layout;
+    },
     updateMenu() {
       this.$refs.sideMenu.reload();
     },
@@ -38,6 +43,12 @@ export default {
 </script>
 
 <style lang="scss">
+.standard {
+  margin-top: 3rem;
+}
+.fullscr {
+  margin-top: 0rem;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

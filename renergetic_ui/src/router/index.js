@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "../views/Home.vue";
 import dashboardRoutes from "./dashboard";
-
+//todo import other
 const routes = [
   {
     path: "/",

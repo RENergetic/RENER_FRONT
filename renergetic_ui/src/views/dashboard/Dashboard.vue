@@ -52,6 +52,13 @@ export default {
               this.$refs.deleteDashboard.delete();
             },
           },
+          {
+            label: this.$t("menu.update_dashboard"),
+            icon: "pi pi-fw pi-pencil",
+            command: () => {
+              alert("todo: redirect page");
+            },
+          },
         ];
       return [];
     },

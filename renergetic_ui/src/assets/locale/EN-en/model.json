@@ -1,3 +1,7 @@
 {
-     "dashboard":{"name":"Name"}
+     "dashboard": {
+          "name": "Name",
+          "url": "URL",
+          "label":"Label"
+     }
 }
