@@ -21,6 +21,7 @@ var informationPanels = [
     tiles: [
       {
         layout: { x: 0, y: 0, h: 3, w: 3 },
+        state: "ok",
         id: "1",
         title: null,
         col: 2,
@@ -66,6 +67,7 @@ var informationPanels = [
       },
       {
         id: "3",
+        state: "warning",
         title: null,
         col: 2,
         x: 8,

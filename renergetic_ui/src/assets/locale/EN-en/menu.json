@@ -2,6 +2,7 @@
     "add_dashboard": "Add dashboard",
     "dashboards": "Dashboards",
     "delete_dashboard": "Delete dashboard",
-    "profile": "Profile",
-    "information_panel":"Information panels"
+    "edit_dashboard":"Edit dashboard",
+    "information_panel":"Information panels",
+    "profile": "Profile"
 }
