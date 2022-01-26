@@ -210,7 +210,7 @@ var measurementAttributes = [
 ];
 let measurementsGenerator = (i, n) => {
   let datasets = [];
-  for (var d = 0; d < i; i++) {
+  for (var d = 0; d < i; d++) {
     var data = [];
     let next = Math.floor(Math.random() * 150) - 50;
     for (var j = 0; j < n; j++) {
@@ -229,7 +229,7 @@ let measurementsGenerator = (i, n) => {
   var t = Date.now();
   t = t - (t % 60000);
   for (j = 0; j < n; j++) {
-    data.push(t - 60000 * (n - j));
+    labels.push(t - 60000 * (n - j));
   }
   return { datasets: datasets, labels: labels };
 };
