@@ -1,7 +1,7 @@
 import AuthApi from "./ren_api/auth";
 import DashboardApi from "./ren_api/dashboardapi";
 import { DashboardApi as DummyDashboardApi } from "../../assets/dummy/api";
-const USE_DUMMY = true;
+const USE_DUMMY = false;
 // import UserApi from './renergetic/ren_api/user'
 // import i18n from "../locale";
 import axios from "axios";
@@ -9,6 +9,7 @@ import axios from "axios";
 export var BASE_URL = "/";
 console.info(process.env.VUE_APP_HOST);
 const axiosInstance = axios.create({ baseURL: BASE_URL });
+const apiHost = "http://front-ren-prototype.apps.paas-dev.psnc.pl";
 
 class AxiosAPI {
   constructor(axiosInstance, vueInstance, authApi) {
@@ -45,7 +46,7 @@ class AxiosAPI {
         if (req.spinner) {
           this.storeCommit("spinner/start");
         }
-        req.withCredentials = true;
+        req.withCredentials = false;
         console.log(`${req.method} ${req.url} ${req.spinner}`);
         // Important: request interceptors **must** return the request.
         return req;
@@ -110,7 +111,7 @@ export default function createRest(vueInstance) {
     auth: new AuthApi(axiosInstance, vueInstance),
     axiosApi: new AxiosAPI(axiosInstance, vueInstance, this.auth),
     dashboardApi: !USE_DUMMY
-      ? new DashboardApi(axiosInstance, vueInstance)
+      ? new DashboardApi(axiosInstance, vueInstance, apiHost)
       : new DummyDashboardApi(),
     // this.user = new UserApi(axiosInstance, vueInstance);
   };

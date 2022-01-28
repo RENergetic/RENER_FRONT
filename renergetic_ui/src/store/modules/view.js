@@ -6,6 +6,7 @@ export default {
     locationList: ["en-EN"],
   },
   mutations: {
+    // Requires a Dashboards List
     dashboards(state, payload) {
       // console.info(payload);
       state.dashboards = payload;
@@ -13,9 +14,37 @@ export default {
     informationPanels(state, payload) {
       state.informationPanels = payload;
     },
+    // Requires a Dashboard object ({id:0, name:"", url:"", label:""})
     dashboardsAdd(state, payload) {
       //TODO: verify if there is no duplicate id
-      state.dashboards.push(payload);
+      let duplicated = false;
+      for (let dashboard of state.dashboards) {
+        if (
+          dashboard.id != undefined &&
+          payload.id != undefined &&
+          dashboard.id == payload.id
+        )
+          duplicated = true;
+      }
+      if (!duplicated) state.dashboards.push(payload);
+    },
+    // Requires a Dashboard
+    dashboardsUpdate(state, payload) {
+      if (payload.id != undefined)
+        for (let i = 0; i < state.dashboards.length; i++) {
+          if (state.dashboards[i].id == payload.id) {
+            state.dashboards.splice(i, 1);
+            state.dashboards.push(payload);
+          }
+        }
+    },
+    // Requires a Dashboard Id
+    dashboardsDel(state, payload) {
+      for (let i = 0; i < state.dashboards.length; i++) {
+        if (state.dashboards[i].id == payload) {
+          state.dashboards.splice(i, 1);
+        }
+      }
     },
     locationList(state, payload) {
       // console.info(payload);

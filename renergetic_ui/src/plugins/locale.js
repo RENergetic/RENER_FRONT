@@ -41,7 +41,7 @@ if (!(localeCode in locales)) {
 const messages = await getMessages(localeCode);
 const i18n = createI18n({
   locale: localeCode,
-  defaultLoale: "en",
+  defaultLocale: "en",
   messages,
 });
 

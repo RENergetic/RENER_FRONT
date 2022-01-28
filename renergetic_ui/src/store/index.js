@@ -10,7 +10,7 @@ export default createStore({
 
   plugins: [
     createPersistedState({
-      paths: ["auth"],
+      paths: ["auth", "view"],
       storage: window.sessionStorage,
     }),
   ],

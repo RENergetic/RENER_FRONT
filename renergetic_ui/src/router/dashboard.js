@@ -14,7 +14,7 @@ var dashboardRoutes = [
     component: () => import("../views/dashboard/DashboardAdd.vue"),
   },
   {
-    path: "/dashboard/edit/dashboard_id",
+    path: "/dashboard/edit/:dashboard_id?",
     name: "DashboardEdit",
     props: {},
     meta: { isAuthenticated: true },

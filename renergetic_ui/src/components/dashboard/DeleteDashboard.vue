@@ -26,6 +26,8 @@ export default {
         icon: "pi pi-exclamation-triangle",
         accept: () => {
           this.deleteDashboard(this.id);
+          this.$store.commit("view/dashboardsDel", this.id);
+          this.$router.replace("Dashboard");
         },
         reject: () => {
           this.$confirm.close();

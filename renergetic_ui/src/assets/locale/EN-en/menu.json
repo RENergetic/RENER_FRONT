@@ -1,7 +1,14 @@
 {
     "add_dashboard": "Add dashboard",
     "dashboards": "Dashboards",
+    "update_dashboard": "Update dashboard",
     "delete_dashboard": "Delete dashboard",
+
+    "add_heatmap": "Add heatMap",
+    "list_heatmap": "List heatMap",
+    "heatmaps": "HeatMaps",
+
     "profile": "Profile",
-    "information_panel":"Information panels"
+    "information_panel":"Information panels",
+    "add_information_panel":" Add information panels"
 }
