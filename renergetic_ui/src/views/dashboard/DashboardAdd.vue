@@ -59,7 +59,7 @@ export default {
   // },
   emits: ["UpdateMenu"],
   data() {
-    return { name: "", url: "", label: "", editmode: false };
+    return { id: 0, name: "", url: "", label: "", editmode: false };
   },
   // watch: {
   //   dashboard: function (newval) {
@@ -79,14 +79,14 @@ export default {
   mounted() {
     let id = this.$route.params.dashboard_id;
     if (id != null) {
-      //load dashboard object from api
-      /*
+      this.$ren.dashboardApi.get(id).then((dashboard) => {
+        console.log(dashboard);
+        this.id = id;
         this.name = dashboard.name;
         this.url = dashboard.url;
         this.label = dashboard.label;
-      */
+      });
       this.editmode = true;
-      alert("TODO:");
     }
   },
   methods: {
@@ -96,22 +96,39 @@ export default {
       this.label = "";
     },
     cancel() {
-      alert("todo");
+      this.$router.back();
     },
 
     async submit() {
       if (!this.editmode) {
-        var dashboard = { name: this.name, label: this.label, url: this.url };
-        await this.$ren.dashboardApi.add(dashboard).then((id) => {
-          dashboard.id = id;
-          this.$store.commit("view/dashboardsAdd", dashboard);
+        let dashboard = { name: this.name, label: this.label, url: this.url };
+        await this.$ren.dashboardApi.add(dashboard).then((dashboardReq) => {
+          this.id = dashboardReq.id;
+          this.$store.commit("view/dashboardsAdd", dashboardReq);
           this.$emit("UpdateMenu", null);
-          this.$router.back();
+          this.$router.replace({
+            name: "Dashboard",
+            params: { dashboard_id: this.id },
+          });
         });
-        //tODO: catch error
+        //TODO: catch error
       }
       if (this.editmode) {
         //TODO: update
+        let dashboard = {
+          id: this.id,
+          name: this.name,
+          label: this.label,
+          url: this.url,
+        };
+        await this.$ren.dashboardApi.update(dashboard).then((dashboardReq) => {
+          this.$store.commit("view/dashboardsUpdate", dashboardReq);
+          this.$emit("UpdateMenu", null);
+          this.$router.replace({
+            name: "Dashboard",
+            params: { dashboard_id: this.id },
+          });
+        });
       }
     },
   },

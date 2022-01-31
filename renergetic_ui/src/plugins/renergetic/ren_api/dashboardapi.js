@@ -1,28 +1,84 @@
 import RestComponent from "./restcomponent";
-import { dummyList, informationTiles } from "../../../assets/dummy/dashboard";
+import { informationPanels } from "../../../assets/dummy/dashboard";
 export default class DashboardApi extends RestComponent {
-  constructor(axiosInstance, vueInstance) {
+  urlHost;
+  constructor(axiosInstance, vueInstance, urlHost) {
     super(axiosInstance, vueInstance);
+    this.urlHost = urlHost;
   }
+  //DASHBOARDS REQUESTS
   list() {
     // TODO:
-    return dummyList();
-    // return this.axios
-    //   .get(`/api/dashboard`, {
-    //     headers: { "Content-type": "application/json; charset=UTF-8" },
-    //     spinner: true,
-    //   })
-    //   .then((response) => {
-    //     return response.data;
-    //   })
-    //   .catch(function (error) {
-    //     console.error("list  entity error" + error.message);
-    //   });
+    return this.axios
+      .get(`${this.urlHost}/api-postgre/1.0/api/dashboard`, {
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error) {
+        console.error("list entity error" + error.message);
+      });
   }
+  get(id) {
+    return this.axios
+      .get(`${this.urlHost}/api-postgre/1.0/api/dashboard/${id}`, {
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error) {
+        console.error("list entity error" + error.message);
+      });
+  }
+  add(dashboard) {
+    //validate
+    // TODO:
+    return this.axios
+      .post(`${this.urlHost}/api-postgre/1.0/api/dashboard`, dashboard, {
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error) {
+        console.error("add entity error" + error.message);
+      });
+  }
+  update(dashboard) {
+    //validate
+    // TODO:
+    return this.axios
+      .put(`${this.urlHost}/api-postgre/1.0/api/dashboard`, dashboard, {
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error) {
+        console.error("add entity error" + error.message);
+      });
+  }
+  delete(id) {
+    return this.axios
+      .delete(`${this.urlHost}/api-postgre/1.0/api/dashboard/${id}`, {
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error) {
+        console.error("delete entity error" + error.message);
+      });
+  }
+  // INFORMATION PANEL REQUESTS
   getInformationPanel(panelId) {
     console.info(panelId);
     // TODO:
-    return informationTiles();
+    return new Promise((resolve) => {
+      resolve(informationPanels);
+    });
     // return this.axios
     //   .get(`/api/dashboard`, {
     //     headers: { "Content-type": "application/json; charset=UTF-8" },
@@ -37,7 +93,9 @@ export default class DashboardApi extends RestComponent {
   }
   informationPanelList() {
     // TODO:
-    return informationTiles();
+    return new Promise((resolve) => {
+      resolve(informationPanels);
+    });
     // return this.axios
     //   .get(`/api/dashboard`, {
     //     headers: { "Content-type": "application/json; charset=UTF-8" },
@@ -50,39 +108,12 @@ export default class DashboardApi extends RestComponent {
     //     console.error("list  entity error" + error.message);
     //   });
   }
-  add(dashboard) {
-    //validate
-    // TODO:
-    dashboard.id = Math.floor(Math.random() * 150);
-    return new Promise((resolve) => {
-      resolve(dashboard.id);
-    });
-  }
-
+  // HEATMAP REQUESTS
   async listHeatMap() {
     return null;
   }
   async getHeatMap(id) {
     return id;
-  }
-  delete(id) {
-    //validate
-    // TODO:
-    return new Promise((resolve) => {
-      resolve(id);
-    });
-
-    // return this.axios
-    //   .get(`/api/dashboard`, {
-    //     headers: { "Content-type": "application/json; charset=UTF-8" },
-    //     spinner: true,
-    //   })
-    //   .then((response) => {
-    //     return response.data;
-    //   })
-    //   .catch(function (error) {
-    //     console.error("list  entity error" + error.message);
-    //   });
   }
   addHeatMap(heatmap) {
     console.info(heatmap);

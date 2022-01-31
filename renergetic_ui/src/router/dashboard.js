@@ -10,11 +10,11 @@ var dashboardRoutes = [
     path: "/dashboard/add",
     name: "DashboardAdd",
     props: {},
-    meta: { isAuthenticated: true },
+    meta: { isAuthenticated: true, roles: ["manager, administrator"] },
     component: () => import("../views/dashboard/DashboardAdd.vue"),
   },
   {
-    path: "/dashboard/edit/dashboard_id",
+    path: "/dashboard/edit/:dashboard_id?",
     name: "DashboardEdit",
     props: {},
     meta: { isAuthenticated: true },

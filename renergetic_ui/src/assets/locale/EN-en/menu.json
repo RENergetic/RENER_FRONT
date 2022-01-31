@@ -1,17 +1,23 @@
-{
-  "add_dashboard": "Add dashboard",
-  "dashboards": "Dashboards",
-  "delete_dashboard": "Delete dashboard",
-  "edit_dashboard": "Edit dashboard",
-  "information_panel": "Information panels",
-  "profile": "Profile",
-  "feedback": "Feedback",
-  "notifications": "Notifications",
-  "panel_grid_unlock": "Panel grid unlocked",
-  "panel_grid_lock": "Panel grid locked",
-  "panel_grid_add_tile": "Add tile",
-  "save_panel_grid": "Save panel grid",
-  "list_heatmap": "Heatmap list",
-  "heatmaps": "Heatmaps",
-  "add_heatmap": "Add heatmap"
+    {
+    "add_dashboard": "Add dashboard",
+    "dashboards": "Dashboards",
+    "edit_dashboard": "Edit dashboard",
+    "delete_dashboard": "Delete dashboard",
+
+    "add_heatmap": "Add heatMap",
+    "list_heatmap": "List heatMap",
+    "heatmaps": "HeatMaps",
+
+    "profile": "Profile",
+    "information_panel":"Information panels",
+    "add_information_panel":" Add information panels",
+
+    "feedback": "Feedback",
+    "notifications": "Notifications",
+    "panel_grid_unlock": "Panel grid unlocked",
+    "panel_grid_lock": "Panel grid locked",
+    "panel_grid_add_tile": "Add tile",
+    "save_panel_grid": "Save panel grid",
+
+    "logout": "Logout"
 }
