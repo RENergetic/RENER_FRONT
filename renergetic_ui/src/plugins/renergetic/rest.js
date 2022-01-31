@@ -1,18 +1,15 @@
 import AuthApi from "./ren_api/auth";
 import DashboardApi from "./ren_api/dashboardapi";
-import { DashboardApi as DummyDashboardApi } from "../../assets/dummy/api";
-import MeasurementdApi from "./ren_api/measurementapi";
-import { MeasurementApi as DummyMeasurementApi } from "../../assets/dummy/api";
-
-const USE_DUMMY = process.env.VUE_APP_DUMMY_API;
+import { DashboardApi as DummyDashboardApi, MeasurementApi as DummyMeasurementApi } from "../../assets/dummy/api";
+import MeasurementdApi from "./ren_api/measurementapi"; 
+const USE_DUMMY = process.env.VUE_APP_DUMMY_API; 
 // import UserApi from './renergetic/ren_api/user'
 // import i18n from "../locale";
 import axios from "axios";
 
-export var BASE_URL = "/";
+export var BASE_URL = process.env.VUE_APP_API_URL;
 
 const axiosInstance = axios.create({ baseURL: BASE_URL });
-const apiHost = process.env.VUE_APP_API_URL;
 
 class AxiosAPI {
   constructor(axiosInstance, vueInstance, authApi) {
@@ -113,8 +110,8 @@ export default function createRest(vueInstance) {
   return {
     auth: new AuthApi(axiosInstance, vueInstance),
     axiosApi: new AxiosAPI(axiosInstance, vueInstance, this.auth),
-    dashboardApi: !USE_DUMMY
-      ? new DashboardApi(axiosInstance, vueInstance, apiHost)
+    dashboardApi: !USE_DUMMY 
+      ? new DashboardApi(axiosInstance, vueInstance )  
       : new DummyDashboardApi(),
     measurementApi: !USE_DUMMY
       ? new MeasurementdApi(axiosInstance, vueInstance)

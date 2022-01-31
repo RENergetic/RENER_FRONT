@@ -2,15 +2,14 @@ import RestComponent from "./restcomponent";
 import { informationPanels } from "../../../assets/dummy/dashboard";
 export default class DashboardApi extends RestComponent {
   urlHost;
-  constructor(axiosInstance, vueInstance, urlHost) {
+  constructor(axiosInstance, vueInstance) {
     super(axiosInstance, vueInstance);
-    this.urlHost = urlHost;
   }
   //DASHBOARDS REQUESTS
   list() {
     // TODO:
     return this.axios
-      .get(`${this.urlHost}/api-postgre/1.0/api/dashboard`, {
+      .get(`/api-postgre/1.0/api/dashboard`, {
         headers: { "Content-type": "application/json; charset=UTF-8" },
       })
       .then((response) => {
@@ -22,7 +21,7 @@ export default class DashboardApi extends RestComponent {
   }
   get(id) {
     return this.axios
-      .get(`${this.urlHost}/api-postgre/1.0/api/dashboard/${id}`, {
+      .get(`/api-postgre/1.0/api/dashboard/test/${id}`, {
         headers: { "Content-type": "application/json; charset=UTF-8" },
       })
       .then((response) => {
@@ -36,7 +35,7 @@ export default class DashboardApi extends RestComponent {
     //validate
     // TODO:
     return this.axios
-      .post(`${this.urlHost}/api-postgre/1.0/api/dashboard`, dashboard, {
+      .post(`/api-postgre/1.0/api/dashboard`, dashboard, {
         headers: { "Content-type": "application/json; charset=UTF-8" },
       })
       .then((response) => {
@@ -50,7 +49,7 @@ export default class DashboardApi extends RestComponent {
     //validate
     // TODO:
     return this.axios
-      .put(`${this.urlHost}/api-postgre/1.0/api/dashboard`, dashboard, {
+      .put(`/api-postgre/1.0/api/dashboard`, dashboard, {
         headers: { "Content-type": "application/json; charset=UTF-8" },
       })
       .then((response) => {
@@ -62,7 +61,7 @@ export default class DashboardApi extends RestComponent {
   }
   delete(id) {
     return this.axios
-      .delete(`${this.urlHost}/api-postgre/1.0/api/dashboard/${id}`, {
+      .delete(`/api-postgre/1.0/api/dashboard/${id}`, {
         headers: { "Content-type": "application/json; charset=UTF-8" },
       })
       .then((response) => {
