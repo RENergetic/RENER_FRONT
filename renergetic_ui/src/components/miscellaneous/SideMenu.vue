@@ -17,12 +17,17 @@
       />
       <PanelMenu :model="menuModel" />
     </Sidebar>
+    <Dialogs
+      :notifications="notifications"
+      @update:notifications="notifications = $event"
+    ></Dialogs>
   </div>
 </template>
 
 <script>
 import PanelMenu from "primevue/panelmenu";
 import Sidebar from "primevue/sidebar";
+import Dialogs from "./Dialogs.vue";
 import Logo from "./Logo.vue";
 
 export default {
@@ -30,13 +35,17 @@ export default {
   components: {
     PanelMenu,
     Sidebar,
+    Dialogs,
     Logo,
   },
+  emits: ["notification"],
   data() {
     return {
       visible: false,
       menuModel: [],
       dashboards: [],
+      //tODO: dialog state hashmap
+      notifications: false,
       informationPanels: [],
       isAdmin: false, //this.$store.getters["user/isAdmin"],
     };
@@ -89,7 +98,7 @@ export default {
       });
       items.push({
         //tODO:
-        label: this.$t("menu.add_information_panel") + "todo: ",
+        label: this.$t("menu.add_information_panel"),
         icon: "pi pi-fw pi-plus",
         to: "/panel/add",
         command: () => {
@@ -172,6 +181,23 @@ export default {
           label: this.$t("menu.heatmaps"),
           icon: "pi pi-fw pi-chart-line",
           items: this.heatMapItems(),
+        },
+        {
+          label: this.$t("menu.feedback"),
+          icon: "pi pi-fw pi-check-square",
+          command: () => {
+            alert("TODO: user feedback");
+            // this.$router.push("/feedback");
+          },
+        },
+
+        {
+          label: this.$t("menu.notifications"),
+          icon: "pi pi-fw  pi-bell",
+          command: () => {
+            // this.$emit("notification");
+            this.notifications = !this.notifications;
+          },
         },
       ];
     },

@@ -61,5 +61,10 @@ class MeasurementApi {
   async measurements(objectIds) {
     return measurementsGenerator(objectIds.length, 50);
   }
+
+  async getNotifications(objectIds) {
+    // todo:
+    return objectIds;
+  }
 }
 export { DashboardApi, MeasurementApi };

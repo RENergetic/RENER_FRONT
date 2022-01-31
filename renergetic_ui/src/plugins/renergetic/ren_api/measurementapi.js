@@ -11,4 +11,7 @@ export default class DashboardApi extends RestComponent {
   async measurements(objectIds) {
     console.info(objectIds);
   }
+  async getNotifications(objectIds) {
+    console.info(objectIds);
+  }
 }

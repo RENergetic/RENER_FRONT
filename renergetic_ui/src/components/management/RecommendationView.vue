@@ -1,24 +1,38 @@
 <template>
-  <div style="display: block; width: 10rem; height: 20rem">
-    todo view list of recommendation {{ recommendations }}
+  <div style="display: block; width: 10rem">
+    todo view list of recommendation {{ mRecommendations }} objects:{{
+      objects
+    }}
   </div>
 </template>
 <script>
-// THEN to get HTML5 drag&drop
+//todo: download recommendations
 export default {
-  name: "Dashboard",
+  name: "RecommendationView",
   components: {},
   props: {
     recommendations: {
       type: Array,
       default: () => null,
     },
+
+    objects: { type: Array, default: null },
   },
   data() {
-    return {};
+    return { mRecommendations: [] };
   },
   computed: {},
-  watch: {},
+  watch: {
+    objects: {
+      handler: function () {
+        // todo: load data
+      },
+      deep: true,
+    },
+  },
+  created() {
+    this.mRecommendations = this.recommendations;
+  },
 
   methods: {},
 };

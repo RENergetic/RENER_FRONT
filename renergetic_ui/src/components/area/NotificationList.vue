@@ -1,27 +1,21 @@
 <template>
   <div>
-    TODO: list notifications
+    TODO: list notifications:
     {{ mNotifications }}
+    objects:{{ objects }}
   </div>
 </template>
 <script>
 // THEN to get HTML5 drag&drop
 export default {
-  name: "Dashboard",
+  name: "NotificationList",
   components: {},
   props: {
     notifications: {
       type: Array,
       default: () => null,
     },
-    tileId: {
-      type: Number,
-      default: null,
-    },
-    areaId: {
-      type: Number,
-      default: null,
-    },
+    objects: { type: Array, default: null },
     dateInterval: {
       type: Object,
       default: null,
@@ -30,10 +24,6 @@ export default {
   data() {
     return {
       mNotifications: [],
-      grid: null,
-      locked: false,
-      editTile: null,
-      editDialog: false,
     };
   },
   computed: {},
@@ -41,12 +31,18 @@ export default {
     notifications: function (newValue) {
       this.mNotifications = newValue;
     },
+    objects: {
+      handler: function () {
+        // todo: load data
+      },
+      deep: true,
+    },
   },
   async created() {
-    if (this.notifications == null) {
+    if (this.notifications == null && this.objects != null) {
       //todo:
       this.$ren.measurementApi
-        .getInformationPanel(this.$route.params.id)
+        .getNotifications(this.objects)
         .then((notifications) => {
           this.mNotifications = notifications;
         });
