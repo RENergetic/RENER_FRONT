@@ -1,8 +1,27 @@
 <template>
-  <div class="grid-stack-item" v-bind="gridStackAttributes">
-    <Card :class="'grid-stack-item-content'">
-      <template #title> {tile} </template>
+  <div :class="'grid-stack-item ren'" v-bind="gridStackAttributes">
+    <Card :class="'grid-stack-item-content' + state">
+      <template v-if="tile != null && tile.title != null" #title>
+        {{ tile.title }}
+      </template>
       <template v-if="tile != null" #content>
+        state: {{ state }} (todo: remove this)
+        <Button
+          v-if="edit"
+          id="menu-toggle"
+          :class="'p-button-rounded p-button-text edit-button '"
+          aria-haspopup="true"
+          icon="pi pi-pencil"
+          @click="$emit('edit', tile)"
+        />
+        <Button
+          v-if="edit"
+          id="menu-toggle"
+          :class="'p-button-rounded p-button-text bell-button '"
+          aria-haspopup="true"
+          icon="pi pi-bell"
+          @click="$emit('notification', tile)"
+        />
         <InformationTileItem
           v-for="item in tile.items"
           :key="item.id"
@@ -19,15 +38,24 @@ export default {
   name: "InformationTile",
   components: { Card, InformationTileItem },
   props: {
+    edit: { type: Boolean, default: false },
     tile: {
       type: Object,
       default: () => ({}),
     },
   },
+  emits: ["edit", "notification"],
   // data() {
   //   return {};
   // },
   computed: {
+    state: function () {
+      let state =
+        this.tile == null || this.tile.state == null
+          ? "unknown"
+          : this.tile.state;
+      return ` state ${state}`;
+    },
     col: function () {
       return this.tile == null || this.tile.col == null ? 2 : this.tile.col;
     },
@@ -58,6 +86,16 @@ export default {
 </script>
 
 <style lang="scss">
+.edit-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.bell-button {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
 .grid-stack-item {
   margin: 10px;
 }

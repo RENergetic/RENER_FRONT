@@ -1,8 +1,27 @@
 <template>
   <Card>
     <template v-if="mArea != null" #title>
-      <span v-if="edit">{{ $t("view.edit_area") }}</span>
-      <span v-else>{{ $t("view.view_area") }}</span>
+      <!-- todo remove following icon -->
+      <i
+        class="pi pi-times"
+        style="fontsize: 2rem"
+        @click="viewMeasurements()"
+      />
+      <span v-if="edit">{{ $t("view.edit_area") }} </span>
+      <span v-else>
+        <i
+          class="pi pi-times"
+          style="fontsize: 2rem"
+          @click="viewMeasurements()"
+        />
+        {{ $t("view.view_area") }}
+      </span>
+      <i
+        v-if="edit"
+        class="pi pi-pencil"
+        style="fontsize: 2rem"
+        @click="() => (manageSensorsDialog = !manageSensorsDialog)"
+      />
       <i
         v-if="edit"
         class="pi pi-times"
@@ -25,6 +44,14 @@
           :aria-readonly="!edit"
         />
       </div>
+      <div v-if="mArea && mArea.dashboard">
+        {{ $t("heatmap.dashboard") }}
+        <i
+          class="pi pi-times"
+          style="fontsize: 2rem"
+          @click="$router.push(`/dashboard/heatmap/view/${mArea.dashboard.id}`)"
+        />
+      </div>
     </template>
     <template v-else #content>
       <!-- {{ area.id }} -->
@@ -41,13 +68,37 @@
       </div>
     </template>
   </Card>
+  <Dialog
+    v-model:visible="measurementDialog"
+    :style="{ width: '75vw' }"
+    :maximizable="true"
+    :modal="true"
+    :dismissable-mask="true"
+  >
+    <MeasurementChart
+      v-if="mArea != null"
+      :objects="[mArea.id]"
+    ></MeasurementChart>
+  </Dialog>
+  <Dialog
+    v-model:visible="manageSensorsDialog"
+    :style="{ width: '75vw' }"
+    :maximizable="true"
+    :modal="true"
+    :dismissable-mask="true"
+  >
+    <ManageSensors></ManageSensors>
+  </Dialog>
 </template>
 <script>
 import Card from "primevue/card";
+import MeasurementChart from "./measurements/MeasurementChart.vue";
+import ManageSensors from "./measurements/ManageSensors.vue";
 
+import Dialog from "primevue/dialog";
 export default {
   name: "AreaDetails",
-  components: { Card },
+  components: { Card, Dialog, MeasurementChart, ManageSensors },
 
   props: {
     edit: {
@@ -64,12 +115,14 @@ export default {
     return {
       label: this.modelValue != null ? this.modelValue.label : null,
       mArea: null,
+      measurementDialog: false,
+      manageSensorsDialog: false,
     };
   },
   watch: {
     mArea: {
       handler(newVal, oldValue) {
-        if (oldValue == null) {
+        if (oldValue == null && newVal == null) {
           return;
         }
         this.$emit("update:modelValue", newVal);
@@ -82,6 +135,9 @@ export default {
     },
   },
   methods: {
+    viewMeasurements() {
+      this.measurementDialog = true;
+    },
     deleteArea() {
       this.$confirm.require({
         message: this.$t("view.heatmap_area_delete_confirm", {

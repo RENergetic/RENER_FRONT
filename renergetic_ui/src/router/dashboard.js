@@ -41,11 +41,23 @@ var dashboardRoutes = [
     meta: { isAuthenticated: true },
     component: () => import("../views/dashboard/HeatMapListView.vue"),
   },
+  // {
+  //   path: "/panel/view/:id?",
+  //   name: "InformationPanel",
+  //   meta: { isAuthenticated: true },
+  //   component: () => import("../views/dashboard/InformationPanel.vue"),
+  // },
   {
     path: "/panel/view/:id?",
-    name: "InformationPanel",
+    name: "InformationPanelView",
     meta: { isAuthenticated: true },
-    component: () => import("../views/dashboard/InformationPanel.vue"),
+    component: () => import("../views/dashboard/InformationPanelView.vue"),
+  },
+  {
+    path: "/panel/add",
+    name: "InformationPanelCreator",
+    meta: { isAuthenticated: true },
+    component: () => import("../views/dashboard/InformationPanelCreator.vue"),
   },
 ];
 

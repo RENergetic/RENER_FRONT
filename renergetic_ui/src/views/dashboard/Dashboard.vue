@@ -55,7 +55,7 @@ export default {
             },
           },
           {
-            label: this.$t("menu.update_dashboard"),
+            label: this.$t("menu.edit_dashboard"),
             icon: "pi pi-fw pi-pencil",
             command: () => {
               this.$router.push(`/dashboard/edit/${this.dashboard.id}`);

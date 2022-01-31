@@ -1,17 +1,218 @@
 <template>
-  <div class="home">
-    <!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
+  <div>
+    <DotMenu :model="menuModel" />
+
+    <div class="home-grid-stack grid-stack">
+      <div :class="'grid-stack-item ren'" v-bind="panelTile">
+        <Card :class="'grid-stack-item-content'"> </Card>
+      </div>
+      <div :class="'grid-stack-item ren'" v-bind="feedbackTile">
+        <Card :class="'grid-stack-item-content'">
+          <Feedback></Feedback>
+        </Card>
+      </div>
+
+      <div :class="'grid-stack-item ren'" v-bind="notificationTile">
+        <Card :class="'grid-stack-item-content'">
+          <NotificationList></NotificationList>
+        </Card>
+      </div>
+      <div
+        v-if="panel != null"
+        :class="'grid-stack-item ren'"
+        v-bind="informationTile"
+      >
+        <Card :class="'grid-stack-item-content'">
+          <InformationPanel
+            ref="panel"
+            :panel="panel"
+            :edit-mode="false"
+          ></InformationPanel>
+        </Card>
+      </div>
+    </div>
   </div>
 </template>
-
 <script>
-// @ is an alias to /src
-// import HelloWorld from "@/components/HelloWorld.vue";
+import DotMenu from "../components/miscellaneous/DotMenu.vue";
+import Feedback from "../components/user/Feedback.vue";
+import NotificationList from "../components/area/NotificationList.vue";
+import InformationPanel from "../components/dashboard/InformationPanel.vue";
 
+// import Dialog from "primevue/dialog";
+import { GridStack } from "gridstack";
+// THEN to get HTML5 drag&drop
+import "gridstack/dist/h5/gridstack-dd-native";
+import "gridstack/dist/gridstack.min.css";
 export default {
-  name: "HomePage",
+  name: "Home",
   components: {
-    // HelloWorld,
+    DotMenu,
+    // Dialog,
+    InformationPanel,
+    NotificationList,
+    Feedback,
+  },
+  data() {
+    return {
+      panelTile: {
+        id: "panelTile",
+        "gs-id": "panelTile",
+        // "gs-x": 0,
+        // "gs-y": 0,
+        "gs-w": 4,
+        "gs-h": 4,
+      },
+      notificationTile: {
+        id: "notificationTile",
+        "gs-id": "notificationTile",
+        // "gs-x": this.layout.x,
+        // "gs-y": this.layout.y,
+        "gs-w": 4,
+        "gs-h": 4,
+      },
+      feedbackTile: {
+        id: "feedbackTile",
+        "gs-id": "feedbackTile",
+        // "gs-x": this.layout.x,
+        // "gs-y": this.layout.y,
+        "gs-w": 4,
+        "gs-h": 4,
+      },
+      informationTile: {
+        id: "informationTile",
+        "gs-id": "informationTile",
+        // "gs-x": this.layout.x,
+        // "gs-y": this.layout.y,
+        "gs-w": 12,
+        "gs-h": 3,
+      },
+      grid: null,
+      panel: null,
+      locked: true,
+      editTile: null,
+      editDialog: false,
+      notifiationDialog: false,
+      manageSensorsDialog: false,
+    };
+  },
+  computed: {
+    toggleButton: function () {
+      //TODO: if permission
+      let label = this.locked
+        ? this.$t("menu.grid_unlock")
+        : this.$t("menu.grid_lock");
+      return {
+        label: label,
+        icon: "pi pi-fw pi-lock",
+        command: () => this.toggleLock(),
+      };
+    },
+
+    menuModel() {
+      return [
+        {
+          label: this.$t("menu.save_grid"),
+          icon: "pi pi-fw pi-plus-circle",
+          command: () => this.saveGrid(),
+        },
+        this.toggleButton,
+
+        // {
+        //   label: this.$t("menu.grid_lock"),
+        //   icon: "pi pi-fw pi-lock",
+        //   command: () => this.saveGrid(),
+        // },
+      ];
+    },
+  },
+
+  watch: {},
+  async created() {
+    // todo: get id from session storage
+    let id = "1";
+    this.$ren.dashboardApi.getInformationPanel(id).then((panel) => {
+      this.panel = panel;
+    });
+    //todo: catch
+  },
+  async mounted() {
+    this.setGrid();
+  },
+  updated() {
+    this.setGrid();
+  },
+  methods: {
+    setGrid() {
+      if (this.grid != null) this.grid.destroy(false);
+      let grid = GridStack.init({ float: true }, ".home-grid-stack");
+      if (this.locked) {
+        grid.disable();
+      } else {
+        grid.enable();
+      }
+      this.grid = grid;
+      window.homeGrid = this.grid;
+    },
+    gridWidth(tile) {
+      return tile.col == null ? 2 : tile.col;
+    },
+    async toggleLock() {
+      this.locked = !this.locked;
+    },
+    addTile() {
+      //TODO: get unique id?
+      this.panel.tiles.push({
+        // layout: { x: 0, y: 0, h: 3, w: 3 },
+        id: this.$ren.utils.uuid(),
+        title: null,
+        items: [],
+      });
+    },
+    startEdit(tile) {
+      //todo
+      this.editTile = tile;
+      this.editDialog = true;
+      // console.info(tile);
+    },
+
+    saveGrid() {
+      //TODO: save
+      let nodes = this.gridItems;
+      let tiles = this.tiles;
+      nodes.forEach((node) => {
+        let gridstackNode = node.gridstackNode;
+        const tile = tiles.find((t) => t.id === gridstackNode.id);
+        if (tile) {
+          tile.layout = {
+            x: gridstackNode.x,
+            y: gridstackNode.y,
+            w: gridstackNode.w,
+            h: gridstackNode.h,
+          };
+        }
+      });
+      this.tiles = tiles;
+    },
+    viewNotification() {
+      //TODO: load here notifications for tile
+      this.notifiationDialog = true;
+    },
   },
 };
 </script>
+
+<style lang="scss">
+.grid-stack-item {
+  margin: 10px;
+}
+.grid-stack-item-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #3182ce;
+  background-color: #bee3f8;
+  font-weight: 600;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+</style>

@@ -1,4 +1,5 @@
 <template>
+  <DotMenu :model="menuModel()" />
   <div class="p-grid">
     <div class="p-col-8">
       <Card>
@@ -26,15 +27,25 @@
           </div>
         </template>
       </Card>
+      <MeasurementChart
+        v-if="
+          selectedAreas &&
+          Object.keys(selectedAreas).length > 0 &&
+          measurmenentState
+        "
+        :objects="Object.keys(selectedAreas)"
+      ></MeasurementChart>
     </div>
     <div v-if="bgImage" class="p-col-3 ren">
       <AreaDetails
+        v-show="selectedArea != null"
         class="tile"
         :model-value="selectedArea"
-        @update:model-value="selectedArea = $event"
+        @update:model-value="onAreaSelect($event)"
         @delete="areaDelete(selectedArea)"
       ></AreaDetails>
-      <Card class="tile">
+
+      <!-- <Card class="tile">
         <template #title> {{ $t("heatmap.areas") }}</template>
         <template #content>
           <Listbox
@@ -45,16 +56,65 @@
             style="width: 15rem"
           />
         </template>
-      </Card>
+      </Card> -->
+      <Accordion class="tile" :active-index="0">
+        <AccordionTab>
+          <template #header> {{ $t("heatmap.areas") }}</template>
+
+          <Listbox
+            v-if="heatMap != null"
+            v-model="selectedArea"
+            :options="heatMap.areas"
+            option-label="label"
+            style="width: 15rem"
+          />
+        </AccordionTab>
+      </Accordion>
+      <Accordion v-if="attributes" class="tile" :active-index="0">
+        <AccordionTab>
+          <template #header> {{ $t("heatmap.attributes") }}</template>
+          <Tree
+            v-model:selection-keys="selectedAttributes"
+            :value="attributes"
+            selection-mode="checkbox"
+          ></Tree>
+        </AccordionTab>
+      </Accordion>
+      <Accordion
+        v-if="selectedAreas && recommendationState"
+        class="tile"
+        :active-index="recommendationPanelState"
+      >
+        <AccordionTab>
+          <template #header> {{ $t("heatmap.recommendations") }}</template>
+          <recommendation-view :objects="selectedAreas"></recommendation-view>
+        </AccordionTab>
+      </Accordion>
+      <Accordion
+        v-if="selectedAreas && notificationState"
+        class="tile"
+        :active-index="0"
+      >
+        <AccordionTab>
+          <template #header> {{ $t("heatmap.notifications") }}</template>
+          <notification-view :objects="selectedAreas"></notification-view>
+        </AccordionTab>
+      </Accordion>
     </div>
   </div>
 </template>
 <script>
+import Tree from "primevue/tree";
+import DotMenu from "../../components/miscellaneous/DotMenu.vue";
 import AreaDetails from "../../components/dashboard/AreaDetails.vue";
+import RecommendationView from "../management/RecommendationView.vue";
 import Listbox from "primevue/listbox";
-
+import Accordion from "primevue/accordion";
+import AccordionTab from "primevue/accordiontab";
 import Card from "primevue/card";
 import Konva from "konva";
+import NotificationView from "../area/NotificationList.vue";
+import MeasurementChart from "./measurements/MeasurementChart.vue";
 
 //TODO: update image,todo: spinner?
 //initial canvas size  this.drawArea(this.current);
@@ -62,7 +122,18 @@ const sceneWidth = 900;
 const sceneHeight = 450;
 export default {
   name: "HeatMapView",
-  components: { Card, Listbox, AreaDetails },
+  components: {
+    Card,
+    Listbox,
+    AreaDetails,
+    Accordion,
+    AccordionTab,
+    Tree,
+    RecommendationView,
+    DotMenu,
+    NotificationView,
+    MeasurementChart,
+  },
   props: {
     heatMap: {
       type: Object,
@@ -71,7 +142,6 @@ export default {
   },
   data() {
     return {
-      //heat map area id
       stageSize: {
         width: sceneWidth,
         height: sceneHeight,
@@ -79,26 +149,36 @@ export default {
       selectedArea: null,
       scale: 1,
       bgImage: null,
+      // areaState: [],
+      selectedAreas: {},
+      attributes: null,
+      selectedAttributes: [],
+      recommendations: null,
+      recommendationPanelState: -1,
+      recommendationState: true,
+      measurmenentState: true,
+      notificationState: true,
     };
   },
   watch: {
-    selectedArea: function (newValue, oldValue) {
-      //toggle colors
-      if (oldValue != null) {
-        let oldId = oldValue.id;
-        let oldShape = this.$refs.stage.getStage().findOne(`#${oldId}`);
-        if (oldShape != null) {
-          //oldShape  -> after delete
-          oldShape.fill("#00D2FFAA");
+    // selectedArea: function (newValue, oldValue) {
+    //   //toggle colors
+
+    // },
+    selectedAreas: {
+      handler: async function (newValue) {
+        if (newValue && Object.keys(newValue).length > 0)
+          await this.loadAttributes();
+        else {
+          this.attributes = null;
         }
-      }
-      if (newValue != null) {
-        let newId = newValue.id;
-        this.$refs.stage.getStage().findOne(`#${newId}`).fill("#AAAAFFAA");
-      }
+      },
+      deep: true,
     },
     heatMap: function () {
       if (this.heatMap != null) {
+        // this.areaState = Array(this.heatMap.areas.length).fill(false);
+        // console.info(this.heatMap.areas.length);
         const image = new window.Image();
         image.src = this.heatMap.imgUrl;
         image.onload = () => {
@@ -106,13 +186,12 @@ export default {
           this.bgImage = image;
           let stage = this.$refs.stage.getStage();
           this.scaleHeatMap(stage, image);
-          for (var area in this.heatMap.areas) {
-            this.drawArea(area);
-          }
+          this.heatMap.areas.forEach((area, idx) => this.drawArea(area, idx));
         };
       } else console.info("todo: null");
     },
   },
+
   mounted() {
     if (this.heatMap != null) {
       const image = new window.Image();
@@ -123,16 +202,39 @@ export default {
         let stage = this.$refs.stage.getStage();
         this.scaleHeatMap(stage, image);
 
-        this.heatMap.areas.forEach((it) => this.drawArea(it));
+        this.heatMap.areas.forEach((it, idx) => this.drawArea(it, idx));
       };
+      // this.areaState = Array(this.heatMap.areas.length).fill(false);
     }
   },
   methods: {
+    onAreaSelect(area) {
+      if (this.selectedArea != null) {
+        let oldId = this.selectedArea.id;
+        this.toggleArea(oldId, false);
+      }
+      if (area != null) {
+        Object.keys(this.selectedAreas).forEach((id) => {
+          this.toggleArea(id, false);
+        });
+        let selectedAreas = {};
+        selectedAreas[area.id] = 1;
+        this.selectedAreas = selectedAreas;
+        let newId = area.id;
+        this.toggleArea(newId, true);
+      }
+    },
+    toggleArea(id, state) {
+      let shape = this.$refs.stage.getStage().findOne(`#${id}`);
+      if (shape != null) {
+        //oldShape  -> after delete
+        if (!state) shape.fill("#00D2FFAA");
+        else shape.fill("#AAAAFFAA");
+      }
+    },
     onClick(evt) {
       // console.info(evt.target.nodeName);
       if (evt.target.nodeName == "CANVAS" && this.addMode) {
-        // console.info([evt.layerX / this.scale, evt.layerY / this.scale]);
-        // console.info(evt);var evt = e.evt;
         let stage = this.$refs.stage.getStage();
         var shape = stage.findOne(`#${this.current.id}`);
         if (shape != null) {
@@ -155,10 +257,33 @@ export default {
       }
     },
 
-    drawArea(area) {
+    drawArea(area, idx) {
       let layer = new Konva.Layer();
       let stage = this.$refs.stage.getStage();
       let item = new Konva.Shape(this.getConfig(area));
+      let areaId = area.id;
+      item.on("click", () => {
+        this.selectedArea = this.heatMap.areas[idx];
+        if (this.selectedAreas[areaId] == 1) {
+          if (this.selectedAreas.length == 1) {
+            this.selectedAreas = {};
+          } else delete this.selectedAreas[areaId];
+          this.toggleArea(area.id, false);
+        } else {
+          this.selectedAreas[areaId] = 1;
+          this.toggleArea(area.id, true);
+        }
+
+        let keys = Object.keys(this.selectedAreas);
+        if (keys.length != 1) {
+          this.selectedArea = null;
+        } else {
+          let k = Object.keys(this.selectedAreas);
+          this.heatMap.areas.forEach((area) => {
+            if (area.id == k[0]) this.selectedArea = area;
+          });
+        }
+      });
       layer.add(item);
       stage.add(layer);
       stage.draw();
@@ -183,21 +308,13 @@ export default {
         id: area.id,
       };
     },
-    onSelect() {
-      if (this.$refs.FileUpload !== undefined)
-        this.hasFiles = this.$refs.FileUpload.files.length > 0;
-      else this.hasFiles = false;
-      if (this.hasFiles) {
-        const image = new window.Image();
-        image.src = this.$refs.FileUpload.files[0].objectURL;
-        image.onload = () => {
-          // set image only when it is loaded
-          let stage = this.$refs.stage.getStage();
-          this.bgImage = image;
-          this.scaleHeatMap(stage, image);
-          this.heatmap.imgUrl = image.src;
-        };
-      }
+
+    async loadAttributes() {
+      await this.$ren.measurementApi
+        .attributes(Object.keys(this.selectedAreas))
+        .then((attributes) => {
+          this.attributes = attributes;
+        });
     },
     scaleHeatMap(stage, bgImage) {
       if (bgImage != null) {
@@ -207,6 +324,31 @@ export default {
         stage.height(bgImage.height);
         stage.scale({ x: scale, y: scale });
       }
+    },
+    menuModel() {
+      return [
+        {
+          label: this.$t("menu.show_recommendations"),
+          icon: "pi pi-fw pi-eye",
+          command: () => {
+            this.recommendationState = !this.recommendationState;
+          },
+        },
+        {
+          label: this.$t("menu.show_measurements"),
+          icon: "pi pi-fw pi-pencil",
+          command: () => {
+            this.measurmenentState = !this.measurmenentState;
+          },
+        },
+        {
+          label: this.$t("menu.show_notifications"),
+          icon: "pi pi-fw pi-pencil",
+          command: () => {
+            this.notificationState = !this.notificationState;
+          },
+        },
+      ];
     },
   },
 };

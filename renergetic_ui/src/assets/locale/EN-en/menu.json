@@ -1,7 +1,7 @@
 {
     "add_dashboard": "Add dashboard",
     "dashboards": "Dashboards",
-    "update_dashboard": "Update dashboard",
+    "edit_dashboard": "Edit dashboard",
     "delete_dashboard": "Delete dashboard",
 
     "add_heatmap": "Add heatMap",
@@ -10,5 +10,12 @@
 
     "profile": "Profile",
     "information_panel":"Information panels",
-    "add_information_panel":" Add information panels"
+    "add_information_panel":" Add information panels",
+    
+  "feedback": "Feedback",
+  "notifications": "Notifications",
+  "panel_grid_unlock": "Panel grid unlocked",
+  "panel_grid_lock": "Panel grid locked",
+  "panel_grid_add_tile": "Add tile",
+  "save_panel_grid": "Save panel grid",
 }

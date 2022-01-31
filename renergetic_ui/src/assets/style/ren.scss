@@ -6,7 +6,7 @@ body {
     background-color: lightgrey;
 }
 .ren {
-    .tile{
+    .tile {
         margin: 0.15rem;
     }
     .p-inputtext {
@@ -37,18 +37,22 @@ body {
         margin: auto;
     }
 
+    .state.ok,
     .cell.ok,
     .cell-state.ok {
         background-color: #50b482;
     }
+    .state.error,
     .cell.error,
     .cell-state.error {
         background-color: crimson;
     }
+    .state.warning,
     .cell.warning,
     .cell-state.warning {
         background-color: sandybrown;
     }
+    .state.unknown,
     .cell.unknown,
     .cell-state.unknown {
         background-color: #82fab4aa;
@@ -171,6 +175,5 @@ body {
     z-index: 1001;
 }
 .ren.p-menu-overlay {
-    min-width: 15rem !important; 
+    min-width: 15rem !important;
 }
-

@@ -21,6 +21,7 @@ var informationPanels = [
     tiles: [
       {
         layout: { x: 0, y: 0, h: 3, w: 3 },
+        state: "ok",
         id: "1",
         title: null,
         col: 2,
@@ -66,6 +67,7 @@ var informationPanels = [
       },
       {
         id: "3",
+        state: "warning",
         title: null,
         col: 2,
         x: 8,
@@ -103,7 +105,12 @@ var heatmaps = [
         id: "area_1",
         value: "area_1",
         label: "area_1",
-        dashboardId: null,
+        dashboard: {
+          id: "2",
+          label: "Dashboard 2",
+          name: "dashboard_2",
+          url: "http://localhost:3000/d/cWp8595nk/embedded-dashboard?orgId=1&from=1640263130489&to=1640284730489&kiosk=tv",
+        },
       },
       {
         points: [
@@ -133,4 +140,103 @@ var heatmaps = [
     label: "heatmap_0",
   },
 ];
-export { dummyList, informationPanels, heatmaps };
+var measurementAttributes = [
+  {
+    key: "id4",
+    label: "Predictors",
+    name: "predictors",
+    type: "group",
+    children: [
+      {
+        key: "id5",
+        name: "electrical",
+        label: "Electrical",
+        type: "measurement",
+        children: [],
+      },
+      {
+        key: "id6",
+        name: "thermic",
+        label: "Thermic",
+        type: "measurement",
+        children: [],
+      },
+    ],
+  },
+  {
+    key: "id1",
+    label: "Target",
+    name: "target",
+    type: "group",
+    children: [
+      {
+        key: "id2",
+        name: "electrical",
+        label: "Electrical",
+        type: "measurement",
+        children: [],
+      },
+      {
+        key: "id3",
+        name: "thermic",
+        label: "Thermic",
+        type: "measurement",
+        children: [],
+      },
+    ],
+  },
+  {
+    key: "id7",
+    label: "Prediction Interval",
+    name: "prediction_interval",
+    type: "group",
+    children: [
+      {
+        key: "id8",
+        name: "3h",
+        label: "3 H",
+        type: "measurement",
+        children: [],
+      },
+      {
+        key: "id9",
+        name: "6h",
+        label: "6 H",
+        type: "measurement",
+        children: [],
+      },
+    ],
+  },
+];
+let measurementsGenerator = (i, n) => {
+  let datasets = [];
+  for (var d = 0; d < i; d++) {
+    var data = [];
+    let next = Math.floor(Math.random() * 150) - 50;
+    for (var j = 0; j < n; j++) {
+      data.push(next);
+      next += Math.floor(Math.random() * 150) - 50;
+    }
+    datasets.push({
+      data: data,
+      label: `label_${j}`,
+      // borderColor: ,
+      fill: false,
+    });
+  }
+  let labels = [];
+
+  var t = Date.now();
+  t = t - (t % 60000);
+  for (j = 0; j < n; j++) {
+    labels.push(t - 60000 * (n - j));
+  }
+  return { datasets: datasets, labels: labels };
+};
+export {
+  dummyList,
+  informationPanels,
+  heatmaps,
+  measurementAttributes,
+  measurementsGenerator,
+};
