@@ -72,7 +72,6 @@ export default function (Vue) {
       // Get the actual url of the app, it's needed for Keycloak
       // const basePath = window.location.toString();
       if (!keycloak.authenticated) {
-        alert(`${window.location.origin.toString()}/${to.path}`);
         const basePath = window.location.origin.toString();
         var path = `${basePath}/${to.path}`;
         // The page is protected and the user is not authenticated. Force a login.
