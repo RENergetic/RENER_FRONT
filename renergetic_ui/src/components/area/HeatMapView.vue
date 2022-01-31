@@ -105,16 +105,16 @@
 </template>
 <script>
 import Tree from "primevue/tree";
-import DotMenu from "../../components/miscellaneous/DotMenu.vue";
-import AreaDetails from "../../components/dashboard/AreaDetails.vue";
+import DotMenu from "../miscellaneous/DotMenu.vue";
+import AreaDetails from "./AreaDetails.vue";
 import RecommendationView from "../management/RecommendationView.vue";
 import Listbox from "primevue/listbox";
 import Accordion from "primevue/accordion";
 import AccordionTab from "primevue/accordiontab";
 import Card from "primevue/card";
 import Konva from "konva";
-import NotificationView from "../area/NotificationList.vue";
-import MeasurementChart from "./measurements/MeasurementChart.vue";
+import NotificationView from "./NotificationList.vue";
+import MeasurementChart from "../dashboard/measurements/MeasurementChart.vue";
 
 //TODO: update image,todo: spinner?
 //initial canvas size  this.drawArea(this.current);

@@ -110,7 +110,7 @@
 </template>
 <script>
 import FileUpload from "primevue/fileupload";
-import AreaDetails from "../../components/dashboard/AreaDetails.vue";
+import AreaDetails from "../../components/area/AreaDetails.vue";
 import Listbox from "primevue/listbox";
 import { MapArea } from "../../plugins/model/Area";
 import { HeatMap } from "../../plugins/model/HeatMap";

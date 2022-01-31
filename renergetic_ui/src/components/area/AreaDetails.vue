@@ -92,8 +92,8 @@
 </template>
 <script>
 import Card from "primevue/card";
-import MeasurementChart from "./measurements/MeasurementChart.vue";
-import ManageSensors from "./measurements/ManageSensors.vue";
+import MeasurementChart from "../dashboard/measurements/MeasurementChart.vue";
+import ManageSensors from "../dashboard/measurements/ManageSensors.vue";
 
 import Dialog from "primevue/dialog";
 export default {
