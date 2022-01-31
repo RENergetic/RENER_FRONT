@@ -1,4 +1,4 @@
-{
+    {
     "add_dashboard": "Add dashboard",
     "dashboards": "Dashboards",
     "edit_dashboard": "Edit dashboard",
@@ -11,11 +11,13 @@
     "profile": "Profile",
     "information_panel":"Information panels",
     "add_information_panel":" Add information panels",
-    
-  "feedback": "Feedback",
-  "notifications": "Notifications",
-  "panel_grid_unlock": "Panel grid unlocked",
-  "panel_grid_lock": "Panel grid locked",
-  "panel_grid_add_tile": "Add tile",
-  "save_panel_grid": "Save panel grid",
+
+    "feedback": "Feedback",
+    "notifications": "Notifications",
+    "panel_grid_unlock": "Panel grid unlocked",
+    "panel_grid_lock": "Panel grid locked",
+    "panel_grid_add_tile": "Add tile",
+    "save_panel_grid": "Save panel grid",
+
+    "logout": "Logout"
 }

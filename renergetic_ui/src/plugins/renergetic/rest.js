@@ -10,9 +10,9 @@ const USE_DUMMY = true;
 import axios from "axios";
 
 export var BASE_URL = "/";
-console.info(process.env.VUE_APP_HOST);
+
 const axiosInstance = axios.create({ baseURL: BASE_URL });
-const apiHost = "http://front-ren-prototype.apps.paas-dev.psnc.pl";
+const apiHost = process.env.VUE_APP_API_URL;
 
 class AxiosAPI {
   constructor(axiosInstance, vueInstance, authApi) {
