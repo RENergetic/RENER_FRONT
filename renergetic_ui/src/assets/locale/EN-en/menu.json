@@ -11,6 +11,7 @@
     "profile": "Profile",
     "information_panel":"Information panels",
     "add_information_panel":" Add information panels",
+<<<<<<< HEAD
 
     "feedback": "Feedback",
     "notifications": "Notifications",
@@ -20,4 +21,13 @@
     "save_panel_grid": "Save panel grid",
 
     "logout": "Logout"
+=======
+    
+  "feedback": "Feedback",
+  "notifications": "Notifications",
+  "panel_grid_unlock": "Panel grid unlocked",
+  "panel_grid_lock": "Panel grid locked",
+  "panel_grid_add_tile": "Add tile",
+  "save_panel_grid": "Save panel grid"
+>>>>>>> 0134e69444e95790a073d861bfad9c79cd4b235c
 }
