@@ -26,7 +26,7 @@ const routes = [
   {
     path: "/profile/:username?",
     name: "Profile",
-    meta: { isAuthenticated: true },
+    meta: { isAuthenticated: true, roles: ["manager", "administrator"] },
     component: () => import("../views/user/Profile.vue"),
   },
   {
@@ -39,6 +39,13 @@ const routes = [
 ];
 function timeout(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+function hasAccess(assignedRoles, allowedRoles) {
+  if (!allowedRoles || allowedRoles.length == 0) return true;
+  for (var i = 0; i < allowedRoles.length; i++) {
+    if (assignedRoles.indexOf(allowedRoles[i]) !== -1) return true;
+  }
+  return false;
 }
 
 export default function (Vue) {
@@ -71,9 +78,13 @@ export default function (Vue) {
         //"http://localhost:8080" + to.path
         keycloak.login({ redirectUri: path });
         return false;
-      } else if (keycloak.hasResourceRole("vue-test") || 1 == 1) {
+        //} else if (keycloak.hasResourceRole("vue-test") || 1 == 1) {
+      } else if (keycloak.resourceAccess[process.env.VUE_APP_KEY_CLOAK_CLIENT_ID] != undefined 
+          && hasAccess(keycloak.resourceAccess[process.env.VUE_APP_KEY_CLOAK_CLIENT_ID].roles,to.meta.roles)){
         //TODO: clear or
         // The user was authenticated, and has the app role
+        //console.log(Vue.config.globalProperties.$keycloak.getUsers()); //Test plugin methods
+        
         return await keycloak
           .updateToken(70)
           .then(() => {

@@ -109,7 +109,7 @@ export default {
     },
     dashboardItems() {
       var items = [];
-      if (this.dashboards.length != 0) {
+      if (this.dashboards && this.dashboards.length != 0) {
         items = this.dashboards.map((dashboardItem) => {
           let to = `/dashboard/view/${dashboardItem.id}`;
           return {
@@ -197,6 +197,15 @@ export default {
           command: () => {
             // this.$emit("notification");
             this.notifications = !this.notifications;
+          },
+        },
+        {
+          label: this.$t("menu.logout"),
+          icon: "pi pi-sign-out",
+          to: "/",
+          command: () => {
+            this.$keycloak.logout();
+            this.$router.push("/");
           },
         },
       ];
