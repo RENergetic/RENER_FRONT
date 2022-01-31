@@ -1,0 +1,2 @@
+- Openstreet map integration
+- todo: different home pages -> public home page, user home, admin home

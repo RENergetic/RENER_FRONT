@@ -1,6 +1,6 @@
 <template>
   <div class="p-grid">
-    {{ heatMapList }}
+    <!-- {{ heatMapList }} -->
     <div class="p-col-8">
       <Card>
         <template #title> HeatMap view </template>
