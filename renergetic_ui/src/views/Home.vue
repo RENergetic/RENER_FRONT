@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DotMenu :model="menuModel" />
+    <DotMenu :model="menuModel" :fixed="true" />
 
     <div class="home-grid-stack grid-stack">
       <div :class="'grid-stack-item ren'" v-bind="panelTile">

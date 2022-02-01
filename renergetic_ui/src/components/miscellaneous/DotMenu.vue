@@ -9,7 +9,7 @@
     />
     <Button
       id="menu-toggle"
-      :class="'p-button-rounded p-button-text ' + position"
+      :class="'p-button-rounded p-button-text ' + position + fixedPosition"
       aria-haspopup="true"
       aria-controls="overlay_menu"
       icon="pi pi-ellipsis-v"
@@ -33,21 +33,25 @@ import Menu from "primevue/menu";
 export default {
   name: "DotMenu",
   components: {
-    Menu,
+    Menu
     // BIconThreeDotsVertical,
   },
   props: {
     model: {
       type: Object,
-      default: () => ({}),
+      default: () => ({})
     },
     position: {
       type: String,
-      default: "top right",
+      default: "top right"
     },
+    fixed: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
-    return {};
+    return { fixedPosition: this.fixed ? " fixed" : " absolute" };
   },
   watch: {},
 
@@ -55,8 +59,8 @@ export default {
   methods: {
     toggle(event) {
       this.$refs.menu.toggle(event);
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -65,13 +69,21 @@ export default {
 #menu-toggle {
   font-size: 1.5rem;
   z-index: 1002;
-  position: absolute;
   padding: 0;
   // height: 2rem;
   // text-align: center;
   // width: 2rem;
 }
-.topright {
+
+.fixed {
+  position: fixed;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.top  {
   top: 0.5rem;
 }
 .right {
