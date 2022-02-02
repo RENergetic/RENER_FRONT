@@ -1,12 +1,6 @@
 <template>
   <div>
-    <Menu
-      id="overlay_menu"
-      ref="menu"
-      class="ren"
-      :model="model"
-      :popup="true"
-    />
+    <Menu id="overlay_menu" ref="menu" :model="model" :popup="true" />
     <Button
       id="menu-toggle"
       :class="'p-button-rounded p-button-text ' + position + fixedPosition"
@@ -33,22 +27,22 @@ import Menu from "primevue/menu";
 export default {
   name: "DotMenu",
   components: {
-    Menu
+    Menu,
     // BIconThreeDotsVertical,
   },
   props: {
     model: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     position: {
       type: String,
-      default: "top right"
+      default: "top right",
     },
     fixed: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return { fixedPosition: this.fixed ? " fixed" : " absolute" };
@@ -59,8 +53,8 @@ export default {
   methods: {
     toggle(event) {
       this.$refs.menu.toggle(event);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -83,7 +77,7 @@ export default {
   position: absolute;
 }
 
-.top  {
+.top {
   top: 0.5rem;
 }
 .right {

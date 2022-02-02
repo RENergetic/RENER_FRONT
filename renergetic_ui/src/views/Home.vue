@@ -1,6 +1,16 @@
 <template>
   <div>
+    {{ settingsDialog }}
     <DotMenu :model="menuModel" :fixed="true" />
+    <Dialog
+      v-model:visible="settingsDialog"
+      :style="{ width: '50vw' }"
+      :maximizable="true"
+      :modal="true"
+      :dismissable-mask="true"
+    >
+      <HomeSettings @update="reloadSettings()"></HomeSettings>
+    </Dialog>
 
     <div class="home-grid-stack grid-stack">
       <div :class="'grid-stack-item ren'" v-bind="panelTile">
@@ -35,20 +45,23 @@
 </template>
 <script>
 import DotMenu from "../components/miscellaneous/DotMenu.vue";
+import HomeSettings from "../components/miscellaneous/settings/HomeSettings.vue";
 import Feedback from "../components/user/Feedback.vue";
 import NotificationList from "../components/area/NotificationList.vue";
 import InformationPanel from "../components/dashboard/InformationPanel.vue";
 
-// import Dialog from "primevue/dialog";
+import Dialog from "primevue/dialog";
 import { GridStack } from "gridstack";
 // THEN to get HTML5 drag&drop
 import "gridstack/dist/h5/gridstack-dd-native";
 import "gridstack/dist/gridstack.min.css";
+
 export default {
   name: "Home",
   components: {
     DotMenu,
-    // Dialog,
+    HomeSettings,
+    Dialog,
     InformationPanel,
     NotificationList,
     Feedback,
@@ -94,6 +107,7 @@ export default {
       editDialog: false,
       notifiationDialog: false,
       manageSensorsDialog: false,
+      settingsDialog: false,
     };
   },
   computed: {
@@ -108,22 +122,29 @@ export default {
         command: () => this.toggleLock(),
       };
     },
+    saveButton: function () {
+      return {
+        label: this.$t("menu.save_grid"),
+        icon: "pi pi-fw pi-plus-circle",
+        command: () => this.saveGrid(),
+      };
+    },
+
+    settingsButton: function () {
+      //TODO: set icon
+      return {
+        label: this.$t("menu.settings"),
+        icon: "pi pi-fw pi-plus-circle",
+        command: () => (this.settingsDialog = !this.settingsDialog),
+      };
+    },
 
     menuModel() {
-      return [
-        {
-          label: this.$t("menu.save_grid"),
-          icon: "pi pi-fw pi-plus-circle",
-          command: () => this.saveGrid(),
-        },
-        this.toggleButton,
-
-        // {
-        //   label: this.$t("menu.grid_lock"),
-        //   icon: "pi pi-fw pi-lock",
-        //   command: () => this.saveGrid(),
-        // },
-      ];
+      let model = [];
+      if (!this.locked) model.push(this.saveButton);
+      model.push(this.toggleButton);
+      model.push(this.settingsButton);
+      return model;
     },
   },
 
@@ -143,6 +164,9 @@ export default {
     this.setGrid();
   },
   methods: {
+    reloadSettings() {
+      alert("TOdO:");
+    },
     setGrid() {
       if (this.grid != null) this.grid.destroy(false);
       let grid = GridStack.init({ float: true }, ".home-grid-stack");

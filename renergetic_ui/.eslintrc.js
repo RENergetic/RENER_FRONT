@@ -24,7 +24,7 @@ module.exports = {
     "eol-last": "error",
     "vue/no-v-model-argument": "off",
     "vue/multi-word-component-names": "off",
-    "prettier/prettier": ["off", { endOfLine: "auto" }],
+    "prettier/prettier": ["error", { endOfLine: "auto" }],
   },
   overrides: [
     {

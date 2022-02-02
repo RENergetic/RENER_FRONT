@@ -3,6 +3,8 @@
     "dashboards": "Dashboards",
     "edit_dashboard": "Edit dashboard",
     "delete_dashboard": "Delete dashboard",
+    "grid_lock":"Lock grid",
+    "grid_unlock":"Unlock grid",
 
     "add_heatmap": "Add heatMap",
     "list_heatmap": "List heatMap",
@@ -18,6 +20,7 @@
     "panel_grid_lock": "Panel grid locked",
     "panel_grid_add_tile": "Add tile",
     "save_panel_grid": "Save panel grid",
+    "save_grid": "Save grid",
 
     "logout": "Logout"
 }

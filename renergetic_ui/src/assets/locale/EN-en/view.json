@@ -9,5 +9,9 @@
     "submit": "Submit",
     "cancel": "Cancel"
   },
+  "settings": {
+    "true": {},
+    "false": {}
+  },
   "add_dashboard": "Add dashboard"
 }
