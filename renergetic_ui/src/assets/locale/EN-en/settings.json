@@ -4,5 +4,6 @@
   "hidden":"Hidden",
   "visible":"Visible",
   "feedback":"Feedback",
-  "notification":"Notification"
+  "notification":"Notification",
+  "selected_panel":"Selected Panel"
 }

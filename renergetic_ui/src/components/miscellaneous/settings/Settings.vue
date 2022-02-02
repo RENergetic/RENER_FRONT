@@ -32,6 +32,14 @@
           :mode="s.ext.mode"
           :use-grouping="false"
         />
+        <div v-else-if="s.type == Array">
+          <ListBox
+            :id="s.key"
+            v-model="mModel[s.key]"
+            :options="s.ext.options"
+            :option-label="s.ext.optionLabel"
+          />
+        </div>
         <InputText v-else :id="s.key" v-model="mModel[s.key]" />
       </div>
     </div>
@@ -42,11 +50,13 @@
 // import ToggleButton from "primevue/togglebutton";
 import SelectButton from "primevue/selectbutton";
 import InputNumber from "primevue/inputnumber";
+import ListBox from "primevue/listbox";
 export default {
   name: "Settings",
   components: {
     SelectButton,
     InputNumber,
+    ListBox,
     // ToggleButton
   },
   props: {

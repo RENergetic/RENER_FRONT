@@ -79,13 +79,20 @@ export default function (Vue) {
         keycloak.login({ redirectUri: path });
         next({ name: "Unauthorized" });
         //} else if (keycloak.hasResourceRole("vue-test") || 1 == 1) {
-      } else if ((keycloak.resourceAccess[process.env.VUE_APP_KEY_CLOAK_CLIENT_ID] != undefined 
-          && hasAccess(keycloak.resourceAccess[process.env.VUE_APP_KEY_CLOAK_CLIENT_ID].roles, to.meta.roles))
-          || (to.meta.roles == undefined)){
+      } else if (
+        (keycloak.resourceAccess[process.env.VUE_APP_KEY_CLOAK_CLIENT_ID] !=
+          undefined &&
+          hasAccess(
+            keycloak.resourceAccess[process.env.VUE_APP_KEY_CLOAK_CLIENT_ID]
+              .roles,
+            to.meta.roles
+          )) ||
+        to.meta.roles == undefined
+      ) {
         //TODO: clear or
         // The user was authenticated, and have the necessary roles
         //console.log(Vue.config.globalProperties.$keycloak.getUsers()); //Test plugin methods
-        
+
         await keycloak
           .updateToken(70)
           .then(() => {

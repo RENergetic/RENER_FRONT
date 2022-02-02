@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ settingsDialog }}
     <DotMenu :model="menuModel" :fixed="true" />
     <Dialog
       v-model:visible="settingsDialog"
@@ -13,29 +12,41 @@
     </Dialog>
 
     <div class="home-grid-stack grid-stack">
-      <div :class="'grid-stack-item ren'" v-bind="panelTile">
-        <Card :class="'grid-stack-item-content'"> </Card>
+      <div
+        v-if="settings.actionsVisibility"
+        :class="'grid-stack-item ren'"
+        v-bind="panelTile"
+      >
+        <Card :class="'grid-stack-item-content'"> action panel todo:</Card>
       </div>
-      <div :class="'grid-stack-item ren'" v-bind="feedbackTile">
+      <div
+        v-if="settings.feedbackVisibility"
+        :class="'grid-stack-item ren'"
+        v-bind="feedbackTile"
+      >
         <Card :class="'grid-stack-item-content'">
           <Feedback></Feedback>
         </Card>
       </div>
 
-      <div :class="'grid-stack-item ren'" v-bind="notificationTile">
+      <div
+        v-if="settings.notificationVisibility"
+        :class="'grid-stack-item ren'"
+        v-bind="notificationTile"
+      >
         <Card :class="'grid-stack-item-content'">
           <NotificationList></NotificationList>
         </Card>
       </div>
       <div
-        v-if="panel != null"
+        v-if="settings.selectedPanel"
         :class="'grid-stack-item ren'"
         v-bind="informationTile"
       >
         <Card :class="'grid-stack-item-content'">
           <InformationPanel
             ref="panel"
-            :panel="panel"
+            :panel="settings.selectedPanel"
             :edit-mode="false"
           ></InformationPanel>
         </Card>
@@ -108,6 +119,7 @@ export default {
       notifiationDialog: false,
       manageSensorsDialog: false,
       settingsDialog: false,
+      settings: this.$store.getters["settings/home"],
     };
   },
   computed: {
@@ -165,7 +177,7 @@ export default {
   },
   methods: {
     reloadSettings() {
-      alert("TOdO:");
+      this.settings = this.$store.getters["settings/home"];
     },
     setGrid() {
       if (this.grid != null) this.grid.destroy(false);

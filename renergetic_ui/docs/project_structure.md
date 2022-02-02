@@ -35,6 +35,7 @@ reused modules included in the views or other components
   * measurements -> measurements/sensors view, management
 * management -> modules for the resource managers (those who have privilages to perform some action on the resource - reduce heatinh, close windows etc)
 * miscellaneous - other
+  * settings - settings templates
 * user 
 
 #### Plugins

@@ -1,4 +1,5 @@
 <template>
+  {{ model }}
   <Settings :schema="schema" :model="model"></Settings>
 </template>
 
@@ -12,27 +13,11 @@ export default {
   props: {},
   emits: ["update"],
   data() {
-    var schema = [
-      {
-        label: this.$t("settings.feedback"),
-        ext: {
-          true: this.$t("settings.visible"),
-          false: this.$t("settings.hidden"),
-        },
-        type: Boolean,
-        key: "feedback",
-      },
-      {
-        label: this.$t("settings.notification"),
-        ext: {
-          true: this.$t("settings.visible"),
-          false: this.$t("settings.hidden"),
-        },
-        type: Boolean,
-        key: "notification",
-      },
-    ];
-    return { model: this.$store.commit("settings/home"), schema: schema };
+    return {
+      model: this.$store.getters["settings/home"],
+      panels: [],
+      schema: {},
+    };
   },
   computed: {},
   watch: {
@@ -44,9 +29,65 @@ export default {
       deep: true,
     },
   },
+  async mounted() {
+    this.$ren.dashboardApi
+      .informationPanelList()
+      .then((panels) => {
+        this.panels = panels;
+      })
+      .then(() => {
+        this.schema = this.getSchema();
+      });
+  },
 
-  async created() {},
+  async created() {
+    this.schema = this.getSchema();
+  },
   methods: {
+    getSchema() {
+      var schema = [
+        {
+          label: this.$t("settings.feedback"),
+          ext: {
+            true: this.$t("settings.visible"),
+            false: this.$t("settings.hidden"),
+          },
+          type: Boolean,
+          key: "feedbackVisibility",
+        },
+        {
+          label: this.$t("settings.notification"),
+          ext: {
+            true: this.$t("settings.visible"),
+            false: this.$t("settings.hidden"),
+          },
+          type: Boolean,
+          key: "notificationVisibility",
+        },
+        {
+          label: this.$t("settings.actions"),
+          ext: {
+            true: this.$t("settings.visible"),
+            false: this.$t("settings.hidden"),
+          },
+          type: Boolean,
+          key: "actionsVisibility",
+        },
+      ];
+      //TODO: get panel list from store
+      if (this.panels.length > 0) {
+        schema.push({
+          label: this.$t("settings.selected_panel"),
+          ext: {
+            options: this.panels,
+            optionLabel: "label",
+          },
+          type: Array,
+          key: "selectedPanel",
+        });
+      }
+      return schema;
+    },
     toggle(event) {
       this.$refs.menu.toggle(event);
     },

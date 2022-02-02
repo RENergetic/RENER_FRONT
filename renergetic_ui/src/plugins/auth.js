@@ -3,14 +3,18 @@ import axios from "axios";
 
 axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
 axios.defaults.headers.post["Access-Control-Allow-Credentials"] = "true";
-axios.defaults.headers.post["Access-Control-Allow-Methods"] = "GET, POST, DELETE, OPTIONS";
-axios.defaults.headers.post["Access-Control-Allow-Headers"] = "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type, Origin";
+axios.defaults.headers.post["Access-Control-Allow-Methods"] =
+  "GET, POST, DELETE, OPTIONS";
+axios.defaults.headers.post["Access-Control-Allow-Headers"] =
+  "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type, Origin";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 axios.defaults.headers.delete["Access-Control-Allow-Origin"] = "*";
 axios.defaults.headers.delete["Access-Control-Allow-Credentials"] = "true";
-axios.defaults.headers.delete["Access-Control-Allow-Methods"] = "GET, POST, DELETE, OPTIONS";
-axios.defaults.headers.delete["Access-Control-Allow-Headers"] = "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type, Origin";
+axios.defaults.headers.delete["Access-Control-Allow-Methods"] =
+  "GET, POST, DELETE, OPTIONS";
+axios.defaults.headers.delete["Access-Control-Allow-Headers"] =
+  "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type, Origin";
 axios.defaults.headers.delete["Content-Type"] = "application/json";
 
 // https://www.keycloak.org/docs/11.0/securing_apps/#usage-2
@@ -32,7 +36,7 @@ let info = {
   realm: process.env.VUE_APP_KEY_CLOAK_REALM,
   url: process.env.VUE_APP_KEY_CLOAK_URL,
   clientId: undefined,
-}
+};
 export default function (Vue) {
   keycloak
     .init({
@@ -91,7 +95,12 @@ export default function (Vue) {
       let config = {
         headers: { Authorization: "Bearer " + keycloak.token },
       };
-      return axios.get(`${info.url}/admin/realms/${info.realm}/clients/${info.clientId}/roles`, config).then((res) => {
+      return axios
+        .get(
+          `${info.url}/admin/realms/${info.realm}/clients/${info.clientId}/roles`,
+          config
+        )
+        .then((res) => {
           return res.data;
         })
         .catch((error) => {
@@ -105,7 +114,10 @@ export default function (Vue) {
       let config = {
         headers: { Authorization: "Bearer " + keycloak.token },
       };
-      return axios.get(`${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`, config);
+      return axios.get(
+        `${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`,
+        config
+      );
     },
     //  Manage Users Methods
     async getUsers() {
@@ -113,19 +125,25 @@ export default function (Vue) {
         headers: { Authorization: "Bearer " + keycloak.token },
         params: { clientId: info.app },
       };
-      return axios.get(`${info.url}/admin/realms/${info.realm}/users`, config).then(async (res) => {
+      return axios
+        .get(`${info.url}/admin/realms/${info.realm}/users`, config)
+        .then(async (res) => {
           if (res.data && res.data.length > 0) {
             let users = Array();
             for (const user of res.data) {
               users.push({
                 id: user.id,
                 username: user.username,
-                name: `${user.firstName && user.lastName?`${user.firstName} ${user.lastName}`: ''}`,
+                name: `${
+                  user.firstName && user.lastName
+                    ? `${user.firstName} ${user.lastName}`
+                    : ""
+                }`,
                 email: user.email,
                 roles: await this.getUserRoles(user.id),
               });
             }
-            console.log("users ",users);
+            console.log("users ", users);
             return users;
           }
         })
@@ -138,7 +156,12 @@ export default function (Vue) {
       let config = {
         headers: { Authorization: "Bearer " + keycloak.token },
       };
-      return axios.get(`${info.url}/admin/realms/${info.realm}/users/${user_id}/role-mappings/clients/${info.clientId}`, config).then((res) => {
+      return axios
+        .get(
+          `${info.url}/admin/realms/${info.realm}/users/${user_id}/role-mappings/clients/${info.clientId}`,
+          config
+        )
+        .then((res) => {
           return res.data;
         })
         .catch((error) => {
@@ -152,7 +175,12 @@ export default function (Vue) {
         Accept: "*/*",
         "Content-Type": "application/json",
       };
-      axios.post(`${info.url}/admin/realms/${info.realm}/users/${userId}/role-mappings/clients/${info.clientId}`, body,config)
+      axios
+        .post(
+          `${info.url}/admin/realms/${info.realm}/users/${userId}/role-mappings/clients/${info.clientId}`,
+          body,
+          config
+        )
         .then((res) => {
           return res;
         })
@@ -170,7 +198,11 @@ export default function (Vue) {
         },
         data: body,
       };
-      axios.delete(`${info.url}/admin/realms/${info.realm}/users/${userId}/role-mappings/clients/${info.clientId}`, config)
+      axios
+        .delete(
+          `${info.url}/admin/realms/${info.realm}/users/${userId}/role-mappings/clients/${info.clientId}`,
+          config
+        )
         .then((res) => {
           return res;
         })
@@ -185,7 +217,11 @@ export default function (Vue) {
         Accept: "*/*",
         "Content-Type": "application/json",
       };
-      return axios.post(`${info.url}/admin/realms/${info.realm}/users`, body, config);
+      return axios.post(
+        `${info.url}/admin/realms/${info.realm}/users`,
+        body,
+        config
+      );
     },
     async deleteUser(userId) {
       let config = {
@@ -193,7 +229,10 @@ export default function (Vue) {
         Accept: "*/*",
         "Content-Type": "application/json",
       };
-      return axios.delete(`${info.url}/admin/realms/${info.realm}/users/${userId}`, config);
+      return axios.delete(
+        `${info.url}/admin/realms/${info.realm}/users/${userId}`,
+        config
+      );
     },
   };
 }
