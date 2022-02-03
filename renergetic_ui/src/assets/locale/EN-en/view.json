@@ -15,5 +15,6 @@
   },
   "add_dashboard": "Add dashboard",
   "heatmap_list":"Heatmap List",
-  "select_area":"Select area"
+  "selected_area":"Selected area",
+  "edit_area":"Edit area"
 }

@@ -7,8 +7,9 @@
      "heatmap":{
           "label":"Label",
           "areas":"Areas",
-          "attributes":"Attrbutes",
+          "attributes":"Attributes",
           "recommendations":"Recommendations",
-          "notifications":"Notifications"
+          "notifications":"Notifications",
+          "dashboard":"Dashboard"
      }
 }
