@@ -119,18 +119,14 @@ export default function (Vue) {
         .then(async (res) => {
           if (res.data && res.data.length > 0) {
             let users = Array();
-            for (const user of res.data) {
-              users.push({
-                id: user.id,
-                username: user.username,
-                name: `${
-                  user.firstName && user.lastName
-                    ? `${user.firstName} ${user.lastName}`
-                    : ""
-                }`,
-                email: user.email,
-                roles: await this.getUserRoles(user.id),
-              });
+            for (let user of res.data) {
+              user.name = `${
+                user.firstName && user.lastName
+                  ? `${user.firstName} ${user.lastName}`
+                  : ""
+              }`;
+              user.roles = await this.getUserRoles(user.id)
+              users.push(user);
             }
             return users;
           }
@@ -206,6 +202,18 @@ export default function (Vue) {
       };
       return axios.post(
         `${info.url}/admin/realms/${info.realm}/users`,
+        body,
+        config
+      );
+    },
+    async updateUser(body) {
+      let config = {
+        headers: { Authorization: "Bearer " + keycloak.token },
+        Accept: "*/*",
+        "Content-Type": "application/json",
+      };
+      return axios.put(
+        `${info.url}/admin/realms/${info.realm}/users/${body.id}`,
         body,
         config
       );

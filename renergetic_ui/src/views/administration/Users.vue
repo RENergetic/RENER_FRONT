@@ -10,7 +10,7 @@
             <Column field="email" header="Email" sortable></Column>
             <Column :exportable="false" style="min-width:8rem">
                 <template #body="user">
-                    <!--Button icon="pi pi-user-edit" class="p-button-rounded p-button-warning mr-2" @click="openDialog('editUser', user.data)" /-->
+                    <Button icon="pi pi-user-edit" class="p-button-rounded p-button-warning mr-2" @click="userToEdit = user.data; addUserDialog = true" />
                     <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="openDialog('deleteUser', user.data)" />
                 </template>
             </Column>
@@ -40,7 +40,7 @@
         </DataTable>
         <Toolbar>
             <template #start>
-                <Button label="Add new user" icon="pi pi-user-plus" class="mr-2 p-button-success" @click="addUserDialog = true"/>
+                <Button label="Add new user" icon="pi pi-user-plus" class="mr-2 p-button-success" @click="userToEdit = undefined; addUserDialog = true"/>
             </template>
         </Toolbar>
         <Dialog v-model:visible="deleteDialog.visible" :style="{width: '450px'}" :header="deleteDialog.header" :modal="true">
@@ -53,7 +53,7 @@
                 <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteResource()" />
             </template>
         </Dialog>
-        <UserAdd :users="users" :visible="addUserDialog" @close="closeAddUserDialog"></UserAdd>
+        <UserAdd :users="users" :editUser="userToEdit" :visible="addUserDialog" @close="closeAddUserDialog"></UserAdd>
 	</div>
 </template>
 
@@ -75,6 +75,7 @@ export default {
         return {
             users: [],
             roles:[],
+            userToEdit: undefined,
             userToChange: undefined,
             roleToChange: undefined,
             deleteDialog: {

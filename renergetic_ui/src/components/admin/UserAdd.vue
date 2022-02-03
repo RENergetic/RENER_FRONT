@@ -47,6 +47,11 @@ export default {
             type: Array,
             required: true,
         },
+        editUser: {
+            type: Object,
+            required: false,
+            default: undefined,
+        },
         visible: Boolean,
     },
 emits: ['close'],
@@ -70,39 +75,54 @@ emits: ['close'],
             }
         }
     },
-    async created() {
-    },
-    mounted() {
+    watch: {
+        visible: function (value){
+            if (value){
+                if (this.editUser != undefined) {
+                    this.user =  this.editUser;
+                    this.user.credentials = [{type:"password", value: undefined, temporary: true}];
+                    delete this.user.roles;
+                    delete this.user.name;
+                }
+            }else this.reset();
+        }
     },
     methods: {
         confirmAdd() {
             let error = false;
             console.error(this.user);
             for (let user of this.users){
-                if(this.user.username === user.username){
+                if( this.user.username === undefined ||
+                    (this.user.username === user.username &&
+                    (this.editUser == undefined || this.user.username != this.editUser.username))){
                     error = true;
                     this.error.username = true;
                 }
-                if(this.user.email === user.email){
+                if( (this.user.email != undefined && this.user.email === user.email) &&
+                    (this.editUser == undefined || this.user.email != this.editUser.email)){
                     error = true;
                     this.error.email = true;
                 }
             }
-            if (this.user.credentials[0].value === undefined || this.user.credentials[0].value == 0){
-                    error = true;
-                    this.error.password = true;
+            if (this.editUser != undefined && this.user.credentials[0].value === undefined) {
+                delete this.user.credentials;
+            } else if (this.user.credentials[0].value === undefined || this.user.credentials[0].value == 0){
+                error = true;
+                this.error.password = true;
             }
             
-            if (!error) {
+            if (!error && this.editUser === undefined) {
                 this.$keycloak.createUser(this.user).then(()=> {
-                    this.reset();
                     this.$emit("close", this.user);
                 });
                 //TODO: catch posible errors
+            }else if (!error) {
+                this.$keycloak.updateUser(this.user).then(()=> {
+                    this.$emit("close", this.user);
+                });
             }
         },
         cancelAdd() {
-            this.reset();
             this.$emit("close", undefined);
         },
         reset() {
