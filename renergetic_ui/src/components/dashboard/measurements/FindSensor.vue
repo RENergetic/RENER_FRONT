@@ -5,7 +5,7 @@
     </template>
   </InfoIcon>
   <div class="card">
-    <div class="p-field p-grid">todo: find sensor</div>
+    <div class="field grid">todo: find sensor</div>
   </div>
 </template>
 

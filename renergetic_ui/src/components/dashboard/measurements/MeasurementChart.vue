@@ -8,11 +8,11 @@
   <Chart v-if="data" type="line" :data="data" :options="options" />
   <!-- :plugins="plugin"   "-->
   <div class="card">
-    <div class="p-field p-grid">
-      <!-- <div class="p-col">
+    <div class="field grid">
+      <!-- <div class="col">
         <Button :label="$t('menu.filter')" @click="setfilter" />
       </div> -->
-      <div class="p-col">
+      <div class="col">
         <Button
           :label="$t('view.button.export_csv')"
           @click="$ren.utils.exportChartData({ chartData: chart })"

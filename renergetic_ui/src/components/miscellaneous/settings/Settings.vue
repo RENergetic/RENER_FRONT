@@ -1,7 +1,7 @@
 <template>
   <div class="p-fluid">
-    <div v-for="s in schema" :key="s" :class="'p-field p-grid'">
-      <label :for="s.key" class="p-col-12">{{ s.label }}</label>
+    <div v-for="s in schema" :key="s" :class="'field grid'">
+      <label :for="s.key" class="col-12">{{ s.label }}</label>
 
       <!-- <ToggleButton
         v-model="mModel['key']"
@@ -10,7 +10,7 @@
         on-icon="pi pi-check"
         off-icon="pi pi-times"
       /> -->
-      <div class="p-col-12">
+      <div class="col-12">
         {{ s.ext.mode }}
         <SelectButton
           v-if="s.type == Boolean"

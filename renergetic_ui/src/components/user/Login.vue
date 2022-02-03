@@ -1,20 +1,20 @@
 <template>
   <div class="card ren">
     <!--description -->
-    <div class="p-field p-grid">
-      <label for="usernameInput" class="p-col-fixed">
+    <div class="field grid">
+      <label for="usernameInput" class="col-fixed">
         {{ $t("form.username") }}
       </label>
-      <div class="p-col">
+      <div class="col">
         <InputText id="usernameInput" v-model="username" />
       </div>
     </div>
 
-    <div class="p-field p-grid">
-      <label for="passwordInput" class="p-col-fixed">
+    <div class="field grid">
+      <label for="passwordInput" class="col-fixed">
         {{ $t("form.password") }}
       </label>
-      <div class="p-col">
+      <div class="col">
         <Password
           id="passwordInput"
           v-model="password"
@@ -23,11 +23,11 @@
         />
       </div>
     </div>
-    <div class="p-field p-grid">
-      <div class="p-col">
+    <div class="field grid">
+      <div class="col">
         <!-- <Button  :label="$t('view.button.cancel')" /> -->
       </div>
-      <div class="p-col">
+      <div class="col">
         <Button :label="$t('view.button.login')" @click="login" />
       </div>
     </div>

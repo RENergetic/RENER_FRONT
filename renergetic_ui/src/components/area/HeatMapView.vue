@@ -1,7 +1,7 @@
 <template>
   <DotMenu :model="menuModel()" />
-  <div class="p-grid">
-    <div class="p-col-8">
+  <div class="grid">
+    <div class="col-8">
       <Card>
         <!-- {{ heatMap }}ssss {{ bgImage }} dddd -->
         <template #title> HeatMap View </template>
@@ -36,7 +36,7 @@
         :objects="Object.keys(selectedAreas)"
       ></MeasurementChart>
     </div>
-    <div v-if="bgImage" class="p-col-3 ren">
+    <div v-if="bgImage" class="col-3 ren">
       <AreaDetails
         v-show="selectedArea != null"
         class="tile"

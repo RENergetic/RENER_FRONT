@@ -1,14 +1,14 @@
 <template>
   <Card>
     <template v-if="mArea != null" #title>
-      <div class="p-fluid">
-        <div class="p-field p-grid p-d-flex">
-          <!-- <span v-if="edit">{{ $t("view.edit_area") }} {{ mArea.label }} </span> -->
-          <!-- <span v-else> -->
-          <!-- {{ $t("view.view_area") }} -->
-          <!-- </span> -->
+      <div class="flex">
+        <!-- <span v-if="edit">{{ $t("view.edit_area") }} {{ mArea.label }} </span> -->
+        <!-- <span v-else> -->
+        <!-- {{ $t("view.view_area") }} -->
+        <!-- </span> -->
 
-          <div>{{ mArea.label }}</div>
+        <div class="flex flex-grow-1">{{ mArea.label }}</div>
+        <div class="flex flex-none">
           <i
             v-if="edit"
             class="pi pi-times"
@@ -16,18 +16,29 @@
             @click="deleteArea()"
           />
         </div>
-        <div class="p-field p-grid">
+      </div>
+      <div class="flex flex-row flex-wrap justify-content-start">
+        <div class="flex flex-none">
           <i
-            v-if="!edit"
             class="pi pi-chart-line"
             style="fontsize: 2rem"
             @click="viewMeasurements()"
           />
+        </div>
+        <div class="flex flex-none">
           <i
             v-if="edit"
             class="pi pi-plus"
             style="fontsize: 2rem"
             @click="() => (manageSensorsDialog = !manageSensorsDialog)"
+          />
+        </div>
+        <div class="flex flex-none">
+          <i
+            v-if="edit"
+            class="pi pi-link"
+            style="fontsize: 2rem"
+            @click="() => (heatMapDialog = !heatMapDialog)"
           />
         </div>
       </div>
@@ -49,7 +60,7 @@
         </div>
       </div> -->
 
-      <div class="p-field p-grid">
+      <div class="field grid">
         <label for="heatmapLabel">
           {{ $t("model.heatmap.label") }}
         </label>
@@ -71,7 +82,7 @@
     </template>
     <template v-else #content>
       <!-- {{ area.id }} -->
-      <div class="p-field p-grid">
+      <div class="field grid">
         <label for="heatmapLabel">
           {{ $t("model.heatmap.label") }}
         </label>
@@ -105,16 +116,26 @@
   >
     <ManageSensors></ManageSensors>
   </Dialog>
+  <Dialog
+    v-model:visible="heatMapDialog"
+    :style="{ width: '75vw' }"
+    :maximizable="true"
+    :modal="true"
+    :dismissable-mask="true"
+  >
+    <HeatMapList></HeatMapList>
+  </Dialog>
 </template>
 <script>
 import Card from "primevue/card";
 import MeasurementChart from "../dashboard/measurements/MeasurementChart.vue";
 import ManageSensors from "../dashboard/measurements/ManageSensors.vue";
+import HeatMapList from "./HeatMapList.vue";
 
 import Dialog from "primevue/dialog";
 export default {
   name: "AreaDetails",
-  components: { Card, Dialog, MeasurementChart, ManageSensors },
+  components: { Card, Dialog, MeasurementChart, ManageSensors, HeatMapList },
 
   props: {
     edit: {
@@ -181,7 +202,10 @@ export default {
 #heatmapContainer {
   padding: 0.5rem;
 }
-.p-d-flex > div {
-  flex-grow: 1;
+i {
+  margin: 0.1rem;
 }
+// .flex > div {
+//   flex-grow: 1;
+// }
 </style>
