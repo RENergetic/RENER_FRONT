@@ -48,6 +48,7 @@ export default {
       notifications: false,
       informationPanels: [],
       isAdmin: false, //this.$store.getters["user/isAdmin"],
+      isLogin: false,
     };
   },
   watch: {
@@ -57,6 +58,7 @@ export default {
   },
 
   async created() {
+    this.isLogin = (await this.$keycloak.get()).authenticated;
     this.menuModel = this.initMenu();
     this.reload();
   },
@@ -157,6 +159,19 @@ export default {
         },
       ];
     },
+    administrationItems() {
+      return [
+        {
+          // label: this.$t("menu.group_list"),
+          label: this.$t("menu.users"),
+          icon: "pi pi-fw pi-users",
+          to: "/admin/users",
+          command: () => {
+            this.$router.push({ name: "Users" });
+          },
+        },
+      ];
+    },
     initMenu() {
       return [
         {
@@ -170,17 +185,22 @@ export default {
           items: this.panelItems(),
         },
         {
+          label: this.$t("menu.heatmaps"),
+          icon: "pi pi-fw pi-chart-line",
+          items: this.heatMapItems(),
+        },
+        {
+          label: this.$t("menu.administration"),
+          icon: "pi pi-fw pi-lock",
+          items: this.administrationItems(),
+        },
+        {
           label: this.$t("menu.profile"),
           icon: "pi pi-fw pi-user",
           to: "/profile",
           command: () => {
             this.$router.push("/profile");
           },
-        },
-        {
-          label: this.$t("menu.heatmaps"),
-          icon: "pi pi-fw pi-chart-line",
-          items: this.heatMapItems(),
         },
         {
           label: this.$t("menu.feedback"),
@@ -203,6 +223,7 @@ export default {
           label: this.$t("menu.logout"),
           icon: "pi pi-sign-out",
           to: "/",
+          visible: () => this.isLogin,
           command: () => {
             this.$keycloak.logout();
             this.$router.push("/");

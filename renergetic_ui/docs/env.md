@@ -15,7 +15,7 @@ TODO: describe parameters
 
 ### RENERGETIC SERVICES
 `VUE_APP_API_KEY` *str* -
-`VUE_APP_API_URL` *str* -http://front-ren-prototype.apps.paas-dev.psnc.pl
+`VUE_APP_API_URL` *str* - ren REST APIs host, e.g. http://front-ren-prototype.apps.paas-dev.psnc.pl
 `VUE_APP_API_ISLANDS_PATH` *str* -/api-postgre/1.0/api/islands
 `VUE_APP_API_DASHBOARD_PATH` *str* -/api-postgre/1.0/api/dashboard
 `VUE_APP_API_BUILDINGS_PATH` *str* -/api-buildings/1.0/api/buildings

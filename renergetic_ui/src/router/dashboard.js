@@ -10,7 +10,7 @@ var dashboardRoutes = [
     path: "/dashboard/add",
     name: "DashboardAdd",
     props: {},
-    meta: { isAuthenticated: true, roles: ["manager, administrator"] },
+    meta: { isAuthenticated: true, roles: ["manager", "administrator"] },
     component: () => import("../views/dashboard/DashboardAdd.vue"),
   },
   {

@@ -1,20 +1,7 @@
 import Keycloak from "keycloak-js";
 import axios from "axios";
 
-axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
-axios.defaults.headers.post["Access-Control-Allow-Credentials"] = "true";
-axios.defaults.headers.post["Access-Control-Allow-Methods"] =
-  "GET, POST, DELETE, OPTIONS";
-axios.defaults.headers.post["Access-Control-Allow-Headers"] =
-  "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type, Origin";
 axios.defaults.headers.post["Content-Type"] = "application/json";
-
-axios.defaults.headers.delete["Access-Control-Allow-Origin"] = "*";
-axios.defaults.headers.delete["Access-Control-Allow-Credentials"] = "true";
-axios.defaults.headers.delete["Access-Control-Allow-Methods"] =
-  "GET, POST, DELETE, OPTIONS";
-axios.defaults.headers.delete["Access-Control-Allow-Headers"] =
-  "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type, Origin";
 axios.defaults.headers.delete["Content-Type"] = "application/json";
 
 // https://www.keycloak.org/docs/11.0/securing_apps/#usage-2
@@ -54,22 +41,24 @@ export default function (Vue) {
         var realmRoles = null;
         if (keycloak.resourceAccess && keycloak.resourceAccess.account) {
           accountRoles = keycloak.resourceAccess.account.roles;
-        } else {
-          accountRoles = null;
         }
         if (keycloak.realmAccess) {
           realmRoles = keycloak.realmAccess.roles;
-        } else {
-          realmRoles = null;
         }
         const data = {
           authenticated: keycloak.authenticated,
           appRoles: keycloak.resourceAccess, //[appName].roles,
           accountRoles: accountRoles,
           realmRoles: realmRoles,
-          clientId: info.clientId,
+          clientId: keycloak.clientId,
         };
         Vue.config.globalProperties.$store.commit("auth/set", data);
+        let config = {
+          headers: { Authorization: "Bearer " + keycloak.token },
+        };
+        await axios.get(`${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`, config)
+        .then((response) => info.clientId = response.data[0].id)
+        .catch((error) => console.warn(error));
       }
     })
     .catch((e) => {
@@ -89,7 +78,7 @@ export default function (Vue) {
       return initialized;
     },
     get() {
-      return keycloak;
+      return this.executeAfterInitialized(keycloak);
     },
     async getClientRoles() {
       let config = {
@@ -111,13 +100,14 @@ export default function (Vue) {
     // KEYCLOAK API CALLS
     //  Manage Clients Methods
     async getClientId() {
+      let clientId;
       let config = {
         headers: { Authorization: "Bearer " + keycloak.token },
       };
-      return axios.get(
-        `${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`,
-        config
-      );
+      await axios.get(`${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`, config)
+      .then((response) => clientId = response.data.id);
+      
+      return clientId;
     },
     //  Manage Users Methods
     async getUsers() {
@@ -130,20 +120,15 @@ export default function (Vue) {
         .then(async (res) => {
           if (res.data && res.data.length > 0) {
             let users = Array();
-            for (const user of res.data) {
-              users.push({
-                id: user.id,
-                username: user.username,
-                name: `${
-                  user.firstName && user.lastName
-                    ? `${user.firstName} ${user.lastName}`
-                    : ""
-                }`,
-                email: user.email,
-                roles: await this.getUserRoles(user.id),
-              });
+            for (let user of res.data) {
+              user.name = `${
+                user.firstName && user.lastName
+                  ? `${user.firstName} ${user.lastName}`
+                  : ""
+              }`;
+              user.roles = await this.getUserRoles(user.id)
+              users.push(user);
             }
-            console.log("users ", users);
             return users;
           }
         })
@@ -194,7 +179,6 @@ export default function (Vue) {
         headers: {
           Authorization: "Bearer " + keycloak.token,
           Accept: "*/*",
-          "Content-Type": "application/json",
         },
         data: body,
       };
@@ -223,6 +207,18 @@ export default function (Vue) {
         config
       );
     },
+    async updateUser(body) {
+      let config = {
+        headers: { Authorization: "Bearer " + keycloak.token },
+        Accept: "*/*",
+        "Content-Type": "application/json",
+      };
+      return axios.put(
+        `${info.url}/admin/realms/${info.realm}/users/${body.id}`,
+        body,
+        config
+      );
+    },
     async deleteUser(userId) {
       let config = {
         headers: { Authorization: "Bearer " + keycloak.token },
@@ -234,5 +230,23 @@ export default function (Vue) {
         config
       );
     },
+    async executeAfterInitialized(method) {
+      const TRIES = 4;
+      const TIME = 150;
+      return new Promise((resolve, reject) => {
+        let tries = 0;
+        const iteration = () => {
+          if (this.isInitialized()) {
+            resolve(method);
+          } else if(tries < TRIES) {
+            setTimeout(iteration, TIME);
+            tries += 1;
+          } else {
+            reject("Keycloak isn't initalized");
+          }
+        }
+        iteration();
+      })
+    }
   };
 }
