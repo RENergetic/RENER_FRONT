@@ -2,59 +2,34 @@
     <article id='main'>
         <section>
             <header>
-                <h2>{{(show_builds == -1)? 'Create island':'Add build'}}</h2>
+                <h2>Create user</h2>
             </header>
-            <NewIsland :ip='ip' @event-add='eventAddTag' :show_builds='show_builds'></NewIsland>
+            <NewUser @event-add='eventAddTag'></NewUser>
         </section>
-
         <section>
             <header>
-                <h2>List islands</h2>
+                <h2>List users</h2>
             </header>
-            <SeeIslands :ip='ip' @event-builds='changeShowBuilds' ref='seeTag' :show_builds='show_builds'></SeeIslands>
+            <SeeUsers ref='seeTag'></SeeUsers>
         </section>
     </article>
 </template>
-<script>
-import NewIsland from '@/components/NewIsland.vue'
-import SeeIslands from '@/components/SeeIslands.vue'
 
+<script>
+import SeeUsers from '@/components/SeeUsers.vue'
+import NewUser from '../components/NewUser.vue';
 export default {
-    name: 'Islands',
+    name: "Administration",
+    components: { SeeUsers, NewUser },
     data() {
         return {
-            ip: (process.env.VUE_APP_API_URL == undefined || process.env.VUE_APP_API_URL == '')? location.origin : process.env.VUE_APP_API_URL,
-            show_builds: -1
-        }
-    },
-    components: {
-        NewIsland,
-        SeeIslands
+        };
     },
     methods: {
-        eventAddTag() {
-            this.$refs.seeTag.listIslands();
-        },
-
-        changeShowBuilds(islandId){
-            this.show_builds = islandId;
-        },
-
-        resizeMain(){ 
-            /*const seeIslandsTag = this.$refs.seeTag;
-            seeIslandsTag.style.maxHeight = `${seeIslandsTag.clientHeight}px` 
-            for (const tag of mainTag.getElementsByTagName('section')) {
-                tag.style.maxHeight = `${mainTag.clientHeight}px`;
-            }*/
-        },
-    },
-    mounted() {
-        this.resizeMain();
-        window.addEventListener("resize", this.resizeMain);
-    },
-    unmounted() {
-        window.removeEventListener("resize", this.resizeMain);
-    },
+        eventAddTag(){
+            this.$refs.seeTag.getUsers();
+        }
+    }
 }
 </script>
 

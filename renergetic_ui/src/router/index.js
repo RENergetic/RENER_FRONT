@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "../views/Home.vue";
 import dashboardRoutes from "./dashboard";
+import adminRoutes from "./admin";
 //todo import other
 const routes = [
   {
@@ -36,6 +37,7 @@ const routes = [
     component: () => import("../views/RenAbout.vue"),
   },
   ...dashboardRoutes,
+  ...adminRoutes,
 ];
 function timeout(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -67,7 +69,7 @@ export default function (Vue) {
       } else {
         console.info("no timeout");
       }
-      keycloak = keycloak.get();
+      keycloak = await keycloak.get();
       console.info(keycloak.authenticated);
       // Get the actual url of the app, it's needed for Keycloak
       // const basePath = window.location.toString();
