@@ -13,5 +13,6 @@
     "true": {},
     "false": {}
   },
-  "add_dashboard": "Add dashboard"
+  "add_dashboard": "Add dashboard",
+  "heatmap_list":"Heatmap List"
 }

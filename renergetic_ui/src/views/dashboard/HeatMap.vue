@@ -1,16 +1,18 @@
 <template>
-  <div><HeatMapViewComponent :heat-map="heatmap"></HeatMapViewComponent></div>
+  <div>
+    <HeatMapView :heat-map="heatmap"></HeatMapView>
+  </div>
 </template>
 <script>
-import { HeatMapView as HeatMapViewComponent } from "../../components/area/HeatMapView.vue";
+import HeatMapView from "../../components/area/HeatMapView.vue";
 
 //initial canvas size
 // const sceneWidth = 900;
 // const sceneHeight = 450;
 
 export default {
-  name: "HeatMapView",
-  components: { HeatMapViewComponent },
+  name: "HeatMap",
+  components: { HeatMapView },
   data() {
     return { heatmap: null };
   },

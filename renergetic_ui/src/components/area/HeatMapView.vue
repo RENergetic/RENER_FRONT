@@ -194,6 +194,7 @@ export default {
 
   mounted() {
     if (this.heatMap != null) {
+      alert("dd");
       const image = new window.Image();
       image.src = this.heatMap.imgUrl;
       image.onload = () => {

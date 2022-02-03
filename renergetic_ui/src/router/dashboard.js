@@ -32,7 +32,7 @@ var dashboardRoutes = [
     name: "HeatMapView",
     props: {},
     meta: { isAuthenticated: true },
-    component: () => import("../views/dashboard/HeatMapView.vue"),
+    component: () => import("../views/dashboard/HeatMap.vue"),
   },
   {
     path: "/dashboard/heatmap/list",
