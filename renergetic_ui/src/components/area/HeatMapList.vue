@@ -3,19 +3,18 @@
     <!-- {{ heatMapList }} -->
     <div class="p-col-8">
       <Card>
-        <template #title> HeatMap view </template>
+        <template #title> {{ $t("view.heatmap_list") }} </template>
         <template #content>
           <Listbox
             v-model="selectedArea"
             :options="heatMapList"
-            style="width: 15rem"
             option-label="label"
           >
             <template #option="slotProps">
-              <div class="p-d-flex p-ai-center country-item">
+              <div class="p-d-flex">
                 <div>{{ slotProps.option.label }}</div>
                 <i
-                  class="pi pi-times"
+                  class="pi pi-chevron-circle-right"
                   style="fontsize: 2rem"
                   @click="view(slotProps.option)"
                 />
@@ -54,11 +53,10 @@ export default {
 </script>
 
 <style lang="scss">
-#heatmap {
-  max-width: 75%;
-  max-height: 75vh;
+i.pi {
+  margin-left: 0.25rem;
 }
-#heatmapContainer {
-  padding: 0.5rem;
+.p-d-flex > div {
+  flex-grow: 1;
 }
 </style>

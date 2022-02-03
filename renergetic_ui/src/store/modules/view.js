@@ -15,6 +15,8 @@ export default {
       state.informationPanels = payload;
     },
     // Requires a Dashboard object ({id:0, name:"", url:"", label:""})
+    //TODO: i suggest to add single dashboard via REST API and than download new list - so we have coherent state with the backend.
+    // Issue: connection error -> user creates dashboard and might lose it because there is no internet connection
     dashboardsAdd(state, payload) {
       //TODO: verify if there is no duplicate id
       let duplicated = false;

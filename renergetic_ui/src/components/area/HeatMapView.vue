@@ -59,7 +59,7 @@
       </Card> -->
       <Accordion class="tile" :active-index="0">
         <AccordionTab>
-          <template #header> {{ $t("heatmap.areas") }}</template>
+          <template #header> {{ $t("model.heatmap.areas") }}</template>
 
           <Listbox
             v-if="heatMap != null"
@@ -72,7 +72,7 @@
       </Accordion>
       <Accordion v-if="attributes" class="tile" :active-index="0">
         <AccordionTab>
-          <template #header> {{ $t("heatmap.attributes") }}</template>
+          <template #header> {{ $t("model.heatmap.attributes") }}</template>
           <Tree
             v-model:selection-keys="selectedAttributes"
             :value="attributes"
@@ -86,7 +86,9 @@
         :active-index="recommendationPanelState"
       >
         <AccordionTab>
-          <template #header> {{ $t("heatmap.recommendations") }}</template>
+          <template #header>
+            {{ $t("model.heatmap.recommendations") }}</template
+          >
           <recommendation-view :objects="selectedAreas"></recommendation-view>
         </AccordionTab>
       </Accordion>
@@ -96,7 +98,7 @@
         :active-index="0"
       >
         <AccordionTab>
-          <template #header> {{ $t("heatmap.notifications") }}</template>
+          <template #header> {{ $t("model.heatmap.notifications") }}</template>
           <notification-view :objects="selectedAreas"></notification-view>
         </AccordionTab>
       </Accordion>
@@ -194,6 +196,7 @@ export default {
 
   mounted() {
     if (this.heatMap != null) {
+      alert("dd");
       const image = new window.Image();
       image.src = this.heatMap.imgUrl;
       image.onload = () => {
