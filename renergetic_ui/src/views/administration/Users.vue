@@ -96,7 +96,7 @@ export default {
         availableRoles(user){
             let availableRoles = this.roles.map(object => ({ ...object }))
             for (let role of user.roles){
-                availableRoles.splice(this.roles.indexOf(role), 1);
+                availableRoles.splice(this.roles.map((r) => r.id).indexOf(role.id), 1);
             }
             if (availableRoles != undefined && availableRoles.length > 0)
                 user.addRole = availableRoles[0]; 
