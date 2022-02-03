@@ -36,7 +36,7 @@
       <!-- {{ area.id }} -->
       <div class="p-field p-grid">
         <label for="heatmapLabel">
-          {{ $t("heatmap.label") }}
+          {{ $t("model.heatmap.label") }}
         </label>
         <InputText
           id="heatmapLabel"
@@ -45,7 +45,7 @@
         />
       </div>
       <div v-if="mArea && mArea.dashboard">
-        {{ $t("heatmap.dashboard") }}
+        {{ $t("model.heatmap.dashboard") }}
         <i
           class="pi pi-times"
           style="fontsize: 2rem"
@@ -57,7 +57,7 @@
       <!-- {{ area.id }} -->
       <div class="p-field p-grid">
         <label for="heatmapLabel">
-          {{ $t("heatmap.label") }}
+          {{ $t("model.heatmap.label") }}
         </label>
         <InputText
           id="heatmapLabel"

@@ -14,5 +14,6 @@
     "false": {}
   },
   "add_dashboard": "Add dashboard",
-  "heatmap_list":"Heatmap List"
+  "heatmap_list":"Heatmap List",
+  "select_area":"Select area"
 }

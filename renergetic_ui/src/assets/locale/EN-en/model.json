@@ -3,5 +3,12 @@
           "name": "Name",
           "url": "URL",
           "label":"Label"
+     },
+     "heatmap":{
+          "label":"Label",
+          "areas":"Areas",
+          "attributes":"Attrbutes",
+          "recommendations":"Recommendations",
+          "notifications":"Notifications"
      }
 }
