@@ -1,24 +1,7 @@
 import Keycloak from "keycloak-js";
 import axios from "axios";
 
-<<<<<<< HEAD
 axios.defaults.headers.post["Content-Type"] = "application/json";
-=======
-axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
-axios.defaults.headers.post["Access-Control-Allow-Credentials"] = "true";
-axios.defaults.headers.post["Access-Control-Allow-Methods"] =
-  "GET, POST, DELETE, OPTIONS";
-axios.defaults.headers.post["Access-Control-Allow-Headers"] =
-  "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type, Origin";
-axios.defaults.headers.post["Content-Type"] = "application/json";
-
-axios.defaults.headers.delete["Access-Control-Allow-Origin"] = "*";
-axios.defaults.headers.delete["Access-Control-Allow-Credentials"] = "true";
-axios.defaults.headers.delete["Access-Control-Allow-Methods"] =
-  "GET, POST, DELETE, OPTIONS";
-axios.defaults.headers.delete["Access-Control-Allow-Headers"] =
-  "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type, Origin";
->>>>>>> 29ea8721842860fcc6a11c9494a1ae8710234c05
 axios.defaults.headers.delete["Content-Type"] = "application/json";
 
 // https://www.keycloak.org/docs/11.0/securing_apps/#usage-2
@@ -58,13 +41,9 @@ export default function (Vue) {
         var realmRoles = null;
         if (keycloak.resourceAccess && keycloak.resourceAccess.account) {
           accountRoles = keycloak.resourceAccess.account.roles;
-        } else {
-          accountRoles = null;
         }
         if (keycloak.realmAccess) {
           realmRoles = keycloak.realmAccess.roles;
-        } else {
-          realmRoles = null;
         }
         const data = {
           authenticated: keycloak.authenticated,
@@ -124,17 +103,10 @@ export default function (Vue) {
       let config = {
         headers: { Authorization: "Bearer " + keycloak.token },
       };
-<<<<<<< HEAD
       await axios.get(`${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`, config)
       .then((response) => clientId = response.data.id);
       
       return clientId;
-=======
-      return axios.get(
-        `${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`,
-        config
-      );
->>>>>>> 29ea8721842860fcc6a11c9494a1ae8710234c05
     },
     //  Manage Users Methods
     async getUsers() {
@@ -160,10 +132,6 @@ export default function (Vue) {
                 roles: await this.getUserRoles(user.id),
               });
             }
-<<<<<<< HEAD
-=======
-            console.log("users ", users);
->>>>>>> 29ea8721842860fcc6a11c9494a1ae8710234c05
             return users;
           }
         })

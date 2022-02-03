@@ -1,16 +1,10 @@
 import AuthApi from "./ren_api/auth";
 import DashboardApi from "./ren_api/dashboardapi";
-<<<<<<< HEAD
-import { DashboardApi as DummyDashboardApi, MeasurementApi as DummyMeasurementApi } from "../../assets/dummy/api";
-import MeasurementdApi from "./ren_api/measurementapi"; 
-=======
-import {
-  DashboardApi as DummyDashboardApi,
-  MeasurementApi as DummyMeasurementApi,
+import { 
+  DashboardApi as DummyDashboardApi, 
+  MeasurementApi as DummyMeasurementApi 
 } from "../../assets/dummy/api";
-import MeasurementdApi from "./ren_api/measurementapi";
-const USE_DUMMY = process.env.VUE_APP_DUMMY_API;
->>>>>>> 29ea8721842860fcc6a11c9494a1ae8710234c05
+import MeasurementdApi from "./ren_api/measurementapi"; 
 // import UserApi from './renergetic/ren_api/user'
 // import i18n from "../locale";
 import axios from "axios";
