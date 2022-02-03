@@ -57,7 +57,8 @@ export default function (Vue) {
           headers: { Authorization: "Bearer " + keycloak.token },
         };
         await axios.get(`${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`, config)
-        .then((response) => info.clientId = response.data[0].id);
+        .then((response) => info.clientId = response.data[0].id)
+        .catch((error) => console.warn(error));
       }
     })
     .catch((e) => {
