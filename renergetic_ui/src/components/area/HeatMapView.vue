@@ -37,14 +37,6 @@
       ></MeasurementChart>
     </div>
     <div v-if="bgImage" class="col-3 ren">
-      <AreaDetails
-        v-show="selectedArea != null"
-        class="tile"
-        :model-value="selectedArea"
-        @update:model-value="onAreaSelect($event)"
-        @delete="areaDelete(selectedArea)"
-      ></AreaDetails>
-
       <!-- <Card class="tile">
         <template #title> {{ $t("heatmap.areas") }}</template>
         <template #content>
@@ -57,6 +49,18 @@
           />
         </template>
       </Card> -->
+      <Accordion class="tile" :active-index="selectedArea == null ? -1 : 0">
+        <AccordionTab :disabled="selectedArea == null">
+          <template #header> {{ $t("view.selected_area") }}</template>
+
+          <AreaDetails
+            class="tile"
+            :model-value="selectedArea"
+            @update:model-value="onAreaSelect($event)"
+            @delete="areaDelete(selectedArea)"
+          ></AreaDetails>
+        </AccordionTab>
+      </Accordion>
       <Accordion class="tile" :active-index="0">
         <AccordionTab>
           <template #header> {{ $t("model.heatmap.areas") }}</template>
@@ -196,7 +200,6 @@ export default {
 
   mounted() {
     if (this.heatMap != null) {
-      alert("dd");
       const image = new window.Image();
       image.src = this.heatMap.imgUrl;
       image.onload = () => {

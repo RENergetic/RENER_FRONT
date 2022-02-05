@@ -18,13 +18,47 @@ module.exports = {
   },
   parser: "vue-eslint-parser",
   rules: {
+    "vue/first-attribute-linebreak": [
+      "error",
+      {
+        multiline: "below",
+      },
+    ],
+    "vue/max-attributes-per-line": [
+      2,
+      {
+        singleline: 5,
+        multiline: {
+          max: 3,
+          allowFirstLine: false,
+        },
+      },
+    ],
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
     // "arrow-parens": "off",
     "eol-last": "error",
     "vue/no-v-model-argument": "off",
     "vue/multi-word-component-names": "off",
-    "prettier/prettier": ["off", { endOfLine: "auto" }],
+    "vue/max-len": [
+      "error",
+      {
+        code: 90,
+        template: 120,
+        tabWidth: 2,
+        comments: 100,
+        ignorePattern: "",
+        ignoreComments: false,
+        ignoreTrailingComments: false,
+        ignoreUrls: false,
+        ignoreStrings: false,
+        ignoreTemplateLiterals: false,
+        ignoreRegExpLiterals: false,
+        ignoreHTMLAttributeValues: false,
+        ignoreHTMLTextContents: false,
+      },
+    ],
+    "prettier/prettier": ["error", { endOfLine: "auto" }],
   },
   overrides: [
     {

@@ -4,4 +4,5 @@
 
 ## Object hierarchy
 
+
 Island -> Area -> InformationTile 

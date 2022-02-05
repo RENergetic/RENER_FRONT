@@ -1,33 +1,26 @@
 <template>
   <div>
     <Dialog
-      v-model:visible="heatMapDialog"
+      v-model:visible="dashboardDialog"
       :style="{ width: '75vw' }"
       :maximizable="true"
       :modal="true"
       :dismissable-mask="true"
     >
       <Card>
-        <template #title> {{ $t("view.heatmap_list") }} </template>
+        <template #title> {{ $t("view.dashboard_list") }} </template>
         <template #content>
           <Listbox
-            v-if="heatMapList"
-            v-model="selectedArea"
-            :options="heatMapList"
+            v-if="dashboardList"
+            v-model="selectedDashboard"
+            :options="dashboardList"
             option-label="label"
           >
             <template #option="slotProps">
-              <!-- <div class="flex"> -->
               <div>{{ slotProps.option.label }}</div>
-              <!-- <i
-                  class="pi pi-chevron-circle-right"
-                  style="fontsize: 2rem"
-                  @click="$emit('select', slotProps.option)"
-                /> -->
-              <!-- </div> -->
             </template>
           </Listbox>
-          <div v-if="selectedArea" class="field grid">
+          <div v-if="selectedDashboard" class="field grid">
             <div class="col">
               <Button :label="$t('view.button.submit')" @click="submit" />
             </div>
@@ -43,43 +36,41 @@
 <script>
 import Listbox from "primevue/listbox";
 import Dialog from "primevue/dialog";
-// import { MapArea } from "../../plugins/model/Area";
 
 import Card from "primevue/card";
 export default {
-  name: "HeatMapSelect",
+  name: "DashboardSelect",
   components: { Card, Listbox, Dialog },
   props: { current: { type: Object, default: () => ({}) } },
   emits: { change: null },
   data() {
     return {
-      heatMapList: [],
-      selectedArea: null,
-      heatMapDialog: false,
+      dashboardList: [],
+      selectedDashboard: null,
+      dashboardDialog: false,
     };
   },
   async mounted() {},
   methods: {
-    // onChange(option) {},
     submit() {
-      if (this.selectedArea) {
-        this.$emit("change", this.selectedArea);
+      if (this.selectedDashboard) {
+        this.$emit("change", this.selectedDashboard);
       }
     },
     async open() {
-      await this.$ren.dashboardApi.listHeatMap().then((heatMapList) => {
-        this.heatMapDialog = true;
+      await this.$ren.dashboardApi.list().then((dashboardList) => {
+        this.dashboardDialog = true;
         if (this.current) {
-          if (heatMapList.find((it) => it.id == this.current.id) == null) {
-            this.heatMapList = [this.current] + heatMapList;
+          if (dashboardList.find((it) => it.id == this.current.id) == null) {
+            this.dashboardList = [this.current] + dashboardList;
           }
-          this.selectedArea = this.current;
+          this.dashboardDialog = this.current;
         }
-        this.heatMapList = heatMapList;
+        this.dashboardList = dashboardList;
       });
     },
     cancel() {
-      this.heatMapDialog = false;
+      this.dashboardDialog = false;
     },
   },
 };

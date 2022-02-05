@@ -56,9 +56,13 @@ export default function (Vue) {
         let config = {
           headers: { Authorization: "Bearer " + keycloak.token },
         };
-        await axios.get(`${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`, config)
-        .then((response) => info.clientId = response.data[0].id)
-        .catch((error) => console.warn(error));
+        await axios
+          .get(
+            `${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`,
+            config
+          )
+          .then((response) => (info.clientId = response.data[0].id))
+          .catch((error) => console.warn(error));
       }
     })
     .catch((e) => {
@@ -104,9 +108,13 @@ export default function (Vue) {
       let config = {
         headers: { Authorization: "Bearer " + keycloak.token },
       };
-      await axios.get(`${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`, config)
-      .then((response) => clientId = response.data.id);
-      
+      await axios
+        .get(
+          `${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`,
+          config
+        )
+        .then((response) => (clientId = response.data.id));
+
       return clientId;
     },
     //  Manage Users Methods
@@ -126,7 +134,7 @@ export default function (Vue) {
                   ? `${user.firstName} ${user.lastName}`
                   : ""
               }`;
-              user.roles = await this.getUserRoles(user.id)
+              user.roles = await this.getUserRoles(user.id);
               users.push(user);
             }
             return users;
@@ -238,15 +246,15 @@ export default function (Vue) {
         const iteration = () => {
           if (this.isInitialized()) {
             resolve(method);
-          } else if(tries < TRIES) {
+          } else if (tries < TRIES) {
             setTimeout(iteration, TIME);
             tries += 1;
           } else {
             reject("Keycloak isn't initalized");
           }
-        }
+        };
         iteration();
-      })
-    }
+      });
+    },
   };
 }

@@ -105,6 +105,7 @@ var heatmaps = [
         id: "area_1",
         value: "area_1",
         label: "area_1",
+        heatMapId: 80,
         dashboard: {
           id: "2",
           label: "Dashboard 2",
@@ -122,6 +123,7 @@ var heatmaps = [
         value: "area_2",
         label: "area_2",
         dashboardId: null,
+        heatMapId: 80,
       },
       {
         points: [
@@ -133,6 +135,7 @@ var heatmaps = [
         value: "area_3",
         label: "area_3",
         dashboardId: null,
+        heatMapId: 80,
       },
     ],
     id: 80,
