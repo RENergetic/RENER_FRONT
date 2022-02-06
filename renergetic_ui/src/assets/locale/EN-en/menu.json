@@ -24,6 +24,7 @@
     "panel_grid_add_tile": "Add tile",
     "save_panel_grid": "Save panel grid",
     "save_grid": "Save grid",
+    "settings":"Settings",
 
     "logout": "Logout"
 }

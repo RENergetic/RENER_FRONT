@@ -3,7 +3,6 @@
   <div class="grid">
     <div class="col-8">
       <Card>
-        <!-- {{ heatMap }}ssss {{ bgImage }} dddd -->
         <template #title> HeatMap View </template>
         <template #content>
           <div id="heatmapContainer">
@@ -15,9 +14,6 @@
                   }"
                 />
               </v-layer>
-              <!-- <v-layer  v-for="area in heatMap.areas" :key="area.id">
-                <v-shape :config="getConfig(area)" />
-              </v-layer> -->
             </v-stage>
           </div>
         </template>
@@ -71,13 +67,13 @@
           <Tree v-model:selection-keys="selectedAttributes" :value="attributes" selection-mode="checkbox"></Tree>
         </AccordionTab>
       </Accordion>
-      <Accordion v-if="selectedAreas && recommendationState" class="tile" :active-index="recommendationPanelState">
+      <Accordion v-if="settings.recommendationVisibility && selectedAreas" class="tile" :active-index="-1">
         <AccordionTab>
           <template #header> {{ $t("model.heatmap.recommendations") }}</template>
           <recommendation-view :objects="selectedAreas"></recommendation-view>
         </AccordionTab>
       </Accordion>
-      <Accordion v-if="selectedAreas && notificationState" class="tile" :active-index="0">
+      <Accordion v-if="settings.notificationVisibility && selectedAreas" class="tile" :active-index="0">
         <AccordionTab>
           <template #header> {{ $t("model.heatmap.notifications") }}</template>
           <notification-view :objects="selectedAreas"></notification-view>
@@ -85,6 +81,15 @@
       </Accordion>
     </div>
   </div>
+  <Dialog
+    v-model:visible="settingsDialog"
+    :style="{ width: '50vw' }"
+    :maximizable="true"
+    :modal="true"
+    :dismissable-mask="true"
+  >
+    <HeatMapSettings @update="reloadSettings()"></HeatMapSettings>
+  </Dialog>
 </template>
 <script>
 import Tree from "primevue/tree";
@@ -94,13 +99,13 @@ import RecommendationView from "../management/RecommendationView.vue";
 import Listbox from "primevue/listbox";
 import Accordion from "primevue/accordion";
 import AccordionTab from "primevue/accordiontab";
+import Dialog from "primevue/dialog";
 import Card from "primevue/card";
 import Konva from "konva";
 import NotificationView from "./NotificationList.vue";
+import HeatMapSettings from "../miscellaneous/settings/HeatmapSettings.vue";
 import MeasurementChart from "../dashboard/measurements/MeasurementChart.vue";
 
-//TODO: update image,todo: spinner?
-//initial canvas size  this.drawArea(this.current);
 const sceneWidth = 900;
 const sceneHeight = 450;
 export default {
@@ -112,10 +117,12 @@ export default {
     Accordion,
     AccordionTab,
     Tree,
+    HeatMapSettings,
     RecommendationView,
     DotMenu,
     NotificationView,
     MeasurementChart,
+    Dialog,
   },
   props: {
     heatMap: {
@@ -138,16 +145,12 @@ export default {
       selectedAttributes: [],
       recommendations: null,
       recommendationPanelState: -1,
-      recommendationState: true,
       measurmenentState: true,
-      notificationState: true,
+      settingsDialog: false,
+      settings: this.$store.getters["settings/heatmap"],
     };
   },
   watch: {
-    // selectedArea: function (newValue, oldValue) {
-    //   //toggle colors
-
-    // },
     selectedAreas: {
       handler: async function (newValue) {
         if (newValue && Object.keys(newValue).length > 0) await this.loadAttributes();
@@ -190,6 +193,9 @@ export default {
     }
   },
   methods: {
+    reloadSettings() {
+      this.settings = this.$store.getters["settings/heatmap"];
+    },
     onAreaSelect(area) {
       if (this.selectedArea != null) {
         let oldId = this.selectedArea.id;
@@ -305,24 +311,10 @@ export default {
     menuModel() {
       return [
         {
-          label: this.$t("menu.show_recommendations"),
+          label: this.$t("menu.settings"),
           icon: "pi pi-fw pi-eye",
           command: () => {
-            this.recommendationState = !this.recommendationState;
-          },
-        },
-        {
-          label: this.$t("menu.show_measurements"),
-          icon: "pi pi-fw pi-pencil",
-          command: () => {
-            this.measurmenentState = !this.measurmenentState;
-          },
-        },
-        {
-          label: this.$t("menu.show_notifications"),
-          icon: "pi pi-fw pi-pencil",
-          command: () => {
-            this.notificationState = !this.notificationState;
+            this.settingsDialog = !this.settingsDialog;
           },
         },
       ];

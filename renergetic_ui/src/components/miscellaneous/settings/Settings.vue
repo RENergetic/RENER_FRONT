@@ -11,7 +11,7 @@
         off-icon="pi pi-times"
       /> -->
       <div class="col-12">
-        {{ s.ext.mode }}
+        <!-- {{ s.ext.mode }} -->
         <SelectButton
           v-if="s.type == Boolean"
           :id="s.key"

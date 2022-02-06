@@ -2,3 +2,4 @@
 - todo: different home pages -> public home page, user home, admin home
 - data validation
 - TODO: load settings from rest api
+- user ui settings   docs
