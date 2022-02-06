@@ -1,4 +1,11 @@
-import { dummyList, informationPanels, heatmaps, measurementAttributes, measurementsGenerator } from "./dashboard.js";
+import {
+  dummyList,
+  informationPanels,
+  heatmaps,
+  measurementAttributes,
+  measurementsGenerator,
+  currentMeasurementsGenerator,
+} from "./dashboard.js";
 import storage from "./storage.js";
 const DASHBOARD_KEY = "dashboard";
 const MEASUREMENT_KEY = "dashboard";
@@ -49,10 +56,13 @@ class MeasurementApi {
   async attributes(/*area, areaId*/) {
     return storage.get(`${MEASUREMENT_KEY}.panel_list`, measurementAttributes);
   }
-  async measurements(objectIds) {
+  async getMeasurements(objectIds) {
     return measurementsGenerator(objectIds.length, 50);
   }
 
+  async getCurrentMeasurements(objectIds) {
+    return currentMeasurementsGenerator(objectIds);
+  }
   async getNotifications(objectIds) {
     // todo:
     return objectIds;

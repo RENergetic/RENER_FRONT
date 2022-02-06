@@ -51,7 +51,6 @@
       <Accordion class="tile" :active-index="0">
         <AccordionTab>
           <template #header> {{ $t("model.heatmap.areas") }}</template>
-
           <Listbox
             v-if="heatMap != null"
             v-model="selectedArea"
@@ -79,6 +78,12 @@
           <notification-view :objects="selectedAreas"></notification-view>
         </AccordionTab>
       </Accordion>
+      <Accordion v-if="settings.measurementsVisibility && selectedAreas" class="tile" :active-index="0">
+        <AccordionTab>
+          <template #header> {{ $t("view.measurements") }}</template>
+          <measurements-view :objects="selectedAreas"></measurements-view>
+        </AccordionTab>
+      </Accordion>
     </div>
   </div>
   <Dialog
@@ -103,8 +108,10 @@ import Dialog from "primevue/dialog";
 import Card from "primevue/card";
 import Konva from "konva";
 import NotificationView from "./NotificationList.vue";
+
 import HeatMapSettings from "../miscellaneous/settings/HeatmapSettings.vue";
 import MeasurementChart from "../dashboard/measurements/MeasurementChart.vue";
+import MeasurementsView from "../dashboard/measurements/MeasurementsView.vue";
 
 const sceneWidth = 900;
 const sceneHeight = 450;
@@ -122,6 +129,7 @@ export default {
     DotMenu,
     NotificationView,
     MeasurementChart,
+    MeasurementsView,
     Dialog,
   },
   props: {

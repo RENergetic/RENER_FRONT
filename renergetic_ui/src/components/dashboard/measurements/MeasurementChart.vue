@@ -115,7 +115,7 @@ export default {
       }
     } else {
       if (this.objects) {
-        await this.$ren.measurementApi.measurements(this.objects).then((data) => {
+        await this.$ren.measurementApi.getMeasurements(this.objects).then((data) => {
           this.data = data;
         });
       }
@@ -123,7 +123,7 @@ export default {
   },
   methods: {
     async loadData() {
-      await this.$ren.measurementApi.measurements(this.objects).then((data) => {
+      await this.$ren.measurementApi.getMeasurements(this.objects).then((data) => {
         this.data = data;
       });
     },

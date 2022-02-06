@@ -229,13 +229,20 @@ let measurementsGenerator = (i, n) => {
       fill: false,
     });
   }
-  let labels = [];
-
-  var t = Date.now();
-  t = t - (t % 60000);
-  for (j = 0; j < n; j++) {
-    labels.push(t - 60000 * (n - j));
-  }
-  return { datasets: datasets, labels: labels };
 };
-export { dummyList, informationPanels, heatmaps, measurementAttributes, measurementsGenerator };
+let currentMeasurementsGenerator = (keys) => {
+  let measurements = [];
+  for (var i = 0; i < keys.length; i++) {
+    let next = Math.floor(Math.random() * 150) - 50;
+    measurements.push(next);
+  }
+  return measurements;
+};
+export {
+  dummyList,
+  informationPanels,
+  heatmaps,
+  measurementAttributes,
+  measurementsGenerator,
+  currentMeasurementsGenerator,
+};

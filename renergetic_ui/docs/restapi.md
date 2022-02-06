@@ -15,6 +15,7 @@ Each resource has unique id and  list of possible measurements
 * getMeasurement(resourceId,measurements) -
     * measurements - list of measurements, possible values: 'heat','power',...  ,empty = all TODO:
 
+getCurrentMeasurements -> TODO:
 
 * getMeasurements(resourceIds,measurements) -
     * measurements - list of measurements, possible values: 'heat','power',...  ,empty = all TODO:
