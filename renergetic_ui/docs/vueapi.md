@@ -6,3 +6,4 @@ TODO: restApiName - describe
 * `this.$t` -> i18n plugin
 * `this.$store` -> session store
 * `this.$confirm` -> confirm dialog (YES/NO)
+* `v-tooltip`  -> tooltip attribute for templates
