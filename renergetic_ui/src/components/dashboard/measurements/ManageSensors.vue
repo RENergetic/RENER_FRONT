@@ -7,10 +7,7 @@
   <div class="card">
     TODO: list of current metrics senors etcc
     <div class="field grid">todo: manage sensors sensor</div>
-    <Button
-      :label="$t('view.button.add_sensor')"
-      @click="() => (sensorSearchDialog = !sensorSearchDialog)"
-    />
+    <Button :label="$t('view.button.add_sensor')" @click="() => (sensorSearchDialog = !sensorSearchDialog)" />
   </div>
 
   <Dialog

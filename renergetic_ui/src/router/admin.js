@@ -4,7 +4,7 @@ var adminRoutes = [
     name: "Users",
     props: {},
     meta: { isAuthenticated: true },
-    component: () => import("../views/administration/Users.vue"),
+    component: () => import("../views/admin/Users.vue"),
   },
 ];
 

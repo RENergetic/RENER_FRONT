@@ -33,12 +33,7 @@
             </div>
           </div>
           <div v-show="bgImage != null" id="heatmapContainer">
-            <v-stage
-              id="heatmap"
-              ref="stage"
-              :config="stageSize"
-              @click="onClick"
-            >
+            <v-stage id="heatmap" ref="stage" :config="stageSize" @click="onClick">
               <v-layer>
                 <v-image
                   :config="{
@@ -79,10 +74,7 @@
         <Button :label="$t('view.button.add_point')" @click="addPoint" />
       </div>
       <div v-if="addMode" class="field md-3 sm-6">
-        <Button
-          :label="$t('view.button.confirm_point')"
-          @click="confirmPoint"
-        />
+        <Button :label="$t('view.button.confirm_point')" @click="confirmPoint" />
       </div>
       <div v-if="addMode" class="field md-3 sm-6">
         <Button :label="$t('view.button.cancel')" @click="cancelPoint" />
@@ -90,22 +82,14 @@
     </div>
     <div class="field grid ren-submit">
       <div class="col">
-        <Button
-          :disabled="!hasFiles"
-          :label="$t('view.button.submit')"
-          @click="submit"
-        />
+        <Button :disabled="!hasFiles" :label="$t('view.button.submit')" @click="submit" />
       </div>
       <div class="col">
         <Button :label="$t('view.button.cancel')" @click="cancel" />
       </div>
     </div>
 
-    <ProgressSpinner
-      v-if="spinner"
-      style="width: 10rem; height: 10rem; margin: auto; display: flex"
-      stroke-width="4"
-    />
+    <ProgressSpinner v-if="spinner" style="width: 10rem; height: 10rem; margin: auto; display: flex" stroke-width="4" />
   </div>
 </template>
 <script>
@@ -191,10 +175,7 @@ export default {
         let stage = this.$refs.stage.getStage();
         var shape = stage.findOne(`#${this.current.id}`);
         if (shape != null) {
-          this.current.points.push([
-            evt.layerX / this.scale,
-            evt.layerY / this.scale,
-          ]);
+          this.current.points.push([evt.layerX / this.scale, evt.layerY / this.scale]);
           let pnts = this.current.points;
           let f = (context, shape) => {
             context.beginPath();
@@ -270,8 +251,7 @@ export default {
       // this.bgImage = null;
     },
     onSelect() {
-      if (this.$refs.FileUpload !== undefined)
-        this.hasFiles = this.$refs.FileUpload.files.length > 0;
+      if (this.$refs.FileUpload !== undefined) this.hasFiles = this.$refs.FileUpload.files.length > 0;
       else this.hasFiles = false;
       if (this.hasFiles) {
         const image = new window.Image();

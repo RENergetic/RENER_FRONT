@@ -110,7 +110,9 @@ var heatmaps = [
           id: "2",
           label: "Dashboard 2",
           name: "dashboard_2",
-          url: "http://localhost:3000/d/cWp8595nk/embedded-dashboard?orgId=1&from=1640263130489&to=1640284730489&kiosk=tv",
+          url:
+            "http://localhost:3000/d/cWp8595nk/embedded-dashboard" +
+            "?orgId=1&from=1640263130489&to=1640284730489&kiosk=tv",
         },
       },
       {
@@ -236,10 +238,4 @@ let measurementsGenerator = (i, n) => {
   }
   return { datasets: datasets, labels: labels };
 };
-export {
-  dummyList,
-  informationPanels,
-  heatmaps,
-  measurementAttributes,
-  measurementsGenerator,
-};
+export { dummyList, informationPanels, heatmaps, measurementAttributes, measurementsGenerator };

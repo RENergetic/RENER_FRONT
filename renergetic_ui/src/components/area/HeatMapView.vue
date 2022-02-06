@@ -7,12 +7,7 @@
         <template #title> HeatMap View </template>
         <template #content>
           <div id="heatmapContainer">
-            <v-stage
-              id="heatmap"
-              ref="stage"
-              :config="stageSize"
-              @click="onClick"
-            >
+            <v-stage id="heatmap" ref="stage" :config="stageSize" @click="onClick">
               <v-layer v-show="bgImage != null">
                 <v-image
                   :config="{
@@ -28,11 +23,7 @@
         </template>
       </Card>
       <MeasurementChart
-        v-if="
-          selectedAreas &&
-          Object.keys(selectedAreas).length > 0 &&
-          measurmenentState
-        "
+        v-if="selectedAreas && Object.keys(selectedAreas).length > 0 && measurmenentState"
         :objects="Object.keys(selectedAreas)"
       ></MeasurementChart>
     </div>
@@ -77,30 +68,16 @@
       <Accordion v-if="attributes" class="tile" :active-index="0">
         <AccordionTab>
           <template #header> {{ $t("model.heatmap.attributes") }}</template>
-          <Tree
-            v-model:selection-keys="selectedAttributes"
-            :value="attributes"
-            selection-mode="checkbox"
-          ></Tree>
+          <Tree v-model:selection-keys="selectedAttributes" :value="attributes" selection-mode="checkbox"></Tree>
         </AccordionTab>
       </Accordion>
-      <Accordion
-        v-if="selectedAreas && recommendationState"
-        class="tile"
-        :active-index="recommendationPanelState"
-      >
+      <Accordion v-if="selectedAreas && recommendationState" class="tile" :active-index="recommendationPanelState">
         <AccordionTab>
-          <template #header>
-            {{ $t("model.heatmap.recommendations") }}</template
-          >
+          <template #header> {{ $t("model.heatmap.recommendations") }}</template>
           <recommendation-view :objects="selectedAreas"></recommendation-view>
         </AccordionTab>
       </Accordion>
-      <Accordion
-        v-if="selectedAreas && notificationState"
-        class="tile"
-        :active-index="0"
-      >
+      <Accordion v-if="selectedAreas && notificationState" class="tile" :active-index="0">
         <AccordionTab>
           <template #header> {{ $t("model.heatmap.notifications") }}</template>
           <notification-view :objects="selectedAreas"></notification-view>
@@ -173,8 +150,7 @@ export default {
     // },
     selectedAreas: {
       handler: async function (newValue) {
-        if (newValue && Object.keys(newValue).length > 0)
-          await this.loadAttributes();
+        if (newValue && Object.keys(newValue).length > 0) await this.loadAttributes();
         else {
           this.attributes = null;
         }
@@ -244,10 +220,7 @@ export default {
         let stage = this.$refs.stage.getStage();
         var shape = stage.findOne(`#${this.current.id}`);
         if (shape != null) {
-          this.current.points.push([
-            evt.layerX / this.scale,
-            evt.layerY / this.scale,
-          ]);
+          this.current.points.push([evt.layerX / this.scale, evt.layerY / this.scale]);
           let pnts = this.current.points;
           let f = (context, shape) => {
             context.beginPath();
@@ -316,11 +289,9 @@ export default {
     },
 
     async loadAttributes() {
-      await this.$ren.measurementApi
-        .attributes(Object.keys(this.selectedAreas))
-        .then((attributes) => {
-          this.attributes = attributes;
-        });
+      await this.$ren.measurementApi.attributes(Object.keys(this.selectedAreas)).then((attributes) => {
+        this.attributes = attributes;
+      });
     },
     scaleHeatMap(stage, bgImage) {
       if (bgImage != null) {

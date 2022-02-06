@@ -19,12 +19,7 @@ const getNavigatorLanguage = () => {
   if (navigator.languages && navigator.languages.length) {
     return navigator.languages[0].split("-")[0].toLowerCase();
   } else {
-    return (
-      navigator.userLanguage ||
-      navigator.language ||
-      navigator.browserLanguage ||
-      "en"
-    );
+    return navigator.userLanguage || navigator.language || navigator.browserLanguage || "en";
   }
 };
 var localeCode = "en";

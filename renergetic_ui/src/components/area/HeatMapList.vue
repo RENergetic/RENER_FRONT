@@ -5,19 +5,11 @@
       <Card>
         <template #title> {{ $t("view.heatmap_list") }} </template>
         <template #content>
-          <Listbox
-            v-model="selectedArea"
-            :options="heatMapList"
-            option-label="label"
-          >
+          <Listbox v-model="selectedArea" :options="heatMapList" option-label="label">
             <template #option="slotProps">
               <div class="flex">
                 <div>{{ slotProps.option.label }}</div>
-                <i
-                  class="pi pi-chevron-circle-right"
-                  style="fontsize: 2rem"
-                  @click="view(slotProps.option)"
-                />
+                <i class="pi pi-chevron-circle-right" style="fontsize: 2rem" @click="view(slotProps.option)" />
               </div>
             </template>
           </Listbox>

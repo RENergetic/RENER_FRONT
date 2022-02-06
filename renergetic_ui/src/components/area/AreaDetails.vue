@@ -4,7 +4,7 @@
       <div class="flex">
         <div class="flex flex-grow-1">{{ mArea.label }}</div>
         <div class="flex flex-none">
-          <i v-if="edit" class="pi pi-times" style="fontsize: 2rem" k="" e="d" />
+          <i v-if="edit" class="pi pi-times" style="fontsize: 2rem" />
         </div>
       </div>
       <div class="flex flex-row flex-wrap justify-content-start">
@@ -12,13 +12,17 @@
           <i class="pi pi-chart-line" style="fontsize: 2rem" @click="viewMeasurements()" />
         </div>
         <div class="flex flex-none">
-          <i v-if="edit" class="pi pi-plus" style="fontsize: 2rem" @click="() => (manageSensorsDialog = !manageSensorsDialog)" />
+          <i
+            v-if="edit"
+            class="pi pi-plus"
+            style="fontsize: 2rem"
+            @click="() => (manageSensorsDialog = !manageSensorsDialog)"
+          />
         </div>
         <div class="flex flex-none">
           <i v-if="edit" class="pi pi-link" style="fontsize: 2rem" @click="selectHeatmap" />
         </div>
       </div>
-      <!-- todo remove following icon -->
     </template>
     <template v-else #title>
       {{ $t("view.selected_area") }}
@@ -34,12 +38,11 @@
         <div v-if="mArea.dashboard">
           {{ $t("model.heatmap.dashboard") }}
           <i v-if="edit" class="pi pi-chart-line" @click="selectDashboard" />
-
           <i
             class="pi pi-arrow-circle-right"
             style="fontsize: 2rem"
             @click="$router.push(`/dashboard/heatmap/view/${mArea.dashboard.id}`)"
-          />hhh
+          />
         </div>
         <div v-else>
           {{ $t("view.select_dashboard") }}

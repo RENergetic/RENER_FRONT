@@ -5,11 +5,7 @@ module.exports = {
     node: true,
   },
   plugins: ["vue", "@babel"],
-  extends: [
-    "plugin:vue/vue3-recommended",
-    "eslint:recommended",
-    "@vue/prettier",
-  ],
+  extends: ["plugin:vue/vue3-recommended", "eslint:recommended", "@vue/prettier"],
   parserOptions: {
     ecmaVersion: 2020,
     // parser: "@typescript-eslint/parser",
@@ -18,6 +14,7 @@ module.exports = {
   },
   parser: "vue-eslint-parser",
   rules: {
+    "vetur.format.defaultFormatter.html": "off",
     "vue/first-attribute-linebreak": [
       "error",
       {
@@ -25,12 +22,13 @@ module.exports = {
       },
     ],
     "vue/max-attributes-per-line": [
-      2,
+      "error",
       {
-        singleline: 5,
+        singleline: {
+          max: 4,
+        },
         multiline: {
           max: 3,
-          allowFirstLine: false,
         },
       },
     ],
@@ -43,10 +41,10 @@ module.exports = {
     "vue/max-len": [
       "error",
       {
-        code: 90,
+        code: 120,
         template: 120,
         tabWidth: 2,
-        comments: 100,
+        comments: 160,
         ignorePattern: "",
         ignoreComments: false,
         ignoreTrailingComments: false,
@@ -62,10 +60,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: [
-        "**/__tests__/*.{j,t}s?(x)",
-        "**/tests/unit/**/*.spec.{j,t}s?(x)",
-      ],
+      files: ["**/__tests__/*.{j,t}s?(x)", "**/tests/unit/**/*.spec.{j,t}s?(x)"],
       env: {
         jest: true,
       },

@@ -2,13 +2,7 @@
   <div>
     <div v-if="panel">
       <DotMenu :model="menuModel" />
-
-      <InformationPanel
-        ref="panel"
-        :locked="locked"
-        :panel="panel"
-        :edit-mode="editMode"
-      ></InformationPanel>
+      <InformationPanel ref="panel" :locked="locked" :panel="panel" :edit-mode="editMode"></InformationPanel>
     </div>
   </div>
 </template>
@@ -32,9 +26,7 @@ export default {
   computed: {
     toggleButton: function () {
       //TODO: if permission
-      let label = this.locked
-        ? this.$t("menu.panel_grid_unlock")
-        : this.$t("menu.panel_grid_lock");
+      let label = this.locked ? this.$t("menu.panel_grid_unlock") : this.$t("menu.panel_grid_lock");
       return {
         label: label,
         icon: "pi pi-fw pi-lock",
@@ -44,9 +36,7 @@ export default {
     editModelButton: function () {
       //TODO: if permission
       //todo: add to menu model
-      let label = this.editMode
-        ? this.$t("menu.panel_grid_edit_on")
-        : this.$t("menu.panel_grid_edit_off");
+      let label = this.editMode ? this.$t("menu.panel_grid_edit_on") : this.$t("menu.panel_grid_edit_off");
       return {
         label: label,
         icon: "pi pi-fw pi-lock",
@@ -81,11 +71,9 @@ export default {
   },
   watch: {},
   async created() {
-    this.$ren.dashboardApi
-      .getInformationPanel(this.$route.params.id)
-      .then((panel) => {
-        this.panel = panel;
-      });
+    this.$ren.dashboardApi.getInformationPanel(this.$route.params.id).then((panel) => {
+      this.panel = panel;
+    });
     //todo: catch
   },
 

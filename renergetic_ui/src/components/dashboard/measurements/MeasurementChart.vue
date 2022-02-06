@@ -13,10 +13,7 @@
         <Button :label="$t('menu.filter')" @click="setfilter" />
       </div> -->
       <div class="col">
-        <Button
-          :label="$t('view.button.export_csv')"
-          @click="$ren.utils.exportChartData({ chartData: chart })"
-        />
+        <Button :label="$t('view.button.export_csv')" @click="$ren.utils.exportChartData({ chartData: chart })" />
       </div>
     </div>
   </div>
@@ -118,11 +115,9 @@ export default {
       }
     } else {
       if (this.objects) {
-        await this.$ren.measurementApi
-          .measurements(this.objects)
-          .then((data) => {
-            this.data = data;
-          });
+        await this.$ren.measurementApi.measurements(this.objects).then((data) => {
+          this.data = data;
+        });
       }
     }
   },

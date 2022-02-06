@@ -10,12 +10,7 @@
       <Card>
         <template #title> {{ $t("view.heatmap_list") }} </template>
         <template #content>
-          <Listbox
-            v-if="heatMapList"
-            v-model="selectedArea"
-            :options="heatMapList"
-            option-label="label"
-          >
+          <Listbox v-if="heatMapList" v-model="selectedArea" :options="heatMapList" option-label="label">
             <template #option="slotProps">
               <!-- <div class="flex"> -->
               <div>{{ slotProps.option.label }}</div>

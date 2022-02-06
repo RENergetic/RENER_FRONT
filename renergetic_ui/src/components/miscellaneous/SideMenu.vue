@@ -1,26 +1,11 @@
 <template>
   <div>
-    <Button
-      id="sideMenuButton"
-      icon="pi pi-arrow-right"
-      @click="visible = true"
-    />
+    <Button id="sideMenuButton" icon="pi pi-arrow-right" @click="visible = true" />
     <Sidebar v-model:visible="visible" class="ren-sidebar">
-      <Logo
-        style="
-          position: relative;
-          display: block;
-          margin: 1rem;
-          left: 1rem;
-          bottom: initial;
-        "
-      />
+      <Logo style="position: relative; display: block; margin: 1rem; left: 1rem; bottom: initial" />
       <PanelMenu :model="menuModel" />
     </Sidebar>
-    <Dialogs
-      :notifications="notifications"
-      @update:notifications="notifications = $event"
-    ></Dialogs>
+    <Dialogs :notifications="notifications" @update:notifications="notifications = $event"></Dialogs>
   </div>
 </template>
 
@@ -72,14 +57,12 @@ export default {
         this.menuModel = menu;
       });
 
-      this.$ren.dashboardApi
-        .informationPanelList(this.$route.params.id)
-        .then((informationPanels) => {
-          this.informationPanels = informationPanels;
-          this.$store.commit("view/informationPanels", informationPanels);
-          let menu = this.initMenu();
-          this.menuModel = menu;
-        });
+      this.$ren.dashboardApi.informationPanelList(this.$route.params.id).then((informationPanels) => {
+        this.informationPanels = informationPanels;
+        this.$store.commit("view/informationPanels", informationPanels);
+        let menu = this.initMenu();
+        this.menuModel = menu;
+      });
       //todo: catch
     },
     panelItems() {

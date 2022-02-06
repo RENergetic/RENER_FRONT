@@ -21,12 +21,7 @@ export default {
       //TODO: verify if there is no duplicate id
       let duplicated = false;
       for (let dashboard of state.dashboards) {
-        if (
-          dashboard.id != undefined &&
-          payload.id != undefined &&
-          dashboard.id == payload.id
-        )
-          duplicated = true;
+        if (dashboard.id != undefined && payload.id != undefined && dashboard.id == payload.id) duplicated = true;
       }
       if (!duplicated) state.dashboards.push(payload);
     },

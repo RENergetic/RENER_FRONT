@@ -1,10 +1,4 @@
-import {
-  dummyList,
-  informationPanels,
-  heatmaps,
-  measurementAttributes,
-  measurementsGenerator,
-} from "./dashboard.js";
+import { dummyList, informationPanels, heatmaps, measurementAttributes, measurementsGenerator } from "./dashboard.js";
 import storage from "./storage.js";
 const DASHBOARD_KEY = "dashboard";
 const MEASUREMENT_KEY = "dashboard";
@@ -20,10 +14,7 @@ class DashboardApi {
     return maps.find((it) => it.id == id);
   }
   async getInformationPanel(panelId) {
-    let tiles = await storage.get(
-      `${DASHBOARD_KEY}.panel_list`,
-      informationPanels
-    );
+    let tiles = await storage.get(`${DASHBOARD_KEY}.panel_list`, informationPanels);
     return tiles.find((it) => it.id == panelId);
   }
   informationPanelList() {

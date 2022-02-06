@@ -10,12 +10,7 @@
       <Card>
         <template #title> {{ $t("view.dashboard_list") }} </template>
         <template #content>
-          <Listbox
-            v-if="dashboardList"
-            v-model="selectedDashboard"
-            :options="dashboardList"
-            option-label="label"
-          >
+          <Listbox v-if="dashboardList" v-model="selectedDashboard" :options="dashboardList" option-label="label">
             <template #option="slotProps">
               <div>{{ slotProps.option.label }}</div>
             </template>

@@ -1,5 +1,5 @@
-/* eslint-disable vue/v-on-event-hyphenation */ /* eslint-disable
-vue/first-attribute-linebreak */ /* eslint-disable vue/attribute-hyphenation */
+/* eslint-disable vue/v-on-event-hyphenation */ /* eslint-disable vue/first-attribute-linebreak */ /* eslint-disable
+vue/attribute-hyphenation */
 <template>
   <Dialog
     :visible="visible"
@@ -10,12 +10,7 @@ vue/first-attribute-linebreak */ /* eslint-disable vue/attribute-hyphenation */
   >
     <div class="p-fluid grid">
       <span class="p-float-label p-my-4">
-        <InputText
-          id="username"
-          v-model="user.username"
-          type="text"
-          :class="error.username ? 'p-invalid' : ''"
-        />
+        <InputText id="username" v-model="user.username" type="text" :class="error.username ? 'p-invalid' : ''" />
         <label for="username">Username</label>
       </span>
       <span class="p-float-label p-my-4">
@@ -27,20 +22,11 @@ vue/first-attribute-linebreak */ /* eslint-disable vue/attribute-hyphenation */
         <label for="lastname">User Surname</label>
       </span>
       <span class="p-float-label p-my-4">
-        <InputText
-          id="email"
-          v-model="user.email"
-          type="text"
-          :class="error.email ? 'p-invalid' : ''"
-        />
+        <InputText id="email" v-model="user.email" type="text" :class="error.email ? 'p-invalid' : ''" />
         <label for="email">User E-mail</label>
       </span>
       <span class="p-float-label p-my-4">
-        <Password
-          id="password"
-          v-model="user.credentials[0].value"
-          :class="error.password ? 'p-invalid' : ''"
-        />
+        <Password id="password" v-model="user.credentials[0].value" :class="error.password ? 'p-invalid' : ''" />
         <label for="email">User Password</label>
       </span>
       <ToggleButton
@@ -59,12 +45,7 @@ vue/first-attribute-linebreak */ /* eslint-disable vue/attribute-hyphenation */
         style="color: var(--orange-300)"
         @click="cancelAdd()"
       />
-      <Button
-        label="Yes"
-        icon="pi pi-check"
-        class="p-button-text"
-        @click="confirmAdd()"
-      />
+      <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="confirmAdd()" />
     </template>
   </Dialog>
 </template>
@@ -116,9 +97,7 @@ export default {
       if (value) {
         if (this.editUser != undefined) {
           this.user = this.editUser;
-          this.user.credentials = [
-            { type: "password", value: undefined, temporary: true },
-          ];
+          this.user.credentials = [{ type: "password", value: undefined, temporary: true }];
           delete this.user.roles;
           delete this.user.name;
         }
@@ -133,8 +112,7 @@ export default {
         if (
           this.user.username === undefined ||
           (this.user.username === user.username &&
-            (this.editUser == undefined ||
-              this.user.username != this.editUser.username))
+            (this.editUser == undefined || this.user.username != this.editUser.username))
         ) {
           error = true;
           this.error.username = true;
@@ -148,15 +126,9 @@ export default {
           this.error.email = true;
         }
       }
-      if (
-        this.editUser != undefined &&
-        this.user.credentials[0].value === undefined
-      ) {
+      if (this.editUser != undefined && this.user.credentials[0].value === undefined) {
         delete this.user.credentials;
-      } else if (
-        this.user.credentials[0].value === undefined ||
-        this.user.credentials[0].value == 0
-      ) {
+      } else if (this.user.credentials[0].value === undefined || this.user.credentials[0].value == 0) {
         error = true;
         this.error.password = true;
       }

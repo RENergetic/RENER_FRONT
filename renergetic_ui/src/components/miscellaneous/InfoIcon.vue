@@ -1,22 +1,13 @@
 <template>
   <!-- <div> -->
-  <OverlayPanel
-    ref="InfoPanel"
-    style="max-width: 25rem"
-    append-to="body"
-    :show-close-icon="showCloseIcon"
-  >
+  <OverlayPanel ref="InfoPanel" style="max-width: 25rem" append-to="body" :show-close-icon="showCloseIcon">
     <!-- <content> totdo optional slots
       
     </content> -->
     <slot name="content" />
     {{ label }}
   </OverlayPanel>
-  <div
-    v-if="!showIcon"
-    @mouseleave="$refs.InfoPanel.toggle"
-    @mouseover="$refs.InfoPanel.toggle"
-  >
+  <div v-if="!showIcon" @mouseleave="$refs.InfoPanel.toggle" @mouseover="$refs.InfoPanel.toggle">
     <slot name="body" />
   </div>
   <i

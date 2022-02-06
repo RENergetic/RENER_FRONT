@@ -1,9 +1,6 @@
 import AuthApi from "./ren_api/auth";
 import DashboardApi from "./ren_api/dashboardapi";
-import {
-  DashboardApi as DummyDashboardApi,
-  MeasurementApi as DummyMeasurementApi,
-} from "../../assets/dummy/api";
+import { DashboardApi as DummyDashboardApi, MeasurementApi as DummyMeasurementApi } from "../../assets/dummy/api";
 import MeasurementdApi from "./ren_api/measurementapi";
 // import UserApi from './renergetic/ren_api/user'
 // import i18n from "../locale";
@@ -60,7 +57,7 @@ class AxiosAPI {
           this.storeCommit("spinner/stop");
         }
         this.toastError("connection_error");
-      }
+      },
     );
 
     this.axios.interceptors.response.use(
@@ -77,7 +74,7 @@ class AxiosAPI {
           this.storeCommit("spinner/stop");
         }
         return this._onRequestError(error);
-      }
+      },
     );
   }
 
@@ -88,9 +85,7 @@ class AxiosAPI {
       this.toastError("connection_error");
       return Promise.reject(error);
     } else if (response.status == 403) {
-      console.error(
-        `REST ${origReq.url}:  code=${response.status}: msg=${error.message}`
-      );
+      console.error(`REST ${origReq.url}:  code=${response.status}: msg=${error.message}`);
       error.message = "PRIVILEGE_ERROR";
       return Promise.reject(error);
     } else if (response.status == 401) {
@@ -113,12 +108,8 @@ export default function createRest(vueInstance) {
   return {
     auth: new AuthApi(axiosInstance, vueInstance),
     axiosApi: new AxiosAPI(axiosInstance, vueInstance, this.auth),
-    dashboardApi: !USE_DUMMY
-      ? new DashboardApi(axiosInstance, vueInstance)
-      : new DummyDashboardApi(),
-    measurementApi: !USE_DUMMY
-      ? new MeasurementdApi(axiosInstance, vueInstance)
-      : new DummyMeasurementApi(),
+    dashboardApi: !USE_DUMMY ? new DashboardApi(axiosInstance, vueInstance) : new DummyDashboardApi(),
+    measurementApi: !USE_DUMMY ? new MeasurementdApi(axiosInstance, vueInstance) : new DummyMeasurementApi(),
 
     // this.user = new UserApi(axiosInstance, vueInstance);
   };

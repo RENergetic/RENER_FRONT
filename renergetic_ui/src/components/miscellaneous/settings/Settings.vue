@@ -33,12 +33,7 @@
           :use-grouping="false"
         />
         <div v-else-if="s.type == Array">
-          <ListBox
-            :id="s.key"
-            v-model="mModel[s.key]"
-            :options="s.ext.options"
-            :option-label="s.ext.optionLabel"
-          />
+          <ListBox :id="s.key" v-model="mModel[s.key]" :options="s.ext.options" :option-label="s.ext.optionLabel" />
         </div>
         <InputText v-else :id="s.key" v-model="mModel[s.key]" />
       </div>

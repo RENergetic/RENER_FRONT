@@ -1,13 +1,8 @@
-/* eslint-disable vue/v-on-event-hyphenation */ /* eslint-disable
-vue/first-attribute-linebreak */ /* eslint-disable vue/attribute-hyphenation */
+/* eslint-disable vue/v-on-event-hyphenation */ /* eslint-disable vue/first-attribute-linebreak */ /* eslint-disable
+vue/attribute-hyphenation */
 <template>
   <div>
-    <DataTable
-      v-model:expandedRows="users.roles"
-      :value="users"
-      data-key="id"
-      responsive-layout="scroll"
-    >
+    <DataTable v-model:expandedRows="users.roles" :value="users" data-key="id" responsive-layout="scroll">
       <Column :expander="true" header-style="width: 3rem" />
       <Column field="username" header="Username" sortable></Column>
       <Column field="name" header="Name" sortable></Column>
@@ -48,33 +43,16 @@ vue/first-attribute-linebreak */ /* eslint-disable vue/attribute-hyphenation */
             <Column field="name" header="Role Name" sortable></Column>
           </DataTable>
         </div>
-        <Message v-else severity="info">{{
-          `${user.data.username} haven't assigned roles`
-        }}</Message>
-        <div
-          v-if="availableRoles(user.data).length > 0"
-          class="grid p-fluid"
-          style="margin: 0 2rem"
-        >
+        <Message v-else severity="info">{{ `${user.data.username} haven't assigned roles` }}</Message>
+        <div v-if="availableRoles(user.data).length > 0" class="grid p-fluid" style="margin: 0 2rem">
           <div class="col-12 md:col-4">
             <div class="p-inputgroup">
-              <select
-                style="width: 100%; text-align: center"
-                @change="selectRole($event, user.data)"
-              >
-                <option
-                  v-for="role of availableRoles(user.data)"
-                  :key="role.id"
-                  :value="JSON.stringify(role)"
-                >
+              <select style="width: 100%; text-align: center" @change="selectRole($event, user.data)">
+                <option v-for="role of availableRoles(user.data)" :key="role.id" :value="JSON.stringify(role)">
                   {{ role.name }}
                 </option>
               </select>
-              <Button
-                icon="pi pi-plus"
-                class="p-button-success"
-                @click="addRole(user.data)"
-              />
+              <Button icon="pi pi-plus" class="p-button-success" @click="addRole(user.data)" />
             </div>
           </div>
         </div>
@@ -100,10 +78,7 @@ vue/first-attribute-linebreak */ /* eslint-disable vue/attribute-hyphenation */
       :modal="true"
     >
       <div class="confirmation-content">
-        <i
-          class="pi pi-exclamation-circle mr-3"
-          style="font-size: 2rem; margin: 0em 0.4em"
-        />
+        <i class="pi pi-exclamation-circle mr-3" style="font-size: 2rem; margin: 0em 0.4em" />
         <span v-if="userToChange">{{ deleteDialog.text }}</span>
       </div>
       <template #footer>
@@ -114,20 +89,10 @@ vue/first-attribute-linebreak */ /* eslint-disable vue/attribute-hyphenation */
           style="color: var(--orange-300)"
           @click="deleteDialog.visible = false"
         />
-        <Button
-          label="Yes"
-          icon="pi pi-check"
-          class="p-button-text"
-          @click="deleteResource()"
-        />
+        <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteResource()" />
       </template>
     </Dialog>
-    <UserAdd
-      :users="users"
-      :edit-user="userToEdit"
-      :visible="addUserDialog"
-      @close="closeAddUserDialog"
-    ></UserAdd>
+    <UserAdd :users="users" :edit-user="userToEdit" :visible="addUserDialog" @close="closeAddUserDialog"></UserAdd>
   </div>
 </template>
 
@@ -170,13 +135,9 @@ export default {
     availableRoles(user) {
       let availableRoles = this.roles.map((object) => ({ ...object }));
       for (let role of user.roles) {
-        availableRoles.splice(
-          availableRoles.map((r) => r.id).indexOf(role.id),
-          1
-        );
+        availableRoles.splice(availableRoles.map((r) => r.id).indexOf(role.id), 1);
       }
-      if (availableRoles != undefined && availableRoles.length > 0)
-        user.addRole = availableRoles[0];
+      if (availableRoles != undefined && availableRoles.length > 0) user.addRole = availableRoles[0];
       return availableRoles;
     },
     openDialog(dialogName, user, role = undefined) {
@@ -218,21 +179,11 @@ export default {
       user.addRole = JSON.parse(event.target.value);
     },
     deleteResource() {
-      if (
-        this.deleteDialog.delete == "role" &&
-        this.userToChange &&
-        this.roleToChange
-      ) {
+      if (this.deleteDialog.delete == "role" && this.userToChange && this.roleToChange) {
         let userFromList = this.users[this.users.indexOf(this.userToChange)];
         console.error(userFromList);
-        this.$keycloak.unAssignRolesToUser(
-          this.userToChange.id,
-          Array(this.roleToChange)
-        );
-        userFromList.roles.splice(
-          userFromList.roles.indexOf(this.roleToChange),
-          1
-        );
+        this.$keycloak.unAssignRolesToUser(this.userToChange.id, Array(this.roleToChange));
+        userFromList.roles.splice(userFromList.roles.indexOf(this.roleToChange), 1);
         this.deleteDialog.visible = false;
         this.deleteDialog.delete = undefined;
       } else if (this.deleteDialog.delete == "user" && this.userToChange) {

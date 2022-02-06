@@ -21,8 +21,7 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/RenAbout.vue"),
+    component: () => import(/* webpackChunkName: "about" */ "../views/RenAbout.vue"),
   },
   {
     path: "/profile/:username?",
@@ -82,13 +81,8 @@ export default function (Vue) {
         next({ name: "Unauthorized" });
         //} else if (keycloak.hasResourceRole("vue-test") || 1 == 1) {
       } else if (
-        (keycloak.resourceAccess[process.env.VUE_APP_KEY_CLOAK_CLIENT_ID] !=
-          undefined &&
-          hasAccess(
-            keycloak.resourceAccess[process.env.VUE_APP_KEY_CLOAK_CLIENT_ID]
-              .roles,
-            to.meta.roles
-          )) ||
+        (keycloak.resourceAccess[process.env.VUE_APP_KEY_CLOAK_CLIENT_ID] != undefined &&
+          hasAccess(keycloak.resourceAccess[process.env.VUE_APP_KEY_CLOAK_CLIENT_ID].roles, to.meta.roles)) ||
         to.meta.roles == undefined
       ) {
         //TODO: clear or

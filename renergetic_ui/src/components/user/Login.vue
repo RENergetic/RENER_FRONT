@@ -15,12 +15,7 @@
         {{ $t("form.password") }}
       </label>
       <div class="col">
-        <Password
-          id="passwordInput"
-          v-model="password"
-          :feedback="false"
-          toggle-mask
-        />
+        <Password id="passwordInput" v-model="password" :feedback="false" toggle-mask />
       </div>
     </div>
     <div class="field grid">

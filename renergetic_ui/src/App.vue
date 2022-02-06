@@ -31,8 +31,7 @@ export default {
   mounted() {},
   methods: {
     layout() {
-      let layout =
-        this.$route.meta.layout == null ? "standard" : this.$route.meta.layout;
+      let layout = this.$route.meta.layout == null ? "standard" : this.$route.meta.layout;
       return layout;
     },
     updateMenu() {
