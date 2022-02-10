@@ -34,14 +34,8 @@
 </template>
 
 <script>
-import Dialog from "primevue/dialog";
-import Password from "primevue/password";
 export default {
     name: 'UserAdd',
-    components: {
-        Dialog,
-        Password,
-    },
     props: {
         users: {
             type: Array,
@@ -54,7 +48,7 @@ export default {
         },
         visible: Boolean,
     },
-emits: ['close'],
+    emits: ['close'],
     data() {
         return {
             user: {

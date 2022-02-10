@@ -1,15 +1,21 @@
 <template>
-  <div>aa {{ data }}aa</div>
+  <div>Auth data {{ data }}aa</div>
+  <div>Logged user {{user}}</div>
 </template>
 <script>
 export default {
   name: "Profile",
   components: {},
   data() {
-    return { data: this.$store.getters["auth/current"] };
+    return { 
+      data: this.$store.getters["auth/current"],
+      user: undefined
+    };
   },
   watch: {},
-  mounted() {},
+  async mounted() {
+    this.user = await this.$ren.userApi.getByUsername((await this.$keycloak.get()).tokenParsed.preferred_username);
+  },
   methods: {},
 };
 </script>

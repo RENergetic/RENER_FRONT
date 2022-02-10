@@ -5,7 +5,7 @@ import {
   MeasurementApi as DummyMeasurementApi 
 } from "../../assets/dummy/api";
 import MeasurementdApi from "./ren_api/measurementapi"; 
-// import UserApi from './renergetic/ren_api/user'
+import UserApi from './ren_api/userapi'
 // import i18n from "../locale";
 import axios from "axios";
 
@@ -119,7 +119,6 @@ export default function createRest(vueInstance) {
     measurementApi: !USE_DUMMY
       ? new MeasurementdApi(axiosInstance, vueInstance)
       : new DummyMeasurementApi(),
-
-    // this.user = new UserApi(axiosInstance, vueInstance);
+    userApi: new UserApi(axiosInstance, vueInstance),
   };
 }
