@@ -1,13 +1,13 @@
 <template>
-  <div class="p-grid">
-    <div class="p-col-8">
+  <div class="grid">
+    <div class="col-8">
       <Card>
         <template #title> HeatMap editor </template>
         <template #content>
           <!-- file upload-->
           <!-- {{ areas }} {{ scale }} -->
-          <div v-if="bgImage == null" class="p-field p-grid">
-            <div class="p-col">
+          <div v-if="bgImage == null" class="field grid">
+            <div class="col">
               <FileUpload
                 ref="FileUpload"
                 with-credentials="true,"
@@ -33,12 +33,7 @@
             </div>
           </div>
           <div v-show="bgImage != null" id="heatmapContainer">
-            <v-stage
-              id="heatmap"
-              ref="stage"
-              :config="stageSize"
-              @click="onClick"
-            >
+            <v-stage id="heatmap" ref="stage" :config="stageSize" @click="onClick">
               <v-layer>
                 <v-image
                   :config="{
@@ -51,7 +46,7 @@
         </template>
       </Card>
     </div>
-    <div v-if="bgImage" class="p-col-3 ren">
+    <div v-if="bgImage" class="col-3 ren">
       <AreaDetails
         class="tile"
         :model-value="selectedArea"
@@ -74,38 +69,27 @@
   </div>
 
   <div class="card gf">
-    <div class="p-fluid p-formgrid p-grid ren-submit">
-      <div v-if="!addMode && bgImage" class="p-field p-md-3 p-sm-6">
+    <div class="p-fluid p-formgrid grid ren-submit">
+      <div v-if="!addMode && bgImage" class="field md-3 sm-6">
         <Button :label="$t('view.button.add_point')" @click="addPoint" />
       </div>
-      <div v-if="addMode" class="p-field p-md-3 p-sm-6">
-        <Button
-          :label="$t('view.button.confirm_point')"
-          @click="confirmPoint"
-        />
+      <div v-if="addMode" class="field md-3 sm-6">
+        <Button :label="$t('view.button.confirm_point')" @click="confirmPoint" />
       </div>
-      <div v-if="addMode" class="p-field p-md-3 p-sm-6">
+      <div v-if="addMode" class="field md-3 sm-6">
         <Button :label="$t('view.button.cancel')" @click="cancelPoint" />
       </div>
     </div>
-    <div class="p-field p-grid ren-submit">
-      <div class="p-col">
-        <Button
-          :disabled="!hasFiles"
-          :label="$t('view.button.submit')"
-          @click="submit"
-        />
+    <div class="field grid ren-submit">
+      <div class="col">
+        <Button :disabled="!hasFiles" :label="$t('view.button.submit')" @click="submit" />
       </div>
-      <div class="p-col">
+      <div class="col">
         <Button :label="$t('view.button.cancel')" @click="cancel" />
       </div>
     </div>
 
-    <ProgressSpinner
-      v-if="spinner"
-      style="width: 10rem; height: 10rem; margin: auto; display: flex"
-      stroke-width="4"
-    />
+    <ProgressSpinner v-if="spinner" style="width: 10rem; height: 10rem; margin: auto; display: flex" stroke-width="4" />
   </div>
 </template>
 <script>
@@ -191,10 +175,7 @@ export default {
         let stage = this.$refs.stage.getStage();
         var shape = stage.findOne(`#${this.current.id}`);
         if (shape != null) {
-          this.current.points.push([
-            evt.layerX / this.scale,
-            evt.layerY / this.scale,
-          ]);
+          this.current.points.push([evt.layerX / this.scale, evt.layerY / this.scale]);
           let pnts = this.current.points;
           let f = (context, shape) => {
             context.beginPath();
@@ -270,8 +251,7 @@ export default {
       // this.bgImage = null;
     },
     onSelect() {
-      if (this.$refs.FileUpload !== undefined)
-        this.hasFiles = this.$refs.FileUpload.files.length > 0;
+      if (this.$refs.FileUpload !== undefined) this.hasFiles = this.$refs.FileUpload.files.length > 0;
       else this.hasFiles = false;
       if (this.hasFiles) {
         const image = new window.Image();

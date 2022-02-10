@@ -47,11 +47,7 @@ vue/attribute-hyphenation */
         <div v-if="availableRoles(user.data).length > 0" class="grid p-fluid" style="margin: 0 2rem">
           <div class="col-12 md:col-4">
             <div class="p-inputgroup">
-              <select
-                class="p-component"
-                style="width: 100%; text-align: center"
-                @change="selectRole($event, user.data)"
-              >
+              <select style="width: 100%; text-align: center" @change="selectRole($event, user.data)">
                 <option v-for="role of availableRoles(user.data)" :key="role.id" :value="JSON.stringify(role)">
                   {{ role.name }}
                 </option>
@@ -101,12 +97,18 @@ vue/attribute-hyphenation */
 </template>
 
 <script>
+import Message from "primevue/message";
+import Dialog from "primevue/dialog";
 import UserAdd from "../../components/admin/UserAdd.vue";
+import Toolbar from "primevue/toolbar";
 
 export default {
   name: "Users",
   components: {
+    Dialog,
+    Message,
     UserAdd,
+    Toolbar,
   },
   data() {
     return {

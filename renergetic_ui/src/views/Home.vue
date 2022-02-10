@@ -12,43 +12,23 @@
     </Dialog>
 
     <div class="home-grid-stack grid-stack">
-      <div
-        v-if="settings.actionsVisibility"
-        :class="'grid-stack-item ren'"
-        v-bind="panelTile"
-      >
+      <div v-if="settings.actionsVisibility" :class="'grid-stack-item ren'" v-bind="panelTile">
         <Card :class="'grid-stack-item-content'"> action panel todo:</Card>
       </div>
-      <div
-        v-if="settings.feedbackVisibility"
-        :class="'grid-stack-item ren'"
-        v-bind="feedbackTile"
-      >
+      <div v-if="settings.feedbackVisibility" :class="'grid-stack-item ren'" v-bind="feedbackTile">
         <Card :class="'grid-stack-item-content'">
           <Feedback></Feedback>
         </Card>
       </div>
 
-      <div
-        v-if="settings.notificationVisibility"
-        :class="'grid-stack-item ren'"
-        v-bind="notificationTile"
-      >
+      <div v-if="settings.notificationVisibility" :class="'grid-stack-item ren'" v-bind="notificationTile">
         <Card :class="'grid-stack-item-content'">
           <NotificationList></NotificationList>
         </Card>
       </div>
-      <div
-        v-if="settings.selectedPanel"
-        :class="'grid-stack-item ren'"
-        v-bind="informationTile"
-      >
+      <div v-if="settings.selectedPanel" :class="'grid-stack-item ren'" v-bind="informationTile">
         <Card :class="'grid-stack-item-content'">
-          <InformationPanel
-            ref="panel"
-            :panel="settings.selectedPanel"
-            :edit-mode="false"
-          ></InformationPanel>
+          <InformationPanel ref="panel" :panel="settings.selectedPanel" :edit-mode="false"></InformationPanel>
         </Card>
       </div>
     </div>
@@ -125,9 +105,7 @@ export default {
   computed: {
     toggleButton: function () {
       //TODO: if permission
-      let label = this.locked
-        ? this.$t("menu.grid_unlock")
-        : this.$t("menu.grid_lock");
+      let label = this.locked ? this.$t("menu.grid_unlock") : this.$t("menu.grid_lock");
       return {
         label: label,
         icon: "pi pi-fw pi-lock",

@@ -4,6 +4,7 @@ import {
   heatmaps,
   measurementAttributes,
   measurementsGenerator,
+  currentMeasurementsGenerator,
 } from "./dashboard.js";
 import storage from "./storage.js";
 const DASHBOARD_KEY = "dashboard";
@@ -20,10 +21,7 @@ class DashboardApi {
     return maps.find((it) => it.id == id);
   }
   async getInformationPanel(panelId) {
-    let tiles = await storage.get(
-      `${DASHBOARD_KEY}.panel_list`,
-      informationPanels
-    );
+    let tiles = await storage.get(`${DASHBOARD_KEY}.panel_list`, informationPanels);
     return tiles.find((it) => it.id == panelId);
   }
   informationPanelList() {
@@ -58,10 +56,13 @@ class MeasurementApi {
   async attributes(/*area, areaId*/) {
     return storage.get(`${MEASUREMENT_KEY}.panel_list`, measurementAttributes);
   }
-  async measurements(objectIds) {
+  async getMeasurements(objectIds) {
     return measurementsGenerator(objectIds.length, 50);
   }
 
+  async getCurrentMeasurements(objectIds) {
+    return currentMeasurementsGenerator(objectIds);
+  }
   async getNotifications(objectIds) {
     // todo:
     return objectIds;

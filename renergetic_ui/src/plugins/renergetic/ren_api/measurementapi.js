@@ -8,7 +8,10 @@ export default class DashboardApi extends RestComponent {
     //areas - id list
     console.info(areas);
   }
-  async measurements(objectIds) {
+  async getMeasurements(objectIds) {
+    console.info(objectIds);
+  }
+  async getCurrentMeasurements(objectIds) {
     console.info(objectIds);
   }
   async getNotifications(objectIds) {

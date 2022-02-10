@@ -1,9 +1,11 @@
 <template>
   <DotMenu :model="menuModel" />
   <div id="dashboard-wrapper"><Grafana :url="dashboardUrl" /></div>
-  <!-- <Carousel   :value="data"    :num-visible="3"   :num-scroll="1"  :responsive-options="responsiveOptions" >
+  <!-- <Carousel   :value="data"    :num-visible="3"   :num-scroll="1"  
+  :responsive-options="responsiveOptions" >
     <template #header>   <h5>Basic</h5>    </template>
-    <template #item="slotProps">      <div>data: {{ slotProps.data.name }}</div>    </template>  </Carousel> -->
+    <template #item="slotProps">      <div>data: {{ slotProps.data.name }}</div> 
+       </template>  </Carousel> -->
   <Dock class="ren-dock" :model="dashboardMenu" position="bottom">
     <template #icon="{ item }"
       ><div :style="getColor(item)">
@@ -11,12 +13,7 @@
       </div>
     </template>
   </Dock>
-  <DeleteDashboard
-    v-if="dashboard != null"
-    :id="dashboard.id"
-    ref="deleteDashboard"
-    :label="dashboard.label"
-  />
+  <DeleteDashboard v-if="dashboard != null" :id="dashboard.id" ref="deleteDashboard" :label="dashboard.label" />
 </template>
 <script>
 // import Carousel from "primevue/carousel";
@@ -74,9 +71,7 @@ export default {
     try {
       if (dashboards) {
         this.dashboards = dashboards;
-        this.dashboard = dashboards.find(
-          (item) => item.id == this.$route.params.dashboard_id
-        );
+        this.dashboard = dashboards.find((item) => item.id == this.$route.params.dashboard_id);
         this.dashboardMenu = this.createDashboardMenu();
       }
     } catch (error) {
@@ -93,7 +88,7 @@ export default {
               this.dashboard = dashboard;
             }
           }
-      }
+      },
     );
   },
   methods: {

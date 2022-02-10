@@ -5,11 +5,7 @@ module.exports = {
     node: true,
   },
   plugins: ["vue", "@babel"],
-  extends: [
-    "plugin:vue/vue3-recommended",
-    "eslint:recommended",
-    "@vue/prettier",
-  ],
+  extends: ["plugin:vue/vue3-recommended", "eslint:recommended", "@vue/prettier"],
   parserOptions: {
     ecmaVersion: 2020,
     // parser: "@typescript-eslint/parser",
@@ -18,20 +14,53 @@ module.exports = {
   },
   parser: "vue-eslint-parser",
   rules: {
+    "vetur.format.defaultFormatter.html": "off",
+    "vue/first-attribute-linebreak": [
+      "error",
+      {
+        multiline: "below",
+      },
+    ],
+    "vue/max-attributes-per-line": [
+      2,
+      {
+        singleline: {
+          max: 4,
+        },
+        multiline: {
+          max: 3,
+        },
+      },
+    ],
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
     // "arrow-parens": "off",
     "eol-last": "error",
     "vue/no-v-model-argument": "off",
     "vue/multi-word-component-names": "off",
-    "prettier/prettier": ["off", { endOfLine: "auto" }],
+    "vue/max-len": [
+      "warn",
+      {
+        code: 120,
+        template: 120,
+        tabWidth: 2,
+        comments: 160,
+        ignorePattern: "",
+        ignoreComments: false,
+        ignoreTrailingComments: false,
+        ignoreUrls: false,
+        ignoreStrings: false,
+        ignoreTemplateLiterals: false,
+        ignoreRegExpLiterals: false,
+        ignoreHTMLAttributeValues: false,
+        ignoreHTMLTextContents: false,
+      },
+    ],
+    "prettier/prettier": ["warn", { endOfLine: "auto" }],
   },
   overrides: [
     {
-      files: [
-        "**/__tests__/*.{j,t}s?(x)",
-        "**/tests/unit/**/*.spec.{j,t}s?(x)",
-      ],
+      files: ["**/__tests__/*.{j,t}s?(x)", "**/tests/unit/**/*.spec.{j,t}s?(x)"],
       env: {
         jest: true,
       },

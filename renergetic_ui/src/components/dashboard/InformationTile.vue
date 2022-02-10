@@ -22,11 +22,7 @@
           icon="pi pi-bell"
           @click="$emit('notification', tile)"
         />
-        <InformationTileItem
-          v-for="item in tile.items"
-          :key="item.id"
-          :tile-item="item"
-        ></InformationTileItem>
+        <InformationTileItem v-for="item in tile.items" :key="item.id" :tile-item="item"></InformationTileItem>
       </template>
     </Card>
   </div>
@@ -50,10 +46,7 @@ export default {
   // },
   computed: {
     state: function () {
-      let state =
-        this.tile == null || this.tile.state == null
-          ? "unknown"
-          : this.tile.state;
+      let state = this.tile == null || this.tile.state == null ? "unknown" : this.tile.state;
       return ` state ${state}`;
     },
     col: function () {
@@ -61,9 +54,7 @@ export default {
     },
     layout: function () {
       console.info(this.tile.layout);
-      return this.tile != null && this.tile.layout != null
-        ? this.tile.layout
-        : (() => ({}))();
+      return this.tile != null && this.tile.layout != null ? this.tile.layout : (() => ({}))();
     },
     gridStackAttributes() {
       //TODO: other attributes?

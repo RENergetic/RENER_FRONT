@@ -41,11 +41,9 @@ export default {
   async created() {
     if (this.notifications == null && this.objects != null) {
       //todo:
-      this.$ren.measurementApi
-        .getNotifications(this.objects)
-        .then((notifications) => {
-          this.mNotifications = notifications;
-        });
+      this.$ren.measurementApi.getNotifications(this.objects).then((notifications) => {
+        this.mNotifications = notifications;
+      });
     } else {
       this.mNotifications = this.notifications;
     }

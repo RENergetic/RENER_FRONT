@@ -1,15 +1,12 @@
 import AuthApi from "./ren_api/auth";
 import DashboardApi from "./ren_api/dashboardapi";
-import { 
-  DashboardApi as DummyDashboardApi, 
-  MeasurementApi as DummyMeasurementApi 
-} from "../../assets/dummy/api";
-import MeasurementdApi from "./ren_api/measurementapi"; 
+import { DashboardApi as DummyDashboardApi, MeasurementApi as DummyMeasurementApi } from "../../assets/dummy/api";
+import MeasurementdApi from "./ren_api/measurementapi";
 import UserApi from './ren_api/userapi'
 // import i18n from "../locale";
 import axios from "axios";
+const USE_DUMMY = process.env.VUE_APP_DUMMY_API;
 
-const USE_DUMMY = false;//process.env.VUE_APP_DUMMY_API 
 export var BASE_URL = process.env.VUE_APP_API_URL;
 
 const axiosInstance = axios.create({ baseURL: BASE_URL });
@@ -60,7 +57,7 @@ class AxiosAPI {
           this.storeCommit("spinner/stop");
         }
         this.toastError("connection_error");
-      }
+      },
     );
 
     this.axios.interceptors.response.use(
@@ -77,7 +74,7 @@ class AxiosAPI {
           this.storeCommit("spinner/stop");
         }
         return this._onRequestError(error);
-      }
+      },
     );
   }
 
@@ -88,9 +85,7 @@ class AxiosAPI {
       this.toastError("connection_error");
       return Promise.reject(error);
     } else if (response.status == 403) {
-      console.error(
-        `REST ${origReq.url}:  code=${response.status}: msg=${error.message}`
-      );
+      console.error(`REST ${origReq.url}:  code=${response.status}: msg=${error.message}`);
       error.message = "PRIVILEGE_ERROR";
       return Promise.reject(error);
     } else if (response.status == 401) {

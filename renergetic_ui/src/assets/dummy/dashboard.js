@@ -105,11 +105,14 @@ var heatmaps = [
         id: "area_1",
         value: "area_1",
         label: "area_1",
+        heatMapId: 80,
         dashboard: {
           id: "2",
           label: "Dashboard 2",
           name: "dashboard_2",
-          url: "http://localhost:3000/d/cWp8595nk/embedded-dashboard?orgId=1&from=1640263130489&to=1640284730489&kiosk=tv",
+          url:
+            "http://localhost:3000/d/cWp8595nk/embedded-dashboard" +
+            "?orgId=1&from=1640263130489&to=1640284730489&kiosk=tv",
         },
       },
       {
@@ -122,6 +125,7 @@ var heatmaps = [
         value: "area_2",
         label: "area_2",
         dashboardId: null,
+        heatMapId: 80,
       },
       {
         points: [
@@ -133,6 +137,7 @@ var heatmaps = [
         value: "area_3",
         label: "area_3",
         dashboardId: null,
+        heatMapId: 80,
       },
     ],
     id: 80,
@@ -224,14 +229,14 @@ let measurementsGenerator = (i, n) => {
       fill: false,
     });
   }
-  let labels = [];
-
-  var t = Date.now();
-  t = t - (t % 60000);
-  for (j = 0; j < n; j++) {
-    labels.push(t - 60000 * (n - j));
+};
+let currentMeasurementsGenerator = (keys) => {
+  let measurements = [];
+  for (var i = 0; i < keys.length; i++) {
+    let next = Math.floor(Math.random() * 150) - 50;
+    measurements.push(next);
   }
-  return { datasets: datasets, labels: labels };
+  return measurements;
 };
 export {
   dummyList,
@@ -239,4 +244,5 @@ export {
   heatmaps,
   measurementAttributes,
   measurementsGenerator,
+  currentMeasurementsGenerator,
 };

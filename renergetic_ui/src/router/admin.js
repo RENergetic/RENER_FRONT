@@ -1,11 +1,11 @@
 var adminRoutes = [
-    {
-      path: "/admin/users",
-      name: "Users",
-      props: {},
-      meta: { isAuthenticated: true },
-      component: () => import("../views/administration/Users.vue"),
-    }
+  {
+    path: "/admin/users",
+    name: "Users",
+    props: {},
+    meta: { isAuthenticated: true },
+    component: () => import("../views/admin/Users.vue"),
+  },
 ];
 
 export default adminRoutes;

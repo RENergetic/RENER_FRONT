@@ -56,9 +56,10 @@ export default function (Vue) {
         let config = {
           headers: { Authorization: "Bearer " + keycloak.token },
         };
-        await axios.get(`${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`, config)
-        .then((response) => info.clientId = response.data[0].id)
-        .catch((error) => console.warn(error));
+        await axios
+          .get(`${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`, config)
+          .then((response) => (info.clientId = response.data[0].id))
+          .catch((error) => console.warn(error));
       }
     })
     .catch((e) => {
@@ -85,10 +86,7 @@ export default function (Vue) {
         headers: { Authorization: "Bearer " + keycloak.token },
       };
       return axios
-        .get(
-          `${info.url}/admin/realms/${info.realm}/clients/${info.clientId}/roles`,
-          config
-        )
+        .get(`${info.url}/admin/realms/${info.realm}/clients/${info.clientId}/roles`, config)
         .then((res) => {
           return res.data;
         })
@@ -104,9 +102,10 @@ export default function (Vue) {
       let config = {
         headers: { Authorization: "Bearer " + keycloak.token },
       };
-      await axios.get(`${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`, config)
-      .then((response) => clientId = response.data.id);
-      
+      await axios
+        .get(`${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`, config)
+        .then((response) => (clientId = response.data.id));
+
       return clientId;
     },
     //  Manage Users Methods
@@ -121,12 +120,8 @@ export default function (Vue) {
           if (res.data && res.data.length > 0) {
             let users = Array();
             for (let user of res.data) {
-              user.name = `${
-                user.firstName && user.lastName
-                  ? `${user.firstName} ${user.lastName}`
-                  : ""
-              }`;
-              user.roles = await this.getUserRoles(user.id)
+              user.name = `${user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : ""}`;
+              user.roles = await this.getUserRoles(user.id);
               users.push(user);
             }
             return users;
@@ -142,10 +137,7 @@ export default function (Vue) {
         headers: { Authorization: "Bearer " + keycloak.token },
       };
       return axios
-        .get(
-          `${info.url}/admin/realms/${info.realm}/users/${user_id}/role-mappings/clients/${info.clientId}`,
-          config
-        )
+        .get(`${info.url}/admin/realms/${info.realm}/users/${user_id}/role-mappings/clients/${info.clientId}`, config)
         .then((res) => {
           return res.data;
         })
@@ -164,7 +156,7 @@ export default function (Vue) {
         .post(
           `${info.url}/admin/realms/${info.realm}/users/${userId}/role-mappings/clients/${info.clientId}`,
           body,
-          config
+          config,
         )
         .then((res) => {
           return res;
@@ -183,10 +175,7 @@ export default function (Vue) {
         data: body,
       };
       axios
-        .delete(
-          `${info.url}/admin/realms/${info.realm}/users/${userId}/role-mappings/clients/${info.clientId}`,
-          config
-        )
+        .delete(`${info.url}/admin/realms/${info.realm}/users/${userId}/role-mappings/clients/${info.clientId}`, config)
         .then((res) => {
           return res;
         })
@@ -201,11 +190,7 @@ export default function (Vue) {
         Accept: "*/*",
         "Content-Type": "application/json",
       };
-      return axios.post(
-        `${info.url}/admin/realms/${info.realm}/users`,
-        body,
-        config
-      );
+      return axios.post(`${info.url}/admin/realms/${info.realm}/users`, body, config);
     },
     async updateUser(body) {
       let config = {
@@ -213,11 +198,7 @@ export default function (Vue) {
         Accept: "*/*",
         "Content-Type": "application/json",
       };
-      return axios.put(
-        `${info.url}/admin/realms/${info.realm}/users/${body.id}`,
-        body,
-        config
-      );
+      return axios.put(`${info.url}/admin/realms/${info.realm}/users/${body.id}`, body, config);
     },
     async deleteUser(userId) {
       let config = {
@@ -225,10 +206,7 @@ export default function (Vue) {
         Accept: "*/*",
         "Content-Type": "application/json",
       };
-      return axios.delete(
-        `${info.url}/admin/realms/${info.realm}/users/${userId}`,
-        config
-      );
+      return axios.delete(`${info.url}/admin/realms/${info.realm}/users/${userId}`, config);
     },
     async executeAfterInitialized(method) {
       const TRIES = 4;
@@ -238,15 +216,15 @@ export default function (Vue) {
         const iteration = () => {
           if (this.isInitialized()) {
             resolve(method);
-          } else if(tries < TRIES) {
+          } else if (tries < TRIES) {
             setTimeout(iteration, TIME);
             tries += 1;
           } else {
             reject("Keycloak isn't initalized");
           }
-        }
+        };
         iteration();
-      })
-    }
+      });
+    },
   };
 }

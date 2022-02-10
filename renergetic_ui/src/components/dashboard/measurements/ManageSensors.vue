@@ -6,11 +6,8 @@
   </InfoIcon>
   <div class="card">
     TODO: list of current metrics senors etcc
-    <div class="p-field p-grid">todo: manage sensors sensor</div>
-    <Button
-      :label="$t('view.button.add_sensor')"
-      @click="() => (sensorSearchDialog = !sensorSearchDialog)"
-    />
+    <div class="field grid">todo: manage sensors sensor</div>
+    <Button :label="$t('view.button.add_sensor')" @click="() => (sensorSearchDialog = !sensorSearchDialog)" />
   </div>
 
   <Dialog

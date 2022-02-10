@@ -8,7 +8,7 @@
     </template>
     <template v-if="measurements != null" #content>
       <!-- {{ area.id }} -->
-      <div v-for="m in measurements" :key="m.id" class="p-field p-grid">
+      <div v-for="m in measurements" :key="m.id" class="field grid">
         <label for="heatmapLabel">
           {{ $t("measurement." + m.name) }}
         </label>

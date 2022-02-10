@@ -8,15 +8,12 @@
   <Chart v-if="data" type="line" :data="data" :options="options" />
   <!-- :plugins="plugin"   "-->
   <div class="card">
-    <div class="p-field p-grid">
-      <!-- <div class="p-col">
+    <div class="field grid">
+      <!-- <div class="col">
         <Button :label="$t('menu.filter')" @click="setfilter" />
       </div> -->
-      <div class="p-col">
-        <Button
-          :label="$t('view.button.export_csv')"
-          @click="$ren.utils.exportChartData({ chartData: chart })"
-        />
+      <div class="col">
+        <Button :label="$t('view.button.export_csv')" @click="$ren.utils.exportChartData({ chartData: chart })" />
       </div>
     </div>
   </div>
@@ -118,17 +115,15 @@ export default {
       }
     } else {
       if (this.objects) {
-        await this.$ren.measurementApi
-          .measurements(this.objects)
-          .then((data) => {
-            this.data = data;
-          });
+        await this.$ren.measurementApi.getMeasurements(this.objects).then((data) => {
+          this.data = data;
+        });
       }
     }
   },
   methods: {
     async loadData() {
-      await this.$ren.measurementApi.measurements(this.objects).then((data) => {
+      await this.$ren.measurementApi.getMeasurements(this.objects).then((data) => {
         this.data = data;
       });
     },

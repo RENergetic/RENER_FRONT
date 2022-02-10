@@ -1,23 +1,15 @@
 <template>
-  <div class="p-grid">
+  <div class="grid">
     <!-- {{ heatMapList }} -->
-    <div class="p-col-8">
+    <div class="col-8">
       <Card>
         <template #title> {{ $t("view.heatmap_list") }} </template>
         <template #content>
-          <Listbox
-            v-model="selectedArea"
-            :options="heatMapList"
-            option-label="label"
-          >
+          <Listbox v-model="selectedArea" :options="heatMapList" option-label="label">
             <template #option="slotProps">
-              <div class="p-d-flex">
+              <div class="flex">
                 <div>{{ slotProps.option.label }}</div>
-                <i
-                  class="pi pi-chevron-circle-right"
-                  style="fontsize: 2rem"
-                  @click="view(slotProps.option)"
-                />
+                <i class="pi pi-chevron-circle-right" style="fontsize: 2rem" @click="view(slotProps.option)" />
               </div>
             </template>
           </Listbox>
@@ -56,7 +48,7 @@ export default {
 i.pi {
   margin-left: 0.25rem;
 }
-.p-d-flex > div {
+.flex > div {
   flex-grow: 1;
 }
 </style>

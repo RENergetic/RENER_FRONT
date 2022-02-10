@@ -1,7 +1,7 @@
 <template>
   <div class="p-fluid">
-    <div v-for="s in schema" :key="s" :class="'p-field p-grid'">
-      <label :for="s.key" class="p-col-12">{{ s.label }}</label>
+    <div v-for="s in schema" :key="s" :class="'field grid'">
+      <label :for="s.key" class="col-12">{{ s.label }}</label>
 
       <!-- <ToggleButton
         v-model="mModel['key']"
@@ -10,8 +10,8 @@
         on-icon="pi pi-check"
         off-icon="pi pi-times"
       /> -->
-      <div class="p-col-12">
-        {{ s.ext.mode }}
+      <div class="col-12">
+        <!-- {{ s.ext.mode }} -->
         <SelectButton
           v-if="s.type == Boolean"
           :id="s.key"
@@ -33,12 +33,7 @@
           :use-grouping="false"
         />
         <div v-else-if="s.type == Array">
-          <ListBox
-            :id="s.key"
-            v-model="mModel[s.key]"
-            :options="s.ext.options"
-            :option-label="s.ext.optionLabel"
-          />
+          <ListBox :id="s.key" v-model="mModel[s.key]" :options="s.ext.options" :option-label="s.ext.optionLabel" />
         </div>
         <InputText v-else :id="s.key" v-model="mModel[s.key]" />
       </div>

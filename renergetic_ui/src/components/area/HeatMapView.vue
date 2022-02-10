@@ -1,18 +1,12 @@
 <template>
   <DotMenu :model="menuModel()" />
-  <div class="p-grid">
-    <div class="p-col-8">
+  <div class="grid">
+    <div class="col-8">
       <Card>
-        <!-- {{ heatMap }}ssss {{ bgImage }} dddd -->
         <template #title> HeatMap View </template>
         <template #content>
           <div id="heatmapContainer">
-            <v-stage
-              id="heatmap"
-              ref="stage"
-              :config="stageSize"
-              @click="onClick"
-            >
+            <v-stage id="heatmap" ref="stage" :config="stageSize" @click="onClick">
               <v-layer v-show="bgImage != null">
                 <v-image
                   :config="{
@@ -20,31 +14,16 @@
                   }"
                 />
               </v-layer>
-              <!-- <v-layer  v-for="area in heatMap.areas" :key="area.id">
-                <v-shape :config="getConfig(area)" />
-              </v-layer> -->
             </v-stage>
           </div>
         </template>
       </Card>
       <MeasurementChart
-        v-if="
-          selectedAreas &&
-          Object.keys(selectedAreas).length > 0 &&
-          measurmenentState
-        "
+        v-if="selectedAreas && Object.keys(selectedAreas).length > 0 && measurmenentState"
         :objects="Object.keys(selectedAreas)"
       ></MeasurementChart>
     </div>
-    <div v-if="bgImage" class="p-col-3 ren">
-      <AreaDetails
-        v-show="selectedArea != null"
-        class="tile"
-        :model-value="selectedArea"
-        @update:model-value="onAreaSelect($event)"
-        @delete="areaDelete(selectedArea)"
-      ></AreaDetails>
-
+    <div v-if="bgImage" class="col-3 ren">
       <!-- <Card class="tile">
         <template #title> {{ $t("heatmap.areas") }}</template>
         <template #content>
@@ -57,10 +36,21 @@
           />
         </template>
       </Card> -->
+      <Accordion class="tile" :active-index="selectedArea == null ? -1 : 0">
+        <AccordionTab :disabled="selectedArea == null">
+          <template #header> {{ $t("view.selected_area") }}</template>
+
+          <AreaDetails
+            class="tile"
+            :model-value="selectedArea"
+            @update:model-value="onAreaSelect($event)"
+            @delete="areaDelete(selectedArea)"
+          ></AreaDetails>
+        </AccordionTab>
+      </Accordion>
       <Accordion class="tile" :active-index="0">
         <AccordionTab>
           <template #header> {{ $t("model.heatmap.areas") }}</template>
-
           <Listbox
             v-if="heatMap != null"
             v-model="selectedArea"
@@ -73,37 +63,38 @@
       <Accordion v-if="attributes" class="tile" :active-index="0">
         <AccordionTab>
           <template #header> {{ $t("model.heatmap.attributes") }}</template>
-          <Tree
-            v-model:selection-keys="selectedAttributes"
-            :value="attributes"
-            selection-mode="checkbox"
-          ></Tree>
+          <Tree v-model:selection-keys="selectedAttributes" :value="attributes" selection-mode="checkbox"></Tree>
         </AccordionTab>
       </Accordion>
-      <Accordion
-        v-if="selectedAreas && recommendationState"
-        class="tile"
-        :active-index="recommendationPanelState"
-      >
+      <Accordion v-if="settings.recommendationVisibility && selectedAreas" class="tile" :active-index="-1">
         <AccordionTab>
-          <template #header>
-            {{ $t("model.heatmap.recommendations") }}</template
-          >
+          <template #header> {{ $t("model.heatmap.recommendations") }}</template>
           <recommendation-view :objects="selectedAreas"></recommendation-view>
         </AccordionTab>
       </Accordion>
-      <Accordion
-        v-if="selectedAreas && notificationState"
-        class="tile"
-        :active-index="0"
-      >
+      <Accordion v-if="settings.notificationVisibility && selectedAreas" class="tile" :active-index="0">
         <AccordionTab>
           <template #header> {{ $t("model.heatmap.notifications") }}</template>
           <notification-view :objects="selectedAreas"></notification-view>
         </AccordionTab>
       </Accordion>
+      <Accordion v-if="settings.measurementsVisibility && selectedAreas" class="tile" :active-index="0">
+        <AccordionTab>
+          <template #header> {{ $t("view.measurements") }}</template>
+          <measurements-view :objects="selectedAreas"></measurements-view>
+        </AccordionTab>
+      </Accordion>
     </div>
   </div>
+  <Dialog
+    v-model:visible="settingsDialog"
+    :style="{ width: '50vw' }"
+    :maximizable="true"
+    :modal="true"
+    :dismissable-mask="true"
+  >
+    <HeatMapSettings @update="reloadSettings()"></HeatMapSettings>
+  </Dialog>
 </template>
 <script>
 import Tree from "primevue/tree";
@@ -113,13 +104,15 @@ import RecommendationView from "../management/RecommendationView.vue";
 import Listbox from "primevue/listbox";
 import Accordion from "primevue/accordion";
 import AccordionTab from "primevue/accordiontab";
+import Dialog from "primevue/dialog";
 import Card from "primevue/card";
 import Konva from "konva";
 import NotificationView from "./NotificationList.vue";
-import MeasurementChart from "../dashboard/measurements/MeasurementChart.vue";
 
-//TODO: update image,todo: spinner?
-//initial canvas size  this.drawArea(this.current);
+import HeatMapSettings from "../miscellaneous/settings/HeatmapSettings.vue";
+import MeasurementChart from "../dashboard/measurements/MeasurementChart.vue";
+import MeasurementsView from "../dashboard/measurements/MeasurementsView.vue";
+
 const sceneWidth = 900;
 const sceneHeight = 450;
 export default {
@@ -131,10 +124,13 @@ export default {
     Accordion,
     AccordionTab,
     Tree,
+    HeatMapSettings,
     RecommendationView,
     DotMenu,
     NotificationView,
     MeasurementChart,
+    MeasurementsView,
+    Dialog,
   },
   props: {
     heatMap: {
@@ -157,20 +153,15 @@ export default {
       selectedAttributes: [],
       recommendations: null,
       recommendationPanelState: -1,
-      recommendationState: true,
       measurmenentState: true,
-      notificationState: true,
+      settingsDialog: false,
+      settings: this.$store.getters["settings/heatmap"],
     };
   },
   watch: {
-    // selectedArea: function (newValue, oldValue) {
-    //   //toggle colors
-
-    // },
     selectedAreas: {
       handler: async function (newValue) {
-        if (newValue && Object.keys(newValue).length > 0)
-          await this.loadAttributes();
+        if (newValue && Object.keys(newValue).length > 0) await this.loadAttributes();
         else {
           this.attributes = null;
         }
@@ -196,7 +187,6 @@ export default {
 
   mounted() {
     if (this.heatMap != null) {
-      alert("dd");
       const image = new window.Image();
       image.src = this.heatMap.imgUrl;
       image.onload = () => {
@@ -211,6 +201,9 @@ export default {
     }
   },
   methods: {
+    reloadSettings() {
+      this.settings = this.$store.getters["settings/heatmap"];
+    },
     onAreaSelect(area) {
       if (this.selectedArea != null) {
         let oldId = this.selectedArea.id;
@@ -241,10 +234,7 @@ export default {
         let stage = this.$refs.stage.getStage();
         var shape = stage.findOne(`#${this.current.id}`);
         if (shape != null) {
-          this.current.points.push([
-            evt.layerX / this.scale,
-            evt.layerY / this.scale,
-          ]);
+          this.current.points.push([evt.layerX / this.scale, evt.layerY / this.scale]);
           let pnts = this.current.points;
           let f = (context, shape) => {
             context.beginPath();
@@ -313,11 +303,9 @@ export default {
     },
 
     async loadAttributes() {
-      await this.$ren.measurementApi
-        .attributes(Object.keys(this.selectedAreas))
-        .then((attributes) => {
-          this.attributes = attributes;
-        });
+      await this.$ren.measurementApi.attributes(Object.keys(this.selectedAreas)).then((attributes) => {
+        this.attributes = attributes;
+      });
     },
     scaleHeatMap(stage, bgImage) {
       if (bgImage != null) {
@@ -331,24 +319,10 @@ export default {
     menuModel() {
       return [
         {
-          label: this.$t("menu.show_recommendations"),
+          label: this.$t("menu.settings"),
           icon: "pi pi-fw pi-eye",
           command: () => {
-            this.recommendationState = !this.recommendationState;
-          },
-        },
-        {
-          label: this.$t("menu.show_measurements"),
-          icon: "pi pi-fw pi-pencil",
-          command: () => {
-            this.measurmenentState = !this.measurmenentState;
-          },
-        },
-        {
-          label: this.$t("menu.show_notifications"),
-          icon: "pi pi-fw pi-pencil",
-          command: () => {
-            this.notificationState = !this.notificationState;
+            this.settingsDialog = !this.settingsDialog;
           },
         },
       ];

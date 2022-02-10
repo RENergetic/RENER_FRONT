@@ -1,105 +1,115 @@
 <template>
   <Card>
     <template v-if="mArea != null" #title>
-      <!-- todo remove following icon -->
-      <i
-        class="pi pi-times"
-        style="fontsize: 2rem"
-        @click="viewMeasurements()"
-      />
-      <span v-if="edit">{{ $t("view.edit_area") }} </span>
-      <span v-else>
-        <i
-          class="pi pi-times"
-          style="fontsize: 2rem"
-          @click="viewMeasurements()"
-        />
-        {{ $t("view.view_area") }}
-      </span>
-      <i
-        v-if="edit"
-        class="pi pi-pencil"
-        style="fontsize: 2rem"
-        @click="() => (manageSensorsDialog = !manageSensorsDialog)"
-      />
-      <i
-        v-if="edit"
-        class="pi pi-times"
-        style="fontsize: 2rem"
-        @click="deleteArea()"
-      />
+      <div class="flex">
+        <div class="flex flex-grow-1">{{ mArea.label }}</div>
+        <div class="flex flex-none">
+          <i v-tooltip="$t('view.measurements')" class="pi pi-chart-line" @click="viewMeasurements()" />
+        </div>
+        <!-- TODO: new icon for manage_sensors -->
+        <div class="flex flex-none">
+          <i
+            v-if="edit"
+            v-tooltip="$t('view.manage_sensors')"
+            class="pi pi-plus"
+            @click="() => (manageSensorsDialog = !manageSensorsDialog)"
+          />
+        </div>
+        <div class="flex flex-none">
+          <i v-if="edit" v-tooltip="$t('view.delete_area')" class="pi pi-times" />
+        </div>
+      </div>
     </template>
     <template v-else #title>
-      {{ $t("view.select_area") }}
+      {{ $t("view.selected_area") }}
     </template>
     <template v-if="mArea != null" #content>
-      <!-- {{ area.id }} -->
-      <div class="p-field p-grid">
-        <label for="heatmapLabel">
+      <div class="field grid">
+        <label for="heatmapLabel" class="col-fixed" style="width: 5rem">
           {{ $t("model.heatmap.label") }}
         </label>
-        <InputText
-          id="heatmapLabel"
-          v-model="mArea.label"
-          :aria-readonly="!edit"
-        />
+        <div class="col">
+          <InputText id="heatmapLabel" v-model="mArea.label" :aria-readonly="!edit" />
+        </div>
       </div>
-      <div v-if="mArea && mArea.dashboard">
-        {{ $t("model.heatmap.dashboard") }}
-        <i
-          class="pi pi-times"
-          style="fontsize: 2rem"
-          @click="$router.push(`/dashboard/heatmap/view/${mArea.dashboard.id}`)"
-        />
+      <div id="dashboard-select" class="flex">
+        <div v-if="mArea.dashboard" class="flex flex-grow-1">
+          {{ $t("view.go_to_dashboard") }}
+        </div>
+        <div v-else class="flex flex-grow-1">
+          {{ $t("view.select_dashboard") }}
+        </div>
+        <div class="flex flex-none">
+          <i
+            v-if="mArea.dashboard"
+            v-tooltip="$t('view.go_to_dashboard')"
+            class="pi pi-arrow-circle-right"
+            @click="$router.push(`/dashboard/view/${mArea.dashboard.id}`)"
+          />
+          <i v-if="edit" v-tooltip="$t('view.select_dashboard')" class="pi pi-pencil" @click="selectDashboard" />
+        </div>
       </div>
-    </template>
-    <template v-else #content>
-      <!-- {{ area.id }} -->
-      <div class="p-field p-grid">
-        <label for="heatmapLabel">
-          {{ $t("model.heatmap.label") }}
-        </label>
-        <InputText
-          id="heatmapLabel"
-          aria-disabled="True"
-          aria-placeholder="placeholder: todo:"
-          :aria-readonly="!edit"
-        />
+      <div id="heatmap-select" class="flex">
+        <div v-if="mArea.heatmap" class="flex flex-grow-1">
+          {{ $t("model.heatmap.heatmap") }}
+        </div>
+        <div v-else class="flex flex-grow-1">
+          {{ $t("view.select_heatmap") }}
+        </div>
+        <div class="flex flex-none">
+          <i
+            v-if="mArea.heatmap"
+            v-tooltip="$t('view.go_to_heatmap')"
+            class="pi pi-arrow-circle-right"
+            @click="$router.push(`/dashboard/heatmap/view/${mArea.heatmap.id}`)"
+          />
+          <i v-if="edit" v-tooltip="$t('view.select_heatmap')" class="pi pi-pencil" @click="selectHeatmap" />
+        </div>
       </div>
     </template>
   </Card>
-  <Dialog
-    v-model:visible="measurementDialog"
-    :style="{ width: '75vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
-    <MeasurementChart
-      v-if="mArea != null"
-      :objects="[mArea.id]"
-    ></MeasurementChart>
-  </Dialog>
-  <Dialog
-    v-model:visible="manageSensorsDialog"
-    :style="{ width: '75vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
-    <ManageSensors></ManageSensors>
-  </Dialog>
+  <!-- Dialog section -->
+  <div v-if="mArea">
+    <Dialog
+      v-model:visible="measurementDialog"
+      :style="{ width: '75vw' }"
+      :maximizable="true"
+      :modal="true"
+      :dismissable-mask="true"
+    >
+      <MeasurementChart v-if="mArea != null" :objects="[mArea.id]"></MeasurementChart>
+    </Dialog>
+    <Dialog
+      v-model:visible="manageSensorsDialog"
+      :style="{ width: '75vw' }"
+      :maximizable="true"
+      :modal="true"
+      :dismissable-mask="true"
+    >
+      <ManageSensors></ManageSensors>
+    </Dialog>
+    <HeatMapSelect ref="heatmapSelectDialog" :current="mArea.dashboard" @change="updateHeatMap"></HeatMapSelect>
+    <DashboardSelect ref="dashboardDialog"></DashboardSelect>
+  </div>
 </template>
 <script>
 import Card from "primevue/card";
 import MeasurementChart from "../dashboard/measurements/MeasurementChart.vue";
 import ManageSensors from "../dashboard/measurements/ManageSensors.vue";
+import HeatMapSelect from "./HeatMapSelect.vue";
+import DashboardSelect from "../dashboard/DashboardSelect.vue";
 
 import Dialog from "primevue/dialog";
 export default {
   name: "AreaDetails",
-  components: { Card, Dialog, MeasurementChart, ManageSensors },
-
+  components: {
+    Card,
+    Dialog,
+    MeasurementChart,
+    ManageSensors,
+    HeatMapSelect,
+    DashboardSelect,
+  },
   props: {
     edit: {
       type: Boolean,
@@ -117,6 +127,7 @@ export default {
       mArea: null,
       measurementDialog: false,
       manageSensorsDialog: false,
+      heatMapDialog: false,
     };
   },
   watch: {
@@ -128,15 +139,30 @@ export default {
         this.$emit("update:modelValue", newVal);
       },
       deep: true,
-      immediate: true, //  the callback will be called immediately after the start of the observation
+      immediate: true,
     },
     modelValue: function (newVal) {
       this.mArea = newVal;
     },
   },
   methods: {
+    selectHeatmap() {
+      this.$refs.heatmapSelectDialog.open();
+    },
+    selectDashboard() {
+      this.$refs.dashboardDialog.open();
+    },
     viewMeasurements() {
       this.measurementDialog = true;
+    },
+
+    updateDashboard(dashboard) {
+      this.mArea.dashboard = dashboard;
+      // todo: save to api
+    },
+    updateHeatMap(heatmap) {
+      this.mArea.heatmap = heatmap;
+      // todo: save to api
     },
     deleteArea() {
       this.$confirm.require({
@@ -158,11 +184,7 @@ export default {
 </script>
 
 <style lang="scss">
-#heatmap {
-  max-width: 75%;
-  max-height: 75vh;
-}
-#heatmapContainer {
-  padding: 0.5rem;
+i.pi {
+  font-size: 1rem;
 }
 </style>

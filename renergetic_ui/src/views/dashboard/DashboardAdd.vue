@@ -7,37 +7,37 @@
     <template #content>
       <!--name-->
       <div style="width: 30rem">
-        <div class="p-field p-grid">
-          <label for="dasboardName" class="p-col-fixed">
+        <div class="field grid">
+          <label for="dasboardName" class="col-fixed">
             {{ $t("model.dashboard.name") }}
           </label>
-          <div class="p-col">
+          <div class="col">
             <InputText id="dasboardName" v-model="name" />
           </div>
         </div>
         <!--url-->
-        <div class="p-field p-grid">
-          <label for="dasboardUrl" class="p-col-fixed">
+        <div class="field grid">
+          <label for="dasboardUrl" class="col-fixed">
             {{ $t("model.dashboard.url") }}
           </label>
-          <div class="p-col">
+          <div class="col">
             <InputText id="dasboardUrl" v-model="url" />
           </div>
         </div>
-        <div class="p-field p-grid">
-          <label for="dasboardLabel" class="p-col-fixed">
+        <div class="field grid">
+          <label for="dasboardLabel" class="col-fixed">
             {{ $t("model.dashboard.label") }}
           </label>
-          <div class="p-col">
+          <div class="col">
             <InputText id="dasboardLabel" v-model="label" />
           </div>
         </div>
 
-        <div class="p-field p-grid">
-          <div class="p-col">
+        <div class="field grid">
+          <div class="col">
             <Button :label="$t('view.button.submit')" @click="submit" />
           </div>
-          <div class="p-col">
+          <div class="col">
             <Button :label="$t('view.button.cancel')" @click="cancel" />
           </div>
         </div>
