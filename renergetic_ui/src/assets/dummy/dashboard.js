@@ -112,7 +112,7 @@ var informationPanels = [
         y: 4,
         props: {
           key: "e7",
-          value: 0.6
+          value: 0.6,
         },
       },
     ],
@@ -260,11 +260,10 @@ let measurementsGenerator = (i, n) => {
 let dataGenerator = (n) => {
   let data = {};
   for (var d = 0; d < n; d++) {
-    var data = [];
     let next = Math.floor(Math.random() * 150) - 50;
-    data[`id${n}`] = next
+    data[`id${n}`] = next;
   }
-  return data
+  return data;
 };
 let currentMeasurementsGenerator = (keys) => {
   let measurements = [];

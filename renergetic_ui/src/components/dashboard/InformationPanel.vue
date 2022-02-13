@@ -59,7 +59,7 @@
   <!-- </div> -->
 </template>
 <script>
-import InformationTile from "./InformationTile.vue";
+import InformationTile from "./informationtile/InformationTile.vue";
 import ManageSensors from "./measurements/ManageSensors.vue";
 
 import NotificationView from "../area/NotificationList.vue";

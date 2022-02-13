@@ -5,11 +5,12 @@
         {{ tile.title }}
       </template>
       <template v-if="tile != null" #content>
-        state: {{ state }} (todo: remove this)
+        <!-- state: {{ state }}  -->
+
         <Button
           v-if="edit"
           id="menu-toggle"
-          :class="'p-button-rounded p-button-text edit-button '"
+          :class="'p-button-rounded p-button-text edit-button'"
           aria-haspopup="true"
           icon="pi pi-pencil"
           @click="$emit('edit', tile)"
@@ -22,20 +23,29 @@
           icon="pi pi-bell"
           @click="$emit('notification', tile)"
         />
-        <InformationTileItem v-for="item in tile.items" :key="item.id" :tile-item="item"></InformationTileItem>
+
+        <KnobTile v-if="tile.type == 'knob'" :tile="tile" :pdata="pdata"></KnobTile>
+
+        <!-- tile list-->
+        <InformationListTile v-else :tile="tile" :pdata="pdata"></InformationListTile>
       </template>
     </Card>
   </div>
 </template>
 <script>
+import InformationListTile from "./InformationListTile.vue";
+import KnobTile from "./KnobTile.vue";
 import Card from "primevue/card";
-import InformationTileItem from "./InformationTileItem.vue";
 export default {
   name: "InformationTile",
-  components: { Card, InformationTileItem },
+  components: { InformationListTile, KnobTile, Card },
   props: {
     edit: { type: Boolean, default: false },
     tile: {
+      type: Object,
+      default: () => ({}),
+    },
+    pdata: {
       type: Object,
       default: () => ({}),
     },
