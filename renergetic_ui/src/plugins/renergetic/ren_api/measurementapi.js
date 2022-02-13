@@ -17,4 +17,7 @@ export default class DashboardApi extends RestComponent {
   async getNotifications(objectIds) {
     console.info(objectIds);
   }
+  async getPanelData(panelId) {
+    console.info(panelId);
+  }
 }

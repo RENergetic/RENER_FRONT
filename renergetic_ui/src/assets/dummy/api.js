@@ -5,6 +5,7 @@ import {
   measurementAttributes,
   measurementsGenerator,
   currentMeasurementsGenerator,
+  dataGenerator,
 } from "./dashboard.js";
 import storage from "./storage.js";
 const DASHBOARD_KEY = "dashboard";
@@ -62,6 +63,10 @@ class MeasurementApi {
 
   async getCurrentMeasurements(objectIds) {
     return currentMeasurementsGenerator(objectIds);
+  }
+  async getPanelData(panelId) {
+    if (panelId == null) return null;
+    return dataGenerator(10);
   }
   async getNotifications(objectIds) {
     // todo:

@@ -25,22 +25,26 @@ var informationPanels = [
         id: "1",
         title: null,
         col: 2,
-        items: [
-          {
-            id: "id1",
-            value: 0.05,
-            unit: "kWh",
-            description: "avg",
-            icon: "electricity",
-          },
-          {
-            id: "id2",
-            value: 1.05,
-            unit: "kWh",
-            description: "total",
-            icon: "electricity",
-          },
-        ],
+        props: {
+          items: [
+            {
+              id: "id1",
+              value: 0.05,
+              key: "e1",
+              unit: "kWh",
+              description: "avg",
+              icon: "electricity",
+            },
+            {
+              id: "id2",
+              value: 1.05,
+              unit: "kWh",
+              key: "e2",
+              description: "total",
+              icon: "electricity",
+            },
+          ],
+        },
       },
       {
         id: "2",
@@ -48,46 +52,68 @@ var informationPanels = [
         y: 0,
         title: null,
         col: 2,
-        items: [
-          {
-            id: "id1",
-            value: 20.05,
-            unit: "kWh",
-            description: "avg",
-            icon: "electricity",
-          },
-          {
-            id: "id2",
-            value: 21.05,
-            unit: "kWh",
-            description: "total",
-            icon: "electricity",
-          },
-        ],
+        props: {
+          items: [
+            {
+              id: "id1",
+              key: "e3",
+              value: 20.05,
+              unit: "kWh",
+              description: "avg",
+              icon: "electricity",
+            },
+            {
+              id: "id2",
+              value: 21.05,
+              key: "e4",
+              unit: "kWh",
+              description: "total",
+              icon: "electricity",
+            },
+          ],
+        },
       },
       {
         id: "3",
         state: "warning",
         title: null,
+        type: null,
         col: 2,
         x: 8,
         y: 0,
-        items: [
-          {
-            id: "id1",
-            value: 30.05,
-            unit: "kWh",
-            description: "avg",
-            icon: "electricity",
-          },
-          {
-            id: "id2",
-            value: 3.05,
-            unit: "kWh",
-            description: "total",
-            icon: "electricity",
-          },
-        ],
+        props: {
+          items: [
+            {
+              id: "id1",
+              value: 30.05,
+              key: "e5",
+              unit: "kWh",
+              description: "avg",
+              icon: "electricity",
+            },
+            {
+              id: "id2",
+              key: "e6",
+              value: 3.05,
+              unit: "kWh",
+              description: "total",
+              icon: "electricity",
+            },
+          ],
+        },
+      },
+      {
+        id: "4",
+        state: "warning",
+        title: null,
+        type: "knob",
+        col: 4,
+        x: 0,
+        y: 4,
+        props: {
+          key: "e7",
+          value: 0.6
+        },
       },
     ],
   },
@@ -230,6 +256,16 @@ let measurementsGenerator = (i, n) => {
     });
   }
 };
+
+let dataGenerator = (n) => {
+  let data = {};
+  for (var d = 0; d < n; d++) {
+    var data = [];
+    let next = Math.floor(Math.random() * 150) - 50;
+    data[`id${n}`] = next
+  }
+  return data
+};
 let currentMeasurementsGenerator = (keys) => {
   let measurements = [];
   for (var i = 0; i < keys.length; i++) {
@@ -244,5 +280,6 @@ export {
   heatmaps,
   measurementAttributes,
   measurementsGenerator,
+  dataGenerator,
   currentMeasurementsGenerator,
 };
