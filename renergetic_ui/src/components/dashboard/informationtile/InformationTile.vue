@@ -6,24 +6,23 @@
       </template>
       <template v-if="tile != null" #content>
         <!-- state: {{ state }}  -->
-
-        <Button
-          v-if="edit"
-          id="menu-toggle"
-          :class="'p-button-rounded p-button-text edit-button'"
-          aria-haspopup="true"
-          icon="pi pi-pencil"
-          @click="$emit('edit', tile)"
-        />
-        <Button
-          v-if="edit"
-          id="menu-toggle"
-          :class="'p-button-rounded p-button-text bell-button '"
-          aria-haspopup="true"
-          icon="pi pi-bell"
-          @click="$emit('notification', tile)"
-        />
-
+        <div style="position: absolute; left: 0.3rem; top: 0.3rem">
+          <Button
+            v-if="edit"
+            id="menu-toggle"
+            :class="'p-button-rounded p-button-text edit-button'"
+            aria-haspopup="true"
+            icon="pi pi-pencil"
+            @click="$emit('edit', tile)"
+          />
+          <Button
+            id="menu-toggle"
+            :class="'p-button-rounded p-button-text bell-button '"
+            aria-haspopup="true"
+            icon="pi pi-bell"
+            @click="$emit('notification', tile)"
+          />
+        </div>
         <KnobTile v-if="tile.type == 'knob'" :tile="tile" :pdata="pdata"></KnobTile>
 
         <!-- tile list-->

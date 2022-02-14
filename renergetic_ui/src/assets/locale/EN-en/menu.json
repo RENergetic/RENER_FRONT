@@ -25,6 +25,8 @@
     "save_panel_grid": "Save panel grid",
     "save_grid": "Save grid",
     "settings":"Settings",
+    "panel_grid_edit_on":"Edit mode",
+    "panel_grid_edit_off":"Edit mode off",
 
     "logout": "Logout"
 }

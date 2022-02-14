@@ -5,6 +5,7 @@
       :key="tile.id"
       :tile="tile"
       :edit="editMode"
+      :pdata="pdata"
       @edit="onEdit"
       @notification="viewNotification"
     />
@@ -98,6 +99,7 @@ export default {
       editDialog: false,
       editTile: null,
       mPanel: this.panel,
+      pdata: {},
     };
   },
   computed: {
@@ -128,7 +130,8 @@ export default {
       deep: true,
     },
   },
-  mounted() {
+  async mounted() {
+    this.pdata = await this.$ren.measurementApi.getPanelData(this.panel.id);
     if (this.grid != null) this.grid.destroy(false);
     let grid = GridStack.init({ float: true }, "#panel-grid-stack");
     if (this.locked) {
@@ -138,10 +141,10 @@ export default {
     }
     this.grid = grid;
     //TODO: remove this reference?
+
     window.panelGrid = this.grid;
   },
   updated() {
-    alert("update");
     if (this.grid != null) this.grid.destroy(false);
     let grid = GridStack.init({ float: true }, "#panel-grid-stack");
     if (this.locked) {

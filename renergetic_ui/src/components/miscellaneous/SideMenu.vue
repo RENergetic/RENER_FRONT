@@ -125,7 +125,7 @@ export default {
         {
           // label: this.$t("menu.group_list"),
           label: this.$t("menu.list_heatmap"),
-          icon: "pi pi-fw pi-plus",
+          icon: "pi pi-fw pi-align-left",
           to: "/dashboard/heatmap/list",
           command: () => {
             this.$router.push({ name: "HeatMapListView" });

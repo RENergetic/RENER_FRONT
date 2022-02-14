@@ -3,7 +3,7 @@
     v-for="item in tile.props.items"
     :key="item.id"
     :tile-item="item"
-    :value="pdata[item.key]"
+    :pdata="pdata"
   ></InformationTileItem>
 </template>
 <script>
@@ -29,7 +29,6 @@ export default {
   computed: {},
 
   mounted() {},
-  methods: {},
 };
 </script>
 

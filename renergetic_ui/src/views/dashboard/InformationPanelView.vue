@@ -2,6 +2,15 @@
   <div>
     <div v-if="panel">
       <DotMenu :model="menuModel" />
+      <Dialog
+        v-model:visible="settingsDialog"
+        :style="{ width: '50vw' }"
+        :maximizable="true"
+        :modal="true"
+        :dismissable-mask="true"
+      >
+        <PanelSettings @update="reloadSettings()"></PanelSettings>
+      </Dialog>
       <InformationPanel ref="panel" :locked="locked" :panel="panel" :edit-mode="editMode"></InformationPanel>
     </div>
   </div>
@@ -9,23 +18,27 @@
 <script>
 import InformationPanel from "../../components/dashboard/InformationPanel.vue";
 import DotMenu from "../../components/miscellaneous/DotMenu.vue";
-
+import Dialog from "primevue/dialog";
+import PanelSettings from "../../components/miscellaneous/settings/PanelSettings.vue";
 export default {
   name: "InformationPanelView",
   components: {
     InformationPanel,
     DotMenu,
+    PanelSettings,
+    Dialog,
   },
   data() {
     return {
       panel: null,
       locked: false,
       editMode: false,
+      settings: this.$store.getters["settings/panel"],
+      settingsDialog: false,
     };
   },
   computed: {
     toggleButton: function () {
-      //TODO: if permission
       let label = this.locked ? this.$t("menu.panel_grid_unlock") : this.$t("menu.panel_grid_lock");
       return {
         label: label,
@@ -33,9 +46,15 @@ export default {
         command: () => this.toggleLock(),
       };
     },
+    settingsButton: function () {
+      //TODO: set icon
+      return {
+        label: this.$t("menu.settings"),
+        icon: "pi pi-fw pi-plus-circle",
+        command: () => (this.settingsDialog = !this.settingsDialog),
+      };
+    },
     editModelButton: function () {
-      //TODO: if permission
-      //todo: add to menu model
       let label = this.editMode ? this.$t("menu.panel_grid_edit_on") : this.$t("menu.panel_grid_edit_off");
       return {
         label: label,
@@ -44,7 +63,6 @@ export default {
       };
     },
     addButton: function () {
-      //TODO: if permission
       return {
         label: this.$t("menu.panel_grid_add_tile"),
         icon: "pi pi-fw pi-plus",
@@ -52,21 +70,20 @@ export default {
       };
     },
     menuModel() {
-      return [
+      let menu = [
         {
           label: this.$t("menu.save_panel_grid"),
           icon: "pi pi-fw pi-save",
           command: () => this.saveGrid(),
         },
-        this.toggleButton,
-        this.addButton,
+      ]; //TODO: if permission
+      //todo: add to menu model
 
-        // {
-        //   label: this.$t("menu.grid_lock"),
-        //   icon: "pi pi-fw pi-lock",
-        //   command: () => this.saveGrid(),
-        // },
-      ];
+      menu.push(this.toggleButton);
+      menu.push(this.addButton);
+      if (this.locked) menu.push(this.editModelButton);
+      menu.push(this.settingsButton);
+      return menu;
     },
   },
   watch: {},
@@ -78,6 +95,9 @@ export default {
   },
 
   methods: {
+    reloadSettings() {
+      this.settings = this.$store.getters["settings/panel"];
+    },
     async toggleLock() {
       this.locked = !this.locked;
     },
@@ -90,7 +110,7 @@ export default {
         // layout: { x: 0, y: 0, h: 3, w: 3 },
         id: this.$ren.utils.uuid(),
         title: null,
-        items: [],
+        props: { items: [] },
       });
     },
 

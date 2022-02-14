@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <span> value: {{ tileItem.value }} {{ tileItem.unit }}</span>
+      <span> value: {{ value }} {{ tileItem.unit }}</span>
       <span
         v-if="tileItem.icon != null"
         id="tileicon"
@@ -22,9 +22,9 @@ export default {
       type: Object,
       default: () => null,
     },
-    value: {
-      type: Number,
-      default: null,
+    pdata: {
+      type: Object,
+      default: () => ({}),
     },
   },
   data() {
@@ -36,7 +36,12 @@ export default {
       },
     };
   },
-
+  computed: {
+    value: function () {
+      let v = this.pdata ? this.pdata[this.tileItem.key] : null;
+      return v != null ? v : this.tileItem.value;
+    },
+  },
   mounted() {},
   methods: {},
 };
