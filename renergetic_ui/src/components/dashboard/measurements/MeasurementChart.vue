@@ -5,6 +5,7 @@
     </template>
   </InfoIcon>
   <!-- {{ data }} -->
+  {{ data }}ddd
   <Chart v-if="data" type="line" :data="data" :options="options" />
   <!-- :plugins="plugin"   "-->
   <div class="card">

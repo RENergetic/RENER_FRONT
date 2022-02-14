@@ -11,7 +11,13 @@
       >
         <PanelSettings @update="reloadSettings()"></PanelSettings>
       </Dialog>
-      <InformationPanel ref="panel" :locked="locked" :panel="panel" :edit-mode="editMode"></InformationPanel>
+      <InformationPanel
+        ref="panel"
+        :locked="locked"
+        :panel="panel"
+        :edit-mode="editMode"
+        :settings="settings"
+      ></InformationPanel>
     </div>
   </div>
 </template>

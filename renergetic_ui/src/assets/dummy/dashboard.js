@@ -255,6 +255,7 @@ let measurementsGenerator = (i, n) => {
       fill: false,
     });
   }
+  return datasets;
 };
 
 let dataGenerator = (n) => {

@@ -6,6 +6,7 @@
       :tile="tile"
       :edit="editMode"
       :pdata="pdata"
+      :settings="settings"
       @edit="onEdit"
       @notification="viewNotification"
     />
@@ -86,6 +87,10 @@ export default {
     panel: {
       type: Object,
       default: () => null,
+    },
+    settings: {
+      type: Object,
+      default: () => {},
     },
     editMode: {
       type: Boolean,

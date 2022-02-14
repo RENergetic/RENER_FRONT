@@ -32,6 +32,24 @@
           <InputText id="heatmapLabel" v-model="mArea.label" :aria-readonly="!edit" />
         </div>
       </div>
+      <div id="asset-select" class="flex">
+        <div v-if="mArea.asset" class="flex flex-grow-1">
+          {{ mArea.asset.label }}
+        </div>
+        <div v-else class="flex flex-grow-1">
+          {{ $t("view.select_asset") }}
+        </div>
+        <div class="flex flex-none">
+          <i
+            v-if="mArea.asset"
+            v-tooltip="$t('view.asset')"
+            class="pi pi-arrow-circle-right"
+            @click="assetDialog = true"
+          />
+          <i v-if="edit" v-tooltip="$t('view.select_asset')" class="pi pi-pencil" @click="selectAsset" />
+        </div>
+      </div>
+      <!--  -->
       <div id="dashboard-select" class="flex">
         <div v-if="mArea.dashboard" class="flex flex-grow-1">
           {{ $t("view.go_to_dashboard") }}
@@ -49,6 +67,7 @@
           <i v-if="edit" v-tooltip="$t('view.select_dashboard')" class="pi pi-pencil" @click="selectDashboard" />
         </div>
       </div>
+      <!--  -->
       <div id="heatmap-select" class="flex">
         <div v-if="mArea.heatmap" class="flex flex-grow-1">
           {{ $t("model.heatmap.heatmap") }}
@@ -88,14 +107,17 @@
     >
       <ManageSensors></ManageSensors>
     </Dialog>
+
     <HeatMapSelect ref="heatmapSelectDialog" :current="mArea.dashboard" @change="updateHeatMap"></HeatMapSelect>
     <DashboardSelect ref="dashboardDialog"></DashboardSelect>
+    <AssetSelect ref="dashboardDialog"></AssetSelect>
   </div>
 </template>
 <script>
 import Card from "primevue/card";
 import MeasurementChart from "../dashboard/measurements/MeasurementChart.vue";
 import ManageSensors from "../dashboard/measurements/ManageSensors.vue";
+import AssetSelect from "../management/AssetSelect.vue";
 import HeatMapSelect from "./HeatMapSelect.vue";
 import DashboardSelect from "../dashboard/DashboardSelect.vue";
 
@@ -109,6 +131,7 @@ export default {
     ManageSensors,
     HeatMapSelect,
     DashboardSelect,
+    AssetSelect,
   },
   props: {
     edit: {
@@ -127,6 +150,7 @@ export default {
       mArea: null,
       measurementDialog: false,
       manageSensorsDialog: false,
+      manageAssets: false,
       heatMapDialog: false,
     };
   },
@@ -152,6 +176,10 @@ export default {
     selectDashboard() {
       this.$refs.dashboardDialog.open();
     },
+    selectAsset() {
+      this.$refs.assetSelect.open();
+    },
+
     viewMeasurements() {
       this.measurementDialog = true;
     },

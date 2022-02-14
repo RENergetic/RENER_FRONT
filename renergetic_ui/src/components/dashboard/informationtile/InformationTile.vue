@@ -16,7 +16,8 @@
             @click="$emit('edit', tile)"
           />
           <Button
-            id="menu-toggle"
+            v-if="notificationVisible"
+            id="notification"
             :class="'p-button-rounded p-button-text bell-button '"
             aria-haspopup="true"
             icon="pi pi-bell"
@@ -48,12 +49,20 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    settings: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   emits: ["edit", "notification"],
   // data() {
   //   return {};
   // },
   computed: {
+    notificationVisible: function () {
+      //default visible
+      return !(this.settings != null && !this.settings.notificationVisibility);
+    },
     state: function () {
       let state = this.tile == null || this.tile.state == null ? "unknown" : this.tile.state;
       return ` state ${state}`;
