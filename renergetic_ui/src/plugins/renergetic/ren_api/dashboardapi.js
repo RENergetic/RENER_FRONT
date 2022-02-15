@@ -1,7 +1,6 @@
 import RestComponent from "./restcomponent";
 import { informationPanels } from "../../../assets/dummy/dashboard";
 export default class DashboardApi extends RestComponent {
-  urlHost;
   constructor(axiosInstance, vueInstance) {
     super(axiosInstance, vueInstance);
   }

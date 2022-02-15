@@ -7,9 +7,11 @@ import {
   currentMeasurementsGenerator,
   dataGenerator,
 } from "./dashboard.js";
+import { assetList } from "./data.js";
 import storage from "./storage.js";
 const DASHBOARD_KEY = "dashboard";
 const MEASUREMENT_KEY = "dashboard";
+const ASSET_KEY = "asset";
 class DashboardApi {
   async list() {
     return storage.get(`${DASHBOARD_KEY}.list`, dummyList);
@@ -53,10 +55,18 @@ class DashboardApi {
   }
 }
 
+class InfrastructureApi {
+  //Infrastructure  REQUESTS
+  async assetlist() {
+    return storage.get(`${ASSET_KEY}.list`, assetList);
+  }
+}
+
 class MeasurementApi {
   async attributes(/*area, areaId*/) {
     return storage.get(`${MEASUREMENT_KEY}.panel_list`, measurementAttributes);
   }
+
   async getMeasurements(objectIds) {
     return measurementsGenerator(objectIds.length, 50);
   }
@@ -73,4 +83,4 @@ class MeasurementApi {
     return objectIds;
   }
 }
-export { DashboardApi, MeasurementApi };
+export { DashboardApi, MeasurementApi, InfrastructureApi };

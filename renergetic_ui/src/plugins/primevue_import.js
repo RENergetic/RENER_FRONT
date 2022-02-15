@@ -12,6 +12,7 @@ import Textarea from "primevue/textarea";
 import InputNumber from "primevue/inputnumber";
 import RadioButton from "primevue/radiobutton";
 import ToggleButton from "primevue/togglebutton";
+import Dialog from "primevue/dialog";
 const plugin = {};
 
 plugin.install = function (Vue /*, options*/) {
@@ -20,6 +21,7 @@ plugin.install = function (Vue /*, options*/) {
   Vue.component("AutoComplete", AutoComplete);
   Vue.component("Button", Button);
   Vue.component("Panel", Panel);
+  Vue.component("Dialog", Dialog);
   Vue.component("DataTable", DataTable);
   Vue.component("Column", Column);
   Vue.component("ColumnGroup", ColumnGroup);

@@ -1,7 +1,13 @@
 import AuthApi from "./ren_api/auth";
 import DashboardApi from "./ren_api/dashboardapi";
-import { DashboardApi as DummyDashboardApi, MeasurementApi as DummyMeasurementApi } from "../../assets/dummy/api";
+import {
+  DashboardApi as DummyDashboardApi,
+  MeasurementApi as DummyMeasurementApi,
+  InfrastructureApi as DummyInfrastructureApi,
+} from "../../assets/dummy/api";
 import MeasurementdApi from "./ren_api/measurementapi";
+import InfrastructureApi from "./ren_api/infrastructureapi";
+
 // import UserApi from './renergetic/ren_api/user'
 // import i18n from "../locale";
 import axios from "axios";
@@ -110,6 +116,7 @@ export default function createRest(vueInstance) {
     axiosApi: new AxiosAPI(axiosInstance, vueInstance, this.auth),
     dashboardApi: !USE_DUMMY ? new DashboardApi(axiosInstance, vueInstance) : new DummyDashboardApi(),
     measurementApi: !USE_DUMMY ? new MeasurementdApi(axiosInstance, vueInstance) : new DummyMeasurementApi(),
+    infrastructureApi: !USE_DUMMY ? new InfrastructureApi(axiosInstance, vueInstance) : new DummyInfrastructureApi(),
 
     // this.user = new UserApi(axiosInstance, vueInstance);
   };

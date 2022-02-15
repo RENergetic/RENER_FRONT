@@ -255,7 +255,14 @@ let measurementsGenerator = (i, n) => {
       fill: false,
     });
   }
-  return datasets;
+  let labels = [];
+
+  var t = Date.now();
+  t = t - (t % 60000);
+  for (j = 0; j < n; j++) {
+    labels.push(t - 60000 * (n - j));
+  }
+  return { datasets: datasets, labels: labels };
 };
 
 let dataGenerator = (n) => {

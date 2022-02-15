@@ -1,16 +1,21 @@
     {
     "add_dashboard": "Add dashboard",
+    "add_heatmap": "Add heatMap",
+    "administration": "Administration",
+    "assets":"Assets",
+    "manage":"Manage",
+    "measurements":"Measurements",
+    
     "dashboards": "Dashboards",
     "edit_dashboard": "Edit dashboard",
     "delete_dashboard": "Delete dashboard",
     "grid_lock":"Lock grid",
     "grid_unlock":"Unlock grid",
 
-    "add_heatmap": "Add heatMap",
     "list_heatmap": "List heatMap",
     "heatmaps": "HeatMaps",
+    "infrastructure":"Infrastructure",
 
-    "administration": "Administration",
     "users": "Users",
 
     "profile": "Profile",
@@ -27,6 +32,6 @@
     "settings":"Settings",
     "panel_grid_edit_on":"Edit mode",
     "panel_grid_edit_off":"Edit mode off",
-
+    "view":"View",
     "logout": "Logout"
 }
