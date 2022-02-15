@@ -155,6 +155,70 @@ export default {
         },
       ];
     },
+
+    infrastructureItems() {
+      return [
+        {
+          // label: this.$t("menu.group_list"),
+          label: this.$t("menu.assets"),
+          icon: "pi pi-fw pi-building",
+          items: [
+            {
+              // label: this.$t("menu.group_list"),
+              label: this.$t("menu.manage"),
+              icon: "pi pi-fw pi-chevron-circle-right",
+              to: "/infrastructure/assets/manage",
+              command: () => {
+                alert("todo:");
+                // this.$router.push({ name: "Users" });
+              },
+            },
+            {
+              // label: this.$t("menu.group_list"),
+              label: this.$t("menu.view"),
+              icon: "pi pi-fw pi-chevron-circle-right",
+              to: "/infrastructure/assets/view",
+              command: () => {
+                alert("todo:");
+                // this.$router.push({ name: "Users" });
+              },
+            },
+          ],
+        },
+        {
+          label: this.$t("menu.measurements"),
+          icon: "pi pi-fw pi-chart-line",
+          items: [
+            {
+              label: this.$t("menu.manage"),
+              icon: "pi pi-fw pi-chevron-circle-right",
+              to: "/infrastructure/measurements/manage",
+              command: () => {
+                alert("todo:");
+                // this.$router.push({ name: "Users" });
+              },
+            },
+            {
+              label: this.$t("menu.view"),
+              icon: "pi pi-fw pi-chevron-circle-right",
+              to: "/infrastructure/measurements/view",
+              command: () => {
+                alert("todo:");
+                // this.$router.push({ name: "Users" });
+              },
+            },
+          ],
+        },
+        {
+          label: this.$t("menu.users"),
+          icon: "pi pi-fw pi-users",
+          command: () => {
+            alert("todo:");
+            // this.$router.push({ name: "Users" });
+          },
+        },
+      ];
+    },
     initMenu() {
       return [
         {
@@ -171,6 +235,11 @@ export default {
           label: this.$t("menu.heatmaps"),
           icon: "pi pi-fw pi-chart-line",
           items: this.heatMapItems(),
+        },
+        {
+          label: this.$t("menu.infrastructure"),
+          icon: "pi pi-fw pi-lock",
+          items: this.infrastructureItems(),
         },
         {
           label: this.$t("menu.administration"),

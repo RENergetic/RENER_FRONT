@@ -41,7 +41,6 @@ import Feedback from "../components/user/Feedback.vue";
 import NotificationList from "../components/area/NotificationList.vue";
 import InformationPanel from "../components/dashboard/InformationPanel.vue";
 
-import Dialog from "primevue/dialog";
 import { GridStack } from "gridstack";
 // THEN to get HTML5 drag&drop
 import "gridstack/dist/h5/gridstack-dd-native";
@@ -52,7 +51,6 @@ export default {
   components: {
     DotMenu,
     HomeSettings,
-    Dialog,
     InformationPanel,
     NotificationList,
     Feedback,

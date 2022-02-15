@@ -24,7 +24,6 @@
 <script>
 import InformationPanel from "../../components/dashboard/InformationPanel.vue";
 import DotMenu from "../../components/miscellaneous/DotMenu.vue";
-import Dialog from "primevue/dialog";
 import PanelSettings from "../../components/miscellaneous/settings/PanelSettings.vue";
 export default {
   name: "InformationPanelView",
@@ -32,7 +31,6 @@ export default {
     InformationPanel,
     DotMenu,
     PanelSettings,
-    Dialog,
   },
   data() {
     return {

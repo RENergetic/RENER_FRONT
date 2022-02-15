@@ -51,12 +51,10 @@ vue/attribute-hyphenation */
 </template>
 
 <script>
-import Dialog from "primevue/dialog";
 import Password from "primevue/password";
 export default {
   name: "UserAdd",
   components: {
-    Dialog,
     Password,
   },
   props: {
