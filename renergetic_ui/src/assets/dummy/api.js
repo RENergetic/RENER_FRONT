@@ -7,7 +7,7 @@ import {
   currentMeasurementsGenerator,
   dataGenerator,
 } from "./dashboard.js";
-import { assetList } from "./data.js";
+import { assetList, measurementList } from "./data.js";
 import storage from "./storage.js";
 const DASHBOARD_KEY = "dashboard";
 const MEASUREMENT_KEY = "dashboard";
@@ -57,11 +57,14 @@ class DashboardApi {
 
 class InfrastructureApi {
   //Infrastructure  REQUESTS
-  async assetlist() {
+  async assetList() {
     return storage.get(`${ASSET_KEY}.list`, assetList);
   }
+  async measurementList() {
+    return storage.get(`${MEASUREMENT_KEY}.list`, measurementList);
+  }
 }
-
+//TODO: rename to dataAPI?
 class MeasurementApi {
   async attributes(/*area, areaId*/) {
     return storage.get(`${MEASUREMENT_KEY}.panel_list`, measurementAttributes);

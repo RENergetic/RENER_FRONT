@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "../views/Home.vue";
 import dashboardRoutes from "./dashboard";
 import adminRoutes from "./admin";
+import managementRoutes from "./management";
 //todo import other
 const routes = [
   {
@@ -37,6 +38,7 @@ const routes = [
   },
   ...dashboardRoutes,
   ...adminRoutes,
+  ...managementRoutes,
 ];
 function timeout(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));

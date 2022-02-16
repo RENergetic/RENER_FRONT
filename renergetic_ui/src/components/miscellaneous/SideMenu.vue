@@ -167,17 +167,16 @@ export default {
               // label: this.$t("menu.group_list"),
               label: this.$t("menu.manage"),
               icon: "pi pi-fw pi-chevron-circle-right",
-              to: "/infrastructure/assets/manage",
+              to: "/management/asset",
               command: () => {
-                alert("todo:");
-                // this.$router.push({ name: "Users" });
+                this.$router.push({ name: "AssetList" });
               },
             },
             {
               // label: this.$t("menu.group_list"),
               label: this.$t("menu.view"),
               icon: "pi pi-fw pi-chevron-circle-right",
-              to: "/infrastructure/assets/view",
+              to: "/management/asset/view",
               command: () => {
                 alert("todo:");
                 // this.$router.push({ name: "Users" });
@@ -192,16 +191,15 @@ export default {
             {
               label: this.$t("menu.manage"),
               icon: "pi pi-fw pi-chevron-circle-right",
-              to: "/infrastructure/measurements/manage",
+              to: "/management/measurement",
               command: () => {
-                alert("todo:");
-                // this.$router.push({ name: "Users" });
+                this.$router.push({ name: "MeasurementList" });
               },
             },
             {
               label: this.$t("menu.view"),
               icon: "pi pi-fw pi-chevron-circle-right",
-              to: "/infrastructure/measurements/view",
+              to: "/management/measurement/view",
               command: () => {
                 alert("todo:");
                 // this.$router.push({ name: "Users" });

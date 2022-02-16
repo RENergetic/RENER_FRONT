@@ -30,12 +30,11 @@
 </template>
 <script>
 import Listbox from "primevue/listbox";
-import Dialog from "primevue/dialog";
 
 import Card from "primevue/card";
 export default {
   name: "AssetSelect",
-  components: { Card, Listbox, Dialog },
+  components: { Card, Listbox },
   props: { current: { type: Object, default: () => ({}) } },
   emits: { change: null },
   data() {

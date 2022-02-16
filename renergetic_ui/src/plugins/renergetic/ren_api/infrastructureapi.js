@@ -4,7 +4,8 @@ export default class InfrastructureApi extends RestComponent {
     super(axiosInstance, vueInstance);
   }
   //DASHBOARDS REQUESTS
-  assetlist() {
+  assetList() {
     //TODO:
   }
+  async measurementList() {}
 }

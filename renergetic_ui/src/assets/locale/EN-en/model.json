@@ -2,15 +2,31 @@
      "dashboard": {
           "name": "Name",
           "url": "URL",
-          "label":"Label"
+          "label": "Label"
      },
-     "heatmap":{
-          "label":"Label",
-          "areas":"Areas",
-          "attributes":"Attributes",
-          "recommendations":"Recommendations",
-          "notifications":"Notifications",
-          "dashboard":"Dashboard",
-          "heatmap":"Heatmap"
+     "heatmap": {
+          "label": "Label",
+          "areas": "Areas",
+          "attributes": "Attributes",
+          "recommendations": "Recommendations",
+          "notifications": "Notifications",
+          "dashboard": "Dashboard",
+          "heatmap": "Heatmap"
+     },
+     "asset": {
+          "name": "Name",
+          "id": "Id",
+          "asset_type": "Asset",
+          "label": "Label",
+          "owner": "Owner",
+          "parent": "Parent",
+          "asset_types":
+          {
+               "room":"Room",
+               "pv":"PV"
+          }
+     },
+     "measurement":{
+          
      }
 }
