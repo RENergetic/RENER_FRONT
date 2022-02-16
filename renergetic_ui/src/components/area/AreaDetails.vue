@@ -117,7 +117,7 @@
 import Card from "primevue/card";
 import MeasurementChart from "../dashboard/measurements/MeasurementChart.vue";
 import ManageSensors from "../dashboard/measurements/ManageSensors.vue";
-import AssetSelect from "../management/AssetSelect.vue";
+import AssetSelect from "../management/infrastructure/AssetSelect.vue";
 import HeatMapSelect from "./HeatMapSelect.vue";
 import DashboardSelect from "../dashboard/DashboardSelect.vue";
 

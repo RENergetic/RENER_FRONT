@@ -47,6 +47,24 @@ export default {
     getSchema() {
       var schema = [
         {
+          label: this.$t("settings.heatmap"),
+          ext: {
+            true: this.$t("settings.visible"),
+            false: this.$t("settings.hidden"),
+          },
+          type: Boolean,
+          key: "heatmapVisibility",
+        },
+        {
+          label: this.$t("settings.chart"),
+          ext: {
+            true: this.$t("settings.visible"),
+            false: this.$t("settings.hidden"),
+          },
+          type: Boolean,
+          key: "chartVisibility",
+        },
+        {
           label: this.$t("settings.recommendations"),
           ext: {
             true: this.$t("settings.visible"),

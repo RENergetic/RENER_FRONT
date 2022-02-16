@@ -7,5 +7,7 @@
   "notification": "Notification",
   "measurements": "Measurements",
   "recommendations": "Recommendations",
-  "selected_panel": "Selected Panel" 
+  "selected_panel": "Selected Panel" ,
+  "heatmap":"Heatmap",
+  "chart":"Chart"
 }

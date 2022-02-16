@@ -16,6 +16,9 @@ export default {
     heatmap(state, payload) {
       state.heatmap = payload;
     },
+    toggle(state, payload) {
+      state[payload.section][payload.key] = !state[payload.section][payload.key];
+    },
   },
   getters: {
     home: (state /* getters*/) => {

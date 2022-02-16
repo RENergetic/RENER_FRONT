@@ -2,8 +2,10 @@
   <DotMenu :model="menuModel()" />
   <div class="grid">
     <div class="col-8">
-      <Card>
-        <template #title> HeatMap View </template>
+      <i class="pi pi-image" @click="toggle('heatmapVisibility')" />
+      <i class="pi pi-chart-line" @click="toggle('chartVisibility')" />
+      <Card v-if="settings.heatmapVisibility">
+        <template #title> HeatMap title </template>
         <template #content>
           <div id="heatmapContainer">
             <v-stage id="heatmap" ref="stage" :config="stageSize" @click="onClick">
@@ -19,7 +21,7 @@
         </template>
       </Card>
       <MeasurementChart
-        v-if="selectedAreas && Object.keys(selectedAreas).length > 0 && measurmenentState"
+        v-if="settings.chartVisibility && selectedAreas && Object.keys(selectedAreas).length > 0 && measurmenentState"
         :objects="Object.keys(selectedAreas)"
       ></MeasurementChart>
     </div>
@@ -203,6 +205,9 @@ export default {
   methods: {
     reloadSettings() {
       this.settings = this.$store.getters["settings/heatmap"];
+    },
+    toggle(key) {
+      this.$store.commit("settings/toggle", { section: "heatmap", key: key });
     },
     onAreaSelect(area) {
       if (this.selectedArea != null) {

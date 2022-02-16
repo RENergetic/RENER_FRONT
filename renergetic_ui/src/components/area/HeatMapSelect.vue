@@ -37,13 +37,12 @@
 </template>
 <script>
 import Listbox from "primevue/listbox";
-import Dialog from "primevue/dialog";
 // import { MapArea } from "../../plugins/model/Area";
 
 import Card from "primevue/card";
 export default {
   name: "HeatMapSelect",
-  components: { Card, Listbox, Dialog },
+  components: { Card, Listbox },
   props: { current: { type: Object, default: () => ({}) } },
   emits: { change: null },
   data() {
