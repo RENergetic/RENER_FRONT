@@ -1,9 +1,9 @@
 <template>
-  <div class="div-sign-in p-mx-auto grid">
+  <div class="div-sign-in mx-auto p-grid">
     <TabView ref="signTable" v-model:activeIndex="activeTab">
       <TabPanel header="Your User Data">
-        <div class="p-fluid grid">
-          <span class="p-float-label p-mt-4">
+        <div class="p-fluid p-grid">
+          <span class="p-float-label mt-4">
             <InputText
               id="username"
               v-model="user.username"
@@ -17,7 +17,7 @@
             error.username.msg
           }}</small>
 
-          <span class="p-float-label p-mt-4">
+          <span class="p-float-label mt-4">
             <InputText
               id="firstname"
               v-model="user.firstName"
@@ -31,7 +31,7 @@
             >First name is required</small
           >
 
-          <span class="p-float-label p-mt-4">
+          <span class="p-float-label mt-4">
             <InputText
               id="lastname"
               v-model="user.lastName"
@@ -45,7 +45,7 @@
             >Last name is required</small
           >
 
-          <span class="p-float-label p-mt-4">
+          <span class="p-float-label mt-4">
             <InputText
               id="email"
               v-model="user.email"
@@ -57,7 +57,7 @@
           </span>
           <small id="email-help" :class="error.email.value ? 'p-error' : 'p-sr-only'">{{ error.email.msg }}</small>
 
-          <span class="p-float-label p-mt-4">
+          <span class="p-float-label mt-4">
             <Password
               id="password"
               v-model="user.credentials[0].value"
@@ -70,8 +70,8 @@
         </div>
       </TabPanel>
       <TabPanel header="Your Home">
-        <div class="p-fluid grid">
-          <span class="p-float-label p-mt-4">
+        <div class="p-fluid p-grid">
+          <span class="p-float-label mt-4">
             <InputText
               id="name"
               v-model="asset.name"
@@ -83,11 +83,11 @@
           </span>
           <small id="name-help" :class="error.homeName.value ? 'p-error' : 'p-sr-only'">House name is required</small>
 
-          <span class="p-float-label p-mt-4">
+          <span class="p-float-label mt-4">
             <InputText id="description" v-model="asset.description" type="text" />
             <label for="description">Write a description (Optional)</label>
           </span>
-          <span class="p-float-label p-mt-4">
+          <span class="p-float-label mt-4">
             <InputText
               id="geo_location"
               v-model="asset.geoLocation"
@@ -101,7 +101,7 @@
             >Geolocation is required</small
           >
 
-          <span class="p-float-label p-mt-4">
+          <span class="p-float-label mt-4">
             <Dropdown
               id="type"
               v-model="selectedType"

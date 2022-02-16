@@ -206,7 +206,7 @@ export default {
           label: this.$t("menu.signup"),
           icon: "pi pi-sign-in",
           to: "/signup",
-          visible: () => {return !this.isLogin},
+          visible: () => !this.isLogin,
           command: () => {
             this.$router.push({ name: "SignUp" });
           },

@@ -1,15 +1,15 @@
 <template>
   <div>Auth data {{ data }}aa</div>
-  <div>Logged user {{user}}</div>
+  <div>Logged user {{ user }}</div>
 </template>
 <script>
 export default {
   name: "Profile",
   components: {},
   data() {
-    return { 
+    return {
       data: this.$store.getters["auth/current"],
-      user: undefined
+      user: undefined,
     };
   },
   watch: {},
