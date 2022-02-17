@@ -1,0 +1,34 @@
+{
+    "id": "1",
+    "name": "test",
+    "label": "testname",
+    "tiles": [
+        {
+            "layout": {
+                "x": 0,
+                "y": 0,
+                "h": 3,
+                "w": 3
+            },
+            "state": "ok",
+            "id": "1",
+            "label": null,
+            "type": "list",
+            "props": null,
+            "measurements": [
+                {
+                    "id": "e1",
+                    "unit": "kWh",
+                    "description": "avg",
+                    "icon": "electricity"
+                },
+                {
+                    "id": "e2",
+                    "unit": "kWh",
+                    "description": "total",
+                    "icon": "electricity"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+{
+    "id": "4",
+    "asset_type": "pv",
+    "name": "pv_1",
+    "label": "PV 1",
+    "owner": null,
+    "parent": {
+        "id": "5",
+        "asset_type": "pv",
+        "name": "pv_2",
+        "label": "PV 2",
+        "owner": null,
+        "parent": null
+    },
+    "children": [
+        {
+            "parent": {
+                "id": "6",
+                "asset_type": "pv",
+                "name": "pv_6",
+                "label": "PV 1",
+                "owner": null,
+                "parent": null
+            }
+        }
+    ]
+}

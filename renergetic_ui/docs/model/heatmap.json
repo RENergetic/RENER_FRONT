@@ -1,0 +1,55 @@
+{
+    "areas": [
+        {
+            "roi": [
+                [
+                    125.58000000000001,
+                    227.01000000000002
+                ],
+                [
+                    196.42000000000002,
+                    75.67
+                ],
+                [
+                    322,
+                    180.32000000000002
+                ]
+            ],
+            "id": "area_1",
+            "name": "area_1",
+            "label": "area_1",
+            "heatMapId": 80,
+            "assetId": null,
+            "dashboard": {
+                "id": "2",
+                "label": "Dashboard 2",
+                "name": "dashboard_2",
+                "url": "http://localhost:3000/d/cWp8595nk/embedded-dashboard?orgId=1&from=1640263130489&to=1640284730489&kiosk=tv"
+            }
+        },
+        {
+            "roi": [
+                [
+                    421.82000000000005,
+                    191.59
+                ],
+                [
+                    524.86,
+                    133.63000000000002
+                ],
+                [
+                    589.26,
+                    222.18
+                ]
+            ],
+            "id": "area_2",
+            "name": "area_2",
+            "label": "area_2",
+            "dashboardId": null,
+            "heatMapId": 80
+        }
+    ],
+    "id": 80,
+    "background": "http://localhost:8080/put.jpg",
+    "label": "heatmap_0" 
+}
