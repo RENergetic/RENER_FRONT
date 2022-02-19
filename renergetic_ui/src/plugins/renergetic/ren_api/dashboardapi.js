@@ -71,49 +71,19 @@ export default class DashboardApi extends RestComponent {
       });
   }
   // INFORMATION PANEL REQUESTS
-  getInformationPanel(panelId) {
-    console.info(panelId);
-    // TODO:
-    return new Promise((resolve) => {
-      resolve(informationPanels);
-    });
-    // return this.axios
-    //   .get(`/api/dashboard`, {
-    //     headers: { "Content-type": "application/json; charset=UTF-8" },
-    //     spinner: true,
-    //   })
-    //   .then((response) => {
-    //     return response.data;
-    //   })
-    //   .catch(function (error) {
-    //     console.error("list  entity error" + error.message);
-    //   });
-  }
-  informationPanelList() {
-    // TODO:
-    return new Promise((resolve) => {
-      resolve(informationPanels);
-    });
-    // return this.axios
-    //   .get(`/api/dashboard`, {
-    //     headers: { "Content-type": "application/json; charset=UTF-8" },
-    //     spinner: true,
-    //   })
-    //   .then((response) => {
-    //     return response.data;
-    //   })
-    //   .catch(function (error) {
-    //     console.error("list  entity error" + error.message);
-    //   });
-  }
+
+  //TODO:
+  // listInformationPanel() {}
+  // async getInformationPanel(panelId) {}
+  // async addInformationPanel(panel) {}
+  // async updateInformationPanel(panel) {}
+  // async deleteInformationPanel(id) {}
+
   // HEATMAP REQUESTS
-  async listHeatMap() {
-    return null;
-  }
-  async getHeatMap(id) {
-    return id;
-  }
-  addHeatMap(heatmap) {
-    console.info(heatmap);
-  }
+  //TODO:
+  // async listHeatMap() { }
+  // async getHeatMap(id) { }
+  // async addHeatMap(heatmap) { }
+  // async updateHeatMap(heatmap) { }
+  // async deleteHeatMap(id) { }
 }
