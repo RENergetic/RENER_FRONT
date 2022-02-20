@@ -1,0 +1,102 @@
+export default [
+  {
+    id: "1",
+    label: "testname",
+    tiles: [
+      {
+        layout: { x: 0, y: 0, h: 3, w: 3 },
+        state: "ok",
+        id: "1",
+        title: null,
+        col: 2,
+        measurements: [
+          {
+            id: "1",
+            name: "e1",
+            label: "e1",
+            unit: "kWh",
+            description: "avg",
+            icon: "electricity",
+          },
+          {
+            id: "2",
+            unit: "kWh",
+            label: "e2",
+            name: "e2",
+            description: "total",
+            icon: "electricity",
+          },
+        ],
+        props: {},
+      },
+      {
+        id: "2",
+        layout: { x: 4, y: 0, h: 3, w: 3 },
+        title: null,
+        measurements: [
+          {
+            id: "1",
+            name: "e3",
+            label: "e3",
+            unit: "kWh",
+            description: "avg",
+            icon: "electricity",
+          },
+          {
+            id: "2",
+            name: "e4",
+            label: "e4",
+            unit: "kWh",
+            description: "total",
+            icon: "electricity",
+          },
+        ],
+        props: {},
+      },
+      {
+        id: "3",
+        layout: { x: 8, y: 0, h: 3, w: 3 },
+        state: "warning",
+        title: null,
+        type: null,
+        measurements: [
+          {
+            id: "1",
+            name: "e5",
+            label: "e5",
+            unit: "kWh",
+            description: "avg",
+            icon: "electricity",
+          },
+          {
+            id: "2",
+            name: "e6",
+            label: "e6",
+            unit: "kWh",
+            description: "total",
+            icon: "electricity",
+          },
+        ],
+        props: {},
+      },
+      {
+        id: "4",
+        state: "warning",
+        title: null,
+        type: "knob",
+        layout: { x: 0, y: 4, h: 3, w: 3 },
+        measurements: [
+          {
+            id: "7",
+            name: "e7",
+            label: "e7",
+            unit: "kWh",
+            description: "total",
+            icon: "electricity",
+          },
+        ],
+        props: {},
+      },
+    ],
+  },
+];
