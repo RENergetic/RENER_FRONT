@@ -7,3 +7,6 @@ TODO: restApiName - describe
 * `this.$store` -> session store
 * `this.$confirm` -> confirm dialog (YES/NO)
 * `v-tooltip`  -> tooltip attribute for templates
+* 
+*   
+*   TODO: describe this.$emit("UpdateMenu", null);

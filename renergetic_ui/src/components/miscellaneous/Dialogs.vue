@@ -8,6 +8,15 @@
   >
     <NotificationList></NotificationList>
   </Dialog>
+  <Dialog
+    v-model:visible="updateDialog"
+    :style="{ width: '50vw' }"
+    :maximizable="true"
+    :modal="true"
+    :dismissable-mask="true"
+  >
+    <DashboardForm @save="onSave" @cancel="updateDialog = false"></DashboardForm>
+  </Dialog>
 </template>
 
 <script>
@@ -25,14 +34,36 @@ export default {
       type: Boolean,
       default: false,
     },
+    addDashboard: {
+      type: Boolean,
+      default: false,
+    },
   },
-  emits: ["update:notifications"],
+  emits: ["update:dashboard", "update:notifications"],
   data() {
     return {
       mNotifications: this.notifications,
+      mAddDashboard: this.addDashboard,
     };
   },
   watch: {
+    //dashboard
+    mAddDashboard: {
+      handler(newVal, oldValue) {
+        if (oldValue == null && newVal == null) {
+          return;
+        }
+        this.$emit("update:dashboard", newVal);
+      },
+      immediate: true,
+    },
+    addDashboard: {
+      handler(newVal) {
+        this.mAddDashboard = newVal;
+      },
+      immediate: true,
+    },
+    //notifications
     mNotifications: {
       handler(newVal, oldValue) {
         if (oldValue == null && newVal == null) {
@@ -47,6 +78,14 @@ export default {
         this.mNotifications = newVal;
       },
       immediate: true,
+    },
+  },
+  methods: {
+    async onDashboardCreate(dashboard) {
+      await this.$ren.dashboardApi.add(dashboard).then((dashboardReq) => {
+        this.$store.commit("view/dashboardsAdd", dashboardReq);
+        this.$emit("UpdateMenu", null);
+      });
     },
   },
 };

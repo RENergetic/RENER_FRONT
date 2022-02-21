@@ -14,23 +14,34 @@
     </template>
   </Dock>
   <DeleteDashboard v-if="dashboard != null" :id="dashboard.id" ref="deleteDashboard" :label="dashboard.label" />
+  <Dialog
+    v-model:visible="updateDialog"
+    :style="{ width: '50vw' }"
+    :maximizable="true"
+    :modal="true"
+    :dismissable-mask="true"
+  >
+    <DashboardForm :dashboard="dashboard" @save="onSave" @cancel="updateDialog = false"></DashboardForm>
+  </Dialog>
 </template>
 <script>
 // import Carousel from "primevue/carousel";
 import Grafana from "../../components/dashboard/Grafana.vue";
 import DeleteDashboard from "../../components/dashboard/DeleteDashboard.vue";
+import DashboardForm from "../../components/dashboard/DashboardForm.vue";
 import Dock from "primevue/dock";
 import DotMenu from "../../components/miscellaneous/DotMenu.vue";
 
 export default {
   name: "Dashboard",
-  components: { Dock, DotMenu, Grafana, DeleteDashboard /* Carousel */ },
+  components: { Dock, DotMenu, Grafana, DeleteDashboard, DashboardForm /* Carousel */ },
   emits: ["updateMenu"],
   data() {
     return {
       dashboards: {},
       dashboard: null,
       dashboardMenu: [],
+      updateDialog: false,
     };
   },
   computed: {
@@ -55,7 +66,7 @@ export default {
             label: this.$t("menu.edit_dashboard"),
             icon: "pi pi-fw pi-pencil",
             command: () => {
-              this.$router.push(`/dashboard/edit/${this.dashboard.id}`);
+              this.updateDialog = true;
             },
           },
         ];
@@ -78,6 +89,7 @@ export default {
       this.dashboard = null;
     }
   },
+
   mounted() {
     this.$watch(
       () => this.$route,
@@ -92,6 +104,16 @@ export default {
     );
   },
   methods: {
+    async onSave(dashboard) {
+      await this.$ren.dashboardApi.update(dashboard).then((dashboardReq) => {
+        this.$store.commit("view/dashboardsUpdate", dashboardReq);
+        this.$emit("UpdateMenu", null);
+        // this.$router.replace({
+        //   name: "Dashboard",
+        //   params: { dashboard_id: this.id },
+        // });
+      });
+    },
     getColor(item) {
       if (item.id == this.$route.params.dashboard_id) {
         return "color:green";
