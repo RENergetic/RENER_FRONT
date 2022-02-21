@@ -21,6 +21,25 @@ class Storage {
     this.data[k] = o;
     sessionStorage.setItem(k, JSON.stringify(o));
   }
+
+  async push(k, o) {
+    let l = await this.get(k, []);
+    l.push(o);
+    storage.update(k, l);
+  }
+
+  async updateList(k, o) {
+    let idx = this.data[k].findIndex((el) => el.id === o.id);
+    this.data[k][idx] = o;
+    // sessionStorage.setItem(this.data, JSON.stringify(o));
+  }
+
+  async setDefault(k, defaultValue = null, force = false) {
+    if (this.data[k] == null || force) {
+      this.update(k, defaultValue);
+    }
+  }
+
   async get(k, defaultValue = null) {
     let d = this.data[k];
     return d == null

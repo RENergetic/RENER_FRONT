@@ -16,6 +16,18 @@ function listAssetMeasurements(asset) {
 
   return m;
 }
+function generateHeatMapState(heatmap) {
+  let state = {};
+  for (let area of heatmap.areas) {
+    let value = Math.floor(Math.random());
+    if (value <= 0.6) {
+      area[area.id] = "ok";
+    } else if (value <= 0.8) {
+      area[area.id] = "warning";
+    } else area[area.id] = "warning";
+  }
+  return state;
+}
 
 function generatePanelData(informationPanel) {
   let measurements = listMeasurements(informationPanel);
@@ -62,4 +74,4 @@ function generateTimeseries(ids, n = 50) {
   return { datasets: datasets, labels: labels };
 }
 
-export { generatePanelData, generateTimeseries, generateAssetData };
+export { generatePanelData, generateTimeseries, generateAssetData, generateHeatMapState };
