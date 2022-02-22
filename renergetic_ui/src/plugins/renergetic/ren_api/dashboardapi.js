@@ -72,7 +72,7 @@ export default class DashboardApi extends RestComponent {
   // INFORMATION PANEL REQUESTS
 
   //TODO:
-  // listInformationPanel() {}
+  // listInformationPanel(userId=null) {}
   // async getInformationPanel(panelId) {}
   // async addInformationPanel(panel) {}
   // async updateInformationPanel(panel) {}
@@ -80,7 +80,7 @@ export default class DashboardApi extends RestComponent {
 
   // HEATMAP REQUESTS
   //TODO:
-  // async listHeatMap() { }
+  // async listHeatMap(userId=null) { }
   // async getHeatMap(id) { }
   // async addHeatMap(heatmap) { }
   // async updateHeatMap(heatmap) { }

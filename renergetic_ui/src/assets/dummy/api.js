@@ -21,6 +21,76 @@ await storage.setDefault(`${DASHBOARD_API_KEY}.${HEATMAP_KEY}`, heatmapList);
 await storage.setDefault(`${MANAGEMENT_API_KEY}.${MEASUREMENT_KEY}`, measurementList);
 await storage.setDefault(`${MANAGEMENT_API_KEY}.${ASSET_KEY}`, assetList);
 
+//TODO: temporaty example objectc
+var measurementAttributes = [
+  {
+    key: "id4",
+    label: "Predictors",
+    name: "predictors",
+    type: "group",
+    children: [
+      {
+        key: "id5",
+        name: "electrical",
+        label: "Electrical",
+        type: "measurement",
+        children: [],
+      },
+      {
+        key: "id6",
+        name: "thermic",
+        label: "Thermic",
+        type: "measurement",
+        children: [],
+      },
+    ],
+  },
+  {
+    key: "id1",
+    label: "Target",
+    name: "target",
+    type: "group",
+    children: [
+      {
+        key: "id2",
+        name: "electrical",
+        label: "Electrical",
+        type: "measurement",
+        children: [],
+      },
+      {
+        key: "id3",
+        name: "thermic",
+        label: "Thermic",
+        type: "measurement",
+        children: [],
+      },
+    ],
+  },
+  {
+    key: "id7",
+    label: "Prediction Interval",
+    name: "prediction_interval",
+    type: "group",
+    children: [
+      {
+        key: "id8",
+        name: "3h",
+        label: "3 H",
+        type: "measurement",
+        children: [],
+      },
+      {
+        key: "id9",
+        name: "6h",
+        label: "6 H",
+        type: "measurement",
+        children: [],
+      },
+    ],
+  },
+];
+
 class DashboardApi {
   async list() {
     return storage.get(`${DASHBOARD_API_KEY}.${DASHBOARD_KEY}`, dashboardList);
@@ -44,13 +114,14 @@ class DashboardApi {
     });
   }
 
-  listInformationPanel() {
+  listInformationPanel(userId = null) {
+    console.info(`listInformationPanel for ${userId}`);
     return storage.get(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, informationPanelList);
   }
 
   async getInformationPanel(panelId) {
-    let tiles = await storage.get(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, informationPanelList);
-    return tiles.find((it) => it.id == panelId);
+    let panels = await storage.get(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, informationPanelList);
+    return panels.find((it) => it.id == panelId);
   }
   async addInformationPanel(panel) {
     panel.id = Math.floor(Math.random() * 150);
@@ -71,7 +142,8 @@ class DashboardApi {
     });
   }
 
-  async listHeatMap() {
+  async listHeatMap(userId = null) {
+    console.info(`listHeatMap for ${userId}`);
     return storage.get(`${DASHBOARD_API_KEY}.${HEATMAP_KEY}`, heatmapList);
   }
   async getHeatMap(id) {
@@ -101,9 +173,11 @@ class DashboardApi {
 
 class ManagementApi {
   //Infrastructure  REQUESTS
-  async listAsset() {
+  async listAsset(userId) {
+    console.info(`listAsset for ${userId}`);
     return storage.get(`${MANAGEMENT_API_KEY}.${ASSET_KEY}`, assetList);
   }
+
   async addAsset(asset) {
     asset.id = Math.floor(Math.random() * 150);
     storage.push(`${MANAGEMENT_API_KEY}.${ASSET_KEY}`, asset);
@@ -127,7 +201,8 @@ class ManagementApi {
       resolve(id);
     });
   }
-  async listMeasurement() {
+  async listMeasurement(userId) {
+    console.info(`listMeasurement for ${userId}`);
     return storage.get(`${MANAGEMENT_API_KEY}.${MEASUREMENT_KEY}`, measurementList);
   }
 
@@ -143,13 +218,14 @@ class ManagementApi {
   }
 }
 class DataApi {
+  dashboardApi = new DashboardApi();
   managementApi = new ManagementApi();
 
   //TODO: discuss with Raul
-  // async attributes(/*area, areaId*/) {
-  //   return measurementAttributes;
-  //   // return storage.get(`${MANAGEMENT_KEY}.panel_list`, measurementAttributes);
-  // }
+  async attributes(/*area, areaId*/) {
+    return measurementAttributes;
+    // return storage.get(`${MANAGEMENT_KEY}.panel_list`, measurementAttributes);
+  }
 
   async getTimeseries(measurementIds) {
     return generator.generateTimeseries(measurementIds);
@@ -163,20 +239,24 @@ class DataApi {
     return generator.generateHeatMapState(heatmap);
   }
   async getPanelData(panelId) {
-    let panel = this.managementApi.getInformationPanel(panelId);
+    let panel = await this.dashboardApi.getInformationPanel(panelId);
     return generator.generatePanelData(panel);
   }
   async getAssetData(assetId) {
-    let asset = this.managementApi.getAsset(assetId);
+    let asset = await this.managementApi.getAsset(assetId);
     return generator.getAssetData(asset);
   }
   async getHeatMapData(heatmapid) {
-    let heatmap = this.managementApi.getHeatMap(heatmapid);
+    let heatmap = await this.dashboardApi.getHeatMap(heatmapid);
     return generator.getHeatMapData(heatmap);
   }
   async getNotifications(objectIds) {
     // todo:
     return objectIds;
+  }
+  async getUserNotifications(userId) {
+    // todo:
+    return userId;
   }
 }
 export { DashboardApi, ManagementApi, DataApi };

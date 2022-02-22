@@ -35,7 +35,7 @@ import DotMenu from "../../components/miscellaneous/DotMenu.vue";
 export default {
   name: "Dashboard",
   components: { Dock, DotMenu, Grafana, DeleteDashboard, DashboardForm /* Carousel */ },
-  emits: ["updateMenu"],
+  emits: ["UpdateMenu"],
   data() {
     return {
       dashboards: {},
@@ -59,7 +59,7 @@ export default {
             icon: "pi pi-fw pi-minus-circle",
             command: () => {
               this.$refs.deleteDashboard.delete();
-              this.$emit("updateMenu", null);
+              this.$emit("UpdateMenu", null);
             },
           },
           {

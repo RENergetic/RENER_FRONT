@@ -9,25 +9,26 @@
     <NotificationList></NotificationList>
   </Dialog>
   <Dialog
-    v-model:visible="updateDialog"
+    v-model:visible="mAddDashboard"
     :style="{ width: '50vw' }"
     :maximizable="true"
     :modal="true"
     :dismissable-mask="true"
   >
-    <DashboardForm @save="onSave" @cancel="updateDialog = false"></DashboardForm>
+    <DashboardForm @save="onSave" @cancel="mAddDashboard = false"></DashboardForm>
   </Dialog>
 </template>
 
 <script>
 import Dialog from "primevue/dialog";
 import NotificationList from "../area/NotificationList.vue";
-
+import DashboardForm from "../../components/dashboard/DashboardForm.vue";
 export default {
   name: "Dialogs",
   components: {
     Dialog,
     NotificationList,
+    DashboardForm,
   },
   props: {
     notifications: {
@@ -39,7 +40,7 @@ export default {
       default: false,
     },
   },
-  emits: ["update:dashboard", "update:notifications"],
+  emits: ["update:dashboard", "update:notifications", "UpdateMenu"],
   data() {
     return {
       mNotifications: this.notifications,

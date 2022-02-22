@@ -1,11 +1,11 @@
 function listMeasurements(informationPanel) {
-  let m = {};
+  let md = {};
   for (let tile of informationPanel.tiles) {
     for (let m of tile.measurements) {
-      m[m.id] = null;
+      md[m.id] = "";
     }
   }
-  return m;
+  return md;
 }
 function listAssetMeasurements(asset) {
   let m = {};

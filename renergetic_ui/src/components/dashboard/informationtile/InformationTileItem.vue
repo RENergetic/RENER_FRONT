@@ -38,8 +38,7 @@ export default {
   },
   computed: {
     value: function () {
-      let v = this.pdata ? this.pdata[this.tileItem.key] : null;
-      return v != null ? v : this.tileItem.value;
+      return this.pdata ? this.pdata[this.tileItem.id] : null;
     },
   },
   mounted() {},

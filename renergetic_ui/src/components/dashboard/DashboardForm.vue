@@ -3,43 +3,41 @@
     <template #title>
       {{ $t("view.add_dashboard") }}
     </template>
-
     <template #content>
       <!--name-->
-      <div style="width: 30rem">
-        <div class="field grid">
-          <label for="dasboardName" class="col-fixed">
-            {{ $t("model.dashboard.name") }}
-          </label>
-          <div class="col">
-            <InputText id="dasboardName" v-model="mDashboard.name" />
-          </div>
-        </div>
-        <!--url-->
-        <div class="field grid">
-          <label for="dasboardUrl" class="col-fixed">
-            {{ $t("model.dashboard.url") }}
-          </label>
-          <div class="col">
-            <InputText id="dasboardUrl" v-model="mDashboard.url" />
-          </div>
-        </div>
-        <div class="field grid">
-          <label for="dasboardLabel" class="col-fixed">
-            {{ $t("model.dashboard.label") }}
-          </label>
-          <div class="col">
-            <InputText id="dasboardLabel" v-model="mDashboard.label" />
-          </div>
-        </div>
+      <div class="field grid">
+        <label for="dasboardName" class="col-12 mb-2 md:col-2 md:mb-0">
+          {{ $t("model.dashboard.name") }}
+        </label>
 
-        <div class="field grid">
-          <div class="col">
-            <Button :label="$t('view.button.submit')" @click="submit" />
-          </div>
-          <div class="col">
-            <Button :label="$t('view.button.cancel')" @click="cancel" />
-          </div>
+        <div class="col-12 md:col-10">
+          <InputText id="dasboardName" v-model="mDashboard.name" />
+        </div>
+      </div>
+      <!--url-->
+
+      <div class="field grid">
+        <label for="dasboardUrl" class="col-12 mb-2 md:col-2 md:mb-0">
+          {{ $t("model.dashboard.url") }}
+        </label>
+
+        <div class="col-12 md:col-10"><InputText id="dasboardUrl" v-model="mDashboard.url" /></div>
+      </div>
+
+      <!-- label -->
+
+      <div class="field grid">
+        <label for="dasboardLabel" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.dashboard.label") }} </label>
+
+        <div class="col-12 md:col-10">
+          <InputText id="dasboardLabel" v-model="mDashboard.label" />
+        </div>
+      </div>
+
+      <div class="field grid">
+        <div class="col-6 md:col-6"><Button :label="$t('view.button.submit')" @click="submit" /></div>
+        <div class="col-6 md:col-6">
+          <Button :label="$t('view.button.cancel')" @click="cancel" />
         </div>
       </div>
     </template>
@@ -54,7 +52,7 @@ export default {
   props: {
     dashboard: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
   },
   emits: ["update:modelValue", "save", "cancel"],

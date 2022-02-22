@@ -1,10 +1,5 @@
 <template>
-  <InformationTileItem
-    v-for="item in tile.props.items"
-    :key="item.id"
-    :tile-item="item"
-    :pdata="pdata"
-  ></InformationTileItem>
+  <InformationTileItem v-for="m in tile.measurements" :key="m.id" :tile-item="m" :pdata="pdata"></InformationTileItem>
 </template>
 <script>
 import InformationTileItem from "./InformationTileItem.vue";

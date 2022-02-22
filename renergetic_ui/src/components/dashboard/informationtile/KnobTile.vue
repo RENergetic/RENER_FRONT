@@ -9,7 +9,7 @@ export default {
   name: "InformationTile",
   components: { Knob },
   props: {
-    pdata: { type: Object, default: () => {} },
+    pdata: { type: Object, default: () => ({}) },
     tile: {
       type: Object,
       default: () => ({}),

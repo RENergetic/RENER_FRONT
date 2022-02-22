@@ -5,7 +5,7 @@ export default class ManagementApi extends RestComponent {
   }
   // ASSET REQUESTS
   // TODO:
-  // async listAsset() { }
+  // async listAsset(userId=null) { }
   // async addAsset(asset) { }
   // async updateAsset(asset) { }
   // async getAsset(id) { }
@@ -13,7 +13,7 @@ export default class ManagementApi extends RestComponent {
 
   // MEASUREMENT REQUESTS
   // TODO:
-  // async listMeasurement() {}
+  // async listMeasurement(userId=null) {}
   // async updateMeasurement(measurement) {}
   // async getMeasurement(id) {}
 }

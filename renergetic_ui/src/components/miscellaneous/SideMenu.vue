@@ -5,7 +5,11 @@
       <Logo style="position: relative; display: block; margin: 1rem; left: 1rem; bottom: initial" />
       <PanelMenu :model="menuModel" />
     </Sidebar>
-    <Dialogs :notifications="notifications" @update:notifications="notifications = $event"></Dialogs>
+    <Dialogs
+      :notifications="notifications"
+      :add-dashboard="dashboardDialog"
+      @update:notifications="notifications = $event"
+    ></Dialogs>
   </div>
 </template>
 
@@ -31,6 +35,7 @@ export default {
       dashboards: [],
       //tODO: dialog state hashmap
       notifications: false,
+      dashboardDialog: false,
       informationPanels: [],
       isAdmin: false, //this.$store.getters["user/isAdmin"],
       isLogin: false,
@@ -56,8 +61,8 @@ export default {
         console.info(menu);
         this.menuModel = menu;
       });
-
-      this.$ren.dashboardApi.informationPanelList(this.$route.params.id).then((informationPanels) => {
+      //this.$route.params.id
+      this.$ren.dashboardApi.listInformationPanel().then((informationPanels) => {
         this.informationPanels = informationPanels;
         this.$store.commit("view/informationPanels", informationPanels);
         let menu = this.initMenu();
@@ -74,7 +79,7 @@ export default {
         return {
           // label: this.$t("menu.group_list"),
           label: panel.label,
-          icon: "pi pi-fw pi-align-left",
+          icon: "pi pi-fw pi-th-large",
           to: to,
           command: () => {
             this.$router.push(to);
@@ -112,9 +117,10 @@ export default {
         // label: this.$t("menu.group_list"),
         label: this.$t("menu.add_dashboard"),
         icon: "pi pi-fw pi-plus",
-        to: "/dashboard/add",
+        // to: "/dashboard/add",
         command: () => {
-          this.$router.push({ name: "DashboadAdd" });
+          this.dashboardDialog = !this.dashboardDialog;
+          // this.$router.push({ name: "DashboadAdd" });
         },
       });
       return items;

@@ -90,7 +90,9 @@ export default {
     },
     settings: {
       type: Object,
-      default: () => {},
+      default: () => {
+        return {};
+      },
     },
     editMode: {
       type: Boolean,
@@ -119,7 +121,6 @@ export default {
   watch: {
     panel: {
       handler: function (newValue) {
-        alert();
         this.mPanel = newValue;
         if (this.grid != null) this.grid.destroy(false);
         let grid = GridStack.init({ float: true }, "#panel-grid-stack");
@@ -136,7 +137,7 @@ export default {
     },
   },
   async mounted() {
-    this.pdata = await this.$ren.measurementApi.getPanelData(this.panel.id);
+    this.pdata = await this.$ren.dataApi.getPanelData(this.panel.id);
     if (this.grid != null) this.grid.destroy(false);
     let grid = GridStack.init({ float: true }, "#panel-grid-stack");
     if (this.locked) {

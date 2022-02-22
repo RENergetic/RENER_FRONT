@@ -4,7 +4,7 @@
     <div class="col-8">
       <i class="pi pi-image" @click="toggle('heatmapVisibility')" />
       <i class="pi pi-chart-line" @click="toggle('chartVisibility')" />
-      <Card v-if="settings.heatmapVisibility">
+      <Card v-show="settings.heatmapVisibility">
         <template #title> HeatMap title </template>
         <template #content>
           <div id="heatmapContainer">
@@ -308,7 +308,7 @@ export default {
     },
 
     async loadAttributes() {
-      await this.$ren.measurementApi.attributes(Object.keys(this.selectedAreas)).then((attributes) => {
+      await this.$ren.dataApi.attributes(Object.keys(this.selectedAreas)).then((attributes) => {
         this.attributes = attributes;
       });
     },

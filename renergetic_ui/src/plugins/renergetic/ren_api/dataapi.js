@@ -16,4 +16,5 @@ export default class DataApi extends RestComponent {
   // async getAssetData(assetId) {}
   // async getHeatMapData(heatmapId) {}
   // async getNotifications(objectIds) {}
+  // async getUserNotifications(userId) {}
 }
