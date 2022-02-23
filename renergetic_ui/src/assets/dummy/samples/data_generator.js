@@ -21,10 +21,10 @@ function generateHeatMapState(heatmap) {
   for (let area of heatmap.areas) {
     let value = Math.floor(Math.random());
     if (value <= 0.6) {
-      area[area.id] = "ok";
+      state[area.id] = "ok";
     } else if (value <= 0.8) {
-      area[area.id] = "warning";
-    } else area[area.id] = "warning";
+      state[area.id] = "warning";
+    } else state[area.id] = "warning";
   }
   return state;
 }

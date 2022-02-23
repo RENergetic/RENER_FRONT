@@ -10,7 +10,7 @@ export default class DataApi extends RestComponent {
   // async attributes(/*area, areaId*/) {}
 
   // async getTimeseries(measurementIds) {   }
-  // async generateHeatMapState(heatmapid){}
+  // async getHeatMapState(heatmapid){}
   // async getCurrentData(measurementIds) {  }
   // async getPanelData(panelId) {}
   // async getAssetData(assetId) {}

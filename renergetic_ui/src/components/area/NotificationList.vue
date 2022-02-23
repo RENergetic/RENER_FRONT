@@ -41,7 +41,7 @@ export default {
   async created() {
     if (this.notifications == null && this.objects != null) {
       //todo:
-      this.$ren.measurementApi.getNotifications(this.objects).then((notifications) => {
+      this.$ren.dataApi.getNotifications(this.objects).then((notifications) => {
         this.mNotifications = notifications;
       });
     } else {

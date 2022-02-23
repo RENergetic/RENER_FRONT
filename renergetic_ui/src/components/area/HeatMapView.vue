@@ -1,11 +1,13 @@
 <template>
   <DotMenu :model="menuModel()" />
+  <div class="ren-toolbar">
+    <i class="pi pi-image" @click="toggle('heatmapVisibility')" />
+    <i class="pi pi-chart-line" @click="toggle('chartVisibility')" />
+  </div>
   <div class="grid">
-    <div class="col-8">
-      <i class="pi pi-image" @click="toggle('heatmapVisibility')" />
-      <i class="pi pi-chart-line" @click="toggle('chartVisibility')" />
+    <div class="col-9">
       <Card v-show="settings.heatmapVisibility">
-        <template #title> HeatMap title </template>
+        <template #title> {{ heatmap.label }} </template>
         <template #content>
           <div id="heatmapContainer">
             <v-stage id="heatmap" ref="stage" :config="stageSize" @click="onClick">
@@ -26,18 +28,6 @@
       ></MeasurementChart>
     </div>
     <div v-if="bgImage" class="col-3 ren">
-      <!-- <Card class="tile">
-        <template #title> {{ $t("heatmap.areas") }}</template>
-        <template #content>
-          <Listbox
-            v-if="heatMap != null"
-            v-model="selectedArea"
-            :options="heatMap.areas"
-            option-label="label"
-            style="width: 15rem"
-          />
-        </template>
-      </Card> -->
       <Accordion class="tile" :active-index="selectedArea == null ? -1 : 0">
         <AccordionTab :disabled="selectedArea == null">
           <template #header> {{ $t("view.selected_area") }}</template>
@@ -54,9 +44,9 @@
         <AccordionTab>
           <template #header> {{ $t("model.heatmap.areas") }}</template>
           <Listbox
-            v-if="heatMap != null"
+            v-if="heatmap != null"
             v-model="selectedArea"
-            :options="heatMap.areas"
+            :options="heatmap.areas"
             option-label="label"
             style="width: 15rem"
           />
@@ -106,7 +96,6 @@ import RecommendationView from "../management/RecommendationView.vue";
 import Listbox from "primevue/listbox";
 import Accordion from "primevue/accordion";
 import AccordionTab from "primevue/accordiontab";
-import Dialog from "primevue/dialog";
 import Card from "primevue/card";
 import Konva from "konva";
 import NotificationView from "./NotificationList.vue";
@@ -115,8 +104,8 @@ import HeatMapSettings from "../miscellaneous/settings/HeatmapSettings.vue";
 import MeasurementChart from "../dashboard/measurements/MeasurementChart.vue";
 import MeasurementsView from "../dashboard/measurements/MeasurementsView.vue";
 
-const sceneWidth = 900;
-const sceneHeight = 450;
+const sceneWidth = 1200;
+const sceneHeight = 600;
 export default {
   name: "HeatMapView",
   components: {
@@ -132,10 +121,13 @@ export default {
     NotificationView,
     MeasurementChart,
     MeasurementsView,
-    Dialog,
   },
   props: {
-    heatMap: {
+    heatmap: {
+      type: Object,
+      default: () => null,
+    },
+    heatmapState: {
       type: Object,
       default: () => null,
     },
@@ -170,36 +162,36 @@ export default {
       },
       deep: true,
     },
-    heatMap: function () {
-      if (this.heatMap != null) {
-        // this.areaState = Array(this.heatMap.areas.length).fill(false);
-        // console.info(this.heatMap.areas.length);
+    heatmap: function () {
+      if (this.heatmap != null) {
+        // this.areaState = Array(this.heatmap.areas.length).fill(false);
+        // console.info(this.heatmap.areas.length);
         const image = new window.Image();
-        image.src = this.heatMap.imgUrl;
+        image.src = this.heatmap.imgUrl;
         image.onload = () => {
           // set image only when it is loaded
           this.bgImage = image;
           let stage = this.$refs.stage.getStage();
           this.scaleHeatMap(stage, image);
-          this.heatMap.areas.forEach((area, idx) => this.drawArea(area, idx));
+          this.heatmap.areas.forEach((area, idx) => this.drawArea(area, idx));
         };
       } else console.info("todo: null");
     },
   },
 
   mounted() {
-    if (this.heatMap != null) {
+    if (this.heatmap != null) {
       const image = new window.Image();
-      image.src = this.heatMap.imgUrl;
+      image.src = this.heatmap.imgUrl;
       image.onload = () => {
         // set image only when it is loaded
         this.bgImage = image;
         let stage = this.$refs.stage.getStage();
         this.scaleHeatMap(stage, image);
 
-        this.heatMap.areas.forEach((it, idx) => this.drawArea(it, idx));
+        this.heatmap.areas.forEach((it, idx) => this.drawArea(it, idx));
       };
-      // this.areaState = Array(this.heatMap.areas.length).fill(false);
+      // this.areaState = Array(this.heatmap.areas.length).fill(false);
     }
   },
   methods: {
@@ -261,7 +253,7 @@ export default {
       let item = new Konva.Shape(this.getConfig(area));
       let areaId = area.id;
       item.on("click", () => {
-        this.selectedArea = this.heatMap.areas[idx];
+        this.selectedArea = this.heatmap.areas[idx];
         if (this.selectedAreas[areaId] == 1) {
           if (this.selectedAreas.length == 1) {
             this.selectedAreas = {};
@@ -277,7 +269,7 @@ export default {
           this.selectedArea = null;
         } else {
           let k = Object.keys(this.selectedAreas);
-          this.heatMap.areas.forEach((area) => {
+          this.heatmap.areas.forEach((area) => {
             if (area.id == k[0]) this.selectedArea = area;
           });
         }
@@ -338,8 +330,8 @@ export default {
 
 <style lang="scss">
 #heatmap {
-  max-width: 75%;
-  max-height: 75vh;
+  max-width: 90%;
+  max-height: 80vh;
 }
 #heatmapContainer {
   padding: 0.5rem;

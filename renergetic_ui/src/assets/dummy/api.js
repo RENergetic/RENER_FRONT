@@ -235,11 +235,12 @@ class DataApi {
   //   return generator.
   // }
 
-  async generateHeatMapState(heatmap) {
+  async getHeatMapState(heatmapId) {
+    let heatmap = await this.dashboardApi.getHeatMap(heatmapId);
     return generator.generateHeatMapState(heatmap);
   }
   async getPanelData(panelId) {
-    let panel = await this.dashboardApi.getInformationPanel(panelId);
+    let panel = await this.managementApi.getInformationPanel(panelId);
     return generator.generatePanelData(panel);
   }
   async getAssetData(assetId) {

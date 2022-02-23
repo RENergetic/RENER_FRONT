@@ -32,48 +32,55 @@
           <InputText id="heatmapLabel" v-model="mArea.label" :aria-readonly="!edit" />
         </div>
       </div>
+      <!-- ASSET -->
       <div id="asset-select" class="flex">
         <div v-if="mArea.asset" class="flex flex-grow-1">
           {{ mArea.asset.label }}
-        </div>
-        <div v-else class="flex flex-grow-1">
-          {{ $t("view.select_asset") }}
-        </div>
-        <div class="flex flex-none">
           <i
             v-if="mArea.asset"
             v-tooltip="$t('view.asset')"
             class="pi pi-arrow-circle-right"
             @click="assetDialog = true"
           />
+        </div>
+        <div v-else class="flex flex-grow-1">
+          <span v-if="edit">
+            {{ $t("view.select_asset") }}
+          </span>
+          <span v-else class="disabled"> {{ $t("view.no_asset") }} </span>
+        </div>
+        <div class="flex flex-none">
           <i v-if="edit" v-tooltip="$t('view.select_asset')" class="pi pi-pencil" @click="selectAsset" />
         </div>
       </div>
-      <!--  -->
+      <!-- DASHBOARD  -->
       <div id="dashboard-select" class="flex">
         <div v-if="mArea.dashboard" class="flex flex-grow-1">
           {{ $t("view.go_to_dashboard") }}
-        </div>
-        <div v-else class="flex flex-grow-1">
-          {{ $t("view.select_dashboard") }}
-        </div>
-        <div class="flex flex-none">
           <i
             v-if="mArea.dashboard"
             v-tooltip="$t('view.go_to_dashboard')"
             class="pi pi-arrow-circle-right"
             @click="$router.push(`/dashboard/view/${mArea.dashboard.id}`)"
           />
-          <i v-if="edit" v-tooltip="$t('view.select_dashboard')" class="pi pi-pencil" @click="selectDashboard" />
+        </div>
+        <div v-else class="flex flex-grow-1">
+          <span v-if="edit">
+            {{ $t("view.select_dashboard") }}
+          </span>
+          <span v-else class="disabled"> {{ $t("view.no_dashboard") }} </span>
         </div>
       </div>
-      <!--  -->
+      <!-- HEATMAP  -->
       <div id="heatmap-select" class="flex">
         <div v-if="mArea.heatmap" class="flex flex-grow-1">
           {{ $t("model.heatmap.heatmap") }}
         </div>
         <div v-else class="flex flex-grow-1">
-          {{ $t("view.select_heatmap") }}
+          <span v-if="edit">
+            {{ $t("view.select_heatmap") }}
+          </span>
+          <span v-else class="disabled"> {{ $t("view.no_heatmap") }} </span>
         </div>
         <div class="flex flex-none">
           <i
@@ -136,7 +143,7 @@ export default {
   props: {
     edit: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     modelValue: {
       type: Object,

@@ -31,7 +31,7 @@ var dashboardRoutes = [
     path: "/dashboard/heatmap/view/:id?",
     name: "HeatMapView",
     props: {},
-    meta: { isAuthenticated: true },
+    meta: { isAuthenticated: true, layout: "fullscr" },
     component: () => import("../views/dashboard/HeatMap.vue"),
   },
   {
@@ -50,7 +50,7 @@ var dashboardRoutes = [
   {
     path: "/panel/view/:id?",
     name: "InformationPanelView",
-    meta: { isAuthenticated: true },
+    meta: { isAuthenticated: true, layout: "fullscr" },
     component: () => import("../views/dashboard/InformationPanelView.vue"),
   },
   {

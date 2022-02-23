@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HeatMapView :heat-map="heatmap"></HeatMapView>
+    <HeatMapView v-if="heatmap" :heatmap="heatmap" :heatmap-state="heatmapState"></HeatMapView>
   </div>
 </template>
 <script>
@@ -14,13 +14,17 @@ export default {
   name: "HeatMap",
   components: { HeatMapView },
   data() {
-    return { heatmap: null };
+    return { heatmap: null, heatmapState: null };
   },
   async created() {
     this.$ren.dashboardApi
       .getHeatMap(this.$route.params.id)
       .then((heatmap) => {
         this.heatmap = heatmap;
+        return this.$ren.dataApi.getHeatMapState(heatmap.id);
+      })
+      .then((state) => {
+        this.heatmapState = state;
       })
       .catch((e) => {
         this.$toast.add({

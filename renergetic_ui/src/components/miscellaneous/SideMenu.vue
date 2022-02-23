@@ -301,12 +301,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 #sideMenuButton {
+  width: $sidemenu-button-width;
+  height: $sidemenu-button-width;
+  font-size: $sidemenu-button-width;
   position: fixed;
   top: 0.2rem;
   left: 0.2rem;
-  font-size: 2rem;
-  height: 2rem;
-  width: 2rem;
   z-index: 1001;
 }
 #sideCloseMenuButton {

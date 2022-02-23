@@ -3,7 +3,9 @@ export default {
   state: {
     //TODO: default home settings
     home: {},
-    heatmap: {},
+    heatmap: {
+      heatmapVisibility: true,
+    },
     panel: {},
   },
   mutations: {

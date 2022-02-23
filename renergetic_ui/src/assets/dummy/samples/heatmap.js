@@ -51,5 +51,6 @@ export default [
     id: 80,
     imgUrl: "http://localhost:8080/put.jpg",
     label: "heatmap_0",
+    description: "description",
   },
 ];

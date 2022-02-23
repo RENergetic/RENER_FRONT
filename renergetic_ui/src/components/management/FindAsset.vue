@@ -33,7 +33,7 @@ export default {
   async created() {},
   methods: {
     async loadData() {
-      await this.$ren.measurementApi.getMeasurements(this.objects).then((data) => {
+      await this.$ren.dataApi.listAssets().then((data) => {
         this.data = data;
       });
     },
