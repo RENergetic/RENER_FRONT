@@ -1,5 +1,14 @@
 // vue.config.js
 module.exports = {
+  css: {
+    loaderOptions: {
+      sass: {
+        prependData: `
+        @import "@/assets/style/variables.scss"; 
+      `,
+      },
+    },
+  },
   configureWebpack: {
     resolve: {
       fallback: { crypto: false, util: false },

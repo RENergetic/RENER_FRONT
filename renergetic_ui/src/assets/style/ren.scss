@@ -1,7 +1,10 @@
 // @import url('primevue/resources/themes/nova-vue/theme.css');
-$inputwidth: 100%;
-$primary-color: #94ba39; //#F1F2F2;//#0D89EC
-$secondary-color: #f1f2f2; //#F1F2F2;//#0D89EC
+@import './variables.scss';
+// $inputwidth: 100%;
+// $primary-color: #94ba39; //#F1F2F2;//#0D89EC
+// $secondary-color: #f1f2f2; //#F1F2F2;//#0D89EC
+// $sidemenu-button-width: 2rem;
+
 body {
     background-color: lightgrey;
 }
@@ -87,6 +90,9 @@ body {
     top: 0;
     left: 0;
     margin: 0;
+    .toolbar {
+        margin-left: ($sidemenu-button-width + 0.5rem);
+    }
 }
 .ren-sidebar.p-sidebar {
     padding: 0;

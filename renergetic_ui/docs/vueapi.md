@@ -10,3 +10,7 @@ TODO: restApiName - describe
 * 
 *   
 *   TODO: describe this.$emit("UpdateMenu", null);
+
+### vue.config.js
+Project imports
+* scss variables import

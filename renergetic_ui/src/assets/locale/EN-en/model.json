@@ -11,7 +11,10 @@
           "recommendations": "Recommendations",
           "notifications": "Notifications",
           "dashboard": "Dashboard",
-          "heatmap": "Heatmap"
+          "heatmap": "Heatmap",
+          "imgUrl":"Image URL",
+          "description":"Description",
+          "id":"Id"
      },
      "asset": {
           "name": "Name",
