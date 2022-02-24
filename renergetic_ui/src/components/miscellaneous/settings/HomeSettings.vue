@@ -31,7 +31,7 @@ export default {
   },
   async mounted() {
     this.$ren.dashboardApi
-      .informationPanelList()
+      .listInformationPanel()
       .then((panels) => {
         this.panels = panels;
       })
