@@ -14,15 +14,18 @@
           "heatmap": "Heatmap",
           "imgUrl":"Image URL",
           "description":"Description",
-          "id":"Id"
+          "id":"Id" 
      },
      "asset": {
           "name": "Name",
           "id": "Id",
+          "child":"Sub assets",
           "asset_type": "Asset",
           "label": "Label",
+          "geo_location":"Geo location",
           "owner": "Owner",
           "parent": "Parent",
+          
           "asset_types":
           {
                "room":"Room",

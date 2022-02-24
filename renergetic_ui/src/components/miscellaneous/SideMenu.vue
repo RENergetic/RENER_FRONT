@@ -58,7 +58,6 @@ export default {
         this.dashboards = dashboards;
         this.$store.commit("view/dashboards", dashboards);
         let menu = this.initMenu();
-        console.info(menu);
         this.menuModel = menu;
       });
       //this.$route.params.id

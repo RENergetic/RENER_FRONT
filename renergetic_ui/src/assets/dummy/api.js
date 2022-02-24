@@ -3,7 +3,8 @@ import informationPanelList from "./samples/informationpanels.js";
 import heatmapList from "./samples/heatmap.js";
 // import { measurementsGenerator, currentMeasurementsGenerator, dataGenerator } from "./dashboard.js";
 import * as generator from "./samples/data_generator.js";
-import { assetList, measurementList } from "./data.js";
+import assetList from "./samples/assets.js";
+import measurementList from "./samples/measurement";
 import storage from "./storage.js";
 const DASHBOARD_API_KEY = "dashboard_api";
 const MANAGEMENT_API_KEY = "management_api";
@@ -240,8 +241,8 @@ class DataApi {
     return generator.generateHeatMapState(heatmap);
   }
   async getPanelData(panelId) {
-    let panel = await this.managementApi.getInformationPanel(panelId);
-    return generator.generatePanelData(panel);
+    let panel = await this.dashboardApi.getInformationPanel(panelId);
+    return { data: generator.generatePanelData(panel), state: generator.generatePanelState(panel) };
   }
   async getAssetData(assetId) {
     let asset = await this.managementApi.getAsset(assetId);

@@ -6,7 +6,27 @@
   </InfoIcon>
 
   <DataTable :value="assetList">
-    <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.asset.' + col)"></Column>
+    <!-- <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.asset.' + col)"></Column> -->
+    <Column field="name" :header="$t('model.asset.name')"> </Column>
+    <Column field="label" :header="$t('model.asset.label')"> </Column>
+    <Column field="asset_type" :header="$t('model.asset.asset_type')"> </Column>
+    <Column field="child" :header="$t('model.asset.child')">
+      <template #body="slotProps">
+        {{ slotProps.data.child }}
+      </template>
+    </Column>
+
+    <Column field="parent" :header="$t('model.asset.parent')">
+      <template #body="slotProps">
+        <span v-if="slotProps.data.parent" @click="setParent">
+          {{ slotProps.data.parent.label }}
+        </span>
+        <span v-else class="disabled" @click="setParent">
+          {{ $t("view.no_parent") }}
+        </span>
+      </template>
+    </Column>
+    <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column>
   </DataTable>
   <Button :label="$t('view.button.add')" @click="assetAdd = true" />
   <Dialog
@@ -33,12 +53,15 @@ export default {
   computed: {},
   watch: {},
   async created() {
-    this.assetList = await this.$ren.infrastructureApi.assetList();
+    this.assetList = await this.$ren.managementApi.listAsset();
     if (this.assetList != null && this.assetList.length > 0) {
       this.columns = Object.keys(this.assetList[0]);
     }
   },
   methods: {
+    setParent() {
+      console.info("TODO: Set parent");
+    },
     onCreate(o, i) {
       alert(o);
       alert(i);

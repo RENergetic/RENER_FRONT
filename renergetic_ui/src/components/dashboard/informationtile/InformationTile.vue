@@ -1,9 +1,7 @@
 <template>
   <div :class="'grid-stack-item ren'" v-bind="gridStackAttributes">
-    <Card :class="'grid-stack-item-content' + state">
-      <template v-if="tile != null && tile.title != null" #title>
-        {{ tile.title }}
-      </template>
+    <Card :class="'grid-stack-item-content' + state" style="padding: 0">
+      <template v-if="tile != null && tile.title != null" #title> {{ tile.title }} </template>
       <template v-if="tile != null" #content>
         <!-- state: {{ state }}  -->
         <div style="position: absolute; left: 0.3rem; top: 0.3rem">
@@ -24,10 +22,12 @@
             @click="$emit('notification', tile)"
           />
         </div>
-        <KnobTile v-if="tile.type == 'knob'" :tile="tile" :pdata="pdata"></KnobTile>
+        <KnobTile v-if="tile.type == 'knob'" :tile="tile" :pdata="pdata.data"></KnobTile>
+
+        <DoughnutTile v-else-if="tile.type == 'doughnut'" :tile="tile" :pdata="pdata.data"></DoughnutTile>
 
         <!-- tile list-->
-        <InformationListTile v-else :tile="tile" :pdata="pdata"></InformationListTile>
+        <InformationListTile v-else :tile="tile" :pdata="pdata.data"></InformationListTile>
       </template>
     </Card>
   </div>
@@ -35,10 +35,11 @@
 <script>
 import InformationListTile from "./InformationListTile.vue";
 import KnobTile from "./KnobTile.vue";
+import DoughnutTile from "./DoughnutTile.vue";
 import Card from "primevue/card";
 export default {
   name: "InformationTile",
-  components: { InformationListTile, KnobTile, Card },
+  components: { InformationListTile, KnobTile, DoughnutTile, Card },
   props: {
     edit: { type: Boolean, default: false },
     tile: {
@@ -64,8 +65,9 @@ export default {
       return !(this.settings != null && !this.settings.notificationVisibility);
     },
     state: function () {
-      let state = this.tile == null || this.tile.state == null ? "unknown" : this.tile.state;
-      return ` state ${state}`;
+      // let state = this.tile == null || this.tile.state == null ? "unknown" : this.tile.state;
+      let state = this.pdata && this.pdata.state ? this.pdata.state[this.tile.id] : "unknown";
+      return ` state ${state.toLowerCase()}`;
     },
     col: function () {
       return this.tile == null || this.tile.col == null ? 2 : this.tile.col;

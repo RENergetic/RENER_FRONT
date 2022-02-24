@@ -58,10 +58,10 @@ export default [
         layout: { x: 8, y: 0, h: 3, w: 3 },
         state: "warning",
         title: null,
-        type: null,
+        type: "doughnut",
         measurements: [
           {
-            id: "1",
+            id: "2",
             name: "e5",
             label: "e5",
             unit: "kWh",
@@ -69,7 +69,15 @@ export default [
             icon: "electricity",
           },
           {
-            id: "2",
+            id: "3",
+            name: "e6",
+            label: "e6",
+            unit: "kWh",
+            description: "total",
+            icon: "electricity",
+          },
+          {
+            id: "4",
             name: "e6",
             label: "e6",
             unit: "kWh",

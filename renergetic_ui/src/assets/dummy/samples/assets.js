@@ -1,11 +1,11 @@
 export default [
   {
-    id: "1",
+    id: 1,
     asset_type: "type_1",
     name: "asset_1",
     label: "Asset 1",
     geo_location: null,
-    parent_id: null,
+    parent: { id: 4, name: "parent_4", label: "Parent 4" },
     child: [],
     measurents: [
       {
@@ -35,12 +35,12 @@ export default [
     ],
   },
   {
-    id: "a1",
+    id: 2,
     asset_type: "type_1",
     name: "asset_1",
     label: "Asset 1",
     geo_location: null,
-    parent_id: null,
+    parent: { id: 3, name: "parent_3", label: "Parent 3" },
     child: [],
     measurents: [
       {
@@ -53,8 +53,8 @@ export default [
       },
     ],
   },
-  { id: "3", asset_type: "room", name: "room_1", label: "Room 1", owner: null, parent: null },
-  { id: "4", asset_type: "room", name: "room_2", label: "Room 2", owner: null, parent: null },
+  { id: "3", asset_type: "building", name: "parent_3", label: "Parent 3", owner: null, parent: null },
+  { id: "4", asset_type: "building", name: "parent_4", label: "Parent 4", owner: null, parent: null },
   { id: "5", asset_type: "room", name: "room_3", label: "Room 3", owner: null, parent: null },
   { id: "6", asset_type: "pv", name: "pv_1", label: "PV 1", owner: null, parent: null },
 ];

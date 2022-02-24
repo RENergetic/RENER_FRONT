@@ -99,11 +99,12 @@ import AccordionTab from "primevue/accordiontab";
 import Card from "primevue/card";
 import Konva from "konva";
 import NotificationView from "./NotificationList.vue";
-
+import { Colors } from "../../plugins/model/Enums";
 import HeatMapSettings from "../miscellaneous/settings/HeatmapSettings.vue";
 import MeasurementChart from "../dashboard/measurements/MeasurementChart.vue";
 import MeasurementsView from "../dashboard/measurements/MeasurementsView.vue";
-
+//todo: config
+const TRANSPARENCY = "77";
 const sceneWidth = 1200;
 const sceneHeight = 600;
 export default {
@@ -217,12 +218,28 @@ export default {
         this.toggleArea(newId, true);
       }
     },
-    toggleArea(id, state) {
+    getColor(id, selected = false) {
+      let state = this.heatmapState != null ? this.heatmapState[id] : null;
+      let transparency = TRANSPARENCY;
+      if (selected) {
+        transparency = "CC";
+        // return Colors.SELECTED + transparency;
+      }
+      switch (Colors[state]) {
+        case Colors.OK:
+          return Colors.OK + transparency;
+        case Colors.WARNING:
+          return Colors.WARNING + transparency;
+        case Colors.ERROR:
+          return Colors.ERROR + transparency;
+        default:
+          return Colors.DEFAULT + transparency;
+      }
+    },
+    toggleArea(id, selected) {
       let shape = this.$refs.stage.getStage().findOne(`#${id}`);
       if (shape != null) {
-        //oldShape  -> after delete
-        if (!state) shape.fill("#00D2FFAA");
-        else shape.fill("#AAAAFFAA");
+        shape.fill(this.getColor(id, selected));
       }
     },
     onClick(evt) {
@@ -278,6 +295,7 @@ export default {
       stage.add(layer);
       stage.draw();
     },
+
     getConfig(area) {
       return {
         sceneFunc: function (context, shape) {
@@ -290,7 +308,7 @@ export default {
           // special Konva.js method
           context.fillStrokeShape(shape);
         },
-        fill: "#00D2FFAA",
+        fill: this.getColor(area.id),
         stroke: "black",
         strokeWidth: 1,
         opacity: 0.75,

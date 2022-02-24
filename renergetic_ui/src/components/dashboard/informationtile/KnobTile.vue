@@ -1,6 +1,11 @@
 <template>
-  <div>
-    <Knob v-model="value" :min="0" :max="1.0" />
+  <Knob v-model="value" :min="0" :max="1.0" />
+  <div style="text-align: center">
+    <!-- <div key="" class="flex flex-grow-1">
+      {{ $t("model.heatmap.heatmap") }}
+    </div> -->
+
+    <div>{{ measurement.label }}</div>
   </div>
 </template>
 <script>
@@ -15,13 +20,22 @@ export default {
       default: () => ({}),
     },
   },
-  // data() {
-  //   return {};
-  // },
+  data() {
+    let measurement = null;
+    if (this.tile.measurements) {
+      measurement = this.tile.measurements[0];
+    }
+    return {
+      measurement: measurement,
+    };
+  },
   computed: {
     value: function () {
-      let v = this.pdata ? this.pdata[this.tile.props.key] : null;
-      return v != null ? v : this.tile.props.value;
+      if (this.measurement) {
+        let id = this.measurement.id;
+        return this.pdata ? this.pdata[id] : null;
+      }
+      return null;
     },
   },
 
