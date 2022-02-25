@@ -1,6 +1,5 @@
 <template>
   <div>
-    <HeatDemand :demand="demand" />
     <DotMenu :model="menuModel" :fixed="true" />
     <Dialog
       v-model:visible="settingsDialog"
@@ -14,7 +13,9 @@
 
     <div class="home-grid-stack grid-stack">
       <div v-if="settings.actionsVisibility" :class="'grid-stack-item ren'" v-bind="panelTile">
-        <Card :class="'grid-stack-item-content'"> action panel todo:</Card>
+        <Card :class="'grid-stack-item-content  flex  flex-column  flex-wrap align-items-start'">
+          <DemandList :class="'flex align-content-start'"
+        /></Card>
       </div>
       <div v-if="settings.feedbackVisibility" :class="'grid-stack-item ren'" v-bind="feedbackTile">
         <Card :class="'grid-stack-item-content'">
@@ -46,7 +47,7 @@ import HomeSettings from "../components/miscellaneous/settings/HomeSettings.vue"
 import Feedback from "../components/user/Feedback.vue";
 import NotificationList from "../components/dashboard/area/NotificationList.vue";
 import InformationPanel from "../components/dashboard/InformationPanel.vue";
-import HeatDemand from "../components/user/demand/HeatDemand.vue";
+import DemandList from "../components/user/demand/DemandList.vue";
 
 import { GridStack } from "gridstack";
 // THEN to get HTML5 drag&drop
@@ -57,7 +58,7 @@ export default {
   name: "Home",
   components: {
     DotMenu,
-    HeatDemand,
+    DemandList,
     HomeSettings,
     InformationPanel,
     NotificationList,

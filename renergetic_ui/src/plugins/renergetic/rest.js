@@ -2,10 +2,12 @@ import AuthApi from "./ren_api/auth";
 import DashboardApi from "./ren_api/dashboardapi";
 import DataApi from "./ren_api/dataapi";
 import ManagementApi from "./ren_api/managementapi";
+import UserApi from "./ren_api/userapi";
 import {
   DashboardApi as DummyDashboardApi,
   ManagementApi as DummyManagementApi,
   DataApi as DummyDataApi,
+  UserApi as DummyUserApi,
 } from "../../assets/dummy/api";
 
 // import UserApi from './renergetic/ren_api/user'
@@ -117,6 +119,7 @@ export default function createRest(vueInstance) {
     dashboardApi: !USE_DUMMY ? new DashboardApi(axiosInstance, vueInstance) : new DummyDashboardApi(),
     dataApi: !USE_DUMMY ? new DataApi(axiosInstance, vueInstance) : new DummyDataApi(),
     managementApi: !USE_DUMMY ? new ManagementApi(axiosInstance, vueInstance) : new DummyManagementApi(),
+    userApi: !USE_DUMMY ? new UserApi(axiosInstance, vueInstance) : new DummyUserApi(),
 
     // this.user = new UserApi(axiosInstance, vueInstance);
   };

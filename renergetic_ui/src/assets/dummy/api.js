@@ -1,6 +1,7 @@
 import dashboardList from "./samples/dashboard.js";
 import informationPanelList from "./samples/informationpanels.js";
 import heatmapList from "./samples/heatmap.js";
+import demandList from "./samples/demand.js";
 // import { measurementsGenerator, currentMeasurementsGenerator, dataGenerator } from "./dashboard.js";
 import * as generator from "./samples/data_generator.js";
 import assetList from "./samples/assets.js";
@@ -261,4 +262,11 @@ class DataApi {
     return userId;
   }
 }
-export { DashboardApi, ManagementApi, DataApi };
+
+class UserApi {
+  async getDemad(userId) {
+    console.info(userId);
+    return demandList;
+  }
+}
+export { DashboardApi, ManagementApi, DataApi, UserApi };

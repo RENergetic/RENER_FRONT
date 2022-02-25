@@ -3,16 +3,18 @@
     <div class="flex-none flex align-items-center justify-content-center">
       <span
         v-if="demand.icon != null"
-        id="tileicon"
+        id="demandicon"
         :style="'background-image: url(' + icons[demand.icon] + ')'"
       ></span>
     </div>
 
-    <div class="flex-none flex align-items-center justify-content-start flex-wrap">
-      <div class="flex col-12" style="height: 2rem">
-        <h3>{{ demand.msg }}</h3>
+    <div class="flex-none flex flex-column justify-content-center flex-wrap">
+      <div class="flex align-content-end flex-wrap">
+        <div class="message">{{ demand.msg }}</div>
       </div>
-      <div class="flex col-12 description">{{ demand.description }}</div>
+      <div class="flex align-content-start flex-wrap">
+        <div class="flex align-items-center justify-content-center">{{ demand.description }}</div>
+      </div>
     </div>
     <div class="flex-none flex align-items-center justify-content-center">
       <i v-if="demand.up" class="pi pi-arrow-up-right"></i>
@@ -56,9 +58,12 @@ export default {
     font-size: 1rem;
     font-style: italic;
   }
+  .message {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
 }
-
-#tileicon {
+#demandicon {
   width: 5rem;
   height: 5rem;
   // display: inherit;
