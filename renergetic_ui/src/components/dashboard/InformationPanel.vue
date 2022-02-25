@@ -1,5 +1,5 @@
 <template>
-  <div id="panel-grid-stack" style="width: 100%" class="grid-stack">
+  <div id="panel-grid-stack" style="width: 100%; position: absolute; top: 0" class="grid-stack">
     <InformationTile
       v-for="tile in tiles"
       :key="tile.id"
@@ -64,7 +64,7 @@
 import InformationTile from "./informationtile/InformationTile.vue";
 import ManageSensors from "./measurements/ManageSensors.vue";
 
-import NotificationView from "../area/NotificationList.vue";
+import NotificationView from "../dashboard/area/NotificationList.vue";
 
 import Dialog from "primevue/dialog";
 import { GridStack } from "gridstack";

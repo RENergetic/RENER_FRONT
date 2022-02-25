@@ -1,5 +1,6 @@
 <template>
   <div>
+    <HeatDemand :demand="demand" />
     <DotMenu :model="menuModel" :fixed="true" />
     <Dialog
       v-model:visible="settingsDialog"
@@ -27,9 +28,14 @@
         </Card>
       </div>
       <div v-if="settings.selectedPanel" :class="'grid-stack-item ren'" v-bind="informationTile">
-        <Card :class="'grid-stack-item-content'">
-          <InformationPanel ref="panel" :panel="settings.selectedPanel" :edit-mode="false"></InformationPanel>
-        </Card>
+        <div :class="'grid-stack-item-content'">
+          <InformationPanel
+            v-if="loaded"
+            ref="panel"
+            :panel="settings.selectedPanel"
+            :edit-mode="false"
+          ></InformationPanel>
+        </div>
       </div>
     </div>
   </div>
@@ -38,8 +44,9 @@
 import DotMenu from "../components/miscellaneous/DotMenu.vue";
 import HomeSettings from "../components/miscellaneous/settings/HomeSettings.vue";
 import Feedback from "../components/user/Feedback.vue";
-import NotificationList from "../components/area/NotificationList.vue";
+import NotificationList from "../components/dashboard/area/NotificationList.vue";
 import InformationPanel from "../components/dashboard/InformationPanel.vue";
+import HeatDemand from "../components/user/demand/HeatDemand.vue";
 
 import { GridStack } from "gridstack";
 // THEN to get HTML5 drag&drop
@@ -50,6 +57,7 @@ export default {
   name: "Home",
   components: {
     DotMenu,
+    HeatDemand,
     HomeSettings,
     InformationPanel,
     NotificationList,
@@ -57,6 +65,8 @@ export default {
   },
   data() {
     return {
+      demand: { msg: "increase bla blah blah", icon: "battery", up: true, description: "description" },
+      loaded: false,
       panelTile: {
         id: "panelTile",
         "gs-id": "panelTile",
@@ -84,8 +94,6 @@ export default {
       informationTile: {
         id: "informationTile",
         "gs-id": "informationTile",
-        // "gs-x": this.layout.x,
-        // "gs-y": this.layout.y,
         "gs-w": 12,
         "gs-h": 3,
       },
@@ -139,6 +147,7 @@ export default {
   watch: {},
   async created() {
     // todo: get id from session storage
+    this.loaded = false;
     let id = "1";
     this.$ren.dashboardApi.getInformationPanel(id).then((panel) => {
       this.panel = panel;
@@ -156,6 +165,7 @@ export default {
       this.settings = this.$store.getters["settings/home"];
     },
     setGrid() {
+      this.loaded = false;
       if (this.grid != null) this.grid.destroy(false);
       let grid = GridStack.init({ float: true }, ".home-grid-stack");
       if (this.locked) {
@@ -165,6 +175,7 @@ export default {
       }
       this.grid = grid;
       window.homeGrid = this.grid;
+      this.loaded = true;
     },
     gridWidth(tile) {
       return tile.col == null ? 2 : tile.col;

@@ -122,11 +122,11 @@
 </template>
 <script>
 import Card from "primevue/card";
-import MeasurementChart from "../dashboard/measurements/MeasurementChart.vue";
-import ManageSensors from "../dashboard/measurements/ManageSensors.vue";
-import AssetSelect from "../management/infrastructure/AssetSelect.vue";
+import MeasurementChart from "../measurements/MeasurementChart.vue";
+import ManageSensors from "../measurements/ManageSensors.vue";
+import AssetSelect from "../../management/infrastructure/AssetSelect.vue";
 import HeatMapSelect from "./HeatMapSelect.vue";
-import DashboardSelect from "../dashboard/DashboardSelect.vue";
+import DashboardSelect from "../DashboardSelect.vue";
 
 import Dialog from "primevue/dialog";
 export default {

@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import HeatMapView from "../../components/area/HeatMapView.vue";
+import HeatMapView from "../../components/dashboard/area/HeatMapView.vue";
 
 //initial canvas size
 // const sceneWidth = 900;

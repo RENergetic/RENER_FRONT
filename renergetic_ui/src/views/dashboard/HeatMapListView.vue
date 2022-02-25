@@ -4,7 +4,7 @@
 <script>
 // import { MapArea } from "../../plugins/model/Area";
 
-import HeatMapList from "../../components/area/HeatMapList.vue";
+import HeatMapList from "../../components/dashboard/area/HeatMapList.vue";
 
 //initial canvas size
 // const sceneWidth = 900;

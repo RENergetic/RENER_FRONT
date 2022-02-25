@@ -21,7 +21,7 @@
 
 <script>
 import Dialog from "primevue/dialog";
-import NotificationList from "../area/NotificationList.vue";
+import NotificationList from "../dashboard/area/NotificationList.vue";
 import DashboardForm from "../../components/dashboard/DashboardForm.vue";
 export default {
   name: "Dialogs",

@@ -90,19 +90,19 @@
 </template>
 <script>
 import Tree from "primevue/tree";
-import DotMenu from "../miscellaneous/DotMenu.vue";
+import DotMenu from "../../miscellaneous/DotMenu.vue";
 import AreaDetails from "./AreaDetails.vue";
-import RecommendationView from "../management/RecommendationView.vue";
+import RecommendationView from "../../management/RecommendationView.vue";
 import Listbox from "primevue/listbox";
 import Accordion from "primevue/accordion";
 import AccordionTab from "primevue/accordiontab";
 import Card from "primevue/card";
 import Konva from "konva";
 import NotificationView from "./NotificationList.vue";
-import { Colors } from "../../plugins/model/Enums";
-import HeatMapSettings from "../miscellaneous/settings/HeatmapSettings.vue";
-import MeasurementChart from "../dashboard/measurements/MeasurementChart.vue";
-import MeasurementsView from "../dashboard/measurements/MeasurementsView.vue";
+import { Colors } from "../../../plugins/model/Enums";
+import HeatMapSettings from "../../miscellaneous/settings/HeatmapSettings.vue";
+import MeasurementChart from "../measurements/MeasurementChart.vue";
+import MeasurementsView from "../measurements/MeasurementsView.vue";
 //todo: config
 const TRANSPARENCY = "77";
 const sceneWidth = 1200;

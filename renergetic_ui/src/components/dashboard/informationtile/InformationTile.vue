@@ -1,45 +1,49 @@
 <template>
   <div :class="'grid-stack-item ren'" v-bind="gridStackAttributes">
-    <Card :class="'grid-stack-item-content' + state" style="padding: 0">
-      <template v-if="tile != null && tile.title != null" #title> {{ tile.title }} </template>
-      <template v-if="tile != null" #content>
-        <!-- state: {{ state }}  -->
-        <div style="position: absolute; left: 0.3rem; top: 0.3rem">
-          <Button
-            v-if="edit"
-            id="menu-toggle"
-            :class="'p-button-rounded p-button-text edit-button'"
-            aria-haspopup="true"
-            icon="pi pi-pencil"
-            @click="$emit('edit', tile)"
-          />
-          <Button
-            v-if="notificationVisible"
-            id="notification"
-            :class="'p-button-rounded p-button-text bell-button '"
-            aria-haspopup="true"
-            icon="pi pi-bell"
-            @click="$emit('notification', tile)"
-          />
-        </div>
-        <KnobTile v-if="tile.type == 'knob'" :tile="tile" :pdata="pdata.data"></KnobTile>
+    <div :class="'grid-stack-item-content' + state" style="padding: 0">
+      <!-- <template v-if="tile != null && tile.title != null" #title> {{ tile.title }} </template> -->
+      <!-- <template v-if="tile != null" #content> -->
+      <!-- state: {{ state }}  -->
+      <div style="position: absolute; left: 0.3rem; top: 0.3rem">
+        <Button
+          v-if="edit"
+          id="menu-toggle"
+          :class="'p-button-rounded p-button-text edit-button'"
+          aria-haspopup="true"
+          icon="pi pi-pencil"
+          @click="$emit('edit', tile)"
+        />
+        <Button
+          v-if="notificationVisible"
+          id="notification"
+          :class="'p-button-rounded p-button-text bell-button '"
+          aria-haspopup="true"
+          icon="pi pi-bell"
+          @click="$emit('notification', tile)"
+        />
+      </div>
+      <div class="card-container">
+        <h3 v-if="tile != null && tile.label != null" class="block">{{ tile.label }}</h3>
 
-        <DoughnutTile v-else-if="tile.type == 'doughnut'" :tile="tile" :pdata="pdata.data"></DoughnutTile>
+        <KnobTile v-if="tile.type == 'knob'" class="block" :tile="tile" :pdata="pdata.data"></KnobTile>
+
+        <DoughnutTile v-else-if="tile.type == 'doughnut'" class="block" :tile="tile" :pdata="pdata.data"></DoughnutTile>
 
         <!-- tile list-->
-        <InformationListTile v-else :tile="tile" :pdata="pdata.data"></InformationListTile>
-      </template>
-    </Card>
+        <InformationListTile v-else class="block" :tile="tile" :pdata="pdata.data"></InformationListTile>
+        <!-- </template> -->
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import InformationListTile from "./InformationListTile.vue";
 import KnobTile from "./KnobTile.vue";
 import DoughnutTile from "./DoughnutTile.vue";
-import Card from "primevue/card";
+// import Card from "primevue/card";
 export default {
   name: "InformationTile",
-  components: { InformationListTile, KnobTile, DoughnutTile, Card },
+  components: { InformationListTile, KnobTile, DoughnutTile },
   props: {
     edit: { type: Boolean, default: false },
     tile: {
