@@ -3,6 +3,7 @@ import HomePage from "../views/Home.vue";
 import dashboardRoutes from "./dashboard";
 import adminRoutes from "./admin";
 import managementRoutes from "./management";
+import userRoutes from "./user";
 //todo import other
 const routes = [
   {
@@ -27,7 +28,7 @@ const routes = [
   {
     path: "/profile/:username?",
     name: "Profile",
-    meta: { isAuthenticated: true, roles: ["manager", "administrator"] },
+    meta: { isAuthenticated: true },
     component: () => import("../views/user/Profile.vue"),
   },
   {
@@ -39,6 +40,7 @@ const routes = [
   ...dashboardRoutes,
   ...adminRoutes,
   ...managementRoutes,
+  ...userRoutes,
 ];
 function timeout(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));

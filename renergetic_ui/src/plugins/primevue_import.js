@@ -13,6 +13,11 @@ import InputNumber from "primevue/inputnumber";
 import RadioButton from "primevue/radiobutton";
 import ToggleButton from "primevue/togglebutton";
 import Dialog from "primevue/dialog";
+import Password from "primevue/password";
+import Message from "primevue/message";
+import Toolbar from "primevue/toolbar";
+import TabView from "primevue/tabview";
+import TabPanel from "primevue/tabpanel";
 const plugin = {};
 
 plugin.install = function (Vue /*, options*/) {
@@ -31,6 +36,12 @@ plugin.install = function (Vue /*, options*/) {
   Vue.component("RadioButton", RadioButton);
   Vue.component("Tooltip", Tooltip);
   Vue.component("ToggleButton", ToggleButton);
+  Vue.component("Dialog", Dialog);
+  Vue.component("Password", Password);
+  Vue.component("Message", Message);
+  Vue.component("Toolbar", Toolbar);
+  Vue.component("TabView", TabView);
+  Vue.component("TabPanel", TabPanel);
 }; // install
 
 export default plugin;

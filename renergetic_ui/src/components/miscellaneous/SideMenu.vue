@@ -275,6 +275,15 @@ export default {
           },
         },
         {
+          label: this.$t("menu.signup"),
+          icon: "pi pi-sign-in",
+          to: "/signup",
+          visible: () => !this.isLogin,
+          command: () => {
+            this.$router.push({ name: "SignUp" });
+          },
+        },
+        {
           label: this.$t("menu.logout"),
           icon: "pi pi-sign-out",
           to: "/",
