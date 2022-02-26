@@ -9,19 +9,18 @@
       "id": "1",
       "label": null,
       "type": "list",
-      "props":null,
+      "props": null,
       "measurements": [
         {
-          "id": "e1",
+          "id": "2",
+          "name": "e5",
+          "label": "e5",
           "unit": "kWh",
           "description": "avg",
-          "icon": "electricity"
-        },
-        {
-          "id": "e2",
-          "unit": "kWh",
-          "description": "total",
-          "icon": "electricity"
+          "icon": "electricity",
+          "measurement_details": {
+            "color": "#5C6BC0"
+          }
         }
       ]
     }

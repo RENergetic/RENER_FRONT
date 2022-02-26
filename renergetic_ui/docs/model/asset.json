@@ -1,27 +1,39 @@
 {
-    "id": "4",
-    "asset_type": "pv",
-    "name": "pv_1",
-    "label": "PV 1",
-    "owner": null,
+    "id": 1,
+    "asset_type": "type_1",
+    "name": "asset_1",
+    "label": "Asset 1",
+    "geo_location": null,
     "parent": {
-        "id": "5",
-        "asset_type": "pv",
-        "name": "pv_2",
-        "label": "PV 2",
-        "owner": null,
-        "parent": null
+        "id": 4,
+        "name": "parent_4",
+        "label": "Parent 4"
     },
-    "children": [
+    "child": [],
+    "measurents": [
         {
-            "parent": {
-                "id": "6",
-                "asset_type": "pv",
-                "name": "pv_6",
-                "label": "PV 1",
-                "owner": null,
-                "parent": null
-            }
+            "id": "7",
+            "name": "e7",
+            "label": "e7",
+            "unit": "kWh",
+            "description": "total",
+            "icon": "electricity"
+        },
+        {
+            "id": "6",
+            "name": "e7",
+            "label": "e7",
+            "unit": "kWh",
+            "description": "total",
+            "icon": "electricity"
+        },
+        {
+            "id": "5",
+            "name": "e5",
+            "label": "e5",
+            "unit": "kWh",
+            "description": "total",
+            "icon": "electricity"
         }
     ]
 }

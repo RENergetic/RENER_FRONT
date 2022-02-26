@@ -3,8 +3,9 @@ export default class UserApi extends RestComponent {
   constructor(axiosInstance, vueInstance) {
     super(axiosInstance, vueInstance);
   }
-  // TODO:
+  // TODO: implement
   // async getDemad(userId) {}
+
   static loggedUser = undefined;
   register(user) {
     //validate

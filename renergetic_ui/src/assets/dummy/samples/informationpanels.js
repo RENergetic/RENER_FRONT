@@ -2,6 +2,7 @@ export default [
   {
     id: "1",
     label: "testname",
+    name: "some name",
     tiles: [
       {
         layout: { x: 0, y: 0, h: 3, w: 3 },
