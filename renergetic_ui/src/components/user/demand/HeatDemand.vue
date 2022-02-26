@@ -18,7 +18,8 @@
     </div>
     <div class="flex-none flex align-items-center justify-content-center">
       <i v-if="demand.up" class="pi pi-arrow-up-right"></i>
-      <i v-else class="pi pi-arrow-down-right"></i>
+      <i v-if="demand.up == false" class="pi pi-arrow-down-right"></i>
+      <!-- TODO: set empty icon ??? <i v-else class="pi pi-arrow-down-right"></i> -->
     </div>
   </div>
 </template>
