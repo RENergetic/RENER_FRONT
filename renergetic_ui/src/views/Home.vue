@@ -12,10 +12,8 @@
     </Dialog>
 
     <div class="home-grid-stack grid-stack">
-      <div v-if="settings.actionsVisibility" :class="'grid-stack-item ren'" v-bind="panelTile">
-        <Card :class="'grid-stack-item-content  flex  flex-column  flex-wrap align-items-start'">
-          <DemandList :class="'flex align-content-start'"
-        /></Card>
+      <div v-if="settings.demandVisibility" :class="'grid-stack-item ren'" v-bind="panelTile">
+        <DemandList :class="'grid-stack-item-content'" />
       </div>
       <div v-if="settings.feedbackVisibility" :class="'grid-stack-item ren'" v-bind="feedbackTile">
         <Card :class="'grid-stack-item-content'">
@@ -150,6 +148,7 @@ export default {
     // todo: get id from session storage
     this.loaded = false;
     let id = "1";
+    console.info(this.$ren.dashboardApi);
     this.$ren.dashboardApi.getInformationPanel(id).then((panel) => {
       this.panel = panel;
     });

@@ -1,5 +1,5 @@
 <template>
-  {{ model }}
+  <!-- {{ model }} -->
   <Settings :schema="schema" :model="model"></Settings>
 </template>
 
@@ -65,13 +65,13 @@ export default {
           key: "notificationVisibility",
         },
         {
-          label: this.$t("settings.actions"),
+          label: this.$t("settings.request_demand"),
           ext: {
             true: this.$t("settings.visible"),
             false: this.$t("settings.hidden"),
           },
           type: Boolean,
-          key: "actionsVisibility",
+          key: "demandVisibility",
         },
       ];
       //TODO: get panel list from store

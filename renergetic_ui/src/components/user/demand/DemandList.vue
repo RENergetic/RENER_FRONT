@@ -1,7 +1,13 @@
 <template>
-  <template v-for="d in demands" :key="d">
-    <HeatDemand v-if="d != null && d.type == 'heat'" :demand="d"></HeatDemand>
-  </template>
+  <!-- <Card :class="' flex  flex-column    align-items-start'"> -->
+  <div>
+    <div style="height: 100%" class="flex flex-column align-items-start align-content-start">
+      <template v-for="d in demands" :key="d">
+        <HeatDemand v-if="d != null && d.type == 'heat'" :demand="d"></HeatDemand>
+      </template>
+    </div>
+  </div>
+  <!-- </Card> -->
 </template>
 <script>
 import HeatDemand from "./HeatDemand.vue";
@@ -26,6 +32,7 @@ export default {
 
 <style lang="scss">
 .heatdemand {
+  padding: 0.75rem;
   i {
     font-size: 2rem;
     margin-left: 0.75rem;

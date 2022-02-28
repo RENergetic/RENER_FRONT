@@ -61,6 +61,7 @@ export default {
         this.menuModel = menu;
       });
       //this.$route.params.id
+      //TODO: set user id ?
       this.$ren.dashboardApi.listInformationPanel().then((informationPanels) => {
         this.informationPanels = informationPanels;
         this.$store.commit("view/informationPanels", informationPanels);
