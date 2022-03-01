@@ -77,10 +77,11 @@ export default class DashboardApi extends RestComponent {
   // async addInformationPanel(panel) {}
   // async updateInformationPanel(panel) {}
   // async deleteInformationPanel(id) {}
+  // async searchAsset(q,offset=0,limit=20){}
 
   // HEATMAP REQUESTS
   //TODO:
-  // async listHeatMap(userId=null) { }  src/assets/dummy/samples/heatmap.js
+  // async listHeatMap(userId=null,offset=0,limit=20) { }  src/assets/dummy/samples/heatmap.js
   // async getHeatMap(id) { }
   // async addHeatMap(heatmap) { }
   // async updateHeatMap(heatmap) { }
