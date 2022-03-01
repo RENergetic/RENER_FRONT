@@ -138,6 +138,7 @@ export default {
   },
   async mounted() {
     this.pdata = await this.$ren.dataApi.getPanelData(this.panel.id);
+    console.info(JSON.stringify(this.pdata));
     if (this.grid != null) this.grid.destroy(false);
     let grid = GridStack.init({ float: true }, "#panel-grid-stack");
     if (this.locked) {

@@ -24,6 +24,7 @@ export default {
         return this.$ren.dataApi.getHeatMapState(heatmap.id);
       })
       .then((state) => {
+        console.info(JSON.stringify(state));
         this.heatmapState = state;
       })
       .catch((e) => {

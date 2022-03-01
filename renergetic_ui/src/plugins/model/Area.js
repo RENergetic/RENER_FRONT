@@ -1,7 +1,7 @@
 export class MapArea {
-  constructor(id, points = null, dashboardId = null) {
-    if (points != null) this.points = points;
-    else this.points = [];
+  constructor(id, roi = null, dashboardId = null) {
+    if (roi != null) this.roi = roi;
+    else this.roi = [];
     this.id = id;
     //for primefaces modules
     this.value = id;

@@ -117,6 +117,7 @@ export default {
     } else {
       if (this.objects) {
         await this.$ren.dataApi.getTimeseries(this.objects).then((data) => {
+          // console.info(JSON.stringify(data));
           this.data = data;
         });
       }
@@ -125,6 +126,7 @@ export default {
   methods: {
     async loadData() {
       await this.$ren.dataApi.getTimeseries(this.objects).then((data) => {
+        // console.info(JSON.stringify(data));
         this.data = data;
       });
     },

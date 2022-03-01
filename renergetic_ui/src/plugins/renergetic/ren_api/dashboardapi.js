@@ -72,7 +72,7 @@ export default class DashboardApi extends RestComponent {
   // INFORMATION PANEL REQUESTS
 
   //TODO:
-  // listInformationPanel(userId=null) {}
+  // listInformationPanel(userId=null,offset=0,limit=10) {} =>  src/assets/dummy/samples/information_panel.js
   // async getInformationPanel(panelId) {}
   // async addInformationPanel(panel) {}
   // async updateInformationPanel(panel) {}
@@ -80,9 +80,10 @@ export default class DashboardApi extends RestComponent {
 
   // HEATMAP REQUESTS
   //TODO:
-  // async listHeatMap(userId=null) { }
+  // async listHeatMap(userId=null) { }  src/assets/dummy/samples/heatmap.js
   // async getHeatMap(id) { }
   // async addHeatMap(heatmap) { }
   // async updateHeatMap(heatmap) { }
   // async deleteHeatMap(id) { }
+  // async getDemand(areaId) {} ./docs/model/demand.json
 }

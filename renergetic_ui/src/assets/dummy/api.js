@@ -171,6 +171,11 @@ class DashboardApi {
       resolve(id);
     });
   }
+  getDemand(areaId) {
+    //TODO:
+    console.info(areaId);
+    return demandList;
+  }
 }
 
 class ManagementApi {
@@ -197,7 +202,11 @@ class ManagementApi {
     let maps = await this.assetList();
     return maps.find((it) => it.id == id);
   }
-
+  getDemand(assetId) {
+    //TODO:
+    console.info(assetId);
+    return demandList;
+  }
   async deleteAsset(id) {
     return new Promise((resolve) => {
       resolve(id);

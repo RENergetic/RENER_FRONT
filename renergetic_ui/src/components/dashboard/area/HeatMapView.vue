@@ -248,8 +248,8 @@ export default {
         let stage = this.$refs.stage.getStage();
         var shape = stage.findOne(`#${this.current.id}`);
         if (shape != null) {
-          this.current.points.push([evt.layerX / this.scale, evt.layerY / this.scale]);
-          let pnts = this.current.points;
+          this.current.roi.push([evt.layerX / this.scale, evt.layerY / this.scale]);
+          let pnts = this.current.roi;
           let f = (context, shape) => {
             context.beginPath();
             pnts.forEach((pnt) => {
@@ -301,7 +301,7 @@ export default {
         sceneFunc: function (context, shape) {
           context.beginPath();
           console.info(area);
-          area.points.forEach((pnt) => {
+          area.roi.forEach((pnt) => {
             context.lineTo(pnt[0], pnt[1]);
           });
           context.closePath();
