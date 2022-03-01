@@ -14,11 +14,5 @@
     "measurement_details": {
         "color": "#5C6BC0"
     },
-    "connection": {
-        "2": {
-            "id": "2",
-            "name": "other measurement name",
-            "label": "other measurement's label"
-        }
-    }
+    
 }

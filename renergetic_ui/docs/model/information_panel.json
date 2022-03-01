@@ -1,5 +1,5 @@
 {
-    "id": "1",
+    "id": 1,
     "name": "test",
     "label": "testname",
     "tiles": [
@@ -23,7 +23,9 @@
                     "unit": "kWh",
                     "description": "avg",
                     "icon": "electricity",
-                    "measurement_details": { "color": "#5C6BC0" },
+                    "measurement_details": {
+                        "color": "#5C6BC0"
+                    }
                 }
             ]
         }

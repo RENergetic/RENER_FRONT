@@ -175,8 +175,8 @@ export default {
         let stage = this.$refs.stage.getStage();
         var shape = stage.findOne(`#${this.current.id}`);
         if (shape != null) {
-          this.current.points.push([evt.layerX / this.scale, evt.layerY / this.scale]);
-          let pnts = this.current.points;
+          this.current.roi.push([evt.layerX / this.scale, evt.layerY / this.scale]);
+          let pnts = this.current.roi;
           let f = (context, shape) => {
             context.beginPath();
             pnts.forEach((pnt) => {
@@ -195,7 +195,7 @@ export default {
     },
     addPoint() {
       this.current = new MapArea(`area_${nextId++}`);
-      this.current.points = []; // new MapArea(`area_${nextId++}`);
+      this.current.roi = []; // new MapArea(`area_${nextId++}`);
       this.addMode = true;
       this.drawArea(this.current);
     },
@@ -220,7 +220,7 @@ export default {
       stage.draw();
     },
     confirmPoint() {
-      // let area = new MapArea(`area_${nextId++}`, this.current.points);
+      // let area = new MapArea(`area_${nextId++}`, this.current.roi);
       //todo: validate
       this.heatmap.areas.push(this.current);
       this.current = null;
@@ -230,7 +230,7 @@ export default {
       return {
         sceneFunc: function (context, shape) {
           context.beginPath();
-          area.points.forEach((pnt) => {
+          area.roi.forEach((pnt) => {
             context.lineTo(pnt[0], pnt[1]);
           });
           context.closePath();
