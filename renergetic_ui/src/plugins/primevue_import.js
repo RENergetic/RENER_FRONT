@@ -18,6 +18,7 @@ import Message from "primevue/message";
 import Toolbar from "primevue/toolbar";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
+import Card from "primevue/card";
 const plugin = {};
 
 plugin.install = function (Vue /*, options*/) {
@@ -42,6 +43,7 @@ plugin.install = function (Vue /*, options*/) {
   Vue.component("Toolbar", Toolbar);
   Vue.component("TabView", TabView);
   Vue.component("TabPanel", TabPanel);
+  Vue.component("Card", Card);
 }; // install
 
 export default plugin;

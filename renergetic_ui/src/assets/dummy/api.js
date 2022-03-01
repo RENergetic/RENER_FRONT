@@ -199,8 +199,16 @@ class ManagementApi {
     });
   }
   async getAsset(id) {
-    let maps = await this.assetList();
-    return maps.find((it) => it.id == id);
+    let assets = await this.listAsset();
+    return assets.find((it) => it.id == id);
+  }
+  async searchAsset(q) {
+    let mQ = q.toLowerCase();
+    let assets = await this.listAsset();
+    let f = function (s) {
+      return s.name.toLowerCase().includes(mQ) || (s.label != null && s.label.toLowerCase().includes(mQ));
+    };
+    return assets.filter((it) => f(it));
   }
   getDemand(assetId) {
     //TODO:

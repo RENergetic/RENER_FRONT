@@ -31,22 +31,34 @@
         :options="assetTypes"
         option-label="label"
         option-value="value"
-        :placeholder="$t('view.select_asset')"
+        :placeholder="$t('view.select_asset_type')"
       />
     </div>
   </div>
-  todo: select parent, select measurements
+
+  <div class="field grid">
+    <label for="assetType" class="col-fixed" style="width: 5rem">
+      {{ $t("model.asset.parent") }}
+    </label>
+    <div class="col">
+      <span v-if="parentLabel" @click="selectAsset">{{ parentLabel }}</span>
+      <span v-else @click="selectAsset">{{ $t("view.select_parent_asset") }}</span>
+    </div>
+  </div>
 
   <Button :label="$t('view.button.submit')" @click="submit" />
   <Button :label="$t('view.button.cancel')" @click="cancel" />
+  <AssetSelect ref="assetSelectDialog" v-model="mModel.parent" />
+  <!-- change -->
 </template>
 
 <script>
 import InfoIcon from "../../miscellaneous/InfoIcon.vue";
 import { AssetTypes } from "@/plugins/model/Enums.js";
+import AssetSelect from "./AssetSelect.vue";
 export default {
   name: "AssetForm",
-  components: { InfoIcon },
+  components: { InfoIcon, AssetSelect },
   props: {
     model: {
       type: Object,
@@ -66,9 +78,16 @@ export default {
       // ],
     };
   },
-  computed: {},
+  computed: {
+    parentLabel: function () {
+      return this.mModel != null && this.mModel.parent != null ? this.mModel.parent.label : null;
+    },
+  },
   watch: {},
   methods: {
+    selectAsset() {
+      this.$refs.assetSelectDialog.open();
+    },
     submit() {
       this.$emit("update:modelValue", this.mModel);
     },

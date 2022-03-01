@@ -20,12 +20,11 @@
           "name": "Name",
           "id": "Id",
           "child":"Sub assets",
-          "asset_type": "Asset",
+          "asset_type": "Asset type",
           "label": "Label",
           "geo_location":"Geo location",
           "owner": "Owner",
-          "parent": "Parent",
-          
+          "parent": "Parent",          
           "asset_types":
           {
                "room":"Room",

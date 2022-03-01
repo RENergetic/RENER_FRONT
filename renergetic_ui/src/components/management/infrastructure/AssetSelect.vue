@@ -1,20 +1,21 @@
 <template>
   <div>
-    <Dialog
-      v-model:visible="assetDialog"
-      :style="{ width: '75vw' }"
-      :maximizable="true"
-      :modal="true"
-      :dismissable-mask="true"
-    >
+    <Dialog v-model:visible="assetDialog" :maximizable="true" :modal="true" :dismissable-mask="true">
       <Card>
         <template #title> {{ $t("view.asset_list") }} </template>
         <template #content>
-          <Listbox v-if="assetList" v-model="selectedAsset" :options="assetList" option-label="label">
+          <AutoComplete
+            v-model="selectedAsset"
+            :placeholder="$t('view.find_asset')"
+            :suggestions="assetList"
+            field="label"
+            @complete="searchAsset($event)"
+          />
+          <!-- <Listbox v-if="assetList" v-model="selectedAsset" :options="assetList" option-label="label">
             <template #option="slotProps">
               <div>{{ slotProps.option.label }}</div>
             </template>
-          </Listbox>
+          </Listbox> -->
           <div v-if="selectedAsset" class="field grid">
             <div class="col">
               <Button :label="$t('view.button.submit')" @click="submit" />
@@ -29,14 +30,11 @@
   </div>
 </template>
 <script>
-import Listbox from "primevue/listbox";
-
-import Card from "primevue/card";
 export default {
   name: "AssetSelect",
-  components: { Card, Listbox },
-  props: { current: { type: Object, default: () => ({}) } },
-  emits: { change: null },
+  components: {},
+  props: { current: { type: Object, default: () => null } },
+  emits: ["change", "update:modelValue"],
   data() {
     return {
       assetList: [],
@@ -50,19 +48,41 @@ export default {
     submit() {
       if (this.selectedAsset) {
         this.$emit("change", this.selectedAsset);
+        this.$emit("update:modelValue", this.selectedAsset);
+        this.assetDialog = false;
+      }
+    },
+    async searchAsset(event) {
+      let q = event.query.trim();
+      if (q.length > 0)
+        await this.$ren.managementApi.searchAsset(q).then((assetList) => {
+          // if (this.current) {
+          //   if (assetList.find((it) => it.id == this.current.id) == null) {
+          //     this.assetList = [this.current] + assetList;
+          //   }
+          //   this.selectedAsset = this.current;
+          // }
+          this.assetList = assetList;
+        });
+      else {
+        await this.$ren.managementApi.listAsset().then((assetList) => {
+          this.assetList = assetList;
+        });
       }
     },
     async open() {
-      await this.$ren.dashboardApi.listAsset().then((assetList) => {
-        this.assetDialog = true;
-        if (this.current) {
-          if (assetList.find((it) => it.id == this.current.id) == null) {
-            this.assetList = [this.current] + assetList;
-          }
-          this.selectedAsset = this.current;
-        }
-        this.assetList = assetList;
-      });
+      this.assetDialog = true;
+      this.selectedAsset = this.current;
+      // await this.$ren.managementApi.listAsset().then((assetList) => {
+      //   this.assetDialog = true;
+      //   if (this.current) {
+      //     if (assetList.find((it) => it.id == this.current.id) == null) {
+      //       this.assetList = [this.current] + assetList;
+      //     }
+      //     this.selectedAsset = this.current;
+      //   }
+      //   this.assetList = assetList;
+      // });
     },
     cancel() {
       this.assetDialog = false;

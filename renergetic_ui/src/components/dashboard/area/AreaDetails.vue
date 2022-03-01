@@ -117,7 +117,7 @@
 
     <HeatMapSelect ref="heatmapSelectDialog" :current="mArea.dashboard" @change="updateHeatMap"></HeatMapSelect>
     <DashboardSelect ref="dashboardDialog"></DashboardSelect>
-    <AssetSelect ref="dashboardDialog"></AssetSelect>
+    <AssetSelect ref="assetSelectDialog"></AssetSelect>
   </div>
 </template>
 <script>
@@ -184,7 +184,7 @@ export default {
       this.$refs.dashboardDialog.open();
     },
     selectAsset() {
-      this.$refs.assetSelect.open();
+      this.$refs.assetSelectDialog.open();
     },
 
     viewMeasurements() {
