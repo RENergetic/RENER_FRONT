@@ -24,10 +24,13 @@
   "edit_area": "Edit area",
   "button": {
     "submit": "Submit",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "add":"Add"
   },
   "settings": {
     "true": {},
     "false": {}
   }
+
+  
 }

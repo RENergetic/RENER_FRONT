@@ -4,7 +4,6 @@
       <!-- some info -->
     </template>
   </InfoIcon>
-
   <div class="field grid">
     <label for="assetName" class="col-fixed" style="width: 5rem">
       {{ $t("model.asset.name") }}
@@ -29,10 +28,10 @@
       <Dropdown
         id="assetType"
         v-model="mModel.asset_type"
-        :options="cities"
+        :options="assetTypes"
         option-label="label"
         option-value="value"
-        placeholder="Select a City"
+        :placeholder="$t('view.select_asset')"
       />
     </div>
   </div>
@@ -44,7 +43,7 @@
 
 <script>
 import InfoIcon from "../../miscellaneous/InfoIcon.vue";
-
+import { AssetTypes } from "@/plugins/model/Enums.js";
 export default {
   name: "AssetForm",
   components: { InfoIcon },
@@ -57,11 +56,14 @@ export default {
   emits: ["update:modelValue", "cancel"],
   data() {
     return {
+      assetTypes: Object.entries(AssetTypes).map((k) => {
+        return { value: k[1], label: this.$t("enums.asset_type." + k[1]) };
+      }),
       mModel: this.model,
-      assetTypes: [
-        { value: "room", label: this.$t("model.asset.asset_types.room") },
-        { value: "pv", label: this.$t("model.asset.asset_types.pv") },
-      ],
+      // assetTypes: [
+      //   { value: "room", label: this.$t("model.asset.asset_types.room") },
+      //   { value: "pv", label: this.$t("model.asset.asset_types.pv") },
+      // ],
     };
   },
   computed: {},

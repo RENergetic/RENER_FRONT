@@ -5,4 +5,9 @@ const Colors = Object.freeze({
   SELECTED: "#0a0fc9",
   DEFAULT: "#eaeef5",
 });
-export { Colors };
+const AssetTypes = Object.freeze({
+  BUILDING: "bulding",
+  FLAT: "flat",
+  HEAT_SOURCE: "heat_source",
+});
+export { Colors, AssetTypes };
