@@ -22,6 +22,7 @@
           "child":"Sub assets",
           "asset_type": "Asset type",
           "label": "Label",
+          "measurements":"Measurements",
           "geo_location":"Geo location",
           "owner": "Owner",
           "parent": "Parent",          
@@ -32,6 +33,8 @@
           }
      },
      "measurement":{
-          
+          "name": "Name",
+          "label":"Label",
+          "measurement_type":"Measurement type"
      }
 }

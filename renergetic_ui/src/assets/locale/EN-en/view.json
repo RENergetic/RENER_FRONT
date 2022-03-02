@@ -1,4 +1,5 @@
 {
+  "asset_child_empty":"No sub assets",
   "asset_list": "Asset list",
   "dashboards": "Dashboards",
   "dashboard_delete": "Delete dashboard",
@@ -12,6 +13,8 @@
   "manage_sensors": "Manage sensors",
   "measurements": "Measurements",
   "no_asset":"No asset",
+  "no_asset_children":"No sub assets",
+  "no_asset_measurements":"No measurements", 
   "no_dashboard":"No dashboard",
   "no_heatmap": "No heatmap",
   "no_parent":"No parent",
@@ -25,6 +28,8 @@
   "select_asset_type":"Select asset type",
   "select_parent_asset":"Select parent asset",
   "edit_area": "Edit area",
+  "view_asset_children":"Show sub assets",
+  "view_asset_measurements":"Show measurements", 
   "button": {
     "submit": "Submit",
     "cancel": "Cancel",

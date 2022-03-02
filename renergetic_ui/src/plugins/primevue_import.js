@@ -19,6 +19,7 @@ import Toolbar from "primevue/toolbar";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
 import Card from "primevue/card";
+
 const plugin = {};
 
 plugin.install = function (Vue /*, options*/) {

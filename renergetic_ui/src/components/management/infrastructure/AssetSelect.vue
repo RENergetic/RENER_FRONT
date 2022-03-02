@@ -70,9 +70,11 @@ export default {
         });
       }
     },
-    async open() {
+    async open(current = null) {
       this.assetDialog = true;
-      this.selectedAsset = this.current;
+      if (current == null) this.selectedAsset = this.current;
+      else this.selectedAsset = current;
+
       // await this.$ren.managementApi.listAsset().then((assetList) => {
       //   this.assetDialog = true;
       //   if (this.current) {

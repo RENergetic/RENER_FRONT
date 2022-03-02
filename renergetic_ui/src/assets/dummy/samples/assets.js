@@ -7,7 +7,7 @@ export default [
     geo_location: null,
     parent: { id: 4, name: "parent_4", label: "Parent 4" },
     child: [],
-    measurents: [
+    measurements: [
       {
         id: "7",
         name: "e7",
@@ -42,7 +42,7 @@ export default [
     geo_location: null,
     parent: { id: 3, name: "parent_3", label: "Parent 3" },
     child: [],
-    measurents: [
+    measurements: [
       {
         id: "1",
         name: "e1",
