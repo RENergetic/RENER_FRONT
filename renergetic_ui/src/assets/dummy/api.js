@@ -171,9 +171,9 @@ class DashboardApi {
       resolve(id);
     });
   }
-  getDemand(areaId) {
+  getDemand(heatmapId) {
     //TODO:
-    console.info(areaId);
+    console.info(heatmapId);
     return demandList;
   }
 }

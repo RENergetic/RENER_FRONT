@@ -3,5 +3,9 @@
     "bulding": "Bulding",
     "flat": "Flat",
     "heat_source": "Heat Source"
+  },
+  "measurement_type":{
+   "electricity":"electricity",
+   "heat":"heat"
   }
 }

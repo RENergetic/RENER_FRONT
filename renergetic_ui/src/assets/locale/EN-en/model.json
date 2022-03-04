@@ -35,6 +35,15 @@
      "measurement":{
           "name": "Name",
           "label":"Label",
-          "measurement_type":"Measurement type"
+          "measurement_type":"Measurement type",
+          "type":"Measurement type",
+          "id":"Id",
+          "details":"details",
+          "direction":"Direction",
+          "direction_out":"Out",
+          "direction_in":"In",
+          "direction_null":"N/A"
+
      }
+
 }

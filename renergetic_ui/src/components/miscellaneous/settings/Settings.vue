@@ -35,6 +35,9 @@
         <div v-else-if="s.type == Array">
           <ListBox :id="s.key" v-model="mModel[s.key]" :options="s.ext.options" :option-label="s.ext.optionLabel" />
         </div>
+        <div v-else-if="s.type == 'Color'">
+          <ColorPicker v-model="mModel[s.key]" />
+        </div>
         <InputText v-else :id="s.key" v-model="mModel[s.key]" />
       </div>
     </div>
@@ -45,12 +48,14 @@
 import SelectButton from "primevue/selectbutton";
 import InputNumber from "primevue/inputnumber";
 import ListBox from "primevue/listbox";
+import ColorPicker from "primevue/colorpicker";
 export default {
   name: "Settings",
   components: {
     SelectButton,
     InputNumber,
     ListBox,
+    ColorPicker,
     // ToggleButton
   },
   props: {
