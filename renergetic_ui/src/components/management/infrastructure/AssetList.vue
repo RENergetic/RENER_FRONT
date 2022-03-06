@@ -98,10 +98,16 @@
           <Column field="label" :header="$t('model.measurement.label')"> </Column>
           <Column field="measurement_type" :header="$t('model.measurement.measurement_type')"> </Column>
         </DataTable>
-
         <span v-else>
           {{ $t("view.no_asset_measurements") }}
         </span>
+
+        <Button :label="$t('view.button.add_measurement')" @click="addMeasurement" />
+        <measurement-select
+          ref="measurementSelectDialog"
+          :asset-id="selectedRow.data.id"
+          @select="onMeasurementSelect"
+        ></measurement-select>
       </template>
     </Card>
   </Dialog>
@@ -111,9 +117,11 @@
 import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import AssetForm from "./AssetForm.vue";
 import AssetSelect from "./AssetSelect.vue";
+import MeasurementSelect from "./MeasurementSelect.vue";
+
 export default {
   name: "AssetList",
-  components: { InfoIcon, AssetForm, AssetSelect },
+  components: { InfoIcon, AssetForm, AssetSelect, MeasurementSelect },
   props: {},
   data() {
     return {
@@ -153,6 +161,12 @@ export default {
 
     onParentChange(parent) {
       this.selectedRow.data.parent = parent;
+    },
+    addMeasurement() {
+      this.$refs.measurementSelectDialog.open();
+    },
+    onMeasurementSelect(measurement) {
+      this.selectedRow.data.measurements.push(measurement);
     },
     async onCreate(o) {
       await this.$ren.managementApi.addAsset(o).then((assetId) => {

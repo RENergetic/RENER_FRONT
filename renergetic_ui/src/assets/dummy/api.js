@@ -210,6 +210,7 @@ class ManagementApi {
     };
     return assets.filter((it) => f(it));
   }
+
   getDemand(assetId) {
     //TODO:
     console.info(assetId);
@@ -234,6 +235,14 @@ class ManagementApi {
   async getMeasurement(id) {
     let maps = await this.measurementList();
     return maps.find((it) => it.id == id);
+  }
+  async searchMeasurement(q) {
+    let mQ = q.toLowerCase();
+    let measurements = await this.listMeasurement();
+    let f = function (s) {
+      return s.name.toLowerCase().includes(mQ) || (s.label != null && s.label.toLowerCase().includes(mQ));
+    };
+    return measurements.filter((it) => f(it));
   }
 }
 class DataApi {

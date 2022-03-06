@@ -18,5 +18,6 @@ export default class ManagementApi extends RestComponent {
   // async listMeasurement(userId=null) {}  ./docs/model/measurement.json  or src/assets/dummy/samples/measurement.js
   // async updateMeasurement(measurement) {} -> only allow to update labels ,  color, and key-value properties
   // async getMeasurement(id) {}
+  // async searchMeasurement(q,assetId=null,offset=0,limit=20){}
   //
 }

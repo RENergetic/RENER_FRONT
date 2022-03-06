@@ -31,7 +31,7 @@
 </template>
 <script>
 export default {
-  name: "AssetSelect",
+  name: "MeasurementSelect",
   components: {},
   props: { current: { type: Object, default: () => null } },
   emits: ["change", "update:modelValue"],
