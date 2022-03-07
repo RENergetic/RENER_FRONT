@@ -10,4 +10,10 @@ const AssetTypes = Object.freeze({
   FLAT: "flat",
   HEAT_SOURCE: "heat_source",
 });
-export { Colors, AssetTypes };
+
+const TileTypes = Object.freeze({
+  knob: "knob",
+  doughnut: "doughnut",
+  list: "list",
+});
+export { Colors, AssetTypes, TileTypes };

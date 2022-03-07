@@ -7,5 +7,10 @@
   "measurement_type":{
    "electricity":"electricity",
    "heat":"heat"
-  }
+  },
+  "tile_type":{
+    "knob":"knob",
+    "doughnut":"doughnut",
+    "list":"list"
+  } 
 }

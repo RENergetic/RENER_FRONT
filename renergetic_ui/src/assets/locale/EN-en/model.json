@@ -12,38 +12,42 @@
           "notifications": "Notifications",
           "dashboard": "Dashboard",
           "heatmap": "Heatmap",
-          "imgUrl":"Image URL",
-          "description":"Description",
-          "id":"Id" 
+          "imgUrl": "Image URL",
+          "description": "Description",
+          "id": "Id"
      },
      "asset": {
           "name": "Name",
           "id": "Id",
-          "child":"Sub assets",
+          "child": "Sub assets",
           "asset_type": "Asset type",
           "label": "Label",
-          "measurements":"Measurements",
-          "geo_location":"Geo location",
+          "measurements": "Measurements",
+          "geo_location": "Geo location",
           "owner": "Owner",
-          "parent": "Parent",          
-          "asset_types":
-          {
-               "room":"Room",
-               "pv":"PV"
+          "parent": "Parent",
+          "asset_types": {
+               "room": "Room",
+               "pv": "PV"
           }
      },
-     "measurement":{
+     "information_tile": {
+          "type": "type"
+     },
+     "measurement": {
           "name": "Name",
-          "label":"Label",
-          "measurement_type":"Measurement type",
-          "type":"Measurement type",
-          "id":"Id",
-          "details":"details",
-          "direction":"Direction",
-          "direction_out":"Out",
-          "direction_in":"In",
-          "direction_null":"N/A"
-
+          "label": "Label",
+          "measurement_type": "Measurement type",
+          "type": "Measurement type",
+          "id": "Id",
+          "details": "details",
+          "direction": "Direction",
+          "direction_out": "Out",
+          "direction_in": "In",
+          "direction_null": "N/A"
+     },
+     "panel": {
+          "name": "Name",
+          "label": "Label"
      }
-
 }

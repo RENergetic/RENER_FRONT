@@ -17,6 +17,7 @@
   "no_asset": "No asset",
   "no_asset_children": "No sub assets",
   "no_asset_measurements": "No measurements",
+  "no_panel_measurements": "No measurements",
   "no_dashboard": "No dashboard",
   "no_heatmap": "No heatmap",
   "no_parent": "No parent",
@@ -29,6 +30,7 @@
   "select_heatmap": "Select heatmap",
   "select_asset": "Select asset",
   "select_asset_type": "Select asset type",
+  "select_tile_type": "Select tile type",
   "select_parent_asset": "Select parent asset",
   "edit_area": "Edit area",
   "view_asset_children": "Show sub assets",
@@ -37,7 +39,8 @@
     "submit": "Submit",
     "cancel": "Cancel",
     "add": "Add",
-    "add_measurement": "Add measurement"
+    "add_measurement": "Add measurement",
+    "manage_measurement": "Set measurements"
   },
   "settings": {
     "true": {},

@@ -5,7 +5,7 @@
       {{ $t("model.heatmap.heatmap") }}
     </div> -->
 
-    <div>{{ measurement.label }}</div>
+    <div v-if="measurement">{{ measurement.label }}</div>
   </div>
 </template>
 <script>

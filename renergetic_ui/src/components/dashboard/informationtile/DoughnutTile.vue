@@ -31,7 +31,7 @@ export default {
       let labels = this.tile.measurements.map((m) => m.label);
 
       let data = this.tile.measurements.map((m) => this.pdata[m.id]);
-      console.info(this.tile.measurements);
+      // console.info(this.tile.measurements);
       let backgroundColor = this.tile.measurements.map((m) =>
         m.measurement_details.color ? m.measurement_details.color : "#90A4AE",
       );

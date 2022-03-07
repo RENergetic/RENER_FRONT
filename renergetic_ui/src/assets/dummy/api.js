@@ -126,7 +126,7 @@ class DashboardApi {
     return panels.find((it) => it.id == panelId);
   }
   async addInformationPanel(panel) {
-    panel.id = Math.floor(Math.random() * 150);
+    panel.id = Math.floor(Math.random() * 1500);
     storage.push(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, panel);
     return new Promise((resolve) => {
       resolve(panel.id);
@@ -222,7 +222,7 @@ class ManagementApi {
     });
   }
   async listMeasurement(userId) {
-    console.info(`listMeasurement for ${userId}`);
+    console.info(`listMeasurement for user:${userId}`);
     return storage.get(`${MANAGEMENT_API_KEY}.${MEASUREMENT_KEY}`, measurementList);
   }
 
