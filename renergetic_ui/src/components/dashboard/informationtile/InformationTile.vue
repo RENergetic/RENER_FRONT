@@ -4,6 +4,7 @@
       <!-- <template v-if="tile != null && tile.title != null" #title> {{ tile.title }} </template> -->
       <!-- <template v-if="tile != null" #content> -->
       <!-- state: {{ state }}  -->
+
       <div style="position: absolute; left: 0.3rem; top: 0.3rem">
         <Button
           v-if="edit"
@@ -11,7 +12,7 @@
           :class="'p-button-rounded p-button-text edit-button'"
           aria-haspopup="true"
           icon="pi pi-pencil"
-          @click="$emit('edit', tile)"
+          @click="$emit('edit', slotProps)"
         />
         <Button
           v-if="notificationVisible"
@@ -19,7 +20,7 @@
           :class="'p-button-rounded p-button-text bell-button '"
           aria-haspopup="true"
           icon="pi pi-bell"
-          @click="$emit('notification', tile)"
+          @click="$emit('notification', slotProps)"
         />
       </div>
       <div class="card-container">
@@ -46,10 +47,14 @@ export default {
   components: { InformationListTile, KnobTile, DoughnutTile },
   props: {
     edit: { type: Boolean, default: false },
-    tile: {
+    slotProps: {
       type: Object,
       default: () => ({}),
     },
+    // index: {
+    //   type: Number,
+    //   default: null,
+    // },
     pdata: {
       type: Object,
       default: () => ({}),
@@ -64,6 +69,9 @@ export default {
   //   return {};
   // },
   computed: {
+    tile: function () {
+      return this.slotProps.tile;
+    },
     notificationVisible: function () {
       //default visible
       return !(this.settings != null && !this.settings.notificationVisibility);
@@ -71,13 +79,15 @@ export default {
     state: function () {
       // let state = this.tile == null || this.tile.state == null ? "unknown" : this.tile.state;
       let state = this.pdata && this.pdata.state ? this.pdata.state[this.tile.id] : "unknown";
-      return ` state ${state.toLowerCase()}`;
+      if (state) return `state ${state.toLowerCase()}`;
+      //state not provided to the exists tile (e.g. tile not saved yet in the backend)
+      return `state unknown`;
     },
     col: function () {
       return this.tile == null || this.tile.col == null ? 2 : this.tile.col;
     },
     layout: function () {
-      console.info(this.tile.layout);
+      // console.info(this.tile.layout);
       return this.tile != null && this.tile.layout != null ? this.tile.layout : (() => ({}))();
     },
     gridStackAttributes() {
