@@ -52,6 +52,9 @@
         @click="() => (manageSensorsDialog = !manageSensorsDialog)"
       />
     </div>
+    <div class="field grid">
+      <Button :label="$t('view.button.submit')" icon="pi pi-plus" @click="saveGrid" />
+    </div>
     <Dialog
       v-model:visible="manageSensorsDialog"
       :style="{ width: '75vw' }"
@@ -61,10 +64,6 @@
     >
       <!-- {{ selectedTile.tile.measurements }} -->
       <ManageSensors v-model="selectedTile.tile.measurements"></ManageSensors>
-
-      <div class="field grid">
-        <Button :label="$t('view.button.submit')" icon="pi pi-plus" @click="apply" />
-      </div>
     </Dialog>
   </Dialog>
 </template>
@@ -109,7 +108,7 @@ export default {
       default: false,
     },
   },
-  emits: ["save"],
+  emits: ["update"],
   data() {
     return {
       grid: null,
@@ -136,7 +135,7 @@ export default {
   watch: {
     manageSensorsDialog: function (newValue) {
       if (!newValue) {
-        this.mPanel[this.selectedTile.index] = this.selectedTile.tile;
+        this.mPanel.tiles[this.selectedTile.index] = this.selectedTile.tile;
       }
     },
     panel: {
@@ -213,8 +212,9 @@ export default {
         }
       });
       this.mPanel.tiles = tiles;
-      this.$emit("save", this.mPanel);
+      this.$emit("update", this.mPanel);
     },
+
     viewNotification() {
       //TODO: load here notifications for tile
       this.notificationDialog = true;

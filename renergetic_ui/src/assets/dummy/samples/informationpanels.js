@@ -171,4 +171,26 @@ export default [
       },
     ],
   },
+  {
+    tiles: [
+      {
+        id: "abd4491c-34ac-4a10-a3ec-0e003670636b",
+        title: null,
+        type: "knob",
+        measurements: [
+          {
+            id: "2",
+            type: { name: "electricity", unit: "kWh" },
+            name: "m_2",
+            label: "M 2",
+            direction: 1,
+            measurement_details: { color: "#FF7043" },
+          },
+        ],
+        props: { items: [] },
+        layout: { x: 0, y: 0, w: 3, h: 2 },
+      },
+    ],
+    id: 790,
+  },
 ];

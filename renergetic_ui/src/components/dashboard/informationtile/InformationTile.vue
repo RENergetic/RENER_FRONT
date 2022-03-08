@@ -1,6 +1,6 @@
 <template>
   <div :class="'grid-stack-item ren'" v-bind="gridStackAttributes">
-    <div :class="'grid-stack-item-content' + state" style="padding: 0">
+    <div :class="'grid-stack-item-content ' + state" style="padding: 0">
       <!-- <template v-if="tile != null && tile.title != null" #title> {{ tile.title }} </template> -->
       <!-- <template v-if="tile != null" #content> -->
       <!-- state: {{ state }}  -->
@@ -77,11 +77,12 @@ export default {
       return !(this.settings != null && !this.settings.notificationVisibility);
     },
     state: function () {
+      // return state class
       // let state = this.tile == null || this.tile.state == null ? "unknown" : this.tile.state;
       let state = this.pdata && this.pdata.state ? this.pdata.state[this.tile.id] : "unknown";
-      if (state) return `state ${state.toLowerCase()}`;
+      if (state) return ` state ${state.toLowerCase()}`;
       //state not provided to the exists tile (e.g. tile not saved yet in the backend)
-      return `state unknown`;
+      return ` state unknown`;
     },
     col: function () {
       return this.tile == null || this.tile.col == null ? 2 : this.tile.col;

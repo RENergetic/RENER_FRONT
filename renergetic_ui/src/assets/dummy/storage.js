@@ -19,16 +19,22 @@ class Storage {
   }
   async update(k, o) {
     this.data[k] = o;
+    console.info(k);
+    console.info(JSON.stringify(o));
     sessionStorage.setItem(k, JSON.stringify(o));
   }
 
   async push(k, o) {
+    console.info(k);
+    console.info(JSON.stringify(o));
     let l = await this.get(k, []);
     l.push(o);
     storage.update(k, l);
   }
 
   async updateList(k, o) {
+    console.info(k);
+    console.info(JSON.stringify(o));
     let idx = this.data[k].findIndex((el) => el.id === o.id);
     this.data[k][idx] = o;
     // sessionStorage.setItem(this.data, JSON.stringify(o));
