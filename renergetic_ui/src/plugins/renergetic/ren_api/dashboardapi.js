@@ -7,7 +7,7 @@ export default class DashboardApi extends RestComponent {
   list() {
     // TODO:
     return this.axios
-      .get(`/api-postgre/1.0/api/dashboard`, {
+      .get(`/api/dashboard`, {
         headers: { "Content-type": "application/json; charset=UTF-8" },
       })
       .then((response) => {
@@ -19,7 +19,7 @@ export default class DashboardApi extends RestComponent {
   }
   get(id) {
     return this.axios
-      .get(`/api-postgre/1.0/api/dashboard/test/${id}`, {
+      .get(`/api/dashboard/test/${id}`, {
         headers: { "Content-type": "application/json; charset=UTF-8" },
       })
       .then((response) => {
@@ -33,7 +33,7 @@ export default class DashboardApi extends RestComponent {
     //validate
     // TODO:
     return this.axios
-      .post(`/api-postgre/1.0/api/dashboard`, dashboard, {
+      .post(`/api/dashboard`, dashboard, {
         headers: { "Content-type": "application/json; charset=UTF-8" },
       })
       .then((response) => {
@@ -47,7 +47,7 @@ export default class DashboardApi extends RestComponent {
     //validate
     // TODO:
     return this.axios
-      .put(`/api-postgre/1.0/api/dashboard`, dashboard, {
+      .put(`/api/dashboard`, dashboard, {
         headers: { "Content-type": "application/json; charset=UTF-8" },
       })
       .then((response) => {
@@ -59,7 +59,7 @@ export default class DashboardApi extends RestComponent {
   }
   delete(id) {
     return this.axios
-      .delete(`/api-postgre/1.0/api/dashboard/${id}`, {
+      .delete(`/api/dashboard/${id}`, {
         headers: { "Content-type": "application/json; charset=UTF-8" },
       })
       .then((response) => {
