@@ -87,6 +87,14 @@ export default {
         };
       });
       items.push({
+        label: this.$t("menu.information_panel_list"),
+        icon: "pi pi-fw  pi-align-left",
+        to: "/panel",
+        command: () => {
+          this.$router.push({ name: "InformationPanelList" });
+        },
+      });
+      items.push({
         //tODO:
         label: this.$t("menu.add_information_panel"),
         icon: "pi pi-fw pi-plus",

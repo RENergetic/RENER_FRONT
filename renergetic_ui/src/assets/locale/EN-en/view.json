@@ -12,6 +12,7 @@
   "heatmap_area_delete_confirm": "Are you sure you want to remove heatmap: {label}",
   "go_to_dashboard": "Go to dashboard",
   "go_to_heatmap": "Go inside",
+  "information_panel_list":"Information panel list",
   "manage_sensors": "Manage sensors",
   "measurements": "Measurements",
   "no_asset": "No asset",

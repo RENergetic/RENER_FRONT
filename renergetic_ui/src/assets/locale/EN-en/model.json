@@ -34,6 +34,11 @@
      "information_tile": {
           "type": "type"
      },
+     "information_panel": {
+          "id": "Id",
+          "label": "Label",
+          "name": "Name"
+     },
      "measurement": {
           "name": "Name",
           "label": "Label",

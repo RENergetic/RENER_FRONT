@@ -54,6 +54,12 @@ var dashboardRoutes = [
     component: () => import("../views/dashboard/InformationPanelView.vue"),
   },
   {
+    path: "/panel",
+    name: "InformationPanelListView",
+    meta: { isAuthenticated: true },
+    component: () => import("../views/dashboard/InformationPanelListView.vue"),
+  },
+  {
     path: "/panel/add",
     name: "InformationPanelCreator",
     meta: { isAuthenticated: true },
