@@ -45,7 +45,7 @@ export default {
   methods: {
     async onSave() {
       //todo: validate:
-      await this.$ren.dashboardApi.updateHeatmap(this.heatmap).then(() => {
+      await this.$ren.dashboardApi.updateHeatMap(this.heatmap).then(() => {
         // dashoard.id = id;
         // this.$store.commit("view/dashboardsAdd", dashoard);
         // TODO: router back?

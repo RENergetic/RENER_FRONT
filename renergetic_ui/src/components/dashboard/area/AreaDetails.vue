@@ -35,17 +35,13 @@
       <div id="asset-select" class="flex">
         <div v-if="mArea.asset" class="flex flex-grow-1">
           {{ mArea.asset.label }}
-          <i
-            v-if="mArea.asset"
-            v-tooltip="$t('view.asset')"
-            class="pi pi-arrow-circle-right"
-            @click="assetDialog = true"
-          />
+          <span v-if="mArea.asset != null">
+            <i v-tooltip="$t('view.show')" class="pi pi-arrow-circle-right" @click="showAsset" />
+          </span>
         </div>
         <div v-else class="flex flex-grow-1">
           <span v-if="edit">
             {{ $t("view.select_asset") }}
-            <i v-if="mArea.assetId" v-tooltip="$t('view.show')" class="pi pi-arrow-circle-right" @click="showAsset" />
           </span>
           <span v-else class="disabled"> {{ $t("view.no_asset") }} </span>
         </div>
@@ -192,22 +188,23 @@ export default {
       this.$refs.dashboardDialog.open();
     },
     async selectAsset() {
-      if (this.mArea.assetId != null) {
+      if (this.mArea.asset != null) {
         await this.$ren.managementApi
-          .getAsset(this.mArea.assetId)
+          .getAsset(this.mArea.asset.id)
           .then((asset) => this.$refs.assetSelectDialog.open(asset));
       } else this.$refs.assetSelectDialog.open();
     },
     async showAsset() {
-      if (this.mArea.assetId != null) {
+      if (this.mArea.asset != null) {
         await this.$ren.managementApi
-          .getAsset(this.mArea.assetId)
+          .getAsset(this.mArea.asset.id)
           .then((asset) => this.$refs.assetViewDialog.open(asset));
       }
     },
 
     onAssetUpdate(asset) {
       this.mArea.assetId = asset.id;
+      this.mArea.asset = asset;
     },
     viewMeasurements() {
       this.measurementDialog = true;

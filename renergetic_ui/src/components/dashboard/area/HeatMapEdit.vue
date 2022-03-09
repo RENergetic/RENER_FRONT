@@ -1,6 +1,6 @@
 <template>
   <div class="grid">
-    <div class="col-8">
+    <div class="col-9">
       <Card>
         <template #title> HeatMap editor </template>
         <template #content>
@@ -98,7 +98,7 @@
     </div> -->
     <div class="field grid ren-submit">
       <div class="col">
-        <Button :disabled="!hasFiles" :label="$t('view.button.submit')" @click="submit" />
+        <Button :disabled="bgImage == null || mHeatmap == null" :label="$t('view.button.submit')" @click="submit" />
       </div>
       <div class="col">
         <Button :label="$t('view.button.cancel')" @click="cancel" />
