@@ -46,7 +46,7 @@
         </template>
       </Card>
     </div>
-    <div v-if="bgImage" class="col-3 ren">
+    <div v-if="bgImage && !addMode" class="col-3 ren">
       <AreaDetails
         :edit="true"
         class="tile"
@@ -73,11 +73,13 @@
     <div class="field grid">
       <div v-if="!addMode && bgImage" class="col">
         <Button :label="$t('view.button.add_area')" @click="addPoint" />
-        <Button v-if="selectedArea" :label="$t('view.button.add_area')" @click="editPoint" />
+      </div>
+      <div v-if="!addMode && selectedArea" class="col">
+        <Button :label="$t('view.button.edit_area')" @click="editPoint" />
       </div>
       <div v-if="addMode" class="col">
         <Button :label="$t('view.button.confirm_area')" @click="confirmPoint" />
-        <Button v-if="selectedArea" :label="$t('view.button.add_area')" @click="confirmEditPoint" />
+        <!-- <Button v-if="selectedArea" :label="$t('view.button.add_area')" @click="confirmEditPoint" /> -->
       </div>
       <div v-if="addMode" class="col">
         <Button :label="$t('view.button.cancel')" @click="cancelPoint" />
@@ -109,8 +111,11 @@ import AreaDetails from "./AreaDetails.vue";
 import { MapArea } from "@/plugins/model/Area";
 
 import Konva from "konva";
-const sceneWidth = 900;
-const sceneHeight = 450;
+// const sceneWidth = 900;
+// const sceneHeight = 450;
+
+const sceneWidth = 0.7 * window.innerWidth;
+const sceneHeight = (sceneWidth * 9) / 16;
 var nextId = 0;
 export default {
   name: "HeatMapEdit",
@@ -167,7 +172,9 @@ export default {
       };
     }
   },
-  mounted() {},
+  updated() {
+    this.mHeatmap = this.modelValue;
+  },
   methods: {
     areaDelete(area) {
       this.mHeatmap.areas = this.mHeatmap.areas.filter((f) => f.id != area.id);
@@ -203,6 +210,7 @@ export default {
       }
     },
     addPoint() {
+      this.selectedArea = null;
       this.current = new MapArea(`area_${nextId++}`);
       this.current.roi = []; // new MapArea(`area_${nextId++}`);
       this.addMode = true;
@@ -235,20 +243,17 @@ export default {
       stage.draw();
     },
     confirmPoint() {
-      // let area = new MapArea(`area_${nextId++}`, this.current.roi);
       //todo: validate
-      this.mHeatmap.areas.push(this.current);
-      this.current = null;
+      if (this.selectedArea != null) {
+        this.deletePoint(this.selectedArea.id);
+        this.selectedArea.roi = this.current.roi;
+        this.cancelPoint();
+        this.drawArea(this.selectedArea);
+      } else {
+        this.mHeatmap.areas.push(this.current);
+        this.current = null;
+      }
       this.addMode = false;
-    },
-
-    confirmEditPoint() {
-      // let area = new MapArea(`area_${nextId++}`, this.current.roi);
-      //todo: validate
-      this.deletePoint(this.selectedArea.id);
-      this.selectedArea.roi = this.current.roi;
-      this.cancelPoint();
-      this.drawArea(this.selectedArea);
     },
     getConfig(area) {
       return {
@@ -290,24 +295,21 @@ export default {
       }
     },
     scaleHeatMap(stage, bgImage) {
+      //TODO: validate image ratio
       if (bgImage != null) {
         var scale = sceneWidth / bgImage.width;
         this.scale = scale;
-        stage.width(bgImage.width);
-        stage.height(bgImage.height);
+        // console.info(scale);
+        // console.info(bgImage);
+        stage.width(bgImage.width * scale);
+        stage.height(bgImage.height * scale);
         stage.scale({ x: scale, y: scale });
       }
     },
     async submit() {
-      //todo: validate:
-
-      alert("");
-      await this.$ren.dashboardApi.addHeatMap(this.mHeatmap).then(() => {
-        // dashoard.id = id;
-        // this.$store.commit("view/dashboardsAdd", dashoard);
-        // TODO: router back?
-        this.$router.push(this.$route.meta.from);
-      });
+      // this.$router.push(this.$route.meta.from);
+      this.$emit("update", this.mHeatmap);
+      this.$emit("update:modelValue", this.mHeatmap);
     },
   },
 };

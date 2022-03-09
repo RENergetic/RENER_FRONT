@@ -5,6 +5,7 @@
           "label": "Label"
      },
      "heatmap": {
+          "name":"Name",
           "label": "Label",
           "areas": "Areas",
           "attributes": "Attributes",

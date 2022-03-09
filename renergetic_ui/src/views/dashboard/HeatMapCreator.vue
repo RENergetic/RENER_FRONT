@@ -1,14 +1,24 @@
 <template>
-  <!-- {{ heatmap }} -->
-  <HeatMapEdit v-model="heatmap" @save="onSave" />
+  <Dialog
+    v-model:visible="heatmapDialog"
+    :style="{ width: '50vw' }"
+    :maximizable="true"
+    :modal="true"
+    :dismissable-mask="false"
+  >
+    <HeatMapForm @save="onHeatmapInit" @cancel="onCancel"></HeatMapForm>
+  </Dialog>
+  <HeatMapEdit v-if="heatmap != null" v-model="heatmap" @update="onSave" />
 </template>
 <script>
 import HeatMapEdit from "@/components/dashboard/area/HeatMapEdit.vue";
+import HeatMapForm from "@/components/dashboard/area/HeatMapForm.vue";
+
 import { HeatMap } from "../../plugins/model/HeatMap";
 
 export default {
   name: "HeatMapCreator",
-  components: { HeatMapEdit },
+  components: { HeatMapEdit, HeatMapForm },
   props: {
     id: {
       type: String,
@@ -18,18 +28,16 @@ export default {
   data() {
     return {
       heatmap: null,
+      heatmapDialog: false,
     };
   },
-  created() {
-    this.heatmap = new HeatMap();
-  },
+  created() {},
   mounted() {
     this.heatmap = new HeatMap();
+    this.heatmapDialog = true;
   },
   methods: {
-    onSave() {},
-
-    async submit() {
+    async onSave() {
       //todo: validate:
       await this.$ren.dashboardApi.addHeatMap(this.heatmap).then(() => {
         // dashoard.id = id;
@@ -38,16 +46,16 @@ export default {
         this.$router.push(this.$route.meta.from);
       });
     },
+    onHeatmapInit(heatmap) {
+      this.heatmap = heatmap;
+      console.info(this.heatmap);
+      this.heatmapDialog = false;
+    },
+    onCancel() {
+      this.$router.push(this.$route.meta.from);
+    },
   },
 };
 </script>
 
-<style lang="scss">
-#heatmap {
-  max-width: 75%;
-  max-height: 75vh;
-}
-#heatmapContainer {
-  padding: 0.5rem;
-}
-</style>
+<style lang="scss"></style>

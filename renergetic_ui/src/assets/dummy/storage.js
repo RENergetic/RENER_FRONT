@@ -29,7 +29,7 @@ class Storage {
     console.info(JSON.stringify(o));
     let l = await this.get(k, []);
     l.push(o);
-    storage.update(k, l);
+    this.update(k, l);
   }
 
   async updateList(k, o) {

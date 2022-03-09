@@ -105,8 +105,8 @@ import MeasurementChart from "../measurements/MeasurementChart.vue";
 import MeasurementsView from "../measurements/MeasurementsView.vue";
 //todo: config
 const TRANSPARENCY = "77";
-const sceneWidth = 1200;
-const sceneHeight = 600;
+const sceneWidth = 0.7 * window.innerWidth;
+const sceneHeight = (sceneWidth * 9) / 16;
 export default {
   name: "HeatMapView",
   components: {
@@ -300,7 +300,7 @@ export default {
       return {
         sceneFunc: function (context, shape) {
           context.beginPath();
-          console.info(area);
+          // console.info(area);
           area.roi.forEach((pnt) => {
             context.lineTo(pnt[0], pnt[1]);
           });
@@ -326,8 +326,9 @@ export default {
       if (bgImage != null) {
         var scale = sceneWidth / bgImage.width;
         this.scale = scale;
-        stage.width(bgImage.width);
-        stage.height(bgImage.height);
+        console.info(scale);
+        stage.width(bgImage.width * scale);
+        stage.height(bgImage.height * scale);
         stage.scale({ x: scale, y: scale });
       }
     },
