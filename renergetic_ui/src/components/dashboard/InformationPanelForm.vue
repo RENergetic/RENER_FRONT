@@ -38,7 +38,7 @@ export default {
   components: {},
   props: {
     edit: { type: Boolean, default: true },
-    model: {
+    modelValue: {
       type: Object,
       default: () => ({}),
     },
@@ -46,7 +46,7 @@ export default {
   emits: ["update:modelValue", "cancel", "save"],
   data() {
     return {
-      mModel: this.model,
+      mModel: this.modelValue == null ? {} : this.modelValue,
     };
   },
   computed: {

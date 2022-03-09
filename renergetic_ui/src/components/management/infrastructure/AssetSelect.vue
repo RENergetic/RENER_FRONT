@@ -33,7 +33,7 @@
 export default {
   name: "MeasurementSelect",
   components: {},
-  props: { current: { type: Object, default: () => null } },
+  props: { current: { type: Object, default: () => null }, modelValue: { type: Object, default: () => null } },
   emits: ["change", "update:modelValue"],
   data() {
     return {
@@ -72,7 +72,7 @@ export default {
     },
     async open(current = null) {
       this.assetDialog = true;
-      if (current == null) this.selectedAsset = this.current;
+      if (current == null) this.selectedAsset = this.modelValue;
       else this.selectedAsset = current;
 
       // await this.$ren.managementApi.listAsset().then((assetList) => {

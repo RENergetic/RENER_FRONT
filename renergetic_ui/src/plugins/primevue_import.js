@@ -19,6 +19,8 @@ import Toolbar from "primevue/toolbar";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
 import Card from "primevue/card";
+import FileUpload from "primevue/fileupload";
+import Listbox from "primevue/listbox";
 
 const plugin = {};
 
@@ -45,6 +47,7 @@ plugin.install = function (Vue /*, options*/) {
   Vue.component("TabView", TabView);
   Vue.component("TabPanel", TabPanel);
   Vue.component("Card", Card);
+  Vue.component("FileUpload", FileUpload);
+  Vue.component("Listbox", Listbox);
 }; // install
-
 export default plugin;

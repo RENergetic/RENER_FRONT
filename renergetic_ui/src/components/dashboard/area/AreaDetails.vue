@@ -6,17 +6,16 @@
         <div class="flex flex-none">
           <i v-tooltip="$t('view.measurements')" class="pi pi-chart-line" @click="viewMeasurements()" />
         </div>
-        <!-- TODO: new icon for manage_sensors -->
-        <div class="flex flex-none">
+        <!-- <div class="flex flex-none">
           <i
             v-if="edit"
             v-tooltip="$t('view.manage_sensors')"
             class="pi pi-plus"
             @click="() => (manageSensorsDialog = !manageSensorsDialog)"
           />
-        </div>
+        </div> -->
         <div class="flex flex-none">
-          <i v-if="edit" v-tooltip="$t('view.delete_area')" class="pi pi-times" />
+          <i v-if="edit" v-tooltip="$t('view.delete_area')" class="pi pi-times" @click="deleteArea" />
         </div>
       </div>
     </template>
@@ -46,11 +45,12 @@
         <div v-else class="flex flex-grow-1">
           <span v-if="edit">
             {{ $t("view.select_asset") }}
+            <i v-if="mArea.assetId" v-tooltip="$t('view.show')" class="pi pi-arrow-circle-right" @click="showAsset" />
           </span>
           <span v-else class="disabled"> {{ $t("view.no_asset") }} </span>
         </div>
         <div class="flex flex-none">
-          <i v-if="edit" v-tooltip="$t('view.select_asset')" class="pi pi-pencil" @click="selectAsset" />
+          <i v-if="edit" v-tooltip="$t('view.select_asset')" class="pi pi-pencil" @click="selectAsset()" />
         </div>
       </div>
       <!-- DASHBOARD  -->
@@ -70,7 +70,12 @@
           </span>
           <span v-else class="disabled"> {{ $t("view.no_dashboard") }} </span>
         </div>
+
+        <div class="flex flex-none">
+          <i v-if="edit" v-tooltip="$t('view.select_dashboard')" class="pi pi-pencil" @click="selectDashboard" />
+        </div>
       </div>
+
       <!-- HEATMAP  -->
       <div id="heatmap-select" class="flex">
         <div v-if="mArea.heatmap" class="flex flex-grow-1">
@@ -105,7 +110,7 @@
     >
       <MeasurementChart v-if="mArea != null" :objects="[mArea.id]"></MeasurementChart>
     </Dialog>
-    <Dialog
+    <!-- <Dialog
       v-model:visible="manageSensorsDialog"
       :style="{ width: '75vw' }"
       :maximizable="true"
@@ -113,20 +118,22 @@
       :dismissable-mask="true"
     >
       <ManageSensors></ManageSensors>
-    </Dialog>
+    </Dialog> -->
 
     <HeatMapSelect ref="heatmapSelectDialog" :current="mArea.dashboard" @change="updateHeatMap"></HeatMapSelect>
-    <DashboardSelect ref="dashboardDialog"></DashboardSelect>
-    <AssetSelect ref="assetSelectDialog"></AssetSelect>
+    <DashboardSelect ref="dashboardDialog" @change="onDashboardUpdate"></DashboardSelect>
+    <AssetSelect ref="assetSelectDialog" @change="onAssetUpdate"></AssetSelect>
+    <AssetView ref="assetViewDialog"></AssetView>
   </div>
 </template>
 <script>
 import Card from "primevue/card";
 import MeasurementChart from "../measurements/MeasurementChart.vue";
-import ManageSensors from "../measurements/ManageSensors.vue";
+// import ManageSensors from "../measurements/ManageSensors.vue";
 import AssetSelect from "../../management/infrastructure/AssetSelect.vue";
 import HeatMapSelect from "./HeatMapSelect.vue";
 import DashboardSelect from "../DashboardSelect.vue";
+import AssetView from "@/components/management/infrastructure/AssetView.vue";
 
 import Dialog from "primevue/dialog";
 export default {
@@ -135,10 +142,11 @@ export default {
     Card,
     Dialog,
     MeasurementChart,
-    ManageSensors,
+    // ManageSensors,
     HeatMapSelect,
     DashboardSelect,
     AssetSelect,
+    AssetView,
   },
   props: {
     edit: {
@@ -183,15 +191,29 @@ export default {
     selectDashboard() {
       this.$refs.dashboardDialog.open();
     },
-    selectAsset() {
-      this.$refs.assetSelectDialog.open();
+    async selectAsset() {
+      if (this.mArea.assetId != null) {
+        await this.$ren.managementApi
+          .getAsset(this.mArea.assetId)
+          .then((asset) => this.$refs.assetSelectDialog.open(asset));
+      } else this.$refs.assetSelectDialog.open();
+    },
+    async showAsset() {
+      if (this.mArea.assetId != null) {
+        await this.$ren.managementApi
+          .getAsset(this.mArea.assetId)
+          .then((asset) => this.$refs.assetViewDialog.open(asset));
+      }
     },
 
+    onAssetUpdate(asset) {
+      this.mArea.assetId = asset.id;
+    },
     viewMeasurements() {
       this.measurementDialog = true;
     },
 
-    updateDashboard(dashboard) {
+    onDashboardUpdate(dashboard) {
       this.mArea.dashboard = dashboard;
       // todo: save to api
     },

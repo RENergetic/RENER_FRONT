@@ -29,6 +29,7 @@
   "selected_area": "Selected area",
   "select_dashboard": "Select dashboard",
   "select_heatmap": "Select heatmap",
+  "select_heatmap_image":"Select heatmap background",
   "select_asset": "Select asset",
   "select_asset_type": "Select asset type",
   "select_tile_type": "Select tile type",
@@ -37,8 +38,12 @@
   "view_asset_children": "Show sub assets",
   "view_asset_measurements": "Show measurements",
   "button": {
+    "add_area":"Add area",
     "submit": "Submit",
     "cancel": "Cancel",
+    "confirm_area":"Confirm area",
+    "clear": "Clear",
+    "choose":"Choose",
     "add": "Add",
     "add_measurement": "Add measurement",
     "manage_measurement": "Set measurements"

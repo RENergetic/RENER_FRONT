@@ -60,7 +60,7 @@ export default {
   name: "AssetForm",
   components: { InfoIcon, AssetSelect },
   props: {
-    model: {
+    modelValue: {
       type: Object,
       default: () => ({}),
     },
@@ -71,7 +71,7 @@ export default {
       assetTypes: Object.entries(AssetTypes).map((k) => {
         return { value: k[1], label: this.$t("enums.asset_type." + k[1]) };
       }),
-      mModel: this.model,
+      mModel: this.modelValue,
       // assetTypes: [
       //   { value: "room", label: this.$t("model.asset.asset_types.room") },
       //   { value: "pv", label: this.$t("model.asset.asset_types.pv") },

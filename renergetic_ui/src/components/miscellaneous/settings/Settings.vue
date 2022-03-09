@@ -59,7 +59,7 @@ export default {
     // ToggleButton
   },
   props: {
-    model: {
+    modelValue: {
       type: Object,
       default: () => ({}),
     },
@@ -70,7 +70,7 @@ export default {
   },
   emits: ["update:modelValue"],
   data() {
-    return { mModel: this.model };
+    return { mModel: this.modelValue };
   },
   watch: {
     mModel: {
