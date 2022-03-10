@@ -117,7 +117,7 @@ export default class ManagementApi extends RestComponent {
   } // ./docs/model/measurement.json  or src/assets/dummy/samples/measurement.js
 
   async addMeasurement(measurement) {
-    if (measurement.type != undefined) measurement.parent = measurement.parent.id;
+    if (measurement.type != undefined) measurement.type = measurement.type.id;
     return this.axios
       .post(`/api/measurements`, measurement, {
         headers: { "Content-type": "application/json; charset=UTF-8" },
@@ -131,7 +131,7 @@ export default class ManagementApi extends RestComponent {
   }
 
   async updateMeasurement(measurement) {
-    if (asset.parent != undefined) asset.parent = asset.parent.id;
+    if (asset.type != undefined) asset.type = asset.type.id;
     return this.axios
       .put(`/api/measurements/${measurement.id}`, asset, {
         headers: { "Content-type": "application/json; charset=UTF-8" },
