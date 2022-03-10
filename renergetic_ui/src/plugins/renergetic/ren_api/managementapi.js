@@ -35,7 +35,7 @@ export default class ManagementApi extends RestComponent {
       });
   }
 
-  async updateAsset(asset) { 
+  async updateAsset(asset) {
     if (asset.parent != undefined) asset.parent = asset.parent.id;
     return this.axios
       .put(`/api/assets/${asset.id}`, asset, {
@@ -51,7 +51,7 @@ export default class ManagementApi extends RestComponent {
       });
   }
 
-  async getAsset(id) { 
+  async getAsset(id) {
     return this.axios
       .get(`/api/assets/${id}`, {
         headers: { "Content-type": "application/json; charset=UTF-8" },
@@ -68,7 +68,7 @@ export default class ManagementApi extends RestComponent {
 
   // async searchAsset(q,offset=0,limit=20){}
 
-  async deleteAsset(id) { 
+  async deleteAsset(id) {
     return this.axios
     .delete(`/api/assets/${id}`, {
       headers: { "Content-type": "application/json; charset=UTF-8" },
@@ -82,7 +82,21 @@ export default class ManagementApi extends RestComponent {
         console.error("asset not found" + error.message);
     });
   }
-  // async getDemand(assetId) {} ./docs/model/demand.json
+
+  async getDemand(assetId) {
+    return this.axios
+      .get(`/api/demandRequests/assetId/${assetId}`, {
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error) {
+        console.error("retrieve demand request for assetId "+ assetId +" error" + error.message);
+        if (error.response.status == 404)
+          console.error("asset with id "+ assetId +" not found" + error.message);
+      });
+  } // ./docs/model/demand.json
 
   // MEASUREMENT REQUESTS
   // TODO:
@@ -131,7 +145,7 @@ export default class ManagementApi extends RestComponent {
           console.error("measurement not found" + error.message);
       });
     } // TODO: -> only allow to update labels ,  color, and key-value properties
-  
+
     async getMeasurement(id) {
       return this.axios
         .get(`/api/measurements/${id}`, {
@@ -148,7 +162,7 @@ export default class ManagementApi extends RestComponent {
     }
   // async searchMeasurement(q,assetId=null,offset=0,limit=20){}
 
-  async deleteMeasurement(id) { 
+  async deleteMeasurement(id) {
     return this.axios
     .delete(`/api/measurements/${id}`, {
       headers: { "Content-type": "application/json; charset=UTF-8" },

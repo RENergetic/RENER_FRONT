@@ -85,5 +85,5 @@ export default class DashboardApi extends RestComponent {
   // async addHeatMap(heatmap) { }
   // async updateHeatMap(heatmap) { }
   // async deleteHeatMap(id) { }
-  // async getDemand(areaId) {} ./docs/model/demand.json
+  // This one may not be needed anymore and should use getDemand(assetId) in managementApi: async getDemand(areaId) {} ./docs/model/demand.json
 }
