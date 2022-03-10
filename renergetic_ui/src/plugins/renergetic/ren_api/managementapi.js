@@ -117,7 +117,7 @@ export default class ManagementApi extends RestComponent {
   }
 
   async updateMeasurement(measurement) {
-    if (asset.parent != undefined) asset.parent = asset.parent.id;
+    if (asset.type != undefined) asset.type = asset.type.id;
     return this.axios
       .put(`/api/measurements/${measurement.id}`, asset, {
         headers: { "Content-type": "application/json; charset=UTF-8" },
