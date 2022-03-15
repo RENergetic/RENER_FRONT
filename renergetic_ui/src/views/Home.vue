@@ -7,32 +7,39 @@
       :maximizable="true"
       :modal="true"
       :dismissable-mask="true"
+      @hide="reload"
     >
       <HomeSettings @update="reloadSettings()"></HomeSettings>
     </Dialog>
 
     <div class="home-grid-stack grid-stack">
-      <div v-if="settings.demandVisibility" :class="'grid-stack-item ren'" v-bind="panelTile">
+      <div v-if="settings.demandVisibility" :class="'grid-stack-item ren'" v-bind="getLayout('demandTile')">
         <DemandList :class="'grid-stack-item-content'" />
       </div>
-      <div v-if="settings.feedbackVisibility" :class="'grid-stack-item ren'" v-bind="feedbackTile">
+      <div v-if="settings.feedbackVisibility" :class="'grid-stack-item ren'" v-bind="getLayout('feedbackTile')">
         <Card :class="'grid-stack-item-content'">
           <Feedback></Feedback>
         </Card>
       </div>
 
-      <div v-if="settings.notificationVisibility" :class="'grid-stack-item ren'" v-bind="notificationTile">
+      <div v-if="settings.notificationVisibility" :class="'grid-stack-item ren'" v-bind="getLayout('notificationTile')">
         <Card :class="'grid-stack-item-content'">
           <NotificationList></NotificationList>
         </Card>
       </div>
-      <div v-if="settings.selectedPanel" :class="'grid-stack-item ren'" v-bind="informationTile">
-        <div :class="'grid-stack-item-content'">
+      <div
+        v-if="settings.selectedPanel"
+        :class="'grid-stack-item ren'"
+        style="margin: 0; background: transparent"
+        v-bind="getLayout('panelTile')"
+      >
+        <div class="grid-stack-item-content" sty>
           <InformationPanel
-            v-if="loaded"
+            v-if="loaded && panel != null"
             ref="panel"
-            :panel="settings.selectedPanel"
+            :panel="panel"
             :edit-mode="false"
+            style="margin: 0; background: transparent"
           ></InformationPanel>
         </div>
       </div>
@@ -66,36 +73,6 @@ export default {
     return {
       demand: { msg: "increase bla blah blah", icon: "battery", up: true, description: "description" },
       loaded: false,
-      panelTile: {
-        id: "panelTile",
-        "gs-id": "panelTile",
-        // "gs-x": 0,
-        // "gs-y": 0,
-        "gs-w": 4,
-        "gs-h": 4,
-      },
-      notificationTile: {
-        id: "notificationTile",
-        "gs-id": "notificationTile",
-        // "gs-x": this.layout.x,
-        // "gs-y": this.layout.y,
-        "gs-w": 4,
-        "gs-h": 4,
-      },
-      feedbackTile: {
-        id: "feedbackTile",
-        "gs-id": "feedbackTile",
-        // "gs-x": this.layout.x,
-        // "gs-y": this.layout.y,
-        "gs-w": 4,
-        "gs-h": 4,
-      },
-      informationTile: {
-        id: "informationTile",
-        "gs-id": "informationTile",
-        "gs-w": 12,
-        "gs-h": 3,
-      },
       grid: null,
       panel: null,
       locked: true,
@@ -104,7 +81,9 @@ export default {
       notifiationDialog: false,
       manageSensorsDialog: false,
       settingsDialog: false,
+      settingsChange: false,
       settings: this.$store.getters["settings/home"],
+      layout: this.$store.getters["settings/homeLayout"],
     };
   },
   computed: {
@@ -147,22 +126,47 @@ export default {
   async created() {
     // todo: get id from session storage
     this.loaded = false;
-    let id = "1";
-    console.info(this.$ren.dashboardApi);
-    this.$ren.dashboardApi.getInformationPanel(id).then((panel) => {
-      this.panel = panel;
-    });
+
+    // console.info(this.$ren.dashboardApi);
+    this.getPanel();
     //todo: catch
   },
   async mounted() {
     this.setGrid();
+    this.getPanel();
   },
-  updated() {
-    this.setGrid();
-  },
+  updated() {},
   methods: {
+    getLayout(tileId) {
+      // console.info(this.tile.layout);
+      var layout = this.layout != null ? this.layout[tileId] : null;
+      if (layout != null) {
+        return {
+          id: tileId,
+          "gs-id": tileId,
+          "gs-x": layout.x,
+          "gs-y": layout.y,
+          "gs-w": layout.w,
+          "gs-h": layout.h,
+        };
+      }
+      return {
+        id: tileId,
+        "gs-id": tileId,
+      };
+    },
+    async getPanel() {
+      if (this.settings.selectedPanel != null) {
+        this.panel = await this.$ren.dashboardApi.getInformationPanel(this.settings.selectedPanel);
+      } else this.panel = null;
+    },
+    reload() {
+      this.setGrid();
+      // if (this.settingsChange) this.settings = this.$store.getters["settings/home"];
+      // this.settingsChange = false;
+    },
     reloadSettings() {
-      this.settings = this.$store.getters["settings/home"];
+      // this.settingsChange = true;
     },
     setGrid() {
       this.loaded = false;
@@ -182,40 +186,23 @@ export default {
     },
     async toggleLock() {
       this.locked = !this.locked;
-    },
-    addTile() {
-      //TODO: get unique id?
-      this.panel.tiles.push({
-        // layout: { x: 0, y: 0, h: 3, w: 3 },
-        id: this.$ren.utils.uuid(),
-        title: null,
-        items: [],
-      });
-    },
-    startEdit(tile) {
-      //todo
-      this.editTile = tile;
-      this.editDialog = true;
-      // console.info(tile);
+      this.setGrid();
     },
 
     saveGrid() {
-      //TODO: save
-      let nodes = this.gridItems;
-      let tiles = this.tiles;
+      let nodes = this.grid.getGridItems();
+
       nodes.forEach((node) => {
         let gridstackNode = node.gridstackNode;
-        const tile = tiles.find((t) => t.id === gridstackNode.id);
-        if (tile) {
-          tile.layout = {
-            x: gridstackNode.x,
-            y: gridstackNode.y,
-            w: gridstackNode.w,
-            h: gridstackNode.h,
-          };
-        }
+        this.layout[gridstackNode.id] = {
+          x: gridstackNode.x,
+          y: gridstackNode.y,
+          w: gridstackNode.w,
+          h: gridstackNode.h,
+        };
       });
-      this.tiles = tiles;
+
+      this.$store.commit("settings/homeLayout", this.layout);
     },
     viewNotification() {
       //TODO: load here notifications for tile

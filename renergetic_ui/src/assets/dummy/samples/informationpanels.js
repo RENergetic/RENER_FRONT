@@ -5,7 +5,7 @@ export default [
     name: "some name",
     tiles: [
       {
-        layout: { x: 0, y: 0, h: 3, w: 3 },
+        layout: { x: 0, y: 0, h: 3, w: 2 },
         state: "ok",
         id: "1",
         label: "Label ",
@@ -33,7 +33,7 @@ export default [
       },
       {
         id: "2",
-        layout: { x: 3, y: 0, h: 3, w: 3 },
+        layout: { x: 2, y: 0, h: 3, w: 2 },
         label: "label 2",
         measurements: [
           {
@@ -59,7 +59,7 @@ export default [
       },
       {
         id: "3",
-        layout: { x: 6, y: 0, h: 3, w: 3 },
+        layout: { x: 4, y: 0, h: 5, w: 4 },
         state: "warning",
         label: null,
         type: "doughnut",
@@ -96,7 +96,7 @@ export default [
       },
       {
         id: "4",
-        layout: { x: 9, y: 0, h: 3, w: 3 },
+        layout: { x: 8, y: 0, h: 5, w: 4 },
         state: "warning",
         label: "label 4",
         type: "doughnut",
@@ -136,7 +136,7 @@ export default [
         state: "warning",
         label: null,
         type: "knob",
-        layout: { x: 0, y: 3, h: 3, w: 3 },
+        layout: { x: 0, y: 3, h: 2, w: 2 },
         measurements: [
           {
             id: "7",
@@ -155,7 +155,7 @@ export default [
         state: "warning",
         label: "label 6",
         type: "knob",
-        layout: { x: 3, y: 3, h: 3, w: 3 },
+        layout: { x: 2, y: 3, h: 2, w: 2 },
         measurements: [
           {
             id: "9",

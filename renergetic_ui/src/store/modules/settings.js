@@ -2,7 +2,19 @@ export default {
   namespaced: true,
   state: {
     //TODO: default home settings
-    home: {},
+    home: {
+      selectedPanel: "1",
+      feedbackVisibility: false,
+      notificationVisibility: false,
+      demandVisibility: true,
+    },
+    homeLayout: {
+      demandTile: { x: 0, y: 0, w: 6, h: 2 },
+      feedbackTile: { x: 4, y: 2, w: 1, h: 1 },
+      notificationTile: { x: 1, y: 2, w: 3, h: 2 },
+      panelTile: { x: 1, y: 4, w: 9, h: 5 },
+    },
+
     heatmap: {
       heatmapVisibility: true,
     },
@@ -11,6 +23,9 @@ export default {
   mutations: {
     home(state, payload) {
       state.home = payload;
+    },
+    homeLayout(state, payload) {
+      state.homeLayout = payload;
     },
     panel(state, payload) {
       state.panel = payload;
@@ -25,6 +40,9 @@ export default {
   getters: {
     home: (state /* getters*/) => {
       return state.home;
+    },
+    homeLayout: (state /* getters*/) => {
+      return state.homeLayout;
     },
     panel: (state /* getters*/) => {
       return state.panel;

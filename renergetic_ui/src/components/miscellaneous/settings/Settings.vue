@@ -1,5 +1,6 @@
 <template>
   <div class="p-fluid">
+    {{ settings }}
     <div v-for="s in schema" :key="s" :class="'field grid'">
       <label :for="s.key" class="col-12">{{ s.label }}</label>
 
@@ -33,7 +34,13 @@
           :use-grouping="false"
         />
         <div v-else-if="s.type == Array">
-          <ListBox :id="s.key" v-model="mModel[s.key]" :options="s.ext.options" :option-label="s.ext.optionLabel" />
+          <ListBox
+            :id="s.key"
+            v-model="mModel[s.key]"
+            :options="s.ext.options"
+            :option-value="s.ext.optionValue"
+            :option-label="s.ext.optionLabel"
+          />
         </div>
         <div v-else-if="s.type == 'Color'">
           <ColorPicker v-model="mModel[s.key]" />
@@ -59,7 +66,7 @@ export default {
     // ToggleButton
   },
   props: {
-    modelValue: {
+    settings: {
       type: Object,
       default: () => ({}),
     },
@@ -70,7 +77,7 @@ export default {
   },
   emits: ["update:modelValue"],
   data() {
-    return { mModel: this.modelValue };
+    return { mModel: this.settings };
   },
   watch: {
     mModel: {
