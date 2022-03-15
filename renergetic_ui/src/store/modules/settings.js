@@ -36,6 +36,9 @@ export default {
     toggle(state, payload) {
       state[payload.section][payload.key] = !state[payload.section][payload.key];
     },
+    all(state, payload) {
+      state = payload;
+    },
   },
   getters: {
     home: (state /* getters*/) => {

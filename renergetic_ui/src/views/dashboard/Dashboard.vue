@@ -108,10 +108,6 @@ export default {
       await this.$ren.dashboardApi.update(dashboard).then((dashboardReq) => {
         this.$store.commit("view/dashboardsUpdate", dashboardReq);
         this.$emit("UpdateMenu", null);
-        // this.$router.replace({
-        //   name: "Dashboard",
-        //   params: { dashboard_id: this.id },
-        // });
       });
     },
     getColor(item) {

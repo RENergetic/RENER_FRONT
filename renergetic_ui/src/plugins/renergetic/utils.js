@@ -30,6 +30,22 @@ export default class RenUtils {
     let allSettings = this.app.$store.getters["settings/all"];
     this.app.$ren.userApi.setSettings(allSettings);
   }
+  async reloadStore() {
+    console.info("reload");
+    this.reloadDashboard();
+    this.app.$ren.dashboardApi.listInformationPanel().then((informationPanels) => {
+      this.app.$store.commit("view/informationPanels", informationPanels);
+    });
+    this.app.$ren.userApi.getSettings().then((settings) => {
+      this.app.$store.commit("settings/all", settings);
+    });
+  }
+  async reloadDashboard() {
+    return await this.app.$ren.dashboardApi.list().then((dashboards) => {
+      this.app.$store.commit("view/dashboards", dashboards);
+      return dashboards;
+    });
+  }
   parseUnixTimestamp(timestamp) {
     var ts = new Date(timestamp);
     var dd = String(ts.getDate()).padStart(2, "0");

@@ -54,21 +54,12 @@ export default {
   },
   methods: {
     async reload() {
-      this.$ren.dashboardApi.list().then((dashboards) => {
-        this.dashboards = dashboards;
-        this.$store.commit("view/dashboards", dashboards);
+      this.$ren.utils.reloadStore().then(() => {
+        this.dashboards = this.$store.getters["view/dashboards"];
+        this.informationPanels = this.$store.getters["view/informationPanels"];
         let menu = this.initMenu();
         this.menuModel = menu;
       });
-      //this.$route.params.id
-      //TODO: set user id ?
-      this.$ren.dashboardApi.listInformationPanel().then((informationPanels) => {
-        this.informationPanels = informationPanels;
-        this.$store.commit("view/informationPanels", informationPanels);
-        let menu = this.initMenu();
-        this.menuModel = menu;
-      });
-      //todo: catch
     },
     panelItems() {
       if (this.informationPanels.length == 0) {
