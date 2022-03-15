@@ -50,7 +50,7 @@ export default {
   width: 5rem;
   height: 5rem;
   // display: inherit;
-  background-size: 100%;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   margin-right: 1rem;
