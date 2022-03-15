@@ -7,6 +7,7 @@ export default {
   name: "DoughnutTile",
   components: { Chart },
   props: {
+    legend: { type: Boolean, default: true },
     pdata: { type: Object, default: () => ({}) },
     tile: {
       type: Object,
@@ -16,8 +17,10 @@ export default {
   data() {
     return {
       options: {
+        responsive: true,
         plugins: {
           legend: {
+            display: this.legend,
             labels: {
               color: "#495057",
             },

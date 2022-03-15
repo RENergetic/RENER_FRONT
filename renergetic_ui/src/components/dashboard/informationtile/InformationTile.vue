@@ -28,7 +28,13 @@
 
         <KnobTile v-if="tile.type == 'knob'" class="block" :tile="tile" :pdata="pdata.data"></KnobTile>
 
-        <DoughnutTile v-else-if="tile.type == 'doughnut'" class="block" :tile="tile" :pdata="pdata.data"></DoughnutTile>
+        <DoughnutTile
+          v-else-if="tile.type == 'doughnut'"
+          class="block"
+          :tile="tile"
+          :pdata="pdata.data"
+          :legend="true"
+        ></DoughnutTile>
 
         <!-- tile list-->
         <InformationListTile v-else class="block" :tile="tile" :pdata="pdata.data"></InformationListTile>

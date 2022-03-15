@@ -62,6 +62,7 @@ export default [
         layout: { x: 4, y: 0, h: 5, w: 4 },
         state: "warning",
         label: null,
+        featured: true,
         type: "doughnut",
         measurements: [
           {
