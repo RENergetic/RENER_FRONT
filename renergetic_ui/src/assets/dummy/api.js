@@ -7,7 +7,6 @@ import * as generator from "./samples/data_generator.js";
 import assetList from "./samples/assets.js";
 import measurementList from "./samples/measurement";
 import storage from "./storage.js";
-import { get } from "core-js/core/dict";
 const DASHBOARD_API_KEY = "dashboard_api";
 const MANAGEMENT_API_KEY = "management_api";
 const USER_API_KEY = "user_api";

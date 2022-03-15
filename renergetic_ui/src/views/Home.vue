@@ -9,7 +9,8 @@
       :dismissable-mask="true"
       @hide="reload"
     >
-      <HomeSettings @update="reloadSettings()"></HomeSettings>
+      <!--  @update="onSettingsUpdate()" -->
+      <HomeSettings></HomeSettings>
     </Dialog>
 
     <div class="home-grid-stack grid-stack">
@@ -55,7 +56,6 @@ import InformationPanel from "../components/dashboard/InformationPanel.vue";
 import DemandList from "../components/user/demand/DemandList.vue";
 
 import { GridStack } from "gridstack";
-// THEN to get HTML5 drag&drop
 import "gridstack/dist/h5/gridstack-dd-native";
 import "gridstack/dist/gridstack.min.css";
 
@@ -76,10 +76,7 @@ export default {
       grid: null,
       panel: null,
       locked: true,
-      editTile: null,
-      editDialog: false,
       notifiationDialog: false,
-      manageSensorsDialog: false,
       settingsDialog: false,
       settingsChange: false,
       settings: this.$store.getters["settings/home"],
@@ -103,7 +100,6 @@ export default {
         command: () => this.saveGrid(),
       };
     },
-
     settingsButton: function () {
       //TODO: set icon
       return {
@@ -112,7 +108,6 @@ export default {
         command: () => (this.settingsDialog = !this.settingsDialog),
       };
     },
-
     menuModel() {
       let model = [];
       if (!this.locked) model.push(this.saveButton);
@@ -121,15 +116,10 @@ export default {
       return model;
     },
   },
-
   watch: {},
   async created() {
-    // todo: get id from session storage
     this.loaded = false;
-
-    // console.info(this.$ren.dashboardApi);
     this.getPanel();
-    //todo: catch
   },
   async mounted() {
     this.setGrid();
@@ -140,20 +130,19 @@ export default {
     getLayout(tileId) {
       // console.info(this.tile.layout);
       var layout = this.layout != null ? this.layout[tileId] : null;
-      if (layout != null) {
-        return {
-          id: tileId,
-          "gs-id": tileId,
-          "gs-x": layout.x,
-          "gs-y": layout.y,
-          "gs-w": layout.w,
-          "gs-h": layout.h,
-        };
-      }
-      return {
-        id: tileId,
-        "gs-id": tileId,
-      };
+      return layout != null
+        ? {
+            id: tileId,
+            "gs-id": tileId,
+            "gs-x": layout.x,
+            "gs-y": layout.y,
+            "gs-w": layout.w,
+            "gs-h": layout.h,
+          }
+        : {
+            id: tileId,
+            "gs-id": tileId,
+          };
     },
     async getPanel() {
       if (this.settings.selectedPanel != null) {
@@ -162,11 +151,6 @@ export default {
     },
     reload() {
       this.setGrid();
-      // if (this.settingsChange) this.settings = this.$store.getters["settings/home"];
-      // this.settingsChange = false;
-    },
-    reloadSettings() {
-      // this.settingsChange = true;
     },
     setGrid() {
       this.loaded = false;
@@ -181,17 +165,12 @@ export default {
       window.homeGrid = this.grid;
       this.loaded = true;
     },
-    gridWidth(tile) {
-      return tile.col == null ? 2 : tile.col;
-    },
     async toggleLock() {
       this.locked = !this.locked;
       this.setGrid();
     },
-
     saveGrid() {
       let nodes = this.grid.getGridItems();
-
       nodes.forEach((node) => {
         let gridstackNode = node.gridstackNode;
         this.layout[gridstackNode.id] = {
@@ -201,8 +180,8 @@ export default {
           h: gridstackNode.h,
         };
       });
-
-      this.$store.commit("settings/homeLayout", this.layout);
+      this.$ren.utils.saveSettings("settings/homeLayout", this.layout);
+      this.toggleLock();
     },
     viewNotification() {
       //TODO: load here notifications for tile
