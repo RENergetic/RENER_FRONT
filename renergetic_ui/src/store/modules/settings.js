@@ -50,5 +50,8 @@ export default {
     heatmap: (state) => {
       return state.heatmap;
     },
+    all: (state) => {
+      return state;
+    },
   },
 };

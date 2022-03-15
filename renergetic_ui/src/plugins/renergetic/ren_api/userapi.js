@@ -5,7 +5,8 @@ export default class UserApi extends RestComponent {
   }
   // TODO: implement
   // async getDemad(userId) {}
-
+  // async setSettings(settings) {   }
+  // async getSettings() {   }
   static loggedUser = undefined;
   register(user) {
     //validate

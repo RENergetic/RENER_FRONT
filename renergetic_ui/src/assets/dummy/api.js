@@ -7,14 +7,17 @@ import * as generator from "./samples/data_generator.js";
 import assetList from "./samples/assets.js";
 import measurementList from "./samples/measurement";
 import storage from "./storage.js";
+import { get } from "core-js/core/dict";
 const DASHBOARD_API_KEY = "dashboard_api";
 const MANAGEMENT_API_KEY = "management_api";
+const USER_API_KEY = "user_api";
 // const DATA_API_KEY = "data_api";
 const DASHBOARD_KEY = "dashboard";
 const HEATMAP_KEY = "heatmap";
 const PANEL_KEY = "panel";
 const MEASUREMENT_KEY = "measurement";
 const ASSET_KEY = "asset";
+const SETTINGS_KEY = "settings";
 
 //init default
 await storage.setDefault(`${DASHBOARD_API_KEY}.${DASHBOARD_KEY}`, dashboardList);
@@ -293,6 +296,12 @@ class UserApi {
   async getDemad(userId) {
     console.info(userId);
     return demandList;
+  }
+  async setSettings(settings) {
+    storage.update(`${USER_API_KEY}.${SETTINGS_KEY}`, settings);
+  }
+  async getSettings() {
+    return storage.get(`${USER_API_KEY}.${SETTINGS_KEY}`, null);
   }
 }
 export { DashboardApi, ManagementApi, DataApi, UserApi };
