@@ -32,7 +32,7 @@ export default {
 
 <style lang="scss">
 .heatdemand {
-  padding: 0.75rem;
+  padding: 0.5rem;
   i {
     font-size: 2rem;
     margin-left: 0.75rem;

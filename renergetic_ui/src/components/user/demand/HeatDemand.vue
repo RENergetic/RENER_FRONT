@@ -1,15 +1,15 @@
 <template>
   <div class="flex heatdemand">
-    <div class="flex-none flex align-items-center justify-content-center">
+    <div class="flex align-items-center justify-content-center">
       <span
         v-if="demand.icon != null"
         id="demandicon"
-        :style="'background-image: url(' + icons[demand.icon] + ');width:10rem;'"
+        :style="'background-image: url(' + icons[demand.icon] + ');width:7.5rem;'"
       ></span>
       <span v-if="demand.tile != null" id="demandtile" @click="$router.push(`/panel/view/${demand.tile.panelId}`)">
-        <!-- TODO: :pdata="pdata" -->
+        <!-- TODO: load :pdata="pdata" -->
         <DoughnutTile
-          :style="'height:10rem;width:10rem;margin-right: 1rem;'"
+          :style="'height:7.5rem;width:7.5rem;margin-right: 1rem;'"
           :legend="false"
           class="block"
           :tile="demand.tile"

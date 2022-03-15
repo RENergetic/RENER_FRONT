@@ -30,7 +30,7 @@
       <div
         v-if="settings.selectedPanel"
         :class="'grid-stack-item ren'"
-        style="margin: 0; background: transparent"
+        style="background: transparent"
         v-bind="getLayout('panelTile')"
       >
         <div class="grid-stack-item-content" sty>
@@ -39,7 +39,7 @@
             ref="panel"
             :panel="panel"
             :edit-mode="false"
-            style="margin: 0; background: transparent"
+            style="background: transparent"
           ></InformationPanel>
         </div>
       </div>
@@ -214,7 +214,7 @@ export default {
 
 <style lang="scss">
 .grid-stack-item {
-  margin: 10px;
+  margin: 0;
 }
 .grid-stack-item-content {
   display: flex;
