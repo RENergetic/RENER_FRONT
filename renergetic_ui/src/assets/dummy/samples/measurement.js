@@ -2,6 +2,7 @@ export default [
   {
     id: "1",
     type: { name: "electricity", unit: "kWh" },
+    location_name: "m_1",
     name: "m_1",
     label: "M 1",
     direction: 1,
@@ -10,6 +11,7 @@ export default [
   {
     id: "2",
     type: { name: "electricity", unit: "kWh" },
+    location_name: "m_1",
     name: "m_2",
     label: "M 2",
     direction: 1,
@@ -18,6 +20,7 @@ export default [
   {
     id: "3",
     type: { name: "heat", unit: "kWh" },
+    location_name: "m_1",
     name: "m_3",
     label: "M 3",
     direction: 1,
@@ -26,6 +29,7 @@ export default [
   {
     id: "4",
     type: { name: "heat", unit: "kWh" },
+    location_name: "m_1",
     name: "m_4",
     label: "M 4",
     direction: 1,
@@ -34,6 +38,7 @@ export default [
   {
     id: "5",
     type: { name: "electricity", unit: "kWh" },
+    location_name: "m_1",
     name: "m_5",
     label: "M 5",
     direction: 1,
@@ -42,6 +47,7 @@ export default [
   {
     id: "6",
     type: { name: "electricity", unit: "kWh" },
+    location_name: "m_1",
     name: "m_6",
     label: "M 6",
     direction: 1,
@@ -50,6 +56,7 @@ export default [
   {
     id: "7",
     type: { name: "electricity", unit: "kWh" },
+    location_name: "m_1",
     name: "m_7",
     label: "M 7",
     direction: 1,
@@ -58,6 +65,7 @@ export default [
   {
     id: "8",
     type: { name: "electricity", unit: "kWh" },
+    location_name: "m_1",
     name: "m_8",
     label: "M 8",
     direction: 1,

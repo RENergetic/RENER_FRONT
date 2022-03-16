@@ -65,6 +65,19 @@ function generateAssetData(asset) {
   return data;
 }
 
+// function generateAssetsData(assets,group=true) {
+//   var res= {}
+//   if(group){
+//     m
+//   }
+//   let measurements = listAssetMeasurements(asset);
+//   let data = {};
+//   for (let m of Object.keys(measurements)) {
+//     let value = Math.floor(Math.random() * 150) - 50;
+//     data[m] = value;
+//   }
+//   return data;
+// }
 function generateTimeseries(ids, n = 50) {
   let datasets = [];
   for (let id of ids) {

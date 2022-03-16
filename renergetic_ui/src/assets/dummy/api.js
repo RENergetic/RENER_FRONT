@@ -277,6 +277,16 @@ class DataApi {
     let asset = await this.managementApi.getAsset(assetId);
     return generator.getAssetData(asset);
   }
+
+  // async getAssetsData(assetIds) {
+  //   var res = {};
+  //   for (var assetId of assetIds) {
+  //     let asset = await this.managementApi.getAsset(assetId);
+  //     res[assetId] = generator.getAssetData(asset);
+  //   }
+  //   return res;
+  // }
+
   async getHeatMapData(heatmapid) {
     let heatmap = await this.dashboardApi.getHeatMap(heatmapid);
     return generator.getHeatMapData(heatmap);

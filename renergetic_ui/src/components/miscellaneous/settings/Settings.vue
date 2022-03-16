@@ -75,14 +75,14 @@ export default {
       default: () => ({}),
     },
   },
-  emits: ["update:modelValue"],
+  emits: ["update:settings"],
   data() {
     return { mModel: this.settings };
   },
   watch: {
     mModel: {
       handler: function (newVal) {
-        this.$emit("update:modelValue", newVal);
+        this.$emit("update:settings", newVal);
       },
       deep: true,
     },

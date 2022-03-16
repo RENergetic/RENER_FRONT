@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import InfoIcon from "../../miscellaneous/InfoIcon.vue";
+import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import MeasurementSelect from "@/components/management/infrastructure/MeasurementSelect.vue";
 
 export default {

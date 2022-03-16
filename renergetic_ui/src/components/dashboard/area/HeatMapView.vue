@@ -89,7 +89,7 @@
   </Dialog>
 </template>
 <script>
-import DotMenu from "../../miscellaneous/DotMenu.vue";
+import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import AreaDetails from "./AreaDetails.vue";
 import RecommendationView from "@/components/management/RecommendationView.vue";
 import Konva from "konva";
@@ -202,7 +202,7 @@ export default {
           this.toggleArea(id, false);
         });
         let selectedAreas = {};
-        selectedAreas[area.id] = 1;
+        selectedAreas[area.id] = area.label;
         this.selectedAreas = selectedAreas;
         let newId = area.id;
         this.toggleArea(newId, true);
@@ -261,13 +261,13 @@ export default {
       let areaId = area.id;
       item.on("click", () => {
         this.selectedArea = this.heatmap.areas[idx];
-        if (this.selectedAreas[areaId] == 1) {
+        if (this.selectedAreas[areaId]) {
           if (this.selectedAreas.length == 1) {
             this.selectedAreas = {};
           } else delete this.selectedAreas[areaId];
           this.toggleArea(area.id, false);
         } else {
-          this.selectedAreas[areaId] = 1;
+          this.selectedAreas[areaId] = area.label;
           this.toggleArea(area.id, true);
         }
 
