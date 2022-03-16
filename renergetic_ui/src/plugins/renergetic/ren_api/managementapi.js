@@ -1,3 +1,4 @@
+import { is } from "core-js/core/object";
 import RestComponent from "./restcomponent";
 export default class ManagementApi extends RestComponent {
   constructor(axiosInstance, vueInstance) {
@@ -5,19 +6,20 @@ export default class ManagementApi extends RestComponent {
   }
   // ASSET REQUESTS
   // TODO:
-  async listAsset(userId=null,offset=0,limit=20) {
+  async listAsset(userId = null, offset = 0, limit = 20) {
+    //TODO: is user id required here ?
+    console.info(userId);
     return this.axios
       .get(`/api/assets`, {
         headers: { "Content-type": "application/json; charset=UTF-8" },
-        params: { offset: offset, limit: limit }
+        params: { offset: offset, limit: limit },
       })
       .then((response) => {
         return response.data;
       })
       .catch(function (error) {
         console.error("list asset error" + error.message);
-        if (error.response.status == 404)
-          console.error("there are no assets" + error.message);
+        if (error.response.status == 404) console.error("there are no assets" + error.message);
       });
   } //./docs/model/asset.json or src/assets/dummy/samples/assets.js
 
@@ -46,8 +48,7 @@ export default class ManagementApi extends RestComponent {
       })
       .catch(function (error) {
         console.error("update asset error" + error.message);
-        if (error.response.status == 404)
-          console.error("asset not found" + error.message);
+        if (error.response.status == 404) console.error("asset not found" + error.message);
       });
   }
 
@@ -61,8 +62,7 @@ export default class ManagementApi extends RestComponent {
       })
       .catch(function (error) {
         console.error("list asset error" + error.message);
-        if (error.response.status == 404)
-          console.error("asset not found" + error.message);
+        if (error.response.status == 404) console.error("asset not found" + error.message);
       });
   }
 
@@ -70,17 +70,16 @@ export default class ManagementApi extends RestComponent {
 
   async deleteAsset(id) {
     return this.axios
-    .delete(`/api/assets/${id}`, {
-      headers: { "Content-type": "application/json; charset=UTF-8" },
-    })
-    .then((response) => {
-      return response.data;
-    })
-    .catch(function (error) {
-      console.error("delete asset error" + error.message);
-      if (error.response.status == 404)
-        console.error("asset not found" + error.message);
-    });
+      .delete(`/api/assets/${id}`, {
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error) {
+        console.error("delete asset error" + error.message);
+        if (error.response.status == 404) console.error("asset not found" + error.message);
+      });
   }
 
   async getDemand(assetId) {
@@ -92,27 +91,27 @@ export default class ManagementApi extends RestComponent {
         return response.data;
       })
       .catch(function (error) {
-        console.error("retrieve demand request for assetId "+ assetId +" error" + error.message);
-        if (error.response.status == 404)
-          console.error("asset with id "+ assetId +" not found" + error.message);
+        console.error("retrieve demand request for assetId " + assetId + " error" + error.message);
+        if (error.response.status == 404) console.error("asset with id " + assetId + " not found" + error.message);
       });
   } // ./docs/model/demand.json
 
   // MEASUREMENT REQUESTS
   // TODO:
-  async listMeasurement(userId=null,offset=0,limit=20) {
+  async listMeasurement(userId = null, offset = 0, limit = 20) {
+    //TODO: is user id required here ?
+    console.info(userId);
     return this.axios
       .get(`/api/measurements`, {
         headers: { "Content-type": "application/json; charset=UTF-8" },
-        params: { offset: offset, limit: limit }
+        params: { offset: offset, limit: limit },
       })
       .then((response) => {
         return response.data;
       })
       .catch(function (error) {
         console.error("list measurement error" + error.message);
-        if (error.response.status == 404)
-          console.error("there are no measurements" + error.message);
+        if (error.response.status == 404) console.error("there are no measurements" + error.message);
       });
   } // ./docs/model/measurement.json  or src/assets/dummy/samples/measurement.js
 
@@ -131,9 +130,9 @@ export default class ManagementApi extends RestComponent {
   }
 
   async updateMeasurement(measurement) {
-    if (asset.type != undefined) asset.type = asset.type.id;
+    if (measurement.type != undefined) measurement.type = measurement.type.id;
     return this.axios
-      .put(`/api/measurements/${measurement.id}`, asset, {
+      .put(`/api/measurements/${measurement.id}`, measurement, {
         headers: { "Content-type": "application/json; charset=UTF-8" },
       })
       .then((response) => {
@@ -141,40 +140,37 @@ export default class ManagementApi extends RestComponent {
       })
       .catch(function (error) {
         console.error("update measurement error" + error.message);
-        if (error.response.status == 404)
-          console.error("measurement not found" + error.message);
+        if (error.response.status == 404) console.error("measurement not found" + error.message);
       });
-    } // TODO: -> only allow to update labels ,  color, and key-value properties
+  } // TODO: -> only allow to update labels ,  color, and key-value properties
 
-    async getMeasurement(id) {
-      return this.axios
-        .get(`/api/measurements/${id}`, {
-          headers: { "Content-type": "application/json; charset=UTF-8" },
-        })
-        .then((response) => {
-          return response.data;
-        })
-        .catch(function (error) {
-          console.error("list measurement error" + error.message);
-          if (error.response.status == 404)
-            console.error("measurement not found" + error.message);
-        });
-    }
+  async getMeasurement(id) {
+    return this.axios
+      .get(`/api/measurements/${id}`, {
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error) {
+        console.error("list measurement error" + error.message);
+        if (error.response.status == 404) console.error("measurement not found" + error.message);
+      });
+  }
   // async searchMeasurement(q,assetId=null,offset=0,limit=20){}
 
   async deleteMeasurement(id) {
     return this.axios
-    .delete(`/api/measurements/${id}`, {
-      headers: { "Content-type": "application/json; charset=UTF-8" },
-    })
-    .then((response) => {
-      return response.data;
-    })
-    .catch(function (error) {
-      console.error("delete measurement error" + error.message);
-      if (error.response.status == 404)
-        console.error("measurement not found" + error.message);
-    });
+      .delete(`/api/measurements/${id}`, {
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error) {
+        console.error("delete measurement error" + error.message);
+        if (error.response.status == 404) console.error("measurement not found" + error.message);
+      });
   }
   //
 }
