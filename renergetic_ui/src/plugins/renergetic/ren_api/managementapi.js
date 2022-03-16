@@ -1,4 +1,4 @@
-import { is } from "core-js/core/object";
+// import { is } from "core-js/core/object";
 import RestComponent from "./restcomponent";
 export default class ManagementApi extends RestComponent {
   constructor(axiosInstance, vueInstance) {
