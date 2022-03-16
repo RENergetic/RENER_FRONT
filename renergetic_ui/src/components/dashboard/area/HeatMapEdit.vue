@@ -1,4 +1,5 @@
 <template>
+  <DotMenu :model="menuModel" />
   <div class="grid">
     <div class="col-9">
       <Card>
@@ -85,47 +86,29 @@
         <Button :label="$t('view.button.cancel')" @click="cancelPoint" />
       </div>
     </div>
-    <!-- <div class="p-fluid p-formgrid grid ren-submit">
-      <div v-if="!addMode && bgImage" class="field md-3 sm-6">
-        <Button :label="$t('view.button.add_area')" @click="addPoint" />
-      </div>
-      <div v-if="addMode" class="field md-3 sm-6">
-        <Button :label="$t('view.button.confirm_area')" @click="confirmPoint" />
-      </div>
-      <div v-if="addMode" class="field md-3 sm-6">
-        <Button :label="$t('view.button.cancel')" @click="cancelPoint" />
-      </div>
-    </div> -->
-    <div class="field grid ren-submit">
-      <div class="col">
-        <Button :disabled="bgImage == null || mHeatmap == null" :label="$t('view.button.submit')" @click="submit" />
-      </div>
-      <div class="col">
-        <Button :label="$t('view.button.cancel')" @click="cancel" />
-      </div>
-    </div>
   </div>
 </template>
 <script>
+import DotMenu from "../../miscellaneous/DotMenu.vue";
+import { Colors } from "@/plugins/model/Enums";
 import AreaDetails from "./AreaDetails.vue";
 import { MapArea } from "@/plugins/model/Area";
 
 import Konva from "konva";
-// const sceneWidth = 900;
-// const sceneHeight = 450;
+const TRANSPARENCY = "77";
 
 const sceneWidth = 0.7 * window.innerWidth;
 const sceneHeight = (sceneWidth * 9) / 16;
-var nextId = 0;
 export default {
   name: "HeatMapEdit",
-  components: { AreaDetails },
+  components: { AreaDetails, DotMenu },
   props: {
     modelValue: {
       type: Object,
       required: true,
     },
   },
+  emits: ["cancel", "update:modelValue", "update"],
   data() {
     return {
       //heat map area id
@@ -142,6 +125,28 @@ export default {
       addMode: false,
     };
   },
+  computed: {
+    menuModel: function () {
+      return [
+        {
+          label: this.$t("menu.save"),
+          icon: "pi pi-fw pi-eye",
+          disabled: this.bgImage == null || this.mHeatmap == null,
+          command: () => {
+            this.$emit("update", this.mHeatmap);
+            this.$emit("update:modelValue", this.mHeatmap);
+          },
+        },
+        {
+          label: this.$t("menu.cancel"),
+          icon: "pi pi-fw pi-eye",
+          command: () => {
+            this.$emit("cancel");
+          },
+        },
+      ];
+    },
+  },
   watch: {
     selectedArea: function (newValue, oldValue) {
       //toggle colors
@@ -150,12 +155,12 @@ export default {
         let oldShape = this.$refs.stage.getStage().findOne(`#${oldId}`);
         if (oldShape != null) {
           //oldShape  -> after delete
-          oldShape.fill("#00D2FFAA");
+          oldShape.fill(this.getColor(false));
         }
       }
       if (newValue != null) {
         let newId = newValue.id;
-        this.$refs.stage.getStage().findOne(`#${newId}`).fill("#AAAAFFAA");
+        this.$refs.stage.getStage().findOne(`#${newId}`).fill(this.getColor(true));
       }
     },
   },
@@ -176,6 +181,13 @@ export default {
     this.mHeatmap = this.modelValue;
   },
   methods: {
+    getColor(selected = false) {
+      let transparency = TRANSPARENCY;
+      if (selected) {
+        transparency = "CC";
+      }
+      return Colors.DEFAULT + transparency;
+    },
     areaDelete(area) {
       this.mHeatmap.areas = this.mHeatmap.areas.filter((f) => f.id != area.id);
       this.deletePoint(area.id);
@@ -186,8 +198,6 @@ export default {
     onClick(evt) {
       // console.info(evt.target.nodeName);
       if (evt.target.nodeName == "CANVAS" && this.addMode) {
-        // console.info([evt.layerX / this.scale, evt.layerY / this.scale]);
-        // console.info(evt);var evt = e.evt;
         let stage = this.$refs.stage.getStage();
         var shape = stage.findOne(`#${this.current.id}`);
         if (shape != null) {
@@ -204,14 +214,11 @@ export default {
           };
           shape.setSceneFunc(f);
         }
-        // stage.draw();
-        // this.deletePoint(this.current.id);
-        // this.drawArea(this.current);
       }
     },
     addPoint() {
       this.selectedArea = null;
-      this.current = new MapArea(`area_${nextId++}`);
+      this.current = new MapArea(this.$ren.utils.uuid());
       this.current.roi = []; // new MapArea(`area_${nextId++}`);
       this.addMode = true;
       this.drawArea(this.current);
@@ -266,18 +273,13 @@ export default {
           // special Konva.js method
           context.fillStrokeShape(shape);
         },
-        fill: "#00D2FFAA",
+        fill: this.getColor(false),
         stroke: "black",
         strokeWidth: 1,
         opacity: 0.75,
         listening: true,
         id: area.id,
       };
-    },
-    cancel() {
-      // TOdo: go back
-      if (this.$refs.FileUpload != null) this.$refs.FileUpload.clear();
-      // this.bgImage = null;
     },
     onSelect() {
       if (this.$refs.FileUpload !== undefined) this.hasFiles = this.$refs.FileUpload.files.length > 0;
@@ -305,11 +307,6 @@ export default {
         stage.height(bgImage.height * scale);
         stage.scale({ x: scale, y: scale });
       }
-    },
-    async submit() {
-      // this.$router.push(this.$route.meta.from);
-      this.$emit("update", this.mHeatmap);
-      this.$emit("update:modelValue", this.mHeatmap);
     },
   },
 };

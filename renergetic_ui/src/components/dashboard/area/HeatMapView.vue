@@ -89,14 +89,9 @@
   </Dialog>
 </template>
 <script>
-import Tree from "primevue/tree";
 import DotMenu from "../../miscellaneous/DotMenu.vue";
 import AreaDetails from "./AreaDetails.vue";
-import RecommendationView from "../../management/RecommendationView.vue";
-import Listbox from "primevue/listbox";
-import Accordion from "primevue/accordion";
-import AccordionTab from "primevue/accordiontab";
-import Card from "primevue/card";
+import RecommendationView from "@/components/management/RecommendationView.vue";
 import Konva from "konva";
 import NotificationView from "./NotificationList.vue";
 import { Colors } from "../../../plugins/model/Enums";
@@ -110,12 +105,7 @@ const sceneHeight = (sceneWidth * 9) / 16;
 export default {
   name: "HeatMapView",
   components: {
-    Card,
-    Listbox,
     AreaDetails,
-    Accordion,
-    AccordionTab,
-    Tree,
     HeatMapSettings,
     RecommendationView,
     DotMenu,

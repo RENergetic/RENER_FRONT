@@ -14,7 +14,7 @@
 import HeatMapEdit from "@/components/dashboard/area/HeatMapEdit.vue";
 import HeatMapForm from "@/components/dashboard/area/HeatMapForm.vue";
 
-import { HeatMap } from "../../plugins/model/HeatMap";
+import { HeatMap } from "@/plugins/model/HeatMap";
 
 export default {
   name: "HeatMapCreator",

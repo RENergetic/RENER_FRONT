@@ -2,21 +2,13 @@
   <Card>
     <template v-if="mArea != null" #title>
       <div class="flex">
-        <div class="flex flex-grow-1">{{ mArea.label }}</div>
         <div class="flex flex-none">
           <i v-tooltip="$t('view.measurements')" class="pi pi-chart-line" @click="viewMeasurements()" />
         </div>
-        <!-- <div class="flex flex-none">
-          <i
-            v-if="edit"
-            v-tooltip="$t('view.manage_sensors')"
-            class="pi pi-plus"
-            @click="() => (manageSensorsDialog = !manageSensorsDialog)"
-          />
-        </div> -->
         <div class="flex flex-none">
           <i v-if="edit" v-tooltip="$t('view.delete_area')" class="pi pi-times" @click="deleteArea" />
         </div>
+        <div class="flex flex-grow-1">{{ mArea.label }}</div>
       </div>
     </template>
     <template v-else #title>
@@ -106,15 +98,6 @@
     >
       <MeasurementChart v-if="mArea != null" :objects="[mArea.id]"></MeasurementChart>
     </Dialog>
-    <!-- <Dialog
-      v-model:visible="manageSensorsDialog"
-      :style="{ width: '75vw' }"
-      :maximizable="true"
-      :modal="true"
-      :dismissable-mask="true"
-    >
-      <ManageSensors></ManageSensors>
-    </Dialog> -->
 
     <HeatMapSelect ref="heatmapSelectDialog" :current="mArea.dashboard" @change="updateHeatMap"></HeatMapSelect>
     <DashboardSelect ref="dashboardDialog" @change="onDashboardUpdate"></DashboardSelect>
@@ -123,22 +106,15 @@
   </div>
 </template>
 <script>
-import Card from "primevue/card";
 import MeasurementChart from "../measurements/MeasurementChart.vue";
-// import ManageSensors from "../measurements/ManageSensors.vue";
 import AssetSelect from "../../management/infrastructure/AssetSelect.vue";
 import HeatMapSelect from "./HeatMapSelect.vue";
 import DashboardSelect from "../DashboardSelect.vue";
 import AssetView from "@/components/management/infrastructure/AssetView.vue";
-
-import Dialog from "primevue/dialog";
 export default {
   name: "AreaDetails",
   components: {
-    Card,
-    Dialog,
     MeasurementChart,
-    // ManageSensors,
     HeatMapSelect,
     DashboardSelect,
     AssetSelect,
@@ -212,11 +188,9 @@ export default {
 
     onDashboardUpdate(dashboard) {
       this.mArea.dashboard = dashboard;
-      // todo: save to api
     },
     updateHeatMap(heatmap) {
       this.mArea.heatmap = heatmap;
-      // todo: save to api
     },
     deleteArea() {
       this.$confirm.require({
