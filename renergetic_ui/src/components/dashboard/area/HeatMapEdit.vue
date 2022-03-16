@@ -133,15 +133,39 @@ export default {
           icon: "pi pi-fw pi-eye",
           disabled: this.bgImage == null || this.mHeatmap == null,
           command: () => {
-            this.$emit("update", this.mHeatmap);
-            this.$emit("update:modelValue", this.mHeatmap);
+            this.$confirm.require({
+              message: this.$t("view.dashboard_save_confirm", {
+                label: this.label,
+              }),
+              header: this.$t("view.dashboard_save"),
+              icon: "pi pi-exclamation-triangle",
+              accept: () => {
+                this.$emit("update", this.mHeatmap);
+                this.$emit("update:modelValue", this.mHeatmap);
+              },
+              reject: () => {
+                this.$confirm.close();
+              },
+            });
           },
         },
         {
           label: this.$t("menu.cancel"),
           icon: "pi pi-fw pi-eye",
           command: () => {
-            this.$emit("cancel");
+            this.$confirm.require({
+              message: this.$t("view.dashboard_save_cancel_confirm", {
+                label: this.label,
+              }),
+              header: this.$t("view.dashboard_save_cancel"),
+              icon: "pi pi-exclamation-triangle",
+              accept: () => {
+                this.$emit("cancel");
+              },
+              reject: () => {
+                this.$confirm.close();
+              },
+            });
           },
         },
       ];

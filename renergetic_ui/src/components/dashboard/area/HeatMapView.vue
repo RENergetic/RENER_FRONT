@@ -331,6 +331,15 @@ export default {
             this.settingsDialog = !this.settingsDialog;
           },
         },
+
+        {
+          label: this.$t("menu.edit"),
+          icon: "pi pi-fw pi-pencil",
+          command: () => {
+            let to = `/dashboard/heatmap/edit/${this.heatmap.id}`;
+            this.$router.push(to);
+          },
+        },
       ];
     },
   },
