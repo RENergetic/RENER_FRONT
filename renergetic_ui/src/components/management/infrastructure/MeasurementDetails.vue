@@ -1,6 +1,6 @@
 <template>
   <!-- {{ schema }} -->
-  <Settings :schema="schema" :model="model"></Settings>
+  <Settings :schema="schema" :settings="mModel"></Settings>
 </template>
 
 <script>
@@ -13,27 +13,26 @@ export default {
   components: {
     Settings,
   },
-  props: ["value"],
+  props: { model: { type: Object, default: () => ({}) } },
   emits: ["update"],
   data() {
     return {
-      model: this.value,
+      mModel: this.model,
       keys: [],
       schema: {},
     };
   },
   computed: {},
   watch: {
-    model: {
+    mModel: {
       handler: function (newVal) {
-        this.model = newVal;
         this.$emit("update", newVal);
       },
       deep: true,
     },
   },
   async mounted() {
-    this.keys = Object.keys(this.value);
+    this.keys = Object.keys(this.mModel);
     this.schema = this.getSchema();
   },
 

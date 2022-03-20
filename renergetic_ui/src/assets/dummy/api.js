@@ -21,11 +21,13 @@ const SETTINGS_KEY = "settings";
 var measurementTypes = Object.assign({}, ...measurement_types.map((x) => ({ [x.id]: x })));
 
 //init default
-let measurementListExt = measurementList.map((it) => (it.type = measurementTypes[it.metric_type_id]));
+measurementList.map((it) => (it.type = measurementTypes[it.metric_type_id]));
+
+console.info(measurementList);
 await storage.setDefault(`${DASHBOARD_API_KEY}.${DASHBOARD_KEY}`, dashboardList);
 await storage.setDefault(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, informationPanelList);
 await storage.setDefault(`${DASHBOARD_API_KEY}.${HEATMAP_KEY}`, heatmapList);
-await storage.setDefault(`${MANAGEMENT_API_KEY}.${MEASUREMENT_KEY}`, measurementListExt);
+await storage.setDefault(`${MANAGEMENT_API_KEY}.${MEASUREMENT_KEY}`, measurementList);
 await storage.setDefault(`${MANAGEMENT_API_KEY}.${ASSET_KEY}`, assetList);
 
 //TODO: temporaty example objectc

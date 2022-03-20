@@ -10,7 +10,7 @@
     <Column field="label" :header="$t('model.measurement.label')"></Column>
     <Column field="type" :header="$t('model.measurement.type')">
       <template #body="slotProps">
-        <span> {{ $t("enums.measurement_type." + slotProps.data.type.name) }}[{{ slotProps.data.type.unit }}] </span>
+        <span> {{ $t("enums.metric_type." + slotProps.data.type.metric_type) }} [{{ slotProps.data.type.unit }}] </span>
       </template>
     </Column>
     <Column field="direction" :header="$t('model.measurement.direction')">
@@ -36,7 +36,7 @@
     :modal="true"
     :dismissable-mask="true"
   >
-    <MeasurementDetails :value="selectedRow.data.measurement_details" @update="onDetailsUpdate"></MeasurementDetails>
+    <MeasurementDetails :model="selectedRow.data.measurement_details" @update="onDetailsUpdate"></MeasurementDetails>
     <!-- @update:model-value="onCreate($event, 0)" -->
   </Dialog>
   <!-- <Button :label="$t('view.button.add')" @click="measurementAdd = true" /> -->
@@ -80,7 +80,8 @@ export default {
   methods: {
     onDetailsUpdate(details) {
       this.selectedRow.data.measuremet_details = details;
-      //todo store to db
+      alert("Save error, not implemented");
+      //todo: store to db save
     },
     showDetails(row) {
       // console.info(row.data);

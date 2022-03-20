@@ -1,6 +1,6 @@
 <template>
   <div class="p-fluid">
-    {{ settings }}
+    <!-- {{ settings }} -->
     <div v-for="s in schema" :key="s" :class="'field grid'">
       <label :for="s.key" class="col-12">{{ s.label }}</label>
 
@@ -82,6 +82,7 @@ export default {
   watch: {
     mModel: {
       handler: function (newVal) {
+        console.info(newVal);
         this.$emit("update:settings", newVal);
       },
       deep: true,
