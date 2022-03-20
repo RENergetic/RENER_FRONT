@@ -7,6 +7,7 @@ import * as generator from "./samples/data_generator.js";
 import assetList from "./samples/assets.js";
 import measurementList from "./samples/measurement";
 import storage from "./storage.js";
+import measurement_types from "./samples/measurement_types.js";
 const DASHBOARD_API_KEY = "dashboard_api";
 const MANAGEMENT_API_KEY = "management_api";
 const USER_API_KEY = "user_api";
@@ -17,12 +18,14 @@ const PANEL_KEY = "panel";
 const MEASUREMENT_KEY = "measurement";
 const ASSET_KEY = "asset";
 const SETTINGS_KEY = "settings";
+var measurementTypes = Object.assign({}, ...measurement_types.map((x) => ({ [x.id]: x })));
 
 //init default
+let measurementListExt = measurementList.map((it) => (it.type = measurementTypes[it.metric_type_id]));
 await storage.setDefault(`${DASHBOARD_API_KEY}.${DASHBOARD_KEY}`, dashboardList);
 await storage.setDefault(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, informationPanelList);
 await storage.setDefault(`${DASHBOARD_API_KEY}.${HEATMAP_KEY}`, heatmapList);
-await storage.setDefault(`${MANAGEMENT_API_KEY}.${MEASUREMENT_KEY}`, measurementList);
+await storage.setDefault(`${MANAGEMENT_API_KEY}.${MEASUREMENT_KEY}`, measurementListExt);
 await storage.setDefault(`${MANAGEMENT_API_KEY}.${ASSET_KEY}`, assetList);
 
 //TODO: temporaty example objectc
