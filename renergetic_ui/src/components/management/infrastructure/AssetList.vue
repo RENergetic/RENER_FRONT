@@ -4,7 +4,7 @@
       <!-- some info -->
     </template>
   </InfoIcon>
-
+  <!-- {{ assetList }} -->
   <DataTable :value="assetList">
     <!-- <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.asset.' + col)"></Column> -->
     <Column field="name" :header="$t('model.asset.name')"> </Column>
@@ -23,10 +23,8 @@
 
     <Column field="parent" :header="$t('model.asset.parent')">
       <template #body="slotProps">
-        <span v-if="slotProps.data.parent" @click="setParent(slotProps)">
-          {{ slotProps.data.parent.label }}
-        </span>
-        <span v-else class="disabled" @click="setParent(slotProps)">
+        <span v-if="slotProps.data.parent" @click="setParent(slotProps.data)"> {{ slotProps.data.parent.label }} </span>
+        <span v-else class="disabled" @click="setParent(slotProps.data)">
           {{ $t("view.no_parent") }}
         </span>
       </template>
@@ -35,7 +33,7 @@
       <template #body="slotProps">
         <span
           v-if="slotProps.data.measurements && slotProps.data.measurements.length > 0"
-          @click="viewMeasurements(slotProps)"
+          @click="viewMeasurements(slotProps.data)"
         >
           {{ $t("view.view_asset_measurements") }}
         </span>
@@ -69,7 +67,7 @@
     <Card>
       <template #title> {{ $t("model.asset.child") }} </template>
       <template #content>
-        <DataTable v-if="selectedRow" :value="selectedRow.data.child">
+        <DataTable v-if="selectedRow" :value="selectedRow.child">
           <!-- <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.asset.' + col)"></Column> -->
           <Column field="name" :header="$t('model.asset.name')"> </Column>
           <Column field="label" :header="$t('model.asset.label')"> </Column>
@@ -91,12 +89,30 @@
     <Card>
       <template #title> {{ $t("model.asset.measurements") }} </template>
       <template #content>
-        <!-- {{ selectedRow.data.measurements }}  -->
-        <DataTable v-if="selectedRow" :value="selectedRow.data.measurements">
+        <!-- {{ selectedRow.measurements }} -->
+        <DataTable v-if="selectedRow" :value="selectedRow.measurements">
           <!-- <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.asset.' + col)"></Column> -->
+          <!-- TODO: field=direction? -->
           <Column field="name" :header="$t('model.measurement.name')"> </Column>
           <Column field="label" :header="$t('model.measurement.label')"> </Column>
-          <Column field="measurement_type" :header="$t('model.measurement.measurement_type')"> </Column>
+          <Column field="location_name" :header="$t('model.measurement.location_name')"> </Column>
+          <Column field="measurement_type" :header="$t('model.measurement.measurement_type')">
+            <template #body="slotProps">
+              <span v-if="slotProps.data.type">
+                {{ slotProps.data.type.label }}: {{ slotProps.data.type.unit }}
+                <!-- TODO icon: metric_type:electricity -->
+              </span>
+              <span v-else>
+                {{ $t("view.measurement_type_not_defined") }}
+              </span>
+            </template>
+          </Column>
+          <Column field="measurement_details" :header="$t('model.measurement.measurement_type')">
+            TODO: details
+            <!-- <template #body="slotProps">
+            "measurement_details": { "color": "#4CAF50" }
+            </template> -->
+          </Column>
         </DataTable>
         <span v-else>
           {{ $t("view.no_asset_measurements") }}
@@ -105,7 +121,7 @@
         <Button :label="$t('view.button.add_measurement')" @click="addMeasurement" />
         <measurement-select
           ref="measurementSelectDialog"
-          :asset-id="selectedRow.data.id"
+          :asset-id="selectedRow.id"
           @select="onMeasurementSelect"
         ></measurement-select>
       </template>
@@ -143,30 +159,32 @@ export default {
   },
   methods: {
     setParent(row) {
-      console.info(row.data);
+      console.info(row);
       this.selectedRow = row;
-      this.$refs.assetSelectDialog.open(row.data.parent);
+      this.$refs.assetSelectDialog.open(row.parent);
     },
     viewChildren(row) {
-      console.info(row.data);
+      console.info(row);
       this.selectedRow = row;
       this.childDialog = true;
     },
 
     viewMeasurements(row) {
-      console.info(row.data);
+      console.info(row);
       this.selectedRow = row;
       this.measurementDialog = true;
     },
 
     onParentChange(parent) {
-      this.selectedRow.data.parent = parent;
+      this.selectedRow.parent = { name: parent.name, id: parent.id, label: parent.label };
+      //TODO: catch error
+      this.$ren.managementApi.updateAsset({ ...this.selectedRow });
     },
     addMeasurement() {
       this.$refs.measurementSelectDialog.open();
     },
     onMeasurementSelect(measurement) {
-      this.selectedRow.data.measurements.push(measurement);
+      this.selectedRow.measurements.push(measurement);
     },
     async onCreate(o) {
       await this.$ren.managementApi.addAsset(o).then((assetId) => {

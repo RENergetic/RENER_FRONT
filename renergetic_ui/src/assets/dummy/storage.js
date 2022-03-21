@@ -34,10 +34,10 @@ class Storage {
 
   async updateList(k, o) {
     console.info(k);
-    console.info(JSON.stringify(o));
+    console.info(o);
     let idx = this.data[k].findIndex((el) => el.id === o.id);
     this.data[k][idx] = o;
-    // sessionStorage.setItem(this.data, JSON.stringify(o));
+    sessionStorage.setItem(this.data, JSON.stringify(o));
   }
 
   async setDefault(k, defaultValue = null, force = false) {

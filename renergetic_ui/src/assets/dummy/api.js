@@ -189,7 +189,17 @@ class ManagementApi {
   //Infrastructure  REQUESTS
   async listAsset(userId) {
     console.info(`listAsset for ${userId}`);
-    return storage.get(`${MANAGEMENT_API_KEY}.${ASSET_KEY}`, assetList);
+    let assets = await storage.get(`${MANAGEMENT_API_KEY}.${ASSET_KEY}`, assetList);
+
+    for (let asset of assets) {
+      asset.measurements = await Promise.all(
+        asset.measurements.map(async (it) => {
+          return this.getMeasurement(it.id);
+        }),
+      );
+    }
+    console.info(assets);
+    return assets;
   }
 
   async addAsset(asset) {
@@ -207,7 +217,10 @@ class ManagementApi {
   }
   async getAsset(id) {
     let assets = await this.listAsset();
-    return assets.find((it) => it.id == id);
+
+    let asset = assets.find((it) => it.id == id);
+    await Promise.all(asset.measurements.map(async (it) => this.getMeasurement(it.id)));
+    return asset;
   }
   async searchAsset(q) {
     let mQ = q.toLowerCase();
@@ -215,7 +228,9 @@ class ManagementApi {
     let f = function (s) {
       return s.name.toLowerCase().includes(mQ) || (s.label != null && s.label.toLowerCase().includes(mQ));
     };
-    return assets.filter((it) => f(it));
+    let asset = assets.filter((it) => f(it));
+    await Promise.all(asset.measurements.map(async (it) => await this.getMeasurement(it.id)));
+    return asset;
   }
 
   getDemand(assetId) {
@@ -230,7 +245,7 @@ class ManagementApi {
   }
   async listMeasurement(userId) {
     console.info(`listMeasurement for user:${userId}`);
-    return storage.get(`${MANAGEMENT_API_KEY}.${MEASUREMENT_KEY}`, measurementList);
+    return await storage.get(`${MANAGEMENT_API_KEY}.${MEASUREMENT_KEY}`, measurementList);
   }
 
   async updateMeasurement(measurement) {
@@ -240,8 +255,9 @@ class ManagementApi {
     });
   }
   async getMeasurement(id) {
-    let maps = await this.measurementList();
-    return maps.find((it) => it.id == id);
+    let maps = await this.listMeasurement();
+    let res = maps.find((it) => it.id == id);
+    return res;
   }
   async searchMeasurement(q) {
     let mQ = q.toLowerCase();

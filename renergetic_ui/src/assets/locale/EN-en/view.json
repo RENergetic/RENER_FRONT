@@ -1,6 +1,7 @@
 {
   "asset_child_empty": "No sub assets",
   "asset_list": "Asset list",
+  "asset_select": "Select asset",
   "add_heatmap": "Add heatmap",
   "add_measurement": "Add measurement",
   "dashboards": "Dashboards",
@@ -16,6 +17,7 @@
   "information_panel_list": "Information panel list",
   "manage_sensors": "Manage sensors",
   "measurements": "Measurements",
+  "measurement_type_not_defined":"Type not defined",
   "no_asset": "No asset",
   "no_asset_children": "No sub assets",
   "no_asset_measurements": "No measurements",
