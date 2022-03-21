@@ -9,7 +9,7 @@
       {{ $t("model.panel.label") }}
     </label>
     <div class="col">
-      <InputText id="panelLabel" v-model="mModel.label" :aria-readonly="!edit" />
+      <InputText id="panelLabel" v-model="label" :aria-readonly="!edit" />
     </div>
   </div>
   <div class="field grid">
@@ -17,7 +17,7 @@
       {{ $t("model.panel.name") }}
     </label>
     <div class="col">
-      <InputText id="panelName" v-model="mModel.name" :aria-readonly="!edit" />
+      <InputText id="panelName" v-model="name" :aria-disabled="true" :aria-readonly="!edit" />
     </div>
   </div>
   <div class="field grid">
@@ -46,20 +46,24 @@ export default {
   emits: ["update:modelValue", "cancel", "save"],
   data() {
     return {
-      mModel: this.modelValue == null ? {} : this.modelValue,
+      name: "",
+      label: null,
     };
   },
-  computed: {
-    parentLabel: function () {
-      return this.mModel != null && this.mModel.parent != null ? this.mModel.parent.label : null;
+  computed: {},
+  watch: {
+    label: {
+      handler(newVal) {
+        if (newVal == null) this.name = null;
+        else this.name = newVal.toLowerCase().trim().replace(" ", "_");
+      },
     },
   },
-  watch: {},
   methods: {
     submit() {
-      this.mModel.tiles = [];
-      this.$emit("update:modelValue", this.mModel);
-      this.$emit("save", this.mModel);
+      let model = { tiles: [], name: this.name, label: this.label };
+      this.$emit("update:modelValue", model);
+      this.$emit("save", model);
     },
     cancel() {
       this.$emit("cancel", this.model);
