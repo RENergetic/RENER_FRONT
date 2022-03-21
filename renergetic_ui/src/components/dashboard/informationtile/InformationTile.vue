@@ -37,7 +37,13 @@
         ></DoughnutTile>
 
         <!-- tile list-->
-        <InformationListTile v-else class="block" :tile="tile" :pdata="pdata.data"></InformationListTile>
+        <InformationListTile
+          v-else
+          class="block"
+          :tile="tile"
+          :pdata="pdata.data"
+          :font-size="fontSize"
+        ></InformationListTile>
         <!-- </template> -->
       </div>
     </div>
@@ -75,6 +81,10 @@ export default {
   //   return {};
   // },
   computed: {
+    fontSize: function () {
+      let size = this.settings != null && this.settings.fontSize != null ? this.settings.fontSize : 2.5;
+      return `${size}rem`;
+    },
     tile: function () {
       return this.slotProps.tile;
     },

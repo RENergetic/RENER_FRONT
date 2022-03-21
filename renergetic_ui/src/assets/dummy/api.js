@@ -140,6 +140,8 @@ class DashboardApi {
     });
   }
   async updateInformationPanel(panel) {
+    // console.info(panel);
+    // console.info(JSON.stringify(panel));
     storage.updateList(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, panel);
     return new Promise((resolve) => {
       resolve(panel.id);

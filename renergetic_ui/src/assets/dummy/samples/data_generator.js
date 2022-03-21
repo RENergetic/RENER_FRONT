@@ -36,7 +36,7 @@ function generatePanelData(informationPanel) {
   let measurements = listMeasurements(informationPanel);
   let data = {};
   for (let m of Object.keys(measurements)) {
-    let value = Math.floor(Math.random() * 150) - 50;
+    let value = Math.floor(Math.random() * 150);
     data[m] = value;
   }
   return data;
