@@ -53,7 +53,7 @@ export default {
   name: "NotificationItem",
   components: { InformationTile, DoughnutTile },
   props: {
-    demand: {
+    notification: {
       type: Object,
       default: () => {},
     },

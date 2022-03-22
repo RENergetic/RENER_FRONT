@@ -67,7 +67,7 @@
       <Accordion v-if="settings.notificationVisibility && selectedAreas" class="tile" :active-index="0">
         <AccordionTab>
           <template #header> {{ $t("model.heatmap.notifications") }}</template>
-          <notification-view :objects="selectedAreas"></notification-view>
+          <notification-list :object-id="heatmap.id" :context="context"></notification-list>
         </AccordionTab>
       </Accordion>
       <Accordion v-if="settings.measurementsVisibility && selectedAreas" class="tile" :active-index="0">
@@ -93,8 +93,8 @@ import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import AreaDetails from "./AreaDetails.vue";
 import RecommendationView from "@/components/management/RecommendationView.vue";
 import Konva from "konva";
-import NotificationView from "../../management/notification/NotificationList.vue";
-import { Colors } from "../../../plugins/model/Enums";
+import NotificationList from "../../management/notification/NotificationList.vue";
+import { Colors, NotificationContext } from "../../../plugins/model/Enums";
 import HeatMapSettings from "../../miscellaneous/settings/HeatmapSettings.vue";
 import MeasurementChart from "../measurements/MeasurementChart.vue";
 import MeasurementsView from "../measurements/MeasurementsView.vue";
@@ -109,7 +109,7 @@ export default {
     HeatMapSettings,
     RecommendationView,
     DotMenu,
-    NotificationView,
+    NotificationList,
     MeasurementChart,
     MeasurementsView,
   },
@@ -141,6 +141,7 @@ export default {
       measurmenentState: true,
       settingsDialog: false,
       settings: this.$store.getters["settings/heatmap"],
+      context: NotificationContext.AREA,
     };
   },
   watch: {

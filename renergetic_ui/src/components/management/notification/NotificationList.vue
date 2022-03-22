@@ -1,11 +1,9 @@
 <template>
   <div>
-    <div>
-      <div style="height: 100%" class="flex flex-column align-items-start align-content-start">
-        <template v-for="n in mNotifications" :key="n.id">
-          <NotificationItem :notification="n"></NotificationItem>
-        </template>
-      </div>
+    <div style="height: 100%" class="flex flex-column align-items-start align-content-start">
+      <template v-for="n in mNotifications" :key="n.id">
+        <NotificationItem :notification="n"></NotificationItem>
+      </template>
     </div>
   </div>
 </template>
@@ -39,7 +37,7 @@ export default {
     },
   },
   async created() {
-    if (this.notifications == null && this.objects != null) {
+    if (this.notifications == null) {
       //todo:
       this.$ren.managementApi.getNotifications(this.objectId, this.context).then((notifications) => {
         this.mNotifications = notifications;

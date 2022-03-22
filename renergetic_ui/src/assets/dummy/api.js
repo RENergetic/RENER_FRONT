@@ -243,12 +243,12 @@ class ManagementApi {
     return assets;
   }
 
-  getDemand(assetId) {
+  async getDemand(assetId) {
     //TODO:
     console.info(assetId);
     return demandList;
   }
-  getNotifications(assetId, context = NotificationContext.USER) {
+  async getNotifications(assetId, context = NotificationContext.USER) {
     //TODO:
     console.info(assetId + " " + context);
     return notificationList;

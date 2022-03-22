@@ -22,11 +22,8 @@
           <Feedback></Feedback>
         </Card>
       </div>
-
       <div v-if="settings.notificationVisibility" :class="'grid-stack-item ren'" v-bind="getLayout('notificationTile')">
-        <Card :class="'grid-stack-item-content'">
-          <NotificationList></NotificationList>
-        </Card>
+        <NotificationList :class="'grid-stack-item-content'"></NotificationList>
       </div>
       <div
         v-if="settings.selectedPanel"
