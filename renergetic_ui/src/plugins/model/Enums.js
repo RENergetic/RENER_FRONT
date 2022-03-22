@@ -18,4 +18,11 @@ const TileTypes = Object.freeze({
   doughnut: "doughnut",
   list: "list",
 });
-export { Colors, AssetTypes, TileTypes };
+
+const NotificationContext = Object.freeze({
+  ASSET: "asset",
+  USER: "user",
+  AREA: "area",
+  TILE: "area",
+});
+export { Colors, AssetTypes, TileTypes, NotificationContext };

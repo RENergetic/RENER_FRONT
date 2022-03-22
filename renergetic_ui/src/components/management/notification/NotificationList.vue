@@ -11,6 +11,7 @@
 </template>
 <script>
 import NotificationItem from "./NotificationItem.vue";
+import { NotificationContext } from "@/plugins/model/Enums.js";
 export default {
   name: "NotificationList",
   components: { NotificationItem },
@@ -19,7 +20,8 @@ export default {
       type: Array,
       default: () => null,
     },
-    objects: { type: Array, default: null },
+    objectId: { type: Number, default: null },
+    context: { type: String, default: NotificationContext.USER },
     dateInterval: {
       type: Object,
       default: null,
@@ -35,17 +37,11 @@ export default {
     notifications: function (newValue) {
       this.mNotifications = newValue;
     },
-    objects: {
-      handler: function () {
-        // todo: load data
-      },
-      deep: true,
-    },
   },
   async created() {
     if (this.notifications == null && this.objects != null) {
       //todo:
-      this.$ren.dataApi.getNotifications(this.objects).then((notifications) => {
+      this.$ren.managementApi.getNotifications(this.objectId, this.context).then((notifications) => {
         this.mNotifications = notifications;
       });
     } else {

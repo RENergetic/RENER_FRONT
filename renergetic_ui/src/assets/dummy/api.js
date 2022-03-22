@@ -1,6 +1,8 @@
+import { NotificationContext } from "@/plugins/model/Enums.js";
 import dashboardList from "./samples/dashboard.js";
 import informationPanelList from "./samples/informationpanels.js";
 import heatmapList from "./samples/heatmap.js";
+import notificationList from "./samples/notifications.js";
 import demandList from "./samples/demand.js";
 // import { measurementsGenerator, currentMeasurementsGenerator, dataGenerator } from "./dashboard.js";
 import * as generator from "./samples/data_generator.js";
@@ -245,6 +247,11 @@ class ManagementApi {
     //TODO:
     console.info(assetId);
     return demandList;
+  }
+  getNotifications(assetId, context = NotificationContext.USER) {
+    //TODO:
+    console.info(assetId + " " + context);
+    return notificationList;
   }
   async deleteAsset(id) {
     return new Promise((resolve) => {

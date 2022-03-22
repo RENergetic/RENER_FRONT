@@ -4,6 +4,7 @@ export default class ManagementApi extends RestComponent {
   constructor(axiosInstance, vueInstance) {
     super(axiosInstance, vueInstance);
   }
+  //getNotifications(objectId=null,context="user") => context:NotificationContext -> Enums.js
   // ASSET REQUESTS
   // TODO:
   async listAsset(userId = null, offset = 0, limit = 20) {
