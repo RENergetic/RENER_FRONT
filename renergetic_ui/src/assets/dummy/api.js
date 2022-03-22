@@ -289,12 +289,16 @@ class DataApi {
 
   //TODO: discuss with Raul
   async attributes(/*area, areaId*/) {
+    console.info(JSON.stringify(measurementAttributes));
     return measurementAttributes;
     // return storage.get(`${MANAGEMENT_KEY}.panel_list`, measurementAttributes);
   }
 
-  async getTimeseries(measurementIds) {
-    return generator.generateTimeseries(measurementIds);
+  async getTimeseries(measurementIds, attributes = {}) {
+    console.info(attributes);
+    let timeseries = generator.generateTimeseries(measurementIds);
+    console.info(JSON.stringify(timeseries));
+    return timeseries;
   }
 
   // async getCurrentData(measurementIds) {
@@ -303,11 +307,15 @@ class DataApi {
 
   async getHeatMapState(heatmapId) {
     let heatmap = await this.dashboardApi.getHeatMap(heatmapId);
-    return generator.generateHeatMapState(heatmap);
+    let state = generator.generateHeatMapState(heatmap);
+    console.info(JSON.stringify(state));
+    return state;
   }
   async getPanelData(panelId) {
     let panel = await this.dashboardApi.getInformationPanel(panelId);
-    return { data: generator.generatePanelData(panel), state: generator.generatePanelState(panel) };
+    let data = { data: generator.generatePanelData(panel), state: generator.generatePanelState(panel) };
+    console.info(JSON.stringify(data));
+    return data;
   }
   async getAssetData(assetId) {
     let asset = await this.managementApi.getAsset(assetId);

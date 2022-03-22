@@ -19,8 +19,7 @@
     :modal="true"
     :dismissable-mask="true"
   >
-    <notification-view :notifications="[]" />
-    <p>todo:</p>
+    <notification-list v-if="selectedItem" :context="notificationContext" :object-id="selectedItem.tile.id" />
   </Dialog>
   <Dialog
     v-model:visible="editDialog"
@@ -37,7 +36,7 @@
       <div class="col">
         <Dropdown
           id="assetType"
-          v-model="selectedTile.tile.type"
+          v-model="selectedItem.tile.type"
           :options="tileTypes"
           option-label="label"
           option-value="value"
@@ -63,7 +62,7 @@
       :dismissable-mask="true"
     >
       <!-- {{ selectedTile.tile.measurements }} -->
-      <ManageSensors v-model="selectedTile.tile.measurements"></ManageSensors>
+      <ManageSensors v-model="selectedItem.tile.measurements"></ManageSensors>
     </Dialog>
   </Dialog>
 </template>
@@ -71,11 +70,11 @@
 import InformationTile from "./informationtile/InformationTile.vue";
 import ManageSensors from "./measurements/ManageSensors.vue";
 
-import NotificationView from "../management/notification/NotificationList.vue";
+import NotificationList from "../management/notification/NotificationList.vue";
 
 import Dialog from "primevue/dialog";
 import { GridStack } from "gridstack";
-import { TileTypes } from "@/plugins/model/Enums.js";
+import { TileTypes, NotificationContext } from "@/plugins/model/Enums.js";
 // THEN to get HTML5 drag&drop
 import "gridstack/dist/h5/gridstack-dd-native";
 import "gridstack/dist/gridstack.min.css";
@@ -86,7 +85,7 @@ export default {
 
     ManageSensors,
     Dialog,
-    NotificationView,
+    NotificationList,
   },
   props: {
     locked: {
@@ -114,13 +113,14 @@ export default {
       grid: null,
       notificationDialog: false,
       editDialog: false,
-      selectedTile: null,
+      selectedItem: null,
       mPanel: this.panel,
       manageSensorsDialog: false,
       pdata: {},
       tileTypes: Object.entries(TileTypes).map((k) => {
         return { value: k[1], label: this.$t("enums.tile_type." + k[1]) };
       }),
+      notificationContext: NotificationContext.TILE,
     };
   },
   computed: {
@@ -135,7 +135,7 @@ export default {
   watch: {
     manageSensorsDialog: function (newValue) {
       if (!newValue) {
-        this.mPanel.tiles[this.selectedTile.index] = this.selectedTile.tile;
+        this.mPanel.tiles[this.selectedItem.index] = this.selectedItem.tile;
       }
     },
     panel: {
@@ -188,9 +188,9 @@ export default {
     gridWidth(tile) {
       return tile.col == null ? 2 : tile.col;
     },
-    onEdit(selectedTile) {
+    onEdit(evt) {
       //todo
-      this.selectedTile = selectedTile;
+      this.selectedItem = evt;
       this.editDialog = true;
       // console.info(tile);
     },
@@ -215,8 +215,9 @@ export default {
       this.$emit("update", this.mPanel);
     },
 
-    viewNotification() {
+    viewNotification(evt) {
       //TODO: load here notifications for tile
+      this.selectedItem = evt;
       this.notificationDialog = true;
     },
   },

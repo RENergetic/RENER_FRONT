@@ -9,8 +9,9 @@ export default class DataApi extends RestComponent {
   //TODO: discuss with  others
   // async attributes(/*area, areaId*/) {}
 
-  // async getTimeseries(measurementIds,from=null,to=null) {   } ./docs/model/timeseries.json ,
+  // async getTimeseries(measurementIds, attributes = {},from=null,to=null) {   } ./docs/model/timeseries.json ,
   //                labels -> list of unix timestamps , data list of values for those timestamps
+  //                  attributes -> query attributes like predictions, ai models etc, format and  key names -> to be defined
   // async getHeatMapState(heatmapid){} ./docs/model/heatmap_state.json , dictionary with states: area_id => state
   // async getCurrentData(measurementIds) {  } TODO:
   // async getPanelData(panelId) {} ./docs/model/panel_data.json , dictionary:
