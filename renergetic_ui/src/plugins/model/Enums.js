@@ -9,6 +9,8 @@ const AssetTypes = Object.freeze({
   BUILDING: "bulding",
   FLAT: "flat",
   HEAT_SOURCE: "heat_source",
+  ISLAND: "island",
+  PV: "pv",
 });
 
 const TileTypes = Object.freeze({

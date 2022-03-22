@@ -3,7 +3,7 @@ export default {
   state: {
     //TODO: default home settings
     home: {
-      selectedPanel: "1",
+      selectedPanel: "607",
       feedbackVisibility: false,
       notificationVisibility: false,
       demandVisibility: true,

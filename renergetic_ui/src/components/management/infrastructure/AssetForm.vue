@@ -62,7 +62,7 @@ export default {
   props: {
     modelValue: {
       type: Object,
-      default: () => ({}),
+      default: () => ({ measurements: [] }),
     },
   },
   emits: ["update:modelValue", "cancel"],

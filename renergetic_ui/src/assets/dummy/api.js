@@ -230,9 +230,15 @@ class ManagementApi {
     let f = function (s) {
       return s.name.toLowerCase().includes(mQ) || (s.label != null && s.label.toLowerCase().includes(mQ));
     };
-    let asset = assets.filter((it) => f(it));
-    await Promise.all(asset.measurements.map(async (it) => await this.getMeasurement(it.id)));
-    return asset;
+    assets = assets.filter((it) => f(it));
+    for (let asset of assets) {
+      asset.measurements = await Promise.all(
+        asset.measurements.map(async (it) => {
+          return this.getMeasurement(it.id);
+        }),
+      );
+    }
+    return assets;
   }
 
   getDemand(assetId) {

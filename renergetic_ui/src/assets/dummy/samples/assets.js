@@ -29,4 +29,5 @@ export default [
     child: [],
     measurements: [{ id: 10 }, { id: 11 }],
   },
+  { measurements: [], name: "energy_island_1", label: "Energy island 1", id: 13, asset_type: "island" },
 ];

@@ -5,6 +5,7 @@
     </template>
   </InfoIcon>
   <!-- {{ assetList }} -->
+
   <DataTable :value="assetList">
     <!-- <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.asset.' + col)"></Column> -->
     <Column field="name" :header="$t('model.asset.name')"> </Column>
@@ -189,15 +190,14 @@ export default {
     async onCreate(o) {
       await this.$ren.managementApi.addAsset(o).then((assetId) => {
         console.info("add asset:" + assetId);
-        o.id = assetId;
-        this.assetList.push(o);
+        // o.id = assetId;
+        // this.assetList.push(o);
       });
+      this.reload();
     },
-    // async loadData() {
-    //   await this.$ren.measurementApi.measurements(this.objects).then((data) => {
-    //     this.data = data;
-    //   });
-    // },
+    async reload() {
+      this.assetList = await this.$ren.managementApi.listAsset();
+    },
   },
 };
 </script>
