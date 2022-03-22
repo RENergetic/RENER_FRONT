@@ -30,17 +30,17 @@
     </div>
 
     <div class="flex-none flex flex-column justify-content-center flex-wrap">
-      <div class="flex align-content-end flex-wrap">
+      <!-- <div class="flex align-content-end flex-wrap">
         <div class="message">{{ notification.msg }}</div>
-      </div>
+      </div> -->
       <div class="flex align-content-start flex-wrap">
-        <div class="flex align-items-center justify-content-center">{{ notification.description }}</div>
+        <div class="flex align-items-center justify-content-center">{{ notification.message }}</div>
       </div>
     </div>
     <div class="flex-none flex align-items-center justify-content-center">
-      <i v-if="notification.state == 'warning'" class="pi pi-exclamation-triangle"></i>
-      <i v-if="notification.state == 'info'" class="pi pi-info-circle"></i>
-      <i v-if="notification.state == 'error'" class="pi pi-times-circle"></i>
+      <i v-if="notification.type == 'warning'" class="pi pi-exclamation-triangle"></i>
+      <i v-if="notification.type == 'info'" class="pi pi-info-circle"></i>
+      <i v-if="notification.type == 'error'" class="pi pi-times-circle"></i>
       <!-- TODO: set empty icon ??? <i v-else class="pi pi-arrow-down-right"></i> -->
     </div>
   </div>
