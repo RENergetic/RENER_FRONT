@@ -61,9 +61,9 @@ export default {
   data() {
     return {
       icons: {
-        battery: require(`../../../assets/img/tileicons/battery.png`),
-        electricity: require(`../../../assets/img/tileicons/electricity.png`),
-        heat: require(`../../../assets/img/tileicons/heat.png`),
+        battery: require(`@/assets/img/tileicons/battery.png`),
+        electricity: require(`@/assets/img/tileicons/electricity.png`),
+        heat: require(`@/assets/img/tileicons/heat.png`),
       },
     };
   },
