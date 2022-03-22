@@ -24,7 +24,7 @@ export default {
     },
     fontSize: {
       type: String,
-      default: "2.5rem",
+      default: "2rem",
     },
   },
   // emits: ["edit", "notification"],

@@ -82,7 +82,7 @@ export default {
   // },
   computed: {
     fontSize: function () {
-      let size = this.settings != null && this.settings.fontSize != null ? this.settings.fontSize : 2.5;
+      let size = this.settings != null && this.settings.fontSize != null ? this.settings.fontSize : 2.0;
       return `${size}rem`;
     },
     tile: function () {

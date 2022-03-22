@@ -1,15 +1,19 @@
 <template>
   <div>
-    TODO: list notifications:
-    {{ mNotifications }}
-    objects:{{ objects }}
+    <div>
+      <div style="height: 100%" class="flex flex-column align-items-start align-content-start">
+        <template v-for="n in mNotifications" :key="n.id">
+          <NotificationItem :notification="n"></NotificationItem>
+        </template>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-// THEN to get HTML5 drag&drop
+import NotificationItem from "./NotificationItem.vue";
 export default {
   name: "NotificationList",
-  components: {},
+  components: { NotificationItem },
   props: {
     notifications: {
       type: Array,

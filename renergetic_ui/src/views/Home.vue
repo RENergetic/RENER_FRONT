@@ -51,7 +51,7 @@
 import DotMenu from "../components/miscellaneous/DotMenu.vue";
 import HomeSettings from "../components/miscellaneous/settings/HomeSettings.vue";
 import Feedback from "../components/user/Feedback.vue";
-import NotificationList from "../components/dashboard/area/NotificationList.vue";
+import NotificationList from "../components/management/notification/NotificationList.vue";
 import InformationPanel from "../components/dashboard/InformationPanel.vue";
 import DemandList from "../components/user/demand/DemandList.vue";
 

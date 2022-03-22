@@ -93,7 +93,7 @@ import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import AreaDetails from "./AreaDetails.vue";
 import RecommendationView from "@/components/management/RecommendationView.vue";
 import Konva from "konva";
-import NotificationView from "./NotificationList.vue";
+import NotificationView from "../../management/notification/NotificationList.vue";
 import { Colors } from "../../../plugins/model/Enums";
 import HeatMapSettings from "../../miscellaneous/settings/HeatmapSettings.vue";
 import MeasurementChart from "../measurements/MeasurementChart.vue";

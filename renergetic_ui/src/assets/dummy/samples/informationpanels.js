@@ -5,7 +5,7 @@ export default [
   //   name: "some name",
   //   tiles: [
   //     {
-  //       layout: { x: 0, y: 0, h: 3, w: 2 },
+  //       layout: { x: 0, y: 0, h: 4, w: 2 },
   //       state: "ok",
   //       id: "1",
   //       label: "Label ",
@@ -33,7 +33,7 @@ export default [
   //     },
   //     {
   //       id: "2",
-  //       layout: { x: 2, y: 0, h: 3, w: 2 },
+  //       layout: { x: 2, y: 0, h: 4, w: 2 },
   //       label: "label 2",
   //       measurements: [
   //         {
@@ -137,7 +137,7 @@ export default [
   //       state: "warning",
   //       label: null,
   //       type: "knob",
-  //       layout: { x: 0, y: 3, h: 3, w: 2 },
+  //       layout: { x: 0, y: 3, h: 4, w: 2 },
   //       measurements: [
   //         {
   //           id: "7",
@@ -156,7 +156,7 @@ export default [
   //       state: "warning",
   //       label: "label 6",
   //       type: "knob",
-  //       layout: { x: 2, y: 3, h: 3, w: 2 },
+  //       layout: { x: 2, y: 3, h: 4, w: 2 },
   //       measurements: [
   //         {
   //           id: "9",
@@ -201,7 +201,7 @@ export default [
           },
         ],
         props: { items: [] },
-        layout: { x: 4, y: 0, w: 4, h: 3 },
+        layout: { x: 4, y: 0, w: 4, h: 4 },
       },
       {
         id: "0dbf2fbe-06d8-43a9-9009-b6ae402aa214",
@@ -248,7 +248,7 @@ export default [
           },
         ],
         props: { items: [] },
-        layout: { x: 0, y: 0, w: 4, h: 3 },
+        layout: { x: 0, y: 0, w: 4, h: 4 },
       },
       {
         id: "fcb2c173-b500-4c9b-95b1-02c93cc6fd5a",
@@ -295,7 +295,7 @@ export default [
           },
         ],
         props: { items: [] },
-        layout: { x: 8, y: 0, w: 4, h: 3 },
+        layout: { x: 8, y: 0, w: 4, h: 4 },
       },
     ],
     name: "building_a",
@@ -360,7 +360,7 @@ export default [
           x: 0,
           y: 0,
           w: 4,
-          h: 3,
+          h: 4,
         },
       },
       {
@@ -418,7 +418,7 @@ export default [
           x: 4,
           y: 0,
           w: 4,
-          h: 3,
+          h: 4,
         },
       },
       {
@@ -455,7 +455,7 @@ export default [
           x: 8,
           y: 0,
           w: 4,
-          h: 3,
+          h: 4,
         },
       },
     ],

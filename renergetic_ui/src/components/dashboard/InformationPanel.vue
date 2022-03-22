@@ -71,7 +71,7 @@
 import InformationTile from "./informationtile/InformationTile.vue";
 import ManageSensors from "./measurements/ManageSensors.vue";
 
-import NotificationView from "../dashboard/area/NotificationList.vue";
+import NotificationView from "../management/notification/NotificationList.vue";
 
 import Dialog from "primevue/dialog";
 import { GridStack } from "gridstack";
