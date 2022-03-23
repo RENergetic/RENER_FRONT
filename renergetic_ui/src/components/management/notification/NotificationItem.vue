@@ -34,7 +34,18 @@
         <!-- <div class="message">{{ notification.msg }}</div> -->
       </div>
       <div class="flex align-content-start flex-wrap">
-        <div class="flex align-items-center justify-content-center">{{ notification.message }}</div>
+        <div class="flex align-items-center justify-content-center">
+          {{ notification.message }}
+          <div v-if="notification.dashboard" class="flex flex-grow-1">
+            {{ $t("view.go_to_dashboard") }}
+            <i
+              v-if="notification.dashboard"
+              v-tooltip="$t('view.go_to_dashboard')"
+              class="pi pi-arrow-circle-right"
+              @click="$router.push(`/dashboard/view/${notification.dashboard.id}`)"
+            />
+          </div>
+        </div>
       </div>
     </div>
     <div class="col-2 flex-none flex align-items-center justify-content-center">
