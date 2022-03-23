@@ -1,6 +1,6 @@
 <template>
-  <div class="flex heatdemand">
-    <div class="flex align-items-center justify-content-center">
+  <div class="grid col-12">
+    <div class="col-2 flex align-items-center justify-content-center">
       <span
         v-if="notification.icon != null"
         id="demandicon"
@@ -29,15 +29,15 @@
       >
     </div>
 
-    <div class="flex-none flex flex-column justify-content-center flex-wrap">
-      <!-- <div class="flex align-content-end flex-wrap">
-        <div class="message">{{ notification.msg }}</div>
-      </div> -->
+    <div class="col-8 flex flex-column justify-content-center flex-wrap">
+      <div class="flex align-content-end flex-wrap">
+        <!-- <div class="message">{{ notification.msg }}</div> -->
+      </div>
       <div class="flex align-content-start flex-wrap">
         <div class="flex align-items-center justify-content-center">{{ notification.message }}</div>
       </div>
     </div>
-    <div class="flex-none flex align-items-center justify-content-center">
+    <div class="col-2 flex-none flex align-items-center justify-content-center">
       <i v-if="notification.type == 'warning'" class="pi pi-exclamation-triangle"></i>
       <i v-if="notification.type == 'info'" class="pi pi-info-circle"></i>
       <i v-if="notification.type == 'error'" class="pi pi-times-circle"></i>
