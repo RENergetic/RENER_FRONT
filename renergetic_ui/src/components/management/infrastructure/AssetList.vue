@@ -55,7 +55,7 @@
     :modal="true"
     :dismissable-mask="true"
   >
-    <AssetForm @update:model-value="onCreate($event, 0)"></AssetForm>
+    <AssetForm @update:model-value="onCreate($event, 0)" @cancel="assetAdd = false"> </AssetForm>
   </Dialog>
   <AssetSelect ref="assetSelectDialog" @change="onParentChange" />
   <Dialog
@@ -188,6 +188,8 @@ export default {
       this.selectedRow.measurements.push(measurement);
     },
     async onCreate(o) {
+      console.error("AQUI HA LLEGADO");
+      console.log(o);
       await this.$ren.managementApi.addAsset(o).then((assetId) => {
         console.info("add asset:" + assetId);
         // o.id = assetId;
