@@ -9,6 +9,7 @@
       :notifications="notifications"
       :add-dashboard="dashboardDialog"
       @update:notifications="notifications = $event"
+      @UpdateMenu="reload"
     ></Dialogs>
   </div>
 </template>
@@ -54,12 +55,16 @@ export default {
   },
   methods: {
     async reload() {
-      this.$ren.utils.reloadStore().then(() => {
-        this.dashboards = this.$store.getters["view/dashboards"];
-        this.informationPanels = this.$store.getters["view/informationPanels"];
-        let menu = this.initMenu();
-        this.menuModel = menu;
-      });
+      this.$ren.utils
+        .reloadStore()
+        .then(async () => {
+          //this.dashboards = this.$store.getters["view/dashboards"];
+          this.dashboards = await this.$ren.dashboardApi.list();
+          this.informationPanels = this.$store.getters["view/informationPanels"];
+          let menu = this.initMenu();
+          this.menuModel = menu;
+        })
+        .catch((error) => console.error(error));
     },
     panelItems() {
       if (this.informationPanels.length == 0) {

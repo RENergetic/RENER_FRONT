@@ -10,10 +10,10 @@
     <!-- <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.asset.' + col)"></Column> -->
     <Column field="name" :header="$t('model.asset.name')"> </Column>
     <Column field="label" :header="$t('model.asset.label')"> </Column>
-    <Column field="asset_type" :header="$t('model.asset.asset_type')"> </Column>
+    <Column field="type.label" :header="$t('model.asset.asset_type')"> </Column>
     <Column field="child" :header="$t('model.asset.child')">
       <template #body="slotProps">
-        <span v-if="slotProps.data.child && slotProps.data.child.length > 0" @click="viewChildren(slotProps)">
+        <span v-if="slotProps.data.child && slotProps.data.child.length > 0" @click="viewChildren(slotProps.data)">
           {{ $t("view.view_asset_children") }}
         </span>
         <span v-else class="disabled">
@@ -72,7 +72,7 @@
           <!-- <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.asset.' + col)"></Column> -->
           <Column field="name" :header="$t('model.asset.name')"> </Column>
           <Column field="label" :header="$t('model.asset.label')"> </Column>
-          <Column field="asset_type" :header="$t('model.measurement.asset_type')"> </Column>
+          <Column field="type" :header="$t('model.asset.asset_type')"> </Column>
         </DataTable>
         <span v-else>
           {{ $t("view.asset_child_empty") }}
@@ -97,7 +97,7 @@
           <Column field="name" :header="$t('model.measurement.name')"> </Column>
           <Column field="label" :header="$t('model.measurement.label')"> </Column>
           <Column field="location_name" :header="$t('model.measurement.location_name')"> </Column>
-          <Column field="measurement_type" :header="$t('model.measurement.measurement_type')">
+          <Column field="type" :header="$t('model.measurement.measurement_type')">
             <template #body="slotProps">
               <span v-if="slotProps.data.type">
                 {{ slotProps.data.type.label }}: {{ slotProps.data.type.unit }}
@@ -108,7 +108,7 @@
               </span>
             </template>
           </Column>
-          <Column field="measurement_details" :header="$t('model.measurement.measurement_type')">
+          <Column field="measurement_details" :header="$t('model.measurement.details')">
             TODO: details
             <!-- <template #body="slotProps">
             "measurement_details": { "color": "#4CAF50" }

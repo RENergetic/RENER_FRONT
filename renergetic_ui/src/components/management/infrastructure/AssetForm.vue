@@ -84,6 +84,12 @@ export default {
     },
   },
   watch: {},
+  async mounted() {
+    // LOAD ASSET TYPES
+    this.assetTypes = (await this.$ren.managementApi.listAssetType()).map((type) => {
+      return { value: type.name, label: type.label };
+    });
+  },
   methods: {
     selectAsset() {
       this.$refs.assetSelectDialog.open();

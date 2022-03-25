@@ -106,6 +106,9 @@ export default {
   methods: {
     async onSave(dashboard) {
       await this.$ren.dashboardApi.update(dashboard).then((dashboardReq) => {
+        console.log(dashboard);
+        console.log(dashboardReq);
+        this.updateDialog = false;
         this.$store.commit("view/dashboardsUpdate", dashboardReq);
         this.$emit("UpdateMenu", null);
       });

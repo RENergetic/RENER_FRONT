@@ -83,6 +83,21 @@ export default class ManagementApi extends RestComponent {
       });
   }
 
+  async listAssetType(category = null, offset = 0, limit = 20) {
+    return this.axios
+      .get(`/api/assets/type`, {
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+        params: { offset: offset, limit: limit, category: category },
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error) {
+        console.error("list asset types error" + error.message);
+        if (error.response.status == 404) console.error("there are no assets types" + error.message);
+      });
+  }
+
   async getDemand(assetId) {
     return this.axios
       .get(`/api/demandRequests/assetId/${assetId}`, {

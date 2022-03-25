@@ -23,7 +23,7 @@ export default {
   async mounted() {
     //TODO: userId
     let userID = 0;
-    this.demands = await this.$ren.userApi.getDemad(userID);
+    this.demands = await this.$ren.dashboardApi.getDemand(userID);
   },
 
   methods: {},
