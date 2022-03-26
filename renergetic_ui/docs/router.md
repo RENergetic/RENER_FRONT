@@ -1,7 +1,7 @@
 ### Meta parameter description:
 * isAuthenticated: **bool** - true=enable authentication
 * layout: **enum** - *standard*, *fullscr*
-* roles: **array** - ["manager", "administrator", "public"]. Only allow access to users with one of write roles. TODO:  define default path role
+* roles: **array** - ["ren-manager", "ren-admin", "ren-guest","ren-user","ren-dev"]. Only allow access to users with one of write roles. TODO:  define default path role
   
   * manager  - TODO: description
   * administrator - TODO: description
