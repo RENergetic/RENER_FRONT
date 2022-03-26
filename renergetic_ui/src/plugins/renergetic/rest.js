@@ -14,7 +14,7 @@ import {
 // import UserApi from './renergetic/ren_api/user'
 // import i18n from "../locale";
 import axios from "axios";
-const USE_DUMMY = false;
+const USE_DUMMY = process.env.VUE_APP_DUMMY_API;
 
 export var BASE_URL = process.env.VUE_APP_API_URL;
 
