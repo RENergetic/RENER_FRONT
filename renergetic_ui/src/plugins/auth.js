@@ -3,7 +3,7 @@ import axios from "axios";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.headers.delete["Content-Type"] = "application/json";
-
+//TODO: translate to english
 // https://www.keycloak.org/docs/11.0/securing_apps/#usage-2
 //https://stackoverflow.com/questions/65398657/keycloak-and-node-js-how-to-keep-user-logged-in-after-keycloak-access-token-get
 // var session = require("express-session");
@@ -208,14 +208,14 @@ export default function (Vue) {
       };
       return axios.delete(`${info.url}/admin/realms/${info.realm}/users/${userId}`, config);
     },
-    hasAccess(assignedRoles, allowedRoles) {
-      if (!allowedRoles || allowedRoles.length == 0) return true;
-      else if (!assignedRoles || assignedRoles.length == 0) return false;
-      for (var i = 0; i < allowedRoles.length; i++) {
-        if (assignedRoles.indexOf(allowedRoles[i]) !== -1) return true;
-      }
-      return false;
-    },
+    // hasAccess(assignedRoles, allowedRoles) {
+    //   if (!allowedRoles || allowedRoles.length == 0) return true;
+    //   else if (!assignedRoles || assignedRoles.length == 0) return false;
+    //   for (var i = 0; i < allowedRoles.length; i++) {
+    //     if (assignedRoles.indexOf(allowedRoles[i]) !== -1) return true;
+    //   }
+    //   return false;
+    // },
     async executeAfterInitialized(method) {
       const TRIES = 4;
       const TIME = 150;

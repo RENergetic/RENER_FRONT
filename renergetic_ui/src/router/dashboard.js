@@ -60,14 +60,14 @@ var dashboardRoutes = [
     meta: {
       isAuthenticated: true,
       layout: "fullscr",
-      roles: ["ren-admin", "ren-dev", "ren-manager", "resident"],
+      roles: ["ren-admin", "ren-dev", "ren-manager", "ren-user"],
     },
     component: () => import("../views/dashboard/InformationPanelView.vue"),
   },
   {
     path: "/panel",
     name: "InformationPanelListView",
-    meta: { isAuthenticated: true, roles: ["ren-admin", "ren-dev", "ren-manager", "resident"] },
+    meta: { isAuthenticated: true, roles: ["ren-admin", "ren-dev", "ren-manager", "ren-user"] },
     component: () => import("../views/dashboard/InformationPanelListView.vue"),
   },
   {
