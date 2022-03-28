@@ -60,20 +60,20 @@ var dashboardRoutes = [
     meta: {
       isAuthenticated: true,
       layout: "fullscr",
-      roles: ["ren-administrator", "ren-developer", "energy-manager", "resident"],
+      roles: ["ren-dev", "ren-manager", "ren-user"],
     },
     component: () => import("../views/dashboard/InformationPanelView.vue"),
   },
   {
     path: "/panel",
     name: "InformationPanelListView",
-    meta: { isAuthenticated: true, roles: ["ren-administrator", "ren-developer", "energy-manager", "resident"] },
+    meta: { isAuthenticated: true, roles: ["ren-dev", "ren-manager", "ren-user"] },
     component: () => import("../views/dashboard/InformationPanelListView.vue"),
   },
   {
     path: "/panel/add",
     name: "InformationPanelCreator",
-    meta: { isAuthenticated: true, roles: ["ren-administrator", "ren-developer"] },
+    meta: { isAuthenticated: true, roles: ["ren-admin", "ren-dev"] },
     component: () => import("../views/dashboard/InformationPanelCreator.vue"),
   },
 ];
