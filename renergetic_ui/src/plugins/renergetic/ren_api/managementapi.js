@@ -158,6 +158,7 @@ export default class ManagementApi extends RestComponent {
         params: { offset: offset, limit: limit },
       })
       .then((response) => {
+        console.log(response.data);
         return response.data;
       })
       .catch(function (error) {
