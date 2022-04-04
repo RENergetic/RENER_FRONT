@@ -1,5 +1,10 @@
 // import { is } from "core-js/core/object";
 import RestComponent from "./restcomponent";
+
+// TEMPORAL CHANGES TO CONNECT WITH BACKEND
+import { NotificationContext } from "@/plugins/model/Enums.js";
+import notificationList from "../../../assets/dummy/samples/notifications.js";
+
 export default class ManagementApi extends RestComponent {
   constructor(axiosInstance, vueInstance) {
     super(axiosInstance, vueInstance);
@@ -224,5 +229,10 @@ export default class ManagementApi extends RestComponent {
         if (error.response.status == 404) console.error("measurement not found" + error.message);
       });
   }
-  //
+  // TODO: Ask to Tomek about NotificationContext
+  async getNotifications(assetId, context = NotificationContext.USER) {
+    //TODO:
+    console.info(assetId + " " + context);
+    return notificationList;
+  }
 }
