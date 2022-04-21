@@ -3,18 +3,22 @@
     "bulding": "Bulding",
     "flat": "Flat",
     "heat_source": "Heat Source",
-    "island":"Island",
-    "pv":"pv"
+    "island": "Island",
+    "pv": "pv"
   },
-  "metric_type":{
-   "electricity":"electricity",
-   "heat":"heat",
-   "temperature":"temperature",
-   "renewability":"renewability"
+  "metric_type": {
+    "electricity": "electricity",
+    "heat": "heat",
+    "temperature": "temperature",
+    "renewability": "renewability"
   },
-  "tile_type":{
-    "knob":"knob",
-    "doughnut":"doughnut",
-    "list":"list"
-  } 
+  "tile_type": {
+    "knob": "knob",
+    "doughnut": "doughnut",
+    "list": "list"
+  },
+  "heatmap_type": {
+    "default": "Normal",
+    "osm": "OpenStreeMap"
+  }
 }

@@ -3,3 +3,25 @@
 - data validation
 - TODO: load settings from rest api
 - user ui settings   docs
+
+features:
+- comfort zones ?
+- manual demand system (recommendations defined by manager from ui)
+- alternative information tiles based on attributes and predictions
+- attribute and predictions filters  management
+- rules/roles/privilages management
+- measurement api functions like: avg, std, mean
+
+- role management
+- heatmap layers with simple data
+- EnergyShareComponent for energy island 
+- asset energy share
+- more information for measurement containing measurement alternatives (predictions and aggregations, std ,avg, sum - all possible) and set default visible on the information tile
+- alert threshold ui, frequency of validation
+
+
+
+
+
+bugs:
+- tile edit - delete measurement

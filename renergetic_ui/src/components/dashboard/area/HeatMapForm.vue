@@ -74,8 +74,8 @@ export default {
     return {
       mHeatmap: this.modelValue,
       typeList: [
-        { value: HeatMapType.DEFAULT, label: this.$t(`enums.heatmaptype.${HeatMapType.DEFAULT}`) },
-        { value: HeatMapType.OSM, label: this.$t(`enums.heatmaptype.${HeatMapType.OSM}`) },
+        { value: HeatMapType.DEFAULT, label: this.$t(`enums.heatmap_type.${HeatMapType.DEFAULT}`) },
+        { value: HeatMapType.OSM, label: this.$t(`enums.heatmap_type.${HeatMapType.OSM}`) },
       ],
     };
   },
