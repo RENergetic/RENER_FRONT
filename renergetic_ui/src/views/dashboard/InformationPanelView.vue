@@ -22,9 +22,9 @@
   </div>
 </template>
 <script>
-import InformationPanel from "../../components/dashboard/InformationPanel.vue";
-import DotMenu from "../../components/miscellaneous/DotMenu.vue";
-import PanelSettings from "../../components/miscellaneous/settings/PanelSettings.vue";
+import InformationPanel from "@/components/dashboard/informationpanel/InformationPanel.vue";
+import DotMenu from "@/components/miscellaneous/DotMenu.vue";
+import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 export default {
   name: "InformationPanelView",
   components: {

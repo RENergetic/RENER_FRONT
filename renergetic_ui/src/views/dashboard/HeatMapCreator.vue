@@ -43,6 +43,7 @@ export default {
         // dashoard.id = id;
         // this.$store.commit("view/dashboardsAdd", dashoard);
         // TODO: router back?
+        console.info("heatmapsave");
         this.$router.push(this.$route.meta.from);
       });
     },

@@ -67,10 +67,10 @@
   </Dialog>
 </template>
 <script>
-import InformationTile from "./informationtile/InformationTile.vue";
-import ManageSensors from "./measurements/ManageSensors.vue";
+import InformationTile from "../informationtile/InformationTile.vue";
+import ManageSensors from "../measurements/ManageSensors.vue";
 
-import NotificationList from "../management/notification/NotificationList.vue";
+import NotificationList from "../../management/notification/NotificationList.vue";
 
 import Dialog from "primevue/dialog";
 import { GridStack } from "gridstack";

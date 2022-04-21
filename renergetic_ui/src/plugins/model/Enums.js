@@ -5,6 +5,10 @@ const Colors = Object.freeze({
   SELECTED: "#0a0fc9",
   DEFAULT: "#eaeef5",
 });
+const HeatMapType = Object.freeze({
+  OSM: "osm",
+  DEFAULT: "default",
+});
 const AssetTypes = Object.freeze({
   BUILDING: "bulding",
   FLAT: "flat",
@@ -25,4 +29,4 @@ const NotificationContext = Object.freeze({
   AREA: "area",
   TILE: "area",
 });
-export { Colors, AssetTypes, TileTypes, NotificationContext };
+export { Colors, AssetTypes, TileTypes, NotificationContext, HeatMapType };
