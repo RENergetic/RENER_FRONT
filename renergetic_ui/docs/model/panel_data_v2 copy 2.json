@@ -1,0 +1,31 @@
+{
+	"data": {
+		"{asset_name}": {
+			"{measurement_id}": {
+				"current": 33,
+				"max": 50,
+				"avg": 55,
+				"stdev": 5,
+				"prediction": {
+					"1h": {
+						"current": 33,
+						"stdev": 5
+					}
+				},
+				"prediction_model": {
+					"model_1": {
+						"current":33
+					}
+				}
+			}
+		}
+	},	
+	"state": {
+		"1": "ERROR",
+		"2": "OK",
+		"3": "OK",
+		"4": "WARNING",
+		"5": "OK",
+		"6": "OK"
+	}
+}

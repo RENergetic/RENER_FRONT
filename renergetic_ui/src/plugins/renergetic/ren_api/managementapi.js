@@ -29,6 +29,11 @@ export default class ManagementApi extends RestComponent {
   async searchAsset(query, params = undefined, offset = 0, limit = 20) {
     // Params: category, type, name, owner_id, parent_id
     // PREPARE FILTERS
+    //
+    // IMPORTANT NOTE FROM TOMEK:
+    // this method really surprised me - usually filtering is made on
+    // the database site not on the UI. Retrieving all results to the UI
+    // and then filtering is really, really bad idea...
     let normalizedQuery = query.trim().toLowerCase();
     let f = function (s) {
       return (
