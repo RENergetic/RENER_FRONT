@@ -41,11 +41,11 @@
   </div>
 </template>
 <script>
-import InformationTile from "@/components/dashboard/informationtile/InformationTile.vue";
-import DoughnutTile from "@/components/dashboard/informationtile/DoughnutTile.vue";
+import InformationTile from "@/components/dashboard/informationpanel/informationtile/InformationTile.vue";
+import DoughnutTile from "@/components/dashboard/informationpanel/informationtile/DoughnutTile.vue";
 
 export default {
-  name: "HeatDemand",
+  name: "UserDemand",
   components: { InformationTile, DoughnutTile },
   props: {
     demand: {

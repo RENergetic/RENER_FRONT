@@ -3,17 +3,17 @@
   <div>
     <div style="height: 100%" class="flex flex-column align-items-start align-content-start">
       <template v-for="d in demands" :key="d">
-        <HeatDemand v-if="d != null && d.type == 'heat'" :demand="d"></HeatDemand>
+        <UserDemand v-if="d != null && d.type == 'heat'" :demand="d"></UserDemand>
       </template>
     </div>
   </div>
   <!-- </Card> -->
 </template>
 <script>
-import HeatDemand from "./HeatDemand.vue";
+import UserDemand from "./UserDemand.vue";
 export default {
   name: "DemandList",
-  components: { HeatDemand },
+  components: { UserDemand },
   props: {},
   data() {
     return { demands: [] };

@@ -31,7 +31,10 @@ export default {
       heatmapDialog: false,
     };
   },
-  created() {},
+  created() {
+    this.$router.push(`/`);
+    return;
+  },
   mounted() {
     this.heatmap = new HeatMap();
     this.heatmapDialog = true;

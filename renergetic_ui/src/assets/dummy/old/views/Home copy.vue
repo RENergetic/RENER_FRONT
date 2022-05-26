@@ -12,14 +12,34 @@
       <!--  @update="onSettingsUpdate()" -->
       <HomeSettings></HomeSettings>
     </Dialog>
-    <energy-flow style="width:100vw,height:100vh" />
+
     <div class="home-grid-stack grid-stack">
-      <div v-if="settings.demandVisibility" :class="'grid-stack-item ren'">
+      <div v-if="settings.demandVisibility" :class="'grid-stack-item ren'" v-bind="getLayout('demandTile')">
         <DemandList :class="'grid-stack-item-content'" />
       </div>
-
-      <div v-if="settings.notificationVisibility" :class="'grid-stack-item ren'">
+      <div v-if="settings.feedbackVisibility" :class="'grid-stack-item ren'" v-bind="getLayout('feedbackTile')">
+        <Card :class="'grid-stack-item-content'">
+          <Feedback></Feedback>
+        </Card>
+      </div>
+      <div v-if="settings.notificationVisibility" :class="'grid-stack-item ren'" v-bind="getLayout('notificationTile')">
         <NotificationList :class="'grid-stack-item-content'"></NotificationList>
+      </div>
+      <div
+        v-if="settings.selectedPanel"
+        :class="'grid-stack-item ren'"
+        style="background: transparent"
+        v-bind="getLayout('panelTile')"
+      >
+        <div class="grid-stack-item-content" sty>
+          <InformationPanel
+            v-if="loaded && panel != null"
+            ref="panel"
+            :panel="panel"
+            :edit-mode="false"
+            style="background: transparent"
+          ></InformationPanel>
+        </div>
       </div>
     </div>
   </div>
@@ -27,12 +47,14 @@
 <script>
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import HomeSettings from "@/components/miscellaneous/settings/HomeSettings.vue";
+import Feedback from "@/components/user/Feedback.vue";
 import NotificationList from "@/components/management/notification/NotificationList.vue";
-import EnergyFlow from "@/components/dashboard/EnergyFlow.vue";
+import InformationPanel from "@/components/dashboard/informationpanel/InformationPanel.vue";
 import DemandList from "@/components/user/demand/DemandList.vue";
-// import { GridStack } from "gridstack";
-// import "gridstack/dist/h5/gridstack-dd-native";
-// import "gridstack/dist/gridstack.min.css";
+
+import { GridStack } from "gridstack";
+import "gridstack/dist/h5/gridstack-dd-native";
+import "gridstack/dist/gridstack.min.css";
 
 export default {
   name: "Home",
@@ -40,8 +62,9 @@ export default {
     DotMenu,
     DemandList,
     HomeSettings,
+    InformationPanel,
     NotificationList,
-    EnergyFlow,
+    Feedback,
   },
   data() {
     return {
@@ -54,7 +77,7 @@ export default {
       settingsDialog: false,
       settingsChange: false,
       settings: this.$store.getters["settings/home"],
-      // layout: this.$store.getters["settings/homeLayout"],
+      layout: this.$store.getters["settings/homeLayout"],
     };
   },
   computed: {
@@ -126,7 +149,19 @@ export default {
     reload() {
       this.setGrid();
     },
-
+    setGrid() {
+      this.loaded = false;
+      if (this.grid != null) this.grid.destroy(false);
+      let grid = GridStack.init({ float: true }, ".home-grid-stack");
+      if (this.locked) {
+        grid.disable();
+      } else {
+        grid.enable();
+      }
+      this.grid = grid;
+      window.homeGrid = this.grid;
+      this.loaded = true;
+    },
     async toggleLock() {
       this.locked = !this.locked;
       this.setGrid();

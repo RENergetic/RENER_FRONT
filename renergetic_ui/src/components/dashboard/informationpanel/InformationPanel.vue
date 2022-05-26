@@ -67,7 +67,7 @@
   </Dialog>
 </template>
 <script>
-import InformationTile from "../informationtile/InformationTile.vue";
+import InformationTile from "./informationtile/InformationTile.vue";
 import ManageSensors from "../measurements/ManageSensors.vue";
 
 import NotificationList from "../../management/notification/NotificationList.vue";

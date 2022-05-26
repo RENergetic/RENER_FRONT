@@ -1,7 +1,5 @@
 <template>
-  <div id="dashboard">
-    <iframe v-if="url != null" :src="url"></iframe>
-  </div>
+  <div id="graph">This ia another fantastic and creative ,kempt, innovative new graph view</div>
 </template>
 <script>
 export default {
@@ -23,14 +21,10 @@ export default {
 </script>
 
 <style lang="scss">
-#dashboard iframe {
+#graph {
+  display: block;
   width: 100%;
   height: 100%;
-}
-#dashboard {
-  position: relative;
-  height: 100%;
-  width: 100%;
-  display: inline-block;
+  background: rgba(255, 0, 247, 0.463);
 }
 </style>
