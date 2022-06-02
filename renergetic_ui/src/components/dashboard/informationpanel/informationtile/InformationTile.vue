@@ -24,7 +24,8 @@
         />
       </div>
       <div class="card-container">
-        <h3 v-if="tile != null && tile.label != null" class="block">{{ tile.label }}</h3>
+        <information-tile-data :tile="tile" :pdata="pdata" :settings="settings"></information-tile-data>
+        <!-- <h3 v-if="tile != null && tile.label != null" class="block">{{ tile.label }}</h3>
 
         <KnobTile v-if="tile.type == 'knob'" class="block" :tile="tile" :pdata="pdata.data"></KnobTile>
 
@@ -32,31 +33,31 @@
           v-else-if="tile.type == 'doughnut'"
           class="block"
           :tile="tile"
-          :pdata="pdata.data"
-          :legend="true"
+          :pdata="pdata"
+          :legend="settings.legend"
         ></DoughnutTile>
 
-        <!-- tile list-->
-        <InformationListTile
+       
+       <InformationListTile
           v-else
           class="block"
           :tile="tile"
-          :pdata="pdata.data"
+          :pdata="pdata"
           :font-size="fontSize"
-        ></InformationListTile>
+        ></InformationListTile> -->
+
         <!-- </template> -->
       </div>
     </div>
   </div>
 </template>
 <script>
-import InformationListTile from "./InformationListTile.vue";
-import KnobTile from "./KnobTile.vue";
-import DoughnutTile from "./DoughnutTile.vue";
+import InformationTileData from "./InformationTileData.vue";
+
 // import Card from "primevue/card";
 export default {
   name: "InformationTile",
-  components: { InformationListTile, KnobTile, DoughnutTile },
+  components: { InformationTileData },
   props: {
     edit: { type: Boolean, default: false },
     slotProps: {

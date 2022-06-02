@@ -12,22 +12,25 @@
       <!--  @update="onSettingsUpdate()" -->
       <HomeSettings></HomeSettings>
     </Dialog>
-    <energy-flow style="width:100vw,height:100vh" />
+    <div style="width: 100%; height: 100vh">
+      <energy-flow />
+    </div>
+    <DemandList id="demand-list" />
     <div class="home-grid-stack grid-stack">
-      <div v-if="settings.demandVisibility" :class="'grid-stack-item ren'">
+      <!-- <div v-if="settings.demandVisibility" :class="'grid-stack-item ren'">
         <DemandList :class="'grid-stack-item-content'" />
-      </div>
+      </div> -->
 
-      <div v-if="settings.notificationVisibility" :class="'grid-stack-item ren'">
+      <!-- <div v-if="settings.notificationVisibility" :class="'grid-stack-item ren'">
         <NotificationList :class="'grid-stack-item-content'"></NotificationList>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 <script>
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import HomeSettings from "@/components/miscellaneous/settings/HomeSettings.vue";
-import NotificationList from "@/components/management/notification/NotificationList.vue";
+// import NotificationList from "@/components/management/notification/NotificationList.vue";
 import EnergyFlow from "@/components/dashboard/EnergyFlow.vue";
 import DemandList from "@/components/user/demand/DemandList.vue";
 // import { GridStack } from "gridstack";
@@ -40,7 +43,7 @@ export default {
     DotMenu,
     DemandList,
     HomeSettings,
-    NotificationList,
+    // NotificationList,
     EnergyFlow,
   },
   data() {
@@ -93,58 +96,16 @@ export default {
   watch: {},
   async created() {
     this.loaded = false;
-    this.getPanel();
   },
-  async mounted() {
-    this.setGrid();
-    this.getPanel();
-  },
+  async mounted() {},
   updated() {},
   methods: {
-    getLayout(tileId) {
-      // console.info(this.tile.layout);
-      var layout = this.layout != null ? this.layout[tileId] : null;
-      return layout != null
-        ? {
-            id: tileId,
-            "gs-id": tileId,
-            "gs-x": layout.x,
-            "gs-y": layout.y,
-            "gs-w": layout.w,
-            "gs-h": layout.h,
-          }
-        : {
-            id: tileId,
-            "gs-id": tileId,
-          };
-    },
-    async getPanel() {
-      if (this.settings.selectedPanel != null) {
-        this.panel = await this.$ren.dashboardApi.getInformationPanel(this.settings.selectedPanel);
-      } else this.panel = null;
-    },
-    reload() {
-      this.setGrid();
-    },
+    reload() {},
 
     async toggleLock() {
       this.locked = !this.locked;
-      this.setGrid();
     },
-    saveGrid() {
-      let nodes = this.grid.getGridItems();
-      nodes.forEach((node) => {
-        let gridstackNode = node.gridstackNode;
-        this.layout[gridstackNode.id] = {
-          x: gridstackNode.x,
-          y: gridstackNode.y,
-          w: gridstackNode.w,
-          h: gridstackNode.h,
-        };
-      });
-      this.$ren.utils.saveSettings("settings/homeLayout", this.layout);
-      this.toggleLock();
-    },
+
     viewNotification() {
       //TODO: load here notifications for tile
       this.notifiationDialog = true;
@@ -154,6 +115,12 @@ export default {
 </script>
 
 <style lang="scss">
+#demand-list {
+  width: 50rem;
+  max-width: 95vw;
+  margin: auto;
+  color: #3182ce;
+}
 .grid-stack-item {
   margin: 0;
 }

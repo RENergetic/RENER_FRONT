@@ -1,5 +1,5 @@
 <template>
-  <Chart type="doughnut" :data="chartData" :options="options" />
+  <Chart style="max-width: 20rem" type="doughnut" :data="chartData" :options="options" />
 </template>
 <script>
 import Chart from "primevue/chart";

@@ -1,52 +1,56 @@
 <template>
   <div class="flex heatdemand">
     <div class="flex align-items-center justify-content-center">
+      <!-- {{ demand }} -->
       <span
-        v-if="demand.icon != null"
+        v-if="demand.tile == null"
         id="demandicon"
-        :style="'background-image: url(' + icons[demand.icon] + ');width:7.5rem;'"
+        :style="'background-image: url(' + getIcon(demand.action) + ');width:7.5rem;'"
       ></span>
       <span v-if="demand.tile != null" id="demandtile" @click="$router.push(`/panel/view/${demand.tile.panelId}`)">
         <!-- TODO: load :pdata="pdata" -->
-        <DoughnutTile
+        <!-- {{ demand }} -->
+        <!-- <DoughnutTile
+          v-if="false"
           :style="'height:7.5rem;width:7.5rem;margin-right: 1rem;'"
           :legend="false"
           class="block"
           :tile="demand.tile"
           :pdata="{ '2': 2, '3': 3, '4': 4 }"
-        ></DoughnutTile>
-        <InformationTile
-          v-if="false"
+        ></DoughnutTile> -->
+        <!-- TODO: load :pdata="pdata" -->
+        <InformationTileData
           :key="demand.tile.id"
-          :slot-props="{ tile: demand.tile, index: 0 }"
-          :settings="{}"
+          :style="'height:7.5rem;width:7.5rem;margin-right: 1rem;'"
+          :tile="demand.tile"
+          :pdata="{ '2': 2, '3': 3, '4': 4 }"
+          :settings="{ legend: false }"
         />
-        {{ demand.area }}</span
-      >
+      </span>
     </div>
 
     <div class="flex-none flex flex-column justify-content-center flex-wrap">
       <div class="flex align-content-end flex-wrap">
-        <div class="message">{{ demand.msg }}</div>
+        <div class="message">{{ $t(`enums.demand_action.${demand.action}`) }}</div>
       </div>
       <div class="flex align-content-start flex-wrap">
-        <div class="flex align-items-center justify-content-center">{{ demand.description }}</div>
+        <div class="flex align-items-center justify-content-center">{{ demand.message }}</div>
       </div>
     </div>
     <div class="flex-none flex align-items-center justify-content-center">
-      <i v-if="demand.up" class="pi pi-arrow-up-right"></i>
-      <i v-if="demand.up == false" class="pi pi-arrow-down-right"></i>
+      <i v-if="demand.action_type == 'increase'" class="pi pi-arrow-up-right"></i>
+      <i v-if="demand.action_type == 'decrease'" class="pi pi-arrow-down-right"></i>
       <!-- TODO: set empty icon ??? <i v-else class="pi pi-arrow-down-right"></i> -->
     </div>
   </div>
 </template>
 <script>
-import InformationTile from "@/components/dashboard/informationpanel/informationtile/InformationTile.vue";
-import DoughnutTile from "@/components/dashboard/informationpanel/informationtile/DoughnutTile.vue";
+import InformationTileData from "@/components/dashboard/informationpanel/informationtile/InformationTileData.vue";
+// import DoughnutTile from "@/components/dashboard/informationpanel/informationtile/DoughnutTile.vue";
 
 export default {
   name: "UserDemand",
-  components: { InformationTile, DoughnutTile },
+  components: { InformationTileData },
   props: {
     demand: {
       type: Object,
@@ -65,12 +69,26 @@ export default {
   computed: {},
   watch: {},
 
-  methods: {},
+  methods: {
+    getIcon(demandAction) {
+      //todo: make global enum
+      switch (demandAction) {
+        case "increase_temperature":
+          return this.icons.heat;
+        default:
+          return this.icons.heat;
+      }
+    },
+  },
 };
 </script>
 
 <style lang="scss">
 .heatdemand {
+  margin: 0.5rem;
+  width: 100%;
+  border: solid;
+
   i {
     font-size: 2rem;
     margin-left: 0.75rem;

@@ -1,9 +1,9 @@
 <template>
-  <div id="graph">This ia another fantastic and creative ,kempt, innovative new graph view</div>
+  <div id="energy-flow">This ia another fantastic and creative ,kempt, innovative new graph view</div>
 </template>
 <script>
 export default {
-  name: "Grafana",
+  name: "EnergyFlow",
   components: {},
   props: {
     url: {
@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style lang="scss">
-#graph {
+#energy-flow {
   display: block;
   width: 100%;
   height: 100%;

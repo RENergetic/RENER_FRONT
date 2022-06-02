@@ -3,7 +3,7 @@
   <div>
     <div style="height: 100%" class="flex flex-column align-items-start align-content-start">
       <template v-for="d in demands" :key="d">
-        <UserDemand v-if="d != null && d.type == 'heat'" :demand="d"></UserDemand>
+        <UserDemand :demand="d"></UserDemand>
       </template>
     </div>
   </div>
