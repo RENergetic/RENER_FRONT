@@ -130,28 +130,28 @@ export default {
       return items;
     },
 
-    heatMapItems() {
-      return [
-        {
-          // label: this.$t("menu.group_list"),
-          label: this.$t("menu.list_heatmap"),
-          icon: "pi pi-fw pi-align-left",
-          to: "/dashboard/heatmap/list",
-          command: () => {
-            this.$router.push({ name: "HeatMapListView" });
-          },
-        },
-        {
-          // label: this.$t("menu.group_list"),
-          label: this.$t("menu.add_heatmap"),
-          icon: "pi pi-fw pi-plus",
-          to: "/dashboard/heatmap/add",
-          command: () => {
-            this.$router.push({ name: "DashboadAdd" });
-          },
-        },
-      ];
-    },
+    // heatMapItems() {
+    //   return [
+    //     {
+    //       // label: this.$t("menu.group_list"),
+    //       label: this.$t("menu.list_heatmap"),
+    //       icon: "pi pi-fw pi-align-left",
+    //       to: "/dashboard/heatmap/list",
+    //       command: () => {
+    //         this.$router.push({ name: "HeatMapListView" });
+    //       },
+    //     },
+    //     {
+    //       // label: this.$t("menu.group_list"),
+    //       label: this.$t("menu.add_heatmap"),
+    //       icon: "pi pi-fw pi-plus",
+    //       to: "/dashboard/heatmap/add",
+    //       command: () => {
+    //         this.$router.push({ name: "DashboadAdd" });
+    //       },
+    //     },
+    //   ];
+    // },
     administrationItems() {
       return [
         {
@@ -239,11 +239,11 @@ export default {
           icon: "pi pi-fw pi-chart-line",
           items: this.panelItems(),
         },
-        {
-          label: this.$t("menu.heatmaps"),
-          icon: "pi pi-fw pi-chart-line",
-          items: this.heatMapItems(),
-        },
+        // {
+        //   label: this.$t("menu.heatmaps"),
+        //   icon: "pi pi-fw pi-chart-line",
+        //   items: this.heatMapItems(),
+        // },
         {
           label: this.$t("menu.infrastructure"),
           icon: "pi pi-fw pi-lock",

@@ -47,4 +47,9 @@ export default class UserApi extends RestComponent {
   async getSettings() {
     return storage.get(`${USER_API_KEY}.${SETTINGS_KEY}`, null);
   }
+
+  // async getNotifications(objectIds) {
+  //   // todo:
+  //   return objectIds;
+  // }
 }

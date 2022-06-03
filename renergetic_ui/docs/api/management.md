@@ -1,57 +1,51 @@
 
 ### Asset ###
 
-* get assets: GET `/api/assets` 
+* get assets: GET `/api/assets`  
   
     *args* : 
         
       * query *str* - search by  string 
-      
+      * type *str* - filter by type
 
-    *example*:
-```
-[{
-      TODO:  
-}]
-``` 
+      Return: list of  [asset.json](../model/asset.json)
+
 * get asset: GET `/api/assets/${id}` ,`/api/assets/name/${name}` 
    
-
-    *example*:
-```
-{
-      TODO:  
-}
-``` 
+      Return: [asset.json](../model/asset.json)
 
  * add asset: POST  `/api/assets` 
   
-    *body* :  asset json
+    *body* :   [asset.json](../model/asset.json)
 
-    *example*:
-```
-{
-      TODO:  
-]
-``` 
 
 * delete asset: DELETE `/api/assets/${id}`  
   
-* get asset: GET `/api/assets/type` 
+* get asset: GET `/api/assets/types`
+  description: get asset types 
 
 *example*:
 ```
-{
-      TODO:  
+[
+      'building', 'heat_pump'
 ]
-``` 
+```
+
+* set connection: POST `/api/assets/${id}/connection`  
+  
+    ***body***: [connection](../model/asset_connection.json)
+    or
+    POST `/api/assets/${id}/connection/asset/${id}/type/${type}`  
+* delete connection: DELETE `/api/assets/${id}/connection/asset/${id}`  
+
+    
 
 ### Measurements
 
 
 * get measurements: 
   * GET `/api/measurements/schema`      
-  
+  description - add new definition
 
 *example*:
 ```
@@ -149,15 +143,20 @@
 
 ``` 
 ### Demand
-(for authorized users only) 
+(for managers users only) 
 
 * get demands: 
-  * GET `/api/demandrequests/assetId/${assetId}`      
-  * GET `/api/demandrequests` 
+  * GET `/api/demand/assetId/${assetId}`      
+  * GET `/api/demand` 
+  current recommendation list (data is not required we wont present for manager pie chart)
+   return: list of  [demand.json](../model/demand.json)
 
-*example*:
-```
-{
-      TODO:  
-]
-``` 
+* POST demand schedule:     
+  * GET `/api/demand/schedule` 
+   BODY: list of  [demand_schedule.json](../model/demand_schedule.json)
+
+* PUT demand :     
+  * GET `/api/demand/definition` 
+   BODY: list of  [demand_definition.json](../model/demand_definition.json)
+
+ 
