@@ -65,6 +65,16 @@ var dashboardRoutes = [
     component: () => import("../views/dashboard/InformationPanelView.vue"),
   },
   {
+    path: "/asset/:asset_id/panel/:id?",
+    name: "InformationPanelView",
+    meta: {
+      isAuthenticated: true,
+      layout: "fullscr",
+      roles: ["ren-admin", "ren-dev", "ren-manager", "ren-user", "ren-visitor", "ren-technical-manager"],
+    },
+    component: () => import("../views/dashboard/InformationPanelView.vue"),
+  },
+  {
     path: "/panel",
     name: "InformationPanelListView",
     meta: { isAuthenticated: true, roles: ["ren-admin", "ren-dev", "ren-manager", "ren-user"] },

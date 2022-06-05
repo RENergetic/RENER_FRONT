@@ -10,6 +10,9 @@ import assetList from "./samples/assets.js";
 import measurementList from "./samples/measurement";
 import storage from "./storage.js";
 import measurement_types from "./samples/measurement_types.js";
+import measurementAttributes from "./samples/measurement_attributes.js";
+import { AssetTypes } from "../../plugins/model/Enums.js";
+
 const DASHBOARD_API_KEY = "dashboard_api";
 const MANAGEMENT_API_KEY = "management_api";
 const USER_API_KEY = "user_api";
@@ -33,74 +36,6 @@ await storage.setDefault(`${MANAGEMENT_API_KEY}.${MEASUREMENT_KEY}`, measurement
 await storage.setDefault(`${MANAGEMENT_API_KEY}.${ASSET_KEY}`, assetList);
 
 //TODO: temporaty example objectc
-var measurementAttributes = [
-  {
-    key: "id4",
-    label: "Predictors",
-    name: "predictors",
-    type: "group",
-    children: [
-      {
-        key: "id5",
-        name: "electrical",
-        label: "Electrical",
-        type: "measurement",
-        children: [],
-      },
-      {
-        key: "id6",
-        name: "thermic",
-        label: "Thermic",
-        type: "measurement",
-        children: [],
-      },
-    ],
-  },
-  {
-    key: "id1",
-    label: "Target",
-    name: "target",
-    type: "group",
-    children: [
-      {
-        key: "id2",
-        name: "electrical",
-        label: "Electrical",
-        type: "measurement",
-        children: [],
-      },
-      {
-        key: "id3",
-        name: "thermic",
-        label: "Thermic",
-        type: "measurement",
-        children: [],
-      },
-    ],
-  },
-  {
-    key: "id7",
-    label: "Prediction Interval",
-    name: "prediction_interval",
-    type: "group",
-    children: [
-      {
-        key: "id8",
-        name: "3h",
-        label: "3 H",
-        type: "measurement",
-        children: [],
-      },
-      {
-        key: "id9",
-        name: "6h",
-        label: "6 H",
-        type: "measurement",
-        children: [],
-      },
-    ],
-  },
-];
 
 class DashboardApi {
   async list() {
@@ -346,8 +281,10 @@ class DataApi {
 }
 
 class UserApi {
-  async getDemad(userId) {
-    console.info(userId);
+  managementApi = new ManagementApi();
+
+  async getDemad() {
+    // console.info(userId);
     return demandList;
   }
   async setSettings(settings) {
@@ -355,6 +292,11 @@ class UserApi {
   }
   async getSettings() {
     return storage.get(`${USER_API_KEY}.${SETTINGS_KEY}`, null);
+  }
+
+  async getAssets() {
+    let assets = await this.managementApi.listAsset();
+    return assets.filter((asset) => asset.type.name == AssetTypes.BUILDING);
   }
 }
 export { DashboardApi, ManagementApi, DataApi, UserApi };

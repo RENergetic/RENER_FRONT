@@ -1,3 +1,16 @@
+higher priority:
+- ROLE managements
+- asset connection management
+- energy flow
+- prediction slider component
+  
+lower priority:
+- notifications
+- 
+
+
+
+//Other
 - Openstreet map integration
 - todo: different home pages -> public home page, user home, admin home
 - data validation

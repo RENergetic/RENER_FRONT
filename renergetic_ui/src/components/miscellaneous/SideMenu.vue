@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { RenRoles } from "../../plugins/model/Enums";
 import PanelMenu from "primevue/panelmenu";
 import Sidebar from "primevue/sidebar";
 import Dialogs from "./Dialogs.vue";
@@ -31,6 +32,7 @@ export default {
   emits: ["notification"],
   data() {
     return {
+      role: this.$store.getters["auth/renRole"],
       visible: false,
       menuModel: [],
       dashboards: [],
@@ -101,7 +103,34 @@ export default {
       });
       return items;
     },
+    assetsItems() {
+      //TODO temporary asset panels
+      let assets = this.$store.getters["view/assets"];
+      let flags = RenRoles.REN_VISITOR | RenRoles.REN_USER;
+      if ((flags & this.role) == 0) return [];
+      let items = assets.map((asset) => {
+        let to = `/asset/${asset.id}/panel`;
+        return {
+          // label: this.$t("menu.group_list"),
+          label: asset.label,
+          icon: "pi pi-fw pi-align-left",
+          to: to,
+          command: () => {
+            this.$router.push(to);
+          },
+        };
+      });
+      return [
+        {
+          label: this.$t("menu.assets"),
+          icon: "pi pi-fw pi-chart-line",
+          items: items,
+        },
+      ];
+    },
     dashboardItems() {
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
+      if ((flags & this.role) == 0) return [];
       var items = [];
       if (this.dashboards && this.dashboards.length != 0) {
         items = this.dashboards.map((dashboardItem) => {
@@ -117,17 +146,25 @@ export default {
           };
         });
       }
-      items.push({
-        // label: this.$t("menu.group_list"),
-        label: this.$t("menu.add_dashboard"),
-        icon: "pi pi-fw pi-plus",
-        // to: "/dashboard/add",
-        command: () => {
-          this.dashboardDialog = !this.dashboardDialog;
-          // this.$router.push({ name: "DashboadAdd" });
+      flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
+      if ((flags & this.role) > 0)
+        items.push({
+          // label: this.$t("menu.group_list"),
+          label: this.$t("menu.add_dashboard"),
+          icon: "pi pi-fw pi-plus",
+          // to: "/dashboard/add",
+          command: () => {
+            this.dashboardDialog = !this.dashboardDialog;
+            // this.$router.push({ name: "DashboadAdd" });
+          },
+        });
+      return [
+        {
+          label: this.$t("menu.dashboards"),
+          icon: "pi pi-fw pi-chart-line",
+          items: items,
         },
-      });
-      return items;
+      ];
     },
 
     // heatMapItems() {
@@ -229,11 +266,8 @@ export default {
     },
     initMenu() {
       return [
-        {
-          label: this.$t("menu.dashboards"),
-          icon: "pi pi-fw pi-chart-line",
-          items: this.dashboardItems(),
-        },
+        ...this.dashboardItems(),
+        ...this.assetsItems(),
         {
           label: this.$t("menu.information_panel"),
           icon: "pi pi-fw pi-chart-line",
@@ -297,6 +331,17 @@ export default {
             this.$keycloak.logout();
             this.$router.push("/");
           },
+        },
+
+        {
+          label: this.$t("menu.login"),
+          icon: "pi pi-sign-in",
+          to: "/login",
+          visible: () => this.role == 0,
+          // command: () => {
+          //   this.$router.push("/login");
+          //   // this.$keycloak.login({ redirectUri: "/login" });
+          // },
         },
       ];
     },

@@ -31,13 +31,16 @@ export default class RenUtils {
     this.app.$ren.userApi.setSettings(allSettings);
   }
   async reloadStore() {
-    console.info("reload");
+    console.info("reload user data");
     this.reloadDashboard();
     this.app.$ren.dashboardApi.listInformationPanel().then((informationPanels) => {
       this.app.$store.commit("view/informationPanels", informationPanels);
     });
-    this.app.$ren.userApi.getSettings().then((settings) => {
+    await this.app.$ren.userApi.getSettings().then((settings) => {
       this.app.$store.commit("settings/all", settings);
+    });
+    await this.app.$ren.userApi.getAssets().then((assets) => {
+      this.app.$store.commit("view/assets", assets);
     });
   }
   async reloadDashboard() {

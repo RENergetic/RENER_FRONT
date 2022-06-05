@@ -10,7 +10,7 @@ const HeatMapType = Object.freeze({
   DEFAULT: "default",
 });
 const AssetTypes = Object.freeze({
-  BUILDING: "bulding",
+  BUILDING: "building",
   FLAT: "flat",
   HEAT_SOURCE: "heat_source",
   ISLAND: "island",
@@ -42,11 +42,24 @@ const RenRoles = Object.freeze({
   REN_TECHNICAL_MANAGER: 0x00010000,
   "ren-technical-manager": 0x00010000,
   REN_ADMIN: 0x00100000,
-  "ren-admin": 0x001000000,
-  REN_STAFF: 0x010000000,
-  "ren-staff": 0x010000000,
+  "ren-admin": 0x00100000,
+  REN_STAFF: 0x01000000,
+  "ren-staff": 0x01000000,
   REN_DEV: 0x11111111,
   "ren-dev": 0x11111111,
+  parseError: (flag) => {
+    let msg = "";
+    if ((flag & this.REN_VISITOR) > 0) msg += " ren-visitor,";
+    if ((flag & this.REN_USER) > 0) msg += " ren-user,";
+    if ((flag & this.REN_MANAGER) > 0) msg += " ren-manager,";
+    if ((flag & this.REN_TECHNICAL_MANAGER) > 0) msg += " ren-technical-manager,";
+    if ((flag & this.REN_ADMIN) > 0) msg += " ren-admin,";
+    if ((flag & this.REN_STAFF) > 0) msg += " ren-staff,";
+    if (msg.length > 0) {
+      return `Required privileges:${msg.substring(0, msg.length - 2)}`;
+    }
+    return null;
+  },
 });
 
 export { Colors, AssetTypes, TileTypes, NotificationContext, HeatMapType, RenRoles };

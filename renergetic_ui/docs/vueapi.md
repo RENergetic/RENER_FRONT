@@ -5,10 +5,12 @@ TODO: restApiName - describe
   * `this.$ren.utils` -> utils
 * `this.$t` -> i18n plugin
 * `this.$store` -> session store
+  * view 
+  * auth 
+  * settings
 * `this.$confirm` -> confirm dialog (YES/NO)
 * `v-tooltip`  -> tooltip attribute for templates
-* 
-*   
+*  
 *   TODO: describe this.$emit("UpdateMenu", null);
 
 ###  global events

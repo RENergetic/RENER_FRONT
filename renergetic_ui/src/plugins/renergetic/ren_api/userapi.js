@@ -10,6 +10,9 @@ export default class UserApi extends RestComponent {
   // async getDemad(userId) {}
   // async setSettings(settings) {   }
   // async getSettings() {   }
+  // async getAssets(){
+  // todo:
+  // }
   static loggedUser = undefined;
   register(user) {
     //validate
@@ -49,7 +52,7 @@ export default class UserApi extends RestComponent {
   }
 
   // async getNotifications(objectIds) {
-  //   // todo:
+
   //   return objectIds;
   // }
 }

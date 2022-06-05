@@ -33,6 +33,7 @@ import HomeSettings from "@/components/miscellaneous/settings/HomeSettings.vue";
 // import NotificationList from "@/components/management/notification/NotificationList.vue";
 import EnergyFlow from "@/components/dashboard/EnergyFlow.vue";
 import DemandList from "@/components/user/demand/DemandList.vue";
+import { RenRoles } from "../plugins/model/Enums.js";
 // import { GridStack } from "gridstack";
 // import "gridstack/dist/h5/gridstack-dd-native";
 // import "gridstack/dist/gridstack.min.css";
@@ -48,6 +49,7 @@ export default {
   },
   data() {
     return {
+      roles: RenRoles,
       demand: { msg: "increase bla blah blah", icon: "battery", up: true, description: "description" },
       loaded: false,
       grid: null,
@@ -61,6 +63,9 @@ export default {
     };
   },
   computed: {
+    hasAccess: function () {
+      return (this.$store.getters["auth/renRole"] | RenRoles.REN_ADMIN) > 0;
+    },
     toggleButton: function () {
       //TODO: if permission
       let label = this.locked ? this.$t("menu.grid_unlock") : this.$t("menu.grid_lock");

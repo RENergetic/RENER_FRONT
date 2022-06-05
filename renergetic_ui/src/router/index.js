@@ -37,6 +37,12 @@ const routes = [
     meta: { isAuthenticated: false },
     component: () => import("../views/RenAbout.vue"),
   },
+  {
+    path: "/login",
+    name: "Login",
+    meta: { isAuthenticated: true },
+    component: () => import("../views/RenAbout.vue"),
+  },
   ...dashboardRoutes,
   ...adminRoutes,
   ...managementRoutes,

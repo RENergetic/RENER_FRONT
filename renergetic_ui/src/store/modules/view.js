@@ -1,12 +1,15 @@
 export default {
   namespaced: true,
   state: {
+    // graphana dashboards
     dashboards: [],
+    // list of featured information panels: todo:
     informationPanels: [],
+    // list of featured user assets
+    assets: [],
     locationList: ["en-EN"],
   },
   mutations: {
-    // Requires a Dashboards List
     dashboards(state, payload) {
       // console.info(payload);
       state.dashboards = payload;
@@ -14,6 +17,10 @@ export default {
     informationPanels(state, payload) {
       state.informationPanels = payload;
     },
+    assets(state, payload) {
+      state.assets = payload;
+    },
+
     // Requires a Dashboard object ({id:0, name:"", url:"", label:""})
     //TODO: i suggest to add single dashboard via REST API and than download new list - so we have coherent state with the backend.
     // Issue: connection error -> user creates dashboard and might lose it because there is no internet connection
@@ -54,6 +61,9 @@ export default {
     },
     dashboards: (state /* getters*/) => {
       return state.dashboards;
+    },
+    assets: (state /* getters*/) => {
+      return state.assets;
     },
     informationPanels: (state /* getters*/) => {
       return state.informationPanels;
