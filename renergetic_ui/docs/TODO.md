@@ -3,6 +3,7 @@ higher priority:
 - asset connection management
 - energy flow
 - prediction slider component
+- fix keyclock integration - check log in , log out etc , auto initialization
   
 lower priority:
 - notifications
