@@ -4,8 +4,16 @@ function listMeasurements(informationPanel) {
   console.info(informationPanel);
   let md = {};
   for (let tile of informationPanel.tiles) {
-    for (let m of tile.measurements) {
-      md[m.id] = "";
+    if (tile.type != "panel") {
+      for (let m of tile.measurements) {
+        md[m.id] = "";
+      }
+    } else {
+      for (let _tile of tile.panel.tiles) {
+        for (let m of _tile.measurements) {
+          md[m.id] = "";
+        }
+      }
     }
   }
   return md;
@@ -32,14 +40,16 @@ function generateHeatMapState(heatmap) {
   return state;
 }
 
-function generatePanelData(informationPanel) {
+function generatePanelData(informationPanel, predictionWindow) {
   let measurements = listMeasurements(informationPanel);
+
   let data = {};
   for (let m of Object.keys(measurements)) {
     let value = Math.floor(Math.random() * 150);
     data[m] = value;
   }
-  return data;
+  if (predictionWindow == null) return { current: { default: data } };
+  return { prediction: { default: data } };
 }
 
 function generatePanelState(informationPanel) {

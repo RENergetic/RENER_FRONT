@@ -1,10 +1,6 @@
 <template>
-  <div :class="'grid-stack-item ren'" v-bind="gridStackAttributes">
+  <div v-if="slotProps" :class="'grid-stack-item ren'" v-bind="gridStackAttributes">
     <div :class="'grid-stack-item-content ' + state" style="padding: 0">
-      <!-- <template v-if="tile != null && tile.title != null" #title> {{ tile.title }} </template> -->
-      <!-- <template v-if="tile != null" #content> -->
-      <!-- state: {{ state }}  -->
-
       <div style="position: absolute; left: 0.3rem; top: 0.3rem">
         <Button
           v-if="edit"
@@ -23,9 +19,10 @@
           @click="$emit('notification', slotProps)"
         />
       </div>
-      <div class="card-container">
-        <information-tile-data :tile="tile" :pdata="pdata" :settings="settings"></information-tile-data>
-        <!-- <h3 v-if="tile != null && tile.label != null" class="block">{{ tile.label }}</h3>
+      <!-- {{ slotProps.index }} {{ gridStackAttributes }} -->
+
+      <InformationTileData :class="tileClass" :tile="tile" :pdata="tileData" :settings="settings"></InformationTileData>
+      <!-- <h3 v-if="tile != null && tile.label != null" class="block">{{ tile.label }}</h3>
 
         <KnobTile v-if="tile.type == 'knob'" class="block" :tile="tile" :pdata="pdata.data"></KnobTile>
 
@@ -46,8 +43,7 @@
           :font-size="fontSize"
         ></InformationListTile> -->
 
-        <!-- </template> -->
-      </div>
+      <!-- </template> -->
     </div>
   </div>
 </template>
@@ -64,6 +60,7 @@ export default {
       type: Object,
       default: () => ({}),
     },
+
     // index: {
     //   type: Number,
     //   default: null,
@@ -78,9 +75,11 @@ export default {
     },
   },
   emits: ["edit", "notification"],
-  // data() {
-  //   return {};
-  // },
+  data() {
+    return {
+      tileData: this.pdata && this.pdata.data ? this.pdata.data : {},
+    };
+  },
   computed: {
     fontSize: function () {
       let size = this.settings != null && this.settings.fontSize != null ? this.settings.fontSize : 2.0;
@@ -88,6 +87,12 @@ export default {
     },
     tile: function () {
       return this.slotProps.tile;
+    },
+    tileClass: function () {
+      if (this.tile.type == "panel") {
+        return "block tile";
+      }
+      return "block";
     },
     notificationVisible: function () {
       //default visible
@@ -101,6 +106,7 @@ export default {
       //state not provided to the exists tile (e.g. tile not saved yet in the backend)
       return ` state unknown`;
     },
+
     col: function () {
       return this.tile == null || this.tile.col == null ? 2 : this.tile.col;
     },
@@ -122,7 +128,12 @@ export default {
       };
     },
   },
-
+  pdata: {
+    handler: function (newValue) {
+      this.tileData = newValue && newValue.data ? newValue.data : {};
+    },
+    deep: true,
+  },
   mounted() {},
   methods: {},
 };
@@ -150,5 +161,9 @@ export default {
   background-color: #bee3f8;
   font-weight: 600;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+.tile {
+  height: 100%;
+  width: 100%;
 }
 </style>

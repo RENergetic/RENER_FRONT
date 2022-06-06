@@ -37,93 +37,6 @@ await storage.setDefault(`${MANAGEMENT_API_KEY}.${ASSET_KEY}`, assetList);
 
 //TODO: temporaty example objectc
 
-class DashboardApi {
-  async list() {
-    return storage.get(`${DASHBOARD_API_KEY}.${DASHBOARD_KEY}`, dashboardList);
-  }
-  async add(dashboard) {
-    dashboard.id = Math.floor(Math.random() * 150);
-    storage.push(`${DASHBOARD_API_KEY}.${DASHBOARD_KEY}`, dashboard);
-    return new Promise((resolve) => {
-      resolve(dashboard.id);
-    });
-  }
-  async update(dashboard) {
-    storage.updateList(`${DASHBOARD_API_KEY}.${DASHBOARD_KEY}`, dashboard);
-    return new Promise((resolve) => {
-      resolve(dashboard.id);
-    });
-  }
-  delete(id) {
-    return new Promise((resolve) => {
-      resolve(id);
-    });
-  }
-
-  listInformationPanel(userId = null) {
-    console.info(`listInformationPanel for ${userId}`);
-    return storage.get(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, informationPanelList);
-  }
-
-  async getInformationPanel(panelId) {
-    let panels = await storage.get(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, informationPanelList);
-    return panels.find((it) => it.id == panelId);
-  }
-  async addInformationPanel(panel) {
-    panel.id = Math.floor(Math.random() * 1500);
-    storage.push(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, panel);
-    return new Promise((resolve) => {
-      resolve(panel.id);
-    });
-  }
-  async updateInformationPanel(panel) {
-    // console.info(panel);
-    // console.info(JSON.stringify(panel));
-    storage.updateList(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, panel);
-    return new Promise((resolve) => {
-      resolve(panel.id);
-    });
-  }
-  async deleteInformationPanel(id) {
-    return new Promise((resolve) => {
-      resolve(id);
-    });
-  }
-
-  async listHeatMap(userId = null) {
-    console.info(`listHeatMap for ${userId}`);
-    return storage.get(`${DASHBOARD_API_KEY}.${HEATMAP_KEY}`, heatmapList);
-  }
-  async getHeatMap(id) {
-    let maps = await this.listHeatMap();
-    return maps.find((it) => it.id == id);
-  }
-
-  async addHeatMap(heatmap) {
-    heatmap.id = Math.floor(Math.random() * 150);
-    storage.push(`${DASHBOARD_API_KEY}.${HEATMAP_KEY}`, heatmap);
-    return new Promise((resolve) => {
-      resolve(heatmap.id);
-    });
-  }
-  async updateHeatMap(heatmap) {
-    storage.updateList(`${DASHBOARD_API_KEY}.${HEATMAP_KEY}`, heatmap);
-    return new Promise((resolve) => {
-      resolve(heatmap.id);
-    });
-  }
-  async deleteHeatMap(id) {
-    return new Promise((resolve) => {
-      resolve(id);
-    });
-  }
-  getDemand(heatmapId) {
-    //TODO:
-    console.info(heatmapId);
-    return demandList;
-  }
-}
-
 class ManagementApi {
   //Infrastructure  REQUESTS
   async listAsset(userId) {
@@ -218,6 +131,107 @@ class ManagementApi {
     return measurements.filter((it) => f(it));
   }
 }
+class DashboardApi {
+  managementApi = new ManagementApi();
+
+  async list() {
+    return storage.get(`${DASHBOARD_API_KEY}.${DASHBOARD_KEY}`, dashboardList);
+  }
+  async add(dashboard) {
+    dashboard.id = Math.floor(Math.random() * 150);
+    storage.push(`${DASHBOARD_API_KEY}.${DASHBOARD_KEY}`, dashboard);
+    return new Promise((resolve) => {
+      resolve(dashboard.id);
+    });
+  }
+  async update(dashboard) {
+    storage.updateList(`${DASHBOARD_API_KEY}.${DASHBOARD_KEY}`, dashboard);
+    return new Promise((resolve) => {
+      resolve(dashboard.id);
+    });
+  }
+  delete(id) {
+    return new Promise((resolve) => {
+      resolve(id);
+    });
+  }
+
+  listInformationPanel(userId = null) {
+    console.info(`listInformationPanel for ${userId}`);
+    return storage.get(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, informationPanelList);
+  }
+
+  async getInformationPanel(panelId, assetId) {
+    let panels = await storage.get(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, informationPanelList);
+    if (assetId) {
+      let panel = await panels.find((it) => it.id == -1);
+      let asset = await this.managementApi.getAsset(assetId);
+      let assetLabel = asset.label ? asset.label : asset.name;
+      if (panel.label != null) {
+        panel.label = panel.label.replace("{asset}", assetLabel);
+      } else {
+        panel.label = assetLabel;
+      }
+      return panel;
+    }
+    return panels.find((it) => it.id == panelId);
+  }
+
+  async addInformationPanel(panel) {
+    panel.id = Math.floor(Math.random() * 1500);
+    storage.push(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, panel);
+    return new Promise((resolve) => {
+      resolve(panel.id);
+    });
+  }
+  async updateInformationPanel(panel) {
+    // console.info(panel);
+    // console.info(JSON.stringify(panel));
+    storage.updateList(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, panel);
+    return new Promise((resolve) => {
+      resolve(panel.id);
+    });
+  }
+  async deleteInformationPanel(id) {
+    return new Promise((resolve) => {
+      resolve(id);
+    });
+  }
+
+  async listHeatMap(userId = null) {
+    console.info(`listHeatMap for ${userId}`);
+    return storage.get(`${DASHBOARD_API_KEY}.${HEATMAP_KEY}`, heatmapList);
+  }
+  async getHeatMap(id) {
+    let maps = await this.listHeatMap();
+    return maps.find((it) => it.id == id);
+  }
+
+  async addHeatMap(heatmap) {
+    heatmap.id = Math.floor(Math.random() * 150);
+    storage.push(`${DASHBOARD_API_KEY}.${HEATMAP_KEY}`, heatmap);
+    return new Promise((resolve) => {
+      resolve(heatmap.id);
+    });
+  }
+  async updateHeatMap(heatmap) {
+    storage.updateList(`${DASHBOARD_API_KEY}.${HEATMAP_KEY}`, heatmap);
+    return new Promise((resolve) => {
+      resolve(heatmap.id);
+    });
+  }
+  async deleteHeatMap(id) {
+    return new Promise((resolve) => {
+      resolve(id);
+    });
+  }
+  getDemand(heatmapId) {
+    //TODO:
+    console.info(heatmapId);
+    return demandList;
+  }
+}
+
 class DataApi {
   dashboardApi = new DashboardApi();
   managementApi = new ManagementApi();
@@ -246,9 +260,13 @@ class DataApi {
     console.info(JSON.stringify(state));
     return state;
   }
-  async getPanelData(panelId) {
+  async getPanelData(panelId, assetId, predictionWindow) {
+    console.info(assetId);
     let panel = await this.dashboardApi.getInformationPanel(panelId);
-    let data = { data: generator.generatePanelData(panel), state: generator.generatePanelState(panel) };
+    let data = {
+      data: generator.generatePanelData(panel, predictionWindow),
+      state: generator.generatePanelState(panel),
+    };
     console.info(JSON.stringify(data));
     return data;
   }

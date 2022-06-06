@@ -1,7 +1,7 @@
 
 ### Timeseries ### 
 
-* get timeseries : GET `/api/timeseries` 
+* get timeseries : GET `/api/data/timeseries` 
   
   *args*:      
     * ***prediction*** - prediction ahead 
@@ -46,6 +46,7 @@ function: current(recent value), min, max, ....
     
     *args*:          
     * ***prediction*** - prediction ahead 
+    * ***asset_id*** - asset_id 
   
     Return: [data.json](../model/data.json)
 
@@ -55,6 +56,7 @@ function: current(recent value), min, max, ....
     
     *args*:          
     * ***prediction*** - prediction ahead 
+    * ***asset_id*** - asset_id 
 
     Return:   [data.json](../model/data.json)
 

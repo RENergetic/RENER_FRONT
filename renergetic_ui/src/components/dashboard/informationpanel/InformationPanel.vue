@@ -1,8 +1,9 @@
 <template>
-  <div id="panel-grid-stack" style="width: 100%; position: absolute; top: 0" class="grid-stack">
+  <div v-if="panel" id="panel-grid-stack" style="width: 100%; position: absolute; top: 0" class="grid-stack">
     <InformationTile
       v-for="(tile, index) in tiles"
       :key="tile.id"
+      class="card-container"
       :slot-props="{ tile: tile, index: index }"
       :edit="editMode"
       :pdata="pdata"
@@ -82,12 +83,15 @@ export default {
   name: "InformationPanel",
   components: {
     InformationTile,
-
     ManageSensors,
     Dialog,
     NotificationList,
   },
   props: {
+    assetId: {
+      type: Number,
+      default: null,
+    },
     locked: {
       type: Boolean,
       default: true,
@@ -140,6 +144,8 @@ export default {
     },
     panel: {
       handler: function (newValue) {
+        alert("");
+        console.info("reload panel");
         this.mPanel = newValue;
         if (this.grid != null) this.grid.destroy(false);
         let grid = GridStack.init({ float: true }, "#panel-grid-stack");
@@ -183,7 +189,7 @@ export default {
   },
   methods: {
     async loadData() {
-      if (this.panel.id != null) this.pdata = await this.$ren.dataApi.getPanelData(this.panel.id);
+      if (this.panel.id != null) this.pdata = await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId);
     },
     gridWidth(tile) {
       return tile.col == null ? 2 : tile.col;
