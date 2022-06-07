@@ -23,4 +23,65 @@ todo:
     Return:   [information_panel.json](../model/information_panel.json)
 
 
- 
+** Duplicate **
+<!-- * get information panels with the necesary data
+  * GET `/api/user/panel/{panelId}`  
+  
+    *headers* : 
+        
+      * user_token *str* - Header to identify the necessary assets measurements and demands
+
+  
+    *args* : 
+        
+      * panel_id *int* - Path param to identify the panel
+*example*:
+```
+{
+    "id": 0,
+    "name": "panel_name",
+    "label": "Panel Label",
+    "owner_id": null,
+    "is_template": false,
+    "tiles": [
+        {
+            "tile_id": 0,
+            "name": "tile_name",
+            "label": "Tile Label",
+            "type": "knob",
+            "assets":[
+                {
+                    "id": 0,
+                    "asset_type": "type_name",
+                    "name": "asset_name",
+                    "label": "Optional label",
+                    "geo_location": "location",
+                    "measurements": [
+                        {
+                            "name": "measurement_name",
+                            "last": "0.0",
+                            "avg": "0.0",
+                            "total": "0.0"
+                        }
+                    ],
+                    "demands": [
+                        {
+                            "id": 0,
+                            "demand_start": "yyyy-MM-dd HH:mm:ss",
+                            "demand_stop": "yyyy-MM-dd HH:mm:ss",
+                            "update_date": "yyyy-MM-dd HH:mm:ss",
+                            "action_type": "enum",
+                            "action": "enum",
+                            "message": "demand message",
+                            "ext": "something"
+                        }
+                    ]
+                }
+            ],
+            "layout": "{'x': 0, 'y': 0}",
+            "props": null
+        }
+    ]
+}
+```
+  -->

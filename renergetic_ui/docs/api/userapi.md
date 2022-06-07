@@ -36,7 +36,10 @@ TODO:
 
 * get assets: GET `/api/user/assets`
     description: get all assets connected to the user
-    Return: list of  [asset.json](../model/asset.json)
+    *headers* : 
+    
+      * user_token *str* - token to identify user
+      Return: list of  [asset.json](../model/asset.json)
 
 * get demand: 
     GET `/api/user/demand`
