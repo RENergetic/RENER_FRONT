@@ -1,5 +1,5 @@
 <template>
-  <div id="energy-flow">This ia another fantastic and creative ,kempt, innovative new graph view</div>
+  <div id="energy-flow">ENERGY FLOW COMPONENT</div>
 </template>
 <script>
 export default {
@@ -26,5 +26,7 @@ export default {
   width: 100%;
   height: 100%;
   background: rgba(255, 0, 247, 0.463);
+  font-size: 30 rem;
+  padding: 10%;
 }
 </style>

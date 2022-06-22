@@ -21,6 +21,9 @@ const TileTypes = Object.freeze({
   knob: "knob",
   doughnut: "doughnut",
   list: "list",
+  panel: "panel",
+  multi_doughnut: "multi_doughnut",
+  multi_knob: "multi_knob",
 });
 
 const NotificationContext = Object.freeze({

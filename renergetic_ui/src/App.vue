@@ -4,6 +4,7 @@
     <ConfirmDialog></ConfirmDialog>
     <SideMenu ref="sideMenu" />
     <router-view :class="layout()" @update-menu="updateMenu()" />
+    <!-- {{ $route }} -->
     <Footer style="display: none">
       <template #right> </template>
     </Footer>

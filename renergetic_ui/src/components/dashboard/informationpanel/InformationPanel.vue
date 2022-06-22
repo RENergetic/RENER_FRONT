@@ -190,6 +190,7 @@ export default {
   methods: {
     async loadData() {
       if (this.panel.id != null) this.pdata = await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId);
+      console.info(this.pdata);
     },
     gridWidth(tile) {
       return tile.col == null ? 2 : tile.col;

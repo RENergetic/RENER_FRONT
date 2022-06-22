@@ -1,6 +1,7 @@
 <template>
   <div>
-    <!-- {{ $route.params.asset_id }} -->
+    <!-- {{ $route.paframs.asset_id }} -->
+    <!-- {{ panel }} -->
     <div v-if="panel">
       <DotMenu :model="menuModel" />
       <Dialog
