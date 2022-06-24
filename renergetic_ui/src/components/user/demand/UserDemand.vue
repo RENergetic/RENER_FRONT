@@ -8,17 +8,6 @@
         :style="'background-image: url(' + getIcon(demand.action) + ');width:7.5rem;'"
       ></span>
       <span v-if="demand.tile != null" id="demandtile" @click="$router.push(`/panel/view/${demand.tile.panelId}`)">
-        <!-- TODO: load :pdata="pdata" -->
-        <!-- {{ demand }} -->
-        <!-- <DoughnutTile
-          v-if="false"
-          :style="'height:7.5rem;width:7.5rem;margin-right: 1rem;'"
-          :legend="false"
-          class="block"
-          :tile="demand.tile"
-          :pdata="{ '2': 2, '3': 3, '4': 4 }"
-        ></DoughnutTile> -->
-        <!-- TODO: load :pdata="pdata" -->
         <InformationTileData
           :key="demand.tile.id"
           :style="'height:7.5rem;width:7.5rem;margin-right: 1rem;'"
@@ -46,7 +35,6 @@
 </template>
 <script>
 import InformationTileData from "@/components/dashboard/informationpanel/informationtile/InformationTileData.vue";
-// import DoughnutTile from "@/components/dashboard/informationpanel/informationtile/DoughnutTile.vue";
 
 export default {
   name: "UserDemand",

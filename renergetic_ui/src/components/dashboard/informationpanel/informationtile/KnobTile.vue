@@ -1,10 +1,6 @@
 <template>
   <Knob v-model="value" :style="{ textAlign: 'center' }" :min="0" :max="100.0" />
   <div style="text-align: center">
-    <!-- <div key="" class="flex flex-grow-1">
-      {{ $t("model.heatmap.heatmap") }}
-    </div> -->
-
     <div v-if="measurement">{{ measurement.label }}</div>
   </div>
 </template>
@@ -33,7 +29,10 @@ export default {
     value: function () {
       if (this.measurement) {
         let id = this.measurement.id;
-        return this.pdata ? this.pdata[id] : null;
+        if (!(this.pdata && this.pdata.current)) {
+          return null;
+        }
+        return this.pdata.current[id];
       }
       return null;
     },

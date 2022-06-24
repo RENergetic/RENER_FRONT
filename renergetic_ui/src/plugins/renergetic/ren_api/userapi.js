@@ -6,6 +6,17 @@ export default class UserApi extends RestComponent {
   constructor(axiosInstance, vueInstance) {
     super(axiosInstance, vueInstance);
   }
+  /**
+   * get panels assigned to assets
+   * ./docs/model/asset_panel.json
+   */
+  listAssetPanels() {
+    //TODO: API_INTEGRATION
+  }
+  listInformationPanel(userId = null) {
+    //TODO: API_INTEGRATION
+    console.info(userId);
+  }
   // TODO: implement
   // async getDemad(userId) {}
   // async setSettings(settings) {   }

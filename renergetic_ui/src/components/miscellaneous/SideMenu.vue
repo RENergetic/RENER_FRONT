@@ -60,8 +60,8 @@ export default {
       this.$ren.utils
         .reloadStore()
         .then(async () => {
-          //this.dashboards = this.$store.getters["view/dashboards"];
-          this.dashboards = await this.$ren.dashboardApi.list();
+          this.dashboards = this.$store.getters["view/dashboards"];
+          // this.dashboards = await this.$ren.dashboardApi.list();
           this.informationPanels = this.$store.getters["view/informationPanels"];
           let menu = this.initMenu();
           this.menuModel = menu;
@@ -104,15 +104,15 @@ export default {
       return items;
     },
     assetsItems() {
-      //TODO temporary asset panels
-      let assets = this.$store.getters["view/assets"];
       let flags = RenRoles.REN_VISITOR | RenRoles.REN_USER;
       if ((flags & this.role) == 0) return [];
-      let items = assets.map((asset) => {
-        let to = `/asset/${asset.id}/panel`;
+      let assetPanels = this.$store.getters["view/assetPanels"];
+      if (assetPanels.length == 0) return [];
+      let items = assetPanels.map((assetPanel) => {
+        let to = `/asset/${assetPanel.asset.id}/panel/${assetPanel.panel.id}`;
         return {
           // label: this.$t("menu.group_list"),
-          label: asset.label,
+          label: assetPanel.panel.label.replace("{asset}", assetPanel.asset.label),
           icon: "pi pi-fw pi-align-left",
           to: to,
           command: () => {

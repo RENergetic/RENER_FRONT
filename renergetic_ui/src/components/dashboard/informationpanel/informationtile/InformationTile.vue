@@ -1,10 +1,7 @@
 <template>
-  <!-- <InformationTileData></InformationTileData> -->
-  <!-- {{ slotProps }} -->
   <div v-if="slotProps" :class="'grid-stack-item ren'" v-bind="gridStackAttributes">
     <div :class="'grid-stack-item-content ' + state" style="padding: 0">
       <div style="position: absolute; left: 0.3rem; top: 0.3rem">
-        <!-- {{ gridStackAttributes }} -->
         <Button
           v-if="edit"
           id="menu-toggle"
@@ -22,41 +19,14 @@
           @click="$emit('notification', slotProps)"
         />
       </div>
-      <!-- {{ slotProps.index }} {{ gridStackAttributes }} -->
-      <!-- {{ tileData }} -->
+
       <InformationTileData :tile="tile" :pdata="tileData" :settings="settings"></InformationTileData>
-
-      <!-- :class="tileClass"
-       -->
-      <!-- <h3 v-if="tile != null && tile.label != null" class="block">{{ tile.label }}</h3>
-
-        <KnobTile v-if="tile.type == 'knob'" class="block" :tile="tile" :pdata="pdata.data"></KnobTile>
-
-        <DoughnutTile
-          v-else-if="tile.type == 'doughnut'"
-          class="block"
-          :tile="tile"
-          :pdata="pdata"
-          :legend="settings.legend"
-        ></DoughnutTile>
-
-       
-       <InformationListTile
-          v-else
-          class="block"
-          :tile="tile"
-          :pdata="pdata"
-          :font-size="fontSize"
-        ></InformationListTile> -->
-
-      <!-- </template> -->
     </div>
   </div>
 </template>
 <script>
-// import TTest from "./TTest.vue";
-import InformationTileData from "@/components/dashboard/informationpanel/informationtile/InformationTileData.vue";
-// import Card from "primevue/card";
+import InformationTileData from "./InformationTileData.vue";
+
 export default {
   name: "InformationTile",
   components: { InformationTileData },
@@ -66,11 +36,6 @@ export default {
       type: Object,
       default: () => ({}),
     },
-
-    // index: {
-    //   type: Number,
-    //   default: null,
-    // },
     pdata: {
       type: Object,
       default: () => ({}),
@@ -137,30 +102,11 @@ export default {
   watch: {
     pdata: {
       handler: function (newValue) {
-        //
-        console.info("testa");
-        // console.info(this.pdata);
-        // console.info(newValue);
         this.tileData = newValue && newValue.data ? newValue.data : {};
       },
       deep: true,
     },
-    slotProps: {
-      handler: function () {
-        // newValue
-        console.info("testba");
-        // console.info(this.pdata);
-        // console.info(newValue);
-        // this.tileData = newValue && newValue.data ? newValue.data : {};
-      },
-      deep: true,
-    },
   },
-  mounted() {},
-  updated() {
-    //   this.tileData = this.pdata && this.pdata.data ? this.pdata.data : {};
-  },
-  methods: {},
 };
 </script>
 

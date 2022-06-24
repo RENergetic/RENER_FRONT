@@ -1,11 +1,12 @@
 
 ### Grafana ###  
-todo:
+ 
+dashboardApi.list()
 
 ### InformationPanel ###  
 
 * list panel :  
-    GET `/api/panel`
+    GET `/api/panels`
     description: list information panel
     
     *args*:           
@@ -14,13 +15,13 @@ todo:
     Return:  list of [information_panel.json](../model/information_panel.json)
 
 * get panel :  
-    GET `/api/panel/${panelId}`
-    description: get current user's demand
+    GET `/api/panels/${panelId}`
+    description: get detailed structure of information panel
     
     *args*:           
     * ***asset_id*** - asset_id 
 
-    Return:   [information_panel.json](../model/information_panel.json)
+    Return:   [information_panel.json](../model/information_panel_detailed.json)
 
 
 ** Duplicate **

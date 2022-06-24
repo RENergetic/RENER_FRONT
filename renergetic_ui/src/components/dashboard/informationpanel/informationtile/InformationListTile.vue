@@ -27,10 +27,7 @@ export default {
       default: "2rem",
     },
   },
-  // emits: ["edit", "notification"],
-  // data() {
-  //   return {};
-  // },
+
   computed: {},
 
   mounted() {},

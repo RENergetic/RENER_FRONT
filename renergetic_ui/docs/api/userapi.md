@@ -43,6 +43,23 @@ TODO:
 
     Return: list of  [asset.json](../model/asset.json)
 
+
+* list panel :  
+* 
+    GET `/api/user/panels`
+    description: list user panel (userApi.listInformationPanel())
+
+    Return:  list of [information_panel.json](../model/information_panel.json)
+
+* list asset panel :  
+    GET `/api/user/asset_panels`
+    description: list user panel (userApi.listAssetPanels())
+    
+    *args*:           
+    * ***asset_id*** - return panels for asset 
+
+    Return:  list of [information_panel.json](../model/asset_panel.json.json)
+
 * get demand: 
     GET `/api/user/demand`
     GET `/api/user/demand/assetId/${assetId}`

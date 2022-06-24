@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import { RenRoles } from "../model/Enums";
 export default class RenUtils {
   vueInstance = null;
   host = document.location.origin;
@@ -30,17 +31,29 @@ export default class RenUtils {
     let allSettings = this.app.$store.getters["settings/all"];
     this.app.$ren.userApi.setSettings(allSettings);
   }
+  /**
+   * reload primary app data
+   */
   async reloadStore() {
     console.info("reload user data");
-    this.reloadDashboard();
-    this.app.$ren.dashboardApi.listInformationPanel().then((informationPanels) => {
+    let flags = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
+    if ((flags & role) != 0) this.reloadDashboard();
+    flags = RenRoles.REN_VISITOR | RenRoles.REN_USER;
+    let role = this.app.$store.getters["auth/renRole"];
+    if ((flags & role) == 0) return;
+
+    this.app.$ren.userApi.listInformationPanel().then((informationPanels) => {
       this.app.$store.commit("view/informationPanels", informationPanels);
     });
-    await this.app.$ren.userApi.getSettings().then((settings) => {
-      this.app.$store.commit("settings/all", settings);
-    });
-    await this.app.$ren.userApi.getAssets().then((assets) => {
-      this.app.$store.commit("view/assets", assets);
+    //TODO: settings
+    // await this.app.$ren.userApi.getSettings().then((settings) => {
+    //   this.app.$store.commit("settings/all", settings);
+    // });
+    // await this.app.$ren.userApi.getAssets().then((assets) => {
+    //   this.app.$store.commit("view/assets", assets);
+    // });
+    await this.app.$ren.userApi.listAssetPanels().then((assets) => {
+      this.app.$store.commit("view/assetPanels", assets);
     });
   }
   async reloadDashboard() {

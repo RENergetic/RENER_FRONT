@@ -625,7 +625,7 @@ export default [
     tiles: [
       {
         id: "s5ad2e34-cf62-4e22-a048-e44a5ebc09f9",
-        title: null,
+        title: "Electricity",
         type: "multi_knob",
         measurements: [
           {
@@ -683,7 +683,7 @@ export default [
       },
       {
         id: "d4c86f0d-2354-448a-9d11-5aef499a3a7d",
-        title: null,
+        title: "Renawables",
         type: "list",
         measurements: [
           {

@@ -7,6 +7,7 @@ import demandList from "./samples/demand.js";
 // import { measurementsGenerator, currentMeasurementsGenerator, dataGenerator } from "./dashboard.js";
 import * as generator from "./samples/data_generator.js";
 import assetList from "./samples/assets.js";
+import assetPanelList from "./samples/asset_panels.js";
 import measurementList from "./samples/measurement";
 import storage from "./storage.js";
 import measurement_types from "./samples/measurement_types.js";
@@ -315,6 +316,18 @@ class UserApi {
   async getAssets() {
     let assets = await this.managementApi.listAsset();
     return assets.filter((asset) => asset.type.name == AssetTypes.BUILDING);
+  }
+
+  async listAssetPanels(userId) {
+    console.info(`assetPanelList for ${userId}`);
+    let panels = await storage.get(`${USER_API_KEY}.${PANEL_KEY}`, assetPanelList);
+
+    console.info(panels);
+    return panels;
+  }
+  listInformationPanel(userId = null) {
+    console.info(`listInformationPanel for ${userId}`);
+    return storage.get(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, informationPanelList);
   }
 }
 export { DashboardApi, ManagementApi, DataApi, UserApi };

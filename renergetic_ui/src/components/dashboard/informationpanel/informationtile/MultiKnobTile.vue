@@ -1,6 +1,7 @@
 <template>
   <!-- {{ chartData }} {{ options }}sss {{ pdata }} -->
   <Chart style="max-width: 20rem" type="doughnut" :data="chartData" :options="options" />
+  <!-- <span id="tileicon" :style="'background-image: url(' + icon + ')'"></span> -->
 </template>
 <script>
 import Chart from "primevue/chart";
@@ -17,6 +18,7 @@ export default {
   },
   data() {
     return {
+      icon: require(`../../../../assets/img/tileicons/battery.png`),
       relativeValues: false,
       tmpIndex: 0,
       options: {
@@ -99,4 +101,13 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+#tileicon {
+  width: 3rem;
+  height: 3rem;
+  // display: inherit;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+</style>

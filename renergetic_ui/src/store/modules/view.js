@@ -7,6 +7,8 @@ export default {
     informationPanels: [],
     // list of featured user assets
     assets: [],
+    // list of featured user assets
+    assetPanels: [],
     locationList: ["en-EN"],
   },
   mutations: {
@@ -19,6 +21,9 @@ export default {
     },
     assets(state, payload) {
       state.assets = payload;
+    },
+    assetPanels(state, payload) {
+      state.assetPanels = payload;
     },
 
     // Requires a Dashboard object ({id:0, name:"", url:"", label:""})
@@ -64,6 +69,9 @@ export default {
     },
     assets: (state /* getters*/) => {
       return state.assets;
+    },
+    assetPanels: (state /* getters*/) => {
+      return state.assetPanels;
     },
     informationPanels: (state /* getters*/) => {
       return state.informationPanels;

@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!-- {{ $route.paframs.asset_id }} -->
-    <!-- {{ panel }} -->
     <div v-if="panel">
       <DotMenu :model="menuModel" />
       <Dialog
@@ -97,7 +95,7 @@ export default {
   watch: {},
   async created() {
     if (this.$route.params.asset_id) {
-      this.$ren.dashboardApi.getInformationPanel(null, this.$route.params.asset_id).then((panel) => {
+      this.$ren.dashboardApi.getInformationPanel(this.$route.params.id, this.$route.params.asset_id).then((panel) => {
         this.panel = panel;
       });
     } else {

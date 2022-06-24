@@ -3,8 +3,6 @@
     <div v-if="tile">
       <h3 v-if="tile != null && tile.title != null">{{ tile.title }}</h3>
 
-      <!-- {{ tile.type }} -->
-
       <KnobTile v-if="tile.type == 'knob'" :tile="tile" :pdata="pdata.data"></KnobTile>
       <DoughnutTile
         v-else-if="tile.type == 'doughnut'"
@@ -12,12 +10,12 @@
         :pdata="pdata"
         :legend="settings.legend"
       ></DoughnutTile>
-      <MultiDoughnutTile
+      <!-- <MultiDoughnutTile
         v-else-if="tile.type == 'multi_doughnut'"
         :tile="tile"
         :pdata="pdata"
         :legend="settings.legend"
-      ></MultiDoughnutTile>
+      ></MultiDoughnutTile> -->
       <MultiKnobTile
         v-else-if="tile.type == 'multi_knob'"
         :tile="tile"
@@ -31,19 +29,17 @@
 </template>
 <script>
 import InformationListTile from "./InformationListTile.vue";
-// import PanelTile from "./PanelTile.vue";
 import KnobTile from "./KnobTile.vue";
 import DoughnutTile from "./DoughnutTile.vue";
 import MultiKnobTile from "./MultiKnobTile.vue";
-import MultiDoughnutTile from "./MultiDoughnutTile.vue";
-// import Card from "primevue/card";
+// import MultiDoughnutTile from "./MultiDoughnutTile.vue";
 export default {
   name: "InformationTileData",
   components: {
     InformationListTile,
     KnobTile,
     DoughnutTile,
-    MultiDoughnutTile,
+    // MultiDoughnutTile,
     MultiKnobTile,
     PanelTile: () => import("./PanelTile.vue"),
   },

@@ -1,5 +1,4 @@
 <template>
-  <!-- {{ chartData }} {{ options }}sss {{ pdata }} -->
   <Chart style="max-width: 20rem" type="doughnut" :data="chartData" :options="options" />
 </template>
 <script>
@@ -38,7 +37,7 @@ export default {
       let labels = this.tile.measurements.map((m) => m.label);
 
       // let data = this.tile.measurements.map((m) => this.pdata[m.id]);
-      //TODO: make it comgigurable in tile / args prediction & aggregation func
+      //TODO: make it comfigurable in tile / args prediction & aggregation func
       let data = this.tile.measurements.map((m) => this.pdata.current.default[m.id]);
 
       // console.info(this.tile.measurements);

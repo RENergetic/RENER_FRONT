@@ -57,8 +57,6 @@ export default {
   },
   emits: ["update:modelValue", "save", "cancel"],
   data() {
-    // this.$emit("update:modelValue", newVal);
-    // this.$emit("save", newVal);
     return { mDashboard: this.dashboard };
   },
   watch: {
