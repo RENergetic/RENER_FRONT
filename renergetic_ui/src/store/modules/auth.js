@@ -18,10 +18,9 @@ export default {
     /**
      * set keyclock auth details
      * @param {*} state
-     * @param {*} payload
+     * @param {*} payload -> keyclock object
      */
     set(state, payload) {
-      // console.info(payload);
       if (payload != null && payload.appRoles != null) {
         let roles = payload.appRoles[process.env.VUE_APP_KEY_CLOAK_CLIENT_ID].roles;
         let role = RenRoles.REN_GUEST;

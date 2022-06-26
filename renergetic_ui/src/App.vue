@@ -3,7 +3,7 @@
     <Toast />
     <ConfirmDialog></ConfirmDialog>
     <SideMenu ref="sideMenu" />
-    <router-view :class="layout()" @update-menu="updateMenu()" />
+    <router-view v-if="hasAccess" :class="layout()" @update-menu="updateMenu()" />
     <!-- {{ $route }} -->
     <Footer style="display: none">
       <template #right> </template>
@@ -15,6 +15,7 @@ import SideMenu from "./components/miscellaneous/SideMenu";
 import Toast from "primevue/toast";
 import ConfirmDialog from "primevue/confirmdialog";
 import Footer from "./components/miscellaneous/Footer.vue";
+
 export default {
   name: "App",
   components: {
@@ -24,6 +25,10 @@ export default {
     Footer,
   },
   computed: {
+    hasAccess() {
+      if (this.$route.meta.roleFlag == null || this.$route.meta.roleFlag == undefined) return true;
+      return this.$ren.utils.checkAccess(this.$route.meta.roleFlag);
+    },
     isLoading() {
       return this.$store.getters["spinner/isLoading"];
     },

@@ -14,16 +14,22 @@ import UserDemand from "./UserDemand.vue";
 export default {
   name: "DemandList",
   components: { UserDemand },
-  props: {},
+  props: {
+    userId: {
+      type: Number,
+      default: null,
+    },
+  },
   data() {
     return { demands: [] };
   },
   computed: {},
   watch: {},
   async mounted() {
-    //TODO: userId
-    let userID = 0;
-    this.demands = await this.$ren.dashboardApi.getDemand(userID);
+    if (this.userId != null) {
+      //TODO: verify privileges
+      this.demands = await this.$ren.dashboardApi.getDemand(this.userId);
+    } else this.demands = await this.$ren.userApi.getDemand();
   },
 
   methods: {},

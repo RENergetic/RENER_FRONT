@@ -31,7 +31,6 @@ import DeleteDashboard from "@/components/dashboard/grafana/DeleteDashboard.vue"
 import DashboardForm from "@/components/dashboard/grafana/DashboardForm.vue";
 import Dock from "primevue/dock";
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
-
 export default {
   name: "Dashboard",
   components: { Dock, DotMenu, Grafana, DeleteDashboard, DashboardForm /* Carousel */ },

@@ -32,17 +32,28 @@ export default class RenUtils {
     this.app.$ren.userApi.setSettings(allSettings);
   }
   /**
-   * reload primary app data
+   *
+   * @param {*} flags  - e.g. RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN
+   * @returns
+   */
+  checkAccess(flags) {
+    return (flags & this.app.$store.getters["auth/renRole"]) != 0;
+  }
+  /**
+   * reload basic app data
    */
   async reloadStore() {
     console.info("reload user data");
-    let flags = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
-    if ((flags & role) != 0) this.reloadDashboard();
-    flags = RenRoles.REN_VISITOR | RenRoles.REN_USER;
-    let role = this.app.$store.getters["auth/renRole"];
-    if ((flags & role) == 0) return;
 
-    this.app.$ren.userApi.listInformationPanel().then((informationPanels) => {
+    if (
+      (RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER) &
+      this.app.$store.getters["auth/renRole"]
+    ) {
+      await this.reloadDashboard();
+    }
+    if (!(RenRoles.REN_VISITOR | (RenRoles.REN_USER & this.app.$store.getters["auth/renRole"]))) return;
+
+    await this.app.$ren.userApi.listInformationPanel().then((informationPanels) => {
       this.app.$store.commit("view/informationPanels", informationPanels);
     });
     //TODO: settings
@@ -57,9 +68,8 @@ export default class RenUtils {
     });
   }
   async reloadDashboard() {
-    return await this.app.$ren.dashboardApi.list().then((dashboards) => {
+    await this.app.$ren.dashboardApi.list().then((dashboards) => {
       this.app.$store.commit("view/dashboards", dashboards);
-      return dashboards;
     });
   }
   parseUnixTimestamp(timestamp) {

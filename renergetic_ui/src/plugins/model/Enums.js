@@ -44,7 +44,7 @@ const RenRoles = Object.freeze({
   "ren-manager": 0x00001000,
   REN_TECHNICAL_MANAGER: 0x00010000,
   "ren-technical-manager": 0x00010000,
-  REN_ADMIN: 0x00100000,
+  REN_ADMIN: 0x00110000,
   "ren-admin": 0x00100000,
   REN_STAFF: 0x01000000,
   "ren-staff": 0x01000000,

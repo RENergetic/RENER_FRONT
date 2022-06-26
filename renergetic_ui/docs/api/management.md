@@ -152,6 +152,19 @@
   current recommendation list (data is not required we wont present for manager pie chart)
    return: list of  [demand.json](../model/demand.json)
 
+* get user demand: 
+    GET `/api/demand/userId/${assetId}`
+    description: get current user's demand with data
+    
+Return: 
+```
+{
+    'demand':  list of  [demand.json](../model/demand.json)
+    'data': [data.json](../model/data.json)
+}
+```
+  
+
 * POST demand schedule:     
   * GET `/api/demand/schedule` 
    BODY: list of  [demand_schedule.json](../model/demand_schedule.json)

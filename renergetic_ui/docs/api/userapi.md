@@ -35,7 +35,8 @@ TODO:
 
     Return: list of  [asset.json](../model/asset.json)
 
-* get assets: GET `/api/user/assets`
+* get assets: GET `/api/user/assets?featured=true`
+    description: get current user's assigned (featured) assets - to display in menu / drop down
     description: get all assets connected to the user
     *headers* : 
 
@@ -45,7 +46,7 @@ TODO:
 
 
 * list panel :  
-* 
+
     GET `/api/user/panels`
     description: list user panel (userApi.listInformationPanel())
 

@@ -41,7 +41,7 @@ data template
 }
 ```
 time_moment: current, prediction
-function: current(recent value), min, max, ....
+function: current(most recent value), min, max, ....
 
 * get tile data:  
     GET `/api/data/tile/${tileId}`
@@ -55,7 +55,7 @@ function: current(recent value), min, max, ....
 
 * get panel data:  
     GET `/api/data/panel/${panelId}`
-    description: get current user's demand
+    description: get current user's demand (dataApi.getPanelData())
     
     *args*:          
     * ***prediction*** - prediction ahead 

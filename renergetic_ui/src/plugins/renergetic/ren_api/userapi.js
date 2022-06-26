@@ -13,6 +13,9 @@ export default class UserApi extends RestComponent {
   listAssetPanels() {
     //TODO: API_INTEGRATION
   }
+  getDemand() {
+    //TODO: API_INTEGRATION
+  }
   listInformationPanel(userId = null) {
     //TODO: API_INTEGRATION
     console.info(userId);

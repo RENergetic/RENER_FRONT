@@ -130,7 +130,9 @@ export default {
     },
     dashboardItems() {
       let flags = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
-      if ((flags & this.role) == 0) return [];
+      if ((flags & this.role) == 0) {
+        return [];
+      }
       var items = [];
       if (this.dashboards && this.dashboards.length != 0) {
         items = this.dashboards.map((dashboardItem) => {

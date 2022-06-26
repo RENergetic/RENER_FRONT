@@ -105,6 +105,8 @@ export default class DataApi extends RestComponent {
   // }
 
   async getPanelData(panelId) {
+    //, assetId, predictionWindow) {
+    //TODO: API_INTEGRATION
     let panel = await this.dashboardApi.getInformationPanel(panelId);
     let data = { data: generator.generatePanelData(panel), state: generator.generatePanelState(panel) };
     console.info(JSON.stringify(data));

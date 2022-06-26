@@ -165,7 +165,8 @@ class DashboardApi {
   async getInformationPanel(panelId, assetId) {
     let panels = await storage.get(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, informationPanelList);
     if (assetId) {
-      let panel = await panels.find((it) => it.id == -1);
+      let panel = panels.find((it) => it.id == panelId);
+      // let panel = await panels.find((it) => it.id == -1);
       let asset = await this.managementApi.getAsset(assetId);
       let assetLabel = asset.label ? asset.label : asset.name;
       if (panel.label != null) {
@@ -226,9 +227,9 @@ class DashboardApi {
       resolve(id);
     });
   }
-  getDemand(heatmapId) {
+  getDemand(userId) {
     //TODO:
-    console.info(heatmapId);
+    console.info(userId);
     return demandList;
   }
 }
@@ -302,8 +303,7 @@ class DataApi {
 class UserApi {
   managementApi = new ManagementApi();
 
-  async getDemad() {
-    // console.info(userId);
+  async getDemand() {
     return demandList;
   }
   async setSettings(settings) {

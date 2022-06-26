@@ -1,7 +1,15 @@
 
 ### Grafana ###  
  
-dashboardApi.list()
+
+* list dashboard :  
+    GET `/api/dashboard/` 
+    description: list grafana dashboards (dashboardApi.list())   
+    
+
+    Return:  list of [information_panel.json](../model/dashboard.json)
+
+
 
 ### InformationPanel ###  
 
