@@ -4,7 +4,7 @@
     <ConfirmDialog></ConfirmDialog>
     <SideMenu ref="sideMenu" />
     <router-view v-if="hasAccess" :class="layout()" @update-menu="updateMenu()" />
-    <!-- {{ $route }} -->
+    <!-- TODO: v-else -->
     <Footer style="display: none">
       <template #right> </template>
     </Footer>

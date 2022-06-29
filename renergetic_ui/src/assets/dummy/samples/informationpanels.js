@@ -3,7 +3,7 @@ export default [
     tiles: [
       {
         id: "d4c86f0d-2354-448a-9d11-5aef499a3a7d",
-        title: null,
+        label: null,
         type: "knob",
         measurements: [
           {
@@ -31,7 +31,7 @@ export default [
       },
       {
         id: "0dbf2fbe-06d8-43a9-9009-b6ae402aa214",
-        title: null,
+        label: null,
         type: "list",
         measurements: [
           {
@@ -78,7 +78,7 @@ export default [
       },
       {
         id: "fcb2c173-b500-4c9b-95b1-02c93cc6fd5a",
-        title: null,
+        label: null,
         type: "doughnut",
         measurements: [
           {
@@ -133,7 +133,7 @@ export default [
     tiles: [
       {
         id: "35ad2e34-cf62-4e22-a048-e44a5ebc09f9",
-        title: null,
+        label: null,
         type: "doughnut",
         measurements: [
           {
@@ -191,7 +191,7 @@ export default [
       },
       {
         id: "1ec9f3e6-67fc-415e-8190-6fe468daba97",
-        title: null,
+        label: null,
         type: "doughnut",
         measurements: [
           {
@@ -249,7 +249,7 @@ export default [
       },
       {
         id: "b2601fdc-c6f1-4303-9b6c-c61cc2e6484e",
-        title: null,
+        label: null,
         type: "list",
         measurements: [
           {
@@ -293,13 +293,13 @@ export default [
     tiles: [
       {
         id: "35ad2e34-cf62-4e22-a048-e44a5ebc09f0",
-        title: "Heat domain",
+        label: "Heat domain",
         type: "panel",
         panel: {
           tiles: [
             {
               id: "s5ad2e34-cf62-4e22-a048-e44a5ebc09f9",
-              title: null,
+              label: null,
               type: "doughnut",
               measurements: [
                 {
@@ -357,7 +357,7 @@ export default [
             },
             {
               id: "bbc9f3e6-67fc-415e-8190-6fe468daba97",
-              title: null,
+              label: null,
               type: "doughnut",
               measurements: [
                 {
@@ -415,7 +415,7 @@ export default [
             },
             {
               id: "cc601fdc-c6f1-4303-9b6c-c61cc2e6484e",
-              title: null,
+              label: null,
               type: "list",
               measurements: [
                 {
@@ -464,7 +464,7 @@ export default [
       },
       {
         id: "35ad2e34-cf62-4e22-a048-e44a5ebc09f9",
-        title: null,
+        label: null,
         type: "doughnut",
         measurements: [
           {
@@ -522,7 +522,7 @@ export default [
       },
       {
         id: "1ec9f3e6-67fc-415e-8190-6fe468daba97",
-        title: null,
+        label: null,
         type: "doughnut",
         measurements: [
           {
@@ -580,7 +580,7 @@ export default [
       },
       {
         id: "b2601fdc-c6f1-4303-9b6c-c61cc2e6484e",
-        title: null,
+        label: null,
         type: "list",
         measurements: [
           {
@@ -625,7 +625,7 @@ export default [
     tiles: [
       {
         id: "s5ad2e34-cf62-4e22-a048-e44a5ebc09f9",
-        title: "Electricity",
+        label: "Electricity",
         type: "multi_knob",
         measurements: [
           {
@@ -677,13 +677,13 @@ export default [
         layout: {
           x: 0,
           y: 0,
-          w: 4,
+          w: 5,
           h: 4,
         },
       },
       {
         id: "d4c86f0d-2354-448a-9d11-5aef499a3a7d",
-        title: "Renawables",
+        label: "Renawables",
         type: "list",
         measurements: [
           {
@@ -707,11 +707,11 @@ export default [
           },
         ],
         props: { items: [] },
-        layout: { x: 4, y: 0, w: 4, h: 4 },
+        layout: { x: 5, y: 0, w: 2, h: 2 },
       },
       {
         id: "d4c86f1d-2354-448a-9d11-5aef499a3a7d",
-        title: null,
+        label: null,
         type: "list",
         measurements: [
           {
@@ -735,7 +735,65 @@ export default [
           },
         ],
         props: { items: [] },
-        layout: { x: 4, y: 0, w: 4, h: 4 },
+        layout: { x: 5, y: 2, w: 2, h: 2 },
+      },
+      {
+        id: "s5ad2e34-cf62-4e22-a048-e44a5ebc09f9",
+        label: "Heat",
+        type: "multi_knob",
+        measurements: [
+          {
+            id: "7",
+            metric_type_id: 1,
+            location_name: "Building_A",
+            name: "Building_A_power",
+            label: "Building A power",
+            direction: 1,
+            measurement_details: {
+              color: "#4CAF50",
+            },
+            type: {
+              id: "1",
+              name: "electricity_power_w",
+              label: "Power [W]",
+              unit: "W",
+              base_unit: "W",
+              metric_type: "electricity",
+              factor: 1,
+              color: "#4CAF50",
+            },
+          },
+          {
+            id: "8",
+            metric_type_id: 1,
+            location_name: "Building_B",
+            name: "Building_B_power",
+            label: "Building B power",
+            direction: 1,
+            measurement_details: {
+              color: "#4CAF50",
+            },
+            type: {
+              id: "1",
+              name: "electricity_power_w",
+              label: "Power [W]",
+              unit: "W",
+              base_unit: "W",
+              metric_type: "electricity",
+              factor: 1,
+              color: "#4CAF50",
+            },
+          },
+        ],
+        props: {
+          items: [],
+        },
+        layout: {
+          x: 8,
+          y: 0,
+          w: 5,
+          h: 4,
+        },
       },
     ],
     name: "asset_template_view test",

@@ -27,7 +27,6 @@ export default {
   watch: {},
   async mounted() {
     if (this.userId != null) {
-      //TODO: verify privileges
       this.demands = await this.$ren.dashboardApi.getDemand(this.userId);
     } else this.demands = await this.$ren.userApi.getDemand();
   },

@@ -121,7 +121,7 @@ export default {
       this.panel.tiles.push({
         // layout: { x: 0, y: 0, h: 3, w: 3 },
         id: this.$ren.utils.uuid(),
-        title: null,
+        label: null,
         props: { items: [] },
       });
     },
