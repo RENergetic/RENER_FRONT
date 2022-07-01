@@ -1,3 +1,4 @@
+//generate data for panels
 import { Colors } from "../../../plugins/model/Enums.js";
 console.info(Object.keys(Colors));
 function listMeasurements(informationPanel) {
@@ -61,6 +62,7 @@ function generatePanelState(informationPanel) {
     } else if (value <= 0.85) {
       state[panel.id] = "WARNING";
     } else state[panel.id] = "ERROR";
+    state[panel.id] = "OK";
   }
   return state;
 }

@@ -22,7 +22,20 @@ export default [
     panel: {
       name: "asset_template_view test",
       label: "View for Building_B test",
-      id: 6,
+      id: 7,
+    },
+  },
+  {
+    asset: {
+      id: 2,
+      name: "Building_B",
+      label: "Building B",
+      //other asset fields
+    },
+    panel: {
+      name: "asset_template_view test",
+      label: "Yet another View for Building_B test",
+      id: 8,
     },
   },
 ];
