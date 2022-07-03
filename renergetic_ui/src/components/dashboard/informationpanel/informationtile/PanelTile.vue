@@ -5,8 +5,6 @@
     style="width: 100%; position: relative; display: block; height: fit-content"
     class="grid-stack"
   >
-    <!-- {{ tileData }} -->
-
     <InformationTile
       v-for="(t, index) in tiles"
       :key="t.id"

@@ -1,7 +1,9 @@
 <template>
-  <!-- {{ chartData }} {{ options }}sss {{ pdata }} -->
-  <Chart style="max-width: 20rem" type="doughnut" :data="chartData" :options="options" />
-  <!-- <span id="tileicon" :style="'background-image: url(' + icon + ')'"></span> -->
+  <h1>{{ tile.label }}</h1>
+  <div style="position: relative">
+    <Chart style="max-width: 20rem" type="doughnut" :data="chartData" :options="options" />
+    <span v-if="icon" id="tileicon" :style="'background-image: url(' + icon + ')'"></span>
+  </div>
 </template>
 <script>
 import Chart from "primevue/chart";
@@ -18,7 +20,10 @@ export default {
   },
   data() {
     return {
-      icon: require(`../../../../assets/img/tileicons/battery.png`),
+      icons: {
+        heat: require(`../../../../assets/img/tileicons/heat.png`),
+        electricity: require(`../../../../assets/img/tileicons/electricity.png`),
+      },
       relativeValues: false,
       tmpIndex: 0,
       options: {
@@ -36,6 +41,13 @@ export default {
     };
   },
   computed: {
+    icon: function () {
+      try {
+        return this.icons[this.tile.props.icon];
+      } catch (Exception) {
+        return null;
+      }
+    },
     chartData: function () {
       if (!(this.pdata && this.pdata.current)) {
         return {};
@@ -45,12 +57,11 @@ export default {
         let total = data.reduce((partialSum, a) => partialSum + a, 0);
         data = data.map((v) => v / total);
       }
-
       let labels = []; // this.tile.measurements.map((m) => m.label);
       //todo remove labels ?
-      for (let m in this.tile.measurements) {
-        labels.push(m.label);
-        labels.push(m.label);
+      for (let idx in this.tile.measurements) {
+        labels.push(this.tile.measurements[idx].label);
+        labels.push(this.tile.measurements[idx].label);
       }
       let datasets = data.map((v) => this.getDataset(v));
 
@@ -101,13 +112,18 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 #tileicon {
-  width: 3rem;
-  height: 3rem;
+  // width: 3rem;
+  // height: 3rem;
   // display: inherit;
-  background-size: 100%;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  position: absolute;
+  height: 30%;
+  width: 30%;
+  left: 35%;
+  top: 35%;
 }
 </style>

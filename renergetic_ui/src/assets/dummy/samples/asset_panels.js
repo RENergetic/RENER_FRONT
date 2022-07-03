@@ -4,7 +4,7 @@ export default [
       id: 1,
       name: "Building_A",
       label: "Building A",
-      //other asset fields
+      //other asset fields ??
     },
     panel: {
       name: "asset_template_view test",

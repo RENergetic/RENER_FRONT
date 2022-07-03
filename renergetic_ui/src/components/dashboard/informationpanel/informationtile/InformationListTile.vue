@@ -1,11 +1,6 @@
 <template>
-  <InformationTileItem
-    v-for="m in tile.measurements"
-    :key="m.id"
-    :style="{ fontSize: fontSize }"
-    :tile-item="m"
-    :pdata="pdata"
-  ></InformationTileItem>
+  <InformationTileItem v-for="m in tile.measurements" :key="m.id" :tile-item="m" :pdata="pdata"></InformationTileItem>
+  <!-- :style="{ fontSize: fontSize }" -->
 </template>
 <script>
 import InformationTileItem from "./InformationTileItem.vue";

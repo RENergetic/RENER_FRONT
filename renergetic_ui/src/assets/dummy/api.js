@@ -11,7 +11,7 @@ import assetPanelList from "./samples/asset_panels.js";
 import measurementList from "./samples/measurement";
 import storage from "./storage.js";
 import measurement_types from "./samples/measurement_types.js";
-import measurementAttributes from "./samples/measurement_attributes.js";
+// import measurementAttributes from "./samples/measurement_attributes.js";
 import { AssetTypes } from "../../plugins/model/Enums.js";
 
 const DASHBOARD_API_KEY = "dashboard_api";
@@ -238,12 +238,12 @@ class DataApi {
   dashboardApi = new DashboardApi();
   managementApi = new ManagementApi();
 
-  //TODO: discuss with Raul
-  async attributes(/*area, areaId*/) {
-    console.info(JSON.stringify(measurementAttributes));
-    return measurementAttributes;
-    // return storage.get(`${MANAGEMENT_KEY}.panel_list`, measurementAttributes);
-  }
+  // //TODO: discuss with Raul
+  // async attributes(/*area, areaId*/) {
+  //   console.info(JSON.stringify(measurementAttributes));
+  //   return measurementAttributes;
+  //   // return storage.get(`${MANAGEMENT_KEY}.panel_list`, measurementAttributes);
+  // }
 
   async getTimeseries(measurementIds, attributes = {}) {
     console.info(attributes);
@@ -262,13 +262,12 @@ class DataApi {
     console.info(JSON.stringify(state));
     return state;
   }
-  async getPanelData(panelId, assetId, predictionWindow) {
+  async getDemandData(demands, assetId, predictionWindow) {
     console.info(assetId);
-    let panel = await this.dashboardApi.getInformationPanel(panelId);
-    let data = {
-      data: generator.generatePanelData(panel, predictionWindow),
-      state: generator.generatePanelState(panel),
-    };
+    // let data = {
+    //   data: generator.generateTileData(demand.tile, predictionWindow),
+    // };
+    let data = generator.generateDemandData(demands, predictionWindow);
     console.info(JSON.stringify(data));
     return data;
   }

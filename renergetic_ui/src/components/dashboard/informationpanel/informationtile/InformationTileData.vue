@@ -1,36 +1,47 @@
 <template>
-  <div>
-    <div v-if="tile">
-      <h3 v-if="tile != null && tile.title != null">{{ tile.title }}</h3>
+  <div v-if="tile" style="height: 100%">
+    <h3 v-if="tile != null && tile.title != null">{{ tile.title }}</h3>
 
-      <KnobTile v-if="tile.type == 'knob'" :tile="tile" :pdata="pdata.data"></KnobTile>
-      <DoughnutTile
-        v-else-if="tile.type == 'doughnut'"
-        :tile="tile"
-        :pdata="pdata"
-        :legend="settings.legend"
-      ></DoughnutTile>
-      <!-- <MultiDoughnutTile
+    <KnobTile v-if="tile.type == 'knob'" :tile="tile" :pdata="pdata.data"></KnobTile>
+    <DoughnutTile
+      v-else-if="tile.type == 'doughnut'"
+      :tile="tile"
+      :pdata="pdata"
+      :legend="settings.legend"
+    ></DoughnutTile>
+    <!-- <MultiDoughnutTile
         v-else-if="tile.type == 'multi_doughnut'"
         :tile="tile"
         :pdata="pdata"
         :legend="settings.legend"
       ></MultiDoughnutTile> -->
-      <MultiKnobTile
-        v-else-if="tile.type == 'multi_knob'"
-        :tile="tile"
-        :pdata="pdata"
-        :legend="settings.legend"
-      ></MultiKnobTile>
-      <PanelTile v-else-if="tile.type == 'panel'" :tile="tile" :pdata="pdata"></PanelTile>
-      <InformationListTile v-else :tile="tile" :pdata="pdata" :font-size="fontSize"></InformationListTile>
-    </div>
+    <MultiKnobTile
+      v-else-if="tile.type == 'multi_knob'"
+      :tile="tile"
+      :pdata="pdata"
+      :legend="settings.legend"
+    ></MultiKnobTile>
+    <PanelTile v-else-if="tile.type == 'panel'" :tile="tile" :pdata="pdata"></PanelTile>
+    <InformationTileSingle
+      v-else-if="tile.type == 'single'"
+      :tile="tile"
+      :pdata="pdata"
+      :font-size="fontSize"
+    ></InformationTileSingle>
+    <InformationListTile
+      v-else
+      :style="'height: 100%'"
+      :tile="tile"
+      :pdata="pdata"
+      :font-size="fontSize"
+    ></InformationListTile>
   </div>
 </template>
 <script>
 import InformationListTile from "./InformationListTile.vue";
 import KnobTile from "./KnobTile.vue";
 import DoughnutTile from "./DoughnutTile.vue";
+import InformationTileSingle from "./InformationTileSingle.vue";
 import MultiKnobTile from "./MultiKnobTile.vue";
 // import MultiDoughnutTile from "./MultiDoughnutTile.vue";
 export default {
@@ -39,6 +50,7 @@ export default {
     InformationListTile,
     KnobTile,
     DoughnutTile,
+    InformationTileSingle,
     // MultiDoughnutTile,
     MultiKnobTile,
     PanelTile: () => import("./PanelTile.vue"),

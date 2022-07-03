@@ -3,7 +3,7 @@
   <div>
     <div style="height: 100%" class="flex flex-column align-items-start align-content-start">
       <template v-for="d in demands" :key="d">
-        <UserDemand :demand="d"></UserDemand>
+        <UserDemand :demand="d" :pdata="pdata"></UserDemand>
       </template>
     </div>
   </div>
@@ -21,7 +21,7 @@ export default {
     },
   },
   data() {
-    return { demands: [] };
+    return { demands: [], pdata: {} };
   },
   computed: {},
   watch: {},
@@ -29,6 +29,7 @@ export default {
     if (this.userId != null) {
       this.demands = await this.$ren.dashboardApi.getDemand(this.userId);
     } else this.demands = await this.$ren.userApi.getDemand();
+    this.pdata = await this.$ren.dataApi.getDemandData(this.demands);
   },
 
   methods: {},

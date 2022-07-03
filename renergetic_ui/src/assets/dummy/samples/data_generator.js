@@ -19,6 +19,26 @@ function listMeasurements(informationPanel) {
   }
   return md;
 }
+
+function listDemanMeasurements(demands) {
+  let md = {};
+  for (let demand of demands) {
+    let tile = demand.tile;
+    if (tile)
+      if (tile.type != "panel") {
+        for (let m of tile.measurements) {
+          md[m.id] = "";
+        }
+      } else {
+        for (let _tile of tile.panel.tiles) {
+          for (let m of _tile.measurements) {
+            md[m.id] = "";
+          }
+        }
+      }
+  }
+  return md;
+}
 function listAssetMeasurements(asset) {
   let m = {};
 
@@ -40,7 +60,17 @@ function generateHeatMapState(heatmap) {
   }
   return state;
 }
+function generateDemandData(demands, predictionWindow) {
+  let measurements = listDemanMeasurements(demands);
 
+  let data = {};
+  for (let m of Object.keys(measurements)) {
+    let value = Math.floor(Math.random() * 150);
+    data[m] = value;
+  }
+  if (predictionWindow == null) return { current: { default: data } };
+  return { prediction: { default: data } };
+}
 function generatePanelData(informationPanel, predictionWindow) {
   let measurements = listMeasurements(informationPanel);
 
@@ -55,14 +85,14 @@ function generatePanelData(informationPanel, predictionWindow) {
 
 function generatePanelState(informationPanel) {
   let state = {};
-  for (let panel of informationPanel.tiles) {
+  for (let tile of informationPanel.tiles) {
     let value = Math.random();
     if (value <= 0.6) {
-      state[panel.id] = "OK";
+      state[tile.id] = "OK";
     } else if (value <= 0.85) {
-      state[panel.id] = "WARNING";
-    } else state[panel.id] = "ERROR";
-    state[panel.id] = "OK";
+      state[tile.id] = "WARNING";
+    } else state[tile.id] = "ERROR";
+    state[tile.id] = "OK";
   }
   return state;
 }
@@ -116,4 +146,11 @@ function generateTimeseries(ids, n = 50) {
   return { datasets: datasets, labels: labels };
 }
 
-export { generatePanelData, generateTimeseries, generatePanelState, generateAssetData, generateHeatMapState };
+export {
+  generatePanelData,
+  generateDemandData,
+  generateTimeseries,
+  generatePanelState,
+  generateAssetData,
+  generateHeatMapState,
+};

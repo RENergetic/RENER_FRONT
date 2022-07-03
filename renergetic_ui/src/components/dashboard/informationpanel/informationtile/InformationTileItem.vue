@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <div>
-      <span v-if="icon != null" id="tileicon" :style="'background-image: url(' + icon + ')'"></span>
-      <span> {{ label }}: {{ value }} {{ tileItem.type.unit }}</span>
-    </div>
+  <div class="tileitem">
+    <span v-if="icon != null" id="tileicon" :style="'background-image: url(' + icon + ')'"></span>
+    <span> {{ label }}: {{ value }} {{ tileItem.type.unit }}</span>
     <div v-if="tileItem.description">description: {{ tileItem.description }}</div>
   </div>
 </template>
@@ -75,5 +73,13 @@ span {
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
+}
+.tileitem {
+  border: gray 2px solid;
+  background: gray;
+  margin: 5px;
+  padding: 5px;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 </style>

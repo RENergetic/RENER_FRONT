@@ -73,6 +73,9 @@ export default {
       // return state class
       // let state = this.tile == null || this.tile.state == null ? "unknown" : this.tile.state;
       let state = this.pdata && this.pdata.state ? this.pdata.state[this.tile.id] : "unknown";
+      if (state.toLowerCase() == "ok") {
+        return "";
+      }
       if (state) return ` state ${state.toLowerCase()}`;
       //state not provided to the exists tile (e.g. tile not saved yet in the backend)
       return ` state unknown`;
@@ -128,10 +131,13 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #3182ce;
-  background-color: #bee3f8;
+  color: #d6ebff;
+  // background-color: #bee3f8;
   font-weight: 600;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  background: #870000; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to bottom, #190a05, #870000); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to bottom, #190a05, #870000);
 }
 .tile {
   height: 100%;

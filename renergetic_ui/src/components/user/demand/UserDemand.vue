@@ -8,11 +8,12 @@
         :style="'background-image: url(' + getIcon(demand.action) + ');width:7.5rem;'"
       ></span>
       <span v-if="demand.tile != null" id="demandtile" @click="$router.push(`/panel/view/${demand.tile.panelId}`)">
+        <!-- {{ demand.tile }} -->
         <InformationTileData
           :key="demand.tile.id"
           :style="'height:7.5rem;width:7.5rem;margin-right: 1rem;'"
           :tile="demand.tile"
-          :pdata="{ '2': 2, '3': 3, '4': 4 }"
+          :pdata="pdata"
           :settings="{ legend: false }"
         />
       </span>
@@ -41,6 +42,10 @@ export default {
   components: { InformationTileData },
   props: {
     demand: {
+      type: Object,
+      default: () => {},
+    },
+    pdata: {
       type: Object,
       default: () => {},
     },
