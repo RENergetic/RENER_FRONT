@@ -5,14 +5,18 @@
       <span
         v-if="demand.tile == null"
         id="demandicon"
-        :style="'background-image: url(' + getIcon(demand.action) + ');width:7.5rem;'"
+        :style="'background-image: url(' + getIcon(demand.demand_definition.action) + ');width:7.5rem;'"
       ></span>
-      <span v-if="demand.tile != null" id="demandtile" @click="$router.push(`/panel/view/${demand.tile.panelId}`)">
+      <span
+        v-if="demand.demand_definition.tile != null"
+        id="demandtile"
+        @click="$router.push(`/panel/view/${demand.demand_definition.tile.panelId}`)"
+      >
         <!-- {{ demand.tile }} -->
         <InformationTileData
-          :key="demand.tile.id"
+          :key="demand.demand_definition.tile.id"
           :style="'height:7.5rem;width:7.5rem;margin-right: 1rem;'"
-          :tile="demand.tile"
+          :tile="demand.demand_definition.tile"
           :pdata="pdata"
           :settings="{ legend: false }"
         />
@@ -28,8 +32,8 @@
       </div>
     </div>
     <div class="flex-none flex align-items-center justify-content-center">
-      <i v-if="demand.action_type == 'increase'" class="pi pi-arrow-up-right"></i>
-      <i v-if="demand.action_type == 'decrease'" class="pi pi-arrow-down-right"></i>
+      <i v-if="demand.demand_definition.action_type == 'increase'" class="pi pi-arrow-up-right"></i>
+      <i v-if="demand.demand_definition.action_type == 'decrease'" class="pi pi-arrow-down-right"></i>
       <!-- TODO: set empty icon ??? <i v-else class="pi pi-arrow-down-right"></i> -->
     </div>
   </div>

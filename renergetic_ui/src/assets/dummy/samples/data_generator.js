@@ -22,8 +22,9 @@ function listMeasurements(informationPanel) {
 
 function listDemanMeasurements(demands) {
   let md = {};
+  console.ingo;
   for (let demand of demands) {
-    let tile = demand.tile;
+    let tile = demand.demand_definition.tile;
     if (tile)
       if (tile.type != "panel") {
         for (let m of tile.measurements) {

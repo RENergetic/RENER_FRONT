@@ -328,7 +328,7 @@ class UserApi {
     console.info(panels);
     return panels;
   }
-  listInformationPanel(userId = null) {
+  async listInformationPanel(userId = null) {
     console.info(`listInformationPanel for ${userId}`);
     return storage.get(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, informationPanelList);
   }
@@ -339,29 +339,41 @@ class WrapperApi {
   managementApi = new ManagementApi();
   userApi = new UserApi();
   dataApi = new DataApi();
-  get(query) {
+  async get(query) {
     //tODO: merge data fields
+    console.info("query: " + JSON.stringify(query));
     let calls = query["calls"];
     let res = {};
     if (calls["assets"]) {
-      res["assets"] = this.managementApi.listAsset();
+      res["assets"] = await this.managementApi.listAsset();
     }
     if (calls["data"]) {
       //do nothing
     }
     if (calls["demands"]) {
-      res["demands"] = this.userApi.getDemand();
+      res["demands"] = await this.userApi.getDemand();
 
-      res["data"] = this.dataApi.getDemandData();
+      res["data"] = await this.dataApi.getDemandData(res["demands"]);
     }
     if (calls["panels"]) {
+      let ap = await this.userApi.listAssetPanels();
+      if (calls["assets"]) {
+        res["asset_panels"] = ap;
+      }
+      let panelIds = ap.map((it) => it.panel.id);
+      // console.info(panelIds);
       if (calls["panels"]["id"]) {
-        res["data"] = this.dataApi.getPanelData(calls["panels"]["id"]);
-        res["panels"] = [this.managementApi.getInformationPanel(calls["panels"]["id"])];
+        res["data"] = await this.dataApi.getPanelData(calls["panels"]["id"]);
+        res["panels"] = [await this.managementApi.getInformationPanel(calls["panels"]["id"])];
       } else {
-        res["panels"] = this.managementApi.listInformationPanel();
+        res["panels"] = await this.userApi.listInformationPanel();
+        res["panels"] = res["panels"].filter((it) => panelIds.includes(it.id));
+        console.info(res["panels"]);
       }
     }
+
+    console.info(JSON.stringify(res));
+    alert("ddd");
     return res;
   }
 }

@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import { QueryBuilder } from "./ren_api/wrapper_api";
 import { RenRoles } from "../model/Enums";
 export default class RenUtils {
   vueInstance = null;
@@ -44,7 +45,11 @@ export default class RenUtils {
    */
   async reloadStore() {
     console.info("reload user data");
-
+    let q = new QueryBuilder().assets().assetPanels().demands().panels();
+    await this.app.$ren.wrapperApi.get(q.build()).then((data) => {
+      console.info(data);
+    });
+    alert("sssss");
     if (
       (RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER) &
       this.app.$store.getters["auth/renRole"]

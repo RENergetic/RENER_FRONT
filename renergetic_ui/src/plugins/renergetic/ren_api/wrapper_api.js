@@ -4,7 +4,7 @@ export class QueryBuilder {
   build() {
     return { calls: this.calls };
   }
-  asset(offset = 0, limit = 10, id) {
+  assets(offset = 0, limit = 10, id) {
     this.calls["assets"] = {
       offset: offset,
       limit: limit,
