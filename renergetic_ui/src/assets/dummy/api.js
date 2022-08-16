@@ -251,7 +251,10 @@ class DataApi {
     console.info(JSON.stringify(timeseries));
     return timeseries;
   }
-
+  async getPanelData(panelId) {
+    let panel = await this.dashboardApi.getInformationPanel(panelId);
+    return { data: generator.generatePanelData(panel), state: generator.generatePanelState(panel) };
+  }
   // async getCurrentData(measurementIds) {
   //   return generator.
   // }
@@ -271,6 +274,7 @@ class DataApi {
     console.info(JSON.stringify(data));
     return data;
   }
+
   async getAssetData(assetId) {
     let asset = await this.managementApi.getAsset(assetId);
     return generator.getAssetData(asset);
@@ -329,4 +333,37 @@ class UserApi {
     return storage.get(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, informationPanelList);
   }
 }
-export { DashboardApi, ManagementApi, DataApi, UserApi };
+
+class WrapperApi {
+  dashboardApi = new DashboardApi();
+  managementApi = new ManagementApi();
+  userApi = new UserApi();
+  dataApi = new DataApi();
+  get(query) {
+    //tODO: merge data fields
+    let calls = query["calls"];
+    let res = {};
+    if (calls["assets"]) {
+      res["assets"] = this.managementApi.listAsset();
+    }
+    if (calls["data"]) {
+      //do nothing
+    }
+    if (calls["demands"]) {
+      res["demands"] = this.userApi.getDemand();
+
+      res["data"] = this.dataApi.getDemandData();
+    }
+    if (calls["panels"]) {
+      if (calls["panels"]["id"]) {
+        res["data"] = this.dataApi.getPanelData(calls["panels"]["id"]);
+        res["panels"] = [this.managementApi.getInformationPanel(calls["panels"]["id"])];
+      } else {
+        res["panels"] = this.managementApi.listInformationPanel();
+      }
+    }
+    return res;
+  }
+}
+
+export { DashboardApi, ManagementApi, DataApi, UserApi, WrapperApi };
