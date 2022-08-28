@@ -12,7 +12,14 @@ export class QueryBuilder {
     };
     return this;
   }
-
+  dashboards(offset = 0, limit = 10, id) {
+    this.calls["dashboards"] = {
+      offset: offset,
+      limit: limit,
+      id: id,
+    };
+    return this;
+  }
   data(from, to, panelId) {
     var d = {
       from: from,
@@ -60,17 +67,11 @@ export default class WrapperApi extends RestComponent {
   }
 
   get(query) {
-    // TODO:
-
-    //   .get(`/api/ui/wrapper`, {
+    console.info("query: " + JSON.stringify(query));
     return this.axios
-      .post(
-        `/api/ui/wrapper/1`,
-        {
-          headers: { "Content-type": "application/json; charset=UTF-8" },
-        },
-        query,
-      )
+      .post(`/api/ui/wrapper/1`, query, {
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+      })
       .then((response) => {
         return response.data;
       })

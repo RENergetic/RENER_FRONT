@@ -347,6 +347,10 @@ class WrapperApi {
     if (calls["assets"]) {
       res["assets"] = await this.managementApi.listAsset();
     }
+    if (calls["dashboards"]) {
+      res["dashboards"] = await this.dashboardApi.list();
+    }
+
     if (calls["data"]) {
       //do nothing
     }

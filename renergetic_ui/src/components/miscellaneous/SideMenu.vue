@@ -1,6 +1,7 @@
 <template>
   <div>
     <Button id="sideMenuButton" icon="pi pi-arrow-right" @click="visible = true" />
+
     <Sidebar v-model:visible="visible" class="ren-sidebar">
       <Logo style="position: relative; display: block; margin: 1rem; left: 1rem; bottom: initial" />
       <PanelMenu :model="menuModel" />
@@ -9,7 +10,7 @@
       :notifications="notifications"
       :add-dashboard="dashboardDialog"
       @update:notifications="notifications = $event"
-      @UpdateMenu="reload"
+      @update-menu="reload"
     ></Dialogs>
   </div>
 </template>
@@ -80,7 +81,7 @@ export default {
           icon: "pi pi-fw pi-th-large",
           to: to,
           command: () => {
-            this.$router.push(to);
+            this.$router.push({ to: to, params: { a: "d" } });
           },
         };
       });

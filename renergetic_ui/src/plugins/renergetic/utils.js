@@ -45,22 +45,34 @@ export default class RenUtils {
    */
   async reloadStore() {
     console.info("reload user data");
-    let q = new QueryBuilder().assets().assetPanels().demands().panels();
-    await this.app.$ren.wrapperApi.get(q.build()).then((data) => {
-      console.info(data);
-    });
-    alert("sssss");
+    let q = new QueryBuilder();
     if (
       (RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER) &
       this.app.$store.getters["auth/renRole"]
     ) {
-      await this.reloadDashboard();
+      q.dashboards();
+      // await this.reloadDashboard();
     }
-    if (!(RenRoles.REN_VISITOR | (RenRoles.REN_USER & this.app.$store.getters["auth/renRole"]))) return;
+    if (RenRoles.REN_VISITOR | (RenRoles.REN_USER & this.app.$store.getters["auth/renRole"])) {
+      q.assets().assetPanels().demands().panels();
+    }
+    let _this = this;
+    await this.app.$ren.wrapperApi.get(q.build()).then((data) => {
+      console.info(data);
 
-    await this.app.$ren.userApi.listInformationPanel().then((informationPanels) => {
-      this.app.$store.commit("view/informationPanels", informationPanels);
+      _this.app.$store.commit("view/wrapper", data);
+      // _this.app.$store.commit("view/wrapper", data["assets"]);
+      // _this.app.$store.commit("view/assetPanels", data["asset_panels"]);
+      // _this.app.$store.commit("view/informationPanels", data["panels"]);
+      // _this.app.$store.commit("view/demands", data["demands"]);
+      // _this.app.$store.commit("view/data", data["data"]);
+      // await this.app.$ren.userApi.listInformationPanel().then((informationPanels) => {
+      //   this.app.$store.commit("view/informationPanels", informationPanels);
+      // });
     });
+    // await this.app.$ren.userApi.listInformationPanel().then((informationPanels) => {
+    //   this.app.$store.commit("view/informationPanels", informationPanels);
+    // });
     //TODO: settings
     // await this.app.$ren.userApi.getSettings().then((settings) => {
     //   this.app.$store.commit("settings/all", settings);
@@ -68,9 +80,9 @@ export default class RenUtils {
     // await this.app.$ren.userApi.getAssets().then((assets) => {
     //   this.app.$store.commit("view/assets", assets);
     // });
-    await this.app.$ren.userApi.listAssetPanels().then((assets) => {
-      this.app.$store.commit("view/assetPanels", assets);
-    });
+    // await this.app.$ren.userApi.listAssetPanels().then((assets) => {
+    //   this.app.$store.commit("view/assetPanels", assets);
+    // });
   }
   async reloadDashboard() {
     await this.app.$ren.dashboardApi.list().then((dashboards) => {

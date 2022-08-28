@@ -23,6 +23,15 @@ export var BASE_URL = process.env.VUE_APP_API_URL;
 const axiosInstance = axios.create({ baseURL: BASE_URL });
 
 export default function createRest(vueInstance) {
+  // return {
+  //   auth: new AuthApi(axiosInstance, vueInstance),
+  //   axiosApi: new AxiosAPI(axiosInstance, vueInstance, this.auth),
+  //   dashboardApi: !USE_DUMMY ? new DashboardApi(axiosInstance, vueInstance) : new DummyDashboardApi(),
+  //   dataApi: !USE_DUMMY ? new DataApi(axiosInstance, vueInstance) : new DummyDataApi(),
+  //   managementApi: !USE_DUMMY ? new ManagementApi(axiosInstance, vueInstance) : new DummyManagementApi(),
+  //   userApi: !USE_DUMMY ? new UserApi(axiosInstance, vueInstance) : new DummyUserApi(),
+  //   wrapperApi: !USE_DUMMY ? new WrapperApi(axiosInstance, vueInstance) : new DummyWrapperApi(),
+  // };
   return {
     auth: new AuthApi(axiosInstance, vueInstance),
     axiosApi: new AxiosAPI(axiosInstance, vueInstance, this.auth),
@@ -30,6 +39,6 @@ export default function createRest(vueInstance) {
     dataApi: !USE_DUMMY ? new DataApi(axiosInstance, vueInstance) : new DummyDataApi(),
     managementApi: !USE_DUMMY ? new ManagementApi(axiosInstance, vueInstance) : new DummyManagementApi(),
     userApi: !USE_DUMMY ? new UserApi(axiosInstance, vueInstance) : new DummyUserApi(),
-    wrapperApi: !USE_DUMMY ? new WrapperApi(axiosInstance, vueInstance) : new DummyWrapperApi(),
+    wrapperApi: USE_DUMMY ? new WrapperApi(axiosInstance, vueInstance) : new DummyWrapperApi(),
   };
 }

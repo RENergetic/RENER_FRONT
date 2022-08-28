@@ -142,7 +142,7 @@ import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import AssetForm from "./AssetForm.vue";
 import AssetSelect from "./AssetSelect.vue";
 import MeasurementSelect from "./MeasurementSelect.vue";
-import { QueryBuilder } from "@/plugins/renergetic/ren_api/wrapper_api.js";
+// import { QueryBuilder } from "@/plugins/renergetic/ren_api/wrapper_api.js";
 export default {
   name: "DemandList",
   components: { InfoIcon, AssetForm, AssetSelect, MeasurementSelect },
@@ -160,7 +160,8 @@ export default {
   computed: {},
   watch: {},
   async created() {
-    this.assetList = await this.$ren.managementApi.get(QueryBuilder.asset().build());
+    this.assetList = await this.$ren.managementApi.listAsset();
+    // this.assetList = await this.$ren.managementApi.get(QueryBuilder.asset().build());
     if (this.assetList != null && this.assetList.length > 0) {
       this.columns = Object.keys(this.assetList[0]);
     }

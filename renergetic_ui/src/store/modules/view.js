@@ -9,9 +9,26 @@ export default {
     assets: [],
     // list of featured user assets
     assetPanels: [],
+    demands: [],
+    data: [],
     locationList: ["en-EN"],
   },
   mutations: {
+    wrapper(state, payload) {
+      let getF = (key, defaultValue) => (payload[key] ? payload[key] : defaultValue);
+      state.informationPanels = getF("panels", []);
+      state.assets = getF("assets", []);
+      // state.state =  getF("state",[]);
+      state.data = getF("data", []);
+      state.assetPanels = getF("asset_panels", []);
+      state.dashboards = getF("dashboards", []);
+      state.demands = getF("demands", []);
+      // _this.app.$store.commit("view/wrapper", data["assets"]);
+      // _this.app.$store.commit("view/assetPanels", data["asset_panels"]);
+      // _this.app.$store.commit("view/informationPanels", data["panels"]);
+      // _this.app.$store.commit("view/demands", data["demands"]);
+      // _this.app.$store.commit("view/data", data["data"]);
+    },
     dashboards(state, payload) {
       // console.info(payload);
       state.dashboards = payload;
@@ -21,6 +38,12 @@ export default {
     },
     assets(state, payload) {
       state.assets = payload;
+    },
+    data(state, payload) {
+      state.data = payload;
+    },
+    demands(state, payload) {
+      state.demands = payload;
     },
     assetPanels(state, payload) {
       state.assetPanels = payload;
@@ -61,6 +84,9 @@ export default {
     },
   },
   getters: {
+    wrapper: (state) => {
+      return state;
+    },
     locationList: (state /* getters*/) => {
       return state.locationList;
     },
@@ -69,6 +95,12 @@ export default {
     },
     assets: (state /* getters*/) => {
       return state.assets;
+    },
+    demands: (state /* getters*/) => {
+      return state.demands;
+    },
+    data: (state /* getters*/) => {
+      return state.data;
     },
     assetPanels: (state /* getters*/) => {
       return state.assetPanels;
