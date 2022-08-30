@@ -1,14 +1,29 @@
+function mapPanelId(objectArray) {
+  let dict = objectArray.reduce((dict, el, index) => ((dict[el["id"]] = index), dict), {});
+  return dict;
+}
+function mapAssetPanelId(objectArray) {
+  let dict = objectArray.reduce(
+    (dict, el, index) => ((dict[el["panel"]["id"] + "_" + el["asset"]["id"]] = index), dict),
+    {},
+  );
+  return dict;
+}
 export default {
   namespaced: true,
   state: {
     // graphana dashboards
     dashboards: [],
-    // list of featured information panels: todo:
+    dashboardMap: {},
+    // list of information panel visible in the sidemenu
     informationPanels: [],
+    informationPanelsMap: {},
     // list of featured user assets
     assets: [],
+    assetsMap: {},
     // list of featured user assets
     assetPanels: [],
+    assetPanelsMap: {},
     demands: [],
     data: [],
     locationList: ["en-EN"],
@@ -17,11 +32,15 @@ export default {
     wrapper(state, payload) {
       let getF = (key, defaultValue) => (payload[key] ? payload[key] : defaultValue);
       state.informationPanels = getF("panels", []);
+      state.informationPanelsMap = mapPanelId(state.informationPanels);
       state.assets = getF("assets", []);
+      state.assetsMap = mapPanelId(state.assets);
       // state.state =  getF("state",[]);
       state.data = getF("data", []);
       state.assetPanels = getF("asset_panels", []);
+      state.assetPanelsMap = mapAssetPanelId(state.assetPanels);
       state.dashboards = getF("dashboards", []);
+      state.dashboardMap = mapPanelId(state.dashboards);
       state.demands = getF("demands", []);
       // _this.app.$store.commit("view/wrapper", data["assets"]);
       // _this.app.$store.commit("view/assetPanels", data["asset_panels"]);
@@ -32,12 +51,15 @@ export default {
     dashboards(state, payload) {
       // console.info(payload);
       state.dashboards = payload;
+      state.dashboardMap = mapPanelId(payload);
     },
     informationPanels(state, payload) {
       state.informationPanels = payload;
+      state.informationPanelsMap = mapPanelId(payload);
     },
     assets(state, payload) {
       state.assets = payload;
+      state.assetsMap = mapPanelId(payload);
     },
     data(state, payload) {
       state.data = payload;
@@ -47,6 +69,7 @@ export default {
     },
     assetPanels(state, payload) {
       state.assetPanels = payload;
+      state.assetPanelsMap = mapAssetPanelId(state.assetPanels);
     },
 
     // Requires a Dashboard object ({id:0, name:"", url:"", label:""})
@@ -107,6 +130,12 @@ export default {
     },
     informationPanels: (state /* getters*/) => {
       return state.informationPanels;
+    },
+    assetPanelsMap: (state /* getters*/) => {
+      return state.assetPanelsMap;
+    },
+    informationPanelsMap: (state /* getters*/) => {
+      return state.informationPanelsMap;
     },
   },
 };

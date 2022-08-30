@@ -23,6 +23,9 @@ https://materialui.co/colors
 Project imports
 * scss variables import
 
+### store:
+$store.getters["view/wrapper"] - main getter for view data
+
 ### roles
 ```
 user_role_flag  = user_roles .reduce((flag,user_role)=>flag |user_role,0x0)

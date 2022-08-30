@@ -52,7 +52,7 @@ export default {
       if (!(this.pdata && this.pdata.current)) {
         return {};
       }
-      let data = this.tile.measurements.map((m) => this.pdata.current.default[m.id]);
+      let data = this.tile.measurements.map((m) => this.pdata.current.last[m.id]);
       if (!this.relativeValues) {
         let total = data.reduce((partialSum, a) => partialSum + a, 0);
         data = data.map((v) => v / total);

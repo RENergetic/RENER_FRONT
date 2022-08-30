@@ -1,5 +1,7 @@
 <template>
+  <!-- {{ pdata }} -->
   <div v-if="panel" id="panel-grid-stack" style="width: 100%; position: absolute; top: 0" class="grid-stack">
+    <!-- {{ pdata }} -->
     <InformationTile
       v-for="(tile, index) in tiles"
       :key="tile.id"
@@ -144,7 +146,6 @@ export default {
     },
     panel: {
       handler: function (newValue) {
-        alert("");
         console.info("reload panel");
         this.mPanel = newValue;
         if (this.grid != null) this.grid.destroy(false);
@@ -164,6 +165,7 @@ export default {
   async mounted() {
     await this.loadData();
     console.info(JSON.stringify(this.pdata));
+
     if (this.grid != null) this.grid.destroy(false);
     let grid = GridStack.init({ float: true }, "#panel-grid-stack");
     if (this.locked) {
@@ -189,8 +191,10 @@ export default {
   },
   methods: {
     async loadData() {
-      if (this.panel.id != null) this.pdata = await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId);
-      console.info(this.pdata);
+      if (this.panel.id != null) {
+        this.pdata = await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId);
+        console.info(this.pdata);
+      }
     },
     gridWidth(tile) {
       return tile.col == null ? 2 : tile.col;

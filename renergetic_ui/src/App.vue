@@ -3,7 +3,7 @@
     <Toast />
     <ConfirmDialog></ConfirmDialog>
     <SideMenu ref="sideMenu" />
-    <router-view v-if="hasAccess" :class="layout()" @update-menu="updateMenu()" />
+    <router-view v-if="hasAccess" :key="$route.path" :class="layout()" @update-menu="updateMenu()" />
     <!-- TODO: v-else -->
     <Footer style="display: none">
       <template #right> </template>

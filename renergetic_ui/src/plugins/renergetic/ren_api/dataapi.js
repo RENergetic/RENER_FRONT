@@ -104,13 +104,18 @@ export default class DataApi extends RestComponent {
   //   return generator.
   // }
 
-  async getPanelData(panelId) {
-    //, assetId, predictionWindow) {
-    //TODO: API_INTEGRATION
-    let panel = await this.dashboardApi.getInformationPanel(panelId);
-    let data = { data: generator.generatePanelData(panel), state: generator.generatePanelState(panel) };
-    console.info(JSON.stringify(data));
-    return data;
+  async getPanelData(panelId, assetId) {
+    let endpoint = assetId != null ? `/api/data/panel/${panelId}/asset/${assetId}` : `/api/data/panel/${panelId}`;
+    return this.axios
+      .get(endpoint, {
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error) {
+        console.error("getPanelData error" + error.message);
+      });
   }
 
   async getAssetData(assetId) {

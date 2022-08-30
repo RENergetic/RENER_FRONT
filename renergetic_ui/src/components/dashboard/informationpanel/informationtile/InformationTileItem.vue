@@ -41,11 +41,11 @@ export default {
     value: function () {
       //todo support other aggregation functions
       try {
-        return this.pdata.current.default[this.tileItem.id];
+        return this.pdata.current.last[this.tileItem.id];
       } catch (e) {
         return null;
       }
-      // this.pdata.current.default[m.id];
+      // this.pdata.current.last[m.id];
       // return this.pdata ? this.pdata[this.tileItem.id] : null;
     },
     label: function () {

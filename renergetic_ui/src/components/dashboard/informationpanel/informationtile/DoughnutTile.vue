@@ -38,7 +38,7 @@ export default {
 
       // let data = this.tile.measurements.map((m) => this.pdata[m.id]);
       //TODO: make it comfigurable in tile / args prediction & aggregation func
-      let data = this.tile.measurements.map((m) => this.pdata.current.default[m.id]);
+      let data = this.tile.measurements.map((m) => this.pdata.current.last[m.id]);
 
       // console.info(this.tile.measurements);
       let backgroundColor = this.tile.measurements.map((m) =>

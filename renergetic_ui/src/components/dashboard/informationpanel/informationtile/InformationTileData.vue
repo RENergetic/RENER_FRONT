@@ -1,8 +1,9 @@
 <template>
   <div v-if="tile" style="height: 100%">
     <h3 v-if="tile != null && tile.title != null">{{ tile.title }}</h3>
-
-    <KnobTile v-if="tile.type == 'knob'" :tile="tile" :pdata="pdata.data"></KnobTile>
+    <!-- {{ pdata }} -->
+    <div v-if="tile.measurements.length == 0">TODO: empty tile in case of no measurements</div>
+    <KnobTile v-else-if="tile.type == 'knob'" :tile="tile" :pdata="pdata.data"></KnobTile>
     <DoughnutTile
       v-else-if="tile.type == 'doughnut'"
       :tile="tile"

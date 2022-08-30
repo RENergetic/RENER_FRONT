@@ -19,7 +19,8 @@
           @click="$emit('notification', slotProps)"
         />
       </div>
-
+      <!-- {{ pdata }}
+      {{ tileData }} -->
       <InformationTileData :tile="tile" :pdata="tileData" :settings="settings"></InformationTileData>
     </div>
   </div>

@@ -93,20 +93,41 @@ export default {
     },
   },
   watch: {},
-  async created() {
-    if (this.$route.params.asset_id) {
-      this.$ren.dashboardApi.getInformationPanel(this.$route.params.id, this.$route.params.asset_id).then((panel) => {
-        this.panel = panel;
-      });
-    } else {
-      this.$ren.dashboardApi.getInformationPanel(this.$route.params.id).then((panel) => {
-        this.panel = panel;
-      });
-    }
-    //todo: catch
+  async mounted() {
+    await this.loadStructure();
+  },
+  async updated() {
+    await this.loadStructure();
   },
 
   methods: {
+    localPanel(id, assetId) {
+      console.error("asset panels templates not supported: " + assetId);
+      // if (assetId != null) {
+      //   let index = this.$store.getters("view/assetPanelsMap")[id + "_" + assetId];
+      //   if (index != null) {
+      //     return   let index = this.$store.getters("view/assetPanels")[index];
+      //   }
+      //   return null;
+      // }
+      // console.info(this.$store.getters["view/informationPanelsMap"][id]);
+      let index = this.$store.getters["view/informationPanelsMap"][id];
+      if (index != null) {
+        return this.$store.getters["view/informationPanels"][index];
+      }
+      return null;
+    },
+    async loadStructure() {
+      let informationPanel = this.localPanel(this.$route.params.id, this.$route.params.asset_id);
+      // console.info(informationPanel);
+      if (informationPanel == null) {
+        this.$ren.dashboardApi.getInformationPanel(this.$route.params.id, this.$route.params.asset_id).then((panel) => {
+          this.panel = panel;
+        });
+      } else {
+        this.panel = informationPanel;
+      }
+    },
     reloadSettings() {
       this.settings = this.$store.getters["settings/panel"];
     },

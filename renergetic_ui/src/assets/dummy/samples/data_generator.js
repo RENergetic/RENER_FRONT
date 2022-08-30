@@ -69,8 +69,8 @@ function generateDemandData(demands, predictionWindow) {
     let value = Math.floor(Math.random() * 150);
     data[m] = value;
   }
-  if (predictionWindow == null) return { current: { default: data } };
-  return { prediction: { default: data } };
+  if (predictionWindow == null) return { current: { last: data } };
+  return { prediction: { last: data } };
 }
 function generatePanelData(informationPanel, predictionWindow) {
   let measurements = listMeasurements(informationPanel);
@@ -80,8 +80,8 @@ function generatePanelData(informationPanel, predictionWindow) {
     let value = Math.floor(Math.random() * 150);
     data[m] = value;
   }
-  if (predictionWindow == null) return { current: { default: data } };
-  return { prediction: { default: data } };
+  if (predictionWindow == null) return { current: { last: data } };
+  return { prediction: { last: data } };
 }
 
 function generatePanelState(informationPanel) {

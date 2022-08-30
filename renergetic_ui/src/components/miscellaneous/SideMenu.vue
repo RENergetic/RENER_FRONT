@@ -81,7 +81,7 @@ export default {
           icon: "pi pi-fw pi-th-large",
           to: to,
           command: () => {
-            this.$router.push({ to: to, params: { a: "d" } });
+            this.$router.push({ to: to, params: { id: panel.id } });
           },
         };
       });
@@ -110,14 +110,21 @@ export default {
       let assetPanels = this.$store.getters["view/assetPanels"];
       if (assetPanels.length == 0) return [];
       let items = assetPanels.map((assetPanel) => {
-        let to = `/asset/${assetPanel.asset.id}/panel/${assetPanel.panel.id}`;
+        // let to = `/asset/${assetPanel.asset.id}/panel/${assetPanel.panel.id}`;
+
         return {
           // label: this.$t("menu.group_list"),
           label: assetPanel.panel.label.replace("{asset}", assetPanel.asset.label),
           icon: "pi pi-fw pi-align-left",
-          to: to,
+          // to: to,
           command: () => {
-            this.$router.push(to);
+            this.$router.push({
+              name: "AssetPanelView",
+              params: {
+                asset_id: assetPanel.asset.id,
+                id: assetPanel.panel.id,
+              },
+            });
           },
         };
       });

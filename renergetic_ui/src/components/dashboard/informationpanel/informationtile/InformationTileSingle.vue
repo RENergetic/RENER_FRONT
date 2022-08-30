@@ -4,7 +4,11 @@
   <span
     ><h1>{{ value }} {{ measurement.type.unit }}</h1></span
   >
-
+  <!-- {{ pdata }} -->
+  <!-- <div v-if="pdata && pdata.current">
+    {{ pdata.current.last }}
+  </div> -->
+  <!-- {{ tile }} -->
   <!-- {{ tile.props }} -->
   <!-- <div v-if="measurement.description">description: {{ measurement.description }}</div> -->
 </template>
@@ -53,11 +57,11 @@ export default {
     value: function () {
       //todo support other aggregation functions
       try {
-        return this.pdata.current.default[this.measurement.id];
+        return this.pdata.current.last[this.measurement.id];
       } catch (e) {
         return null;
       }
-      // this.pdata.current.default[m.id];
+      // this.pdata.current.last[m.id];
       // return this.pdata ? this.pdata[this.tileItem.id] : null;
     },
     label: function () {
