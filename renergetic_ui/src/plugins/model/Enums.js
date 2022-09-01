@@ -16,6 +16,10 @@ const AssetTypes = Object.freeze({
   ISLAND: "island",
   PV: "pv",
 });
+const DemandActionType = Object.freeze({
+  INCREASE: "increase",
+  DECREASE: "decrease",
+});
 
 const TileTypes = Object.freeze({
   knob: "knob",
@@ -66,4 +70,4 @@ const RenRoles = Object.freeze({
   },
 });
 
-export { Colors, AssetTypes, TileTypes, NotificationContext, HeatMapType, RenRoles };
+export { Colors, AssetTypes, TileTypes, NotificationContext, HeatMapType, RenRoles, DemandActionType };

@@ -12,7 +12,7 @@
       <!--  @update="onSettingsUpdate()" -->
       <HomeSettings></HomeSettings>
     </Dialog>
-    <div style="width: 100%; height: 100vh">
+    <div style="width: 100%; height: 100vh; margin-bottom: 1rem">
       <energy-flow />
     </div>
     <DemandList id="demand-list" />

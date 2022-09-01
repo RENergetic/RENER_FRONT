@@ -68,10 +68,10 @@ export default class WrapperApi extends RestComponent {
 
   get(query) {
     //TODO user id -> remove
-    const USER_ID = "/2";
+    const userId = "/" + this.USER_ID;
     console.info("query: " + JSON.stringify(query));
     return this.axios
-      .post(`/api/ui/wrapper${USER_ID}`, query, {
+      .post(`/api/ui/wrapper${userId}`, query, {
         headers: { "Content-type": "application/json; charset=UTF-8" },
       })
       .then((response) => {

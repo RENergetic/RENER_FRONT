@@ -1,5 +1,5 @@
 <template>
-  <h1>{{ tile.label }}</h1>
+  <h1 v-if="legend">{{ tile.label }}</h1>
   <div style="position: relative">
     <Chart style="max-width: 20rem" type="doughnut" :data="chartData" :options="options" />
     <span v-if="icon" id="tileicon" :style="'background-image: url(' + icon + ')'"></span>

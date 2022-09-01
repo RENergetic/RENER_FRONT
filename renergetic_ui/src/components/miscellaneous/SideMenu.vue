@@ -3,7 +3,9 @@
     <Button id="sideMenuButton" icon="pi pi-arrow-right" @click="visible = true" />
 
     <Sidebar v-model:visible="visible" class="ren-sidebar">
-      <Logo style="position: relative; display: block; margin: 1rem; left: 1rem; bottom: initial" />
+      <div id="sideMenuLogo">
+        <Logo />
+      </div>
       <PanelMenu :model="menuModel" />
     </Sidebar>
     <Dialogs
@@ -368,6 +370,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+#sideMenuLogo {
+  position: relative;
+  display: block;
+  margin: 5%;
+  bottom: initial;
+  width: 90%;
+}
+
 #sideMenuButton {
   width: $sidemenu-button-width;
   height: $sidemenu-button-width;

@@ -1,6 +1,6 @@
 <template>
   <div v-if="tile" style="height: 100%">
-    <h3 v-if="tile != null && tile.title != null">{{ tile.title }}</h3>
+    <h3 v-if="titleVisible && title">{{ title }}</h3>
     <!-- {{ pdata }} -->
     <div v-if="tile.measurements.length == 0">TODO: empty tile in case of no measurements</div>
     <KnobTile v-else-if="tile.type == 'knob'" :tile="tile" :pdata="pdata.data"></KnobTile>
@@ -76,6 +76,13 @@ export default {
     fontSize: function () {
       let size = this.settings != null && this.settings.fontSize != null ? this.settings.fontSize : 2.0;
       return `${size}rem`;
+    },
+    titleVisible: function () {
+      //default use/show title
+      return this.settings == null || this.settings.title;
+    },
+    title: function () {
+      return this.tile && this.tile.title != null ? this.tile.title : null;
     },
   },
   // data() {

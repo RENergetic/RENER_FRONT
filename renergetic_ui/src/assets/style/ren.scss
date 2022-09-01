@@ -1,15 +1,23 @@
 // @import url('primevue/resources/themes/nova-vue/theme.css');
-@import './variables.scss';
+@import "./variables.scss";
 // $inputwidth: 100%;
 // $primary-color: #94ba39; //#F1F2F2;//#0D89EC
 // $secondary-color: #f1f2f2; //#F1F2F2;//#0D89EC
 // $sidemenu-button-width: 2rem;
-
-body {
-    background-color: lightgrey;
+#pageLogo {
+    height: 3rem;
 }
-.disabled{    
-    color: rgba(144, 144, 144,0.75);
+body {
+    // background-color: lightgrey;
+    background: linear-gradient(to right, #232526, #414345);
+}
+.ren-control-bg {
+    background: linear-gradient(to bottom, #190a05, #870000);
+    color: $secondary-color;
+}
+
+.disabled {
+    color: rgba(144, 144, 144, 0.75);
     font-style: italic;
 }
 .ren {
@@ -96,11 +104,11 @@ body {
     top: 0;
     left: 0;
     margin: 0;
-   
-      .ren-toolbar {
+
+    .ren-toolbar {
         margin-left: ($sidemenu-button-width + 0.5rem);
     }
-} 
+}
 .ren-sidebar.p-sidebar {
     padding: 0;
     background-color: $secondary-color//seagreen;
