@@ -26,10 +26,18 @@ export default {
   computed: {},
   watch: {},
   async mounted() {
-    if (this.userId != null) {
-      this.demands = await this.$ren.dashboardApi.getDemand(this.userId);
-    } else this.demands = await this.$ren.userApi.getDemand();
-    this.pdata = await this.$ren.dataApi.getDemandData(this.demands);
+    let demands = this.$store.getters["view/demands"];
+    if (demands) {
+      this.demands = demands;
+    } else {
+      this.demands = await this.$ren.userApi.getDemand();
+    }
+    let pdata = this.$store.getters["view/data"];
+    if (pdata) {
+      this.pdata = pdata;
+    } else {
+      this.pdata = await this.$ren.dataApi.getDemandData(this.demands);
+    }
   },
 
   methods: {},

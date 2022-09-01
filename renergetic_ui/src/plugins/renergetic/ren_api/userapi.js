@@ -6,6 +6,18 @@ export default class UserApi extends RestComponent {
   constructor(axiosInstance, vueInstance) {
     super(axiosInstance, vueInstance);
   }
+  getProfile() {
+    return this.axios
+      .get(`/api/users/profile`, {
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error) {
+        console.error(error.response);
+      });
+  }
   /**
    * get panels assigned to assets
    * ./docs/model/asset_panel.json

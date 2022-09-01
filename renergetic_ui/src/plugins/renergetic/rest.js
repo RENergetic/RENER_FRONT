@@ -11,13 +11,18 @@ import {
   DataApi as DummyDataApi,
   UserApi as DummyUserApi,
   WrapperApi as DummyWrapperApi,
+  initDummy,
 } from "../../assets/dummy/api";
-
+var USE_DUMMY;
 // import UserApi from './renergetic/ren_api/user'
 // import i18n from "../locale";
 import axios from "axios";
-const USE_DUMMY = process.env.VUE_APP_DUMMY_API;
-
+if (process.env.VUE_APP_DUMMY_API == true) {
+  await initDummy();
+  USE_DUMMY = true;
+} else {
+  USE_DUMMY = false;
+}
 export var BASE_URL = process.env.VUE_APP_API_URL;
 
 const axiosInstance = axios.create({ baseURL: BASE_URL });
@@ -36,9 +41,9 @@ export default function createRest(vueInstance) {
     auth: new AuthApi(axiosInstance, vueInstance),
     axiosApi: new AxiosAPI(axiosInstance, vueInstance, this.auth),
     dashboardApi: !USE_DUMMY ? new DashboardApi(axiosInstance, vueInstance) : new DummyDashboardApi(),
-    dataApi: USE_DUMMY ? new DataApi(axiosInstance, vueInstance) : new DummyDataApi(),
+    dataApi: !USE_DUMMY ? new DataApi(axiosInstance, vueInstance) : new DummyDataApi(),
     managementApi: !USE_DUMMY ? new ManagementApi(axiosInstance, vueInstance) : new DummyManagementApi(),
     userApi: !USE_DUMMY ? new UserApi(axiosInstance, vueInstance) : new DummyUserApi(),
-    wrapperApi: USE_DUMMY ? new WrapperApi(axiosInstance, vueInstance) : new DummyWrapperApi(),
+    wrapperApi: !USE_DUMMY ? new WrapperApi(axiosInstance, vueInstance) : new DummyWrapperApi(),
   };
 }

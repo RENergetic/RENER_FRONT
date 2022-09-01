@@ -24,18 +24,20 @@ const PANEL_KEY = "panel";
 const MEASUREMENT_KEY = "measurement";
 const ASSET_KEY = "asset";
 const SETTINGS_KEY = "settings";
-var measurementTypes = Object.assign({}, ...measurement_types.map((x) => ({ [x.id]: x })));
 
 //init default
-measurementList.map((it) => (it.type = measurementTypes[it.metric_type_id]));
+async function initDummy() {
+  console.info("Init dummy data");
+  var measurementTypes = Object.assign({}, ...measurement_types.map((x) => ({ [x.id]: x })));
+  measurementList.map((it) => (it.type = measurementTypes[it.metric_type_id]));
 
-console.info(measurementList);
-await storage.setDefault(`${DASHBOARD_API_KEY}.${DASHBOARD_KEY}`, dashboardList);
-await storage.setDefault(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, informationPanelList);
-await storage.setDefault(`${DASHBOARD_API_KEY}.${HEATMAP_KEY}`, heatmapList);
-await storage.setDefault(`${MANAGEMENT_API_KEY}.${MEASUREMENT_KEY}`, measurementList);
-await storage.setDefault(`${MANAGEMENT_API_KEY}.${ASSET_KEY}`, assetList);
-
+  // console.info(measurementList);
+  await storage.setDefault(`${DASHBOARD_API_KEY}.${DASHBOARD_KEY}`, dashboardList);
+  await storage.setDefault(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, informationPanelList);
+  await storage.setDefault(`${DASHBOARD_API_KEY}.${HEATMAP_KEY}`, heatmapList);
+  await storage.setDefault(`${MANAGEMENT_API_KEY}.${MEASUREMENT_KEY}`, measurementList);
+  await storage.setDefault(`${MANAGEMENT_API_KEY}.${ASSET_KEY}`, assetList);
+}
 //TODO: temporaty example objectc
 
 class ManagementApi {
@@ -382,4 +384,4 @@ class WrapperApi {
   }
 }
 
-export { DashboardApi, ManagementApi, DataApi, UserApi, WrapperApi };
+export { DashboardApi, ManagementApi, DataApi, UserApi, WrapperApi, initDummy };

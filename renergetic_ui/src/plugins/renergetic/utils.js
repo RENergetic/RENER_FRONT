@@ -51,7 +51,6 @@ export default class RenUtils {
       this.app.$store.getters["auth/renRole"]
     ) {
       q.dashboards();
-      // await this.reloadDashboard();
     }
     if (RenRoles.REN_VISITOR | (RenRoles.REN_USER & this.app.$store.getters["auth/renRole"])) {
       q.assets().assetPanels().demands().panels();
@@ -61,34 +60,13 @@ export default class RenUtils {
       console.info(data);
 
       _this.app.$store.commit("view/wrapper", data);
-      // _this.app.$store.commit("view/wrapper", data["assets"]);
-      // _this.app.$store.commit("view/assetPanels", data["asset_panels"]);
-      // _this.app.$store.commit("view/informationPanels", data["panels"]);
-      // _this.app.$store.commit("view/demands", data["demands"]);
-      // _this.app.$store.commit("view/data", data["data"]);
-      // await this.app.$ren.userApi.listInformationPanel().then((informationPanels) => {
-      //   this.app.$store.commit("view/informationPanels", informationPanels);
-      // });
-    });
-    // await this.app.$ren.userApi.listInformationPanel().then((informationPanels) => {
-    //   this.app.$store.commit("view/informationPanels", informationPanels);
-    // });
-    //TODO: settings
-    // await this.app.$ren.userApi.getSettings().then((settings) => {
-    //   this.app.$store.commit("settings/all", settings);
-    // });
-    // await this.app.$ren.userApi.getAssets().then((assets) => {
-    //   this.app.$store.commit("view/assets", assets);
-    // });
-    // await this.app.$ren.userApi.listAssetPanels().then((assets) => {
-    //   this.app.$store.commit("view/assetPanels", assets);
-    // });
-  }
-  async reloadDashboard() {
-    await this.app.$ren.dashboardApi.list().then((dashboards) => {
-      this.app.$store.commit("view/dashboards", dashboards);
     });
   }
+  // async reloadDashboard() {
+  //   await this.app.$ren.dashboardApi.list().then((dashboards) => {
+  //     this.app.$store.commit("view/dashboards", dashboards);
+  //   });
+  // }
   parseUnixTimestamp(timestamp) {
     var ts = new Date(timestamp);
     var dd = String(ts.getDate()).padStart(2, "0");

@@ -42,11 +42,6 @@ export default {
       state.dashboards = getF("dashboards", []);
       state.dashboardMap = mapPanelId(state.dashboards);
       state.demands = getF("demands", []);
-      // _this.app.$store.commit("view/wrapper", data["assets"]);
-      // _this.app.$store.commit("view/assetPanels", data["asset_panels"]);
-      // _this.app.$store.commit("view/informationPanels", data["panels"]);
-      // _this.app.$store.commit("view/demands", data["demands"]);
-      // _this.app.$store.commit("view/data", data["data"]);
     },
     dashboards(state, payload) {
       // console.info(payload);
