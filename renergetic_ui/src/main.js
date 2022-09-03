@@ -16,7 +16,7 @@ import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
 //https://www.primefaces.org/primevue/showcase/#/primeflex
 import "primeflex/primeflex.css";
-import "./assets/style/ren.scss";
+import "./assets/styles/ren.scss";
 import VueKonva from "vue-konva";
 
 import Tooltip from "primevue/tooltip";
