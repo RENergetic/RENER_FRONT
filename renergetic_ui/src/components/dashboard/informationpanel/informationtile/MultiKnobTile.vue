@@ -2,7 +2,7 @@
   <h1 v-if="legend">{{ tile.label }}</h1>
   <div style="position: relative">
     <Chart style="max-width: 20rem" type="doughnut" :data="chartData" :options="options" />
-    <span v-if="icon" id="tileicon" :style="'background-image: url(' + icon + ')'"></span>
+    <span v-if="settings.icon" id="tileicon" :style="'background-image: url(' + settings.icon + ')'"></span>
   </div>
 </template>
 <script>
@@ -12,6 +12,7 @@ export default {
   components: { Chart },
   props: {
     // legend: { type: Boolean, default: true },
+    settings: { type: Object, default: () => ({}) },
     pdata: { type: Object, default: () => ({}) },
     tile: {
       type: Object,
@@ -20,10 +21,6 @@ export default {
   },
   data() {
     return {
-      icons: {
-        heat: require(`../../../../assets/img/tileicons/heat.png`),
-        electricity: require(`../../../../assets/img/tileicons/electricity.png`),
-      },
       relativeValues: false,
       tmpIndex: 0,
       options: {
@@ -33,7 +30,7 @@ export default {
           legend: {
             display: false, //this.legend,
             labels: {
-              color: "#495057",
+              color: this.settings.color,
             },
           },
         },
@@ -41,13 +38,6 @@ export default {
     };
   },
   computed: {
-    icon: function () {
-      try {
-        return this.icons[this.tile.props.icon];
-      } catch (Exception) {
-        return null;
-      }
-    },
     chartData: function () {
       if (!(this.pdata && this.pdata.current)) {
         return {};
@@ -76,13 +66,6 @@ export default {
       return {
         labels: labels,
         datasets: datasets,
-        //TODO: set colors
-        // datasets: [
-        //   {
-        //     data: data,
-        //     backgroundColor: backgroundColor,
-        //   },
-        // ],
       };
     },
   },

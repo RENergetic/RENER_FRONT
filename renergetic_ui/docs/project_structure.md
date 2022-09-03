@@ -4,6 +4,7 @@
 * public - static, resources files a
 * src - [project sources](#src-directory) 
 * src/assets - [project assets](#assets) 
+* src/assets/styles - [project styles](#styles) 
 * src/components - [project components](#components) 
 * src/plugins - [project plugins](#plugins) 
 * src/router - [vuejs router](#router) 
@@ -25,6 +26,11 @@
   * style -> additional styles   
   * logo.png -> main logo
   
+#### Styles
+
+* variables.scss - configurable variables
+* ren.scss - global classes , primefaces modifications
+
 #### Components
 reused modules included in the views or other components
 * admin -> admin components like: user management, privilages managements, config?

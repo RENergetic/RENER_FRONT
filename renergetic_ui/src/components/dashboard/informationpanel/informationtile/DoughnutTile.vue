@@ -1,5 +1,9 @@
 <template>
-  <Chart style="max-width: 20rem" type="doughnut" :data="chartData" :options="options" />
+  <h1 v-if="legend">{{ tile.label }}</h1>
+  <div style="position: relative">
+    <Chart style="max-width: 20rem" type="doughnut" :data="chartData" :options="options" />
+    <span v-if="settings.icon" id="tileicon" :style="'background-image: url(' + settings.icon + ')'"></span>
+  </div>
 </template>
 <script>
 import Chart from "primevue/chart";
@@ -7,7 +11,7 @@ export default {
   name: "DoughnutTile",
   components: { Chart },
   props: {
-    legend: { type: Boolean, default: true },
+    settings: { type: Object, default: () => ({}) },
     pdata: { type: Object, default: () => ({}) },
     tile: {
       type: Object,
@@ -20,9 +24,10 @@ export default {
         responsive: true,
         plugins: {
           legend: {
-            display: this.legend,
+            display: this.settings.legend,
             labels: {
-              color: "#495057",
+              // color: "#495057",
+              color: this.settings.color,
             },
           },
         },
@@ -63,4 +68,18 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style scoped lang="scss">
+#tileicon {
+  // width: 3rem;
+  // height: 3rem;
+  // display: inherit;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  height: 35%;
+  width: 30%;
+  left: 35%;
+  top: 40%;
+}
+</style>

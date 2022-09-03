@@ -1,7 +1,9 @@
 <template>
-  <Knob v-model="value" :style="{ textAlign: 'center' }" :min="0" :max="100.0" />
-  <div style="text-align: center">
-    <div v-if="measurement">{{ measurement.label }}</div>
+  <div style="position: relative">
+    <Knob v-model="value" :style="{ textAlign: 'center' }" :min="0" :max="100.0" />
+    <div style="text-align: center">
+      <div v-if="measurement">{{ measurement.label }}</div>
+    </div>
   </div>
 </template>
 <script>

@@ -1,14 +1,15 @@
 <template>
-  <div v-if="icon != null && iconVisibility" id="tileicon" :style="'background-image: url(' + icon + ')'"></div>
-  <span> {{ label }}</span>
-  <span
-    ><h1>{{ value }} {{ measurement.type.unit }}</h1></span
-  >
-  <!-- {{ pdata }} -->
-  <!-- <div v-if="pdata && pdata.current">
-    {{ pdata.current.last }}
-  </div> -->
-  <!-- {{ tile }} -->
+  <div
+    v-if="settings.icon != null && iconVisibility"
+    id="tileicon"
+    :style="'background-image: url(' + settings.icon + ')'"
+  ></div>
+  <div style="position: relative">
+    <span> {{ label }}</span>
+    <span
+      ><h1>{{ value }} {{ measurement.type.unit }}</h1></span
+    >
+  </div>
   <!-- {{ tile.props }} -->
   <!-- <div v-if="measurement.description">description: {{ measurement.description }}</div> -->
 </template>
@@ -25,22 +26,20 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    fontSize: {
-      type: String,
-      default: "2rem",
-    },
+
+    settings: { type: Object, default: () => ({}) },
   },
 
   data() {
     let measurement = this.tile.measurements.length > 0 ? this.tile.measurements[0] : null;
     return {
       measurement: measurement,
-      icons: {
-        battery: require(`../../../../assets/img/tileicons/battery.png`),
-        renewability: require(`../../../../assets/img/tileicons/battery.png`),
-        electricity: require(`../../../../assets/img/tileicons/electricity.png`),
-        heat: require(`../../../../assets/img/tileicons/heat.png`),
-      },
+      // icons: {
+      //   battery: require(`../../../../assets/img/tileicons/battery.png`),
+      //   renewability: require(`../../../../assets/img/tileicons/battery.png`),
+      //   electricity: require(`../../../../assets/img/tileicons/electricity.png`),
+      //   heat: require(`../../../../assets/img/tileicons/heat.png`),
+      // },
     };
   },
   computed: {

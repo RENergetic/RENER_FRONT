@@ -1,7 +1,6 @@
 <template>
   <div class="grid">
     <div class="col-8">
-      <!-- {{ panelList }} -->
       <Card>
         <template #title> {{ $t("view.information_panel_list") }} </template>
         <template #content>
@@ -19,13 +18,8 @@
   </div>
 </template>
 <script>
-// import Listbox from "primevue/listbox";
-// import { MapArea } from "../../plugins/model/Area";
-
-import Card from "primevue/card";
 export default {
   name: "InformationPanelList",
-  components: { Card },
   data() {
     return {
       panelList: [],
@@ -34,6 +28,7 @@ export default {
     };
   },
   async mounted() {
+    //todo: add some filters
     await this.$ren.dashboardApi.listInformationPanel().then((list) => {
       this.panelList = list;
       if (list.length > 0) {
@@ -53,10 +48,10 @@ export default {
 </script>
 
 <style lang="scss">
-i.pi {
-  margin-left: 0.25rem;
-}
-.flex > div {
-  flex-grow: 1;
-}
+// i.pi {
+//   margin-left: 0.25rem;
+// }
+// .flex > div {
+//   flex-grow: 1;
+// }
 </style>

@@ -1,41 +1,29 @@
 <template>
-  <div v-if="tile" style="height: 100%">
+  <div v-if="tile" id="tile_wrapper">
     <h3 v-if="titleVisible && title">{{ title }}</h3>
     <!-- {{ pdata }} -->
-    <div v-if="tile.measurements.length == 0">TODO: empty tile in case of no measurements</div>
+    <div v-if="tile.measurements.length == 0"><h1>N/A</h1></div>
     <KnobTile v-else-if="tile.type == 'knob'" :tile="tile" :pdata="pdata.data"></KnobTile>
-    <DoughnutTile
-      v-else-if="tile.type == 'doughnut'"
-      :tile="tile"
-      :pdata="pdata"
-      :legend="settings.legend"
-    ></DoughnutTile>
+    <DoughnutTile v-else-if="isDoughnut" :tile="tile" :pdata="pdata" :settings="mSettings"></DoughnutTile>
     <!-- <MultiDoughnutTile
         v-else-if="tile.type == 'multi_doughnut'"
         :tile="tile"
-        :pdata="pdata"
-        :legend="settings.legend"
+        :pdata="pdata":settings="mSettings"
       ></MultiDoughnutTile> -->
     <MultiKnobTile
       v-else-if="tile.type == 'multi_knob'"
       :tile="tile"
       :pdata="pdata"
-      :legend="settings.legend"
+      :settings="mSettings"
     ></MultiKnobTile>
     <PanelTile v-else-if="tile.type == 'panel'" :tile="tile" :pdata="pdata"></PanelTile>
     <InformationTileSingle
       v-else-if="tile.type == 'single'"
       :tile="tile"
       :pdata="pdata"
-      :font-size="fontSize"
+      :settings="mSettings"
     ></InformationTileSingle>
-    <InformationListTile
-      v-else
-      :style="'height: 100%'"
-      :tile="tile"
-      :pdata="pdata"
-      :font-size="fontSize"
-    ></InformationListTile>
+    <InformationListTile v-else :tile="tile" :pdata="pdata" :settings="mSettings"></InformationListTile>
   </div>
 </template>
 <script>
@@ -44,7 +32,31 @@ import KnobTile from "./KnobTile.vue";
 import DoughnutTile from "./DoughnutTile.vue";
 import InformationTileSingle from "./InformationTileSingle.vue";
 import MultiKnobTile from "./MultiKnobTile.vue";
+import { TileTypes } from "@/plugins/model/Enums.js";
 // import MultiDoughnutTile from "./MultiDoughnutTile.vue";
+
+function validateSettings(tile, settings) {
+  let icons = {
+    heat: require(`../../../../assets/img/tileicons/heat.png`),
+    electricity: require(`../../../../assets/img/tileicons/electricity.png`),
+    battery: require(`../../../../assets/img/tileicons/battery.png`),
+    renewability: require(`../../../../assets/img/tileicons/battery.png`),
+  };
+  try {
+    settings.icon = icons[tile.props.icon];
+  } catch (Exception) {
+    settings.icon = null;
+  }
+
+  if (settings == null) {
+    settings = {};
+  }
+  settings.legend = settings.legend != null ? settings.legend : true;
+  settings.color = settings.color != null ? settings.color : "#d6ebff";
+  let size = settings != null && settings.fontSize != null ? settings.fontSize : 2.0;
+  settings.fontSize = `${size}rem`;
+  return settings;
+}
 export default {
   name: "InformationTileData",
   components: {
@@ -72,11 +84,16 @@ export default {
     },
   },
   emits: ["edit", "notification"],
+  data() {
+    return {
+      mSettings: validateSettings(this.tile, this.settings),
+    };
+  },
   computed: {
-    fontSize: function () {
-      let size = this.settings != null && this.settings.fontSize != null ? this.settings.fontSize : 2.0;
-      return `${size}rem`;
+    isDoughnut: function () {
+      return this.tile != null && this.tile.type == TileTypes.doughnut;
     },
+
     titleVisible: function () {
       //default use/show title
       return this.settings == null || this.settings.title;
@@ -85,12 +102,11 @@ export default {
       return this.tile && this.tile.title != null ? this.tile.title : null;
     },
   },
-  // data() {
-  //   return {};
-  // },
   watch: {
     tile: {
-      handler: function () {},
+      handler: function (newValue) {
+        this.mSettings = validateSettings(newValue, this.settings);
+      },
       deep: true,
     },
   },
@@ -99,4 +115,10 @@ export default {
   methods: {},
 };
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+#tile_wrapper {
+  display: flex;
+  align-content: center;
+  // height: 100%;
+}
+</style>

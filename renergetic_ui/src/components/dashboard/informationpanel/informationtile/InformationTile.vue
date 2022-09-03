@@ -1,7 +1,7 @@
 <template>
   <div v-if="slotProps" :class="'grid-stack-item ren'" v-bind="gridStackAttributes">
-    <div :class="'grid-stack-item-content ' + state" style="padding: 0">
-      <div style="position: absolute; left: 0.3rem; top: 0.3rem">
+    <div :class="'grid-stack-item-content ' + state">
+      <div class="tile-bar">
         <Button
           v-if="edit"
           id="menu-toggle"
@@ -19,8 +19,6 @@
           @click="$emit('notification', slotProps)"
         />
       </div>
-      <!-- {{ pdata }}
-      {{ tileData }} -->
       <InformationTileData :tile="tile" :pdata="tileData" :settings="settings"></InformationTileData>
     </div>
   </div>
@@ -32,7 +30,7 @@ export default {
   name: "InformationTile",
   components: { InformationTileData },
   props: {
-    edit: { type: Boolean, default: false },
+    edit: { type: Boolean, default: true },
     slotProps: {
       type: Object,
       default: () => ({}),
@@ -133,6 +131,7 @@ export default {
   justify-content: center;
   align-items: center;
   color: #d6ebff;
+  padding: 0;
   // background-color: #bee3f8;
   font-weight: 600;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -143,5 +142,8 @@ export default {
 .tile {
   height: 100%;
   width: 100%;
+}
+.tile-bar {
+  padding: 0.3rem;
 }
 </style>

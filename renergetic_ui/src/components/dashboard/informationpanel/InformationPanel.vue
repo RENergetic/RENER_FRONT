@@ -1,6 +1,5 @@
 <template>
-  <!-- {{ pdata }} -->
-  <div v-if="panel" id="panel-grid-stack" style="width: 100%; position: absolute; top: 0" class="grid-stack">
+  <div v-if="panel" id="panel-grid-stack" style="" class="grid-stack">
     <!-- {{ pdata }} -->
     <InformationTile
       v-for="(tile, index) in tiles"
@@ -146,54 +145,35 @@ export default {
     },
     panel: {
       handler: function (newValue) {
-        console.info("reload panel");
         this.mPanel = newValue;
-        if (this.grid != null) this.grid.destroy(false);
-        let grid = GridStack.init({ float: true }, "#panel-grid-stack");
-        if (this.locked) {
-          grid.disable();
-        } else {
-          grid.enable();
-        }
-        this.grid = grid;
-        //TODO: remove this reference?
-        window.panelGrid = this.grid;
+        this.reloadGrid();
       },
       deep: true,
     },
   },
   async mounted() {
     await this.loadData();
-    console.info(JSON.stringify(this.pdata));
-
-    if (this.grid != null) this.grid.destroy(false);
-    let grid = GridStack.init({ float: true }, "#panel-grid-stack");
-    if (this.locked) {
-      grid.disable();
-    } else {
-      grid.enable();
-    }
-    this.grid = grid;
-    //TODO: remove this reference?
-    window.panelGrid = this.grid;
+    this.reloadGrid();
   },
-  updated() {
-    if (this.grid != null) this.grid.destroy(false);
-    let grid = GridStack.init({ float: true }, "#panel-grid-stack");
-    if (this.locked) {
-      grid.disable();
-    } else {
-      grid.enable();
-    }
-    this.grid = grid;
-    //TODO: remove this reference?
-    window.panelGrid = this.grid;
-  },
+  // async updated() {
+  // await this.loadData();
+  // this.reloadGrid();
+  // },
   methods: {
+    reloadGrid() {
+      if (this.grid != null) this.grid.destroy(false);
+      let grid = GridStack.init({ float: true }, "#panel-grid-stack");
+      if (this.locked) {
+        grid.disable();
+      } else {
+        grid.enable();
+      }
+      this.grid = grid;
+    },
     async loadData() {
       if (this.panel.id != null) {
         this.pdata = await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId);
-        console.info(this.pdata);
+        // console.info(this.pdata);
       }
     },
     gridWidth(tile) {
@@ -235,4 +215,10 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+#panel-grid-stack {
+  width: 100%;
+  position: absolute;
+  top: 0;
+}
+</style>
