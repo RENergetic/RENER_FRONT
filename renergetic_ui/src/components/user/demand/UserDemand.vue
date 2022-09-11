@@ -16,7 +16,7 @@
               :style="'height:7.5rem;width:7.5rem;margin-right: 1rem;'"
               :tile="demand.demand_definition.tile"
               :pdata="pdata"
-              :settings="{ legend: false, title: false }"
+              :settings="{ legend: false, title: false, center: false }"
             />
           </span>
         </div>

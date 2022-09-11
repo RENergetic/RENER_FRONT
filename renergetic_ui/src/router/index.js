@@ -67,6 +67,8 @@ export default function (Vue) {
 
   router.beforeEach(async (to, from, next) => {
     to.meta.from = from;
+    // console.info(to);
+    // console.info(from);
     if (to.meta.isAuthenticated) {
       let keycloak = Vue.config.globalProperties.$keycloak;
       if (!keycloak.isInitialized()) {
@@ -113,7 +115,11 @@ export default function (Vue) {
       }
     } else {
       // This page did not require authentication
-      next();
+      if (to.hash.match("^#error=login_required&state=.*$")) {
+        next({ path: to.path });
+      } else {
+        next();
+      }
     }
   });
   return router;

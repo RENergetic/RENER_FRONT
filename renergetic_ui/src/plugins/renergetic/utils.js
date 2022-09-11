@@ -45,6 +45,7 @@ export default class RenUtils {
    */
   async reloadStore() {
     console.info("reload user data");
+    console.info(this.app.$store.getters["auth/renRole"]);
     let q = new QueryBuilder();
     if (
       (RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER) &
@@ -52,13 +53,15 @@ export default class RenUtils {
     ) {
       q.dashboards();
     }
-    if (RenRoles.REN_VISITOR | (RenRoles.REN_USER & this.app.$store.getters["auth/renRole"])) {
-      q.assets().assetPanels().demands().panels();
+    if ((RenRoles.REN_VISITOR | RenRoles.REN_USER) & this.app.$store.getters["auth/renRole"]) {
+      q.assets().assetPanels().panels();
+    }
+    if (RenRoles.REN_USER & this.app.$store.getters["auth/renRole"]) {
+      q.demands();
     }
     let _this = this;
     await this.app.$ren.wrapperApi.get(q.build()).then((data) => {
       console.info(data);
-
       _this.app.$store.commit("view/wrapper", data);
     });
   }

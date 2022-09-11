@@ -1,7 +1,7 @@
 <template>
   <h1 v-if="legend">{{ tile.label }}</h1>
   <div style="position: relative">
-    <Chart style="max-width: 20rem" type="doughnut" :data="chartData" :options="options" />
+    <Chart style="max-width: 20rem; max-height: 100%" type="doughnut" :data="chartData" :options="options" />
     <span v-if="settings.icon" id="tileicon" :style="'background-image: url(' + settings.icon + ')'"></span>
   </div>
 </template>

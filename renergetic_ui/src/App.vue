@@ -1,21 +1,27 @@
 <template>
-  <div>
+  <div v-if="keycloakState == 1">
     <Toast />
     <ConfirmDialog></ConfirmDialog>
     <SideMenu ref="sideMenu" />
     <router-view v-if="hasAccess" :key="$route.path" :class="layout()" @update-menu="updateMenu()" />
     <!-- TODO: v-else -->
+    <!-- {{ $keycloak && $keycloak.isInitialized() }} -->
     <Footer style="display: none">
       <template #right> </template>
     </Footer>
   </div>
+  <div v-else-if="keycloakState == 0">
+    <h2>Keycloak not initialized</h2>
+  </div>
+
+  <!-- TODO: v-else do something when keycloakState == -1 -->
 </template>
 <script>
 import SideMenu from "./components/miscellaneous/SideMenu";
 import Toast from "primevue/toast";
 import ConfirmDialog from "primevue/confirmdialog";
 import Footer from "./components/miscellaneous/Footer.vue";
-
+// import createKeyCloak from "@/plugins/auth2";
 export default {
   name: "App",
   components: {
@@ -23,6 +29,11 @@ export default {
     SideMenu,
     ConfirmDialog,
     Footer,
+  },
+  data() {
+    return {
+      keycloakState: -1,
+    };
   },
   computed: {
     hasAccess() {
@@ -33,8 +44,11 @@ export default {
       return this.$store.getters["spinner/isLoading"];
     },
   },
-  watch: {},
-  mounted() {},
+  async mounted() {
+    await this.$keycloak.get();
+    if (this.$keycloak.isInitialized()) this.keycloakState = 1;
+    else this.keycloakState = 0;
+  },
   methods: {
     layout() {
       let layout = this.$route.meta.layout == null ? "standard" : this.$route.meta.layout;

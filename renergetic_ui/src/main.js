@@ -2,7 +2,6 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import createRouter from "./router";
 import store from "./store";
-
 import i18n from "./plugins/locale";
 import PrimeVue from "primevue/config";
 //import renergetic plugins
@@ -44,6 +43,5 @@ app.use(ConfirmationService);
 
 app.use(store);
 app.use(plugin);
-
 app.use(createRouter(app));
 app.mount("#app");

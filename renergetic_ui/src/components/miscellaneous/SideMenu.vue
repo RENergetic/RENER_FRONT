@@ -39,7 +39,6 @@ export default {
       visible: false,
       menuModel: [],
       dashboards: [],
-      //tODO: dialog state hashmap
       notifications: false,
       dashboardDialog: false,
       informationPanels: [],
@@ -47,17 +46,21 @@ export default {
       isLogin: false,
     };
   },
-  watch: {
-    isAdmin: function () {
-      this.menuModel = this.initMenu();
+  computed: {
+    pluginLoaded() {
+      return this.$pluginLoaded;
     },
   },
-
-  async created() {
-    this.isLogin = (await this.$keycloak.get()).authenticated;
+  watch: {
+    // isAdmin: function () {
+    //   this.menuModel = this.initMenu();
+    // },
+  },
+  mounted() {
     this.menuModel = this.initMenu();
     this.reload();
   },
+  async created() {},
   methods: {
     async reload() {
       this.$ren.utils

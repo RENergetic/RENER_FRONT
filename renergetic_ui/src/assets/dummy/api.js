@@ -352,7 +352,6 @@ class WrapperApi {
     if (calls["dashboards"]) {
       res["dashboards"] = await this.dashboardApi.list();
     }
-
     if (calls["data"]) {
       //do nothing
     }
@@ -377,9 +376,7 @@ class WrapperApi {
         console.info(res["panels"]);
       }
     }
-
     console.info(JSON.stringify(res));
-    alert("ddd");
     return res;
   }
 }

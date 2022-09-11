@@ -77,9 +77,9 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
   position: absolute;
-  height: 35%;
+  height: 30%;
   width: 30%;
   left: 35%;
-  top: 40%;
+  top: 35%;
 }
 </style>

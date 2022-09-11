@@ -17,6 +17,7 @@ var USE_DUMMY;
 // import UserApi from './renergetic/ren_api/user'
 // import i18n from "../locale";
 import axios from "axios";
+console.info(process.env);
 if (process.env.VUE_APP_DUMMY_API == true) {
   await initDummy();
   USE_DUMMY = true;

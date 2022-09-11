@@ -1,5 +1,5 @@
 <template>
-  <div v-if="tile" id="tile_wrapper">
+  <div v-if="tile" :class="tileClass">
     <h3 v-if="titleVisible && title">{{ title }}</h3>
     <!-- {{ pdata }} -->
     <div v-if="tile.measurements.length == 0"><h1>N/A</h1></div>
@@ -90,6 +90,9 @@ export default {
     };
   },
   computed: {
+    tileClass: function () {
+      return this.settings != null && !this.settings.center ? "tile_wrapper" : "tile_wrapper_center";
+    },
     isDoughnut: function () {
       return this.tile != null && this.tile.type == TileTypes.doughnut;
     },
@@ -116,7 +119,12 @@ export default {
 };
 </script>
 <style lang="scss">
-#tile_wrapper {
+.tile_wrapper {
+  // display: flex;
+  // align-content: center;
+  // height: 100%;
+}
+.tile_wrapper_center {
   display: flex;
   align-content: center;
   // height: 100%;
