@@ -205,7 +205,11 @@ export default {
     //   ];
     // },
     administrationItems() {
-      return [
+      let flags = RenRoles.REN_ADMIN;
+      if ((flags & this.role) == 0) {
+        return [];
+      }
+      let items = [
         {
           // label: this.$t("menu.group_list"),
           label: this.$t("menu.users"),
@@ -216,10 +220,21 @@ export default {
           },
         },
       ];
+      return [
+        {
+          label: this.$t("menu.administration"),
+          icon: "pi pi-fw pi-lock",
+          items: items,
+        },
+      ];
     },
 
     infrastructureItems() {
-      return [
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
+      if ((flags & this.role) == 0) {
+        return [];
+      }
+      let items = [
         {
           // label: this.$t("menu.group_list"),
           label: this.$t("menu.assets"),
@@ -278,6 +293,13 @@ export default {
           },
         },
       ];
+      return [
+        {
+          label: this.$t("menu.infrastructure"),
+          icon: "pi pi-fw pi-lock",
+          items: items,
+        },
+      ];
     },
     initMenu() {
       return [
@@ -293,16 +315,9 @@ export default {
         //   icon: "pi pi-fw pi-chart-line",
         //   items: this.heatMapItems(),
         // },
-        {
-          label: this.$t("menu.infrastructure"),
-          icon: "pi pi-fw pi-lock",
-          items: this.infrastructureItems(),
-        },
-        {
-          label: this.$t("menu.administration"),
-          icon: "pi pi-fw pi-lock",
-          items: this.administrationItems(),
-        },
+        ...this.infrastructureItems(),
+
+        ...this.administrationItems(),
         {
           label: this.$t("menu.profile"),
           icon: "pi pi-fw pi-user",

@@ -1,4 +1,5 @@
 <template>
+  <!-- {{ panel }} -->
   <div v-if="panel" id="panel-grid-stack" style="" class="grid-stack">
     <!-- {{ pdata }} -->
     <InformationTile
