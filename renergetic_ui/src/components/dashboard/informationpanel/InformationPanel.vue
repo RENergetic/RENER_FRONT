@@ -168,6 +168,7 @@ export default {
       } else {
         grid.enable();
       }
+      grid.disable();
       this.grid = grid;
     },
     async loadData() {

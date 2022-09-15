@@ -1,5 +1,14 @@
 <template>
-  <InformationTileItem v-for="m in tile.measurements" :key="m.id" :tile-item="m" :pdata="pdata"></InformationTileItem>
+  <InformationTileItem
+    v-for="(m, idx) in mTile.measurements"
+    :key="m.id"
+    :tile-item="m"
+    :idx="idx"
+    :settings="settings"
+    :pdata="pdata"
+    @click="onItemClick({ index: idx, item: m })"
+  ></InformationTileItem>
+
   <!-- :style="{ fontSize: fontSize }" -->
 </template>
 <script>
@@ -22,10 +31,24 @@ export default {
       default: "2rem",
     },
   },
+  emits: ["select"],
 
+  data() {
+    return {
+      mTile: this.tile,
+    };
+  },
   computed: {},
 
   mounted() {},
+  methods: {
+    onItemClick(ctx) {
+      if (this.mTile.measurements[ctx.index].visible == null) {
+        this.mTile.measurements[ctx.index].visible = false;
+      } else this.mTile.measurements[ctx.index].visible = !this.mTile.measurements[ctx.index].visible;
+      this.$emit("select", ctx);
+    },
+  },
 };
 </script>
 

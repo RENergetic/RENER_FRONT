@@ -138,6 +138,11 @@ export default {
   background: #870000; /* fallback for old browsers */
   background: -webkit-linear-gradient(to bottom, #190a05, #870000); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to bottom, #190a05, #870000);
+  max-height: 100%;
+  width: 100%;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: flex-end;
 }
 .tile {
   height: 100%;

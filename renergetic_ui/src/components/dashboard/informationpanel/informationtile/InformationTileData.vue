@@ -34,14 +34,13 @@ import InformationTileSingle from "./InformationTileSingle.vue";
 import MultiKnobTile from "./MultiKnobTile.vue";
 import { TileTypes } from "@/plugins/model/Enums.js";
 // import MultiDoughnutTile from "./MultiDoughnutTile.vue";
-
+const icons = {
+  heat: require(`../../../../assets/img/tileicons/heat.png`),
+  electricity: require(`../../../../assets/img/tileicons/electricity.png`),
+  battery: require(`../../../../assets/img/tileicons/battery.png`),
+  renewability: require(`../../../../assets/img/tileicons/battery.png`),
+};
 function validateSettings(tile, settings) {
-  let icons = {
-    heat: require(`../../../../assets/img/tileicons/heat.png`),
-    electricity: require(`../../../../assets/img/tileicons/electricity.png`),
-    battery: require(`../../../../assets/img/tileicons/battery.png`),
-    renewability: require(`../../../../assets/img/tileicons/battery.png`),
-  };
   try {
     settings.icon = icons[tile.props.icon];
   } catch (Exception) {
@@ -123,6 +122,8 @@ export default {
   // display: flex;
   // align-content: center;
   // height: 100%;
+  width: 100%;
+  height: 100%;
 }
 .tile_wrapper_center {
   display: flex;

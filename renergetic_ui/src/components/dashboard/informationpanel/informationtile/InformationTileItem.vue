@@ -1,7 +1,7 @@
 <template>
-  <div class="tileitem">
+  <div :class="state" :style="style">
     <span v-if="icon != null" id="tileicon" :style="'background-image: url(' + icon + ')'"></span>
-    <span> {{ label }}: {{ value }} {{ tileItem.type.unit }}</span>
+    <span> {{ label }}: {{ Math.round(value, 2) }} {{ tileItem.type.unit }} </span>
     <div v-if="tileItem.description">description: {{ tileItem.description }}</div>
   </div>
 </template>
@@ -10,9 +10,14 @@ export default {
   name: "InformationTileItem",
   components: {},
   props: {
+    settings: { type: Object, default: () => ({}) },
     tileItem: {
       type: Object,
       default: () => null,
+    },
+    idx: {
+      type: Number,
+      default: -1,
     },
     pdata: {
       type: Object,
@@ -31,9 +36,22 @@ export default {
     };
   },
   computed: {
+    style: function () {
+      let color = this.$ren.utils.measurementColor(this.tileItem, this.value);
+      return `background:${color.color};opacity:${color.alpha}`;
+    },
+    state: function () {
+      let state;
+      if (this.tileItem.visible == null) state = true;
+      else state = this.tileItem.visible;
+      if (state) {
+        return "tileitem";
+      }
+      return "tileitem tileitem-hidden";
+    },
     icon: function () {
       //todo: default
-      let icon = this.tileItem.type.metric_type;
+      let icon = this.tileItem.domain ? this.tileItem.domain : this.tileItem.type.metric_type;
       if (this.tileItem.measurement_details.icon != null) icon = this.tileItem.measurement_details.icon;
       else if (this.tileItem.type.icon != null) icon = this.tileItem.type.icon;
       return this.icons[icon] != null ? this.icons[icon] : this.icons.default;
@@ -81,5 +99,8 @@ span {
   padding: 5px;
   margin-left: 1rem;
   margin-right: 1rem;
+}
+.tileitem-hidden {
+  opacity: 0.6 !important;
 }
 </style>

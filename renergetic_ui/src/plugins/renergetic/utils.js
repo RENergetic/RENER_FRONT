@@ -82,4 +82,25 @@ export default class RenUtils {
     let parsed = MM + "/" + dd + "/" + yyyy + " " + hh + ":" + mm;
     return parsed;
   }
+
+  measurementChartColors(measurement) {
+    if (measurement.type.color) {
+      let color = measurement.type.color;
+      if (color.length == 7) {
+        return [`#${color.slice(1)}FF`, `#${color.slice(1)}40`];
+      }
+      return [`#${color.slice(1, color.length - 2)}FF`, `#${color.slice(1, color.length - 2)}40`];
+    }
+  }
+  measurementColor(measurement, value) {
+    let alpha = value ? 1.0 : 0.5;
+    return { alpha: alpha, color: measurement.type.color };
+    // if (measurement.type.color) {
+    //   let color = measurement.type.color;
+    //   if (color.length == 7) {
+    //     return [`#FF${color.slice(1)}`, `#40${color.slice(1)}`];
+    //   }
+    //   return [`#FF${color.slice(3)}`, `#40${color.slice(3)}`];
+    // }
+  }
 }
