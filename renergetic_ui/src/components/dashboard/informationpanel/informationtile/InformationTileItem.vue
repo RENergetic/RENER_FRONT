@@ -1,9 +1,24 @@
 <template>
   <div :class="state" :style="style">
+    <div class="flex flex-none flex-row align-items-center justify-content-center">
+      <span v-if="icon != null" id="tileicon" :style="'background-image: url(' + icon + ')'"></span>
+    </div>
+    <div class="flex flex-grow-1 flex-column align-items-start justify-content-center message">
+      <div class="flex flex-grow-1 align-items-center justify-content-center">
+        <div class="flex message align-items-start">{{ label }}:</div>
+        <div class="flex message align-items-end">{{ Math.round(value, 2) }} {{ tileItem.type.unit }}</div>
+      </div>
+      <div v-if="tileItem.description" class="flex">
+        <div class="flex align-items-center justify-content-center">description: {{ tileItem.description }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div :class="state" :style="style">
     <span v-if="icon != null" id="tileicon" :style="'background-image: url(' + icon + ')'"></span>
     <span> {{ label }}: {{ Math.round(value, 2) }} {{ tileItem.type.unit }} </span>
     <div v-if="tileItem.description">description: {{ tileItem.description }}</div>
-  </div>
+  </div> -->
 </template>
 <script>
 export default {
@@ -45,9 +60,9 @@ export default {
       if (this.tileItem.visible == null) state = true;
       else state = this.tileItem.visible;
       if (state) {
-        return "tileitem";
+        return "tileitem flex-grow-1 flex flex-row justify-content-start flex-wrap";
       }
-      return "tileitem tileitem-hidden";
+      return "tileitem tileitem-hidden flex-grow-1 flex flex-row justify-content-start flex-wrap";
     },
     icon: function () {
       //todo: default
@@ -85,20 +100,20 @@ span {
   display: inline-block;
 }
 #tileicon {
-  width: 3rem;
-  height: 3rem;
+  width: 2.5rem;
+  height: 2.5rem;
   // display: inherit;
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
+  margin-right: 1rem;
 }
 .tileitem {
   border: gray 2px solid;
   background: gray;
   margin: 5px;
   padding: 5px;
-  margin-left: 1rem;
-  margin-right: 1rem;
+  // margin-left: 1rem;
 }
 .tileitem-hidden {
   opacity: 0.6 !important;

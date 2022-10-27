@@ -1,14 +1,18 @@
 <template>
-  <div
-    v-if="settings.icon != null && iconVisibility"
-    id="tileicon"
-    :style="'background-image: url(' + settings.icon + ')'"
-  ></div>
-  <div style="position: relative">
-    <span> {{ label }}</span>
-    <span
-      ><h1>{{ value }} {{ measurement.type.unit }}</h1></span
-    >
+  <div class="flex flex-column justify-content-center" style="height: 100%">
+    <div
+      v-if="settings.icon != null && iconVisibility"
+      id="tileicon"
+      class="flex align-items-center justify-content-center"
+      :style="'background-image: url(' + settings.icon + ')'"
+    ></div>
+
+    <div class="flex flex-column align-items-center justify-content-center">
+      <span> {{ label }}</span>
+      <span
+        ><h2>{{ value }} {{ measurement.type.unit }}</h2></span
+      >
+    </div>
   </div>
   <!-- {{ tile.props }} -->
   <!-- <div v-if="measurement.description">description: {{ measurement.description }}</div> -->
@@ -89,6 +93,9 @@ span {
   background-position: center;
   background-size: contain;
   width: 100%;
-  height: 5rem;
+  height: 4.5rem;
+}
+h2 {
+  margin: 0;
 }
 </style>

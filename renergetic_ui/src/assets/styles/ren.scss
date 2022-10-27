@@ -1,10 +1,19 @@
 // @import url('primevue/resources/themes/nova-vue/theme.css');
-@import "./variables.scss";
-// $inputwidth: 100%;
-// $primary-color: #94ba39; //#F1F2F2;//#0D89EC
-// $secondary-color: #f1f2f2; //#F1F2F2;//#0D89EC
-// $sidemenu-button-width: 2rem;
+// @use "sass:math";
+@import "./variables.scss"; 
+// .grid-stack > .grid-stack-item {
 
+//     $gridstack-columns: 12;
+  
+//     min-width: 100%/$gridstack-columns;
+  
+//     @for $i from 0 through $gridstack-columns {
+//       &[gs-w='#{$i}'] { width: (100% / $gridstack-columns) * $i; }
+//       &[gs-x='#{$i}'] { left: (100% / $gridstack-columns) * $i; }
+//       &[gs-min-w='#{$i}'] { min-width: (100% / $gridstack-columns) * $i; }
+//       &[gs-max-w='#{$i}'] { max-width: (100% / $gridstack-columns) * $i; }
+//     }
+//   } 
 body {
     // background-color: lightgrey;
     background: linear-gradient(to right, #232526, #414345);
@@ -196,3 +205,4 @@ body {
 .ren.p-menu-overlay {
     min-width: 15rem !important;
 }
+

@@ -1,20 +1,28 @@
 <template>
-  <div style="display: flex; flex-direction: column; align-items: flex-end">
-    <h1 v-if="legend">{{ tile.label }}</h1>
-    <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1">
-      <!-- {{ tile }} -->
-      <Chart
-        style="max-width: 20rem; max-height: 100%; margin: auto"
-        type="doughnut"
-        :data="chartData"
-        :options="options"
-      />
-      <span v-if="settings.icon" id="tileicon" :style="'background-image: url(' + settings.icon + ')'"></span>
+  <!-- <div style="display: flex; flex-direction: column; align-items: flex-end"> -->
+  <div class="flex flex-column justify-content-start" style="height: 100%">
+    <div v-if="mSettings.title" class="flex flex-none align-items-center justify-content-center knob-component">
+      <h2 style="text-align: center">{{ tile.label }}</h2>
     </div>
 
+    <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1">
+    
+      <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
+      <span v-if="settings.icon" id="tileicon" :style="'background-image: url(' + settings.icon + ')'"></span>
+    </div> -->
+    <div
+      class="flex flex-none flex-column align-items-center justify-content-center knob-component"
+      style="position: relative"
+    >
+      <div class="flex flex-none flex-column align-items-center justify-content-center">
+        <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
+      </div>
+      <span v-if="mSettings.icon" id="tileicon" :style="'background-image: url(' + mSettings.icon + ')'"></span>
+    </div>
     <!-- v-if show custom legend  -->
-    <div style="width: 100%">
-      <information-list-tile :tile="tile" :pdata="pdata" :settings="settings" @select="onMeasurementSelect">
+    <!-- {{ mSettings }} -->
+    <div class="flex flex-column flex-none knob-component" style="position: relative; width: 100%">
+      <information-list-tile :tile="tile" :pdata="pdata" :settings="mSettings" @select="onMeasurementSelect">
       </information-list-tile>
     </div>
   </div>
@@ -36,7 +44,9 @@ export default {
   },
   data() {
     return {
+      mStyle: "max-width: 30rem; margin: auto",
       relativeValues: false,
+      mSettings: this.settings,
       tmpIndex: 0,
       options: {
         display: false,
@@ -84,8 +94,9 @@ export default {
       };
     },
   },
-
-  mounted() {},
+  mounted() {
+    this.mStyle = `max-width: 30rem; margin: auto;width:${this.mSettings.cellWidth * this.tile.layout.w * 0.6}px`;
+  },
   methods: {
     onMeasurementSelect(ctx) {
       console.info(ctx);
@@ -137,9 +148,15 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
   position: absolute;
-  height: 30%;
-  width: 30%;
-  left: 35%;
-  top: 35%;
+  height: 25%;
+  width: 25%;
+  left: 37.5%;
+  top: 37.5%;
+}
+h2 {
+  margin-bottom: 0;
+}
+.knob-component {
+  margin-top: 0.75rem;
 }
 </style>

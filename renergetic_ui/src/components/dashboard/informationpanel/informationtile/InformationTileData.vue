@@ -2,7 +2,9 @@
   <div v-if="tile" :class="tileClass">
     <h3 v-if="titleVisible && title">{{ title }}</h3>
     <!-- {{ pdata }} -->
-    <div v-if="tile.measurements.length == 0"><h1>N/A</h1></div>
+    <div v-if="tile.measurements.length == 0" class="flex flex-column justify-content-center" style="height: 100%">
+      <h3 style="margin: 0; text-align: center">{{ tile.label }}</h3>
+    </div>
     <KnobTile v-else-if="tile.type == 'knob'" :tile="tile" :pdata="pdata.data"></KnobTile>
     <DoughnutTile v-else-if="isDoughnut" :tile="tile" :pdata="pdata" :settings="mSettings"></DoughnutTile>
     <!-- <MultiDoughnutTile
@@ -51,9 +53,10 @@ function validateSettings(tile, settings) {
     settings = {};
   }
   settings.legend = settings.legend != null ? settings.legend : true;
+  settings.title = settings.title != null ? settings.title : true;
   settings.color = settings.color != null ? settings.color : "#d6ebff";
-  let size = settings != null && settings.fontSize != null ? settings.fontSize : 2.0;
-  settings.fontSize = `${size}rem`;
+  let size = settings != null && settings.fontSize != null ? settings.fontSize : `${2.0}rem`;
+  settings.fontSize = size;
   return settings;
 }
 export default {
@@ -90,7 +93,7 @@ export default {
   },
   computed: {
     tileClass: function () {
-      return this.settings != null && !this.settings.center ? "tile_wrapper" : "tile_wrapper_center";
+      return this.settings != null && !this.settings.center ? "flex tile_wrapper" : " flex tile_wrapper_center";
     },
     isDoughnut: function () {
       return this.tile != null && this.tile.type == TileTypes.doughnut;
@@ -124,10 +127,12 @@ export default {
   // height: 100%;
   width: 100%;
   height: 100%;
+  position: absolute;
 }
 .tile_wrapper_center {
   display: flex;
   align-content: center;
+  // position: absolute;
   // height: 100%;
 }
 </style>

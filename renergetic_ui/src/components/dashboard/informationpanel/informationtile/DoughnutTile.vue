@@ -1,8 +1,17 @@
 <template>
-  <h1 v-if="legend">{{ tile.label }}</h1>
-  <div style="position: relative">
-    <Chart style="max-width: 20rem" type="doughnut" :data="chartData" :options="options" />
-    <span v-if="settings.icon" id="tileicon" :style="'background-image: url(' + settings.icon + ')'"></span>
+  <div class="flex flex-column justify-content-center" style="height: 100%">
+    <!-- <div style="display: flex; flex-direction: column; align-items: flex-end"> -->
+    <div class="flex flex-none flex-column justify-content-center">
+      <h2 style="text-align: center">{{ tile.label }}</h2>
+      <!-- v-if="legend"-->
+    </div>
+    <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
+    <div class="flex flex-grow-1 flex-column align-items-center justify-content-center" style="position: relative">
+      <div class="flex flex-none flex-column align-items-center justify-content-center">
+        <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
+      </div>
+      <span v-if="settings.icon" id="tileicon" :style="'background-image: url(' + settings.icon + ')'"></span>
+    </div>
   </div>
 </template>
 <script>
@@ -20,6 +29,7 @@ export default {
   },
   data() {
     return {
+      mStyle: "max-width: 30rem; margin: auto",
       options: {
         responsive: true,
         plugins: {
@@ -63,7 +73,11 @@ export default {
     },
   },
 
-  mounted() {},
+  mounted() {
+    // this.settings.cellWidth
+    // console.info(this.tile.layout.w + " " + this.settings.cellWidth);
+    this.mStyle = `max-width: 30rem; margin: auto;width:${this.settings.cellWidth * this.tile.layout.w * 0.7}px`;
+  },
   methods: {},
 };
 </script>
@@ -77,9 +91,9 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
   position: absolute;
-  height: 30%;
-  width: 30%;
-  left: 35%;
-  top: 35%;
+  height: 25%;
+  width: 25%;
+  left: 37.5%;
+  top: 37.5%;
 }
 </style>

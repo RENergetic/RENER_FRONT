@@ -53,7 +53,7 @@ import InformationPanel from "@/components/dashboard/informationpanel/Informatio
 import DemandList from "@/components/user/demand/DemandList.vue";
 
 import { GridStack } from "gridstack";
-import "gridstack/dist/h5/gridstack-dd-native";
+// import "gridstack/dist/h5/gridstack-dd-native";
 import "gridstack/dist/gridstack.min.css";
 
 export default {

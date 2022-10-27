@@ -20,7 +20,7 @@
 <script>
 import { GridStack } from "gridstack";
 import InformationTile from "./InformationTile.vue";
-import "gridstack/dist/h5/gridstack-dd-native";
+// import "gridstack/dist/h5/gridstack-dd-native";
 import "gridstack/dist/gridstack.min.css";
 export default {
   name: "PanelTile",

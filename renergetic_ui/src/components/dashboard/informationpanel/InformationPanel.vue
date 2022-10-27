@@ -1,29 +1,17 @@
 <template>
-  <!-- {{ panel }} -->
-  <div v-if="panel" id="panel-grid-stack" style="" class="grid-stack">
-    <!-- {{ pdata }} -->
-    <InformationTile
-      v-for="(tile, index) in tiles"
-      :key="tile.id"
-      class="card-container"
-      :slot-props="{ tile: tile, index: index }"
-      :edit="editMode"
-      :pdata="pdata"
-      :settings="settings"
-      @edit="onEdit"
-      @notification="viewNotification"
-    />
-  </div>
-
-  <Dialog
-    v-model:visible="notificationDialog"
-    :style="{ width: '50vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
-    <notification-list v-if="selectedItem" :context="notificationContext" :object-id="selectedItem.tile.id" />
-  </Dialog>
+  <!-- {{ mPanel }} -->
+  <!--  offset -->
+  <!-- {{ pdata }} -->
+  <InformationPanelView
+    v-if="mPanel"
+    :edit="editMode"
+    :pdata="pdata"
+    :panel="mPanel"
+    :locked="locked"
+    :settings="settings"
+    :asset-id="assetId"
+    @edit="onEdit"
+  />
   <Dialog
     v-model:visible="editDialog"
     :style="{ width: '50vw' }"
@@ -31,7 +19,6 @@
     :modal="true"
     :dismissable-mask="true"
   >
-    <!-- {{ selectedTile }} -->
     <div class="field grid">
       <label for="assetType" class="col-fixed" style="width: 5rem">
         {{ $t("model.information_tile.type") }}
@@ -70,24 +57,19 @@
   </Dialog>
 </template>
 <script>
-import InformationTile from "./informationtile/InformationTile.vue";
+// import InformationTile from "./informationtile/InformationTile.vue";
+import InformationPanelView from "./InformationPanelView.vue";
 import ManageSensors from "../measurements/ManageSensors.vue";
-
-import NotificationList from "../../management/notification/NotificationList.vue";
-
-import Dialog from "primevue/dialog";
-import { GridStack } from "gridstack";
+// import { GridStack } from "gridstack";
 import { TileTypes, NotificationContext } from "@/plugins/model/Enums.js";
 // THEN to get HTML5 drag&drop
-import "gridstack/dist/h5/gridstack-dd-native";
-import "gridstack/dist/gridstack.min.css";
+// import "gridstack/dist/h5/gridstack-dd-native";
+// import "gridstack/dist/gridstack.min.css";
 export default {
   name: "InformationPanel",
   components: {
-    InformationTile,
+    InformationPanelView,
     ManageSensors,
-    Dialog,
-    NotificationList,
   },
   props: {
     assetId: {
@@ -120,7 +102,7 @@ export default {
       notificationDialog: false,
       editDialog: false,
       selectedItem: null,
-      mPanel: this.panel,
+      mPanel: null,
       manageSensorsDialog: false,
       pdata: {},
       tileTypes: Object.entries(TileTypes).map((k) => {
@@ -144,43 +126,51 @@ export default {
         this.mPanel.tiles[this.selectedItem.index] = this.selectedItem.tile;
       }
     },
-    panel: {
-      handler: function (newValue) {
-        this.mPanel = newValue;
-        this.reloadGrid();
-      },
-      deep: true,
-    },
+    // panel: {
+    //   handler: function (newValue) {
+    //     this.mPanel = newValue;
+    //     this.reloadGrid();
+    //   },
+    //   deep: true,
+    // },
+  },
+  async beforeMount() {
+    if (!this.panel.is_template) {
+      this.mPanel = this.panel;
+    }
   },
   async mounted() {
     await this.loadData();
-    this.reloadGrid();
+    // this.reloadGrid();
   },
   // async updated() {
   // await this.loadData();
   // this.reloadGrid();
   // },
   methods: {
-    reloadGrid() {
-      if (this.grid != null) this.grid.destroy(false);
-      let grid = GridStack.init({ float: true }, "#panel-grid-stack");
-      if (this.locked) {
-        grid.disable();
-      } else {
-        grid.enable();
-      }
-      grid.disable();
-      this.grid = grid;
-    },
+    // reloadGrid() {
+    //   if (this.grid != null) this.grid.destroy(false);
+    //   let grid = GridStack.init({ float: true }, "#panel-grid-stack");
+    //   if (this.locked) {
+    //     grid.disable();
+    //   } else {
+    //     grid.enable();
+    //   }
+    //   grid.disable();
+    //   this.grid = grid;
+    // },
     async loadData() {
       if (this.panel.id != null) {
-        this.pdata = await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId);
-        // console.info(this.pdata);
+        if (this.panel.is_template) {
+          let resp = await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId);
+          this.mPanel = resp.panel;
+          this.pdata = resp;
+        } else this.pdata = await this.$ren.dataApi.getPanelData(this.panel.id);
       }
     },
-    gridWidth(tile) {
-      return tile.col == null ? 2 : tile.col;
-    },
+    // gridWidth(tile) {
+    //   return tile.col == null ? 2 : tile.col;
+    // },
     onEdit(evt) {
       //todo
       this.selectedItem = evt;
@@ -208,19 +198,19 @@ export default {
       this.$emit("update", this.mPanel);
     },
 
-    viewNotification(evt) {
-      //TODO: load here notifications for tile
-      this.selectedItem = evt;
-      this.notificationDialog = true;
-    },
+    // viewNotification(evt) {
+    //   //TODO: load here notifications for tile
+    //   this.selectedItem = evt;
+    //   this.notificationDialog = true;
+    // },
   },
 };
 </script>
 
 <style lang="scss">
-#panel-grid-stack {
-  width: 100%;
-  position: absolute;
-  top: 0;
-}
+// #panel-grid-stack {
+//   width: 100%;
+//   position: absolute;
+//   top: 0;
+// }
 </style>

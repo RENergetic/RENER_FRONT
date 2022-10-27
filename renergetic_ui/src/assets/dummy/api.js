@@ -368,7 +368,10 @@ class WrapperApi {
       let panelIds = ap.map((it) => it.panel.id);
       // console.info(panelIds);
       if (calls["panels"]["id"]) {
-        res["data"] = await this.dataApi.getPanelData(calls["panels"]["id"]);
+        res["data"] = await this.dataApi.getPanelData(calls["panels"]["id"]).then((resp) => {
+          if (resp) return resp["data"];
+          return null;
+        });
         res["panels"] = [await this.managementApi.getInformationPanel(calls["panels"]["id"])];
       } else {
         res["panels"] = await this.userApi.listInformationPanel();
