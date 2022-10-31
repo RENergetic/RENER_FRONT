@@ -10,14 +10,14 @@
           icon="pi pi-pencil"
           @click="$emit('edit', slotProps)"
         />
-        <Button
+        <!-- <Button notifications for tile
           v-if="notificationVisible"
           id="notification"
           :class="'p-button-rounded p-button-text bell-button '"
           aria-haspopup="true"
           icon="pi pi-bell"
           @click="$emit('notification', slotProps)"
-        />
+        /> -->
       </div>
       <InformationTileData :tile="tile" :pdata="tileData" :settings="settings"></InformationTileData>
     </div>

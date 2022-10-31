@@ -1,11 +1,33 @@
 <template>
-  <div class="grid col-12">
-    todo: readall button
+  <!-- todo: readall button ? -->
+  <Card class="notification-box ren-control-bg">
+    <template #content>
+      <div class="flex">
+        <div class="flex align-items-center justify-content-center"></div>
 
-    <div class="col-8 flex flex-column justify-content-center flex-wrap">
-      <div class="flex align-content-end flex-wrap">
-        <!-- <div class="message">{{ notification.msg }}</div> -->
+        <div class="flex-grow-1 flex flex-column justify-content-center flex-wrap">
+          {{ notification.message }}
+          <div v-if="notification.dashboard" class="flex flex-grow-1">
+            {{ $t("view.go_to_dashboard") }}
+            <i
+              v-if="notification.dashboard"
+              v-tooltip="$t('view.go_to_dashboard')"
+              class="pi pi-arrow-circle-right"
+              @click="$router.push(`/dashboard/view/${notification.dashboard.id}`)"
+            />
+          </div>
+        </div>
+        <!-- <div class="flex-none flex align-items-center justify-content-center">
+          <i v-if="demandIncrease" class="pi pi-arrow-up-right"></i>
+          <i v-else-if="demandDecrease" class="pi pi-arrow-down-right"></i> 
+        </div> -->
       </div>
+    </template>
+  </Card>
+
+  <!-- <div class="grid col-12">
+    <div class="col-8 flex flex-column justify-content-center flex-wrap">
+      <div class="flex align-content-end flex-wrap"></div>
       <div class="flex align-content-start flex-wrap">
         <div class="flex align-items-center justify-content-center">
           {{ notification.message }}
@@ -21,13 +43,14 @@
         </div>
       </div>
     </div>
+
     <div class="col-2 flex-none flex align-items-center justify-content-center">
       <i v-if="notification.type == 'warning'" class="pi pi-exclamation-triangle"></i>
       <i v-if="notification.type == 'info'" class="pi pi-info-circle"></i>
       <i v-if="notification.type == 'error'" class="pi pi-times-circle"></i>
-      <!-- TODO: set empty icon ??? <i v-else class="pi pi-arrow-down-right"></i> -->
     </div>
-  </div>
+  </div> -->
+  <!-- TODO: set empty icon ??? <i v-else class="pi pi-arrow-down-right"></i> -->
 </template>
 <script>
 export default {
@@ -56,6 +79,10 @@ export default {
 </script>
 
 <style lang="scss">
+.notification-box {
+  max-width: 90%;
+  width: 90vw;
+}
 .heatdemand {
   i {
     font-size: 2rem;

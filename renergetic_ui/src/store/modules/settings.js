@@ -21,7 +21,7 @@ export default {
     heatmap: {
       heatmapVisibility: true,
     },
-    panel: { center: false, legend: false },
+    panel: { center: false, legend: false, groupByDomain: true, groupByDirection: true, relativeValues: false },
   },
   mutations: {
     home(state, payload) {

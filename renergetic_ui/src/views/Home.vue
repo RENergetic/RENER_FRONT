@@ -13,6 +13,7 @@
       <HomeSettings></HomeSettings>
     </Dialog>
     <div style="width: 100%; height: 100vh; margin-bottom: 1rem">
+      store: {{ $store.getters["view/featuredPanels"].map((it) => it.label) }} endstore
       <energy-flow />
     </div>
     <DemandList id="demand-list" />

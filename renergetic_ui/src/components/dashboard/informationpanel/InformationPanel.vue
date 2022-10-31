@@ -2,6 +2,7 @@
   <!-- {{ mPanel }} -->
   <!--  offset -->
   <!-- {{ pdata }} -->
+  <NotificationList v-if="settings.notificationVisibility" :notifications="mNotifications"></NotificationList>
   <InformationPanelView
     v-if="mPanel"
     :edit="editMode"
@@ -58,6 +59,7 @@
 </template>
 <script>
 // import InformationTile from "./informationtile/InformationTile.vue";
+import NotificationList from "@/components/management/notification/NotificationList.vue";
 import InformationPanelView from "./InformationPanelView.vue";
 import ManageSensors from "../measurements/ManageSensors.vue";
 // import { GridStack } from "gridstack";
@@ -70,6 +72,7 @@ export default {
   components: {
     InformationPanelView,
     ManageSensors,
+    NotificationList,
   },
   props: {
     assetId: {
@@ -98,6 +101,19 @@ export default {
   emits: ["update"],
   data() {
     return {
+      mNotifications: [
+        {
+          id: 2,
+          type: "warning",
+          icon: "electricity",
+          asset: {
+            id: 3,
+          },
+          message: "THe energy island currently consumes  30%  more energy than it it produces locally!",
+          date_from: 1646082303,
+          date_to: 1646182303,
+        },
+      ],
       grid: null,
       notificationDialog: false,
       editDialog: false,

@@ -17,6 +17,7 @@ export default {
     dashboardMap: {},
     // list of information panel visible in the sidemenu
     informationPanels: [],
+    featuredPanels: [],
     informationPanelsMap: {},
     // list of featured user assets
     assets: [],
@@ -32,6 +33,8 @@ export default {
     wrapper(state, payload) {
       let getF = (key, defaultValue) => (payload[key] ? payload[key] : defaultValue);
       state.informationPanels = getF("panels", []);
+
+      state.featuredPanels = state.informationPanels.filter((it) => it.featured);
       state.informationPanelsMap = mapPanelId(state.informationPanels);
       state.assets = getF("assets", []);
       state.assetsMap = mapPanelId(state.assets);
@@ -110,6 +113,9 @@ export default {
     },
     dashboards: (state /* getters*/) => {
       return state.dashboards;
+    },
+    featuredPanels: (state) => {
+      return state.featuredPanels;
     },
     assets: (state /* getters*/) => {
       return state.assets;

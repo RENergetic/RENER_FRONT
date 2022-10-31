@@ -133,6 +133,6 @@ export default {
   width: 98%;
   margin: 1%;
   position: absolute;
-  top: 0;
+  // top: 0;
 }
 </style>

@@ -74,22 +74,39 @@ export default {
         })
         .catch((error) => console.error(error));
     },
+    featuredPanels() {
+      var featuredPanels = this.$store.getters["view/featuredPanels"];
+      var items = featuredPanels.map((panel) => {
+        // let to = `/panel/view/${panel.id}`;
+        return {
+          // label: this.$t("menu.group_list"),
+          label: panel.label ? panel.label : panel.name,
+          icon: "pi pi-fw pi-th-large",
+
+          command: () => {
+            this.$router.push({ name: "InformationPanelView", params: { id: panel.id } });
+          },
+        };
+      });
+      return items;
+    },
     panelItems() {
       if (this.informationPanels.length == 0) {
         return [];
       }
-      var items = this.informationPanels.map((panel) => {
-        let to = `/panel/view/${panel.id}`;
-        return {
-          // label: this.$t("menu.group_list"),
-          label: panel.label,
-          icon: "pi pi-fw pi-th-large",
-          to: to,
-          command: () => {
-            this.$router.push({ to: to, params: { id: panel.id } });
-          },
-        };
-      });
+      var items = [];
+      // var items = this.informationPanels.map((panel) => {
+      //   let to = `/panel/view/${panel.id}`;
+      //   return {
+      //     // label: this.$t("menu.group_list"),
+      //     label: panel.label,
+      //     icon: "pi pi-fw pi-th-large",
+      //     to: to,
+      //     command: () => {
+      //       this.$router.push({ to: to, params: { id: panel.id } });
+      //     },
+      //   };
+      // });
       items.push({
         label: this.$t("menu.information_panel_list"),
         icon: "pi pi-fw  pi-align-left",
@@ -236,6 +253,11 @@ export default {
       }
       let items = [
         {
+          label: this.$t("menu.information_panel"),
+          icon: "pi pi-fw pi-chart-line",
+          items: this.panelItems(),
+        },
+        {
           // label: this.$t("menu.group_list"),
           label: this.$t("menu.assets"),
           icon: "pi pi-fw pi-building",
@@ -301,23 +323,12 @@ export default {
         },
       ];
     },
-    initMenu() {
-      return [
-        ...this.dashboardItems(),
-        ...this.assetsItems(),
-        {
-          label: this.$t("menu.information_panel"),
-          icon: "pi pi-fw pi-chart-line",
-          items: this.panelItems(),
-        },
-        // {
-        //   label: this.$t("menu.heatmaps"),
-        //   icon: "pi pi-fw pi-chart-line",
-        //   items: this.heatMapItems(),
-        // },
-        ...this.infrastructureItems(),
-
-        ...this.administrationItems(),
+    userItems() {
+      let flags = RenRoles.REN_USER;
+      if ((flags & this.role) == 0) {
+        return [];
+      }
+      let items = [
         {
           label: this.$t("menu.profile"),
           icon: "pi pi-fw pi-user",
@@ -332,15 +343,6 @@ export default {
           command: () => {
             alert("TODO: user feedback");
             // this.$router.push("/feedback");
-          },
-        },
-
-        {
-          label: this.$t("menu.notifications"),
-          icon: "pi pi-fw  pi-bell",
-          command: () => {
-            // this.$emit("notification");
-            this.notifications = !this.notifications;
           },
         },
         {
@@ -362,7 +364,39 @@ export default {
             this.$router.push("/");
           },
         },
+      ];
+      return [
+        {
+          label: this.$t("menu.profile"),
+          icon: "pi pi-fw pi-user",
+          items: items,
+        },
+      ];
+    },
 
+    initMenu() {
+      return [
+        ...this.featuredPanels(),
+        ...this.assetsItems(),
+        ...this.dashboardItems(),
+        // {
+        //   label: this.$t("menu.heatmaps"),
+        //   icon: "pi pi-fw pi-chart-line",
+        //   items: this.heatMapItems(),
+        // },
+        ...this.infrastructureItems(),
+
+        ...this.administrationItems(),
+
+        {
+          label: this.$t("menu.notifications"),
+          icon: "pi pi-fw  pi-bell",
+          command: () => {
+            // this.$emit("notification");
+            this.notifications = !this.notifications;
+          },
+        },
+        ...this.userItems(),
         {
           label: this.$t("menu.login"),
           icon: "pi pi-sign-in",

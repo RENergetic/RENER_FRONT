@@ -1,10 +1,8 @@
 <template>
-  <div>
-    <div style="height: 100%" class="flex flex-column align-items-start align-content-start">
-      <template v-for="n in mNotifications" :key="n.id">
-        <NotificationItem :notification="n"></NotificationItem>
-      </template>
-    </div>
+  <div style="height: 100%" class="flex flex-column align-items-center align-content-start">
+    <template v-for="n in mNotifications" :key="n.id">
+      <NotificationItem :notification="n"></NotificationItem>
+    </template>
   </div>
 </template>
 <script>
