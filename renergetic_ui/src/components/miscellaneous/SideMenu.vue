@@ -1,20 +1,19 @@
 <template>
-  <div>
-    <Button id="sideMenuButton" icon="pi pi-arrow-right" @click="visible = true" />
+  <Button id="sideMenuButton" icon="pi pi-arrow-right" @click="visible = true" />
 
-    <Sidebar v-model:visible="visible" class="ren-sidebar">
-      <div id="sideMenuLogo">
-        <Logo />
-      </div>
-      <PanelMenu :model="menuModel" />
-    </Sidebar>
-    <Dialogs
-      :notifications="notifications"
-      :add-dashboard="dashboardDialog"
-      @update:notifications="notifications = $event"
-      @update-menu="reload"
-    ></Dialogs>
-  </div>
+  <Sidebar v-model:visible="visible" class="ren-sidebar">
+    <div id="sideMenuLogo">
+      <Logo />
+    </div>
+
+    <PanelMenu :model="menuModel" />
+  </Sidebar>
+  <Dialogs
+    :notifications="notifications"
+    :add-dashboard="dashboardDialog"
+    @update:notifications="notifications = $event"
+    @update-menu="reload"
+  ></Dialogs>
 </template>
 
 <script>
@@ -426,10 +425,13 @@ export default {
   position: relative;
   display: block;
   margin: 5%;
+  margin-top: 0;
   bottom: initial;
   width: 90%;
 }
-
+.p-sidebar .p-sidebar-header {
+  padding-bottom: 0;
+}
 #sideMenuButton {
   width: $sidemenu-button-width;
   height: $sidemenu-button-width;

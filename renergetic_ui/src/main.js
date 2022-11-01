@@ -9,6 +9,7 @@ import PrimeVue from "primevue/config";
 import plugin from "./plugins/ren_plugins";
 //import primevue plugins
 import PrimeImport from "./plugins/primevue_import";
+import Fonts from "./plugins/fonts";
 import "primevue/resources/themes/saga-green/theme.css";
 // theme showcase: https://www.primefaces.org/primevue/showcase/
 import "primevue/resources/primevue.min.css";
@@ -22,6 +23,7 @@ import Tooltip from "primevue/tooltip";
 import ToastService from "primevue/toastservice";
 // import PrimeLocale from './assets/locale/EN-en/primevue.json'
 import ConfirmationService from "primevue/confirmationservice";
+
 // import mitt from 'mitt'
 // const emitter = mitt()
 
@@ -34,7 +36,7 @@ app.use(VueKonva);
 // app.use(PrimeVue, { locale: PrimeLocale });
 app.use(PrimeVue);
 app.use(PrimeImport);
-
+app.use(Fonts);
 app.directive("tooltip", Tooltip);
 
 app.use(ToastService);

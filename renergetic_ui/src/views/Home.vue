@@ -14,6 +14,7 @@
     </Dialog>
     <div style="width: 100%; height: 100vh; margin-bottom: 1rem">
       store: {{ $store.getters["view/featuredPanels"].map((it) => it.label) }} endstore
+      <font-awesome-icon icon="fa-solid fa-user-secret" />
       <energy-flow />
     </div>
     <DemandList id="demand-list" />
