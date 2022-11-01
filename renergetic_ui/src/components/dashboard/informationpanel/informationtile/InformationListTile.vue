@@ -4,12 +4,10 @@
     :key="m.id"
     :tile-item="m"
     :idx="idx"
-    :settings="settings"
+    :settings="mSettings"
     :pdata="pdata"
     @click="onItemClick({ index: idx, item: m })"
   ></InformationTileItem>
-
-  <!-- :style="{ fontSize: fontSize }" -->
 </template>
 <script>
 import InformationTileItem from "./InformationTileItem.vue";
@@ -17,12 +15,15 @@ export default {
   name: "InformationTile",
   components: { InformationTileItem },
   props: {
-    // edit: { type: Boolean, default: false },
     tile: {
       type: Object,
       default: () => ({}),
     },
     pdata: {
+      type: Object,
+      default: () => ({}),
+    },
+    settings: {
       type: Object,
       default: () => ({}),
     },
@@ -32,15 +33,12 @@ export default {
     },
   },
   emits: ["select"],
-
   data() {
     return {
+      mSettings: this.settings,
       mTile: this.tile,
     };
   },
-  computed: {},
-
-  mounted() {},
   methods: {
     onItemClick(ctx) {
       if (this.mTile.measurements[ctx.index].visible == null) {
@@ -51,5 +49,4 @@ export default {
   },
 };
 </script>
-
 <style lang="scss"></style>

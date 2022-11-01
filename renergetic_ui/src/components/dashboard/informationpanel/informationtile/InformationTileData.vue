@@ -2,6 +2,7 @@
   <div v-if="tile" :class="tileClass">
     <h3 v-if="titleVisible && title">{{ title }}</h3>
     <!-- {{ pdata }} -->
+
     <div v-if="tile.measurements.length == 0" class="flex flex-column justify-content-center" style="height: 100%">
       <h3 style="margin: 0; text-align: center">{{ tile.label }}</h3>
     </div>
@@ -35,30 +36,39 @@ import DoughnutTile from "./DoughnutTile.vue";
 import InformationTileSingle from "./InformationTileSingle.vue";
 import MultiKnobTile from "./MultiKnobTile.vue";
 import { TileTypes } from "@/plugins/model/Enums.js";
+import icons from "./icons";
 // import MultiDoughnutTile from "./MultiDoughnutTile.vue";
-const icons = {
-  heat: require(`../../../../assets/img/tileicons/heat.png`),
-  electricity: require(`../../../../assets/img/tileicons/electricity.png`),
-  battery: require(`../../../../assets/img/tileicons/battery.png`),
-  renewability: require(`../../../../assets/img/tileicons/battery.png`),
-};
-function validateSettings(tile, settings) {
-  try {
-    settings.icon = icons[tile.props.icon];
-  } catch (Exception) {
-    settings.icon = null;
-  }
+// const icons = {
+//   heat: require(`../../../../assets/img/tileicons/heat.png`),
+//   electricity: require(`../../../../assets/img/tileicons/electricity.png`),
+//   battery: require(`../../../../assets/img/tileicons/battery.png`),
+//   renewability: require(`../../../../assets/img/tileicons/battery.png`),
+// };
+//  Gas Station.
 
-  if (settings == null) {
-    settings = {};
+function validateTileSettings(tile, settings) {
+  // console.info("icon for " + tile.props.icon + ": " + icons[tile.props.icon]);
+  if (tile.props) {
+    return {
+      icon: icons[tile.props.icon],
+      icon_visibility: tile.props.icon_visibility != null ? tile.props.icon_visibility : true,
+      legend: tile.props.legend != null ? tile.props.legend : settings.legend,
+      title_visibility:
+        tile.props.title_visibility != null
+          ? tile.props.title_visibility
+          : settings.title_visibility != null
+          ? settings.title_visibility
+          : true,
+      fontSize: settings.fontSize,
+    };
   }
-  settings.legend = settings.legend != null ? settings.legend : true;
-  settings.title = settings.title != null ? settings.title : true;
-  settings.color = settings.color != null ? settings.color : "#d6ebff";
-  let size = settings != null && settings.fontSize != null ? settings.fontSize : `${2.0}rem`;
-  settings.fontSize = size;
   return settings;
+  // tileSettings.legend = settings.legend != null ? settings.legend : true;
+  // settings.title = settings.title != null ? settings.title : true;
+  // settings.color = settings.color != null ? settings.color : "#d6ebff";
+  // console.info(tile);
 }
+
 export default {
   name: "InformationTileData",
   components: {
@@ -88,7 +98,7 @@ export default {
   emits: ["edit", "notification"],
   data() {
     return {
-      mSettings: validateSettings(this.tile, this.settings),
+      mSettings: { tile: validateTileSettings(this.tile, this.settings), panel: this.settings },
     };
   },
   computed: {
@@ -110,7 +120,7 @@ export default {
   watch: {
     tile: {
       handler: function (newValue) {
-        this.mSettings = validateSettings(newValue, this.settings);
+        this.mSettings = validateTileSettings(newValue, this.settings);
       },
       deep: true,
     },

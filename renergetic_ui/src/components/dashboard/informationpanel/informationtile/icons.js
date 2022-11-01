@@ -13,13 +13,15 @@ export default {
   heat_consumed: "fa-solid fa-meter-fire",
   renawables: "fa-solid fa-recycle",
   heat_exchanged: "fa-solid fa-repeat",
-  lights: "fa-solid fa-lightbulb",
+  light: "fa-solid fa-lightbulb",
   solar_energy: "fa-solid fa-solar-panel",
   wind_energy: "fa-solid fa-wind-turbine",
   datacenter: "fa-solid fa-server",
-  offices: "fa-solid fa-chair-office",
+  supercomputer: "fa-solid fa-server",
+  office: "fa-solid fa-computer",
   import: "fa-solid fa-left-long-to-line",
   district: "fa-solid fa-pipe-valve",
+  hvac: "fa-solid fa-fan",
   dormitory: "fa-solid fa-apartment",
 };
 // oil-well

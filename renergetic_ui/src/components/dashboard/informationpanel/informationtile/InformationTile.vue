@@ -1,6 +1,6 @@
 <template>
   <div v-if="slotProps" :class="'grid-stack-item ren'" v-bind="gridStackAttributes">
-    <div :class="'grid-stack-item-content ' + state">
+    <div :style="mStyle" :class="'grid-stack-item-content ' + state">
       <div class="tile-bar">
         <Button
           v-if="edit"
@@ -64,6 +64,13 @@ export default {
       }
       return "block";
     },
+    mStyle: function () {
+      console.info(this.tile.props);
+      if (this.tile.props) {
+        return "background: " + this.tile.props.background;
+      }
+      return "";
+    },
     notificationVisible: function () {
       //default visible
       return !(this.settings != null && !this.settings.notificationVisibility);
@@ -75,9 +82,9 @@ export default {
       if (state.toLowerCase() == "ok") {
         return "";
       }
-      if (state) return ` state ${state.toLowerCase()}`;
+      if (state) return `state ${state.toLowerCase()}`;
       //state not provided to the exists tile (e.g. tile not saved yet in the backend)
-      return ` state unknown`;
+      return `state unknown`;
     },
 
     col: function () {
@@ -127,6 +134,7 @@ export default {
   margin: 10px;
 }
 .grid-stack-item-content {
+  border-radius: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -135,8 +143,8 @@ export default {
   // background-color: #bee3f8;
   font-weight: 600;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  background: #870000; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to bottom, #190a05, #870000); /* Chrome 10-25, Safari 5.1-6 */
+  // background: #870000; /* fallback for old browsers */
+  // background: -webkit-linear-gradient(to bottom, #190a05, #870000); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to bottom, #190a05, #870000);
   max-height: 100%;
   width: 100%;

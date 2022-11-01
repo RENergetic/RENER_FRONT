@@ -10,7 +10,15 @@
       <div class="flex flex-none flex-column align-items-center justify-content-center">
         <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
       </div>
-      <span v-if="settings.icon" id="tileicon" :style="'background-image: url(' + settings.icon + ')'"></span>
+      <span
+        v-if="settings.tile.icon_visibility && settings.tile.icon"
+        id="tileicon"
+        class="flex flex-none flex-column align-items-center justify-content-center"
+      >
+        <!-- {{ settings.tile.icon }} -->
+        <!-- :style="'background-image: url(' + settings.icon + ')'" -->
+        <font-awesome-icon :icon="settings.tile.icon" />
+      </span>
     </div>
   </div>
 </template>
@@ -34,10 +42,10 @@ export default {
         responsive: true,
         plugins: {
           legend: {
-            display: this.settings.legend,
+            display: this.settings.tile.legend,
             labels: {
               // color: "#495057",
-              color: this.settings.color,
+              color: this.settings.tile.color,
             },
           },
         },
@@ -76,7 +84,7 @@ export default {
   mounted() {
     // this.settings.cellWidth
     // console.info(this.tile.layout.w + " " + this.settings.cellWidth);
-    this.mStyle = `max-width: 30rem; margin: auto;width:${this.settings.cellWidth * this.tile.layout.w * 0.7}px`;
+    this.mStyle = `max-width: 30rem; margin: auto;width:${this.settings.panel.cellWidth * this.tile.layout.w * 0.7}px`;
   },
   methods: {},
 };
@@ -87,13 +95,16 @@ export default {
   // width: 3rem;
   // height: 3rem;
   // display: inherit;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+  // background-size: contain;
+  // background-repeat: no-repeat;
+  // background-position: center;
   position: absolute;
-  height: 25%;
-  width: 25%;
-  left: 37.5%;
-  top: 37.5%;
+  height: 20%;
+  width: 20%;
+  // left: 37.5%;
+  // top: 37.5%;
+  svg {
+    height: 100%;
+  }
 }
 </style>

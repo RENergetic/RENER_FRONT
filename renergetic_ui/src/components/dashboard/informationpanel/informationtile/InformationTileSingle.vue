@@ -1,13 +1,15 @@
 <template>
   <div class="flex flex-column justify-content-center" style="height: 100%">
     <div
-      v-if="settings.icon != null && iconVisibility"
+      v-if="settings.tile.icon_visibility && settings.tile.icon"
       id="tileicon"
-      class="flex align-items-center justify-content-center"
-      :style="'background-image: url(' + settings.icon + ')'"
-    ></div>
-
-    <div class="flex flex-column align-items-center justify-content-center">
+      class="flex flex-none flex-column align-items-center justify-content-center"
+    >
+      <!-- {{ settings.tile.icon }} -->
+      <!-- :style="'background-image: url(' + settings.icon + ')'" -->
+      <font-awesome-icon :icon="settings.tile.icon" />
+    </div>
+    <div class="flex flex-none flex-column align-items-center justify-content-center">
       <span> {{ label }}</span>
       <span
         ><h2>{{ value }} {{ measurement.type.unit }}</h2></span
@@ -38,25 +40,16 @@ export default {
     let measurement = this.tile.measurements.length > 0 ? this.tile.measurements[0] : null;
     return {
       measurement: measurement,
-      // icons: {
-      //   battery: require(`../../../../assets/img/tileicons/battery.png`),
-      //   renewability: require(`../../../../assets/img/tileicons/battery.png`),
-      //   electricity: require(`../../../../assets/img/tileicons/electricity.png`),
-      //   heat: require(`../../../../assets/img/tileicons/heat.png`),
-      // },
     };
   },
   computed: {
-    iconVisibility: function () {
-      return this.tile.props.icon_visibility != null ? this.tile.props.icon_visibility : true;
-    },
-    icon: function () {
-      //todo: default
-      let icon = this.measurement.type.metric_type;
-      if (this.measurement.measurement_details.icon != null) icon = this.measurement.measurement_details.icon;
-      else if (this.measurement.type.icon != null) icon = this.measurement.type.icon;
-      return this.icons[icon] != null ? this.icons[icon] : this.icons.default;
-    },
+    // icon: function () {
+    //   //todo: default
+    //   let icon = this.measurement.type.metric_type;
+    //   if (this.measurement.measurement_details.icon != null) icon = this.measurement.measurement_details.icon;
+    //   else if (this.measurement.type.icon != null) icon = this.measurement.type.icon;
+    //   return this.icons[icon] != null ? this.icons[icon] : this.icons.default;
+    // },
     value: function () {
       //todo support other aggregation functions
       try {
@@ -93,8 +86,13 @@ span {
   background-position: center;
   background-size: contain;
   width: 100%;
-  height: 4.5rem;
+  // height: 4.5rem;
+  height: 45%;
+  svg {
+    height: 100%;
+  }
 }
+
 h2 {
   margin: 0;
 }

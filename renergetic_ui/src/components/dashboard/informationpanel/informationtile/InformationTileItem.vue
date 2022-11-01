@@ -1,12 +1,24 @@
 <template>
   <div :class="state" :style="style">
     <div class="flex flex-none flex-row align-items-center justify-content-center">
-      <span v-if="icon != null" id="tileicon" :style="'background-image: url(' + icon + ')'"></span>
+      <!-- <span v-if="icon != null" id="tileicon" :style="'background-image: url(' + icon + ')'"></span> -->
+      <!-- {{ settings }}fff -->
+      <span
+        v-if="mSettings.tile.icon_visibility && settings.tile.icon"
+        id="tileicon"
+        class="flex flex-none flex-column align-items-center justify-content-center"
+      >
+        <!-- {{ settings.tile.icon }} -->
+        <!-- :style="'background-image: url(' + settings.icon + ')'" -->
+        <font-awesome-icon :icon="icon" />
+      </span>
     </div>
     <div class="flex flex-grow-1 flex-column align-items-start justify-content-center message">
       <div class="flex flex-grow-1 align-items-center justify-content-center">
-        <div class="flex message align-items-start">{{ label }}:</div>
-        <div class="flex message align-items-end">{{ Math.round(value, 2) }} {{ tileItem.type.unit }}</div>
+        <div class="flex flex-grow-1 message align-items-start">{{ label }}:</div>
+        <div class="flex flex-grow-none message align-items-end">
+          {{ Math.round(value, 2) }} {{ tileItem.type.unit }}
+        </div>
       </div>
       <div v-if="tileItem.description" class="flex">
         <div class="flex align-items-center justify-content-center">description: {{ tileItem.description }}</div>
@@ -21,6 +33,7 @@
   </div> -->
 </template>
 <script>
+import icons from "./icons";
 export default {
   name: "InformationTileItem",
   components: {},
@@ -41,16 +54,13 @@ export default {
   },
   data() {
     return {
-      icons: {
-        battery: require(`../../../../assets/img/tileicons/battery.png`),
-        renewability: require(`../../../../assets/img/tileicons/battery.png`),
-
-        electricity: require(`../../../../assets/img/tileicons/electricity.png`),
-        heat: require(`../../../../assets/img/tileicons/heat.png`),
-      },
+      mSettings: this.settings,
     };
   },
   computed: {
+    iconVisibility: function () {
+      return (this.mSettings.tile ? this.mSettings.tile.icon_visibility : true) && this.mSettings.tile.icon;
+    },
     style: function () {
       let color = this.$ren.utils.measurementColor(this.tileItem, this.value);
       return `background:${color.color};opacity:${color.alpha}`;
@@ -66,10 +76,12 @@ export default {
     },
     icon: function () {
       //todo: default
+
       let icon = this.tileItem.domain ? this.tileItem.domain : this.tileItem.type.metric_type;
       if (this.tileItem.measurement_details.icon != null) icon = this.tileItem.measurement_details.icon;
       else if (this.tileItem.type.icon != null) icon = this.tileItem.type.icon;
-      return this.icons[icon] != null ? this.icons[icon] : this.icons.default;
+      console.info(icon);
+      return icons[icon] != null ? icons[icon] : icons.default;
     },
     value: function () {
       //todo support other aggregation functions
@@ -95,18 +107,27 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 span {
   display: inline-block;
 }
+// #tileicon {
+//   width: 2.5rem;
+//   height: 2.5rem;
+//   // display: inherit;
+//   background-size: 100%;
+//   background-repeat: no-repeat;
+//   background-position: center;
+//   margin-right: 1rem;
+// }
 #tileicon {
-  width: 2.5rem;
-  height: 2.5rem;
-  // display: inherit;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  background-position: center;
-  margin-right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  // left: 37.5%;
+  // top: 37.5%;
+  svg {
+    height: 80%;
+  }
 }
 .tileitem {
   border: gray 2px solid;

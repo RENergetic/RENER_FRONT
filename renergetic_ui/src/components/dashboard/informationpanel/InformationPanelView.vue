@@ -7,7 +7,7 @@
       :slot-props="{ tile: tile, index: index }"
       :edit="edit"
       :pdata="pdata"
-      :settings="settings"
+      :settings="mSettings"
       @edit="$emit('editTile', { tile: tile, index: index })"
       @notification="viewNotification"
     />
@@ -31,6 +31,19 @@ import { GridStack } from "gridstack";
 import { NotificationContext } from "@/plugins/model/Enums.js";
 // import "gridstack/dist/h5/gridstack-dd-native";
 import "gridstack/dist/gridstack.min.css";
+
+function validateSettings(settings) {
+  if (settings == null) {
+    settings = {};
+  }
+  settings.legend = settings.legend != null ? settings.legend : true;
+  // settings.title = settings.title != null ? settings.title : true;
+  // settings.color = settings.color != null ? settings.color : "#d6ebff";
+  let size = settings != null && settings.fontSize != null ? settings.fontSize : `${2.0}rem`;
+  settings.fontSize = size;
+  return settings;
+}
+
 export default {
   name: "InformationPanelView",
   components: {
@@ -69,7 +82,7 @@ export default {
   data() {
     return {
       grid: null,
-      mSettings: this.settings,
+      mSettings: validateSettings(this.settings),
       notificationDialog: false,
       selectedItem: null,
       mPanel: this.panel,

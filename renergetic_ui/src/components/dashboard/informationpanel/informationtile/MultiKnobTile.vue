@@ -1,7 +1,10 @@
 <template>
   <!-- <div style="display: flex; flex-direction: column; align-items: flex-end"> -->
-  <div class="flex flex-column justify-content-start" style="height: 100%">
-    <div v-if="mSettings.title" class="flex flex-none align-items-center justify-content-center knob-component">
+  <div v-if="loaded" class="flex flex-column justify-content-start" style="height: 100%">
+    <div
+      v-if="mSettings.tile.title_visibility"
+      class="flex flex-none align-items-center justify-content-center knob-component"
+    >
       <h2 style="text-align: center">{{ tile.label }}</h2>
     </div>
 
@@ -17,10 +20,14 @@
       <div class="flex flex-none flex-column align-items-center justify-content-center">
         <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
       </div>
-      <span v-if="mSettings.icon" id="tileicon" :style="'background-image: url(' + mSettings.icon + ')'"></span>
+      <span
+        v-if="iconVisibility"
+        id="tileicon"
+        class="flex flex-none flex-column align-items-center justify-content-center"
+      >
+        <font-awesome-icon :icon="mSettings.tile.icon" />
+      </span>
     </div>
-    <!-- v-if show custom legend  -->
-    <!-- {{ mSettings }} -->
     <div class="flex flex-column flex-none knob-component" style="position: relative; width: 100%">
       <information-list-tile :tile="tile" :pdata="pdata" :settings="mSettings" @select="onMeasurementSelect">
       </information-list-tile>
@@ -48,6 +55,7 @@ export default {
       relativeValues: false,
       mSettings: this.settings,
       tmpIndex: 0,
+      loaded: false,
       options: {
         display: false,
         responsive: true,
@@ -63,6 +71,9 @@ export default {
     };
   },
   computed: {
+    iconVisibility: function () {
+      return (this.mSettings.tile ? this.mSettings.tile.icon_visibility : true) && this.mSettings.tile.icon;
+    },
     chartData: function () {
       if (!(this.pdata && this.pdata.current)) {
         return {};
@@ -95,7 +106,8 @@ export default {
     },
   },
   mounted() {
-    this.mStyle = `max-width: 30rem; margin: auto;width:${this.mSettings.cellWidth * this.tile.layout.w * 0.6}px`;
+    this.loaded = true;
+    this.mStyle = `max-width: 30rem; margin: auto;width:${this.mSettings.panel.cellWidth * this.tile.layout.w * 0.6}px`;
   },
   methods: {
     onMeasurementSelect(ctx) {
@@ -148,11 +160,15 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
   position: absolute;
-  height: 25%;
-  width: 25%;
-  left: 37.5%;
-  top: 37.5%;
+  height: 20%;
+  width: 20%;
+  left: 40%;
+  top: 40%;
+  svg {
+    height: 100%;
+  }
 }
+
 h2 {
   margin-bottom: 0;
 }
