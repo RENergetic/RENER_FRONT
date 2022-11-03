@@ -1,38 +1,57 @@
 <template>
-  <div id="energy-flow">
-    ENERGY FLOW COMPONENT
-
-    <!-- {{ panel }}
-  {{ pdata }} -->
-    <InformationPanelView
-      :edit="editMode"
-      :pdata="pData"
-      :panel="panel"
-      :locked="locked"
-      :settings="settings"
-      :asset-id="assetId"
-      @edit="onEdit"
-    />
-    todo toggle relative
-  </div>
+  <!-- {{ settings }} -->
+  <NotificationList v-if="settings.notificationVisibility" :notifications="mNotifications"></NotificationList>
+  <InformationPanel
+    :edit="false"
+    :pdata="pData"
+    :panel="panel"
+    :locked="locked"
+    :settings="settings"
+    :asset-id="assetId"
+  />
 </template>
+
 <script>
-import InformationPanelView from "./informationpanel/InformationPanelView";
+import InformationPanel from "@/components/dashboard/informationpanel/InformationPanel.vue";
+import NotificationList from "@/components/management/notification/NotificationList.vue";
+// import InformationPanelView from "./informationpanel/InformationPanelView";
+let testNot = [
+  {
+    id: 2,
+    type: "warning",
+    icon: "electricity",
+    asset: {
+      id: 3,
+    },
+    message: "THe energy island currently consumes  30%  more energy than it it produces locally!",
+    date_from: 1646082303,
+    date_to: 1646182303,
+  },
+  {
+    id: 4,
+    type: "warning",
+    icon: "electricity",
+    asset: {
+      id: 5,
+    },
+    message: "The energy island currently consumes  30%  more energy than it it produces locally!!!",
+    date_from: 1646082303,
+    date_to: 1646182303,
+  },
+];
+if (Math.random() > 0.45) {
+  testNot = [testNot[0]];
+}
 export default {
   name: "EnergyFlow",
   components: {
-    InformationPanelView,
-
-    // dokonczyc,
+    InformationPanel,
+    NotificationList,
   },
   props: {
     assetId: {
       type: Number,
       default: null,
-    },
-    locked: {
-      type: Boolean,
-      default: true,
     },
     panel: {
       type: Object,
@@ -44,21 +63,15 @@ export default {
         return {};
       },
     },
-    editMode: {
-      type: Boolean,
-      default: false,
-    },
   },
   emits: ["update"],
   data() {
     return {
       grid: null,
       notificationDialog: false,
-      editDialog: false,
-      selectedItem: null,
-      mPanel: this.panel,
-      manageSensorsDialog: false,
-      pData: {},
+      mNotifications: testNot,
+      locked: false,
+      editMode: false,
       // tileTypes: Object.entries(TileTypes).map((k) => {
       //   return { value: k[1], label: this.$t("enums.tile_type." + k[1]) };
       // }),
@@ -103,22 +116,6 @@ export default {
           if (resp) return resp["data"];
           return {};
         });
-        //TODO: zrobić agregacje po heat_domain_direction_measurement_type
-        // console.info(this.pdata);
-        // for (let k in pData) {
-        //   for (let valueId in pData[k]) {
-        //     let min = 0.0;
-        //     let max = 0;
-        //     if (pData[valueId]["min"]) {
-        //       min = pData[valueId]["min"];
-        //     } else {
-        //       pData[valueId]["min"] = 0.0;
-        //     }
-        //     max = pData[valueId]["max"];
-        //     let diff = max - min;
-        //     pData[valueId]["last"] = (pData[valueId]["last"] - min) / diff;
-        //   }
-        // }
         this.pData = pData;
       }
     },
@@ -127,12 +124,12 @@ export default {
 </script>
 
 <style lang="scss">
-#energy-flow {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 0, 247, 0.463);
-  font-size: 30 rem;
-  padding: 10%;
-}
+// #energy-flow {
+//   display: block;
+//   width: 100%;
+//   height: 100%;
+//   background: rgba(255, 0, 247, 0.463);
+//   font-size: 30 rem;
+//   padding: 10%;
+// }
 </style>

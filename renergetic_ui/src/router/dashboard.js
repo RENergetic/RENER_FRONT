@@ -80,6 +80,24 @@ var dashboardRoutes = [
   //   component: () => import("../views/dashboard/InformationPanel.vue"),
   // },
   {
+    path: "/flowpanel/view/:id?",
+    name: "EnergyFlowView",
+    meta: {
+      isAuthenticated: true,
+      layout: "fullscr",
+      roles: ["ren-admin", "ren-dev", "ren-manager", "ren-user", "ren-visitor", "ren-technical-manager"],
+
+      roleFlag:
+        RenRoles.REN_USER |
+        RenRoles.REN_VISITOR |
+        RenRoles.REN_MANAGER |
+        RenRoles.REN_TECHNICAL_MANAGER |
+        RenRoles.REN_ADMIN |
+        RenRoles.REN_STAFF,
+    },
+    component: () => import("../views/dashboard/EnergyFlow.vue"),
+  },
+  {
     path: "/panel/view/:id?",
     name: "InformationPanelView",
     meta: {

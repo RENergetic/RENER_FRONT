@@ -132,6 +132,10 @@ export default {
     informationPanels: (state /* getters*/) => {
       return state.informationPanels;
     },
+    homePanel(state) {
+      if (state.informationPanels && state.informationPanels.length > 0) return state.informationPanels[0];
+      return null;
+    },
     assetPanelsMap: (state /* getters*/) => {
       return state.assetPanelsMap;
     },

@@ -34,3 +34,6 @@ if ((flags & user_role_flag) > 0)
   //has acccess
   
 ```
+
+https://fontawesome.com/search?q=open&o=r&s=solid
+https://www.primefaces.org/primevue/icons

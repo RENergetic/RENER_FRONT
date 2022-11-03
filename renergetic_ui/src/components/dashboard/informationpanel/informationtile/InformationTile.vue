@@ -65,7 +65,6 @@ export default {
       return "block";
     },
     mStyle: function () {
-      console.info(this.tile.props);
       if (this.tile.props) {
         return "background: " + this.tile.props.background;
       }
@@ -158,5 +157,11 @@ export default {
 }
 .tile-bar {
   padding: 0.3rem;
+}
+.grid-stack-item {
+  margin: 0;
+}
+.grid-stack-item-content {
+  inset: 10px;
 }
 </style>

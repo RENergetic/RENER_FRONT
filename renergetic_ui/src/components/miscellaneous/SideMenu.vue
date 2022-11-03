@@ -83,7 +83,7 @@ export default {
           icon: "pi pi-fw pi-th-large",
 
           command: () => {
-            this.$router.push({ name: "InformationPanelView", params: { id: panel.id } });
+            this.$router.push({ name: "EnergyFlowView", params: { id: panel.id } });
           },
         };
       });

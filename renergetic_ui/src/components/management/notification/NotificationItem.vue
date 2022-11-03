@@ -17,10 +17,6 @@
             />
           </div>
         </div>
-        <!-- <div class="flex-none flex align-items-center justify-content-center">
-          <i v-if="demandIncrease" class="pi pi-arrow-up-right"></i>
-          <i v-else-if="demandDecrease" class="pi pi-arrow-down-right"></i> 
-        </div> -->
       </div>
     </template>
   </Card>
@@ -50,7 +46,6 @@
       <i v-if="notification.type == 'error'" class="pi pi-times-circle"></i>
     </div>
   </div> -->
-  <!-- TODO: set empty icon ??? <i v-else class="pi pi-arrow-down-right"></i> -->
 </template>
 <script>
 export default {
@@ -63,13 +58,7 @@ export default {
     },
   },
   data() {
-    return {
-      icons: {
-        battery: require(`@/assets/img/tileicons/battery.png`),
-        electricity: require(`@/assets/img/tileicons/electricity.png`),
-        heat: require(`@/assets/img/tileicons/heat.png`),
-      },
-    };
+    return {};
   },
   computed: {},
   watch: {},
@@ -82,6 +71,13 @@ export default {
 .notification-box {
   max-width: 90%;
   width: 90vw;
+  margin-top: 0.5rem;
+  .p-card-body {
+    padding: 0.5rem !important;
+    .p-card-content {
+      padding: 0.5rem 0;
+    }
+  }
 }
 .heatdemand {
   i {

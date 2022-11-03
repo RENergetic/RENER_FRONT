@@ -14,11 +14,9 @@
       </span>
     </div>
     <div class="flex flex-grow-1 flex-column align-items-start justify-content-center message">
-      <div class="flex flex-grow-1 align-items-center justify-content-center">
+      <div class="flex flex-grow-1 align-items-center justify-content-center" style="width: 100%">
         <div class="flex flex-grow-1 message align-items-start">{{ label }}:</div>
-        <div class="flex flex-grow-none message align-items-end">
-          {{ Math.round(value, 2) }} {{ tileItem.type.unit }}
-        </div>
+        <div class="flex flex-none message align-items-end">{{ Math.round(value, 2) }} {{ unit }}</div>
       </div>
       <div v-if="tileItem.description" class="flex">
         <div class="flex align-items-center justify-content-center">description: {{ tileItem.description }}</div>
@@ -83,9 +81,24 @@ export default {
       console.info(icon);
       return icons[icon] != null ? icons[icon] : icons.default;
     },
+    unit: function () {
+      if (this.mSettings.panel.relativeValues) {
+        return "%";
+      }
+      return this.tileItem.type.unit;
+    },
     value: function () {
       //todo support other aggregation functions
       try {
+        if (this.mSettings.panel.relativeValues) {
+          console.info(JSON.stringify(this.pdata.current));
+          console.info(this.tileItem.type.factor);
+          return (
+            ((this.tileItem.type.factor * this.pdata.current.last[this.tileItem.id]) /
+              this.pdata.current.max[this.tileItem.id]) *
+            100.0
+          );
+        }
         return this.pdata.current.last[this.tileItem.id];
       } catch (e) {
         return null;
@@ -134,6 +147,7 @@ span {
   background: gray;
   margin: 5px;
   padding: 5px;
+  border-radius: 0.5rem;
   // margin-left: 1rem;
 }
 .tileitem-hidden {

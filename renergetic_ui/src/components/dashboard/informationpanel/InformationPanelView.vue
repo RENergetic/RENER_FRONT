@@ -1,12 +1,12 @@
 <template>
-  <div v-if="panel" id="panel-grid-stack" style="" class="grid-stack">
+  <div v-if="panel && mPData" id="panel-grid-stack" style="" class="grid-stack">
     <InformationTile
       v-for="(tile, index) in tiles"
       :key="tile.id"
       class="card-container"
       :slot-props="{ tile: tile, index: index }"
       :edit="edit"
-      :pdata="pdata"
+      :pdata="mPData"
       :settings="mSettings"
       @edit="$emit('editTile', { tile: tile, index: index })"
       @notification="viewNotification"
@@ -86,6 +86,7 @@ export default {
       notificationDialog: false,
       selectedItem: null,
       mPanel: this.panel,
+      mPData: this.pdata,
       // tileTypes: Object.entries(TileTypes).map((k) => {
       //   return { value: k[1], label: this.$t("enums.tile_type." + k[1]) };
       // }),
@@ -109,6 +110,19 @@ export default {
       },
       deep: true,
     },
+  },
+  async updated() {
+    // console.info(this.mSettings);
+    // console.info(JSON.stringify(this.pdata.data));
+    if (this.mSettings.relativeValues && this.pdata.data) {
+      // let relativeData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata.data);
+      this.mPData = this.pdata;
+      this.mPData.data = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata.data);
+      // console.info(relativeData);
+      // this.mPData.data = relativeData;
+    } else {
+      this.mPData = this.pdata;
+    }
   },
   async mounted() {
     this.reloadGrid();
@@ -143,9 +157,9 @@ export default {
 
 <style lang="scss">
 #panel-grid-stack {
-  width: 98%;
-  margin: 1%;
-  position: absolute;
+  width: 100%;
+  // margin: 1%;
+  // position: absolute;
   // top: 0;
 }
 </style>

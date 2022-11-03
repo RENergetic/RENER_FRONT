@@ -1,38 +1,47 @@
 <template>
-  <div>
-    <DotMenu :model="menuModel" :fixed="true" />
-    <Dialog
-      v-model:visible="settingsDialog"
-      :style="{ width: '50vw' }"
-      :maximizable="true"
-      :modal="true"
-      :dismissable-mask="true"
-      @hide="reload"
-    >
-      <!--  @update="onSettingsUpdate()" -->
-      <HomeSettings></HomeSettings>
-    </Dialog>
-    <div style="width: 100%; height: 100vh; margin-bottom: 1rem">
-      store: {{ $store.getters["view/featuredPanels"].map((it) => it.label) }} endstore
-      <font-awesome-icon icon="fa-solid fa-user-secret" />
-      <energy-flow />
-    </div>
+  <DotMenu :model="menuModel" :fixed="true" />
+  <div style="position: relative">
+    <energy-flow v-if="panel" ref="panel" :asset-id="null" :panel="panel" :settings="panelSettings"></energy-flow>
+  </div>
+  <div style="position: relative">
     <DemandList id="demand-list" />
-    <div class="home-grid-stack grid-stack">
-      <!-- <div v-if="settings.demandVisibility" :class="'grid-stack-item ren'">
+  </div>
+  <!-- <div class="home-grid-stack grid-stack"> -->
+  <!-- <div v-if="settings.demandVisibility" :class="'grid-stack-item ren'">
         <DemandList :class="'grid-stack-item-content'" />
       </div> -->
 
-      <!-- <div v-if="settings.notificationVisibility" :class="'grid-stack-item ren'">
+  <!-- <div v-if="settings.notificationVisibility" :class="'grid-stack-item ren'">
         <NotificationList :class="'grid-stack-item-content'"></NotificationList>
       </div> -->
-    </div>
-  </div>
+  <!-- </div> -->
+  <Dialog
+    v-model:visible="settingsDialog"
+    :style="{ width: '50vw' }"
+    :maximizable="true"
+    :modal="true"
+    :dismissable-mask="true"
+    @hide="reload"
+  >
+    <!--  @update="onSettingsUpdate()" -->
+    <HomeSettings @update="reloadSettings()"></HomeSettings>
+  </Dialog>
+  <Dialog
+    v-model:visible="panelSettingsDialog"
+    :style="{ width: '50vw' }"
+    :maximizable="true"
+    :modal="true"
+    :dismissable-mask="true"
+    @hide="reload"
+  >
+    <!--  @update="onSettingsUpdate()" -->
+    <PanelSettings @update="reloadPanelSettings()"></PanelSettings>
+  </Dialog>
 </template>
 <script>
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import HomeSettings from "@/components/miscellaneous/settings/HomeSettings.vue";
-// import NotificationList from "@/components/management/notification/NotificationList.vue";
+import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 import EnergyFlow from "@/components/dashboard/EnergyFlow.vue";
 import DemandList from "@/components/user/demand/DemandList.vue";
 import { RenRoles } from "../plugins/model/Enums.js";
@@ -46,21 +55,24 @@ export default {
     DotMenu,
     DemandList,
     HomeSettings,
+    PanelSettings,
     // NotificationList,
     EnergyFlow,
   },
   data() {
     return {
       roles: RenRoles,
-      demand: { msg: "increase bla blah blah", icon: "battery", up: true, description: "description" },
+
       loaded: false,
       grid: null,
-      panel: null,
       locked: true,
       notifiationDialog: false,
       settingsDialog: false,
+      panelSettingsDialog: false,
       settingsChange: false,
       settings: this.$store.getters["settings/home"],
+      panel: this.$store.getters["view/homePanel"],
+      panelSettings: this.$store.getters["settings/panel"],
       // layout: this.$store.getters["settings/homeLayout"],
     };
   },
@@ -77,13 +89,13 @@ export default {
         command: () => this.toggleLock(),
       };
     },
-    saveButton: function () {
-      return {
-        label: this.$t("menu.save_grid"),
-        icon: "pi pi-fw pi-plus-circle",
-        command: () => this.saveGrid(),
-      };
-    },
+    // saveButton: function () {
+    //   return {
+    //     label: this.$t("menu.save_grid"),
+    //     icon: "pi pi-fw pi-plus-circle",
+    //     command: () => this.saveGrid(),
+    //   };
+    // },
     settingsButton: function () {
       //TODO: set icon
       return {
@@ -92,11 +104,20 @@ export default {
         command: () => (this.settingsDialog = !this.settingsDialog),
       };
     },
+    panelSettingsButton: function () {
+      //TODO: set icon
+      return {
+        label: this.$t("menu.panel_settings"),
+        icon: "pi pi-fw pi-plus-circle",
+        command: () => (this.panelSettingsDialog = !this.panelSettingsDialog),
+      };
+    },
     menuModel() {
       let model = [];
-      if (!this.locked) model.push(this.saveButton);
+      // if (!this.locked) model.push(this.saveButton);
       model.push(this.toggleButton);
       model.push(this.settingsButton);
+      model.push(this.panelSettingsButton);
       return model;
     },
   },
@@ -107,7 +128,12 @@ export default {
   async mounted() {},
   updated() {},
   methods: {
-    reload() {},
+    reloadSettings() {
+      this.settings = this.$store.getters["settings/home"];
+    },
+    reloadPanelSettings() {
+      this.panelSettingsDialog = this.$store.getters["settings/panel"];
+    },
 
     async toggleLock() {
       this.locked = !this.locked;
@@ -128,16 +154,16 @@ export default {
   margin: auto;
   color: #3182ce;
 }
-.grid-stack-item {
-  margin: 0;
-}
-.grid-stack-item-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #3182ce;
-  background-color: #bee3f8;
-  font-weight: 600;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-}
+// .grid-stack-item {
+//   margin: 0;
+// }
+// .grid-stack-item-content {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   color: #3182ce;
+//   background-color: #bee3f8;
+//   font-weight: 600;
+//   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+// }
 </style>

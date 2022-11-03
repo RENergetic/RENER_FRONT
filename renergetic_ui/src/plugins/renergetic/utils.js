@@ -103,4 +103,75 @@ export default class RenUtils {
     //   return [`#FF${color.slice(3)}`, `#40${color.slice(3)}`];
     // }
   }
+  calcPanelRelativeValues(panel, pData) {
+    var accuDict = {};
+    // var aggDict = { current: { last: {} }, predictions: pData.predictions };
+    //TODO: aggregate also predictions - not only current values
+    if (panel && panel.tiles) {
+      for (let tile of panel.tiles) {
+        for (let m of tile.measurements) {
+          let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
+          let factor = m.type.factor;
+          let value = pData.current.last[m.id] * factor; //todo: raise exception if value not found
+          accuDict = this.valueAccu(key, value, m.type.base_unit, accuDict);
+
+          // console.info(factor);
+          // console.info(m);
+          // console.info(pData.current.last[m.id]);
+          // console.info(JSON.stringify(accuDict));
+        }
+      }
+    }
+    if (panel && panel.tiles) {
+      for (let tile of panel.tiles) {
+        for (let m of tile.measurements) {
+          let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
+          // let factor = m.type.factor;
+          // let value = pData.current.last[m.id] * factor;
+          // let aggValue = this.valueAgg(key, value, m.type.base_unit, accuDict);
+          // pData.current.last[m.id] = aggValue;
+          if (!pData.current.min) {
+            pData.current.min = {};
+          }
+          pData.current.min[m.id] = 0;
+          if (!pData.current.max) {
+            pData.current.max = {};
+          }
+          pData.current.max[m.id] = accuDict[key].accu;
+        }
+      }
+    }
+
+    console.info(accuDict);
+    return pData;
+    // console.info(JSON.stringify(aggDict));
+    // return aggDict;
+  }
+  valueAccu(key, value, baseUnit, dict) {
+    if (dict[key] == null) {
+      dict[key] = { accu: value, counter: 0 };
+      return dict;
+    }
+    switch (baseUnit) {
+      case "W":
+      case "Wh":
+        dict[key].accu += value;
+        break;
+      default:
+        console.error(`measurement type accu not defined for ${baseUnit}, ${key}`);
+        break;
+    }
+    return dict;
+  }
+  valueAgg(key, value, baseUnit, dict) {
+    switch (baseUnit) {
+      case "W":
+      case "Wh":
+        return (value / dict[key].accu) * 100.0;
+      default:
+        console.error(`measurement type aggreagation not defined for ${baseUnit}, ${key}`);
+        break;
+    }
+    return dict;
+  }
 }

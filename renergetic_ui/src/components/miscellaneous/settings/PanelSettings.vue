@@ -1,5 +1,4 @@
 <template>
-  <!-- {{ model }} -->
   <Settings :schema="schema" :settings="settings"></Settings>
 </template>
 

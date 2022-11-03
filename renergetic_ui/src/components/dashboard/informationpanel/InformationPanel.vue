@@ -2,7 +2,7 @@
   <!-- {{ mPanel }} -->
   <!--  offset -->
   <!-- {{ pdata }} -->
-  <NotificationList v-if="settings.notificationVisibility" :notifications="mNotifications"></NotificationList>
+  <!-- <NotificationList v-if="settings.notificationVisibility" :notifications="mNotifications"></NotificationList> -->
   <InformationPanelView
     v-if="mPanel"
     :edit="editMode"
@@ -58,8 +58,7 @@
   </Dialog>
 </template>
 <script>
-// import InformationTile from "./informationtile/InformationTile.vue";
-import NotificationList from "@/components/management/notification/NotificationList.vue";
+// import NotificationList from "@/components/management/notification/NotificationList.vue";
 import InformationPanelView from "./InformationPanelView.vue";
 import ManageSensors from "../measurements/ManageSensors.vue";
 // import { GridStack } from "gridstack";
@@ -72,7 +71,7 @@ export default {
   components: {
     InformationPanelView,
     ManageSensors,
-    NotificationList,
+    // NotificationList,
   },
   props: {
     assetId: {
@@ -114,6 +113,7 @@ export default {
           date_to: 1646182303,
         },
       ],
+
       grid: null,
       notificationDialog: false,
       editDialog: false,
