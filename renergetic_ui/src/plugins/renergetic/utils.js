@@ -83,50 +83,86 @@ export default class RenUtils {
     return parsed;
   }
 
-  measurementChartColors(measurement) {
+  knobColors(measurement) {
     if (measurement.type.color) {
-      let color = measurement.type.color;
+      let color = measurement.measurement_details.color
+        ? measurement.measurement_details.color
+        : measurement.type.color;
+      // console.info(measurement);
+      // console.info(color);
       if (color.length == 7) {
         return [`#${color.slice(1)}FF`, `#${color.slice(1)}40`];
       }
       return [`#${color.slice(1, color.length - 2)}FF`, `#${color.slice(1, color.length - 2)}40`];
     }
   }
+
+  measurementBackgroundColor(measurement /*,alpha*/) {
+    //tODO add alpha supprot
+    let alpha = "80";
+    if (measurement.type.color) {
+      let color = measurement.measurement_details.color
+        ? measurement.measurement_details.color
+        : measurement.type.color;
+      // console.info(measurement);
+      // console.info(color);
+      if (color.length == 7) {
+        return `#${color.slice(1)}${alpha}`;
+      }
+      return `#${color.slice(1, color.length - 2)}${alpha}`;
+    }
+  }
   measurementColor(measurement, value) {
     let alpha = value ? 1.0 : 0.5;
-    return { alpha: alpha, color: measurement.type.color };
-    // if (measurement.type.color) {
-    //   let color = measurement.type.color;
-    //   if (color.length == 7) {
-    //     return [`#FF${color.slice(1)}`, `#40${color.slice(1)}`];
-    //   }
-    //   return [`#FF${color.slice(3)}`, `#40${color.slice(3)}`];
-    // }
+    let color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
+    return { alpha: alpha, color: color };
   }
-  calcPanelRelativeValues(panel, pData) {
+  aggKey(measurement, settings) {
+    let key = measurement.type.base_unit;
+    if (settings.groupByDirection) {
+      key += `_${measurement.direction}`;
+    }
+    if (settings.groupByMeasurement) {
+      key += `_${measurement.name}`;
+    }
+    if (settings.groupByDomain) {
+      key += `_${measurement.domain}`;
+    } else {
+      switch (measurement.domain) {
+        case "heat":
+        case "electricity":
+          key += "_he";
+          break;
+        default:
+          key += "_none";
+      }
+    }
+    return key;
+  }
+
+  calcPanelRelativeValues(panel, pData, settings) {
     var accuDict = {};
+
     // var aggDict = { current: { last: {} }, predictions: pData.predictions };
     //TODO: aggregate also predictions - not only current values
+    //TODO: include min values
     if (panel && panel.tiles) {
       for (let tile of panel.tiles) {
         for (let m of tile.measurements) {
-          let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
+          let key = this.aggKey(m, settings);
+          // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
           let factor = m.type.factor;
           let value = pData.current.last[m.id] * factor; //todo: raise exception if value not found
           accuDict = this.valueAccu(key, value, m.type.base_unit, accuDict);
-
-          // console.info(factor);
-          // console.info(m);
-          // console.info(pData.current.last[m.id]);
-          // console.info(JSON.stringify(accuDict));
         }
       }
     }
     if (panel && panel.tiles) {
       for (let tile of panel.tiles) {
         for (let m of tile.measurements) {
-          let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
-          // let factor = m.type.factor;
+          // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
+          let key = this.aggKey(m, settings);
+          let factor = m.type.factor;
           // let value = pData.current.last[m.id] * factor;
           // let aggValue = this.valueAgg(key, value, m.type.base_unit, accuDict);
           // pData.current.last[m.id] = aggValue;
@@ -137,15 +173,13 @@ export default class RenUtils {
           if (!pData.current.max) {
             pData.current.max = {};
           }
-          pData.current.max[m.id] = accuDict[key].accu;
+          pData.current.max[m.id] = accuDict[key].accu / factor;
         }
       }
     }
 
-    console.info(accuDict);
+    // console.info(accuDict);
     return pData;
-    // console.info(JSON.stringify(aggDict));
-    // return aggDict;
   }
   valueAccu(key, value, baseUnit, dict) {
     if (dict[key] == null) {

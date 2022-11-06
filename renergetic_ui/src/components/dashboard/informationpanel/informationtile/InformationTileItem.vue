@@ -4,7 +4,7 @@
       <!-- <span v-if="icon != null" id="tileicon" :style="'background-image: url(' + icon + ')'"></span> -->
       <!-- {{ settings }}fff -->
       <span
-        v-if="mSettings.tile.icon_visibility && settings.tile.icon"
+        v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
         id="tileicon"
         class="flex flex-none flex-column align-items-center justify-content-center"
       >
@@ -78,7 +78,7 @@ export default {
       let icon = this.tileItem.domain ? this.tileItem.domain : this.tileItem.type.metric_type;
       if (this.tileItem.measurement_details.icon != null) icon = this.tileItem.measurement_details.icon;
       else if (this.tileItem.type.icon != null) icon = this.tileItem.type.icon;
-      console.info(icon);
+      // console.info(icon);
       return icons[icon] != null ? icons[icon] : icons.default;
     },
     unit: function () {
@@ -91,13 +91,12 @@ export default {
       //todo support other aggregation functions
       try {
         if (this.mSettings.panel.relativeValues) {
-          console.info(JSON.stringify(this.pdata.current));
-          console.info(this.tileItem.type.factor);
-          return (
-            ((this.tileItem.type.factor * this.pdata.current.last[this.tileItem.id]) /
-              this.pdata.current.max[this.tileItem.id]) *
-            100.0
-          );
+          // return (
+          //   ((this.tileItem.type.factor * this.pdata.current.last[this.tileItem.id]) /
+          //     this.pdata.current.max[this.tileItem.id]) *
+          //   100.0
+          // );
+          return (this.pdata.current.last[this.tileItem.id] / this.pdata.current.max[this.tileItem.id]) * 100.0;
         }
         return this.pdata.current.last[this.tileItem.id];
       } catch (e) {

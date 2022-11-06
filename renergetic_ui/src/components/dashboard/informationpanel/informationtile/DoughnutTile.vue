@@ -11,13 +11,11 @@
         <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
       </div>
       <span
-        v-if="settings.tile.icon_visibility && settings.tile.icon"
+        v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
         id="tileicon"
         class="flex flex-none flex-column align-items-center justify-content-center"
       >
-        <!-- {{ settings.tile.icon }} -->
-        <!-- :style="'background-image: url(' + settings.icon + ')'" -->
-        <font-awesome-icon :icon="settings.tile.icon" />
+        <font-awesome-icon :icon="mSettings.tile.icon" />
       </span>
     </div>
   </div>
@@ -37,6 +35,7 @@ export default {
   },
   data() {
     return {
+      mSettings: this.settings,
       mStyle: "max-width: 30rem; margin: auto",
       options: {
         responsive: true,
@@ -61,12 +60,24 @@ export default {
 
       // let data = this.tile.measurements.map((m) => this.pdata[m.id]);
       //TODO: make it comfigurable in tile / args prediction & aggregation func
-      let data = this.tile.measurements.map((m) => this.pdata.current.last[m.id]);
-
-      // console.info(this.tile.measurements);
+      let data = null;
       let backgroundColor = this.tile.measurements.map((m) =>
         m.measurement_details.color ? m.measurement_details.color : "#90A4AE",
       );
+      if (!this.mSettings.panel.relativeValues) {
+        data = this.tile.measurements.map((m) => this.pdata.current.last[m.id]);
+      } else {
+        //todo include min offset
+        // console.info(this.pdata.current);
+        data = this.tile.measurements.map((m) => this.pdata.current.last[m.id] / this.pdata.current.max[m.id]);
+        let sum = data.reduce((partialSum, a) => partialSum + a, 0);
+        // console.info(1.0 - sum);
+        data.push(1.0 - sum);
+        backgroundColor.push("#01010110");
+        labels.push("");
+      }
+      // console.info(data);
+      // console.info(this.tile.measurements);
 
       return {
         labels: labels,

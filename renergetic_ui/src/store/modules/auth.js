@@ -44,6 +44,11 @@ export default {
     },
   },
   getters: {
+    /**
+     * get current user
+     * @param {*} state
+     * @returns
+     */
     current: (state /* getters*/) => {
       return state.data;
     },

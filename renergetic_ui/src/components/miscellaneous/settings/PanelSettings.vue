@@ -73,6 +73,15 @@ export default {
           key: "groupByDomain",
         },
         {
+          label: this.$t("settings.group_by_measurement"),
+          ext: {
+            true: this.$t("settings.enabled"),
+            false: this.$t("settings.disabled"),
+          },
+          type: Boolean,
+          key: "groupByMeasurement",
+        },
+        {
           label: this.$t("settings.group_by_direction"),
           ext: {
             true: this.$t("settings.enabled"),

@@ -1,10 +1,12 @@
 ## REST API description
+general parameters
 default parameters:
 - 'o','offset' - skip 'n' rows
 - 'l','limit' - number of returned rows
 date filter
 - 'from' - unix timestamp, [ms]
 - 'to' - unix timestamp, [ms]
+- user id is inferred from auth headers transparent to the UI client
 
 ### Dashboard
 panel structures , heat maps, grafana dashboards
@@ -19,7 +21,10 @@ vue:
 <!-- * listHeatMap  - returns list of grafana based dashboards to the user. 
 * getHeatMap(id) -  get heatmap by id
 * addHeatMap(heatmap) -->
-      
+### Wrapper API
+get all metadata for the view
+(@/plugins/renergetic/ren_api/wrapper_api.js)
+
 ### Data API
 api for data aquuisition
 backend: [dashboard](./api/data.md)

@@ -1,18 +1,17 @@
 <template>
-  <div class="flex flex-column justify-content-center" style="height: 100%">
+  <div class="flex flex-column justify-content-center" :style="tileStyle">
     <div
-      v-if="settings.tile.icon_visibility && settings.tile.icon"
+      v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
       id="tileicon"
       class="flex flex-none flex-column align-items-center justify-content-center"
     >
-      <!-- {{ settings.tile.icon }} -->
-      <!-- :style="'background-image: url(' + settings.icon + ')'" -->
-      <font-awesome-icon :icon="settings.tile.icon" />
+      <!-- {{ mSettings.tile.icon }} -->
+      <font-awesome-icon :icon="mSettings.tile.icon" />
     </div>
     <div class="flex flex-none flex-column align-items-center justify-content-center">
-      <span> {{ label }}</span>
-      <span
-        ><h2>{{ value }} {{ measurement.type.unit }}</h2></span
+      <span :style="color"> {{ label }} </span>
+      <span :style="color"
+        ><h2>{{ Math.round(value, 2) }} {{ unit }}</h2></span
       >
     </div>
   </div>
@@ -40,6 +39,7 @@ export default {
     let measurement = this.tile.measurements.length > 0 ? this.tile.measurements[0] : null;
     return {
       measurement: measurement,
+      mSettings: this.settings,
     };
   },
   computed: {
@@ -50,15 +50,31 @@ export default {
     //   else if (this.measurement.type.icon != null) icon = this.measurement.type.icon;
     //   return this.icons[icon] != null ? this.icons[icon] : this.icons.default;
     // },
+
+    unit: function () {
+      if (this.mSettings.panel.relativeValues) {
+        return "%";
+      }
+      return this.measurement.type.unit;
+    },
+    color: function () {
+      let color = this.$ren.utils.measurementColor(this.measurement, this.value);
+      return `color:${color.color} `;
+    },
+    tileStyle: function () {
+      let color = this.$ren.utils.measurementBackgroundColor(this.measurement, this.value);
+      return `height: 100%;background:${color} `;
+    },
     value: function () {
       //todo support other aggregation functions
       try {
+        if (this.mSettings.panel.relativeValues) {
+          return (this.pdata.current.last[this.measurement.id] / this.pdata.current.max[this.measurement.id]) * 100.0;
+        }
         return this.pdata.current.last[this.measurement.id];
       } catch (e) {
         return null;
       }
-      // this.pdata.current.last[m.id];
-      // return this.pdata ? this.pdata[this.tileItem.id] : null;
     },
     label: function () {
       if (this.measurement.label != null) {

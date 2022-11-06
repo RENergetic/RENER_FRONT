@@ -8,32 +8,43 @@ TODO: restApiName - describe
   * view 
   * auth 
   * settings
+
+  example: `$store.getters["view/get"]` - get user
 * `this.$confirm` -> confirm dialog (YES/NO)
 * `v-tooltip`  -> tooltip attribute for templates
 *  
-*   TODO: describe this.$emit("UpdateMenu", null);
-
-###  global events
-```$emit("UpdateMenu", args)``` - emit event to menu
-
-### colors
-https://materialui.co/colors
-
-### vue.config.js
-Project imports
-* scss variables import
-
-### store:
-$store.getters["view/wrapper"] - main getter for view data
-
-### roles
-```
-user_role_flag  = user_roles .reduce((flag,user_role)=>flag |user_role,0x0)
-flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER ;
-if ((flags & user_role_flag) > 0)
-  //has acccess
   
-```
+
+### colors & icons
+https://materialui.co/colors
 
 https://fontawesome.com/search?q=open&o=r&s=solid
 https://www.primefaces.org/primevue/icons
+
+### Router
+Meta parameter description:
+* isAuthenticated: **bool** - true=enable authentication
+* layout: **enum** - *standard*, *fullscr*
+* roles: **array** - available roles ["ren-manager","ren-technical-manager", "ren-admin", "ren-guest","ren-user","ren-dev","ren-staff","ren-visitor"]. 
+* ```$emit("UpdateMenu", args)``` - request menu update, emit event from router View to sidemenu  
+
+ 
+
+### Role management
+[roles](roles.xlsx) - role overview
+  
+compute user's role flag
+
+```
+user_role_flag  = user_roles.reduce((flag,user_role)=>flag |user_role,0x0)
+```
+compute required flags for the protected section
+```
+required_flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER ;
+```
+verify user
+```
+if ((required_flags & user_role_flag) > 0)
+  //has acccess
+  
+```

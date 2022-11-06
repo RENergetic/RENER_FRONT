@@ -8,8 +8,11 @@
 </template>
 <script>
 import Knob from "primevue/knob";
+/**
+ * component to show percentage values in a form of a knob
+ */
 export default {
-  name: "InformationTile",
+  name: "KnobTile",
   components: { Knob },
   props: {
     pdata: { type: Object, default: () => ({}) },

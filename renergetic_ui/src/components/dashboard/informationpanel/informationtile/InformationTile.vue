@@ -1,6 +1,7 @@
 <template>
   <div v-if="slotProps" :class="'grid-stack-item ren'" v-bind="gridStackAttributes">
-    <div :style="mStyle" :class="'grid-stack-item-content ' + state">
+    <!-- :style="mStyle" -->
+    <div :class="'grid-stack-item-content ' + state" :style="background">
       <div class="tile-bar">
         <Button
           v-if="edit"
@@ -64,7 +65,7 @@ export default {
       }
       return "block";
     },
-    mStyle: function () {
+    background: function () {
       if (this.tile.props) {
         return "background: " + this.tile.props.background;
       }

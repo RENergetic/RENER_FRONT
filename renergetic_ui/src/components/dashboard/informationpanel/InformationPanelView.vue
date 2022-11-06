@@ -115,10 +115,9 @@ export default {
     // console.info(this.mSettings);
     // console.info(JSON.stringify(this.pdata.data));
     if (this.mSettings.relativeValues && this.pdata.data) {
-      // let relativeData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata.data);
       this.mPData = this.pdata;
-      this.mPData.data = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata.data);
-      // console.info(relativeData);
+      this.mPData.data = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata.data, this.mSettings);
+      // console.info(  this.mPData.data );
       // this.mPData.data = relativeData;
     } else {
       this.mPData = this.pdata;

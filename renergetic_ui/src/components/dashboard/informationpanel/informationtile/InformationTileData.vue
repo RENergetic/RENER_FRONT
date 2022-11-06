@@ -1,9 +1,12 @@
 <template>
-  <div v-if="tile" :class="tileClass">
-    <h3 v-if="titleVisible && title">{{ title }}</h3>
+  <div v-if="tile" :class="tileClass" :style="background">
     <!-- {{ pdata }} -->
-
-    <div v-if="tile.measurements.length == 0" class="flex flex-column justify-content-center" style="height: 100%">
+    <!-- {{ tile.props }} -->
+    <div
+      v-if="(titleVisible || tile.measurements.length == 0) && tile.label"
+      class="flex flex-column justify-content-center"
+      style="height: 100%"
+    >
       <h3 style="margin: 0; text-align: center">{{ tile.label }}</h3>
     </div>
     <KnobTile v-else-if="tile.type == 'knob'" :tile="tile" :pdata="pdata.data"></KnobTile>
@@ -48,6 +51,9 @@ import icons from "./icons";
 
 function validateTileSettings(tile, settings) {
   // console.info("icon for " + tile.props.icon + ": " + icons[tile.props.icon]);
+  // console.info(icons[tile.props.icon]);
+  // console.info(tile.props.icon);
+  // console.info(icons);
   if (tile.props) {
     return {
       icon: icons[tile.props.icon],
@@ -60,6 +66,7 @@ function validateTileSettings(tile, settings) {
           ? settings.title_visibility
           : true,
       fontSize: settings.fontSize,
+      background: tile.props.mask,
     };
   }
   return settings;
@@ -102,6 +109,9 @@ export default {
     };
   },
   computed: {
+    background: function () {
+      return `background:${this.mSettings.tile.background}`;
+    },
     tileClass: function () {
       return this.settings != null && !this.settings.center ? "flex tile_wrapper" : " flex tile_wrapper_center";
     },
