@@ -3,6 +3,7 @@
     <Toast />
     <ConfirmDialog></ConfirmDialog>
     <SideMenu ref="sideMenu" />
+
     <router-view v-if="hasAccess" :key="$route.path" :class="layout()" @update-menu="updateMenu()" />
     <!-- TODO: v-else -->
     <!-- {{ $keycloak && $keycloak.isInitialized() }} -->

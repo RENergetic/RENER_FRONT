@@ -103,7 +103,7 @@ export default {
         // console.info(this.pdata.current);
         data = this.tile.measurements.map((m) => this.pdata.current.last[m.id] / this.pdata.current.max[m.id]);
       }
-      console.info(data);
+      // console.info(data);
       let labels = []; // this.tile.measurements.map((m) => m.label);
       //todo remove labels ?
       for (let idx in this.tile.measurements) {
@@ -133,7 +133,7 @@ export default {
     },
   },
   mounted() {
-    console.info(this.mSettings.panel);
+    // console.info(this.mSettings.panel);
     this.mStyle = `max-width: 30rem; margin: auto;width:${this.mSettings.panel.cellWidth * this.tile.layout.w * 0.6}px`;
     this.loaded = true;
   },

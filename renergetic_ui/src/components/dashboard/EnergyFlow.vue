@@ -112,7 +112,7 @@ export default {
   methods: {
     async loadData() {
       if (this.panel.id != null) {
-        let pData = await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, true).then((resp) => {
+        let pData = await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId).then((resp) => {
           if (resp) return resp["data"];
           return {};
         });

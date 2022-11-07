@@ -104,8 +104,9 @@ export default class DataApi extends RestComponent {
   //   return generator.
   // }
 
-  async getPanelData(panelId, assetId, relative = null) {
-    let args = this.parseArgs({ relative: relative });
+  async getPanelData(panelId, assetId) {
+    // let args = this.parseArgs({ relative: relative });
+    let args = "";
     let endpoint =
       assetId != null ? `/api/data/panel/${panelId}/asset/${assetId}${args}` : `/api/data/panel/${panelId}${args}`;
     return this.axios
@@ -113,7 +114,7 @@ export default class DataApi extends RestComponent {
         headers: { "Content-type": "application/json; charset=UTF-8" },
       })
       .then((response) => {
-        console.info(response);
+        console.debug(response);
         return response.data;
       })
       .catch(function (error) {

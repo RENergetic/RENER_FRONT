@@ -75,7 +75,7 @@ export default class WrapperApi extends RestComponent {
         headers: { "Content-type": "application/json; charset=UTF-8" },
       })
       .then((response) => {
-        console.info(response.data);
+        console.debug(response.data);
         return response.data;
       })
       .catch(function (error) {
