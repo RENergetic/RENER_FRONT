@@ -12,6 +12,7 @@ export class QueryBuilder {
     };
     return this;
   }
+
   dashboards(offset = 0, limit = 10, id) {
     this.calls["dashboards"] = {
       offset: offset,
@@ -50,6 +51,11 @@ export class QueryBuilder {
       limit: limit,
       id: id,
     };
+    return this;
+  }
+  measurementTypes() {
+    //offset = 0, limit = 10) {
+    this.calls["measurement_types"] = {};
     return this;
   }
   assetPanels(offset = 0, limit = 10) {

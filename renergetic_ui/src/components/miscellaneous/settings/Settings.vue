@@ -82,7 +82,8 @@ export default {
   watch: {
     mModel: {
       handler: function (newVal) {
-        console.info(newVal);
+        // console.debug(newVal);
+        console.info("settings change");
         this.$emit("update:settings", newVal);
       },
       deep: true,

@@ -12,7 +12,7 @@
       @notification="viewNotification"
     />
   </div>
-
+  <!-- dd {{ mSettings }}ddddddddsettings -->
   <Dialog
     v-model:visible="notificationDialog"
     :style="{ width: '50vw' }"
@@ -110,8 +110,22 @@ export default {
       },
       deep: true,
     },
+    mSettings: {
+      handler(newVal) {
+        if (newVal.relativeValues && this.pdata.data) {
+          this.mPData = this.pdata;
+          this.mPData.data = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata.data, newVal);
+          // console.info(  this.mPData.data );
+          // this.mPData.data = relativeData;
+        } else {
+          this.mPData = this.pdata;
+        }
+      },
+      deep: true,
+    },
   },
   async updated() {
+    console.info("update");
     // console.info(this.mSettings);
     // console.info(JSON.stringify(this.pdata.data));
     if (this.mSettings.relativeValues && this.pdata.data) {

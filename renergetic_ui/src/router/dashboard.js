@@ -36,7 +36,7 @@ var dashboardRoutes = [
       roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
     },
 
-    component: () => import("../views/dashboard/HeatMapCreator.vue"),
+    component: () => import("../views/dashboard/heatmap/HeatMapCreator.vue"),
   },
   {
     path: "/dashboard/heatmap/view/:id?",
@@ -48,7 +48,7 @@ var dashboardRoutes = [
       roles: ["ren-admin", "ren-dev", "ren-manager"],
       roleFlag: RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
     },
-    component: () => import("../views/dashboard/HeatMap.vue"),
+    component: () => import("../views/dashboard/heatmap/HeatMap.vue"),
   },
   {
     path: "/dashboard/heatmap/edit/:id?",
@@ -60,7 +60,7 @@ var dashboardRoutes = [
       roles: ["ren-admin", "ren-dev"],
       roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
     },
-    component: () => import("../views/dashboard/HeatMapEditView.vue"),
+    component: () => import("../views/dashboard/heatmap/HeatMapEditView.vue"),
   },
   {
     path: "/dashboard/heatmap/list",
@@ -71,7 +71,7 @@ var dashboardRoutes = [
       roles: ["ren-admin", "ren-dev", "ren-manager"],
       roleFlag: RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
     },
-    component: () => import("../views/dashboard/HeatMapListView.vue"),
+    component: () => import("../views/dashboard/heatmap/HeatMapListView.vue"),
   },
   // {
   //   path: "/panel/view/:id?",

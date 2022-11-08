@@ -18,6 +18,18 @@ export default class UserApi extends RestComponent {
         console.error(error.response);
       });
   }
+  getNotifications() {
+    return this.axios
+      .get(`/api/users/notifications`, {
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error) {
+        console.error(error.response);
+      });
+  }
   /**
    * get panels assigned to assets
    * ./docs/model/asset_panel.json

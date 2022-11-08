@@ -5,7 +5,6 @@
   </div>
 </template>
 <script>
-// import AssetList from "../../../components/management/infrastructure/AssetList.vue";
 export default {
   name: "AssetTreeView",
   components: {

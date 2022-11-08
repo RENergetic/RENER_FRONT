@@ -1,44 +1,50 @@
 <template>
-  <div id="panel-box">
-    <div v-if="panel">
-      <DotMenu :model="menuModel" />
-      <Dialog
-        v-model:visible="settingsDialog"
-        :style="{ width: '50vw' }"
-        :maximizable="true"
-        :modal="true"
-        :dismissable-mask="true"
-      >
-        <PanelSettings @update="reloadSettings()"></PanelSettings>
-      </Dialog>
+  <div v-if="panel" id="panel-box">
+    <!-- <div > -->
+    <DotMenu :model="menuModel" />
+    <Dialog
+      v-model:visible="settingsDialog"
+      :style="{ width: '50vw' }"
+      :maximizable="true"
+      :modal="true"
+      :dismissable-mask="true"
+    >
+      <PanelSettings @update="reloadSettings()"></PanelSettings>
+    </Dialog>
 
-      <energy-flow
-        v-if="panel"
-        ref="panel"
-        :asset-id="$route.params.asset_id"
-        :panel="panel"
-        :edit-mode="editMode"
-        :settings="settings"
-      ></energy-flow>
-    </div>
+    <NotificationList v-if="settings.notificationVisibility" :notifications="notifications"></NotificationList>
+    <!-- <NotificationList :notifications="notifications"></NotificationList> -->
+
+    <energy-flow
+      v-if="panel"
+      ref="panel"
+      :asset-id="$route.params.asset_id"
+      :panel="panel"
+      :edit-mode="editMode"
+      :settings="settings"
+    ></energy-flow>
   </div>
+  <!-- </div> -->
 </template>
 <script>
 import EnergyFlow from "@/components/dashboard/EnergyFlow.vue";
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
-
+import NotificationList from "@/components/management/notification/NotificationList.vue";
+import { RenRoles } from "@/plugins/model/Enums";
 export default {
   name: "InformationPanelView",
   components: {
     EnergyFlow,
     DotMenu,
     PanelSettings,
+    NotificationList,
   },
   data() {
     return {
       panel: null,
       locked: false,
+      notifications: [],
       editMode: false,
       settings: this.$store.getters["settings/panel"],
       settingsDialog: false,
@@ -67,6 +73,17 @@ export default {
     },
   },
   async mounted() {
+    if (
+      (RenRoles.REN_ADMIN |
+        RenRoles.REN_USER |
+        RenRoles.REN_MANAGER |
+        RenRoles.REN_TECHNICAL_MANAGER |
+        RenRoles.REN_STAFF) &
+      this.$store.getters["auth/renRole"]
+    ) {
+      this.notifications = await this.$ren.userApi.getNotifications();
+    }
+
     await this.loadStructure();
   },
   async updated() {

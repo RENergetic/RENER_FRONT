@@ -9,6 +9,20 @@ function mapAssetPanelId(objectArray) {
   );
   return dict;
 }
+function groupMeasurementTypes(measurementTypes) {
+  let d = {};
+  for (let mt of measurementTypes) {
+    if (!d[mt.physical_name]) {
+      d[mt.physical_name] = [];
+    }
+    d[mt.physical_name].push({
+      unit: mt.unit,
+      factor: mt.factor,
+      base_unit: mt.base_unit,
+    });
+  }
+}
+
 export default {
   namespaced: true,
   state: {
@@ -40,6 +54,7 @@ export default {
       state.assetsMap = mapPanelId(state.assets);
       // state.state =  getF("state",[]);
       state.data = getF("data", []);
+      state.measurementTypes = groupMeasurementTypes(getF("measurement_types", []));
       state.assetPanels = getF("asset_panels", []);
       state.assetPanelsMap = mapAssetPanelId(state.assetPanels);
       state.dashboards = getF("dashboards", []);
@@ -107,6 +122,16 @@ export default {
   getters: {
     wrapper: (state) => {
       return state;
+    },
+    measurementTypes: (state) => {
+      return state.measurementTypes;
+    },
+    convertValue: (state) => (measurementType, value, unit) => {
+      if (unit == null || measurementType.unit == unit) {
+        return value;
+      }
+      let mt = state.measurementTypes[measurementType.physical_name].find((mt) => mt.unit == unit);
+      return (value / measurementType.factor) * mt.factor;
     },
     locationList: (state /* getters*/) => {
       return state.locationList;

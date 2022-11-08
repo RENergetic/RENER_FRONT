@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import MeasurementList from "../../../components/management/infrastructure/MeasurementList.vue";
+import MeasurementList from "@/components/management/infrastructure/MeasurementList.vue";
 export default {
   name: "MeasurementListView",
   components: {

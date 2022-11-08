@@ -176,6 +176,7 @@ export default {
     //   this.grid = grid;
     // },
     async loadData() {
+      console.info("panel load data");
       if (this.panel.id != null) {
         if (this.panel.is_template) {
           let resp = await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId);

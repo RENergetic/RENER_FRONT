@@ -47,6 +47,7 @@ export default class RenUtils {
     console.info("reload user data");
     // console.info(this.app.$store.getters["auth/renRole"]);
     let q = new QueryBuilder();
+    q.measurementTypes();
     if (
       (RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER) &
       this.app.$store.getters["auth/renRole"]

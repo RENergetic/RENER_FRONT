@@ -11,6 +11,7 @@
 	* "legend":bool,
 	* "title_visibility" :bool,
 	* "background": css background property
+	* "mask": hex color above background
  
 *  
   
