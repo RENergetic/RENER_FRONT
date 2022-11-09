@@ -11,7 +11,7 @@
     <div class="flex flex-none flex-column align-items-center justify-content-center">
       <span :style="color"> {{ label }} </span>
       <span :style="color"
-        ><h2>{{ Math.round(value, 2) }} {{ unit }}</h2></span
+        ><h2>{{ Math.round(value * 1000) / 1000.0 }} {{ unit }}</h2></span
       >
     </div>
   </div>
@@ -33,6 +33,7 @@ export default {
     },
 
     settings: { type: Object, default: () => ({}) },
+    conversionSettings: { type: Object, default: () => ({}) },
   },
 
   data() {
@@ -55,11 +56,13 @@ export default {
       if (this.mSettings.panel.relativeValues) {
         return "%";
       }
-      return this.measurement.type.unit;
+      let mt = this.conversionSettings[this.measurement.type.physical_name];
+
+      return mt ? mt : this.measurement.type.unit;
     },
     color: function () {
       let color = this.$ren.utils.measurementColor(this.measurement, this.value);
-      return `color:${color.color} `;
+      return `color:${color.color}`;
     },
     tileStyle: function () {
       let color = this.$ren.utils.measurementBackgroundColor(this.measurement, this.value);

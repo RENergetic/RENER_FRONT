@@ -12,7 +12,7 @@
 <script>
 import InformationTileItem from "./InformationTileItem.vue";
 export default {
-  name: "InformationTile",
+  name: "InformationListTile",
   components: { InformationTileItem },
   props: {
     tile: {

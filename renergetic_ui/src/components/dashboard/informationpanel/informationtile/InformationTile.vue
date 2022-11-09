@@ -20,7 +20,12 @@
           @click="$emit('notification', slotProps)"
         /> -->
       </div>
-      <InformationTileData :tile="tile" :pdata="tileData" :settings="settings"></InformationTileData>
+      <InformationTileData
+        :tile="tile"
+        :pdata="tileData"
+        :settings="settings"
+        :conversion-settings="conversionSettings"
+      ></InformationTileData>
     </div>
   </div>
 </template>
@@ -44,11 +49,15 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    conversionSettings: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   emits: ["edit", "notification"],
   data() {
     return {
-      tileData: this.pdata && this.pdata.data ? this.pdata.data : {},
+      tileData: this.pdata, //&& this.pdata.data ? this.pdata.data : {},
     };
   },
   computed: {
@@ -111,7 +120,7 @@ export default {
   watch: {
     pdata: {
       handler: function (newValue) {
-        this.tileData = newValue && newValue.data ? newValue.data : {};
+        this.tileData = newValue; //&& newValue.data ? newValue.data : {};
       },
       deep: true,
     },

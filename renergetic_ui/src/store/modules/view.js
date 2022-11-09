@@ -21,6 +21,7 @@ function groupMeasurementTypes(measurementTypes) {
       base_unit: mt.base_unit,
     });
   }
+  return d;
 }
 
 export default {
@@ -131,7 +132,7 @@ export default {
         return value;
       }
       let mt = state.measurementTypes[measurementType.physical_name].find((mt) => mt.unit == unit);
-      return (value / measurementType.factor) * mt.factor;
+      return (value * measurementType.factor) / mt.factor;
     },
     locationList: (state /* getters*/) => {
       return state.locationList;

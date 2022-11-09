@@ -1,5 +1,5 @@
 <template>
-  <div v-if="panel && mPData" id="panel-grid-stack" style="" class="grid-stack">
+  <div v-if="mPanel && mPData" id="panel-grid-stack" style="" class="grid-stack">
     <InformationTile
       v-for="(tile, index) in tiles"
       :key="tile.id"
@@ -7,12 +7,13 @@
       :slot-props="{ tile: tile, index: index }"
       :edit="edit"
       :pdata="mPData"
+      :conversion-settings="conversionSettings"
       :settings="mSettings"
       @edit="$emit('editTile', { tile: tile, index: index })"
       @notification="viewNotification"
     />
   </div>
-  <!-- dd {{ mSettings }}ddddddddsettings -->
+  <!-- dddddd {{ conversionSettings }}aaaaaaaaaa {{ mPData }}kk -->
   <Dialog
     v-model:visible="notificationDialog"
     :style="{ width: '50vw' }"
@@ -73,6 +74,12 @@ export default {
         return {};
       },
     },
+    conversionSettings: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
     edit: {
       type: Boolean,
       default: false,
@@ -80,13 +87,16 @@ export default {
   },
   emits: ["editTile", "update"],
   data() {
+    // console.info(this.pdata);
     return {
       grid: null,
+
       mSettings: validateSettings(this.settings),
+      // loaded: false,
       notificationDialog: false,
       selectedItem: null,
       mPanel: this.panel,
-      mPData: this.pdata,
+      mPData: null,
       // tileTypes: Object.entries(TileTypes).map((k) => {
       //   return { value: k[1], label: this.$t("enums.tile_type." + k[1]) };
       // }),
@@ -110,15 +120,50 @@ export default {
       },
       deep: true,
     },
+    pdata: {
+      handler: function (newValue) {
+        if (this.mSettings.relativeValues && newValue) {
+          this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, newValue, this.mSettings);
+        } else {
+          // console.info(newValue);
+          this.mPData = this.$ren.utils.convertPanelData(this.mPanel, newValue, this.conversionSettings);
+          console.info(this.mPData);
+          console.info("wsswww");
+        }
+
+        // this.reloadGrid();
+      },
+      deep: true,
+    },
     mSettings: {
       handler(newVal) {
-        if (newVal.relativeValues && this.pdata.data) {
-          this.mPData = this.pdata;
-          this.mPData.data = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata.data, newVal);
-          // console.info(  this.mPData.data );
-          // this.mPData.data = relativeData;
+        console.info("updcccaaaaaaaaaaate");
+        if (newVal.relativeValues && this.pdata) {
+          // this.mPData = this.pdata;
+          this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata, newVal);
         } else {
-          this.mPData = this.pdata;
+          this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.conversionSettings);
+
+          console.info(this.mPData);
+          console.info("wwww");
+        }
+      },
+      deep: true,
+    },
+    conversionSettings: {
+      handler(newVal) {
+        console.info("updcccate");
+        if (newVal.relativeValues && this.pdata) {
+          // this.mPData = this.pdata;
+          this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata, this.mSettings);
+        } else {
+          // console.info(newVal);
+          // console.info(this.mPData);
+
+          this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, newVal);
+
+          console.info(this.mPData);
+          console.info("wwww");
         }
       },
       deep: true,
@@ -126,24 +171,37 @@ export default {
   },
   async updated() {
     console.info("update");
-    // console.info(this.mSettings);
-    // console.info(JSON.stringify(this.pdata.data));
-    if (this.mSettings.relativeValues && this.pdata.data) {
-      this.mPData = this.pdata;
-      this.mPData.data = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata.data, this.mSettings);
-      // console.info(  this.mPData.data );
-      // this.mPData.data = relativeData;
-    } else {
-      this.mPData = this.pdata;
-    }
+    // // this.mPData = this.pdata;
+    // // console.info(this.mSettings);
+
+    // if (this.mSettings.relativeValues && this.pdata) {
+    //   this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata, this.mSettings);
+    //   // console.info(  this.mPData.data );
+    //   // this.mPData.data = relativeData;
+    // } else {
+    //   console.info(this.pdata);
+    //   // this.mPData = this.pdata;
+    //   this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.conversionSettings);
+    // }
+    this.reloadGrid();
   },
   async mounted() {
+    if (this.settings.relativeValues && this.pdata) {
+      // this.mPData = this.pdata;
+      this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata, this.settings);
+    } else {
+      // console.info(newVal);
+      // this.mPData = this.pdata;
+      this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.conversionSettings);
+      console.info(this.mPData);
+    }
     this.reloadGrid();
   },
   methods: {
     reloadGrid() {
       if (this.grid != null) this.grid.destroy(false);
       let grid = GridStack.init({ float: true, column: 12, cellHeight: "8vh", margin: 5 }, "#panel-grid-stack");
+
       if (this.locked) {
         grid.disable();
       } else {
@@ -151,7 +209,7 @@ export default {
       }
       grid.disable();
       this.mSettings.cellWidth = grid.el.clientWidth / 12;
-      // console.info(grid);
+
       this.grid = grid;
     },
 

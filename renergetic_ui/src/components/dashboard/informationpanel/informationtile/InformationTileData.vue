@@ -9,8 +9,19 @@
     >
       <h3 style="margin: 0; text-align: center">{{ tile.label }}</h3>
     </div>
-    <KnobTile v-else-if="tile.type == 'knob'" :tile="tile" :pdata="pdata.data"></KnobTile>
-    <DoughnutTile v-else-if="isDoughnut" :tile="tile" :pdata="pdata" :settings="mSettings"></DoughnutTile>
+    <KnobTile
+      v-else-if="tile.type == 'knob'"
+      :tile="tile"
+      :pdata="pdata.data"
+      :conversion-settings="conversionSettings"
+    ></KnobTile>
+    <DoughnutTile
+      v-else-if="isDoughnut"
+      :tile="tile"
+      :pdata="pdata"
+      :settings="mSettings"
+      :conversion-settings="conversionSettings"
+    ></DoughnutTile>
     <!-- <MultiDoughnutTile
         v-else-if="tile.type == 'multi_doughnut'"
         :tile="tile"
@@ -21,15 +32,28 @@
       :tile="tile"
       :pdata="pdata"
       :settings="mSettings"
+      :conversion-settings="conversionSettings"
     ></MultiKnobTile>
-    <PanelTile v-else-if="tile.type == 'panel'" :tile="tile" :pdata="pdata"></PanelTile>
+    <PanelTile
+      v-else-if="tile.type == 'panel'"
+      :tile="tile"
+      :pdata="pdata"
+      :conversion-settings="conversionSettings"
+    ></PanelTile>
     <InformationTileSingle
       v-else-if="tile.type == 'single'"
       :tile="tile"
       :pdata="pdata"
       :settings="mSettings"
+      :conversion-settings="conversionSettings"
     ></InformationTileSingle>
-    <InformationListTile v-else :tile="tile" :pdata="pdata" :settings="mSettings"></InformationListTile>
+    <InformationListTile
+      v-else
+      :tile="tile"
+      :pdata="pdata"
+      :settings="mSettings"
+      :conversion-settings="conversionSettings"
+    ></InformationListTile>
   </div>
 </template>
 <script>
@@ -98,6 +122,10 @@ export default {
       default: () => null,
     },
     settings: {
+      type: Object,
+      default: () => ({}),
+    },
+    conversionSettings: {
       type: Object,
       default: () => ({}),
     },

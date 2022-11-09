@@ -11,6 +11,15 @@
     >
       <PanelSettings @update="reloadSettings()"></PanelSettings>
     </Dialog>
+    <Dialog
+      v-model:visible="conversionSettingsDialog"
+      :style="{ width: '50vw' }"
+      :maximizable="true"
+      :modal="true"
+      :dismissable-mask="true"
+    >
+      <ConversionSettings @update="reloadSettings()"></ConversionSettings>
+    </Dialog>
 
     <NotificationList v-if="settings.notificationVisibility" :notifications="notifications"></NotificationList>
     <!-- <NotificationList :notifications="notifications"></NotificationList> -->
@@ -22,6 +31,7 @@
       :panel="panel"
       :edit-mode="editMode"
       :settings="settings"
+      :conversion-settings="conversionSettings"
     ></energy-flow>
   </div>
   <!-- </div> -->
@@ -30,6 +40,7 @@
 import EnergyFlow from "@/components/dashboard/EnergyFlow.vue";
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
+import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
 import NotificationList from "@/components/management/notification/NotificationList.vue";
 import { RenRoles } from "@/plugins/model/Enums";
 export default {
@@ -39,6 +50,7 @@ export default {
     DotMenu,
     PanelSettings,
     NotificationList,
+    ConversionSettings,
   },
   data() {
     return {
@@ -47,7 +59,9 @@ export default {
       notifications: [],
       editMode: false,
       settings: this.$store.getters["settings/panel"],
+      conversionSettings: this.$store.getters["settings/conversion"],
       settingsDialog: false,
+      conversionSettingsDialog: false,
     };
   },
   computed: {
@@ -59,16 +73,25 @@ export default {
         command: () => (this.settingsDialog = !this.settingsDialog),
       };
     },
+    conversionSettingsButton: function () {
+      //TODO: set icon
+      return {
+        label: this.$t("menu.unit_settings"),
+        icon: "pi pi-fw pi-plus-circle",
+        command: () => (this.conversionSettingsDialog = !this.conversionSettingsDialog),
+      };
+    },
 
     menuModel() {
       let menu = [
-        {
-          label: this.$t("menu.save_panel_grid"),
-          icon: "pi pi-fw pi-save",
-          command: () => this.saveGrid(),
-        },
-      ]; //TODO: if permission
+        // {
+        //   label: this.$t("menu.save_panel_grid"),
+        //   icon: "pi pi-fw pi-save",
+        //   command: () => this.saveGrid(),
+        // },
+      ];
       menu.push(this.settingsButton);
+      menu.push(this.conversionSettingsButton);
       return menu;
     },
   },
@@ -112,6 +135,7 @@ export default {
     },
     reloadSettings() {
       this.settings = this.$store.getters["settings/panel"];
+      this.conversionSettings = this.$store.getters["settings/conversion"];
     },
   },
 };

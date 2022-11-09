@@ -117,6 +117,7 @@ export default class RenUtils {
     let color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
     return { alpha: alpha, color: color };
   }
+
   aggKey(measurement, settings) {
     let key = measurement.type.base_unit;
     if (settings.groupByDirection) {
@@ -140,43 +141,93 @@ export default class RenUtils {
     return key;
   }
 
+  convertPanelData(panel, pData, settings) {
+    var mDict = {};
+    //TODO: initialize this dictionary in the vuex store
+    let cp = JSON.parse(JSON.stringify(pData));
+    if (panel && panel.tiles) {
+      for (let tile of panel.tiles) {
+        for (let m of tile.measurements) {
+          mDict[m.id] = m;
+        }
+      }
+    }
+    //TODO: convert min, max, prediction etc
+    // console.info(pData);
+    for (let mId in mDict) {
+      let m = mDict[mId];
+      var newUnit = settings[m.type.physical_name];
+      console.info(m.type.physical_name + " " + newUnit);
+      if (newUnit) {
+        let value = pData.current.last[m.id];
+        let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
+        cp.current.last[m.id] = newV;
+      }
+    }
+    console.info(cp);
+    return cp;
+  }
   calcPanelRelativeValues(panel, pData, settings) {
     var accuDict = {};
 
     // var aggDict = { current: { last: {} }, predictions: pData.predictions };
     //TODO: aggregate also predictions - not only current values
     //TODO: include min values
+    var mDict = {};
+    //TODO: initialize this dictionary in the vuex store
     if (panel && panel.tiles) {
       for (let tile of panel.tiles) {
         for (let m of tile.measurements) {
-          let key = this.aggKey(m, settings);
-          // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
-          let factor = m.type.factor;
-          let value = pData.current.last[m.id] * factor; //todo: raise exception if value not found
-          accuDict = this.valueAccu(key, value, m.type.base_unit, accuDict);
+          mDict[m.id] = m;
         }
       }
     }
-    if (panel && panel.tiles) {
-      for (let tile of panel.tiles) {
-        for (let m of tile.measurements) {
-          // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
-          let key = this.aggKey(m, settings);
-          let factor = m.type.factor;
-          // let value = pData.current.last[m.id] * factor;
-          // let aggValue = this.valueAgg(key, value, m.type.base_unit, accuDict);
-          // pData.current.last[m.id] = aggValue;
-          if (!pData.current.min) {
-            pData.current.min = {};
-          }
-          pData.current.min[m.id] = 0;
-          if (!pData.current.max) {
-            pData.current.max = {};
-          }
-          pData.current.max[m.id] = accuDict[key].accu / factor;
-        }
-      }
+
+    for (let mId in mDict) {
+      let m = mDict[mId];
+      let key = this.aggKey(m, settings);
+      // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
+      let factor = m.type.factor;
+      let value = pData.current.last[m.id] / factor; //todo: raise exception if value not found
+      accuDict = this.valueAccu(key, value, m.type.base_unit, accuDict);
     }
+    for (let mId in mDict) {
+      let m = mDict[mId];
+      // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
+      let key = this.aggKey(m, settings);
+      let factor = m.type.factor;
+      // let value = pData.current.last[m.id] * factor;
+      // let aggValue = this.valueAgg(key, value, m.type.base_unit, accuDict);
+      // pData.current.last[m.id] = aggValue;
+      if (!pData.current.min) {
+        pData.current.min = {};
+      }
+      pData.current.min[m.id] = 0;
+      if (!pData.current.max) {
+        pData.current.max = {};
+      }
+      pData.current.max[m.id] = accuDict[key].accu * factor;
+    }
+    // if (panel && panel.tiles) {
+    //   for (let tile of panel.tiles) {
+    //     for (let m of tile.measurements) {
+    //       // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
+    //       let key = this.aggKey(m, settings);
+    //       let factor = m.type.factor;
+    //       // let value = pData.current.last[m.id] * factor;
+    //       // let aggValue = this.valueAgg(key, value, m.type.base_unit, accuDict);
+    //       // pData.current.last[m.id] = aggValue;
+    //       if (!pData.current.min) {
+    //         pData.current.min = {};
+    //       }
+    //       pData.current.min[m.id] = 0;
+    //       if (!pData.current.max) {
+    //         pData.current.max = {};
+    //       }
+    //       pData.current.max[m.id] = accuDict[key].accu * factor;
+    //     }
+    //   }
+    // }
 
     // console.info(accuDict);
     return pData;

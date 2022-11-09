@@ -3,7 +3,7 @@ export default {
   state: {
     //TODO: default home settings
     home: {
-      selectedPanel: "607",
+      // selectedPanel: "607",
       feedbackVisibility: false,
       notificationVisibility: false,
       demandVisibility: true,
@@ -29,6 +29,7 @@ export default {
       groupByMeasurement: false,
       relativeValues: false,
     },
+    conversion: {},
   },
   mutations: {
     home(state, payload) {
@@ -42,6 +43,9 @@ export default {
     },
     heatmap(state, payload) {
       state.heatmap = payload;
+    },
+    conversion(state, payload) {
+      state.conversion = payload;
     },
     toggle(state, payload) {
       state[payload.section][payload.key] = !state[payload.section][payload.key];
@@ -62,6 +66,9 @@ export default {
     },
     heatmap: (state) => {
       return state.heatmap;
+    },
+    conversion: (state) => {
+      return state.conversion;
     },
     all: (state) => {
       return state;

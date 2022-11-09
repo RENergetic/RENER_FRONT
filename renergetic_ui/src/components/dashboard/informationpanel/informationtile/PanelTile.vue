@@ -49,7 +49,7 @@ export default {
     },
     tileData: function () {
       //wrap back data
-      return { data: this.pdata };
+      return this.pdata;
     },
   },
   updated() {

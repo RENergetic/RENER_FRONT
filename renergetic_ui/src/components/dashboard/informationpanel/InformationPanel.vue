@@ -1,5 +1,6 @@
 <template>
   <!-- {{ mPanel }} -->
+  <!-- {{ $store.getters["view/measurementTypes"] }}  -->
   <!--  offset -->
   <!-- {{ pdata }} -->
   <!-- <NotificationList v-if="settings.notificationVisibility" :notifications="mNotifications"></NotificationList> -->
@@ -10,6 +11,7 @@
     :panel="mPanel"
     :locked="locked"
     :settings="settings"
+    :conversion-settings="conversionSettings"
     :asset-id="assetId"
     @edit="onEdit"
   />
@@ -92,6 +94,13 @@ export default {
         return {};
       },
     },
+    conversionSettings: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
+
     editMode: {
       type: Boolean,
       default: false,
@@ -100,27 +109,14 @@ export default {
   emits: ["update"],
   data() {
     return {
-      mNotifications: [
-        {
-          id: 2,
-          type: "warning",
-          icon: "electricity",
-          asset: {
-            id: 3,
-          },
-          message: "THe energy island currently consumes  30%  more energy than it it produces locally!",
-          date_from: 1646082303,
-          date_to: 1646182303,
-        },
-      ],
-
+      mNotifications: [],
       grid: null,
       notificationDialog: false,
       editDialog: false,
       selectedItem: null,
       mPanel: null,
       manageSensorsDialog: false,
-      pdata: {},
+      pdata: null,
       tileTypes: Object.entries(TileTypes).map((k) => {
         return { value: k[1], label: this.$t("enums.tile_type." + k[1]) };
       }),
@@ -181,8 +177,11 @@ export default {
         if (this.panel.is_template) {
           let resp = await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId);
           this.mPanel = resp.panel;
-          this.pdata = resp;
-        } else this.pdata = await this.$ren.dataApi.getPanelData(this.panel.id);
+          this.pdata = resp.data;
+        } else {
+          let resp = await this.$ren.dataApi.getPanelData(this.panel.id);
+          this.pdata = resp.data;
+        }
       }
     },
     // gridWidth(tile) {
