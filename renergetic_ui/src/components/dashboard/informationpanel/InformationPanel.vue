@@ -11,7 +11,6 @@
     :panel="mPanel"
     :locked="locked"
     :settings="settings"
-    :conversion-settings="conversionSettings"
     :asset-id="assetId"
     @edit="onEdit"
   />
@@ -173,6 +172,9 @@ export default {
     // },
     async loadData() {
       console.info("panel load data");
+
+      let filterSettings = this.$store.getters["settings/parsedFilter"];
+      console.error(filterSettings);
       if (this.panel.id != null) {
         if (this.panel.is_template) {
           let resp = await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId);

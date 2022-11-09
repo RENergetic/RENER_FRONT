@@ -29,7 +29,13 @@
       </span>
     </div>
     <div class="flex flex-column flex-none knob-component" style="position: relative; width: 100%">
-      <information-list-tile :tile="tile" :pdata="pdata" :settings="mSettings" @select="onMeasurementSelect">
+      <information-list-tile
+        :tile="tile"
+        :pdata="pdata"
+        :settings="mSettings"
+        :conversion-settings="conversionSettings"
+        @select="onMeasurementSelect"
+      >
       </information-list-tile>
     </div>
   </div>
@@ -47,6 +53,7 @@ export default {
   props: {
     // legend: { type: Boolean, default: true },
     settings: { type: Object, default: () => ({}) },
+    conversionSettings: { type: Object, default: () => ({}) },
     pdata: { type: Object, default: () => ({}) },
     tile: {
       type: Object,

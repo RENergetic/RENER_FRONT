@@ -140,6 +140,14 @@ export default class RenUtils {
     }
     return key;
   }
+  getUnit(measurement, panelSettings, conversionSettings) {
+    if (panelSettings.relativeValues) {
+      return "%";
+    }
+    let mt = conversionSettings[measurement.type.physical_name];
+    console.info(conversionSettings);
+    return mt ? mt : measurement.type.unit;
+  }
 
   convertPanelData(panel, pData, settings) {
     var mDict = {};
@@ -153,7 +161,7 @@ export default class RenUtils {
       }
     }
     //TODO: convert min, max, prediction etc
-    // console.info(pData);
+    console.info(pData);
     for (let mId in mDict) {
       let m = mDict[mId];
       var newUnit = settings[m.type.physical_name];
@@ -164,7 +172,7 @@ export default class RenUtils {
         cp.current.last[m.id] = newV;
       }
     }
-    console.info(cp);
+    // console.info(cp);
     return cp;
   }
   calcPanelRelativeValues(panel, pData, settings) {

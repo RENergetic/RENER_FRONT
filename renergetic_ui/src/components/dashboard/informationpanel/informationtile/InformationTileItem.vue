@@ -16,7 +16,7 @@
     <div class="flex flex-grow-1 flex-column align-items-start justify-content-center message">
       <div class="flex flex-grow-1 align-items-center justify-content-center" style="width: 100%">
         <div class="flex flex-grow-1 message align-items-start">{{ label }}:</div>
-        <div class="flex flex-none message align-items-end">{{ Math.round(value, 2) }} {{ unit }}</div>
+        <div class="flex flex-none message align-items-end">{{ Math.round(value * 1000.0) / 1000.0 }} {{ unit }}</div>
       </div>
       <div v-if="tileItem.description" class="flex">
         <div class="flex align-items-center justify-content-center">description: {{ tileItem.description }}</div>
@@ -37,6 +37,7 @@ export default {
   components: {},
   props: {
     settings: { type: Object, default: () => ({}) },
+    conversionSettings: { type: Object, default: () => ({}) },
     tileItem: {
       type: Object,
       default: () => null,
@@ -82,11 +83,9 @@ export default {
       return icons[icon] != null ? icons[icon] : icons.default;
     },
     unit: function () {
-      if (this.mSettings.panel.relativeValues) {
-        return "%";
-      }
-      return this.tileItem.type.unit;
+      return this.$ren.utils.getUnit(this.tileItem, this.settings.panel, this.conversionSettings);
     },
+
     value: function () {
       //todo support other aggregation functions
       try {

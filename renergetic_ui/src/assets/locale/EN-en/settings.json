@@ -1,35 +1,41 @@
 {
   "on": "On",
   "off": "Off",
-  "enabled":"Enabled",
-  "disabled":"Disabled",
+  "enabled": "Enabled",
+  "disabled": "Disabled",
   "hidden": "Hidden",
   "visible": "Visible",
   "feedback": "Feedback",
-  "group_by_direction":"Group by measurement's direction",
-  "group_by_domain":"Group by measurement's domain",
-  "group_by_measurement":"Group by measurement name",
+  "group_by_direction": "Group by measurement's direction",
+  "group_by_domain": "Group by measurement's domain",
+  "group_by_measurement": "Group by measurement name",
   "notification": "Notification",
   "measurements": "Measurements",
   "recommendations": "Recommendations",
-  "relative_values":"Use relatives values",
+  "relative_values": "Use relatives values",
   "selected_panel": "Selected Panel",
   "heatmap": "Heatmap",
   "chart": "Chart",
-  "panel_font_size":"Panel font size",
+  "panel_font_size": "Panel font size",
   "request_demand": "Request demand",
   "time_filter": "Time filter",
+  "submit":"Submit",
   "measurement_details": {
     "color": "Color"
   },
-  "time_filters":{
-    "current_day":"Current day",
-    "current_month":"Current month",
-    "current_year":"Current year",
-    "previous_year":"Preavious year"
+  "time_filters": {
+    "current_day": "Current day",
+    "current_month": "Current month",
+    "current_year": "Current year",
+    "previous_year": "Preavious year"
+  },
+  "measurement_type": {
+    "power": "Power",
+    "energy": "Energy",
+    "temperature": "Temperature",
+    "percentage": "Percentage",
+    "voltage": "Voltage",
+    "co2eq": "CO2 eq",
+    "flow": "Flow"
   }
 }
- 
-
- 
-  

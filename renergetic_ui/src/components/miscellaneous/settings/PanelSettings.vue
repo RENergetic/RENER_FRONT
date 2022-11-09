@@ -100,27 +100,28 @@ export default {
           type: Boolean,
           key: "relativeValues",
         },
-        {
-          label: this.$t("settings.time_filter"),
-          ext: {
-            options: [
-              { id: "current_day", label: this.$t("settings.time_filters.current_day") },
-              { id: "current_month", label: this.$t("settings.time_filters.current_month") },
-              { id: "current_year", label: this.$t("settings.time_filters.current_year") },
-              { id: "previous_year", label: this.$t("settings.time_filters.previous_year") },
-            ],
-            optionLabel: "label",
-            optionValue: "id",
-          },
-          type: Array,
-          key: "selectedPanel",
-        },
-        {
-          label: this.$t("settings.panel_font_size"),
-          type: Number,
-          key: "fontSize",
-          ext: { mode: "decimal" },
-        },
+        // {
+        //   label: this.$t("settings.time_filter"),
+        //   ext: {
+        //     options: [
+        //       { id: "current_day", label: this.$t("settings.time_filters.current_day") },
+        //       { id: "current_month", label: this.$t("settings.time_filters.current_month") },
+        //       { id: "current_year", label: this.$t("settings.time_filters.current_year") },
+        //       { id: "previous_year", label: this.$t("settings.time_filters.previous_year") },
+        //     ],
+        //     optionLabel: "label",
+        //     optionValue: "id",
+        //   },
+        //   type: Array,
+        //   key: "selectedPanel",
+        // },
+        //TODO: font size?
+        // {
+        //   label: this.$t("settings.panel_font_size"),
+        //   type: Number,
+        //   key: "fontSize",
+        //   ext: { mode: "decimal" },
+        // },
       ];
 
       return schema;

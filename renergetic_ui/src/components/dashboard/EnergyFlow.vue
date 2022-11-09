@@ -1,13 +1,6 @@
 <template>
   <!-- {{ settings }} -->
-  <InformationPanel
-    :edit="false"
-    :panel="panel"
-    :locked="locked"
-    :settings="settings"
-    :conversion-settings="conversionSettings"
-    :asset-id="assetId"
-  />
+  <InformationPanel :edit="false" :panel="panel" :locked="locked" :settings="settings" :asset-id="assetId" />
 </template>
 
 <script>
@@ -33,12 +26,12 @@ export default {
         return {};
       },
     },
-    conversionSettings: {
-      type: Object,
-      default: () => {
-        return {};
-      },
-    },
+    // conversionSettings: {
+    //   type: Object,
+    //   default: () => {
+    //     return {};
+    //   },
+    // },
   },
   emits: ["update"],
   data() {

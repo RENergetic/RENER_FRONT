@@ -27,6 +27,7 @@ export default {
       type: Object,
       default: () => ({}),
     },
+
     fontSize: {
       type: String,
       default: "2rem",

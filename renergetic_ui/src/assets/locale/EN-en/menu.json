@@ -27,6 +27,8 @@
   "save_grid": "Save grid",
   "settings": "Settings",
   "unit_settings":"Unit settings",
+  "filter_settings":"Filter settings",
+  "panel_settings":"Panel settings",
   "panel_grid_edit_on": "Edit mode",
   "panel_grid_edit_off": "Edit mode off",
   "view": "View",

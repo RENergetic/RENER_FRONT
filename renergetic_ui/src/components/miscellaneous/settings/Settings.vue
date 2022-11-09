@@ -2,7 +2,7 @@
   <div class="p-fluid">
     <!-- {{ settings }} -->
     <div v-for="s in schema" :key="s" :class="'field grid'">
-      <label :for="s.key" class="col-12">{{ s.label }}</label>
+      <label v-if="s.type != 'Submit'" :for="s.key" class="col-12">{{ s.label }}</label>
 
       <!-- <ToggleButton
         v-model="mModel['key']"
@@ -17,6 +17,7 @@
           v-if="s.type == Boolean"
           :id="s.key"
           v-model="mModel[s.key]"
+          v-tooltip="s.description"
           option-label="name"
           option-value="value"
           :options="[
@@ -28,6 +29,7 @@
           v-else-if="s.type == Number"
           :id="s.key"
           v-model="mModel[s.key]"
+          v-tooltip="s.description"
           :min-fraction-digits="0"
           :max-fraction-digits="5"
           :mode="s.ext.mode"
@@ -37,15 +39,19 @@
           <ListBox
             :id="s.key"
             v-model="mModel[s.key]"
+            v-tooltip="s.description"
             :options="s.ext.options"
             :option-value="s.ext.optionValue"
             :option-label="s.ext.optionLabel"
           />
         </div>
         <div v-else-if="s.type == 'Color'">
-          <ColorPicker v-model="mModel[s.key]" />
+          <ColorPicker v-model="mModel[s.key]" v-tooltip="s.description" />
         </div>
-        <InputText v-else :id="s.key" v-model="mModel[s.key]" />
+        <div v-else-if="s.type == 'Submit'">
+          <Button :id="s.key" v-tooltip="s.description" :label="s.label" @click="s.ext.click" />
+        </div>
+        <InputText v-else :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" />
       </div>
     </div>
   </div>

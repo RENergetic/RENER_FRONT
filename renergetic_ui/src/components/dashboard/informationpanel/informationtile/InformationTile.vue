@@ -20,12 +20,7 @@
           @click="$emit('notification', slotProps)"
         /> -->
       </div>
-      <InformationTileData
-        :tile="tile"
-        :pdata="tileData"
-        :settings="settings"
-        :conversion-settings="conversionSettings"
-      ></InformationTileData>
+      <InformationTileData :tile="tile" :pdata="tileData" :settings="settings"></InformationTileData>
     </div>
   </div>
 </template>
@@ -46,10 +41,6 @@ export default {
       default: () => ({}),
     },
     settings: {
-      type: Object,
-      default: () => ({}),
-    },
-    conversionSettings: {
       type: Object,
       default: () => ({}),
     },

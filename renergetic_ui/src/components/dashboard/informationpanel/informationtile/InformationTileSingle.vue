@@ -8,11 +8,16 @@
       <!-- {{ mSettings.tile.icon }} -->
       <font-awesome-icon :icon="mSettings.tile.icon" />
     </div>
-    <div class="flex flex-none flex-column align-items-center justify-content-center">
+    <div v-if="!mSettings.template" class="flex flex-none flex-column align-items-center justify-content-center">
       <span :style="color"> {{ label }} </span>
       <span :style="color"
         ><h2>{{ Math.round(value * 1000) / 1000.0 }} {{ unit }}</h2></span
       >
+    </div>
+    <div v-else class="flex flex-none flex-column align-items-center justify-content-center">
+      <span :style="color">
+        {{ $t(`tile_templates.${tile.name}`, { value: `${Math.round(value * 1000) / 1000.0} ${unit} ` }) }}
+      </span>
     </div>
   </div>
   <!-- {{ tile.props }} -->
@@ -53,12 +58,7 @@ export default {
     // },
 
     unit: function () {
-      if (this.mSettings.panel.relativeValues) {
-        return "%";
-      }
-      let mt = this.conversionSettings[this.measurement.type.physical_name];
-
-      return mt ? mt : this.measurement.type.unit;
+      return this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings);
     },
     color: function () {
       let color = this.$ren.utils.measurementColor(this.measurement, this.value);

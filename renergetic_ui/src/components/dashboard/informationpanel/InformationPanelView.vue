@@ -7,13 +7,11 @@
       :slot-props="{ tile: tile, index: index }"
       :edit="edit"
       :pdata="mPData"
-      :conversion-settings="conversionSettings"
       :settings="mSettings"
       @edit="$emit('editTile', { tile: tile, index: index })"
       @notification="viewNotification"
     />
   </div>
-  <!-- dddddd {{ conversionSettings }}aaaaaaaaaa {{ mPData }}kk -->
   <Dialog
     v-model:visible="notificationDialog"
     :style="{ width: '50vw' }"
@@ -74,12 +72,12 @@ export default {
         return {};
       },
     },
-    conversionSettings: {
-      type: Object,
-      default: () => {
-        return {};
-      },
-    },
+    // conversionSettings: {
+    //   type: Object,
+    //   default: () => {
+    //     return {};
+    //   },
+    // },
     edit: {
       type: Boolean,
       default: false,
@@ -125,10 +123,13 @@ export default {
         if (this.mSettings.relativeValues && newValue) {
           this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, newValue, this.mSettings);
         } else {
-          // console.info(newValue);
-          this.mPData = this.$ren.utils.convertPanelData(this.mPanel, newValue, this.conversionSettings);
-          console.info(this.mPData);
-          console.info("wsswww");
+          console.info("watch pdata");
+          this.mPData = this.$ren.utils.convertPanelData(
+            this.mPanel,
+            newValue,
+            this.$store.getters["settings/conversion"],
+          );
+          // console.info(this.mPData);
         }
 
         // this.reloadGrid();
@@ -137,65 +138,54 @@ export default {
     },
     mSettings: {
       handler(newVal) {
-        console.info("updcccaaaaaaaaaaate");
+        console.info("watch mSettings");
         if (newVal.relativeValues && this.pdata) {
           // this.mPData = this.pdata;
           this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata, newVal);
         } else {
-          this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.conversionSettings);
-
-          console.info(this.mPData);
-          console.info("wwww");
+          this.mPData = this.$ren.utils.convertPanelData(
+            this.mPanel,
+            this.pdata,
+            this.$store.getters["settings/conversion"],
+          );
         }
       },
       deep: true,
     },
-    conversionSettings: {
-      handler(newVal) {
-        console.info("updcccate");
-        if (newVal.relativeValues && this.pdata) {
-          // this.mPData = this.pdata;
-          this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata, this.mSettings);
-        } else {
-          // console.info(newVal);
-          // console.info(this.mPData);
+    // conversionSettings: {
+    //   handler(newVal) {
+    //     console.info("watch conversion");
+    //     if (newVal.relativeValues && this.pdata) {
+    //       // this.mPData = this.pdata;
+    //       this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata, this.mSettings);
+    //     } else {
+    //       // console.info(newVal);
+    //       // console.info(this.mPData);
 
-          this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, newVal);
-
-          console.info(this.mPData);
-          console.info("wwww");
-        }
-      },
-      deep: true,
-    },
+    //       this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, newVal);
+    //     }
+    //   },
+    //   deep: true,
+    // },
   },
   async updated() {
     console.info("update");
-    // // this.mPData = this.pdata;
-    // // console.info(this.mSettings);
-
-    // if (this.mSettings.relativeValues && this.pdata) {
-    //   this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata, this.mSettings);
-    //   // console.info(  this.mPData.data );
-    //   // this.mPData.data = relativeData;
-    // } else {
-    //   console.info(this.pdata);
-    //   // this.mPData = this.pdata;
-    //   this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.conversionSettings);
-    // }
     this.reloadGrid();
   },
+  convertData() {},
   async mounted() {
-    if (this.settings.relativeValues && this.pdata) {
-      // this.mPData = this.pdata;
-      this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata, this.settings);
-    } else {
-      // console.info(newVal);
-      // this.mPData = this.pdata;
-      this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.conversionSettings);
-      console.info(this.mPData);
+    if (this.pdata != null) {
+      if (this.settings.relativeValues && this.pdata) {
+        this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata, this.settings);
+      } else {
+        this.mPData = this.$ren.utils.convertPanelData(
+          this.mPanel,
+          this.pdata,
+          this.$store.getters["settings/conversion"],
+        );
+      }
+      this.reloadGrid();
     }
-    this.reloadGrid();
   },
   methods: {
     reloadGrid() {

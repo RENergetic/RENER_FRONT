@@ -1,7 +1,19 @@
 <template>
   <div v-if="panel" id="panel-box">
-    <!-- <div > -->
     <DotMenu :model="menuModel" />
+
+    <NotificationList v-if="settings.notificationVisibility" :notifications="notifications"></NotificationList>
+
+    <energy-flow
+      v-if="panel"
+      :key="reload"
+      :asset-id="$route.params.asset_id"
+      :panel="panel"
+      :settings="settings"
+    ></energy-flow>
+  </div>
+  <!--dialogs -->
+  <div>
     <Dialog
       v-model:visible="settingsDialog"
       :style="{ width: '50vw' }"
@@ -18,35 +30,33 @@
       :modal="true"
       :dismissable-mask="true"
     >
-      <ConversionSettings @update="reloadSettings()"></ConversionSettings>
+      <ConversionSettings @update="reloadView()"></ConversionSettings>
     </Dialog>
 
-    <NotificationList v-if="settings.notificationVisibility" :notifications="notifications"></NotificationList>
-    <!-- <NotificationList :notifications="notifications"></NotificationList> -->
-
-    <energy-flow
-      v-if="panel"
-      ref="panel"
-      :asset-id="$route.params.asset_id"
-      :panel="panel"
-      :edit-mode="editMode"
-      :settings="settings"
-      :conversion-settings="conversionSettings"
-    ></energy-flow>
+    <Dialog
+      v-model:visible="filterSettingsDialog"
+      :style="{ width: '50vw' }"
+      :maximizable="true"
+      :modal="true"
+      :dismissable-mask="true"
+    >
+      <FilterSettings @update="reloadView()"></FilterSettings>
+    </Dialog>
   </div>
-  <!-- </div> -->
 </template>
 <script>
 import EnergyFlow from "@/components/dashboard/EnergyFlow.vue";
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
+import FilterSettings from "@/components/miscellaneous/settings/FilterSettings.vue";
 import NotificationList from "@/components/management/notification/NotificationList.vue";
 import { RenRoles } from "@/plugins/model/Enums";
 export default {
   name: "InformationPanelView",
   components: {
     EnergyFlow,
+    FilterSettings,
     DotMenu,
     PanelSettings,
     NotificationList,
@@ -54,13 +64,13 @@ export default {
   },
   data() {
     return {
+      reload: false,
       panel: null,
-      locked: false,
+      // locked: false,
       notifications: [],
-      editMode: false,
       settings: this.$store.getters["settings/panel"],
-      conversionSettings: this.$store.getters["settings/conversion"],
       settingsDialog: false,
+      filterSettingsDialog: false,
       conversionSettingsDialog: false,
     };
   },
@@ -68,7 +78,7 @@ export default {
     settingsButton: function () {
       //TODO: set icon
       return {
-        label: this.$t("menu.settings"),
+        label: this.$t("menu.panel_settings"),
         icon: "pi pi-fw pi-plus-circle",
         command: () => (this.settingsDialog = !this.settingsDialog),
       };
@@ -82,6 +92,15 @@ export default {
       };
     },
 
+    filterSettingsButton: function () {
+      //TODO: set icon
+      return {
+        label: this.$t("menu.filter_settings"),
+        icon: "pi pi-fw pi-plus-circle",
+        command: () => (this.filterSettingsDialog = !this.filterSettingsDialog),
+      };
+    },
+
     menuModel() {
       let menu = [
         // {
@@ -92,17 +111,19 @@ export default {
       ];
       menu.push(this.settingsButton);
       menu.push(this.conversionSettingsButton);
+      menu.push(this.filterSettingsButton);
       return menu;
     },
   },
   async mounted() {
     if (
+      this.settings.notificationVisibility &&
       (RenRoles.REN_ADMIN |
         RenRoles.REN_USER |
         RenRoles.REN_MANAGER |
         RenRoles.REN_TECHNICAL_MANAGER |
         RenRoles.REN_STAFF) &
-      this.$store.getters["auth/renRole"]
+        this.$store.getters["auth/renRole"]
     ) {
       this.notifications = await this.$ren.userApi.getNotifications();
     }
@@ -124,7 +145,6 @@ export default {
     },
     async loadStructure() {
       let informationPanel = this.localPanel(this.$route.params.id, this.$route.params.asset_id);
-      // console.info(informationPanel);
       if (informationPanel == null) {
         this.$ren.dashboardApi.getInformationPanel(this.$route.params.id, this.$route.params.asset_id).then((panel) => {
           this.panel = panel;
@@ -136,6 +156,9 @@ export default {
     reloadSettings() {
       this.settings = this.$store.getters["settings/panel"];
       this.conversionSettings = this.$store.getters["settings/conversion"];
+    },
+    reloadView() {
+      this.reload = !this.reload;
     },
   },
 };

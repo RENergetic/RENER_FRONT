@@ -30,6 +30,7 @@ export default {
       relativeValues: false,
     },
     conversion: {},
+    filter: {},
   },
   mutations: {
     home(state, payload) {
@@ -47,6 +48,10 @@ export default {
     conversion(state, payload) {
       state.conversion = payload;
     },
+    filter(state, payload) {
+      state.filter = payload;
+    },
+
     toggle(state, payload) {
       state[payload.section][payload.key] = !state[payload.section][payload.key];
     },
@@ -64,11 +69,45 @@ export default {
     panel: (state /* getters*/) => {
       return state.panel;
     },
+
     heatmap: (state) => {
       return state.heatmap;
     },
     conversion: (state) => {
       return state.conversion;
+    },
+    parsedFilter(state) {
+      //TODO: what time zone i should use?
+      let from = null;
+      let to = null;
+      var date = new Date();
+      switch (state.timeInterval) {
+        case "current_day":
+          from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+          break;
+        case "current_month":
+          from = new Date(date.getFullYear(), date.getMonth(), 1);
+          break;
+        case "previous_month":
+          from = new Date(date.getFullYear(), date.getMonth() - 1, 1);
+          to = new Date(date.getFullYear(), date.getMonth(), 1);
+          break;
+        case "current_year":
+          from = new Date(date.getFullYear(), 0, 1);
+          break;
+        case "previous_year":
+          from = new Date(date.getFullYear() - 1, 0, 1);
+          to = new Date(date.getFullYear(), 0, 1);
+          break;
+        default:
+          from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+          break;
+      }
+
+      return { from: from, to: to };
+    },
+    filter: (state) => {
+      return state.filter;
     },
     all: (state) => {
       return state;

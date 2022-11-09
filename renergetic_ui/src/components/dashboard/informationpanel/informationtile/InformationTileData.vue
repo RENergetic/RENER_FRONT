@@ -9,6 +9,7 @@
     >
       <h3 style="margin: 0; text-align: center">{{ tile.label }}</h3>
     </div>
+    <!-- {{ tile }} -->
     <KnobTile
       v-else-if="tile.type == 'knob'"
       :tile="tile"
@@ -91,6 +92,7 @@ function validateTileSettings(tile, settings) {
           : true,
       fontSize: settings.fontSize,
       background: tile.props.mask,
+      template: tile.props.template,
     };
   }
   return settings;
@@ -125,14 +127,11 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    conversionSettings: {
-      type: Object,
-      default: () => ({}),
-    },
   },
   emits: ["edit", "notification"],
   data() {
     return {
+      conversionSettings: this.$store.getters["settings/conversion"],
       mSettings: { tile: validateTileSettings(this.tile, this.settings), panel: this.settings },
     };
   },
