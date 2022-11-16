@@ -66,21 +66,15 @@ import MultiKnobTile from "./MultiKnobTile.vue";
 import { TileTypes } from "@/plugins/model/Enums.js";
 import icons from "./icons";
 // import MultiDoughnutTile from "./MultiDoughnutTile.vue";
-// const icons = {
-//   heat: require(`../../../../assets/img/tileicons/heat.png`),
-//   electricity: require(`../../../../assets/img/tileicons/electricity.png`),
-//   battery: require(`../../../../assets/img/tileicons/battery.png`),
-//   renewability: require(`../../../../assets/img/tileicons/battery.png`),
-// };
-//  Gas Station.
 
-function validateTileSettings(tile, settings) {
+function validateTileSettings(tile, settings, ctx) {
   // console.info("icon for " + tile.props.icon + ": " + icons[tile.props.icon]);
   // console.info(icons[tile.props.icon]);
   // console.info(tile.props.icon);
   // console.info(icons);
   if (tile.props) {
     return {
+      label: ctx.$t(`enums.measurement_name.${tile.name}`, tile.label),
       icon: icons[tile.props.icon],
       icon_visibility: tile.props.icon_visibility != null ? tile.props.icon_visibility : true,
       legend: tile.props.legend != null ? tile.props.legend : settings.legend,
@@ -132,12 +126,13 @@ export default {
   data() {
     return {
       conversionSettings: this.$store.getters["settings/conversion"],
-      mSettings: { tile: validateTileSettings(this.tile, this.settings), panel: this.settings },
+      mSettings: { tile: validateTileSettings(this.tile, this.settings, this), panel: this.settings },
     };
   },
   computed: {
     background: function () {
-      return `background:${this.mSettings.tile.background}`;
+      console.info(this.mSettings);
+      return `background-color:${this.mSettings.tile.background}`;
     },
     tileClass: function () {
       return this.settings != null && !this.settings.center ? "flex tile_wrapper" : " flex tile_wrapper_center";
@@ -157,7 +152,7 @@ export default {
   watch: {
     tile: {
       handler: function (newValue) {
-        this.mSettings = validateTileSettings(newValue, this.settings);
+        this.mSettings = { tile: validateTileSettings(newValue, this.settings, this), panel: this.settings };
       },
       deep: true,
     },

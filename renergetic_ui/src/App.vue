@@ -1,8 +1,8 @@
 <template>
-  <div v-if="keycloakState == 1">
+  <div v-if="keycloakState == 1" :key="refresh">
     <Toast />
     <ConfirmDialog></ConfirmDialog>
-    <SideMenu ref="sideMenu" />
+    <SideMenu ref="sideMenu" @refresh="onRefresh" />
 
     <router-view v-if="hasAccess" :key="$route.path" :class="layout()" @update-menu="updateMenu()" />
     <!-- TODO: v-else -->
@@ -23,6 +23,7 @@ import Toast from "primevue/toast";
 import ConfirmDialog from "primevue/confirmdialog";
 import Footer from "./components/miscellaneous/Footer.vue";
 // import createKeyCloak from "@/plugins/auth2";
+import { setLocale } from "@/plugins/locales.js";
 export default {
   name: "App",
   components: {
@@ -34,6 +35,7 @@ export default {
   data() {
     return {
       keycloakState: -1,
+      refresh: true,
     };
   },
   computed: {
@@ -45,12 +47,30 @@ export default {
       return this.$store.getters["spinner/isLoading"];
     },
   },
+  created() {
+    this.$emitter.on("refresh", () => {
+      //(evt)
+      this.onRefresh();
+    });
+  },
   async mounted() {
     await this.$keycloak.get();
-    if (this.$keycloak.isInitialized()) this.keycloakState = 1;
-    else this.keycloakState = 0;
+    if (this.$keycloak.isInitialized()) {
+      this.keycloakState = 1;
+      this.setLocale();
+    } else this.keycloakState = 0;
   },
   methods: {
+    setLocale() {
+      let currentLocale = this.$store.getters["settings/locales"].locale;
+      if (currentLocale) {
+        setLocale(currentLocale);
+        this.refresh = !this.refresh;
+      }
+    },
+    onRefresh() {
+      this.refresh = !this.refresh;
+    },
     layout() {
       let layout = this.$route.meta.layout == null ? "standard" : this.$route.meta.layout;
       return layout;

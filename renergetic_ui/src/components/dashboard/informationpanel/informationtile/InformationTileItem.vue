@@ -23,7 +23,6 @@
       </div>
     </div>
   </div>
-
   <!-- <div :class="state" :style="style">
     <span v-if="icon != null" id="tileicon" :style="'background-image: url(' + icon + ')'"></span>
     <span> {{ label }}: {{ Math.round(value, 2) }} {{ tileItem.type.unit }} </span>
@@ -58,7 +57,9 @@ export default {
   },
   computed: {
     iconVisibility: function () {
-      return (this.mSettings.tile ? this.mSettings.tile.icon_visibility : true) && this.mSettings.tile.icon;
+      return (
+        (this.mSettings && this.mSettings.tile ? this.mSettings.tile.icon_visibility : true) && this.mSettings.tile.icon
+      );
     },
     style: function () {
       let color = this.$ren.utils.measurementColor(this.tileItem, this.value);

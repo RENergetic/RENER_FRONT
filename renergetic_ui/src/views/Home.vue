@@ -6,6 +6,10 @@
   <div style="position: relative">
     <DemandList id="demand-list" />
   </div>
+  <!-- {{ ($i18n.locale = locale) }} -->
+  locale: {{ $i18n.locale }}
+  ...
+  {{ $i18n }}
   <!-- <div class="home-grid-stack grid-stack"> -->
   <!-- <div v-if="settings.demandVisibility" :class="'grid-stack-item ren'">
         <DemandList :class="'grid-stack-item-content'" />

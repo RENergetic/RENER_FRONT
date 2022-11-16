@@ -4,16 +4,16 @@ TODO: restApiName - describe
   * `this.$ren.{restApiName}` -> REST API
   * `this.$ren.utils` -> utils
 * `this.$t` -> i18n plugin
-* `this.$store` -> session store
-  * view 
-  * auth 
-  * settings
+* `this.$store` -> session store, store sections
+  * view - some view config
+  * auth - auth/profile details
+  * settings - apllication settigns provided by the user
+* `this.$emitter` - global emitter (see mitt API) . It's better to not overuse global event bus - only when it's really necessary.
 
   example: `$store.getters["view/get"]` - get user
 * `this.$confirm` -> confirm dialog (YES/NO)
 * `v-tooltip`  -> tooltip attribute for templates
 *  
-  
 
 ### colors & icons
 https://materialui.co/colors

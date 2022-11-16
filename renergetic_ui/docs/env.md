@@ -3,7 +3,7 @@ Each key must start with 'VUE_APP_'
 `VUE_APP_HOST` *str* - host
 
 `VUE_APP_DUMMY_API` *bool* - use dummy data
-
+`VUE_APP_I18N_LOCALE` *str* - locale code
 ### KEYCLOAK
 `VUE_APP_KEY_CLOAK_URL` *str* - Keycloak host,e.g. http://localhost:8080/auth
 

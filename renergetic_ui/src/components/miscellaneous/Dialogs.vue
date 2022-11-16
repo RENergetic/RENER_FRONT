@@ -17,18 +17,29 @@
   >
     <DashboardForm @save="onSave" @cancel="mAddDashboard = false"></DashboardForm>
   </Dialog>
+  <Dialog
+    v-model:visible="mLocales"
+    :style="{ width: '50vw' }"
+    :maximizable="true"
+    :modal="true"
+    :dismissable-mask="true"
+  >
+    <LocaleSettings></LocaleSettings>
+  </Dialog>
 </template>
 
 <script>
 import Dialog from "primevue/dialog";
 import NotificationList from "../management/notification/NotificationList.vue";
 import DashboardForm from "../dashboard/grafana/DashboardForm.vue";
+import LocaleSettings from "@/components/miscellaneous/settings/LocaleSettings.vue";
 export default {
   name: "Dialogs",
   components: {
     Dialog,
     NotificationList,
     DashboardForm,
+    LocaleSettings,
   },
   props: {
     notifications: {
@@ -39,12 +50,17 @@ export default {
       type: Boolean,
       default: false,
     },
+    locales: {
+      type: Boolean,
+      default: false,
+    },
   },
-  emits: ["update:dashboard", "update:notifications", "UpdateMenu"],
+  emits: ["update:dashboard", "update:notifications", "UpdateMenu", "update:locales"],
   data() {
     return {
       mNotifications: this.notifications,
       mAddDashboard: this.addDashboard,
+      mLocales: this.locales,
     };
   },
   watch: {
@@ -65,6 +81,15 @@ export default {
       immediate: true,
     },
     //notifications
+    mLocales: {
+      handler(newVal, oldValue) {
+        if (oldValue == null && newVal == null) {
+          return;
+        }
+        this.$emit("update:locales", newVal);
+      },
+      // immediate: true,
+    },
     mNotifications: {
       handler(newVal, oldValue) {
         if (oldValue == null && newVal == null) {
@@ -72,11 +97,17 @@ export default {
         }
         this.$emit("update:notifications", newVal);
       },
-      immediate: true,
+      // immediate: true,
     },
     notifications: {
       handler(newVal) {
         this.mNotifications = newVal;
+      },
+      immediate: true,
+    },
+    locales: {
+      handler(newVal) {
+        this.mLocales = newVal;
       },
       immediate: true,
     },

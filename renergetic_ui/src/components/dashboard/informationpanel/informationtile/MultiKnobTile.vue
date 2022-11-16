@@ -5,7 +5,7 @@
       v-if="mSettings.tile.title_visibility"
       class="flex flex-none align-items-center justify-content-center knob-component"
     >
-      <h2 style="text-align: center">{{ tile.label }}</h2>
+      <h2 style="text-align: center">{{ mSettings.label }}</h2>
     </div>
 
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1">

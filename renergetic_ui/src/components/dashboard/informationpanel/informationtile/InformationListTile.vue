@@ -5,6 +5,7 @@
     :tile-item="m"
     :idx="idx"
     :settings="mSettings"
+    :conversion-settings="conversionSettings"
     :pdata="pdata"
     @click="onItemClick({ index: idx, item: m })"
   ></InformationTileItem>
@@ -15,23 +16,11 @@ export default {
   name: "InformationListTile",
   components: { InformationTileItem },
   props: {
-    tile: {
-      type: Object,
-      default: () => ({}),
-    },
-    pdata: {
-      type: Object,
-      default: () => ({}),
-    },
-    settings: {
-      type: Object,
-      default: () => ({}),
-    },
-
-    fontSize: {
-      type: String,
-      default: "2rem",
-    },
+    tile: { type: Object, default: () => ({}) },
+    pdata: { type: Object, default: () => ({}) },
+    settings: { type: Object, default: () => ({}) },
+    conversionSettings: { type: Object, default: () => ({}) },
+    fontSize: { type: String, default: "2rem" },
   },
   emits: ["select"],
   data() {

@@ -8,16 +8,17 @@
       <!-- {{ mSettings.tile.icon }} -->
       <font-awesome-icon :icon="mSettings.tile.icon" />
     </div>
-    <div v-if="!mSettings.template" class="flex flex-none flex-column align-items-center justify-content-center">
-      <span :style="color"> {{ label }} </span>
-      <span :style="color"
-        ><h2>{{ Math.round(value * 1000) / 1000.0 }} {{ unit }}</h2></span
-      >
-    </div>
-    <div v-else class="flex flex-none flex-column align-items-center justify-content-center">
+
+    <div v-if="mSettings.tile.template" class="flex flex-none flex-column align-items-center justify-content-center">
       <span :style="color">
         {{ $t(`tile_templates.${tile.name}`, { value: `${Math.round(value * 1000) / 1000.0} ${unit} ` }) }}
       </span>
+    </div>
+    <div v-else class="flex flex-none flex-column align-items-center justify-content-center">
+      <span :style="color"> {{ mSettings.label }} </span>
+      <span :style="color"
+        ><h2>{{ Math.round(value * 1000) / 1000.0 }} {{ unit }}</h2></span
+      >
     </div>
   </div>
   <!-- {{ tile.props }} -->
@@ -79,14 +80,14 @@ export default {
         return null;
       }
     },
-    label: function () {
-      if (this.measurement.label != null) {
-        return this.measurement.label;
-      } else {
-        //TODO: translate it
-        return this.measurement.name;
-      }
-    },
+    // label: function () {
+    //   if (this.measurement.label != null) {
+    //     return this.measurement.label;
+    //   } else {
+    //     //TODO: translate it
+    //     return this.measurement.name;
+    //   }
+    // },
   },
 
   mounted() {},

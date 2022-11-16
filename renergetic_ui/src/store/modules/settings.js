@@ -2,6 +2,8 @@ export default {
   namespaced: true,
   state: {
     //TODO: default home settings
+    locales: {},
+
     home: {
       // selectedPanel: "607",
       feedbackVisibility: false,
@@ -33,9 +35,13 @@ export default {
     filter: {},
   },
   mutations: {
+    locales(state, payload) {
+      state.locales = payload;
+    },
     home(state, payload) {
       state.home = payload;
     },
+
     homeLayout(state, payload) {
       state.homeLayout = payload;
     },
@@ -60,6 +66,9 @@ export default {
     },
   },
   getters: {
+    locales(state) {
+      return state.locales;
+    },
     home: (state /* getters*/) => {
       return state.home;
     },

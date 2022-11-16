@@ -2,7 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import createRouter from "./router";
 import store from "./store";
-import i18n from "./plugins/locale";
+import i18n from "./plugins/locales";
 import PrimeVue from "primevue/config";
 //import renergetic plugins
 //renergetic plugins this.$ren.{plugin}
@@ -21,7 +21,7 @@ import VueKonva from "vue-konva";
 
 import Tooltip from "primevue/tooltip";
 import ToastService from "primevue/toastservice";
-// import PrimeLocale from './assets/locale/EN-en/primevue.json'
+
 import ConfirmationService from "primevue/confirmationservice";
 
 // import mitt from 'mitt'

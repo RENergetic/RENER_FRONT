@@ -16,13 +16,14 @@
 ### Src directory 
 #### Assets 
     
-* `/locale/{language code}` -> language translation dictionary
+* `/locales/{language code}` -> language translation dictionary
   * `/index.js` -> import file
   * `/menu.json` -> menu headers
   * `/settings.json` -> user settings labels
   * `/view.json` -> miscellaneous ui keys
   * `/primveue.json` -> primevue components localization
   * `/model.json` -> object's properties/attributes
+  * `/tile_templates` -> tile templates
   * `/enum.json` -> enum translations
 * `/dummy` -> test  data
 * `/img` -> img files

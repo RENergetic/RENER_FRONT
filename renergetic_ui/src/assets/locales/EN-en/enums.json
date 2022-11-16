@@ -9,8 +9,15 @@
   "metric_type": {
     "electricity": "electricity",
     "heat": "heat",
-    "temperature": "temperature",
-    "renewability": "renewability"
+    "temperature": "temperature"
+  },
+  "measurement_name": {
+    "renewability": "renewability",
+    "renewables": "Renewables",
+    "fossil_fuels": "Fossil fuels",
+    "import": "External",
+    "external": "External",
+    "total_production": "Total production"
   },
   "tile_type": {
     "knob": "knob",
@@ -34,6 +41,6 @@
     "decrease": "Decrease",
     "stop": "Stop",
     "start": "Stop",
-    "default":"Other"
+    "default": "Other"
   }
 }

@@ -5,11 +5,11 @@
     <div id="sideMenuLogo">
       <Logo />
     </div>
-
     <PanelMenu :model="menuModel" />
   </Sidebar>
   <Dialogs
     :notifications="notifications"
+    :locales="localesDialog"
     :add-dashboard="dashboardDialog"
     @update:notifications="notifications = $event"
     @update-menu="reload"
@@ -31,7 +31,7 @@ export default {
     Dialogs,
     Logo,
   },
-  emits: ["notification"],
+  emits: ["notification", "refresh"],
   data() {
     return {
       role: this.$store.getters["auth/renRole"],
@@ -40,6 +40,7 @@ export default {
       dashboards: [],
       notifications: false,
       dashboardDialog: false,
+      localesDialog: false,
       informationPanels: [],
       isAdmin: false, //this.$store.getters["user/isAdmin"],
       isLogin: false,
@@ -342,6 +343,14 @@ export default {
           command: () => {
             alert("TODO: user feedback");
             // this.$router.push("/feedback");
+          },
+        },
+        {
+          label: this.$t("menu.locales"),
+          icon: "pi pi-fw  pi-bell",
+          command: () => {
+            // this.$emit("notification");
+            this.localesDialog = !this.localesDialog;
           },
         },
         {

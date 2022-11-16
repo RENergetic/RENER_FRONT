@@ -13,7 +13,9 @@
   "measurements": "Measurements",
   "recommendations": "Recommendations",
   "relative_values": "Use relatives values",
+  "selected_locale":"Selected Locale",
   "selected_panel": "Selected Panel",
+  
   "heatmap": "Heatmap",
   "chart": "Chart",
   "panel_font_size": "Panel font size",

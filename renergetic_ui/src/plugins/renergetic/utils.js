@@ -145,7 +145,7 @@ export default class RenUtils {
       return "%";
     }
     let mt = conversionSettings[measurement.type.physical_name];
-    console.info(conversionSettings);
+    // console.info(conversionSettings);
     return mt ? mt : measurement.type.unit;
   }
 
@@ -161,11 +161,11 @@ export default class RenUtils {
       }
     }
     //TODO: convert min, max, prediction etc
-    console.info(pData);
+    // console.info(pData);
     for (let mId in mDict) {
       let m = mDict[mId];
       var newUnit = settings[m.type.physical_name];
-      console.info(m.type.physical_name + " " + newUnit);
+      // console.info(m.type.physical_name + " " + newUnit);
       if (newUnit) {
         let value = pData.current.last[m.id];
         let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
@@ -216,28 +216,7 @@ export default class RenUtils {
       }
       pData.current.max[m.id] = accuDict[key].accu * factor;
     }
-    // if (panel && panel.tiles) {
-    //   for (let tile of panel.tiles) {
-    //     for (let m of tile.measurements) {
-    //       // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
-    //       let key = this.aggKey(m, settings);
-    //       let factor = m.type.factor;
-    //       // let value = pData.current.last[m.id] * factor;
-    //       // let aggValue = this.valueAgg(key, value, m.type.base_unit, accuDict);
-    //       // pData.current.last[m.id] = aggValue;
-    //       if (!pData.current.min) {
-    //         pData.current.min = {};
-    //       }
-    //       pData.current.min[m.id] = 0;
-    //       if (!pData.current.max) {
-    //         pData.current.max = {};
-    //       }
-    //       pData.current.max[m.id] = accuDict[key].accu * factor;
-    //     }
-    //   }
-    // }
 
-    // console.info(accuDict);
     return pData;
   }
   valueAccu(key, value, baseUnit, dict) {
