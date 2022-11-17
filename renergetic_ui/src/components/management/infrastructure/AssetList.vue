@@ -5,12 +5,76 @@
     </template>
   </InfoIcon>
   <!-- {{ assetList }} -->
-
-  <DataTable :value="assetList">
-    <!-- <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.asset.' + col)"></Column> -->
-    <Column field="name" :header="$t('model.asset.name')"> </Column>
-    <Column field="label" :header="$t('model.asset.label')"> </Column>
-    <Column field="type.label" :header="$t('model.asset.asset_type')"> </Column>
+  <DataTable
+    v-model:filters="filters"
+    :value="assetList"
+    :lazy="true"
+    data-key="id"
+    filter-display="row"
+    :loading="isLoading"
+    responsive-layout="scroll"
+    :global-filter-fields="['name', 'label', 'type.name', 'category.label']"
+  >
+    <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false">
+      <template #filter="{ filterModel }">
+        <InputText v-model="filterModel.value" type="text" class="p-column-filter" :placeholder="$t('view.search')" />
+      </template>
+    </Column>
+    <Column field="label" :header="$t('model.asset.label')" :show-filter-menu="false">
+      <template #filter="{ filterModel }">
+        <InputText v-model="filterModel.value" type="text" class="p-column-filter" :placeholder="$t('view.search')" />
+      </template>
+    </Column>
+    <Column field="type.label" :header="$t('model.asset.type')" :show-filter-menu="false">
+      <template #filter="{ filterModel }">
+        <Dropdown v-model="filterModel.value" :options="assetTypes" :placeholder="$t('view.select_asset_type')">
+          <template #value="slotProps">
+            <div v-if="slotProps.value">
+              <div v-if="$te('model.asset.type.' + slotProps.value.name)">
+                {{ $t("model.asset.type." + slotProps.value.name) }}
+              </div>
+              <div v-else>{{ slotProps.value.label }}</div>
+            </div>
+            <span v-else>
+              {{ slotProps.placeholder }}
+            </span>
+          </template>
+          <template #option="slotProps">
+            <div v-if="$te('model.asset.type.' + slotProps.option.name)">
+              {{ $t("model.asset.type." + slotProps.option.name) }}
+            </div>
+            <div v-else>{{ slotProps.option.label }}</div>
+          </template>
+        </Dropdown>
+      </template>
+    </Column>
+    <Column field="category.label" :header="$t('model.asset.asset_category')" :show-filter-menu="false">
+      <template #filter="{ filterModel }">
+        <Dropdown
+          v-model="filterModel.value"
+          :options="assetCategories"
+          :placeholder="$t('view.select_asset_category')"
+        >
+          <template #value="slotProps">
+            <div v-if="slotProps.value">
+              <div v-if="$te('model.asset.category.' + slotProps.value.name)">
+                {{ $t("model.asset.category." + slotProps.value.name) }}
+              </div>
+              <div v-else>{{ slotProps.value.label }}</div>
+            </div>
+            <span v-else>
+              {{ slotProps.placeholder }}
+            </span>
+          </template>
+          <template #option="slotProps">
+            <div v-if="$te('model.asset.category.' + slotProps.option.name)">
+              {{ $t("model.asset.category." + slotProps.option.name) }}
+            </div>
+            <div v-else>{{ slotProps.option.label }}</div>
+          </template>
+        </Dropdown>
+      </template>
+    </Column>
     <Column field="child" :header="$t('model.asset.child')">
       <template #body="slotProps">
         <span v-if="slotProps.data.child && slotProps.data.child.length > 0" @click="viewChildren(slotProps.data)">
@@ -43,9 +107,59 @@
         </span>
       </template>
     </Column>
-    <Column field="roles" :header="$t('model.asset.roles')"> <template #body>TODO:</template></Column>
-    <Column name="edit" :header="$t('view.edit')"> <template #body>TODO:</template></Column>
+    <Column name="asset_connections" :header="$t('model.asset.asset_connections')">
+      <template #body="slotProps">
+        <span @click="manageAssetConnections(slotProps.data)">
+          {{ $t("view.manage_asset_connections") }}
+        </span>
+      </template></Column
+    >
+    <Column name="edit" :header="$t('view.properties')">
+      <template #body
+        >popup - edit key-value asset_details - list of possible keys is located in Enums.js (AssetDetailsKeys)
+      </template></Column
+    >
+    <Column name="edit" :header="$t('view.edit')">
+      <template #body>TODO: edit other asset properties here</template></Column
+    >
     <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
+    <template #header>
+      <div class="flex justify-content-between">
+        <Button
+          type="button"
+          icon="pi pi-filter-slash"
+          :label="$t('button.filter')"
+          class="p-button-outlined"
+          @click="reload"
+        />
+        <Button
+          type="button"
+          icon="pi pi-filter-slash"
+          :label="$t('button.clear_filter')"
+          class="p-button-outlined"
+          @click="clearFilter"
+        />
+      </div>
+    </template>
+    <template #footer>
+      <div class="flex justify-content-between">
+        <Button
+          type="button"
+          icon="pi pi-filter-slash"
+          :label="$t('button.previous')"
+          class="p-button-outlined"
+          @click="previous"
+        />
+
+        <Button
+          type="button"
+          icon="pi pi-filter-slash"
+          :label="$t('button.next')"
+          class="p-button-outlined"
+          @click="next"
+        />
+      </div>
+    </template>
   </DataTable>
   <Button :label="$t('view.button.add')" @click="assetAdd = true" />
   <Dialog
@@ -57,7 +171,9 @@
   >
     <AssetForm @update:model-value="onCreate($event, 0)" @cancel="assetAdd = false"> </AssetForm>
   </Dialog>
-  <AssetSelect ref="assetSelectDialog" @change="onParentChange" />
+  <AssetSelect ref="assetSelectDialog" @select="onParentChange" />
+  <AssetConnectionManagement ref="assetConnectionManagementDialog" />
+
   <Dialog
     v-model:visible="childDialog"
     :style="{ width: '75vw' }"
@@ -135,19 +251,48 @@ import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import AssetForm from "./AssetForm.vue";
 import AssetSelect from "./AssetSelect.vue";
 import MeasurementSelect from "./MeasurementSelect.vue";
+import AssetConnectionManagement from "./AssetConnectionManagement.vue";
 
+//TODO: get this from API/TOMEK
+const assetTypes = [
+  {
+    name: "building",
+    label: "Building",
+  },
+  {
+    name: "pv",
+    label: "PV",
+  },
+];
+//TODO: get this from API/TOMEK
+const assetCategories = [
+  {
+    name: "building",
+    label: "Building",
+  },
+  {
+    name: "dormitory",
+    label: "Dormitory",
+  },
+];
+const PAGE_SIZE = 10;
 export default {
   name: "AssetList",
-  components: { InfoIcon, AssetForm, AssetSelect, MeasurementSelect },
+  components: { InfoIcon, AssetForm, AssetSelect, MeasurementSelect, AssetConnectionManagement },
   props: {},
   data() {
     return {
+      page: 0,
+      assetTypes: assetTypes,
+      assetCategories: assetCategories,
+      isLoading: false,
       assetAdd: false,
       assetList: [],
       columns: [],
       selectedRow: null,
       childDialog: false,
       measurementDialog: false,
+      filters: this.initFilter(),
     };
   },
   computed: {},
@@ -164,6 +309,10 @@ export default {
       this.selectedRow = row;
       this.$refs.assetSelectDialog.open(row.parent);
     },
+    manageAssetConnections(row) {
+      this.$refs.assetConnectionManagementDialog.open(row);
+    },
+
     viewChildren(row) {
       console.info(row);
       this.selectedRow = row;
@@ -177,6 +326,7 @@ export default {
     },
 
     onParentChange(parent) {
+      //tODO: integrate -TOMEK
       this.selectedRow.parent = { name: parent.name, id: parent.id, label: parent.label };
       //TODO: catch error
       this.$ren.managementApi.updateAsset({ ...this.selectedRow });
@@ -197,8 +347,30 @@ export default {
       });
       this.reload();
     },
+
     async reload() {
+      //TODO: tomek will manage filtering feature with api
+      console.info(this.filter);
+      console.info(this.page + " " + PAGE_SIZE);
       this.assetList = await this.$ren.managementApi.listAsset();
+    },
+    next() {
+      if (this.assetList.lenth == 0) return;
+      this.page += 1;
+    },
+    previous() {
+      this.page = Math.max(0, this.page - 1);
+    },
+    clearFilter() {
+      this.filters = this.initFilter();
+    },
+    initFilter() {
+      return {
+        label: { value: null },
+        name: { value: null },
+        "type.label": { value: null },
+        "category.label": { value: null },
+      };
     },
   },
 };

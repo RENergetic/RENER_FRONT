@@ -57,17 +57,14 @@ export default {
     await this.$keycloak.get();
     if (this.$keycloak.isInitialized()) {
       this.keycloakState = 1;
-      this.setLocale();
-    } else this.keycloakState = 0;
-  },
-  methods: {
-    setLocale() {
       let currentLocale = this.$store.getters["settings/locales"].locale;
       if (currentLocale) {
         setLocale(currentLocale);
         this.refresh = !this.refresh;
       }
-    },
+    } else this.keycloakState = 0;
+  },
+  methods: {
     onRefresh() {
       this.refresh = !this.refresh;
     },

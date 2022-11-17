@@ -9,6 +9,7 @@ const HeatMapType = Object.freeze({
   OSM: "osm",
   DEFAULT: "default",
 });
+//TODO: load it from  backennd
 const AssetTypes = Object.freeze({
   BUILDING: "building",
   FLAT: "flat",
@@ -16,6 +17,16 @@ const AssetTypes = Object.freeze({
   ISLAND: "island",
   PV: "pv",
 });
+const AssetDetailsKeys = Object.freeze({
+  COLOR: "color",
+  PREDICTION_MODEL: "prediction_model",
+});
+
+const MeasurementDetailsKeys = Object.freeze({
+  COLOR: "color",
+  PREDICTION_MODEL: "prediction_model",
+});
+
 const DemandActionType = Object.freeze({
   INCREASE: "increase",
   DECREASE: "decrease",
@@ -70,4 +81,14 @@ const RenRoles = Object.freeze({
   },
 });
 
-export { Colors, AssetTypes, TileTypes, NotificationContext, HeatMapType, RenRoles, DemandActionType };
+export {
+  Colors,
+  AssetTypes,
+  TileTypes,
+  NotificationContext,
+  HeatMapType,
+  RenRoles,
+  DemandActionType,
+  AssetDetailsKeys,
+  MeasurementDetailsKeys,
+};

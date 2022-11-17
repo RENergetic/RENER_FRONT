@@ -2,6 +2,8 @@
   "asset_type": {
     "bulding": "Bulding",
     "flat": "Flat",
+    "heat_exchange": "Heat exchanger",
+    "heat_exchanger": "Heat exchanger",
     "heat_source": "Heat Source",
     "island": "Island",
     "pv": "pv"
@@ -42,5 +44,11 @@
     "stop": "Stop",
     "start": "Stop",
     "default": "Other"
+  },
+  "asset_details_keys": {
+    "color": "Color"
+  },
+  "measurement_details_keys": {
+    "color": "Color"
   }
 }

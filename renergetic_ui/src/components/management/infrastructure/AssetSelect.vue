@@ -10,23 +10,137 @@
       <Card>
         <template #title> {{ $t("view.asset_select") }} </template>
         <template #content>
-          <div class="grid">
-            <div class="col">
-              <AutoComplete
-                v-model="selectedAsset"
-                :placeholder="$t('view.find_asset')"
-                :suggestions="assetList"
-                field="label"
-                class="col-12"
-                @complete="searchAsset($event)"
-              />
-            </div>
+          <div class="flex flex-column">
+            <div v-if="initialAsset">selected: {{ initialAsset }}</div>
+
+            <DataTable
+              v-model:filters="filters"
+              v-model:selection="selectedAsset"
+              :value="assetList"
+              :lazy="true"
+              data-key="id"
+              selection-mode="single"
+              filter-display="row"
+              :loading="isLoading"
+              responsive-layout="scroll"
+              :global-filter-fields="['name', 'label', 'type.name', 'category.label']"
+            >
+              <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false">
+                <template #filter="{ filterModel }">
+                  <InputText
+                    v-model="filterModel.value"
+                    type="text"
+                    class="p-column-filter"
+                    :placeholder="$t('view.search')"
+                  />
+                </template>
+              </Column>
+              <Column field="label" :header="$t('model.asset.label')" :show-filter-menu="false">
+                <template #filter="{ filterModel }">
+                  <InputText
+                    v-model="filterModel.value"
+                    type="text"
+                    class="p-column-filter"
+                    :placeholder="$t('view.search')"
+                  />
+                </template>
+              </Column>
+              <Column field="type.label" :header="$t('model.asset.type')" :show-filter-menu="false">
+                <template #filter="{ filterModel }">
+                  <Dropdown
+                    v-model="filterModel.value"
+                    :options="assetTypes"
+                    :placeholder="$t('view.select_asset_type')"
+                  >
+                    <template #value="slotProps">
+                      <div v-if="slotProps.value">
+                        <div v-if="$te('model.asset.type.' + slotProps.value.name)">
+                          {{ $t("model.asset.type." + slotProps.value.name) }}
+                        </div>
+                        <div v-else>{{ slotProps.value.label }}</div>
+                      </div>
+                      <span v-else>
+                        {{ slotProps.placeholder }}
+                      </span>
+                    </template>
+                    <template #option="slotProps">
+                      <div v-if="$te('model.asset.type.' + slotProps.option.name)">
+                        {{ $t("model.asset.type." + slotProps.option.name) }}
+                      </div>
+                      <div v-else>{{ slotProps.option.label }}</div>
+                    </template>
+                  </Dropdown>
+                </template>
+              </Column>
+              <Column field="category.label" :header="$t('model.asset.asset_category')" :show-filter-menu="false">
+                <template #filter="{ filterModel }">
+                  <Dropdown
+                    v-model="filterModel.value"
+                    :options="assetCategories"
+                    :placeholder="$t('view.select_asset_category')"
+                  >
+                    <template #value="slotProps">
+                      <div v-if="slotProps.value">
+                        <div v-if="$te('model.asset.category.' + slotProps.value.name)">
+                          {{ $t("model.asset.category." + slotProps.value.name) }}
+                        </div>
+                        <div v-else>{{ slotProps.value.label }}</div>
+                      </div>
+                      <span v-else>
+                        {{ slotProps.placeholder }}
+                      </span>
+                    </template>
+                    <template #option="slotProps">
+                      <div v-if="$te('model.asset.category.' + slotProps.option.name)">
+                        {{ $t("model.asset.category." + slotProps.option.name) }}
+                      </div>
+                      <div v-else>{{ slotProps.option.label }}</div>
+                    </template>
+                  </Dropdown>
+                </template>
+              </Column>
+
+              <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
+              <template #header>
+                <div class="flex justify-content-between">
+                  <Button
+                    type="button"
+                    icon="pi pi-filter-slash"
+                    :label="$t('button.filter')"
+                    class="p-button-outlined"
+                    @click="searchAsset"
+                  />
+                  <Button
+                    type="button"
+                    icon="pi pi-filter-slash"
+                    :label="$t('button.clear_filter')"
+                    class="p-button-outlined"
+                    @click="clearFilter"
+                  />
+                </div>
+              </template>
+              <template #footer>
+                <div class="flex justify-content-between">
+                  <Button
+                    type="button"
+                    icon="pi pi-filter-slash"
+                    :label="$t('button.previous')"
+                    class="p-button-outlined"
+                    @click="previous"
+                  />
+
+                  <Button
+                    type="button"
+                    icon="pi pi-filter-slash"
+                    :label="$t('button.next')"
+                    class="p-button-outlined"
+                    @click="next"
+                  />
+                </div>
+              </template>
+            </DataTable>
           </div>
-          <!-- <Listbox v-if="assetList" v-model="selectedAsset" :options="assetList" option-label="label">
-            <template #option="slotProps">
-              <div>{{ slotProps.option.label }}</div>
-            </template>
-          </Listbox> -->
+
           <div class="grid">
             <div class="col">
               <Button
@@ -35,9 +149,7 @@
                 @click="submit"
               />
             </div>
-            <div class="col">
-              <Button :label="$t('view.button.clear')" :disabled="selectedAsset == null" @click="clear" />
-            </div>
+
             <div class="col">
               <Button :label="$t('view.button.cancel')" @click="cancel" />
             </div>
@@ -48,46 +160,88 @@
   </div>
 </template>
 <script>
+//TODO: get this from API/TOMEK
+const assetTypes = [
+  {
+    name: "building",
+    label: "Building",
+  },
+  {
+    name: "pv",
+    label: "PV",
+  },
+];
+//TODO: get this from API/TOMEK
+
+const PAGE_SIZE = 10;
+const assetCategories = [
+  {
+    name: "building",
+    label: "Building",
+  },
+  {
+    name: "dormitory",
+    label: "Dormitory",
+  },
+];
 export default {
   name: "AssetSelect",
   components: {},
   props: {
     current: { type: Object, default: () => null },
-    modelValue: { type: Object, default: () => null },
-    category: { type: String, default: undefined, require: false },
   },
-  emits: ["change", "update:modelValue"],
+  emits: ["select"],
   data() {
     return {
+      page: 0,
+      assetTypes: assetTypes,
+      assetCategories: assetCategories,
+      isLoading: false,
       assetList: [],
-      selectedAsset: null,
+      measurementDialog: false,
+      filters: this.initFilter(),
+      selectedAsset: this.current,
+      initialAsset: this.current,
       assetDialog: false,
-      filters: undefined,
     };
   },
-  async mounted() {},
-  methods: {
-    // onChange(option) {},
-    submit() {
-      // if (this.selectedAsset) {
-      this.$emit("change", this.selectedAsset);
-      this.$emit("update:modelValue", this.selectedAsset);
-      this.assetDialog = false;
-      // }
+  watch: {
+    assetDialog: {
+      handler: function (newValue) {
+        if (newValue) {
+          //set initial state
+          this.filters = this.initFilter();
+        }
+      },
+      immediate: true,
     },
-    async searchAsset(event) {
-      let q = event.query.trim();
+  },
+  methods: {
+    submit() {
+      this.$emit("select", this.selectedAsset);
+      // this.$emit("update:modelValue", this.selectedAsset);
+      this.assetDialog = false;
+    },
+    next() {
+      if (this.assetList.lenth == 0) return;
+      this.page += 1;
+    },
+    previous() {
+      this.page = Math.max(0, this.page - 1);
+    },
+    clearFilter() {
+      this.filters = this.initFilter();
+    },
+    async searchAsset() {
+      //TODO: tomek will manage filtering feature with api
+      console.info(this.filter);
+      console.info(this.page + " " + PAGE_SIZE);
+      let q = ""; //event.query.trim();
       if (this.category != undefined) {
         this.filters = { category: this.category };
       }
       if (q.length > 0)
         await this.$ren.managementApi.searchAsset(q, this.filters).then((assetList) => {
-          // if (this.current) {
-          //   if (assetList.find((it) => it.id == this.current.id) == null) {
-          //     this.assetList = [this.current] + assetList;
-          //   }
-          //   this.selectedAsset = this.current;
-          // }
           this.assetList = assetList;
         });
       else {
@@ -98,19 +252,20 @@ export default {
     },
     async open(current = null) {
       this.assetDialog = true;
-      if (current == null) this.selectedAsset = this.modelValue;
-      else this.selectedAsset = current;
+      if (current != null) {
+        this.selectedAsset = current;
+        this.initialAsset = current;
+        this.searchAsset();
+      }
+    },
 
-      // await this.$ren.managementApi.listAsset().then((assetList) => {
-      //   this.assetDialog = true;
-      //   if (this.current) {
-      //     if (assetList.find((it) => it.id == this.current.id) == null) {
-      //       this.assetList = [this.current] + assetList;
-      //     }
-      //     this.selectedAsset = this.current;
-      //   }
-      //   this.assetList = assetList;
-      // });
+    initFilter() {
+      return {
+        label: { value: null },
+        name: { value: null },
+        "type.label": { value: null },
+        "category.label": { value: null },
+      };
     },
     cancel() {
       this.assetDialog = false;

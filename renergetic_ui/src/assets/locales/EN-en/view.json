@@ -15,6 +15,7 @@
   "go_to_dashboard": "Go to dashboard",
   "go_to_heatmap": "Go inside",
   "information_panel_list": "Information panel list",
+  "loading":"Loading",
   "manage_sensors": "Manage sensors",
   "measurements": "Measurements",
   "measurement_type_not_defined":"Type not defined",

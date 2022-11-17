@@ -6,9 +6,10 @@ export default class ManagementApi extends RestComponent {
   }
   //getNotifications(objectId=null,context="user") => context:NotificationContext -> Enums.js
   // ASSET REQUESTS
-  // TODO:
+  //List assets
   async listAsset(params = undefined, offset = 0, limit = 20) {
     // Params: category, type, name, owner_id, parent_id
+    //TODO: add filtering
     if (params) {
       params.offset = offset;
       params.limit = limit;
@@ -25,7 +26,26 @@ export default class ManagementApi extends RestComponent {
         console.error("list asset error" + error.message);
         if (error.response.status == 404) console.error("there are no assets" + error.message);
       });
+  }
+
+  async listConnectedAssets(assetId, offset = 0, limit = 100) {
+    //TODO: TOMEK
+    // Params: category, type, name, owner_id, parent_id
+    let params = { offset: offset, limit: limit };
+    return this.axios
+      .get(`/api/assets/${assetId}/connected_assets`, {
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+        params: params,
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error) {
+        console.error("list asset error" + error.message);
+        if (error.response.status == 404) console.error("there are no assets" + error.message);
+      });
   } //./docs/model/asset.json or src/assets/dummy/samples/assets.js
+
   async searchAsset(query, params = undefined, offset = 0, limit = 20) {
     // Params: category, type, name, owner_id, parent_id
     // PREPARE FILTERS
