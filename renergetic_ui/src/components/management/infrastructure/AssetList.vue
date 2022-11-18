@@ -1,33 +1,47 @@
 <template>
-  <InfoIcon :show-icon="false">
-    <template #content>
-      <!-- some info -->
-    </template>
-  </InfoIcon>
   <!-- {{ assetList }} -->
+  <!-- {{ filters }} -->
   <DataTable
-    v-model:filters="filters"
     :value="assetList"
     :lazy="true"
     data-key="id"
+    :filters="filters"
     filter-display="row"
     :loading="isLoading"
     responsive-layout="scroll"
     :global-filter-fields="['name', 'label', 'type.name', 'category.label']"
+    @filter="onFilter"
   >
     <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false">
-      <template #filter="{ filterModel }">
-        <InputText v-model="filterModel.value" type="text" class="p-column-filter" :placeholder="$t('view.search')" />
+      <template #filter="{ filterModel, filterCallback }">
+        <InputText
+          v-model="filterModel.value"
+          type="text"
+          class="p-column-filter"
+          :placeholder="$t('view.search')"
+          @input="filterCallback()"
+        />
       </template>
     </Column>
     <Column field="label" :header="$t('model.asset.label')" :show-filter-menu="false">
-      <template #filter="{ filterModel }">
-        <InputText v-model="filterModel.value" type="text" class="p-column-filter" :placeholder="$t('view.search')" />
+      <template #filter="{ filterModel, filterCallback }">
+        <InputText
+          v-model="filterModel.value"
+          type="text"
+          class="p-column-filter"
+          :placeholder="$t('view.search')"
+          @input="filterCallback()"
+        />
       </template>
     </Column>
     <Column field="type.label" :header="$t('model.asset.type')" :show-filter-menu="false">
-      <template #filter="{ filterModel }">
-        <Dropdown v-model="filterModel.value" :options="assetTypes" :placeholder="$t('view.select_asset_type')">
+      <template #filter="{ filterModel, filterCallback }">
+        <Dropdown
+          v-model="filterModel.value"
+          :options="assetTypes"
+          :placeholder="$t('view.select_asset_type')"
+          @change="filterCallback()"
+        >
           <template #value="slotProps">
             <div v-if="slotProps.value">
               <div v-if="$te('model.asset.type.' + slotProps.value.name)">
@@ -49,11 +63,12 @@
       </template>
     </Column>
     <Column field="category.label" :header="$t('model.asset.asset_category')" :show-filter-menu="false">
-      <template #filter="{ filterModel }">
+      <template #filter="{ filterModel, filterCallback }">
         <Dropdown
           v-model="filterModel.value"
           :options="assetCategories"
           :placeholder="$t('view.select_asset_category')"
+          @change="filterCallback"
         >
           <template #value="slotProps">
             <div v-if="slotProps.value">
@@ -247,7 +262,7 @@
 </template>
 
 <script>
-import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
+// import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import AssetForm from "./AssetForm.vue";
 import AssetSelect from "./AssetSelect.vue";
 import MeasurementSelect from "./MeasurementSelect.vue";
@@ -278,7 +293,7 @@ const assetCategories = [
 const PAGE_SIZE = 10;
 export default {
   name: "AssetList",
-  components: { InfoIcon, AssetForm, AssetSelect, MeasurementSelect, AssetConnectionManagement },
+  components: { AssetForm, AssetSelect, MeasurementSelect, AssetConnectionManagement },
   props: {},
   data() {
     return {
@@ -296,7 +311,6 @@ export default {
     };
   },
   computed: {},
-  watch: {},
   async created() {
     this.assetList = await this.$ren.managementApi.listAsset();
     if (this.assetList != null && this.assetList.length > 0) {
@@ -304,6 +318,9 @@ export default {
     }
   },
   methods: {
+    onFilter(ev) {
+      this.filters = ev.filters;
+    },
     setParent(row) {
       console.info(row);
       this.selectedRow = row;
@@ -350,9 +367,16 @@ export default {
 
     async reload() {
       //TODO: tomek will manage filtering feature with api
-      console.info(this.filter);
-      console.info(this.page + " " + PAGE_SIZE);
-      this.assetList = await this.$ren.managementApi.listAsset();
+      console.info(this.filters);
+      let params = {
+        label: this.filters.label.value,
+        name: this.filters.name.value,
+        type: this.filters["type.label"] ? this.filters["type.label"].value.name : null,
+        category: this.filters["category.label"] ? this.filters["category.label"].value.name : null,
+      };
+
+      console.info(params);
+      this.assetList = await this.$ren.managementApi.listAsset(params, PAGE_SIZE * this.page, PAGE_SIZE);
     },
     next() {
       if (this.assetList.lenth == 0) return;
@@ -364,6 +388,7 @@ export default {
     clearFilter() {
       this.filters = this.initFilter();
     },
+
     initFilter() {
       return {
         label: { value: null },
