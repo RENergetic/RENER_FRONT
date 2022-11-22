@@ -2,9 +2,7 @@
   <Button id="sideMenuButton" icon="pi pi-arrow-right" @click="visible = true" />
 
   <Sidebar v-model:visible="visible" class="ren-sidebar">
-    <div id="sideMenuLogo">
-      <Logo />
-    </div>
+    <div id="sideMenuLogo"><Logo /></div>
     <PanelMenu :model="menuModel" />
   </Sidebar>
   <Dialogs
@@ -43,12 +41,21 @@ export default {
       localesDialog: false,
       informationPanels: [],
       isAdmin: false, //this.$store.getters["user/isAdmin"],
-      isLogin: false,
     };
   },
   computed: {
     pluginLoaded() {
       return this.$pluginLoaded;
+    },
+    isLoggedIn() {
+      let flags =
+        RenRoles.REN_USER |
+        RenRoles.REN_VISITOR |
+        RenRoles.REN_MANAGER |
+        RenRoles.REN_TECHNICAL_MANAGER |
+        RenRoles.REN_ADMIN |
+        RenRoles.REN_STAFF;
+      return (flags & this.role) > 0;
     },
   },
   watch: {
@@ -357,7 +364,7 @@ export default {
           label: this.$t("menu.signup"),
           icon: "pi pi-sign-in",
           to: "/signup",
-          visible: () => !this.isLogin,
+          visible: () => !this.isLoggedIn,
           command: () => {
             this.$router.push({ name: "SignUp" });
           },
@@ -366,7 +373,7 @@ export default {
           label: this.$t("menu.logout"),
           icon: "pi pi-sign-out",
           to: "/",
-          visible: () => this.isLogin,
+          visible: () => this.isLoggedIn,
           command: () => {
             this.$keycloak.logout();
             this.$router.push("/");
