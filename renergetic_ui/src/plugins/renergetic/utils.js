@@ -258,7 +258,7 @@ export default class RenUtils {
     switch (baseUnit) {
       case "W":
       case "Wh":
-        return (value / dict[key].accu) * 100.0;
+        return dict[key].accu != 0 ? (value / dict[key].accu) * 100.0 : 0.0;
       default:
         console.error(`measurement type aggreagation not defined for ${baseUnit}, ${key}`);
         break;
