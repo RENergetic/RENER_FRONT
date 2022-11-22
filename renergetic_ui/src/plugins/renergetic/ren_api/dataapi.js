@@ -94,7 +94,9 @@ export default class DataApi extends RestComponent {
   managementApi = new ManagementApi();
 
   async getTimeseries(measurementIds, attributes = {}) {
+    //TODO: TOMEK
     console.info(attributes);
+
     let timeseries = generator.generateTimeseries(measurementIds);
     console.info(JSON.stringify(timeseries));
     return timeseries;
@@ -109,23 +111,9 @@ export default class DataApi extends RestComponent {
     let args = "";
     let endpoint =
       assetId != null ? `/api/data/panel/${panelId}/asset/${assetId}${args}` : `/api/data/panel/${panelId}${args}`;
-    return this.axios
-      .get(endpoint, {
-        headers: { "Content-type": "application/json; charset=UTF-8" },
-      })
-      .then((response) => {
-        console.debug(response);
-        return response.data;
-      })
-      .catch(function (error) {
-        console.error("getPanelData error" + error.message);
-      });
+    return this.get(endpoint);
   }
 
-  async getAssetData(assetId) {
-    let asset = await this.managementApi.getAsset(assetId);
-    return asset;
-  }
   // async getNotifications(objectIds) {
   //   // todo:
   //   return objectIds;

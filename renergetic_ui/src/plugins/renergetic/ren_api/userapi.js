@@ -1,57 +1,30 @@
 import RestComponent from "./restcomponent";
-import storage from "../../../assets/dummy/storage.js";
-const USER_API_KEY = "user_api";
-const SETTINGS_KEY = "settings";
+// import storage from "../../../assets/dummy/storage.js";
+// const USER_API_KEY = "user_api";
+// const SETTINGS_KEY = "settings";
 export default class UserApi extends RestComponent {
   constructor(axiosInstance, vueInstance) {
     super(axiosInstance, vueInstance);
   }
   getProfile() {
-    return this.axios
-      .get(`/api/users/profile`, {
-        headers: { "Content-type": "application/json; charset=UTF-8" },
-      })
-      .then((response) => {
-        return response.data;
-      })
-      .catch(function (error) {
-        console.error(error.response);
-      });
+    return this.get(`/api/users/profile`);
   }
   getNotifications() {
-    return this.axios
-      .get(`/api/users/notifications`, {
-        headers: { "Content-type": "application/json; charset=UTF-8" },
-      })
-      .then((response) => {
-        return response.data;
-      })
-      .catch(function (error) {
-        console.error(error.response);
-      });
+    return this.get(`/api/users/notifications`);
   }
-  /**
-   * get panels assigned to assets
-   * ./docs/model/asset_panel.json
-   */
-  listAssetPanels() {
-    //TODO: API_INTEGRATION
+
+  async setSettings(settings) {
+    return this.post(`/api/users/profile/settings`, JSON.stringify(settings));
   }
-  getDemand() {
-    //TODO: API_INTEGRATION
-  }
-  listInformationPanel(userId = null) {
-    //TODO: API_INTEGRATION
-    console.info(userId);
+  async getSettings() {
+    return this.get(`/api/users/profile/settings`);
   }
   // TODO: implement
   // async getDemad(userId) {}
-  // async setSettings(settings) {   }
-  // async getSettings() {   }
+
   // async getAssets(){
   // todo:
   // }
-  static loggedUser = undefined;
   register(user) {
     //validate
     // TODO:
@@ -81,12 +54,6 @@ export default class UserApi extends RestComponent {
       .catch(function (error) {
         console.error(error.response);
       });
-  }
-  async setSettings(settings) {
-    storage.update(`${USER_API_KEY}.${SETTINGS_KEY}`, settings);
-  }
-  async getSettings() {
-    return storage.get(`${USER_API_KEY}.${SETTINGS_KEY}`, null);
   }
 
   // async getNotifications(objectIds) {

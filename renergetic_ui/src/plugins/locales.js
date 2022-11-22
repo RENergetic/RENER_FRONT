@@ -68,7 +68,7 @@ export async function setLocale(localeCode) {
     }
   }
 }
-console.info(i18n.global);
+// console.info(i18n.global);
 await setLocale(localeCode);
 
 export default i18n;

@@ -49,8 +49,23 @@ export default {
   },
   created() {
     this.$emitter.on("refresh", () => {
-      //(evt)
       this.onRefresh();
+    });
+    this.$emitter.on("error", (evt) => {
+      console.error(evt);
+      let msg;
+      if (evt.code) {
+        msg = this.$t(`error.${evt.code}`, evt.args);
+      } else msg = evt.message;
+      alert("TODO: catch error" + msg);
+    });
+    this.$emitter.on("information", (evt) => {
+      console.info(evt);
+      let msg;
+      if (evt.code) {
+        msg = this.$t(`information.${evt.code}`, evt.args);
+      } else msg = evt.message;
+      alert("TODO: information handler popup" + msg);
     });
   },
   async mounted() {

@@ -1,6 +1,4 @@
 <template>
-  <!-- {{ assetList }} -->
-  <!-- {{ filters }} -->
   <DataTable
     :value="assetList"
     :lazy="true"
@@ -38,7 +36,7 @@
       <template #filter="{ filterModel, filterCallback }">
         <Dropdown
           v-model="filterModel.value"
-          :options="assetTypes"
+          :options="$store.getters['view/assetTypes']"
           :placeholder="$t('view.select_asset_type')"
           @change="filterCallback()"
         >
@@ -66,7 +64,7 @@
       <template #filter="{ filterModel, filterCallback }">
         <Dropdown
           v-model="filterModel.value"
-          :options="assetCategories"
+          :options="$store.getters['view/assetCategories']"
           :placeholder="$t('view.select_asset_category')"
           @change="filterCallback"
         >
@@ -131,7 +129,8 @@
     >
     <Column name="edit" :header="$t('view.properties')">
       <template #body
-        >popup - edit key-value asset_details - list of possible keys is located in Enums.js (AssetDetailsKeys)
+        >popup - edit key-value asset_details - list of possible keys :
+        {{ $store.getters["view/assetDetailsKeys"] }}
       </template></Column
     >
     <Column name="edit" :header="$t('view.edit')">
@@ -262,34 +261,11 @@
 </template>
 
 <script>
-// import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import AssetForm from "./AssetForm.vue";
 import AssetSelect from "./AssetSelect.vue";
 import MeasurementSelect from "./MeasurementSelect.vue";
 import AssetConnectionManagement from "./AssetConnectionManagement.vue";
 
-//TODO: get this from API/TOMEK
-const assetTypes = [
-  {
-    name: "building",
-    label: "Building",
-  },
-  {
-    name: "pv",
-    label: "PV",
-  },
-];
-//TODO: get this from API/TOMEK
-const assetCategories = [
-  {
-    name: "building",
-    label: "Building",
-  },
-  {
-    name: "dormitory",
-    label: "Dormitory",
-  },
-];
 const PAGE_SIZE = 10;
 export default {
   name: "AssetList",
@@ -298,8 +274,6 @@ export default {
   data() {
     return {
       page: 0,
-      assetTypes: assetTypes,
-      assetCategories: assetCategories,
       isLoading: false,
       assetAdd: false,
       assetList: [],

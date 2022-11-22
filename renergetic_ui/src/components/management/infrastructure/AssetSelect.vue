@@ -6,6 +6,7 @@
       :maximizable="true"
       :modal="true"
       :dismissable-mask="true"
+      @filter="onFilter"
     >
       <Card>
         <template #title> {{ $t("view.asset_select") }} </template>
@@ -26,31 +27,34 @@
               :global-filter-fields="['name', 'label', 'type.name', 'category.label']"
             >
               <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false">
-                <template #filter="{ filterModel }">
+                <template #filter="{ filterModel, filterCallback }">
                   <InputText
                     v-model="filterModel.value"
                     type="text"
                     class="p-column-filter"
                     :placeholder="$t('view.search')"
+                    @input="filterCallback"
                   />
                 </template>
               </Column>
               <Column field="label" :header="$t('model.asset.label')" :show-filter-menu="false">
-                <template #filter="{ filterModel }">
+                <template #filter="{ filterModel, filterCallback }">
                   <InputText
                     v-model="filterModel.value"
                     type="text"
                     class="p-column-filter"
                     :placeholder="$t('view.search')"
+                    @input="filterCallback"
                   />
                 </template>
               </Column>
               <Column field="type.label" :header="$t('model.asset.type')" :show-filter-menu="false">
-                <template #filter="{ filterModel }">
+                <template #filter="{ filterModel, filterCallback }">
                   <Dropdown
                     v-model="filterModel.value"
-                    :options="assetTypes"
+                    :options="$store.getters['view/assetTypes']"
                     :placeholder="$t('view.select_asset_type')"
+                    @change="filterCallback"
                   >
                     <template #value="slotProps">
                       <div v-if="slotProps.value">
@@ -73,11 +77,12 @@
                 </template>
               </Column>
               <Column field="category.label" :header="$t('model.asset.asset_category')" :show-filter-menu="false">
-                <template #filter="{ filterModel }">
+                <template #filter="{ filterModel, filterCallback }">
                   <Dropdown
                     v-model="filterModel.value"
-                    :options="assetCategories"
+                    :options="$store.getters['view/assetCategories']"
                     :placeholder="$t('view.select_asset_category')"
+                    @change="filterCallback"
                   >
                     <template #value="slotProps">
                       <div v-if="slotProps.value">
@@ -160,30 +165,8 @@
   </div>
 </template>
 <script>
-//TODO: get this from API/TOMEK
-const assetTypes = [
-  {
-    name: "building",
-    label: "Building",
-  },
-  {
-    name: "pv",
-    label: "PV",
-  },
-];
-//TODO: get this from API/TOMEK
-
 const PAGE_SIZE = 10;
-const assetCategories = [
-  {
-    name: "building",
-    label: "Building",
-  },
-  {
-    name: "dormitory",
-    label: "Dormitory",
-  },
-];
+
 export default {
   name: "AssetSelect",
   components: {},
@@ -194,8 +177,6 @@ export default {
   data() {
     return {
       page: 0,
-      assetTypes: assetTypes,
-      assetCategories: assetCategories,
       isLoading: false,
       assetList: [],
       measurementDialog: false,
@@ -233,22 +214,10 @@ export default {
       this.filters = this.initFilter();
     },
     async searchAsset() {
-      //TODO: tomek will manage filtering feature with api
-      console.info(this.filter);
-      console.info(this.page + " " + PAGE_SIZE);
-      let q = ""; //event.query.trim();
-      if (this.category != undefined) {
-        this.filters = { category: this.category };
-      }
-      if (q.length > 0)
-        await this.$ren.managementApi.searchAsset(q, this.filters).then((assetList) => {
-          this.assetList = assetList;
-        });
-      else {
-        await this.$ren.managementApi.listAsset().then((assetList) => {
-          this.assetList = assetList;
-        });
-      }
+      //not implemented on backend
+      await this.$ren.managementApi.listAsset(this.filters, this.page * PAGE_SIZE, PAGE_SIZE).then((assetList) => {
+        this.assetList = assetList;
+      });
     },
     async open(current = null) {
       this.assetDialog = true;
@@ -258,7 +227,9 @@ export default {
         this.searchAsset();
       }
     },
-
+    onFilter(ev) {
+      this.filters = ev.filters;
+    },
     initFilter() {
       return {
         label: { value: null },

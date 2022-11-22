@@ -8,8 +8,8 @@ TODO: restApiName - describe
   * view - some view config
   * auth - auth/profile details
   * settings - apllication settigns provided by the user
-* `this.$emitter` - global emitter (see mitt API) . It's better to not overuse global event bus - only when it's really necessary.
-
+* `this.$emitter` - global emitter ( [see](#emitter))
+* 
   example: `$store.getters["view/get"]` - get user
 * `this.$confirm` -> confirm dialog (YES/NO)
 * `v-tooltip`  -> tooltip attribute for templates
@@ -28,7 +28,11 @@ Meta parameter description:
 * roles: **array** - available roles ["ren-manager","ren-technical-manager", "ren-admin", "ren-guest","ren-user","ren-dev","ren-staff","ren-visitor"]. 
 * ```$emit("UpdateMenu", args)``` - request menu update, emit event from router View to sidemenu  
 
- 
+### Emitter
+It's better to not overuse global event bus - only when it's really necessary.
+Global events:
+* ```refresh``` - request reload of components
+* ```error``` - emit error
 
 ### Role management
 [roles](roles.xlsx) - role overview

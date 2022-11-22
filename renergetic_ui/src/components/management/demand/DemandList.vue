@@ -4,7 +4,6 @@
       <!-- some info -->
     </template>
   </InfoIcon>
-  TODO: demand list
   <!--  measurement_id 	measurement_type_id 	sensor_name 	asset_type 	action 	message 	value 	properties 	demand_start 	demand_stop 	ext 	update_date 	 -->
 
   <DataTable :value="demandList">

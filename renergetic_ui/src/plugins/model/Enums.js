@@ -10,17 +10,17 @@ const HeatMapType = Object.freeze({
   DEFAULT: "default",
 });
 //TODO: load it from  backennd
-const AssetTypes = Object.freeze({
-  BUILDING: "building",
-  FLAT: "flat",
-  HEAT_SOURCE: "heat_source",
-  ISLAND: "island",
-  PV: "pv",
-});
-const AssetDetailsKeys = Object.freeze({
-  COLOR: "color",
-  PREDICTION_MODEL: "prediction_model",
-});
+// const AssetTypes = Object.freeze({
+//   BUILDING: "building",
+//   FLAT: "flat",
+//   HEAT_SOURCE: "heat_source",
+//   ISLAND: "island",
+//   PV: "pv",
+// });
+// const AssetDetailsKeys = Object.freeze({
+//   COLOR: "color",
+//   PREDICTION_MODEL: "prediction_model",
+// });
 
 const MeasurementDetailsKeys = Object.freeze({
   COLOR: "color",
@@ -47,6 +47,12 @@ const NotificationContext = Object.freeze({
   USER: "user",
   AREA: "area",
   TILE: "area",
+});
+
+const AssetConnectionType = Object.freeze({
+  OWNER: "owner",
+  RESIDENT: "resident",
+  VISITOR: "visitor",
 });
 
 const RenRoles = Object.freeze({
@@ -81,14 +87,15 @@ const RenRoles = Object.freeze({
   },
 });
 
+// AssetTypes,
+// AssetDetailsKeys,
 export {
   Colors,
-  AssetTypes,
   TileTypes,
   NotificationContext,
+  AssetConnectionType,
   HeatMapType,
   RenRoles,
   DemandActionType,
-  AssetDetailsKeys,
   MeasurementDetailsKeys,
 };

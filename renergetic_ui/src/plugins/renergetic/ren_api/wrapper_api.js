@@ -57,14 +57,11 @@ export class QueryBuilder {
     this.calls["measurement_types"] = {};
     return this;
   }
-  assetTypes() {
-    this.calls["asset_types"] = {};
+  assetMetaKeys() {
+    this.calls["asset_metakeys"] = {};
     return this;
   }
-  assetCategories() {
-    this.calls["asset_categories"] = {};
-    return this;
-  }
+
   assetPanels(offset = 0, limit = 10) {
     this.calls["asset_panels"] = {
       offset: offset,

@@ -27,11 +27,28 @@ export default class RenUtils {
     today = mm + "/" + dd + "/" + yyyy + " " + today.getHours() + ":" + today.getMinutes();
     return today;
   }
-  saveSettings(settingsKey, settings) {
-    this.app.$store.commit(settingsKey, settings);
-    let allSettings = this.app.$store.getters["settings/all"];
-    this.app.$ren.userApi.setSettings(allSettings);
+  // saveSettings(settingsKey, settings) {
+  //   this.app.$store.commit(settingsKey, settings);
+  //   let allSettings = this.app.$store.getters["settings"];
+  //   this.app.$ren.userApi
+  //     .setSettings(allSettings)
+  //     .then(() => this.app.$emitter.emit("information", { message: this.app.$t("information.settings_saved") }));
+  // }
+  async saveSettings() {
+    let allSettings = this.app.$store.getters["settings"];
+    let _this = this;
+
+    let settings = await _this.app.$ren.userApi
+      .setSettings(allSettings)
+      .then(() => _this.app.$emitter.emit("information", { message: _this.app.$t("information.settings_saved") }));
+    this.app.$store.commit("settings", settings);
   }
+  async loadSettings() {
+    let settings = await this.app.$ren.userApi.getSettings();
+    console.info(settings);
+    this.app.$store.commit("settings", settings);
+  }
+
   /**
    *
    * @param {*} flags  - e.g. RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN
@@ -45,19 +62,21 @@ export default class RenUtils {
    */
   async reloadStore() {
     console.info("reload user data");
+    await this.loadSettings();
+    let currentRole = this.app.$store.getters["auth/renRole"];
     // console.info(this.app.$store.getters["auth/renRole"]);
     let q = new QueryBuilder();
     q.measurementTypes();
-    if (
-      (RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER) &
-      this.app.$store.getters["auth/renRole"]
-    ) {
+    if ((RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER) & currentRole) {
       q.dashboards();
     }
-    if ((RenRoles.REN_VISITOR | RenRoles.REN_USER) & this.app.$store.getters["auth/renRole"]) {
+    if ((RenRoles.REN_VISITOR | RenRoles.REN_USER) & currentRole) {
       q.assets().assetPanels().panels();
     }
-    if (RenRoles.REN_USER & this.app.$store.getters["auth/renRole"]) {
+    if ((RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER) & currentRole) {
+      q.assetMetaKeys();
+    }
+    if (RenRoles.REN_USER & currentRole) {
       q.demands();
     }
     let _this = this;

@@ -61,19 +61,12 @@ export default {
       state.dashboards = getF("dashboards", []);
       state.dashboardMap = mapPanelId(state.dashboards);
       state.demands = getF("demands", []);
-    },
-    dashboards(state, payload) {
-      // console.info(payload);
-      state.dashboards = payload;
-      state.dashboardMap = mapPanelId(payload);
-    },
-    informationPanels(state, payload) {
-      state.informationPanels = payload;
-      state.informationPanelsMap = mapPanelId(payload);
-    },
-    assets(state, payload) {
-      state.assets = payload;
-      state.assetsMap = mapPanelId(payload);
+      let meta = getF("asset_metakeys", {});
+      state.asset = {
+        categories: meta.categories ? meta.categories : [],
+        types: meta.types ? meta.types : [],
+        asset_details_keys: meta.asset_details_keys ? meta.asset_details_keys : [],
+      };
     },
     data(state, payload) {
       state.data = payload;
@@ -81,11 +74,6 @@ export default {
     demands(state, payload) {
       state.demands = payload;
     },
-    assetPanels(state, payload) {
-      state.assetPanels = payload;
-      state.assetPanelsMap = mapAssetPanelId(state.assetPanels);
-    },
-
     // Requires a Dashboard object ({id:0, name:"", url:"", label:""})
     //TODO: i suggest to add single dashboard via REST API and than download new list - so we have coherent state with the backend.
     // Issue: connection error -> user creates dashboard and might lose it because there is no internet connection
@@ -152,6 +140,16 @@ export default {
     data: (state /* getters*/) => {
       return state.data;
     },
+    assetCategories: (state /* getters*/) => {
+      return state.asset.categories;
+    },
+    assetTypes: (state /* getters*/) => {
+      return state.asset.types;
+    },
+    assetDetailsKeys: (state /* getters*/) => {
+      return state.asset.asset_details_keys;
+    },
+
     assetPanels: (state /* getters*/) => {
       return state.assetPanels;
     },
@@ -170,3 +168,22 @@ export default {
     },
   },
 };
+
+// assetPanels(state, payload) {
+//   state.assetPanels = payload;
+//   state.assetPanelsMap = mapAssetPanelId(state.assetPanels);
+// },
+
+// dashboards(state, payload) {
+//   // console.info(payload);
+//   state.dashboards = payload;
+//   state.dashboardMap = mapPanelId(payload);
+// },
+// informationPanels(state, payload) {
+//   state.informationPanels = payload;
+//   state.informationPanelsMap = mapPanelId(payload);
+// },
+// assets(state, payload) {
+//   state.assets = payload;
+//   state.assetsMap = mapPanelId(payload);
+// },

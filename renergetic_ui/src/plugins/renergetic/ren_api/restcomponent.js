@@ -1,3 +1,4 @@
+const HEADERS = { "Content-type": "application/json; charset=UTF-8" };
 export default class RestComponent {
   //TODO: remove temmporary user id
   USER_ID = 2;
@@ -29,11 +30,134 @@ export default class RestComponent {
     });
     return q;
   }
+  /**
+   *
+   * @param {*} path
+   * @param {*} params
+   * @param {*} headers
+   * @param {*} onError - error handler, return `false` to fire default handler
+   * @returns
+   */
+  get(path, params = null, headers = null, onError = null) {
+    let _this = this;
+    if (headers == null) {
+      headers = HEADERS;
+    }
+    return (
+      params ? this.axios.get(path, { headers: headers, params: params }) : this.axios.get(path, { headers: headers })
+    )
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error) {
+        let defaultErrorHandler = (error) => _this.emitError(`GET: ${path}: ${error.message}`);
+        if (onError == null || !onError(error)) {
+          defaultErrorHandler(error);
+        }
+      });
+  }
+
+  /**
+   *
+   * @param {*} path
+   * @param {*} params
+   * @param {*} headers
+   * @param {*} onError - error handler, return `false` to fire default handler
+   * @returns
+   */
+  delete(path, params = null, headers = null, onError = null) {
+    let _this = this;
+    if (headers == null) {
+      headers = HEADERS;
+    }
+    return (
+      params
+        ? this.axios.delete(path, { headers: headers, params: params })
+        : this.axios.get(path, { headers: headers })
+    )
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error) {
+        let defaultErrorHandler = (error) => _this.emitError(`DELETE: ${path}: ${error.message}`);
+        if (onError == null || !onError(error)) {
+          defaultErrorHandler(error);
+        }
+      });
+  }
+  /**
+   *
+   * @param {*} path
+   * @param {*} data
+   * @param {*} params
+   * @param {*} headers
+   * @param {*} onError - error handler, return `false` to fire default handler
+   * @returns
+   */
+  post(path, data, params = null, headers = null, onError = null) {
+    let _this = this;
+    if (headers == null) {
+      headers = HEADERS;
+    }
+    return (
+      params
+        ? this.axios.post(path, data, { headers: headers, params: params })
+        : this.axios.post(path, data, { headers: headers })
+    )
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error) {
+        let defaultErrorHandler = (error) => _this.emitError(`POST: ${path}: ${error.message}`);
+        if (onError == null || !onError(error)) {
+          defaultErrorHandler(error);
+        }
+      });
+  }
+  /**
+   *
+   * @param {*} path
+   * @param {*} data
+   * @param {*} params
+   * @param {*} headers
+   * @param {*} onError - error handler, return `false` to fire default handler
+   * @returns
+   */
+  put(path, data, params = null, headers = null, onError = null) {
+    let _this = this;
+    if (headers == null) {
+      headers = HEADERS;
+    }
+    return (
+      params
+        ? this.axios.put(path, data, { headers: headers, params: params })
+        : this.axios.put(path, data, { headers: headers })
+    )
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error) {
+        let defaultErrorHandler = (error) => _this.emitError(`PUT: ${path}: ${error.message}`);
+        if (onError == null || !onError(error)) {
+          defaultErrorHandler(error);
+        }
+      });
+  }
 
   get $ren() {
     return this.vueInstance.config.globalProperties.$ren;
   }
   get $router() {
     return this.vueInstance.config.globalProperties.$router;
+  }
+  /**
+   *
+   * @param {*} msg  error msg
+   * @param {*} ctx context object to present more details to the user
+   */
+  emitError(msg, ctx = null) {
+    console.error(msg);
+    if (ctx != null) this.vueInstance.config.globalProperties.$emitter.emit("error", { ...ctx, message: msg });
+    else this.vueInstance.config.globalProperties.$emitter.emit("error", { message: msg });
   }
 }

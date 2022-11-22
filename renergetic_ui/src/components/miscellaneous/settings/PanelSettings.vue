@@ -29,6 +29,7 @@ export default {
     },
   },
   async mounted() {
+    this.settings = this.$store.getters["settings/panel"];
     this.$ren.dashboardApi
       .listInformationPanel()
       .then((panels) => {

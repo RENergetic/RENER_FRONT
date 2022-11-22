@@ -28,7 +28,7 @@
       <Dropdown
         id="assetType"
         v-model="mModel.type"
-        :options="assetTypes"
+        :options="$store.getters['view/assetTypes']"
         option-label="label"
         option-value="value"
         :placeholder="$t('view.select_asset_type')"
@@ -65,7 +65,6 @@
 
 <script>
 import InfoIcon from "../../miscellaneous/InfoIcon.vue";
-import { AssetTypes } from "@/plugins/model/Enums.js";
 import AssetSelect from "./AssetSelect.vue";
 export default {
   name: "AssetForm",
@@ -79,10 +78,8 @@ export default {
   emits: ["update:modelValue", "cancel"],
   data() {
     return {
-      assetTypes: Object.entries(AssetTypes).map((k) => {
-        return { value: k[1], label: this.$t("enums.asset_type." + k[1]) };
-      }),
       mModel: this.modelValue,
+      assetTypes: this.$store.getters["view/assetTypes"],
       // assetTypes: [
       //   { value: "room", label: this.$t("model.asset.asset_types.room") },
       //   { value: "pv", label: this.$t("model.asset.asset_types.pv") },
@@ -98,12 +95,7 @@ export default {
     },
   },
   watch: {},
-  async mounted() {
-    // LOAD ASSET TYPES
-    this.assetTypes = (await this.$ren.managementApi.listAssetType()).map((type) => {
-      return { value: type.id, label: type.label };
-    });
-  },
+  async mounted() {},
   methods: {
     selectAsset() {
       this.$refs.assetSelectDialog.open();
@@ -119,7 +111,9 @@ export default {
     },
   },
 };
+// this.assetTypes = (await this.$ren.managementApi.listAssetType()).map((type) => {
+//   return { value: type.id, label: type.label };
+// });
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss"></style>

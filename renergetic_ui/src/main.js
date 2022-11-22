@@ -41,7 +41,7 @@ app.directive("tooltip", Tooltip);
 
 app.use(ToastService);
 app.use(ConfirmationService);
-// app.config.globalProperties.emitter = emitter
+app.config.globalProperties.$t = i18n.global.t;
 
 app.use(store);
 app.use(plugin);

@@ -19,6 +19,7 @@
     :dismissable-mask="true"
   >
     todo choose connection type and asset
+    {{ connectionTypes }}
     <Button @click="selectAsset" />
     <Button @click="submitAssetConnection" />
   </Dialog>
@@ -27,17 +28,18 @@
 
 <script>
 import AssetSelect from "./AssetSelect.vue";
-
+import { AssetConnectionType } from "@/plugins/model/Enums.js";
 export default {
   name: "AssetConnectionManagement",
   components: { AssetSelect },
-  props: {},
+  props: { asset: { type: Object, default: () => null } },
   data() {
     return {
       dialog: false,
       addDialog: false,
       selectedAsset: null,
-      selectedAssetConnection: null, //-> todo make Enum of all possiblities
+      selectedAssetConnection: null,
+      connectionTypes: AssetConnectionType,
     };
   },
   computed: {},
@@ -61,12 +63,12 @@ export default {
     onAssetSelect(selectedAsset) {
       this.selectedAsset = selectedAsset;
     },
-    deleteAssetConnection(assetConnection) {
-      console.error(assetConnection);
+    deleteAssetConnection() {
+      this.$ren.managementApi.unconnectAsset(this.asset.id, this.selectedAsset.id, this.selectedAssetConnection);
       //tODO: rest integeation tomek
     },
     submitAssetConnection() {
-      //tODO: rest integeation tomek
+      this.$ren.managementApi.connectAsset(this.asset.id, this.selectedAsset.id, this.selectedAssetConnection);
     },
   },
 };

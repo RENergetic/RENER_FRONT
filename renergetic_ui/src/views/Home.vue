@@ -7,9 +7,9 @@
     <DemandList id="demand-list" />
   </div>
   <!-- {{ ($i18n.locale = locale) }} -->
-  locale: {{ $i18n.locale }}
-  ...
-  {{ $i18n }}
+  <!-- locale: {{ $i18n.locale }} -->
+
+  <!-- {{ $i18n }} -->
   <!-- <div class="home-grid-stack grid-stack"> -->
   <!-- <div v-if="settings.demandVisibility" :class="'grid-stack-item ren'">
         <DemandList :class="'grid-stack-item-content'" />
@@ -19,32 +19,30 @@
         <NotificationList :class="'grid-stack-item-content'"></NotificationList>
       </div> -->
   <!-- </div> -->
-  <Dialog
-    v-model:visible="settingsDialog"
-    :style="{ width: '50vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-    @hide="reload"
-  >
+  <SettingsDialog ref="homeSettingsDialog">
     <!--  @update="onSettingsUpdate()" -->
-    <HomeSettings @update="reloadSettings()"></HomeSettings>
-  </Dialog>
-  <Dialog
+    <template #settings><HomeSettings @update="reloadSettings()"></HomeSettings></template>
+  </SettingsDialog>
+  <SettingsDialog ref="panelSettingsDialog">
+    <!--  @update="onSettingsUpdate()" -->
+    <template #settings><PanelSettings @update="reloadPanelSettings()"></PanelSettings></template>
+  </SettingsDialog>
+  <div v-if="$refs.panelSettingsDialog">ddddd {{ $refs.panelSettingsDialog.settingsDialog }}dddd</div>
+  <!-- <Dialog
     v-model:visible="panelSettingsDialog"
     :style="{ width: '50vw' }"
     :maximizable="true"
     :modal="true"
     :dismissable-mask="true"
     @hide="reload"
-  >
-    <!--  @update="onSettingsUpdate()" -->
+  > 
     <PanelSettings @update="reloadPanelSettings()"></PanelSettings>
-  </Dialog>
+  </Dialog> -->
 </template>
 <script>
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import HomeSettings from "@/components/miscellaneous/settings/HomeSettings.vue";
+import SettingsDialog from "@/components/miscellaneous/settings/SettingsDialog.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 import EnergyFlow from "@/components/dashboard/EnergyFlow.vue";
 import DemandList from "@/components/user/demand/DemandList.vue";
@@ -56,6 +54,7 @@ import { RenRoles } from "../plugins/model/Enums.js";
 export default {
   name: "Home",
   components: {
+    SettingsDialog,
     DotMenu,
     DemandList,
     HomeSettings,
@@ -71,8 +70,6 @@ export default {
       grid: null,
       locked: true,
       notifiationDialog: false,
-      settingsDialog: false,
-      panelSettingsDialog: false,
       settingsChange: false,
       settings: this.$store.getters["settings/home"],
       panel: this.$store.getters["view/homePanel"],
@@ -105,7 +102,7 @@ export default {
       return {
         label: this.$t("menu.settings"),
         icon: "pi pi-fw pi-plus-circle",
-        command: () => (this.settingsDialog = !this.settingsDialog),
+        command: () => this.$refs.homeSettingsDialog.open(),
       };
     },
     panelSettingsButton: function () {
@@ -113,7 +110,7 @@ export default {
       return {
         label: this.$t("menu.panel_settings"),
         icon: "pi pi-fw pi-plus-circle",
-        command: () => (this.panelSettingsDialog = !this.panelSettingsDialog),
+        command: () => this.$refs.panelSettingsDialog.open(),
       };
     },
     menuModel() {

@@ -65,6 +65,7 @@ reused modules included in the views or other components
 * management -> modules related to energy island management , demand &notification definition 
 * miscellaneous - other
   * settings - settings templates
+  * InfoIcon - component for help popup
 * user - user based modules
   
 [top](#project-structure) 
