@@ -3,7 +3,7 @@
   <div style="position: relative">
     <energy-flow v-if="panel" ref="panel" :asset-id="null" :panel="panel" :settings="panelSettings"></energy-flow>
   </div>
-  <div style="position: relative">
+  <div v-if="settings.demandVisibility" style="position: relative">
     <DemandList id="demand-list" />
   </div>
   <!-- {{ ($i18n.locale = locale) }} -->

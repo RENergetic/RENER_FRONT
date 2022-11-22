@@ -1,8 +1,8 @@
 <template>
   <!-- <div style="display: flex; flex-direction: column; align-items: flex-end"> -->
-  <div v-if="loaded" class="flex flex-column justify-content-start" style="height: 100%">
+  <div v-if="loaded" class="flex flex-column justify-content-start" style="height: 100%; width: 100%">
     <div
-      v-if="mSettings.tile.title_visibility"
+      v-if="mSettings.tile.title_visibility && mSettings.label"
       class="flex flex-none align-items-center justify-content-center knob-component"
     >
       <h2 style="text-align: center">{{ mSettings.label }}</h2>
@@ -15,9 +15,12 @@
     </div> -->
     <div
       class="flex flex-none flex-column align-items-center justify-content-center knob-component"
-      style="position: relative"
+      style="position: relative; max-height: 100%; max-width: 100%"
     >
-      <div class="flex flex-none flex-column align-items-center justify-content-center">
+      <div
+        class="flex flex-none flex-column align-items-center justify-content-center"
+        style="position: relative; max-height: 100%; max-width: 100%"
+      >
         <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
       </div>
       <span
@@ -28,7 +31,11 @@
         <font-awesome-icon :icon="mSettings.tile.icon" />
       </span>
     </div>
-    <div class="flex flex-column flex-none knob-component" style="position: relative; width: 100%">
+    <div
+      v-if="mSettings.tile.measurement_list"
+      class="flex flex-column flex-none knob-component"
+      style="position: relative; width: 100%"
+    >
       <information-list-tile
         :tile="tile"
         :pdata="pdata"
@@ -62,7 +69,7 @@ export default {
   },
   data() {
     return {
-      mStyle: "max-width: 30rem; margin: auto",
+      mStyle: "width: 30rem; margin: auto;max-width: 100%;max-height:100%",
       relativeValues: false,
       mSettings: this.settings,
       tmpIndex: 0,
@@ -141,7 +148,10 @@ export default {
   },
   mounted() {
     // console.info(this.mSettings.panel);
-    this.mStyle = `max-width: 30rem; margin: auto;width:${this.mSettings.panel.cellWidth * this.tile.layout.w * 0.6}px`;
+    this.mStyle = `max-width: 100%;max-height:100%;margin: auto;width:${
+      this.mSettings.panel.cellWidth * this.tile.layout.w * 0.6
+    }px`;
+
     this.loaded = true;
   },
   methods: {

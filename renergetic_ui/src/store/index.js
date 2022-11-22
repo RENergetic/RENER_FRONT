@@ -8,6 +8,7 @@ export default createStore({
   state: {},
   mutations: {
     settings(state, payload) {
+      console.info(payload);
       let settings = JSON.parse(JSON.stringify(DefaultSettings));
       try {
         settings = { ...settings, ...payload };
@@ -15,11 +16,15 @@ export default createStore({
         console.info(`load settings error ${e}`);
       }
 
+      console.info(settings);
       state.settings = settings;
     },
   },
   getters: {
-    settings: (state) => state.settings,
+    settings: (state) => {
+      console.info(state.settings);
+      return state.settings;
+    },
   },
   actions: {},
   modules: { auth, view, settings },

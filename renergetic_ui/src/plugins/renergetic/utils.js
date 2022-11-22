@@ -38,14 +38,16 @@ export default class RenUtils {
     let allSettings = this.app.$store.getters["settings"];
     let _this = this;
 
-    let settings = await _this.app.$ren.userApi
-      .setSettings(allSettings)
-      .then(() => _this.app.$emitter.emit("information", { message: _this.app.$t("information.settings_saved") }));
+    let settings = await _this.app.$ren.userApi.setSettings(allSettings).then((settings) => {
+      _this.app.$emitter.emit("information", { message: _this.app.$t("information.settings_saved") });
+      return settings;
+    });
+    // console.info(settings);
     this.app.$store.commit("settings", settings);
   }
   async loadSettings() {
     let settings = await this.app.$ren.userApi.getSettings();
-    console.info(settings);
+    // console.info(settings);
     this.app.$store.commit("settings", settings);
   }
 

@@ -84,6 +84,7 @@ function validateTileSettings(tile, settings, ctx) {
           : settings.title_visibility != null
           ? settings.title_visibility
           : true,
+      measurement_list: tile.props.measurement_list != null ? tile.props.measurement_list : true,
       fontSize: settings.fontSize,
       background: tile.props.mask,
       template: tile.props.template,

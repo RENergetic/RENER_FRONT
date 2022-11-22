@@ -2,23 +2,27 @@
   <Card class="demand-box ren-control-bg">
     <template #content>
       <div class="flex">
-        <div class="flex align-items-center justify-content-center">
+        <div
+          class="flex flex-none align-items-center justify-content-center"
+          :style="'height:7.5rem;width:7.5rem;margin-right: 1rem;position: relative;'"
+        >
           <!-- {{ demand }} -->
           <span
             v-if="demand.demand_definition.tile == null"
             id="demandicon"
             :style="'background-image: url(' + getIcon(action) + ');width:7.5rem;'"
           ></span>
-          <span v-if="demand.demand_definition.tile != null" id="demandtile" @click="tileClick()">
-            <!-- {{ demand.tile }} -->
-            <InformationTileData
-              :key="demand.demand_definition.tile.id"
-              :style="'height:7.5rem;width:7.5rem;margin-right: 1rem;'"
-              :tile="demand.demand_definition.tile"
-              :pdata="pdata"
-              :settings="{ legend: false, title: false, center: false }"
-            />
-          </span>
+          <!-- <span v-if="demand.demand_definition.tile != null" id="demandtile" @click="tileClick()"> -->
+          <!-- {{ demand.tile }} -->
+          <!-- {{ demand.demand_definition.tile }} -->
+          <InformationTileData
+            v-if="demand.demand_definition.tile != null"
+            :key="demand.demand_definition.tile.id"
+            :tile="demand.demand_definition.tile"
+            :pdata="pdata"
+            :settings="{ legend: false, title: false, center: false }"
+          />
+          <!-- </span> -->
         </div>
 
         <div class="flex-grow-1 flex flex-column justify-content-center flex-wrap">
@@ -26,7 +30,8 @@
             <div class="message">{{ $t(`enums.demand_action.${action}`) }}</div>
           </div>
           <div class="flex align-content-start flex-wrap">
-            <div class="flex align-items-center justify-content-center">{{ demand.demand_definition.message }}</div>
+            <!-- <div class="flex align-items-center justify-content-center">{{ demand.demand_definition.message }}</div> -->
+            <div class="flex">{{ demand.demand_definition.message }}</div>
           </div>
         </div>
         <div class="flex-none flex align-items-center justify-content-center">
