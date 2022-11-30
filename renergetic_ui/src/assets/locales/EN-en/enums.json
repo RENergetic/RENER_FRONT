@@ -14,12 +14,17 @@
     "temperature": "temperature"
   },
   "measurement_name": {
-    "renewability": "renewability",
+    "heat": "Heat",
+    "electricity": "Electricity",
+    "renewability": "Renewability",
     "renewables": "Renewables",
-    "fossil_fuels": "Fossil fuels",
-    "import": "External",
     "external": "External",
-    "total_production": "Total production"
+    "non_renewables": "Fossil fuels",
+    "import": "External",
+    "office": "Offices",
+    "heat_exchanged": "Heat Exchangers",
+    "supercomputer": "Supercomputers",
+    "hvac": "HVACs"
   },
   "tile_type": {
     "knob": "knob",

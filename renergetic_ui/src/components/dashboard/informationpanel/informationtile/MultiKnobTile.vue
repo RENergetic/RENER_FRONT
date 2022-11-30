@@ -2,10 +2,10 @@
   <!-- <div style="display: flex; flex-direction: column; align-items: flex-end"> -->
   <div v-if="loaded" class="flex flex-column justify-content-start" style="height: 100%; width: 100%">
     <div
-      v-if="mSettings.tile.title_visibility && mSettings.label"
+      v-if="mSettings.tile.title_visibility && mSettings.tile.label"
       class="flex flex-none align-items-center justify-content-center knob-component"
     >
-      <h2 style="text-align: center">{{ mSettings.label }}</h2>
+      <h2 style="text-align: center">{{ mSettings.tile.label }}</h2>
     </div>
 
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1">
