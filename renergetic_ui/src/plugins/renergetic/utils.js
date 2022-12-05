@@ -188,9 +188,9 @@ export default class RenUtils {
       var newUnit = settings[m.type.physical_name];
       // console.info(m.type.physical_name + " " + newUnit);
       if (newUnit) {
-        let value = pData.current.last[m.id];
+        let value = pData.current[m.aggregation_function][m.id];
         let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
-        cp.current.last[m.id] = newV;
+        cp.current[m.aggregation_function][m.id] = newV;
       }
     }
     // console.info(cp);
@@ -217,7 +217,7 @@ export default class RenUtils {
       let key = this.aggKey(m, settings);
       // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
       let factor = m.type.factor;
-      let value = pData.current.last[m.id] / factor; //todo: raise exception if value not found
+      let value = pData.current[m.aggregation_function][m.id] / factor; //todo: raise exception if value not found
       accuDict = this.valueAccu(key, value, m.type.base_unit, accuDict);
     }
     for (let mId in mDict) {
@@ -262,7 +262,7 @@ export default class RenUtils {
       case "Wh":
         return dict[key].accu != 0 ? (value / dict[key].accu) * 100.0 : 0.0;
       default:
-        console.error(`measurement type aggreagation not defined for ${baseUnit}, ${key}`);
+        console.error(`measurement type agreggation not defined for ${baseUnit}, ${key}`);
         break;
     }
     return dict;

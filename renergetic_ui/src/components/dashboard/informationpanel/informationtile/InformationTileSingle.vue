@@ -73,9 +73,13 @@ export default {
       //todo support other aggregation functions
       try {
         if (this.mSettings.panel.relativeValues) {
-          return (this.pdata.current.last[this.measurement.id] / this.pdata.current.max[this.measurement.id]) * 100.0;
+          return (
+            (this.pdata.current[this.measurement.aggregation_function][this.measurement.id] /
+              this.pdata.current.max[this.measurement.id]) *
+            100.0
+          );
         }
-        return this.pdata.current.last[this.measurement.id];
+        return this.pdata.current[this.measurement.aggregation_function][this.measurement.id];
       } catch (e) {
         return null;
       }

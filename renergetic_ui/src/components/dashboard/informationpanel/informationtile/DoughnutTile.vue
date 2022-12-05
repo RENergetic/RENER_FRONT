@@ -65,11 +65,13 @@ export default {
         m.measurement_details.color ? m.measurement_details.color : "#90A4AE",
       );
       if (!this.mSettings.panel.relativeValues) {
-        data = this.tile.measurements.map((m) => this.pdata.current.last[m.id]);
+        data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
       } else {
         //todo include min offset
         // console.info(this.pdata.current);
-        data = this.tile.measurements.map((m) => this.pdata.current.last[m.id] / this.pdata.current.max[m.id]);
+        data = this.tile.measurements.map(
+          (m) => this.pdata.current[m.aggregation_function][m.id] / this.pdata.current.max[m.id],
+        );
         let sum = data.reduce((partialSum, a) => partialSum + a, 0);
         // console.info(1.0 - sum);
         data.push(1.0 - sum);

@@ -96,9 +96,13 @@ export default {
           //     this.pdata.current.max[this.tileItem.id]) *
           //   100.0
           // );
-          return (this.pdata.current.last[this.tileItem.id] / this.pdata.current.max[this.tileItem.id]) * 100.0;
+          return (
+            (this.pdata.current[this.tileItem.aggregation_function][this.tileItem.id] /
+              this.pdata.current.max[this.tileItem.id]) *
+            100.0
+          );
         }
-        return this.pdata.current.last[this.tileItem.id];
+        return this.pdata.current[this.tileItem.aggregation_function][this.tileItem.id];
       } catch (e) {
         return null;
       }

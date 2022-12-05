@@ -109,13 +109,15 @@ export default {
       if (!this.mSettings.panel.relativeValues) {
         // let data = this.tile.measurements.map((m) => this.pdata[m.id]);
         //TODO: make it comgigurable in tile / args prediction & aggregation func
-        data = this.tile.measurements.map((m) => this.pdata.current.last[m.id]);
+        data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
         let total = data.reduce((partialSum, a) => partialSum + a, 0);
         data = data.map((v) => v / total);
       } else {
         //todo include min offset
         // console.info(this.pdata.current);
-        data = this.tile.measurements.map((m) => this.pdata.current.last[m.id] / this.pdata.current.max[m.id]);
+        data = this.tile.measurements.map(
+          (m) => this.pdata.current[m.aggregation_function][m.id] / this.pdata.current.max[m.id],
+        );
       }
       // console.info(data);
       let labels = []; // this.tile.measurements.map((m) => m.label);
