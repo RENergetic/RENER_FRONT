@@ -115,11 +115,14 @@ export default {
       } else {
         //todo include min offset
         // console.info(this.pdata.current);
-        data = this.tile.measurements.map(
-          (m) => this.pdata.current[m.aggregation_function][m.id] / this.pdata.current.max[m.id],
+        data = this.tile.measurements.map((m) =>
+          m.type.base_unit != "%"
+            ? this.pdata.current[m.aggregation_function][m.id] / this.pdata.max[m.aggregation_function][m.id]
+            : this.pdata.current[m.aggregation_function][m.id],
         );
+        console.info(data);
       }
-      // console.info(data);
+      console.info(this.pdata);
       let labels = []; // this.tile.measurements.map((m) => m.label);
       //todo remove labels ?
       for (let idx in this.tile.measurements) {

@@ -2,6 +2,8 @@
   <div v-if="tile" :class="tileClass" :style="background">
     <!-- {{ pdata }} -->
     <!-- {{ tile.props }} -->
+    <!-- todo: group by sensor_name -->
+    <!-- {{ tile }} -->
     <div
       v-if="(titleVisible || tile.measurements.length == 0) && tile.label"
       class="flex flex-column justify-content-center"
@@ -9,7 +11,7 @@
     >
       <h3 style="margin: 0; text-align: center">{{ tile.label }}</h3>
     </div>
-    <!-- {{ tile }} -->
+
     <KnobTile
       v-else-if="tile.type == 'knob'"
       :tile="tile"

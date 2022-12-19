@@ -3,6 +3,7 @@
     <div class="flex flex-none flex-row align-items-center justify-content-center">
       <!-- <span v-if="icon != null" id="tileicon" :style="'background-image: url(' + icon + ')'"></span> -->
       <!-- {{ settings }}fff -->
+      <!-- {{ measurement }} -->
       <span
         v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
         id="tileicon"
@@ -18,8 +19,8 @@
         <div class="flex flex-grow-1 message align-items-start">{{ label }}:</div>
         <div class="flex flex-none message align-items-end">{{ Math.round(value * 1000.0) / 1000.0 }} {{ unit }}</div>
       </div>
-      <div v-if="tileItem.description" class="flex">
-        <div class="flex align-items-center justify-content-center">description: {{ tileItem.description }}</div>
+      <div v-if="measurement.description" class="flex">
+        <div class="flex align-items-center justify-content-center">description: {{ measurement.description }}</div>
       </div>
     </div>
   </div>
@@ -37,7 +38,7 @@ export default {
   props: {
     settings: { type: Object, default: () => ({}) },
     conversionSettings: { type: Object, default: () => ({}) },
-    tileItem: {
+    measurement: {
       type: Object,
       default: () => null,
     },
@@ -62,13 +63,13 @@ export default {
       );
     },
     style: function () {
-      let color = this.$ren.utils.measurementColor(this.tileItem, this.value);
+      let color = this.$ren.utils.measurementColor(this.measurement, this.value);
       return `background:${color.color};opacity:${color.alpha}`;
     },
     state: function () {
       let state;
-      if (this.tileItem.visible == null) state = true;
-      else state = this.tileItem.visible;
+      if (this.measurement.visible == null) state = true;
+      else state = this.measurement.visible;
       if (state) {
         return "tileitem flex-grow-1 flex flex-row justify-content-start flex-wrap";
       }
@@ -77,32 +78,27 @@ export default {
     icon: function () {
       //todo: default
 
-      let icon = this.tileItem.domain ? this.tileItem.domain : this.tileItem.type.metric_type;
-      if (this.tileItem.measurement_details.icon != null) icon = this.tileItem.measurement_details.icon;
-      else if (this.tileItem.type.icon != null) icon = this.tileItem.type.icon;
+      let icon = this.measurement.domain ? this.measurement.domain : this.measurement.type.metric_type;
+      if (this.measurement.measurement_details.icon != null) icon = this.measurement.measurement_details.icon;
+      else if (this.measurement.type.icon != null) icon = this.measurement.type.icon;
       // console.info(icon);
       return icons[icon] != null ? icons[icon] : icons.default;
     },
     unit: function () {
-      return this.$ren.utils.getUnit(this.tileItem, this.settings.panel, this.conversionSettings);
+      return this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings);
     },
 
     value: function () {
       //todo support other aggregation functions
       try {
-        if (this.mSettings.panel.relativeValues) {
-          // return (
-          //   ((this.tileItem.type.factor * this.pdata.current.last[this.tileItem.id]) /
-          //     this.pdata.current.max[this.tileItem.id]) *
-          //   100.0
-          // );
+        if (this.mSettings.panel.relativeValues && this.measurement.type.base_unit != "%") {
           return (
-            (this.pdata.current[this.tileItem.aggregation_function][this.tileItem.id] /
-              this.pdata.current.max[this.tileItem.id]) *
+            (this.pdata.current[this.measurement.aggregation_function][this.measurement.id] /
+              this.pdata.max[this.measurement.aggregation_function][this.measurement.id]) *
             100.0
           );
         }
-        return this.pdata.current[this.tileItem.aggregation_function][this.tileItem.id];
+        return this.pdata.current[this.measurement.aggregation_function][this.measurement.id];
       } catch (e) {
         return null;
       }
@@ -110,11 +106,11 @@ export default {
       // return this.pdata ? this.pdata[this.tileItem.id] : null;
     },
     label: function () {
-      if (this.tileItem.label != null) {
-        return this.tileItem.label;
+      if (this.measurement.label != null) {
+        return this.measurement.label;
       } else {
         //TODO: translate it
-        return this.tileItem.name;
+        return this.measurement.name;
       }
     },
   },
