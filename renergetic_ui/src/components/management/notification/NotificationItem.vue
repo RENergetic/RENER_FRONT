@@ -3,12 +3,12 @@
   <Card class="notification-box ren-control-bg">
     <template #content>
       <div class="flex">
-        <div class="flex align-items-center justify-content-center"></div>
+        <!-- <div class="flex align-items-center justify-content-center"></div> -->
 
         <div class="flex-grow-1 flex flex-column justify-content-center flex-wrap">
           {{ notification.message }}
           <div v-if="notification.dashboard" class="flex flex-grow-1">
-            {{ $t("view.go_to_dashboard") }}
+            <!-- {{ $t("view.go_to_dashboard") }} -->
             <i
               v-if="notification.dashboard"
               v-tooltip="$t('view.go_to_dashboard')"
@@ -16,6 +16,12 @@
               @click="$router.push(`/dashboard/view/${notification.dashboard.id}`)"
             />
           </div>
+        </div>
+        <div class="col-2 flex-none flex align-items-center justify-content-center notification-icon">
+          <i v-if="notification.type == 'warning'" class="pi pi-exclamation-triangle"></i>
+          <i v-if="notification.type == 'information'" class="pi pi-info-circle"></i>
+          <i v-if="notification.type == 'error'" class="pi pi-times-circle"></i>
+          <i v-if="notification.type == 'anomaly'" class="pi pi-times-circle"></i>
         </div>
       </div>
     </template>
@@ -79,27 +85,8 @@ export default {
     }
   }
 }
-.heatdemand {
-  i {
-    font-size: 2rem;
-    margin-left: 0.75rem;
-  }
-  .description {
-    font-size: 1rem;
-    font-style: italic;
-  }
-  .message {
-    font-size: 1.5rem;
-    font-weight: 600;
-  }
-}
-#demandicon {
-  width: 5rem;
-  height: 5rem;
-  // display: inherit;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  margin-right: 1rem;
+
+.notification-icon {
+  font-size: 2.5rem;
 }
 </style>

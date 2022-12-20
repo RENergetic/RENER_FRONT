@@ -2,7 +2,7 @@
   <div v-if="panel" id="panel-box">
     <DotMenu :model="menuModel" />
 
-    <NotificationList v-if="settings.notificationVisibility" :notifications="notifications"></NotificationList>
+    <!-- <NotificationList v-if="settings.notificationVisibility" :notifications="notifications"></NotificationList> -->
 
     <energy-flow
       v-if="panel"
@@ -14,52 +14,35 @@
   </div>
   <!--dialogs -->
   <div>
-    <Dialog
-      v-model:visible="settingsDialog"
-      :style="{ width: '50vw' }"
-      :maximizable="true"
-      :modal="true"
-      :dismissable-mask="true"
-    >
-      <PanelSettings @update="reloadSettings()"></PanelSettings>
-    </Dialog>
-    <Dialog
-      v-model:visible="conversionSettingsDialog"
-      :style="{ width: '50vw' }"
-      :maximizable="true"
-      :modal="true"
-      :dismissable-mask="true"
-    >
-      <ConversionSettings @update="reloadView()"></ConversionSettings>
-    </Dialog>
-
-    <Dialog
-      v-model:visible="filterSettingsDialog"
-      :style="{ width: '50vw' }"
-      :maximizable="true"
-      :modal="true"
-      :dismissable-mask="true"
-    >
-      <FilterSettings @update="reloadView()"></FilterSettings>
-    </Dialog>
+    <SettingsDialog ref="settingsDialog">
+      <template #settings><PanelSettings @update="reloadSettings()"></PanelSettings></template>
+    </SettingsDialog>
+    <SettingsDialog ref="conversionSettingsDialog">
+      <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
+    </SettingsDialog>
+    <SettingsDialog ref="filterSettingsDialog" :save="false">
+      <template #settings><FilterSettings @update="reloadSettings()"></FilterSettings></template>
+    </SettingsDialog>
   </div>
 </template>
 <script>
 import EnergyFlow from "@/components/dashboard/EnergyFlow.vue";
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
+import SettingsDialog from "@/components/miscellaneous/settings/SettingsDialog.vue";
 import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
 import FilterSettings from "@/components/miscellaneous/settings/FilterSettings.vue";
-import NotificationList from "@/components/management/notification/NotificationList.vue";
-import { RenRoles } from "@/plugins/model/Enums";
+// import NotificationList from "@/components/management/notification/NotificationList.vue";
+// import { RenRoles } from "@/plugins/model/Enums";
 export default {
-  name: "InformationPanelView",
+  name: "EnergyFlowView",
   components: {
     EnergyFlow,
     FilterSettings,
+    SettingsDialog,
     DotMenu,
     PanelSettings,
-    NotificationList,
+    // NotificationList,
     ConversionSettings,
   },
   data() {
@@ -80,7 +63,7 @@ export default {
       return {
         label: this.$t("menu.panel_settings"),
         icon: "pi pi-fw pi-plus-circle",
-        command: () => (this.settingsDialog = !this.settingsDialog),
+        command: () => this.$refs.settingsDialog.open(),
       };
     },
     conversionSettingsButton: function () {
@@ -88,7 +71,7 @@ export default {
       return {
         label: this.$t("menu.unit_settings"),
         icon: "pi pi-fw pi-plus-circle",
-        command: () => (this.conversionSettingsDialog = !this.conversionSettingsDialog),
+        command: () => this.$refs.conversionSettingsDialog.open(),
       };
     },
 
@@ -97,7 +80,7 @@ export default {
       return {
         label: this.$t("menu.filter_settings"),
         icon: "pi pi-fw pi-plus-circle",
-        command: () => (this.filterSettingsDialog = !this.filterSettingsDialog),
+        command: () => this.$refs.filterSettingsDialog.open(),
       };
     },
 
@@ -116,17 +99,17 @@ export default {
     },
   },
   async mounted() {
-    if (
-      this.settings.notificationVisibility &&
-      (RenRoles.REN_ADMIN |
-        RenRoles.REN_USER |
-        RenRoles.REN_MANAGER |
-        RenRoles.REN_TECHNICAL_MANAGER |
-        RenRoles.REN_STAFF) &
-        this.$store.getters["auth/renRole"]
-    ) {
-      this.notifications = await this.$ren.userApi.getNotifications();
-    }
+    // if (
+    //   this.settings.notificationVisibility &&
+    //   (RenRoles.REN_ADMIN |
+    //     RenRoles.REN_USER |
+    //     RenRoles.REN_MANAGER |
+    //     RenRoles.REN_TECHNICAL_MANAGER |
+    //     RenRoles.REN_STAFF) &
+    //     this.$store.getters["auth/renRole"]
+    // ) {
+    //   this.notifications = await this.$ren.userApi.getNotifications();
+    // }
 
     await this.loadStructure();
   },

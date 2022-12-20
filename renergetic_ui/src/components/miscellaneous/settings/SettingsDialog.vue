@@ -15,14 +15,23 @@
 <script>
 export default {
   name: "SettingsDialog",
+  props: {
+    save: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return { dialogVisibility: false };
   },
   watch: {
-    // dialogVisibility: {
-    //   handler: function (newVal) {},
-    //   deep: true,
-    // },
+    dialogVisibility: {
+      handler: function (newVal) {
+        if (newVal == false) {
+          this.onClose();
+        }
+      },
+    },
   },
   methods: {
     open() {
@@ -32,7 +41,8 @@ export default {
       this.dialogVisibility = false;
     },
     onClose() {
-      this.$ren.utils.saveSettings();
+      console.info("onClose");
+      if (this.save) this.$ren.utils.saveSettings();
     },
   },
 };

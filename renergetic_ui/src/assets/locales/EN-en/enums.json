@@ -24,7 +24,8 @@
     "office": "Offices",
     "heat_exchanged": "Heat Exchangers",
     "supercomputer": "Supercomputers",
-    "hvac": "HVACs"
+    "hvac": "HVACs",
+    "fossil_fuels":   "Fossil fuels"
   },
   "tile_type": {
     "knob": "knob",
