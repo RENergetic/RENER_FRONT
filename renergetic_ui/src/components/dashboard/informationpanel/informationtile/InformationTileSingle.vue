@@ -72,10 +72,10 @@ export default {
     value: function () {
       //todo support other aggregation functions
       try {
-        if (this.mSettings.panel.relativeValues) {
+        if (this.mSettings.panel.relativeValues && this.measurement.type.base_unit != "%") {
           return (
             (this.pdata.current[this.measurement.aggregation_function][this.measurement.id] /
-              this.pdata.current.max[this.measurement.id]) *
+              this.pdata.max[this.measurement.aggregation_function][this.measurement.id]) *
             100.0
           );
         }

@@ -2,7 +2,7 @@
   <InformationTileItem
     v-for="(m, idx) in mTile.measurements"
     :key="m.id"
-    :tile-item="m"
+    :measurement="m"
     :idx="idx"
     :settings="mSettings"
     :conversion-settings="conversionSettings"

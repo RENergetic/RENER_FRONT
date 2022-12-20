@@ -1,4 +1,5 @@
 <template>
+  <!-- {{ tile }} -->
   <div class="flex flex-column justify-content-center" style="height: 100%">
     <!-- <div style="display: flex; flex-direction: column; align-items: flex-end"> -->
     <div class="flex flex-none flex-column justify-content-center">
@@ -69,8 +70,10 @@ export default {
       } else {
         //todo include min offset
         // console.info(this.pdata.current);
-        data = this.tile.measurements.map(
-          (m) => this.pdata.current[m.aggregation_function][m.id] / this.pdata.current.max[m.id],
+        data = this.tile.measurements.map((m) =>
+          m.type.base_unit != "%"
+            ? this.pdata.current[m.aggregation_function][m.id] / this.pdata.max[m.aggregation_function][m.id]
+            : this.pdata.current[m.aggregation_function][m.id],
         );
         let sum = data.reduce((partialSum, a) => partialSum + a, 0);
         // console.info(1.0 - sum);

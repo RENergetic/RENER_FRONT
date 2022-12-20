@@ -140,7 +140,7 @@ export default class RenUtils {
   }
 
   aggKey(measurement, settings) {
-    let key = measurement.type.base_unit;
+    let key = `${measurement.type.base_unit}_${measurement.aggregation_function}`;
     if (settings.groupByDirection) {
       key += `_${measurement.direction}`;
     }
@@ -220,6 +220,7 @@ export default class RenUtils {
       let value = pData.current[m.aggregation_function][m.id] / factor; //todo: raise exception if value not found
       accuDict = this.valueAccu(key, value, m.type.base_unit, accuDict);
     }
+    pData.max = {};
     for (let mId in mDict) {
       let m = mDict[mId];
       // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
@@ -232,10 +233,17 @@ export default class RenUtils {
         pData.current.min = {};
       }
       pData.current.min[m.id] = 0;
-      if (!pData.current.max) {
-        pData.current.max = {};
+      // if (!pData.current.max) {
+      //   pData.current.max = {};
+      // }
+      // pData.current.max[m.id] = accuDict[key].accu * factor;
+      if (!pData.max[m.aggregation_function]) {
+        pData.max[m.aggregation_function] = {};
       }
-      pData.current.max[m.id] = accuDict[key].accu * factor;
+      if (!pData.max[m.aggregation_function][m.id]) {
+        pData.max[m.aggregation_function][m.id] = {};
+      }
+      pData.max[m.aggregation_function][m.id] = accuDict[key].accu * factor;
     }
 
     return pData;
