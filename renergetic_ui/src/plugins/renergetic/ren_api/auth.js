@@ -35,8 +35,7 @@ export default class AuthApi extends RestComponent {
       //TODO: make some message , toast?
       return Promise.reject(new Error("Too many refresh attempts"));
     }
-    return this.axios
-      .post("/api/auth/refresh")
+    return this.post("/api/auth/refresh")
       .then(() => {
         sessionStorage.setItem("REFRESH_COUNT", 0);
       })

@@ -80,17 +80,9 @@ export default class WrapperApi extends RestComponent {
     //TODO user id -> remove
     const userId = "/" + this.USER_ID;
     console.info("query: " + JSON.stringify(query));
-    return this.axios
-      .post(`/api/ui/wrapper${userId}`, query, {
-        headers: { "Content-type": "application/json; charset=UTF-8" },
-      })
-      .then((response) => {
-        console.debug(response.data);
-        return response.data;
-      })
-      .catch(function (error) {
-        console.error("list entity error" + error.message);
-      });
+    return this.post(`/api/ui/wrapper${userId}`, query, undefined, {
+      "Content-type": "application/json; charset=UTF-8",
+    });
   }
   /** 
     * 

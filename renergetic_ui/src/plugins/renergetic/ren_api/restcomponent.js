@@ -2,6 +2,7 @@ const HEADERS = { "Content-type": "application/json; charset=UTF-8" };
 export default class RestComponent {
   //TODO: remove temmporary user id
   USER_ID = 2;
+
   constructor(axiosInstance, vueInstance) {
     this.vueInstance = vueInstance;
     this.axios = axiosInstance;
@@ -43,18 +44,20 @@ export default class RestComponent {
     if (headers == null) {
       headers = HEADERS;
     }
-    return (
-      params ? this.axios.get(path, { headers: headers, params: params }) : this.axios.get(path, { headers: headers })
-    )
-      .then((response) => {
-        return response.data;
-      })
-      .catch(function (error) {
-        let defaultErrorHandler = (error) => _this.emitError(`GET: ${path}: ${error.message}`);
-        if (onError == null || !onError(error)) {
-          defaultErrorHandler(error);
-        }
-      });
+    return this.securizeAPI(headers).then((headers) => {
+      return (
+        params ? this.axios.get(path, { headers: headers, params: params }) : this.axios.get(path, { headers: headers })
+      )
+        .then((response) => {
+          return response.data;
+        })
+        .catch(function (error) {
+          let defaultErrorHandler = (error) => _this.emitError(`GET: ${path}: ${error.message}`);
+          if (onError == null || !onError(error)) {
+            defaultErrorHandler(error);
+          }
+        });
+    });
   }
 
   /**
@@ -70,20 +73,22 @@ export default class RestComponent {
     if (headers == null) {
       headers = HEADERS;
     }
-    return (
-      params
-        ? this.axios.delete(path, { headers: headers, params: params })
-        : this.axios.get(path, { headers: headers })
-    )
-      .then((response) => {
-        return response.data;
-      })
-      .catch(function (error) {
-        let defaultErrorHandler = (error) => _this.emitError(`DELETE: ${path}: ${error.message}`);
-        if (onError == null || !onError(error)) {
-          defaultErrorHandler(error);
-        }
-      });
+    return this.securizeAPI(headers).then((headers) => {
+      return (
+        params
+          ? this.axios.delete(path, { headers: headers, params: params })
+          : this.axios.get(path, { headers: headers })
+      )
+        .then((response) => {
+          return response.data;
+        })
+        .catch(function (error) {
+          let defaultErrorHandler = (error) => _this.emitError(`DELETE: ${path}: ${error.message}`);
+          if (onError == null || !onError(error)) {
+            defaultErrorHandler(error);
+          }
+        });
+    });
   }
   /**
    *
@@ -99,20 +104,24 @@ export default class RestComponent {
     if (headers == null) {
       headers = HEADERS;
     }
-    return (
-      params
-        ? this.axios.post(path, data, { headers: headers, params: params })
-        : this.axios.post(path, data, { headers: headers })
-    )
-      .then((response) => {
-        return response.data;
-      })
-      .catch(function (error) {
-        let defaultErrorHandler = (error) => _this.emitError(`POST: ${path}: ${error.message}`);
-        if (onError == null || !onError(error)) {
-          defaultErrorHandler(error);
-        }
-      });
+    return this.securizeAPI(headers).then((headers) => {
+      console.error("POST REQUEST OAUTH");
+      console.table(headers);
+      return (
+        params
+          ? this.axios.post(path, data, { headers: headers, params: params })
+          : this.axios.post(path, data, { headers: headers })
+      )
+        .then((response) => {
+          return response.data;
+        })
+        .catch(function (error) {
+          let defaultErrorHandler = (error) => _this.emitError(`POST: ${path}: ${error.message}`);
+          if (onError == null || !onError(error)) {
+            defaultErrorHandler(error);
+          }
+        });
+    });
   }
   /**
    *
@@ -128,20 +137,22 @@ export default class RestComponent {
     if (headers == null) {
       headers = HEADERS;
     }
-    return (
-      params
-        ? this.axios.put(path, data, { headers: headers, params: params })
-        : this.axios.put(path, data, { headers: headers })
-    )
-      .then((response) => {
-        return response.data;
-      })
-      .catch(function (error) {
-        let defaultErrorHandler = (error) => _this.emitError(`PUT: ${path}: ${error.message}`);
-        if (onError == null || !onError(error)) {
-          defaultErrorHandler(error);
-        }
-      });
+    return this.securizeAPI(headers).then((headers) => {
+      return (
+        params
+          ? this.axios.put(path, data, { headers: headers, params: params })
+          : this.axios.put(path, data, { headers: headers })
+      )
+        .then((response) => {
+          return response.data;
+        })
+        .catch(function (error) {
+          let defaultErrorHandler = (error) => _this.emitError(`PUT: ${path}: ${error.message}`);
+          if (onError == null || !onError(error)) {
+            defaultErrorHandler(error);
+          }
+        });
+    });
   }
 
   get $ren() {
@@ -159,5 +170,38 @@ export default class RestComponent {
     console.error(msg);
     if (ctx != null) this.vueInstance.config.globalProperties.$emitter.emit("error", { ...ctx, message: msg });
     else this.vueInstance.config.globalProperties.$emitter.emit("error", { message: msg });
+  }
+
+  securizeAPI(headers) {
+    if (process.env.VUE_APP_API_OAUTH == "true") {
+      console.error("OAUTH_REQUEST");
+      const headersOAuth = {
+        "Content-type": "application/x-www-form-urlencoded",
+        Accept: "*/*",
+      };
+      const auth = {
+        username: process.env.VUE_APP_API_OAUTH_CLIENT,
+        password: process.env.VUE_APP_API_OAUTH_SECRET,
+      };
+      const OAuthparams = new URLSearchParams();
+      OAuthparams.append("grant_type", "client_credentials");
+      return this.axios
+        .request({
+          url: "/realms/master/protocol/openid-connect/token",
+          method: "post",
+          baseURL: process.env.VUE_APP_KEY_CLOAK_URL,
+          auth: auth,
+          data: OAuthparams,
+          headers: headersOAuth,
+        })
+        .then((response) => {
+          headers["Authorization"] = "Bearer " + response.data["access_token"];
+          return headers;
+        });
+    } else if (process.env.VUE_APP_API_KEY) {
+      console.error("APIKEY_REQUEST");
+      headers["apikey"] = process.env.VUE_APP_API_KEY;
+      return Promise.resolve(headers);
+    } else return Promise.resolve(headers);
   }
 }
