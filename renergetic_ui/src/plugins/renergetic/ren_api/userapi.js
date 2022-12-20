@@ -28,28 +28,15 @@ export default class UserApi extends RestComponent {
   register(user) {
     //validate
     // TODO:
-    return this.axios
-      .post(`/api-postgre/1.0/api/users/register`, user, {
-        headers: { "Content-type": "application/json; charset=UTF-8" },
-      })
-      .then((response) => {
-        return response.data;
-      })
-      .catch(function (error) {
-        console.error(error.response);
-      });
+    return this.post(`/api-postgre/1.0/api/users/register`, user);
   }
   getByUsername(userName) {
     //validate
     // TODO:
-    return this.axios
-      .get(`/api-postgre/1.0/api/users/info/keycloak_name`, {
-        params: { value: userName },
-        headers: { "Content-type": "application/json; charset=UTF-8" },
-      })
-      .then((response) => {
-        console.log(response);
-        return response.data[0];
+    return this.get(`/api-postgre/1.0/api/users/info/keycloak_name`, { value: userName })
+      .then((data) => {
+        console.log(data);
+        return data[0];
       })
       .catch(function (error) {
         console.error(error.response);

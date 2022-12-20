@@ -18,6 +18,7 @@
   "infrastructure": "Infrastructure",
   "list_heatmap": "List heatMap",
   "locales":"Switch language",
+  "login":"Login",
   "logout": "Logout",
   "manage": "Manage",
   "measurements": "Measurements",
@@ -36,7 +37,6 @@
   "signup": "Sign Up",
   "settings": "Settings",
   "unit_settings":"Unit settings",
-  "view": "View"
-
+  "view": "View" 
 
 }

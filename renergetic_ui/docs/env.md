@@ -14,11 +14,16 @@ Each key must start with 'VUE_APP_'
 TODO: describe parameters
 
 ### RENERGETIC SERVICES
-`VUE_APP_API_KEY` *str* -
 `VUE_APP_API_URL` *str* - ren REST APIs host, e.g. http://front-ren-prototype.apps.paas-dev.psnc.pl
 `VUE_APP_API_ISLANDS_PATH` *str* -/api-postgre/1.0/api/islands
 `VUE_APP_API_DASHBOARD_PATH` *str* -/api-postgre/1.0/api/dashboard
 `VUE_APP_API_BUILDINGS_PATH` *str* -/api-buildings/1.0/api/buildings
+
+### RENERGETIC SERVICES AUTHORIZATION
+`VUE_APP_API_KEY` *str* - API key used as header in API requests
+`VUE_APP_API_OAUTH` *bool* - true to use OAuth2 to access to the APIs (it get a token from Keycloak to use as API header)
+`VUE_APP_API_OAUTH_CLIENT` *str* - Keycloak client to get the tokens
+`VUE_APP_API_OAUTH_SECRET` *str* - Keycloak secret to get the tokens
 
 #### GRAFANA
 VUE_APP_GRAFANA_URL *str* -http://grafana-ren-prototype.apps.paas-dev.psnc.pl/d-solo/{dashboard-id}/{dashboard-name}?orgId=1&from=1634427441815&to=1636724258711&theme=light&panelId={panel-id}
