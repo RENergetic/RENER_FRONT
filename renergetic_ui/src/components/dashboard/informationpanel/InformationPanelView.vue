@@ -85,7 +85,6 @@ export default {
   },
   emits: ["editTile", "update"],
   data() {
-    // console.info(this.pdata);
     return {
       grid: null,
 
@@ -129,9 +128,7 @@ export default {
             newValue,
             this.$store.getters["settings/conversion"],
           );
-          // console.info(this.mPData);
         }
-
         // this.reloadGrid();
       },
       deep: true,

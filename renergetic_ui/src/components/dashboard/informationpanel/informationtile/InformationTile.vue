@@ -91,7 +91,6 @@ export default {
       return this.tile == null || this.tile.col == null ? 2 : this.tile.col;
     },
     layout: function () {
-      // console.info(this.tile.layout);
       return this.tile != null && this.tile.layout != null ? this.tile.layout : (() => ({}))();
     },
     gridStackAttributes() {

@@ -6,7 +6,12 @@
         <!-- <div class="flex align-items-center justify-content-center"></div> -->
 
         <div class="flex-grow-1 flex flex-column justify-content-center flex-wrap">
-          {{ notification.message }}
+          <span v-if="$te('notifications.' + notification.message)">
+            {{ $t("notifications." + notification.message) }}
+          </span>
+          <span v-else>
+            {{ notification.message }}
+          </span>
           <div v-if="notification.dashboard" class="flex flex-grow-1">
             <!-- {{ $t("view.go_to_dashboard") }} -->
             <i

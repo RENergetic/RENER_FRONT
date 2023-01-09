@@ -1,6 +1,5 @@
 <template>
   <div class="card ren">
-    <!--description -->
     <div class="field grid">
       <label for="usernameInput" class="col-fixed">
         {{ $t("model.user.username") }}
@@ -19,9 +18,7 @@
       </div>
     </div>
     <div class="field grid">
-      <div class="col">
-        <!-- <Button  :label="$t('view.button.cancel')" /> -->
-      </div>
+      <div class="col"></div>
       <div class="col">
         <Button :label="$t('view.button.login')" @click="login" />
       </div>

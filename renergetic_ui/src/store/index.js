@@ -8,7 +8,6 @@ export default createStore({
   state: {},
   mutations: {
     settings(state, payload) {
-      console.info(payload);
       let settings = JSON.parse(JSON.stringify(DefaultSettings));
       try {
         settings = { ...settings, ...payload };

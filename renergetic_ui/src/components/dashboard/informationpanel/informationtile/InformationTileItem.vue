@@ -81,7 +81,6 @@ export default {
       let icon = this.measurement.domain ? this.measurement.domain : this.measurement.type.metric_type;
       if (this.measurement.measurement_details.icon != null) icon = this.measurement.measurement_details.icon;
       else if (this.measurement.type.icon != null) icon = this.measurement.type.icon;
-      // console.info(icon);
       return icons[icon] != null ? icons[icon] : icons.default;
     },
     unit: function () {
