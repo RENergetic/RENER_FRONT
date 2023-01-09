@@ -1,12 +1,12 @@
 <template>
   <Dialog
-    v-model:visible="mNotifications"
+    v-model:visible="mNotificationDialog"
     :style="{ width: '75vw' }"
     :maximizable="false"
     :modal="true"
     :dismissable-mask="true"
   >
-    <NotificationList></NotificationList>
+    <NotificationList @update="onNotificationUpdate($event)"></NotificationList>
   </Dialog>
   <Dialog
     v-model:visible="mAddDashboard"
@@ -34,7 +34,7 @@ import NotificationList from "../management/notification/NotificationList.vue";
 import DashboardForm from "../dashboard/grafana/DashboardForm.vue";
 import LocaleSettings from "@/components/miscellaneous/settings/LocaleSettings.vue";
 export default {
-  name: "Dialogs",
+  name: "MenuDialogs",
   components: {
     Dialog,
     NotificationList,
@@ -42,7 +42,7 @@ export default {
     LocaleSettings,
   },
   props: {
-    notifications: {
+    notificationDialog: {
       type: Boolean,
       default: false,
     },
@@ -55,12 +55,13 @@ export default {
       default: false,
     },
   },
-  emits: ["update:dashboard", "update:notifications", "UpdateMenu", "update:locales"],
+  emits: ["update:dashboard", "update:notificationDialog", "UpdateMenu", "update:locales", "update:notifications"],
   data() {
     return {
-      mNotifications: this.notifications,
+      mNotificationDialog: this.notificationDialog,
       mAddDashboard: this.addDashboard,
       mLocales: this.locales,
+      notifications: [],
     };
   },
   watch: {
@@ -80,7 +81,6 @@ export default {
       },
       immediate: true,
     },
-    //notifications
     mLocales: {
       handler(newVal, oldValue) {
         if (oldValue == null && newVal == null) {
@@ -90,18 +90,18 @@ export default {
       },
       // immediate: true,
     },
-    mNotifications: {
+    mNotificationDialog: {
       handler(newVal, oldValue) {
         if (oldValue == null && newVal == null) {
           return;
         }
-        this.$emit("update:notifications", newVal);
+        this.$emit("update:notificationDialog", newVal);
       },
       // immediate: true,
     },
-    notifications: {
+    notificationDialog: {
       handler(newVal) {
-        this.mNotifications = newVal;
+        this.mNotificationDialog = newVal;
       },
       immediate: true,
     },
@@ -112,6 +112,9 @@ export default {
       immediate: true,
     },
   },
+  async created() {
+    this.onNotificationUpdate(await this.$ren.userApi.getNotifications());
+  },
   methods: {
     async onSave(dashboard) {
       await this.$ren.dashboardApi.add(dashboard).then((dashboardReq) => {
@@ -119,6 +122,10 @@ export default {
         this.$store.commit("view/dashboardsAdd", dashboardReq);
         this.$emit("UpdateMenu", null);
       });
+    },
+    onNotificationUpdate(notifications) {
+      if (notifications) this.$emit("update:notifications", notifications);
+      else this.$emit("update:notifications", []);
     },
   },
 };

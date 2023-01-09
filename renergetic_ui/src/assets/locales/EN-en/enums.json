@@ -25,6 +25,7 @@
     "heat_exchanged": "Heat Exchangers",
     "supercomputer": "Supercomputers",
     "hvac": "HVACs",
+    "waste":"Waste",
     "fossil_fuels":   "Fossil fuels"
   },
   "tile_type": {

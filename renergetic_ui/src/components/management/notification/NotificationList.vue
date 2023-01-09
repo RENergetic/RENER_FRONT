@@ -25,6 +25,7 @@ export default {
     //   default: null,
     // },
   },
+  emits: ["update"],
   data() {
     return {
       mNotifications: [],
@@ -36,9 +37,8 @@ export default {
       this.mNotifications = newValue;
     },
   },
-  async created() {
+  async mounted() {
     await this.loadNotifications();
-    //todo: catch
   },
 
   methods: {
@@ -56,6 +56,7 @@ export default {
         this.$store.getters["auth/renRole"]
       ) {
         this.mNotifications = await this.$ren.userApi.getNotifications();
+        this.$emit("update", this.mNotifications);
       }
     },
   },

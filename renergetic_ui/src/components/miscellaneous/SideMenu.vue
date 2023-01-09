@@ -3,14 +3,16 @@
 
   <Sidebar v-model:visible="visible" class="ren-sidebar">
     <div id="sideMenuLogo"><Logo /></div>
-    <PanelMenu :model="menuModel" />
+    <!-- {{ notificationCount }} -->
+    <PanelMenu class="ren" :model="menuModel" />
   </Sidebar>
   <Dialogs
-    :notifications="notifications"
+    :notification-dialog="notificationDialog"
     :locales="localesDialog"
     :add-dashboard="dashboardDialog"
-    @update:notifications="notifications = $event"
+    @update:notification-dialog="notificationDialog = $event"
     @update-menu="reload"
+    @update:notifications="onNotificationChange($event)"
   ></Dialogs>
 </template>
 
@@ -18,7 +20,7 @@
 import { RenRoles } from "../../plugins/model/Enums";
 import PanelMenu from "primevue/panelmenu";
 import Sidebar from "primevue/sidebar";
-import Dialogs from "./Dialogs.vue";
+import Dialogs from "./MenuDialogs.vue";
 import Logo from "./Logo.vue";
 
 export default {
@@ -36,10 +38,11 @@ export default {
       visible: false,
       menuModel: [],
       dashboards: [],
-      notifications: false,
+      notificationDialog: false,
       dashboardDialog: false,
       localesDialog: false,
       informationPanels: [],
+      notificationCount: 0,
       isAdmin: false, //this.$store.getters["user/isAdmin"],
     };
   },
@@ -69,6 +72,10 @@ export default {
   },
   async created() {},
   methods: {
+    onNotificationChange(notifications) {
+      this.notificationCount = notifications.length;
+      this.menuModel = this.initMenu();
+    },
     async reload() {
       this.$ren.utils
         .reloadStore()
@@ -206,28 +213,6 @@ export default {
       ];
     },
 
-    // heatMapItems() {
-    //   return [
-    //     {
-    //       // label: this.$t("menu.group_list"),
-    //       label: this.$t("menu.list_heatmap"),
-    //       icon: "pi pi-fw pi-align-left",
-    //       to: "/dashboard/heatmap/list",
-    //       command: () => {
-    //         this.$router.push({ name: "HeatMapListView" });
-    //       },
-    //     },
-    //     {
-    //       // label: this.$t("menu.group_list"),
-    //       label: this.$t("menu.add_heatmap"),
-    //       icon: "pi pi-fw pi-plus",
-    //       to: "/dashboard/heatmap/add",
-    //       command: () => {
-    //         this.$router.push({ name: "DashboadAdd" });
-    //       },
-    //     },
-    //   ];
-    // },
     administrationItems() {
       let flags = RenRoles.REN_ADMIN;
       if ((flags & this.role) == 0) {
@@ -408,8 +393,9 @@ export default {
           icon: "pi pi-fw  pi-bell",
           command: () => {
             // this.$emit("notification");
-            this.notifications = !this.notifications;
+            this.notificationDialog = !this.notificationDialog;
           },
+          class: this.notificationCount == 0 ? "" : "hl-warning",
         },
         ...this.userItems(),
         {
@@ -434,8 +420,6 @@ export default {
   },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 #sideMenuLogo {
   position: relative;
@@ -466,3 +450,28 @@ export default {
   width: 2.5rem;
 }
 </style>
+<!--
+heatMapItems() {
+      return [
+        {
+          // label: this.$t("menu.group_list"),
+          label: this.$t("menu.list_heatmap"),
+          icon: "pi pi-fw pi-align-left",
+          to: "/dashboard/heatmap/list",
+          command: () => {
+            this.$router.push({ name: "HeatMapListView" });
+          },
+        },
+        {
+          // label: this.$t("menu.group_list"),
+          label: this.$t("menu.add_heatmap"),
+          icon: "pi pi-fw pi-plus",
+          to: "/dashboard/heatmap/add",
+          command: () => {
+            this.$router.push({ name: "DashboadAdd" });
+          },
+        },
+      ];
+    },
+
+    -->
