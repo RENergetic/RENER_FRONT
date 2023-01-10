@@ -26,8 +26,8 @@
           ]"
         />
         <div v-else-if="s.type == Number && s.mode == 'slider'">
-          <Slider v-model="mModel[s.key]" v-tooltip="s.description" :max="s.max ? s.max : 24" />
-          <span>{{ mModel[s.key] }} {{ s.unit }}</span>
+          <Slider v-model="mModel[s.key]" v-tooltip="s.description" :max="s.ext && s.ext.max ? s.ext.max : 24" />
+          <span>{{ mModel[s.key] }} {{ s.ext ? s.ext.unit : "" }}</span>
         </div>
         <InputNumber
           v-else-if="s.type == Number"
@@ -40,7 +40,7 @@
           :use-grouping="false"
         />
 
-        <div v-else-if="s.type == Array && s.mode == 'list'">
+        <div v-else-if="s.type == 'list'">
           <ListBox
             :id="s.key"
             v-model="mModel[s.key]"
@@ -76,12 +76,14 @@
 
 <script>
 import SelectButton from "primevue/selectbutton";
+import Slider from "primevue/slider";
 import InputNumber from "primevue/inputnumber";
 import ListBox from "primevue/listbox";
 import ColorPicker from "primevue/colorpicker";
 export default {
   name: "Settings",
   components: {
+    Slider,
     SelectButton,
     InputNumber,
     ListBox,

@@ -29,10 +29,14 @@ Meta parameter description:
 * ```$emit("UpdateMenu", args)``` - request menu update, emit event from router View to sidemenu  
 
 ### Emitter
-It's better to not overuse global event bus - only when it's really necessary.
-Global events:
+Example usage: ```$emitter.emit("error", { message: msg }```
+(It's better to not overuse global event bus - only when it's really necessary. By default it's better to use standars $emit)
+Global events (```$emitter.on``` -> App.vue):
 * ```refresh``` - request reload of components
 * ```error``` - emit error
+* ```information``` - emit information
+
+
 
 ### Role management
 [roles](roles.xlsx) - role overview
@@ -52,3 +56,13 @@ if ((required_flags & user_role_flag) > 0)
   //has acccess
   
 ```
+
+### Store
+
+* ```settings/```
+  * ```filter```
+  * ```home```
+  * ```panel```
+  * ```conversion```
+* ```auth/```
+  * ```renRole``` - current user's role bit mask

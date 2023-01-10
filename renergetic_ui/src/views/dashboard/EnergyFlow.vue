@@ -137,6 +137,7 @@ export default {
       }
     },
     reloadSettings() {
+      this.filterSettings = this.$store.getters["settings/filter"];
       this.settings = this.$store.getters["settings/panel"];
       this.conversionSettings = this.$store.getters["settings/conversion"];
     },

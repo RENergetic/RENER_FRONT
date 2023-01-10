@@ -11,10 +11,12 @@
   "group_by_measurement": "Group by measurement name",
   "notification": "Notification",
   "measurements": "Measurements",
+  "prediction_interval":"Prediction interval",
   "recommendations": "Recommendations",
   "relative_values": "Use relatives values",
   "selected_locale":"Selected Locale",
   "selected_panel": "Selected Panel",
+  
   
   "heatmap": "Heatmap",
   "chart": "Chart",
@@ -29,7 +31,7 @@
     "current_day": "Current day",
     "current_month": "Current month",
     "current_year": "Current year",
-    "previous_year": "Preavious year"
+    "previous_year": "Previous year"
   },
   "measurement_type": {
     "power": "Power",

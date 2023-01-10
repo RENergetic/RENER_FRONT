@@ -28,7 +28,7 @@ export var DefaultSettings = {
     relativeValues: false,
   },
   conversion: {},
-  filter: {},
+  filter: { predictionInterval: 0, timeInterval: "current_dat" },
 };
 export default {
   namespaced: true,

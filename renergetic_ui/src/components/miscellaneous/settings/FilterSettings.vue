@@ -43,8 +43,9 @@ export default {
     this.schema = this.getSchema();
   },
   methods: {
-    onClick() {
+    async onClick() {
       this.$store.commit("settings/filter", this.settings);
+      await this.$ren.utils.saveSettings();
       this.$emit("update");
     },
     getSchema() {
@@ -63,6 +64,16 @@ export default {
           },
           type: Array,
           key: "timeInterval",
+        },
+        {
+          label: this.$t("settings.prediction_interval"),
+          ext: {
+            max: 48,
+            unit: "h",
+          },
+          type: Number,
+          mode: "slider",
+          key: "predictionInterval",
         },
         {
           label: this.$t("settings.submit"),
