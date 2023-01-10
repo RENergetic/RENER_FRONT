@@ -25,6 +25,10 @@
             { name: s.ext.false, value: false },
           ]"
         />
+        <div v-else-if="s.type == Number && s.mode == 'slider'">
+          <Slider v-model="mModel[s.key]" v-tooltip="s.description" :max="s.max ? s.max : 24" />
+          <span>{{ mModel[s.key] }} {{ s.unit }}</span>
+        </div>
         <InputNumber
           v-else-if="s.type == Number"
           :id="s.key"
@@ -35,8 +39,20 @@
           :mode="s.ext.mode"
           :use-grouping="false"
         />
-        <div v-else-if="s.type == Array">
+
+        <div v-else-if="s.type == Array && s.mode == 'list'">
           <ListBox
+            :id="s.key"
+            v-model="mModel[s.key]"
+            v-tooltip="s.description"
+            :options="s.ext.options"
+            :option-value="s.ext.optionValue"
+            :option-label="s.ext.optionLabel"
+          />
+        </div>
+
+        <div v-else-if="s.type == Array">
+          <SelectButton
             :id="s.key"
             v-model="mModel[s.key]"
             v-tooltip="s.description"
@@ -48,6 +64,7 @@
         <div v-else-if="s.type == 'Color'">
           <ColorPicker v-model="mModel[s.key]" v-tooltip="s.description" />
         </div>
+
         <div v-else-if="s.type == 'Submit'">
           <Button :id="s.key" v-tooltip="s.description" :label="s.label" @click="s.ext.click" />
         </div>
