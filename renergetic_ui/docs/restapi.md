@@ -6,7 +6,8 @@ default parameters:
 date filter
 - 'from' - unix timestamp, [ms]
 - 'to' - unix timestamp, [ms]
-- user id is inferred from auth headers transparent to the UI client
+- 'prediction' - TODO: 
+- user's id is inferred from auth headers transparent to the UI client
 
 ### Dashboard
 panel structures , heat maps, grafana dashboards

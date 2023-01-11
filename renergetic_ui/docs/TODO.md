@@ -1,14 +1,6 @@
-higher priority:
-- backend API integration 
+higher priority: 
 - ROLE managements
-- asset connection management
-- energy flow
-- prediction slider component
-- fix keyclock integration - check log in , log out etc , auto initialization
-  
-lower priority:
-- notifications
-- 
+- asset connection management   
 
 
 
@@ -16,8 +8,7 @@ lower priority:
 - Openstreet map integration
 - todo: different home pages -> public home page, user home, admin home
 - data validation
-- TODO: load settings from rest api
-- user ui settings   docs
+- TODO: load settings from rest api 
 
 features:
 - comfort zones ?

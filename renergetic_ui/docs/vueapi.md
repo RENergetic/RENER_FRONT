@@ -60,9 +60,19 @@ if ((required_flags & user_role_flag) > 0)
 ### Store
 
 * ```settings/```
-  * ```filter```
+  * ```filter``` - 
   * ```home```
   * ```panel```
-  * ```conversion```
+  * ```conversion``` - measurement's unit settings
 * ```auth/```
   * ```renRole``` - current user's role bit mask
+* ```view/``` - 
+  * ```assetTypes``` - list of all types
+  * ```assetCategories```  - list of all categories
+  * ```assetDetailsKeys``` - list of all asset details' keys
+  * ```dashboards``` - list of all dashboards user has rights
+  * ```measurementTypes``` - list of all measurement types
+  * ```demands``` - current demand list
+  * ```convertValue``` - conversion function - (current_measurement_type, value_to_convert, new_measurement_unit ) 
+  * ```informationPanels``` - ordered list of panels 
+  * ```informationPanelsMap``` - dictionary of panels
