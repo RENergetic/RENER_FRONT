@@ -32,7 +32,7 @@
         />
       </template>
     </Column>
-    <Column field="type.label" :header="$t('model.asset.type')" :show-filter-menu="false">
+    <Column field="type.label" :header="$t('model.asset.asset_type')" :show-filter-menu="false">
       <template #filter="{ filterModel, filterCallback }">
         <Dropdown
           v-model="filterModel.value"
@@ -142,14 +142,14 @@
         <Button
           type="button"
           icon="pi pi-filter-slash"
-          :label="$t('button.filter')"
+          :label="$t('view.button.filter')"
           class="p-button-outlined"
           @click="reload"
         />
         <Button
           type="button"
           icon="pi pi-filter-slash"
-          :label="$t('button.clear_filter')"
+          :label="$t('view.button.clear_filter')"
           class="p-button-outlined"
           @click="clearFilter"
         />
@@ -160,7 +160,7 @@
         <Button
           type="button"
           icon="pi pi-filter-slash"
-          :label="$t('button.previous')"
+          :label="$t('view.button.previous')"
           class="p-button-outlined"
           @click="previous"
         />
@@ -168,7 +168,7 @@
         <Button
           type="button"
           icon="pi pi-filter-slash"
-          :label="$t('button.next')"
+          :label="$t('view.button.next')"
           class="p-button-outlined"
           @click="next"
         />
