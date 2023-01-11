@@ -106,9 +106,13 @@ export default class DataApi extends RestComponent {
   //   return generator.
   // }
 
-  async getPanelData(panelId, assetId) {
+  async getPanelData(panelId, assetId, filter) {
     // let args = this.parseArgs({ relative: relative });
-    let args = "";
+    if (!filter) {
+      filter = {};
+    }
+    let args = this.parseArgs({ ...filter });
+    // let args = "";
     let endpoint =
       assetId != null ? `/api/data/panel/${panelId}/asset/${assetId}${args}` : `/api/data/panel/${panelId}${args}`;
     return this.get(endpoint);

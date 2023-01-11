@@ -44,6 +44,7 @@ export default {
   },
   methods: {
     async onClick() {
+      this.settings["predictionIntervalms"] = this.settings.predictionInterval * 3600;
       this.$store.commit("settings/filter", this.settings);
       await this.$ren.utils.saveSettings();
       this.$emit("update");

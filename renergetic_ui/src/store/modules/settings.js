@@ -114,6 +114,9 @@ export default {
     conversion: (state) => {
       return state.conversion;
     },
+    predictionMs(state) {
+      return state.predictionIntervalms ? state.predictionIntervalms : 0;
+    },
     parsedFilter(state) {
       //TODO: what time zone i should use?
       let from = null;
