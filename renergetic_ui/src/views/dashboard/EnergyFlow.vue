@@ -79,7 +79,7 @@ export default {
       //TODO: set icon
       return {
         label: this.$t("menu.filter_settings"),
-        icon: "pi pi-fw pi-plus-circle",
+        icon: "pi pi-fw pi-filter",
         command: () => this.$refs.filterSettingsDialog.open(),
       };
     },

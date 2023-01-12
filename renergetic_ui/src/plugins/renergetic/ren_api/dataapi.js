@@ -114,7 +114,7 @@ export default class DataApi extends RestComponent {
     let args = this.parseArgs({ ...filter });
     // let args = "";
     let endpoint =
-      assetId != null ? `/api/data/panel/${panelId}/asset/${assetId}${args}` : `/api/data/panel/${panelId}${args}`;
+      assetId != null ? `/api/data/panel/${panelId}/asset/${assetId}?${args}` : `/api/data/panel/${panelId}?${args}`;
     return this.get(endpoint);
   }
 

@@ -76,6 +76,7 @@ reused modules included in the views or other components
 * `/renergetic` -> renergetic js modules, accessed by `this.$ren`
   * `/ren_api` -> REST API, `this.$ren.{apiName}` , apiName:  [`dashboardApi`,`dataApi`,`managementApi`,`userApi`,`userApi`] 
   * `/utils.js` -> miscellaneous functions `this.$ren.utils`
+* `ren_import.js` -> import ren components
   
 [top](#project-structure) 
 

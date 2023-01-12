@@ -47,25 +47,18 @@ export default {
     getSchema() {
       var schema = [
         {
-          label: this.$t("settings.notification"),
+          label: this.$t("settings.relative_values"),
+          description: this.$t("settings.relative_values_description"),
           ext: {
-            true: this.$t("settings.visible"),
-            false: this.$t("settings.hidden"),
+            true: this.$t("settings.enabled"),
+            false: this.$t("settings.disabled"),
           },
           type: Boolean,
-          key: "notificationVisibility",
-        },
-        {
-          label: this.$t("settings.request_demand"),
-          ext: {
-            true: this.$t("settings.visible"),
-            false: this.$t("settings.hidden"),
-          },
-          type: Boolean,
-          key: "demandVisibility",
+          key: "relativeValues",
         },
         {
           label: this.$t("settings.group_by_domain"),
+          description: this.$t("settings.group_by_domain_description"),
           ext: {
             true: this.$t("settings.enabled"),
             false: this.$t("settings.disabled"),
@@ -75,6 +68,7 @@ export default {
         },
         {
           label: this.$t("settings.group_by_measurement"),
+          description: this.$t("settings.group_by_measurement_description"),
           ext: {
             true: this.$t("settings.enabled"),
             false: this.$t("settings.disabled"),
@@ -84,6 +78,7 @@ export default {
         },
         {
           label: this.$t("settings.group_by_direction"),
+          description: this.$t("settings.group_by_direction_description"),
           ext: {
             true: this.$t("settings.enabled"),
             false: this.$t("settings.disabled"),
@@ -91,15 +86,24 @@ export default {
           type: Boolean,
           key: "groupByDirection",
         },
-
         {
-          label: this.$t("settings.relative_values"),
+          label: this.$t("settings.request_demand"),
+          description: this.$t("settings.request_demand_description"),
           ext: {
-            true: this.$t("settings.enabled"),
-            false: this.$t("settings.disabled"),
+            true: this.$t("settings.visible"),
+            false: this.$t("settings.hidden"),
           },
           type: Boolean,
-          key: "relativeValues",
+          key: "demandVisibility",
+        },
+        {
+          label: this.$t("settings.notification"),
+          ext: {
+            true: this.$t("settings.visible"),
+            false: this.$t("settings.hidden"),
+          },
+          type: Boolean,
+          key: "notificationVisibility",
         },
         // {
         //   label: this.$t("settings.time_filter"),

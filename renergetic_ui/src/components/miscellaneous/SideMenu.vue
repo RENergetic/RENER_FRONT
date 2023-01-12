@@ -109,18 +109,6 @@ export default {
         return [];
       }
       var items = [];
-      // var items = this.informationPanels.map((panel) => {
-      //   let to = `/panel/view/${panel.id}`;
-      //   return {
-      //     // label: this.$t("menu.group_list"),
-      //     label: panel.label,
-      //     icon: "pi pi-fw pi-th-large",
-      //     to: to,
-      //     command: () => {
-      //       this.$router.push({ to: to, params: { id: panel.id } });
-      //     },
-      //   };
-      // });
       items.push({
         label: this.$t("menu.information_panel_list"),
         icon: "pi pi-fw  pi-align-left",
@@ -234,6 +222,23 @@ export default {
           label: this.$t("menu.administration"),
           icon: "pi pi-fw pi-lock",
           items: items,
+        },
+      ];
+    },
+    notificationsItem() {
+      let flags = RenRoles.REN_ADMIN | this.REN_USER | this.REN_MANAGER | this.REN_TECHNICAL_MANAGER | this.REN_STAFF;
+      if ((flags & this.role) == 0) {
+        return [];
+      }
+      return [
+        {
+          label: this.$t("menu.notifications"),
+          icon: "pi pi-fw  pi-bell",
+          command: () => {
+            // this.$emit("notification");
+            this.notificationDialog = !this.notificationDialog;
+          },
+          class: this.notificationCount == 0 ? "" : "hl-warning",
         },
       ];
     },
@@ -388,15 +393,7 @@ export default {
 
         ...this.administrationItems(),
 
-        {
-          label: this.$t("menu.notifications"),
-          icon: "pi pi-fw  pi-bell",
-          command: () => {
-            // this.$emit("notification");
-            this.notificationDialog = !this.notificationDialog;
-          },
-          class: this.notificationCount == 0 ? "" : "hl-warning",
-        },
+        ...this.notificationsItem(),
         ...this.userItems(),
         {
           label: this.$t("menu.login"),

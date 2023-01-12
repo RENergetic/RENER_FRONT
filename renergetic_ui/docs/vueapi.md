@@ -12,8 +12,8 @@ TODO: restApiName - describe
 * 
   example: `$store.getters["view/get"]` - get user
 * `this.$confirm` -> confirm dialog (YES/NO)
-* `v-tooltip`  -> tooltip attribute for templates
-*  
+* `v-tooltip`  -> tooltip attribute for vue templates
+*  RenSpinner -> loading spinner todo:
 
 ### colors & icons
 https://materialui.co/colors

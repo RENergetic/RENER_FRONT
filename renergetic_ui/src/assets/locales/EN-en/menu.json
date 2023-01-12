@@ -13,6 +13,7 @@
   "grid_lock": "Lock grid",
   "grid_unlock": "Unlock grid",
   "heatmaps": "HeatMaps",
+  "home_settings":"Home settings",
   "information_panel": "Information panels",
   "information_panel_list": "Information panel list",
   "infrastructure": "Infrastructure",
@@ -37,6 +38,6 @@
   "signup": "Sign Up",
   "settings": "Settings",
   "unit_settings":"Unit settings",
-  "view": "View" 
+  "view": "View"  
 
 }

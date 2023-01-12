@@ -18,7 +18,7 @@ export default class AxiosAPI {
   toastError(code = "rest_error") {
     this.vueInstance.config.globalProperties.$toast.add({
       severity: "error",
-      summary: this.$t("error_title"),
+      summary: this.$t("error.rest_title"),
       detail: this.$t(code),
       life: 30000,
     });

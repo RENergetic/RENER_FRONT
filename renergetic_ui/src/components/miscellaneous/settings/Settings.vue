@@ -2,7 +2,14 @@
   <div class="p-fluid">
     <!-- {{ settings }} -->
     <div v-for="s in schema" :key="s" :class="'field grid'">
-      <label v-if="s.type != 'Submit'" :for="s.key" class="col-12">{{ s.label }}</label>
+      <label
+        v-if="s.type != 'Submit' && s.description"
+        v-tooltip.top="{ value: s.description, class: '' }"
+        :for="s.key"
+        class="col-12"
+        >{{ s.label }}
+      </label>
+      <label v-else-if="s.type != 'Submit'" :for="s.key" class="col-12">{{ s.label }}</label>
 
       <!-- <ToggleButton
         v-model="mModel['key']"

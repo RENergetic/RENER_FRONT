@@ -6,19 +6,7 @@
   <div v-if="settings.demandVisibility" style="position: relative">
     <DemandList id="demand-list" />
   </div>
-  <!-- {{ ($i18n.locale = locale) }} -->
-  <!-- locale: {{ $i18n.locale }} -->
 
-  <!-- {{ $i18n }} -->
-  <!-- <div class="home-grid-stack grid-stack"> -->
-  <!-- <div v-if="settings.demandVisibility" :class="'grid-stack-item ren'">
-        <DemandList :class="'grid-stack-item-content'" />
-      </div> -->
-
-  <!-- <div v-if="settings.notificationVisibility" :class="'grid-stack-item ren'">
-        <NotificationList :class="'grid-stack-item-content'"></NotificationList>
-      </div> -->
-  <!-- </div> -->
   <SettingsDialog ref="homeSettingsDialog">
     <!--  @update="onSettingsUpdate()" -->
     <template #settings><HomeSettings @update="reloadSettings()"></HomeSettings></template>
@@ -27,35 +15,32 @@
     <!--  @update="onSettingsUpdate()" -->
     <template #settings><PanelSettings @update="reloadPanelSettings()"></PanelSettings></template>
   </SettingsDialog>
-  <div v-if="$refs.panelSettingsDialog">ddddd {{ $refs.panelSettingsDialog.settingsDialog }}dddd</div>
-  <!-- <Dialog
-    v-model:visible="panelSettingsDialog"
-    :style="{ width: '50vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-    @hide="reload"
-  > 
-    <PanelSettings @update="reloadPanelSettings()"></PanelSettings>
-  </Dialog> -->
+  <SettingsDialog ref="conversionSettingsDialog">
+    <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
+  </SettingsDialog>
+  <SettingsDialog ref="filterSettingsDialog" :save="false">
+    <template #settings><FilterSettings @update="reloadSettings()"></FilterSettings></template>
+  </SettingsDialog>
+  <div v-if="$refs.panelSettingsDialog">{{ $refs.panelSettingsDialog.settingsDialog }}</div>
 </template>
 <script>
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import HomeSettings from "@/components/miscellaneous/settings/HomeSettings.vue";
-import SettingsDialog from "@/components/miscellaneous/settings/SettingsDialog.vue";
+// import SettingsDialog from "@/components/miscellaneous/settings/SettingsDialog.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 import EnergyFlow from "@/components/dashboard/EnergyFlow.vue";
 import DemandList from "@/components/user/demand/DemandList.vue";
+import FilterSettings from "@/components/miscellaneous/settings/FilterSettings.vue";
+import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
 import { RenRoles } from "../plugins/model/Enums.js";
-// import { GridStack } from "gridstack";
-// import "gridstack/dist/h5/gridstack-dd-native";
-// import "gridstack/dist/gridstack.min.css";
 
 export default {
   name: "Home",
   components: {
-    SettingsDialog,
+    // SettingsDialog,
     DotMenu,
+    FilterSettings,
+    ConversionSettings,
     DemandList,
     HomeSettings,
     PanelSettings,
@@ -88,6 +73,7 @@ export default {
         label: label,
         icon: "pi pi-fw pi-lock",
         command: () => this.toggleLock(),
+        visible: false,
       };
     },
     // saveButton: function () {
@@ -97,11 +83,28 @@ export default {
     //     command: () => this.saveGrid(),
     //   };
     // },
+    filterSettingsButton: function () {
+      //TODO: set icon
+      return {
+        label: this.$t("menu.filter_settings"),
+        icon: "pi pi-fw pi-filter",
+        command: () => this.$refs.filterSettingsDialog.open(),
+      };
+    },
+    conversionSettingsButton: function () {
+      //TODO: set icon
+      return {
+        label: this.$t("menu.unit_settings"),
+        icon: "pi pi-fw pi-cog",
+        command: () => this.$refs.conversionSettingsDialog.open(),
+      };
+    },
+
     settingsButton: function () {
       //TODO: set icon
       return {
-        label: this.$t("menu.settings"),
-        icon: "pi pi-fw pi-plus-circle",
+        label: this.$t("menu.home_settings"),
+        icon: "pi pi-fw pi-home",
         command: () => this.$refs.homeSettingsDialog.open(),
       };
     },
@@ -109,7 +112,7 @@ export default {
       //TODO: set icon
       return {
         label: this.$t("menu.panel_settings"),
-        icon: "pi pi-fw pi-plus-circle",
+        icon: "pi pi-fw pi-cog",
         command: () => this.$refs.panelSettingsDialog.open(),
       };
     },
@@ -119,6 +122,9 @@ export default {
       model.push(this.toggleButton);
       model.push(this.settingsButton);
       model.push(this.panelSettingsButton);
+      model.push(this.conversionSettingsButton);
+
+      model.push(this.filterSettingsButton);
       return model;
     },
   },

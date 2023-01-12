@@ -9,6 +9,7 @@ import PrimeVue from "primevue/config";
 import plugin from "./plugins/ren_plugins";
 //import primevue plugins
 import PrimeImport from "./plugins/primevue_import";
+import RenImport from "./plugins/ren_import";
 import Fonts from "./plugins/fonts";
 import "primevue/resources/themes/saga-green/theme.css";
 // theme showcase: https://www.primefaces.org/primevue/showcase/
@@ -36,6 +37,7 @@ app.use(VueKonva);
 // app.use(PrimeVue, { locale: PrimeLocale });
 app.use(PrimeVue);
 app.use(PrimeImport);
+app.use(RenImport);
 app.use(Fonts);
 app.directive("tooltip", Tooltip);
 
