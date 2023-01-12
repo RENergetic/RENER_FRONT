@@ -24,9 +24,9 @@ export default class ManagementApi extends RestComponent {
 
   async listConnectedAssets(assetId, offset = 0, limit = 500) {
     let params = { offset: offset, limit: limit };
-    this.get(`/api/assets/connect/${assetId}`, params, null, (error) => {
-      if (error.response.status == 404) {
-        console.error(`No connected assets to ${assetId}: ${error.message}`);
+    return this.get(`/api/assets/connect/${assetId}`, params, null, (error) => {
+      if (error.response.status === 404) {
+        console.error(`Could not find asset with id: ${assetId}: ${error.message}`);
         return [];
       } else {
         this.emitError(`/api/assets/connect/${assetId} -${error.message}`);

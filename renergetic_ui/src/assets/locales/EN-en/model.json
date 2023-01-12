@@ -23,6 +23,7 @@
           "id": "Id",
           "child": "Sub assets",
           "asset_type": "Asset type",
+          "asset_category": "Asset category",
           "label": "Label",
           "measurements": "Measurements",
           "geo_location": "Geo location",
