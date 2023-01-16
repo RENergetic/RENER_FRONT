@@ -15,11 +15,12 @@ Run spinner in the VUE component if it's counter != 0
 ### Examples
 
 ##### Without content
+**template:**
 ```
 <RenSpinner ref="spinner1"></RenSpinner>
 ```
 ##### With content
-template:
+**template:**
 ```
 <RenSpinner ref="spinner" :lock="true">
     <template #content>
@@ -30,7 +31,7 @@ template:
     </template>
 </RenSpinner>
 ```
-component:
+**component:**
 ```
 //wrap multiple methods in same spinner - spinner will stop after all tasks are finished
 this.$refs.spinner.run(async () => {
@@ -45,7 +46,7 @@ this.$refs.spinner.run(async () => {
     await this.loadData2.then((data) => { this.data = data; });
 });
 ```
-or
+or:
 ```
 this.$refs.spinner.start();
 await this.loadData.then((data) => {this.data = data; });
