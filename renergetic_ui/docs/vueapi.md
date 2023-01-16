@@ -57,6 +57,8 @@ if ((required_flags & user_role_flag) > 0)
   
 ```
 
+[top](#vuejs-api) 
+
 ### Store
 
 * ```settings/```
@@ -76,3 +78,9 @@ if ((required_flags & user_role_flag) > 0)
   * ```convertValue``` - conversion function - (current_measurement_type, value_to_convert, new_measurement_unit ) 
   * ```informationPanels``` - ordered list of panels 
   * ```informationPanelsMap``` - dictionary of panels
+
+### Components
+
+* RenSpinner [docs](./components/renspinner.md)
+
+[top](#vuejs-api) 

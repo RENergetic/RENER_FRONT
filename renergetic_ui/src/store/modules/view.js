@@ -116,7 +116,7 @@ export default {
       return state.measurementTypes;
     },
     convertValue: (state) => (measurementType, value, unit) => {
-      if (unit == null || measurementType.unit == unit) {
+      if (unit == null || measurementType.unit == unit || measurementType.unit == "%" || unit == "%") {
         return value;
       }
       let mt = state.measurementTypes[measurementType.physical_name].find((mt) => mt.unit == unit);

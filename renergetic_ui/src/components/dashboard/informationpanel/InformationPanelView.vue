@@ -1,4 +1,6 @@
 <template>
+  <!-- {{ pdata }}
+  {{ mPData }} -->
   <div v-if="mPanel && mPData" id="panel-grid-stack" style="" class="grid-stack">
     <InformationTile
       v-for="(tile, index) in tiles"
@@ -120,7 +122,12 @@ export default {
     pdata: {
       handler: function (newValue) {
         if (this.mSettings.relativeValues && newValue) {
-          this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, newValue, this.mSettings);
+          this.mPData = this.$ren.utils.convertPanelData(
+            this.mPanel,
+            newValue,
+            this.$store.getters["settings/conversion"],
+          );
+          this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, this.mSettings);
         } else {
           console.info("watch pdata");
           this.mPData = this.$ren.utils.convertPanelData(
@@ -138,7 +145,12 @@ export default {
         console.info("watch mSettings");
         if (newVal.relativeValues && this.pdata) {
           // this.mPData = this.pdata;
-          this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata, newVal);
+          this.mPData = this.$ren.utils.convertPanelData(
+            this.mPanel,
+            this.pdata,
+            this.$store.getters["settings/conversion"],
+          );
+          this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, newVal);
         } else {
           this.mPData = this.$ren.utils.convertPanelData(
             this.mPanel,
@@ -149,21 +161,6 @@ export default {
       },
       deep: true,
     },
-    // conversionSettings: {
-    //   handler(newVal) {
-    //     console.info("watch conversion");
-    //     if (newVal.relativeValues && this.pdata) {
-    //       // this.mPData = this.pdata;
-    //       this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata, this.mSettings);
-    //     } else {
-    //       // console.info(newVal);
-    //       // console.info(this.mPData);
-
-    //       this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, newVal);
-    //     }
-    //   },
-    //   deep: true,
-    // },
   },
   async updated() {
     console.info("update");
@@ -173,7 +170,12 @@ export default {
   async mounted() {
     if (this.pdata != null) {
       if (this.settings.relativeValues && this.pdata) {
-        this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.pdata, this.settings);
+        this.mPData = this.$ren.utils.convertPanelData(
+          this.mPanel,
+          this.pdata,
+          this.$store.getters["settings/conversion"],
+        );
+        this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, this.settings);
       } else {
         this.mPData = this.$ren.utils.convertPanelData(
           this.mPanel,

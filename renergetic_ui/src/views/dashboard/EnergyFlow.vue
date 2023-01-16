@@ -14,22 +14,22 @@
   </div>
   <!--dialogs -->
   <div>
-    <SettingsDialog ref="settingsDialog">
+    <RenSettingsDialog ref="settingsDialog">
       <template #settings><PanelSettings @update="reloadSettings()"></PanelSettings></template>
-    </SettingsDialog>
-    <SettingsDialog ref="conversionSettingsDialog">
+    </RenSettingsDialog>
+    <RenSettingsDialog ref="conversionSettingsDialog">
       <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
-    </SettingsDialog>
-    <SettingsDialog ref="filterSettingsDialog" :save="false">
+    </RenSettingsDialog>
+    <RenSettingsDialog ref="filterSettingsDialog" :save="false">
       <template #settings><FilterSettings @update="reloadSettings()"></FilterSettings></template>
-    </SettingsDialog>
+    </RenSettingsDialog>
   </div>
 </template>
 <script>
 import EnergyFlow from "@/components/dashboard/EnergyFlow.vue";
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
-import SettingsDialog from "@/components/miscellaneous/settings/SettingsDialog.vue";
+// import SettingsDialog from "@/components/miscellaneous/settings/SettingsDialog.vue";
 import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
 import FilterSettings from "@/components/miscellaneous/settings/FilterSettings.vue";
 // import NotificationList from "@/components/management/notification/NotificationList.vue";
@@ -39,7 +39,6 @@ export default {
   components: {
     EnergyFlow,
     FilterSettings,
-    SettingsDialog,
     DotMenu,
     PanelSettings,
     // NotificationList,

@@ -1,25 +1,31 @@
 <template>
+  <RenSpinner ref="spinner1"></RenSpinner>
   <div class="grid">
     <div class="col-8">
-      <Card>
-        <template #title> {{ $t("view.information_panel_list") }} </template>
+      <RenSpinner ref="spinner" :lock="true">
         <template #content>
-          <DataTable :value="panelList">
-            <Column v-for="h of headers" :key="h" :field="h" :header="$t('model.information_panel.' + h)"></Column>
-            <Column field="link">
-              <template #body="item">
-                <i class="pi pi-chevron-circle-right" style="fontsize: 2rem" @click="view(item.data)" />
-              </template>
-            </Column>
-          </DataTable>
+          <Card>
+            <template #title> {{ $t("view.information_panel_list") }} </template>
+            <template #content>
+              <DataTable :value="panelList">
+                <Column v-for="h of headers" :key="h" :field="h" :header="$t('model.information_panel.' + h)"></Column>
+                <Column field="link">
+                  <template #body="item">
+                    <i class="pi pi-chevron-circle-right" style="fontsize: 2rem" @click="view(item.data)" />
+                  </template>
+                </Column>
+              </DataTable>
+            </template>
+          </Card>
         </template>
-      </Card>
+      </RenSpinner>
     </div>
   </div>
 </template>
 <script>
 export default {
   name: "InformationPanelList",
+  components: {},
   data() {
     return {
       panelList: [],
@@ -29,13 +35,15 @@ export default {
   },
   async mounted() {
     //todo: add some filters
-    await this.$ren.dashboardApi.listInformationPanel().then((list) => {
-      this.panelList = list;
-      if (list.length > 0) {
-        this.headers = Object.keys(list[0]).filter((it) => it != "tiles");
-      } else {
-        this.headers = [];
-      }
+    this.$refs.spinner.run(async () => {
+      await this.$ren.dashboardApi.listInformationPanel().then((list) => {
+        this.panelList = list;
+        if (list.length > 0) {
+          this.headers = Object.keys(list[0]).filter((it) => it != "tiles");
+        } else {
+          this.headers = [];
+        }
+      });
     });
   },
   methods: {

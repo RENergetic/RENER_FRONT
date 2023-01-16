@@ -7,20 +7,20 @@
     <DemandList id="demand-list" />
   </div>
 
-  <SettingsDialog ref="homeSettingsDialog">
+  <RenSettingsDialog ref="homeSettingsDialog">
     <!--  @update="onSettingsUpdate()" -->
     <template #settings><HomeSettings @update="reloadSettings()"></HomeSettings></template>
-  </SettingsDialog>
-  <SettingsDialog ref="panelSettingsDialog">
+  </RenSettingsDialog>
+  <RenSettingsDialog ref="panelSettingsDialog">
     <!--  @update="onSettingsUpdate()" -->
     <template #settings><PanelSettings @update="reloadPanelSettings()"></PanelSettings></template>
-  </SettingsDialog>
-  <SettingsDialog ref="conversionSettingsDialog">
+  </RenSettingsDialog>
+  <RenSettingsDialog ref="conversionSettingsDialog">
     <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
-  </SettingsDialog>
-  <SettingsDialog ref="filterSettingsDialog" :save="false">
+  </RenSettingsDialog>
+  <RenSettingsDialog ref="filterSettingsDialog" :save="false">
     <template #settings><FilterSettings @update="reloadSettings()"></FilterSettings></template>
-  </SettingsDialog>
+  </RenSettingsDialog>
   <div v-if="$refs.panelSettingsDialog">{{ $refs.panelSettingsDialog.settingsDialog }}</div>
 </template>
 <script>

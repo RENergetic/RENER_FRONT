@@ -206,8 +206,11 @@ export default class RenUtils {
     //TODO: initialize this dictionary in the vuex store
     if (panel && panel.tiles) {
       for (let tile of panel.tiles) {
-        for (let m of tile.measurements) {
-          mDict[m.id] = m;
+        if (tile.props && !tile.props.ignore_grouping) {
+          for (let m of tile.measurements) {
+            //TODO: ignore percentage type ?
+            if (m.type.base_unit != "%") mDict[m.id] = m;
+          }
         }
       }
     }

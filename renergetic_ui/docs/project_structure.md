@@ -35,6 +35,7 @@
 
 #### Styles
 
+* Renergetic style class - prefix: 'ren-'
 * variables.scss - configurable variables
 * ren.scss - global classes , primefaces modifications
   
@@ -76,7 +77,7 @@ reused modules included in the views or other components
 * `/renergetic` -> renergetic js modules, accessed by `this.$ren`
   * `/ren_api` -> REST API, `this.$ren.{apiName}` , apiName:  [`dashboardApi`,`dataApi`,`managementApi`,`userApi`,`userApi`] 
   * `/utils.js` -> miscellaneous functions `this.$ren.utils`
-* `ren_import.js` -> import ren components
+* `ren_import.js` -> import global ren components (all global ren components starts with prefix `Ren`)
   
 [top](#project-structure) 
 

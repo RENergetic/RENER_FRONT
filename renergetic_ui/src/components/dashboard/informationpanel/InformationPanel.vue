@@ -1,7 +1,6 @@
 <template>
   <!-- {{ mPanel }} -->
   <!-- {{ $store.getters["view/measurementTypes"] }}  -->
-  <!--  offset -->
   <!-- {{ pdata }} -->
   <!-- <NotificationList v-if="settings.notificationVisibility" :notifications="mNotifications"></NotificationList> -->
   <InformationPanelView
