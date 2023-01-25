@@ -1,5 +1,6 @@
 <template>
   <Settings :schema="schema" :settings="settings"></Settings>
+  <!-- {{ $store.getters["settings/filter"] }} -->
 </template>
 
 <script>
@@ -29,14 +30,15 @@ export default {
   //   },
   // },
   async mounted() {
-    this.$ren.dashboardApi
-      .listInformationPanel()
-      .then((panels) => {
-        this.panels = panels;
-      })
-      .then(() => {
-        this.schema = this.getSchema();
-      });
+    this.settings = this.$store.getters["settings/filter"];
+
+    await this.$ren.dashboardApi.listInformationPanel().then((panels) => {
+      this.panels = panels;
+    });
+    // .then(() => {
+    //   this.schema = this.getSchema();
+    // });
+    this.schema = this.getSchema();
   },
 
   async created() {
@@ -46,6 +48,7 @@ export default {
     async onClick() {
       this.settings["predictionIntervalms"] = this.settings.predictionInterval * 3600;
       this.$store.commit("settings/filter", this.settings);
+
       await this.$ren.utils.saveSettings();
       this.$emit("update");
     },

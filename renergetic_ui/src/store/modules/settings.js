@@ -28,7 +28,7 @@ export var DefaultSettings = {
     relativeValues: false,
   },
   conversion: {},
-  filter: { predictionInterval: 0, timeInterval: "current_dat" },
+  filter: { predictionInterval: 0, timeInterval: "current_day" },
 };
 export default {
   namespaced: true,
@@ -87,6 +87,8 @@ export default {
       state.conversion = payload;
     },
     filter(state, payload) {
+      console.info("filter");
+      console.info(payload);
       state.filter = payload;
     },
 
@@ -115,30 +117,32 @@ export default {
       return state.conversion;
     },
     predictionMs(state) {
-      return state.predictionIntervalms ? state.predictionIntervalms : 0;
+      return state.filter && state.filter.predictionIntervalms ? state.predictionIntervalms : 0;
     },
     parsedFilter(state) {
       //TODO: what time zone i should use?
       let from = null;
       let to = null;
       var date = new Date();
-      switch (state.timeInterval) {
+      // console.info(state.filter);
+      let f = state.filter ? state.filter : {};
+      switch (f.timeInterval) {
         case "current_day":
           from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
           break;
         case "current_month":
-          from = new Date(date.getFullYear(), date.getMonth(), 1);
+          from = new Date(date.getFullYear(), date.getMonth(), 1).getTime();
           break;
         case "previous_month":
-          from = new Date(date.getFullYear(), date.getMonth() - 1, 1);
-          to = new Date(date.getFullYear(), date.getMonth(), 1);
+          from = new Date(date.getFullYear(), date.getMonth() - 1, 1).getTime();
+          to = new Date(date.getFullYear(), date.getMonth(), 1).getTime();
           break;
         case "current_year":
-          from = new Date(date.getFullYear(), 0, 1);
+          from = new Date(date.getFullYear(), 0, 1).getTime();
           break;
         case "previous_year":
-          from = new Date(date.getFullYear() - 1, 0, 1);
-          to = new Date(date.getFullYear(), 0, 1);
+          from = new Date(date.getFullYear() - 1, 0, 1).getTime();
+          to = new Date(date.getFullYear(), 0, 1).getTime();
           break;
         default:
           from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();

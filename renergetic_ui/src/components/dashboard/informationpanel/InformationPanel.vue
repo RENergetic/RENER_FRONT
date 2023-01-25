@@ -3,6 +3,8 @@
   <!-- {{ $store.getters["view/measurementTypes"] }}  -->
   <!-- {{ pdata }} -->
   <!-- <NotificationList v-if="settings.notificationVisibility" :notifications="mNotifications"></NotificationList> -->
+
+  <!-- {{ $store.getters["settings/filter"] }} -->
   <InformationPanelView
     v-if="mPanel"
     :edit="editMode"
@@ -174,7 +176,7 @@ export default {
 
       let filter = this.$store.getters["settings/parsedFilter"];
       let predictions = this.$store.getters["settings/predictionMs"];
-      // console.error(filterSettings);
+
       // console.error(predictions);
       filter["prediction"] = predictions;
       if (this.panel.id != null) {
