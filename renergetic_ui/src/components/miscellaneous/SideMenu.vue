@@ -167,18 +167,21 @@ export default {
       }
       var items = [];
       if (this.dashboards && this.dashboards.length != 0) {
-        items = this.dashboards.map((dashboardItem) => {
-          let to = `/dashboard/view/${dashboardItem.id}`;
-          return {
-            // label: this.$t("menu.group_list"),
-            label: dashboardItem.label,
-            icon: "pi pi-fw pi-align-left",
-            to: to,
-            command: () => {
-              this.$router.push(to);
-            },
-          };
-        });
+        items = this.dashboards
+          .filter((it) => it.url)
+          .map((dashboardItem) => {
+            // let to = `/dashboard/view/${dashboardItem.id}`;
+            return {
+              // label: this.$t("menu.group_list"),
+              label: dashboardItem.label,
+              icon: "pi pi-fw pi-align-left",
+              // to: to,
+              command: () => {
+                window.open(dashboardItem.url, "_blank");
+                // this.$router.push(to);
+              },
+            };
+          });
       }
       flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
       if ((flags & this.role) > 0)

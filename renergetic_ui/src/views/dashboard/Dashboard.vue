@@ -6,6 +6,7 @@
     <template #header>   <h5>Basic</h5>    </template>
     <template #item="slotProps">      <div>data: {{ slotProps.data.name }}</div> 
        </template>  </Carousel> -->
+
   <Dock class="ren-dock" :model="dashboardMenu" position="bottom">
     <template #icon="{ item }"
       ><div :style="getColor(item)">

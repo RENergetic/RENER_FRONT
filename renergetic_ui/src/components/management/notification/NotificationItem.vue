@@ -13,12 +13,15 @@
             {{ notification.message }}
           </span>
           <div v-if="notification.dashboard" class="flex flex-grow-1">
+            <!-- {{ notification.dashboard }} -->
             <!-- {{ $t("view.go_to_dashboard") }} -->
+            <!-- @click="$router.push(`/dashboard/view/${notification.dashboard.id}`)" -->
+            {{ notification.dashboard.url }}
             <i
               v-if="notification.dashboard"
               v-tooltip="$t('view.go_to_dashboard')"
               class="pi pi-arrow-circle-right"
-              @click="$router.push(`/dashboard/view/${notification.dashboard.id}`)"
+              @click="navigate(notification.dashboard.url)"
             />
           </div>
         </div>
@@ -73,7 +76,11 @@ export default {
   },
   computed: {},
   watch: {},
-  methods: {},
+  methods: {
+    navigate(url) {
+      window.open(url, "_blank");
+    },
+  },
 };
 </script>
 
