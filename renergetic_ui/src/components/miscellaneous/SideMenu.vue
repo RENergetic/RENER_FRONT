@@ -184,7 +184,7 @@ export default {
           });
       }
       flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
-      if ((flags & this.role) > 0)
+      if ((flags & this.role) > 0) {
         items.push({
           // label: this.$t("menu.group_list"),
           label: this.$t("menu.add_dashboard"),
@@ -195,6 +195,16 @@ export default {
             // this.$router.push({ name: "DashboadAdd" });
           },
         });
+        items.push({
+          // label: this.$t("menu.group_list"),
+          label: this.$t("menu.manage_dashboard"),
+          icon: "pi pi-fw pi-list",
+          to: "/dashboard/grafana/list",
+          command: () => {
+            this.$router.push({ name: "GrafanaDashboardList" });
+          },
+        });
+      }
       return [
         {
           label: this.$t("menu.dashboards"),

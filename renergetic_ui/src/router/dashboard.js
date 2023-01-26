@@ -39,6 +39,18 @@ var dashboardRoutes = [
     component: () => import("../views/dashboard/heatmap/HeatMapCreator.vue"),
   },
   {
+    path: "/dashboard/grafana/list",
+    name: "GrafanaDashboardListView",
+    props: {},
+    meta: {
+      isAuthenticated: true,
+      layout: "fullscr",
+      roles: ["ren-admin", "ren-dev", "ren-manager"],
+      roleFlag: RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
+    },
+    component: () => import("../views/dashboard/GrafanaDashboardListView.vue"),
+  },
+  {
     path: "/dashboard/heatmap/view/:id?",
     name: "HeatMapView",
     props: {},
