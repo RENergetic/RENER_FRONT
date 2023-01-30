@@ -8,6 +8,11 @@
     "island": "Island",
     "pv": "pv"
   },
+  "dashboard_measurement_types": {
+    "energy": "Energy",
+    "power": "Power"
+  },
+  
   "metric_type": {
     "electricity": "electricity",
     "heat": "heat",

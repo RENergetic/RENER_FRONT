@@ -21,6 +21,7 @@
   "manage_asset_connections": "Manage asset connection",
   "measurements": "Measurements",
   "measurement_type_not_defined":"Type not defined",
+  "na":"N/A",
   "no_asset": "No asset",
   "no_asset_children": "No sub assets",
   "no_asset_measurements": "No measurements",

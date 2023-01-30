@@ -1,5 +1,5 @@
 <template>
-  <RenSpinner ref="spinner1"></RenSpinner>
+  <!-- <RenSpinner ref="spinner1"></RenSpinner> -->
   <div class="grid">
     <div class="col-8">
       <RenSpinner ref="spinner" :lock="true">

@@ -2,7 +2,10 @@
      "dashboard": {
           "name": "Name",
           "url": "URL",
-          "label": "Label"
+          "label": "Label",
+          "model":"Model",
+          "measurement_type":"Measurement type",
+          "unit":"Unit","user":"User"
      },
      "heatmap": {
           "name": "Name",
@@ -55,7 +58,7 @@
           "direction": "Direction",
           "direction_out": "Out",
           "direction_in": "In",
-          "direction_null": "N/A"
+          "direction_null": "N/A"         
      },
      "panel": {
           "name": "Name",

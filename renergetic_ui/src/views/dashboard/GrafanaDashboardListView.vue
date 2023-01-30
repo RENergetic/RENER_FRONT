@@ -1,15 +1,20 @@
 <template>
   <div>
-    <!-- <asset-list /> -->
     todo
+    <dashboard-list :dashboards="dashboards" />
   </div>
 </template>
 <script>
-// import AssetList from "../../../components/management/infrastructure/AssetList.vue";
+import DashboardList from "@/components/dashboard/grafana/DashboardList.vue";
 export default {
   name: "GrafanaDashboardListView",
   components: {
-    // AssetList,
+    DashboardList,
+  },
+  data() {
+    return {
+      dashboards: this.$store.getters["view/dashboards"],
+    };
   },
 };
 </script>

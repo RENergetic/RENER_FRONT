@@ -67,6 +67,10 @@ export default {
         types: meta.types ? meta.types : [],
         asset_details_keys: meta.asset_details_keys ? meta.asset_details_keys : [],
       };
+      meta = getF("dashboard_metakeys", {});
+      state.dashboard = {
+        models: meta.models ? meta.models : [],
+      };
     },
     data(state, payload) {
       state.data = payload;
@@ -146,6 +150,14 @@ export default {
     assetTypes: (state /* getters*/) => {
       return state.asset.types;
     },
+
+    dashboardModels: (state /* getters*/) => {
+      return state.dashboard.models;
+    },
+    dashboardUnits: (state /* getters*/) => {
+      return state.dashboard.units;
+    },
+
     assetDetailsKeys: (state /* getters*/) => {
       return state.asset.asset_details_keys;
     },

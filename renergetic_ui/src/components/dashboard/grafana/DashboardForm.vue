@@ -46,8 +46,9 @@
 <script>
 //TODO: validate
 import Card from "primevue/card";
+import { DashboardMeasurementTypes } from "@/plugins/model/Enums.js";
 export default {
-  name: "DashboardAdd",
+  name: "DashboardForm",
   components: { Card },
   props: {
     dashboard: {
@@ -57,7 +58,12 @@ export default {
   },
   emits: ["update:modelValue", "save", "cancel"],
   data() {
-    return { mDashboard: this.dashboard };
+    return {
+      mDashboard: this.dashboard,
+      models: this.$store.getters["view/dashboardModels"],
+      units: this.$store.getters["view/dashboardUnits"],
+      types: DashboardMeasurementTypes,
+    };
   },
   watch: {
     mDashboard: {

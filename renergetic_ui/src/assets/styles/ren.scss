@@ -1,25 +1,24 @@
 // @import url('primevue/resources/themes/nova-vue/theme.css');
 // @use "sass:math";
-@import "./variables.scss"; 
+@import "./variables.scss";
 
- 
 // .grid-stack > .grid-stack-item {
 
 //     $gridstack-columns: 12;
-  
+
 //     min-width: 100%/$gridstack-columns;
-  
+
 //     @for $i from 0 through $gridstack-columns {
 //       &[gs-w='#{$i}'] { width: (100% / $gridstack-columns) * $i; }
 //       &[gs-x='#{$i}'] { left: (100% / $gridstack-columns) * $i; }
 //       &[gs-min-w='#{$i}'] { min-width: (100% / $gridstack-columns) * $i; }
 //       &[gs-max-w='#{$i}'] { max-width: (100% / $gridstack-columns) * $i; }
 //     }
-//   } 
+//   }
 body {
     // background-color: lightgrey;
     background: linear-gradient(to right, #232526, #414345);
-    margin:0
+    margin: 0;
 }
 .ren-control-bg {
     background: linear-gradient(to bottom, #190a05, #870000);
@@ -78,8 +77,8 @@ body {
         background-color: sandybrown;
     }
     .hl-warning {
-        .p-panelmenu-header-content{            
-        background-color: rgba(255, 255, 0, 0.318);
+        .p-panelmenu-header-content {
+            background-color: rgba(255, 255, 0, 0.318);
         }
         background-color: rgba(255, 255, 0, 0.318);
     }
@@ -127,7 +126,6 @@ body {
         margin-left: ($sidemenu-button-width + 0.5rem);
     }
 }
-
 
 .fullscr-margin {
     max-width: 99.5vw;
@@ -238,3 +236,13 @@ body {
     min-width: 15rem !important;
 }
 
+.ren.add-button {
+    font-size: 2rem;
+    color: $primary-color;
+    border-radius: 2rem;
+}
+.ren.add-button:hover {
+    color: rgba(255, 255, 255, 0.5);
+    background: $primary-color;
+    cursor: pointer;
+}

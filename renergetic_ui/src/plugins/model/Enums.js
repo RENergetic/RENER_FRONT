@@ -49,6 +49,11 @@ const NotificationContext = Object.freeze({
   TILE: "area",
 });
 
+const DashboardMeasurementTypes = Object.freeze({
+  energy: "energy",
+  power: "power",
+});
+
 const AssetConnectionType = Object.freeze({
   OWNER: "owner",
   RESIDENT: "resident",
@@ -98,4 +103,5 @@ export {
   RenRoles,
   DemandActionType,
   MeasurementDetailsKeys,
+  DashboardMeasurementTypes,
 };

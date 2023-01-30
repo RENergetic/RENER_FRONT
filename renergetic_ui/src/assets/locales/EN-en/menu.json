@@ -22,6 +22,7 @@
   "login":"Login",
   "logout": "Logout",
   "manage": "Manage",
+  "manage_dashboard": "Manage dashboards",
   "measurements": "Measurements",
   "notifications": "Notifications",
   "panel_grid_edit_off": "Edit mode off",
