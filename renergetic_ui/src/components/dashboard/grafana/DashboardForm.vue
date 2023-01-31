@@ -57,7 +57,7 @@
           <Dropdown
             id="dasboardUnit"
             v-model="mDashboard.ext.unit"
-            option-label="symbol"
+            :option-label="(opt) => `[${opt.symbol}]`"
             option-value="name"
             :options="$store.getters['view/dashboardUnits']"
             :placeholder="$t('view.select_dashboard_unit')"
@@ -66,14 +66,14 @@
       </div>
       <div class="field grid">
         <label for="dashboardMeasurementType" class="col-12 mb-2 md:col-2 md:mb-0">
-          {{ $t("model.dashboard._measurement_type") }}
+          {{ $t("model.dashboard.measurement_type") }}
         </label>
 
         <div class="col-12 md:col-10">
           <Dropdown
             id="dashboardMeasurementType"
             v-model="mDashboard.ext.measurement_type"
-            :option-label="(ext) => $t('enums.dashboard_measurement_type')"
+            :option-label="(opt) => $t('enums.dashboard_measurement_types.' + opt)"
             :options="measurementTypes"
             :placeholder="$t('view.select_dashboard_measurement_type')"
           />
