@@ -1,9 +1,11 @@
 <template>
   <Card>
     <template #title>
-      {{ $t("view.add_dashboard") }}
+      <span v-if="dashboard"> {{ $t("view.add_dashboard") }}</span>
+      <span v-else> {{ $t("view.edit_dashboard") }}</span>
     </template>
     <template #content>
+      {{ mDashboard }}
       <!--name-->
       <div class="field grid">
         <label for="dasboardName" class="col-12 mb-2 md:col-2 md:mb-0">
@@ -33,6 +35,50 @@
           <InputText id="dasboardLabel" v-model="mDashboard.label" />
         </div>
       </div>
+      <!-- label -->
+
+      <div class="field grid">
+        <label for="dasboardModel" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.dashboard.model") }} </label>
+
+        <div class="col-12 md:col-10">
+          <Dropdown
+            id="dasboardModel"
+            v-model="mDashboard.ext.model"
+            option-label="label"
+            option-value="name"
+            :options="$store.getters['view/dashboardModels']"
+            :placeholder="$t('view.select_dashboard_model')"
+          />
+        </div>
+      </div>
+      <div class="field grid">
+        <label for="dasboardUnit" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.dashboard.unit") }} </label>
+        <div class="col-12 md:col-10">
+          <Dropdown
+            id="dasboardUnit"
+            v-model="mDashboard.ext.unit"
+            option-label="symbol"
+            option-value="name"
+            :options="$store.getters['view/dashboardUnits']"
+            :placeholder="$t('view.select_dashboard_unit')"
+          />
+        </div>
+      </div>
+      <div class="field grid">
+        <label for="dashboardMeasurementType" class="col-12 mb-2 md:col-2 md:mb-0">
+          {{ $t("model.dashboard._measurement_type") }}
+        </label>
+
+        <div class="col-12 md:col-10">
+          <Dropdown
+            id="dashboardMeasurementType"
+            v-model="mDashboard.ext.measurement_type"
+            :option-label="(ext) => $t('enums.dashboard_measurement_type')"
+            :options="measurementTypes"
+            :placeholder="$t('view.select_dashboard_measurement_type')"
+          />
+        </div>
+      </div>
 
       <div class="field grid">
         <div class="col-6 md:col-6"><Button :label="$t('view.button.submit')" @click="submit" /></div>
@@ -53,16 +99,20 @@ export default {
   props: {
     dashboard: {
       type: Object,
-      default: () => ({}),
+      default: null,
     },
   },
   emits: ["update:modelValue", "save", "cancel"],
   data() {
+    let mDashboard = this.dashboard ? this.dashboard : { ext: {} };
+    if (!mDashboard.ext) {
+      mDashboard.ext = {};
+    }
     return {
-      mDashboard: this.dashboard,
+      mDashboard: mDashboard,
       models: this.$store.getters["view/dashboardModels"],
       units: this.$store.getters["view/dashboardUnits"],
-      types: DashboardMeasurementTypes,
+      measurementTypes: Object.keys(DashboardMeasurementTypes),
     };
   },
   watch: {

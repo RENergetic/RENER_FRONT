@@ -95,10 +95,6 @@
     </RenSpinner>
   </div>
 
-  <Dialog>
-    <AssetForm @update:model-value="onCreate($event, 0)" @cancel="assetAdd = false"> </AssetForm>
-  </Dialog>
-
   <Dialog
     v-model:visible="editDialog"
     :style="{ width: '75vw' }"
@@ -106,19 +102,11 @@
     :modal="true"
     :dismissable-mask="true"
   >
-    <Card>
-      <template #title> {{ $t("model.asset.measurements") }} </template>
-      <template #content>
-        <!-- {{ selectedRow.measurements }} -->
-        <DashboardForm v-if="selectedRow" :dashboard="selectedRow"> </DashboardForm>
+    <!-- {{ selectedRow.measurements }} -->
+    <DashboardForm v-if="selectedRow" :dashboard="selectedRow" @save="onEdit" @cancel="editDialog = false" />
+    <DashboardForm v-else @save="onCreate" @cancel="editDialog = false" />
 
-        <span v-else>
-          {{ $t("view.no_asset_measurements") }}
-        </span>
-
-        <Button :label="$t('view.button.add_measurement')" @click="addMeasurement" />
-      </template>
-    </Card>
+    <!-- <Button :label="$t('view.button.add_measurement')" @click="addMeasurement" /> -->
   </Dialog>
 </template>
 
@@ -127,7 +115,7 @@ import DashboardForm from "./DashboardForm.vue";
 
 const PAGE_SIZE = 10;
 export default {
-  name: "AssetList",
+  name: "DashboardList",
   components: { DashboardForm },
   props: { dashboards: { type: Array, default: () => [] } },
   data() {
@@ -162,10 +150,12 @@ export default {
       this.editDialog = true;
     },
 
-    onEdit() {
+    onEdit(evt) {
+      console.info(evt);
       alert("todo");
     },
     async onCreate(o) {
+      alert("todo");
       console.error("AQUI HA LLEGADO");
       console.log(o);
       await this.$ren.managementApi.addAsset(o).then((assetId) => {

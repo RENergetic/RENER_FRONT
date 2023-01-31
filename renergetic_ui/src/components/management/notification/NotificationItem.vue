@@ -16,7 +16,7 @@
             <!-- {{ notification.dashboard }} -->
             <!-- {{ $t("view.go_to_dashboard") }} -->
             <!-- @click="$router.push(`/dashboard/view/${notification.dashboard.id}`)" -->
-            {{ notification.dashboard.url }}
+            <!-- {{ notification.dashboard.url }} -->
             <i
               v-if="notification.dashboard"
               v-tooltip="$t('view.go_to_dashboard')"

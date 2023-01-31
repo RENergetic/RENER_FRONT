@@ -68,8 +68,10 @@ export default {
         asset_details_keys: meta.asset_details_keys ? meta.asset_details_keys : [],
       };
       meta = getF("dashboard_metakeys", {});
+      alert(JSON.stringify(meta.units));
       state.dashboard = {
         models: meta.models ? meta.models : [],
+        units: meta.units ? meta.units : [],
       };
     },
     data(state, payload) {
@@ -154,6 +156,7 @@ export default {
     dashboardModels: (state /* getters*/) => {
       return state.dashboard.models;
     },
+
     dashboardUnits: (state /* getters*/) => {
       return state.dashboard.units;
     },
