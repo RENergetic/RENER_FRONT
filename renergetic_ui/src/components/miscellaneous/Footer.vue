@@ -17,7 +17,7 @@ export default {
   components: { Logo },
 };
 </script>
-<style scoped>
+<style>
 #pagefooter {
   height: 4rem;
   display: flex;

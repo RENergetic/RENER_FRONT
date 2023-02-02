@@ -1,15 +1,13 @@
 <template>
-  <div class="col-12">
-    <Card>
-      <template #content>
-        <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 80vw">
-          <template #content>
-            <dashboard-list :dashboards="dashboards" @reload="reload" />
-          </template>
-        </RenSpinner>
-      </template>
-    </Card>
-  </div>
+  <Card class="col-12">
+    <template #content>
+      <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 80vw">
+        <template #content>
+          <dashboard-list :dashboards="dashboards" @reload="reload" />
+        </template>
+      </RenSpinner>
+    </template>
+  </Card>
 </template>
 <script>
 import DashboardList from "@/components/dashboard/grafana/DashboardList.vue";

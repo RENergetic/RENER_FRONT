@@ -7,7 +7,8 @@
     <router-view v-if="hasAccess" :key="$route.path" :class="layout()" @update-menu="updateMenu()" />
     <!-- TODO: v-else -->
     <!-- {{ $keycloak && $keycloak.isInitialized() }} -->
-    <Footer style="display: none">
+
+    <Footer>
       <template #right> </template>
     </Footer>
   </div>
@@ -109,8 +110,10 @@ export default {
 }
 .fullscr {
   margin-top: 0rem;
+  position: relative;
 }
 #app {
+  min-height: 95vh;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
