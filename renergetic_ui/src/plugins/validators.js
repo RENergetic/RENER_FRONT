@@ -1,3 +1,6 @@
+/**
+ * i18n key: `validations`
+ */
 import * as validators from "@vuelidate/validators";
 import i18n from "@/plugins/locales";
 
@@ -17,24 +20,12 @@ const withParametrizedMessage = (
     withArguments: withArguments,
     messagePath: ({ $validator }) => `validations.${$validator}`,
     messageParams: (params) => {
-      console.info(params);
       params.property = $t(p + params.property);
       return params;
     },
   });
 };
-// for vue-i18n@8
-// const withI18nMessage = createI18nMessage({ t: i18n.t.bind(i18n) })
-
-// wrap each validator.
 // validators that expect a parameter should have `{ withArguments: true }` passed as a second parameter, to annotate they should be wrapped
-
-// property
-
-// const contains = (param) => (value) =>
-//   !helpers.req(value) || value.includes(param)
-
-//export const required = (param) => withI18nMessage(validators.required, {}, { propertyPath: "model.test." });
 export const required = withParametrizedMessage(validators.required);
 export const requiredTr = (path) => withParametrizedMessage(validators.required, { propertyPath: path });
 // export const minLength = withI18nMessage(validators.minLength, { withArguments: true });
@@ -42,6 +33,7 @@ export const requiredTr = (path) => withParametrizedMessage(validators.required,
 // export const maxLength = withI18nMessage(validators.maxLength(10));
 
 export const minLength = withParametrizedMessage(validators.minLength, { withArguments: true });
+//suffix `Tr` - add i18n path to property
 export const minLengthTr = (path) =>
   withParametrizedMessage(validators.minLength, { propertyPath: path, withArguments: true });
 //

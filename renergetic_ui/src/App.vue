@@ -52,20 +52,29 @@ export default {
       this.onRefresh();
     });
     this.$emitter.on("error", (evt) => {
-      console.error(evt);
-      let msg;
-      if (evt.code) {
-        msg = this.$t(`error.${evt.code}`, evt.args);
-      } else msg = evt.message;
-      alert("TODO: catch error" + msg);
+      // console.error(evt);
+      let title = evt.titleCode ? this.$t(`error.${evt.titleCode}`) : evt.title ? evt.title : this.$t(`error.error`);
+      let msg = evt.code ? this.$t(`error.${evt.code}`, evt.args) : evt.message;
+      this.$toast.add({
+        severity: "error",
+        summary: title,
+        detail: msg,
+        life: 3000,
+      });
     });
     this.$emitter.on("information", (evt) => {
-      console.info(evt);
-      let msg;
-      if (evt.code) {
-        msg = this.$t(`information.${evt.code}`, evt.args);
-      } else msg = evt.message;
-      alert("TODO: information handler popup" + msg);
+      let title = evt.titleCode
+        ? this.$t(`information.${evt.titleCode}`)
+        : evt.title
+        ? evt.title
+        : this.$t(`information.information`);
+      let msg = evt.code ? this.$t(`information.${evt.code}`, evt.args) : evt.message;
+      this.$toast.add({
+        severity: "information",
+        summary: title,
+        detail: msg,
+        life: 3000,
+      });
     });
   },
   async mounted() {
