@@ -60,9 +60,10 @@
         </Dropdown>
       </template>
     </Column>
-    <Column field="category.label" :header="$t('model.asset.asset_category')" :show-filter-menu="false">
+    <Column field="asset_category.label" :header="$t('model.asset.asset_category')" :show-filter-menu="false">
       <template #filter="{ filterModel, filterCallback }">
         <Dropdown
+          v-if="filterModel"
           v-model="filterModel.value"
           :options="$store.getters['view/assetCategories']"
           :placeholder="$t('view.select_asset_category')"
@@ -353,7 +354,7 @@ export default {
       this.assetList = await this.$ren.managementApi.listAsset(params, PAGE_SIZE * this.page, PAGE_SIZE);
     },
     next() {
-      if (this.assetList.lenth == 0) return;
+      if (this.assetList.length === 0) return;
       this.page += 1;
     },
     previous() {
