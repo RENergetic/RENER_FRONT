@@ -173,7 +173,7 @@ export default {
             // let to = `/dashboard/view/${dashboardItem.id}`;
             return {
               // label: this.$t("menu.group_list"),
-              label: dashboardItem.label,
+              label: dashboardItem.label ? dashboardItem.label : dashboardItem.name,
               icon: "pi pi-fw pi-align-left",
               // to: to,
               command: () => {
