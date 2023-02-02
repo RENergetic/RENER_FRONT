@@ -1,10 +1,14 @@
 <template>
   <div class="col-12">
-    <RenSpinner ref="spinner" :lock="true">
+    <Card>
       <template #content>
-        <dashboard-list :dashboards="dashboards" @reload="reload" />
+        <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 80vw">
+          <template #content>
+            <dashboard-list :dashboards="dashboards" @reload="reload" />
+          </template>
+        </RenSpinner>
       </template>
-    </RenSpinner>
+    </Card>
   </div>
 </template>
 <script>
