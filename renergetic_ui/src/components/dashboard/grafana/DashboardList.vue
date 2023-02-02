@@ -1,5 +1,8 @@
 <template>
   <!-- {{ mDashboards }} -->
+  <!-- :filters="filters"
+    filter-display="row"
+    :global-filter-fields="['name', 'label','url']" -->
   <DataTable
     v-if="mDashboards"
     paginator-template="CurrentPageReport  PrevPageLink PageLinks NextPageLink    "
@@ -7,10 +10,7 @@
     :rows="10"
     :value="mDashboards"
     data-key="name"
-    :filters="filters"
-    filter-display="row"
     responsive-layout="scroll"
-    :global-filter-fields="['name', 'label']"
   >
     <Column name="name" :header="$t('model.dashboard.name')">
       <template #body="slotProps">

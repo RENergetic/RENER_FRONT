@@ -35,6 +35,7 @@ const routes = [
     path: "/unauthorized",
     name: "Unauthorized",
     meta: { isAuthenticated: false },
+    //TODO: login page?
     component: () => import("../views/RenAbout.vue"),
   },
   {

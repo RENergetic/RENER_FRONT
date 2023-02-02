@@ -5,6 +5,9 @@
     <SideMenu ref="sideMenu" @refresh="onRefresh" />
 
     <router-view v-if="hasAccess" :key="$route.path" :class="layout()" @update-menu="updateMenu()" />
+    <div v-else :class="layout()">
+      <!-- TODO: login button -->
+    </div>
     <!-- TODO: v-else -->
     <!-- {{ $keycloak && $keycloak.isInitialized() }} -->
 
