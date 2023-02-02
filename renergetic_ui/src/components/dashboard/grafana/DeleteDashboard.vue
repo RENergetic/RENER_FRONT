@@ -6,28 +6,30 @@ export default {
   name: "DeleteDashboard",
   components: {},
   props: {
-    id: {
-      type: String,
-      default: null,
-    },
-    label: {
-      type: String,
+    dashboard: {
+      type: Object,
       default: null,
     },
   },
+  emits: ["delete"],
   mounted() {},
   methods: {
-    delete() {
-      this.$confirm.require({
+    async delete() {
+      if (this.dashboard == null) {
+        return;
+        //todo: log error ?
+      }
+      await this.$confirm.require({
         message: this.$t("view.dashboard_delete_confirm", {
-          label: this.label,
+          label: this.dashboard.label ? this.dashboard.label : this.dashboard.name,
         }),
         header: this.$t("view.dashboard_delete"),
         icon: "pi pi-exclamation-triangle",
-        accept: () => {
-          this.deleteDashboard(this.id);
-          this.$store.commit("view/dashboardsDel", this.id);
-          this.$router.replace("Dashboard");
+        accept: async () => {
+          this.$store.commit("view/dashboardsDel", this.dashboard.id);
+          let res = await this.deleteDashboard(this.dashboard.id);
+          if (res) this.$emit("delete", this.dashboard);
+          // this.$router.replace("Dashboard");
         },
         reject: () => {
           this.$confirm.close();
@@ -35,8 +37,8 @@ export default {
       });
     },
     async deleteDashboard(id) {
-      await this.$ren.dashboardApi
-        .delete(id)
+      return await this.$ren.dashboardApi
+        .deleteDashboard(id)
         .then(() => {
           this.$toast.add({
             severity: "success",
@@ -45,6 +47,7 @@ export default {
             }),
             life: 3000,
           });
+          return true;
         })
         .catch(() => {
           this.$toast.add({
@@ -54,6 +57,7 @@ export default {
             }),
             life: 3000,
           });
+          return false;
         });
     },
   },

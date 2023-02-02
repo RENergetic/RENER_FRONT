@@ -75,19 +75,22 @@ export default class RestComponent {
     }
     return this.securizeAPI(headers).then((headers) => {
       return (
-        params
-          ? this.axios.delete(path, { headers: headers, params: params })
-          : this.axios.get(path, { headers: headers })
-      )
-        .then((response) => {
-          return response.data;
-        })
-        .catch(function (error) {
-          let defaultErrorHandler = (error) => _this.emitError(`DELETE: ${path}: ${error.message}`);
-          if (onError == null || !onError(error)) {
-            defaultErrorHandler(error);
-          }
-        });
+        (
+          params
+            ? this.axios.delete(path, { headers: headers, params: params })
+            : this.axios.delete(path, { headers: headers })
+        )
+          // : this.axios.get(path, { headers: headers })
+          .then((response) => {
+            return response.data;
+          })
+          .catch(function (error) {
+            let defaultErrorHandler = (error) => _this.emitError(`DELETE: ${path}: ${error.message}`);
+            if (onError == null || !onError(error)) {
+              defaultErrorHandler(error);
+            }
+          })
+      );
     });
   }
   /**

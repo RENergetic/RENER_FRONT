@@ -33,8 +33,7 @@ Meta parameter description:
 Validators are defined in `/plugins/validators.js` based on vuelidate
 
 Examples:
-Import: 
-
+Import:  
 ```
 import { required, minLength,...} from "@/plugins/validators.js";
 ``` 
@@ -58,7 +57,9 @@ Example usage: ```$emitter.emit("error", { message: msg }```
 Global events (```$emitter.on``` -> App.vue):
 * ```refresh``` - request reload of components
 * ```error``` - emit error
-* ```information``` - emit information
+* ```information``` - emit information 
+* ```warning``` - not implemented, TODO?
+* ```success``` - not implemented, TODO?
 
 
 

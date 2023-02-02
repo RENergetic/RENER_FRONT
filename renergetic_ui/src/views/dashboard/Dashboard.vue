@@ -14,7 +14,7 @@
       </div>
     </template>
   </Dock>
-  <DeleteDashboard v-if="dashboard != null" :id="dashboard.id" ref="deleteDashboard" :label="dashboard.label" />
+  <DeleteDashboard v-if="dashboard != null" ref="deleteDashboard" :dashboard="dashboard" />
   <Dialog
     v-model:visible="updateDialog"
     :style="{ width: '50vw' }"

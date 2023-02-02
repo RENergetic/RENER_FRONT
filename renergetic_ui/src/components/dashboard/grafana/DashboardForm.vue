@@ -6,6 +6,7 @@
     </template>
     <template #content>
       <div class="ren">
+        <!-- {{ $store.getters["view/dashboardUnits"] }} -->
         <!-- {{ mDashboard }} -->
         <!--name-->
         <div class="field grid">
@@ -77,7 +78,7 @@
               id="dasboardUnit"
               v-model="mDashboard.ext.unit"
               :option-label="(opt) => `[${opt.symbol}]`"
-              option-value="name"
+              :option-value="(opt) => `${opt.name} [${opt.symbol}]`"
               :options="$store.getters['view/dashboardUnits']"
               :placeholder="$t('view.select_dashboard_unit')"
             />
@@ -116,11 +117,10 @@ import { useVuelidate } from "@vuelidate/core";
 // import { url, maxLength } from "@vuelidate/validators";
 import { required, minLength, url, maxLength } from "@/plugins/validators.js";
 // requiredTr
-import Card from "primevue/card";
 import { DashboardMeasurementTypes } from "@/plugins/model/Enums.js";
 export default {
   name: "DashboardForm",
-  components: { Card },
+  components: {},
   props: {
     dashboard: {
       type: Object,

@@ -18,7 +18,7 @@ export default class DashboardApi extends RestComponent {
   list(offset = 0, limit = 20) {
     return this.get(`/api/dashboard`, { offset: offset, limit: limit });
   }
-  get(id) {
+  getDashboard(id) {
     return this.get(`/api/dashboard/${id}`);
   }
   add(dashboard) {
@@ -39,7 +39,7 @@ export default class DashboardApi extends RestComponent {
       }
     });
   }
-  delete(id) {
+  deleteDashboard(id) {
     return this.delete(`/api/dashboard/${id}`, null, null, (e) => {
       if (e.response.status == 404) {
         this.emitError(`Dashboard ${id} not found: ${e.message}`, {

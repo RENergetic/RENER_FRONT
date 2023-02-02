@@ -1,7 +1,10 @@
 <template>
-  <div>
-    todo
-    <dashboard-list :dashboards="dashboards" />
+  <div class="col-12">
+    <RenSpinner ref="spinner" :lock="true">
+      <template #content>
+        <dashboard-list :dashboards="dashboards" @reload="reload" />
+      </template>
+    </RenSpinner>
   </div>
 </template>
 <script>
@@ -13,8 +16,21 @@ export default {
   },
   data() {
     return {
-      dashboards: this.$store.getters["view/dashboards"],
+      dashboards: [], // this.$store.getters["view/dashboards"],
     };
+  },
+  mounted() {
+    this.loadDashboards();
+  },
+  methods: {
+    async loadDashboards() {
+      this.$refs.spinner.run(async () => {
+        this.dashboards = await this.$ren.dashboardApi.list();
+      });
+    },
+    reload() {
+      this.loadDashboards();
+    },
   },
 };
 </script>
