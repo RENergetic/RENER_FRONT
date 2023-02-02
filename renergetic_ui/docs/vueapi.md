@@ -8,6 +8,7 @@ TODO: restApiName - describe
   * view - some view config
   * auth - auth/profile details
   * settings - apllication settigns provided by the user
+* data validators - [validation](#validators)
 * `this.$emitter` - global emitter ( [see](#emitter))
 * 
   example: `$store.getters["view/get"]` - get user
@@ -28,6 +29,29 @@ Meta parameter description:
 * roles: **array** - available roles ["ren-manager","ren-technical-manager", "ren-admin", "ren-guest","ren-user","ren-dev","ren-staff","ren-visitor"]. 
 * ```$emit("UpdateMenu", args)``` - request menu update, emit event from router View to sidemenu  
 
+### Validators
+Validators are defined in `/plugins/validators.js` based on vuelidate
+
+Examples:
+Import: 
+
+```
+import { required, minLength,...} from "@/plugins/validators.js";
+``` 
+Usage - validate mDashboard object:
+```
+...
+ data() { return {mDashboard: {}}},
+  validationConfig: {$lazy: true},
+  validations() {
+    return {mDashboard: {
+        name: {required,minLength: minLength(5),maxLength: maxLength(50)},
+        url: {required,url},
+        label: { minLength: minLength(3), maxLengthTr: maxLengthTr("path_to_property.")(50) },
+      }};
+  }
+  ...
+```
 ### Emitter
 Example usage: ```$emitter.emit("error", { message: msg }```
 (It's better to not overuse global event bus - only when it's really necessary. By default it's better to use standars $emit)
@@ -84,3 +108,4 @@ if ((required_flags & user_role_flag) > 0)
 * RenSpinner [docs](./components/renspinner.md)
 
 [top](#vuejs-api) 
+
