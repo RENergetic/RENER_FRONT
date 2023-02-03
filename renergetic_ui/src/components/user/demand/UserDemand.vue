@@ -18,6 +18,7 @@
           <InformationTileData
             v-if="demand.demand_definition.tile != null"
             :key="demand.demand_definition.tile.id"
+            :demand="true"
             :tile="demand.demand_definition.tile"
             :pdata="pdata"
             :settings="{ legend: false, title: false, center: false }"
