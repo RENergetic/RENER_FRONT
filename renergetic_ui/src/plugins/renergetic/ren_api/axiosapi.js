@@ -33,7 +33,7 @@ export default class AxiosAPI {
         if (req.spinner) {
           this.storeCommit("spinner/start");
         }
-        req.withCredentials = false;
+        req.withCredentials = true;
         console.log(`${req.method} ${req.url} ${req.spinner}`);
         // Important: request interceptors **must** return the request.
         return req;
