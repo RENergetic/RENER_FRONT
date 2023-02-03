@@ -182,4 +182,10 @@ export default {
   // position: absolute;
   // height: 100%;
 }
+
+.demand-box {
+  .tile_wrapper {
+    padding: 0.5rem;
+  }
+}
 </style>

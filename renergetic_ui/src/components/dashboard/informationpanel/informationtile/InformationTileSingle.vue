@@ -10,13 +10,13 @@
     </div>
 
     <div v-if="mSettings.tile.template" class="flex flex-none flex-column align-items-center justify-content-center">
-      <span :style="color">
+      <span id="value" :style="color">
         {{ $t(`tile_templates.${tile.name}`, { value: `${Math.round(value * 1000) / 1000.0} ${unit} ` }) }}
       </span>
     </div>
     <div v-else class="flex flex-none flex-column align-items-center justify-content-center">
-      <span :style="color"> {{ mSettings.tile.label }} </span>
-      <span :style="color"
+      <span id="label" :style="color"> {{ mSettings.tile.label }} </span>
+      <span id="value" :style="color"
         ><h2>{{ Math.round(value * 1000) / 1000.0 }} {{ unit }}</h2></span
       >
     </div>
@@ -116,8 +116,22 @@ span {
     height: 100%;
   }
 }
-
 h2 {
   margin: 0;
+}
+
+.demand-box {
+  #tileicon {
+    height: 35%;
+  }
+  #label {
+    font-size: 0.75rem;
+  }
+  #value {
+    h2 {
+      font-size: 1.25rem;
+    }
+    font-size: 1.25rem;
+  }
 }
 </style>

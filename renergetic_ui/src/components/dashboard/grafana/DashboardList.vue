@@ -204,7 +204,7 @@ export default {
       // this.reload()
     },
     next() {
-      if (this.assetList.lenth == 0) return;
+      if (this.assetList.length == 0) return;
       this.page += 1;
     },
     previous() {
