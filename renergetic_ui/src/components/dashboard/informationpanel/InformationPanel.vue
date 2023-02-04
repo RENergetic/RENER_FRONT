@@ -1,20 +1,21 @@
 <template>
-  <!-- {{ mPanel }} -->
   <!-- {{ $store.getters["view/measurementTypes"] }}  -->
-  <!-- {{ pdata }} -->
-  <!-- <NotificationList v-if="settings.notificationVisibility" :notifications="mNotifications"></NotificationList> -->
-
   <!-- {{ $store.getters["settings/filter"] }} -->
-  <InformationPanelView
-    v-if="mPanel"
-    :edit="editMode"
-    :pdata="pdata"
-    :panel="mPanel"
-    :locked="locked"
-    :settings="settings"
-    :asset-id="assetId"
-    @edit="onEdit"
-  />
+
+  <RenSpinner ref="spinner" :lock="true" style="width: 100%; min-height: 15rem">
+    <template #content>
+      <InformationPanelView
+        v-if="mPanel"
+        :edit="editMode"
+        :pdata="pdata"
+        :panel="mPanel"
+        :locked="locked"
+        :settings="settings"
+        :asset-id="assetId"
+        @edit="onEdit"
+      />
+    </template>
+  </RenSpinner>
   <Dialog
     v-model:visible="editDialog"
     :style="{ width: '50vw' }"
@@ -152,13 +153,9 @@ export default {
     }
   },
   async mounted() {
-    await this.loadData();
+    this.loadData();
     // this.reloadGrid();
   },
-  // async updated() {
-  // await this.loadData();
-  // this.reloadGrid();
-  // },
   methods: {
     // reloadGrid() {
     //   if (this.grid != null) this.grid.destroy(false);
@@ -181,12 +178,23 @@ export default {
       filter["prediction"] = predictions;
       if (this.panel.id != null) {
         if (this.panel.is_template) {
-          let resp = await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, filter);
-          this.mPanel = resp.panel;
-          this.pdata = resp.data;
+          this.$refs.spinner.run(async () => {
+            await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, filter).then((resp) => {
+              this.mPanel = resp.panel;
+              this.pdata = resp.data;
+            });
+          });
+          // let resp = await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, filter);
+          // this.mPanel = resp.panel;
+          // this.pdata = resp.data;
         } else {
-          let resp = await this.$ren.dataApi.getPanelData(this.panel.id, null, filter);
-          this.pdata = resp.data;
+          this.$refs.spinner.run(async () => {
+            await this.$ren.dataApi.getPanelData(this.panel.id, null, filter).then((resp) => {
+              this.pdata = resp.data;
+            });
+          });
+          // let resp = await this.$ren.dataApi.getPanelData(this.panel.id, null, filter);
+          // this.pdata = resp.data;
         }
       }
     },

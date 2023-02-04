@@ -1,7 +1,7 @@
 <template>
   <Button id="sideMenuButton" icon="pi pi-arrow-right" @click="visible = true" />
 
-  <Sidebar v-model:visible="visible" class="ren-sidebar">
+  <Sidebar v-model:visible="visible" class="ren-sidebar" :show-close-icon="false">
     <div id="sideMenuLogo"><Logo /></div>
     <!-- {{ notificationCount }} -->
     <PanelMenu class="ren" :model="menuModel" />
@@ -438,6 +438,7 @@ export default {
   margin-top: 0;
   bottom: initial;
   width: 90%;
+  height: 5rem;
 }
 .p-sidebar .p-sidebar-header {
   padding-bottom: 0;
