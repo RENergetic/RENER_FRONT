@@ -1,8 +1,10 @@
 <template>
+  <!-- {{ settings }} -->
   <Settings :schema="schema" :settings="settings"></Settings>
 </template>
 
 <script>
+import { RenRoles } from "@/plugins/model/Enums";
 import Settings from "./Settings.vue";
 export default {
   name: "PanelSettings",
@@ -87,6 +89,16 @@ export default {
           key: "groupByDirection",
         },
         {
+          label: this.$t("settings.tile_legend_visibility"),
+          description: this.$t("settings.tile_legend_visibility_description"),
+          ext: {
+            true: this.$t("settings.enabled"),
+            false: this.$t("settings.disabled"),
+          },
+          type: Boolean,
+          key: "legend",
+        },
+        {
           label: this.$t("settings.request_demand"),
           description: this.$t("settings.request_demand_description"),
           ext: {
@@ -128,7 +140,19 @@ export default {
         //   ext: { mode: "decimal" },
         // },
       ];
-
+      let r = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
+      if (r & this.$store.getters["auth/renRole"]) {
+        schema.push({
+          label: this.$t("settings.ignore_override_mode"),
+          description: this.$t("settings.ignore_override_mode_description"),
+          ext: {
+            true: this.$t("settings.enabled"),
+            false: this.$t("settings.disabled"),
+          },
+          type: Boolean,
+          key: "ignoreOverrideMode",
+        });
+      }
       return schema;
     },
     toggle(event) {
