@@ -185,16 +185,16 @@ export default {
       }
       flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
       if ((flags & this.role) > 0) {
-        items.push({
-          // label: this.$t("menu.group_list"),
-          label: this.$t("menu.add_dashboard"),
-          icon: "pi pi-fw pi-plus",
-          // to: "/dashboard/add",
-          command: () => {
-            this.dashboardDialog = !this.dashboardDialog;
-            // this.$router.push({ name: "DashboadAdd" });
-          },
-        });
+        // items.push({
+        //   // label: this.$t("menu.group_list"),
+        //   label: this.$t("menu.add_dashboard"),
+        //   icon: "pi pi-fw pi-plus",
+        //   // to: "/dashboard/add",
+        //   command: () => {
+        //     this.dashboardDialog = !this.dashboardDialog;
+        //     // this.$router.push({ name: "DashboadAdd" });
+        //   },
+        // });
         items.push({
           // label: this.$t("menu.group_list"),
           label: this.$t("menu.manage_dashboard"),

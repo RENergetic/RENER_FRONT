@@ -7,7 +7,7 @@
     <template #content>
       <div class="ren">
         <!-- {{ $store.getters["view/dashboardUnits"] }} -->
-        <!-- {{ mDashboard }} -->
+        {{ mDashboard }}
         <!--name-->
         <div class="field grid">
           <label for="dasboardName" class="col-12 mb-2 md:col-2 md:mb-0">
@@ -71,19 +71,7 @@
             />
           </div>
         </div>
-        <div class="field grid">
-          <label for="dasboardUnit" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.dashboard.unit") }} </label>
-          <div class="col-12 md:col-10">
-            <Dropdown
-              id="dasboardUnit"
-              v-model="mDashboard.ext.unit"
-              :option-label="(opt) => `[${opt.symbol}]`"
-              :option-value="(opt) => `${opt.name} [${opt.symbol}]`"
-              :options="$store.getters['view/dashboardUnits']"
-              :placeholder="$t('view.select_dashboard_unit')"
-            />
-          </div>
-        </div>
+
         <div class="field grid">
           <label for="dashboardMeasurementType" class="col-12 mb-2 md:col-2 md:mb-0">
             {{ $t("model.dashboard.measurement_type") }}
@@ -96,10 +84,23 @@
               :option-label="(opt) => $t('enums.dashboard_measurement_types.' + opt)"
               :options="measurementTypes"
               :placeholder="$t('view.select_dashboard_measurement_type')"
+              @change="typeChange"
             />
           </div>
         </div>
-
+        <div class="field grid">
+          <label for="dasboardUnit" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.dashboard.unit") }} </label>
+          <div class="col-12 md:col-10">
+            <Dropdown
+              id="dasboardUnit"
+              v-model="mDashboard.ext.unit"
+              :option-label="(opt) => `[${opt.symbol}]`"
+              :option-value="(opt) => `${opt.name} [${opt.symbol}]`"
+              :options="mUnits"
+              :placeholder="$t('view.select_dashboard_unit')"
+            />
+          </div>
+        </div>
         <div class="field grid">
           <Button :disabled="v$.$invalid" :label="$t('view.button.submit')" @click="submit" />
           <!-- <Button :label="$t('view.button.cancel')" @click="cancel" /> -->
@@ -130,14 +131,21 @@ export default {
   emits: ["update:modelValue", "save", "cancel"],
   setup: () => ({ v$: useVuelidate() }),
   data() {
+    //TODO: copy dashboard object to mDashboard - otherwise we modife element  from the list and it hhas to be refreshed
     let mDashboard = this.dashboard ? this.dashboard : { ext: {} };
     if (!mDashboard.ext) {
       mDashboard.ext = {};
     }
+    let mUnits = this.filterUnits(mDashboard.ext.measurement_type);
+    if (mDashboard.ext.unit && !mUnits.find((it) => this.unitValue(it) == mDashboard.ext.unit)) {
+      mDashboard.ext.unit = null;
+    }
+
     return {
       mDashboard: mDashboard,
       models: this.$store.getters["view/dashboardModels"],
-      units: this.$store.getters["view/dashboardUnits"],
+      // units: this.$store.getters["view/dashboardUnits"],
+      mUnits: mUnits,
       measurementTypes: Object.keys(DashboardMeasurementTypes),
     };
   },
@@ -174,7 +182,31 @@ export default {
     },
   },
   mounted() {},
+
   methods: {
+    unitValue(unit) {
+      return `${unit.name} [${unit.symbol}]`;
+    },
+    typeChange(evt) {
+      let v;
+      try {
+        v = evt.value.toLowerCase();
+      } catch (Exception) {
+        v = null;
+      }
+      this.mUnits = this.filterUnits(v);
+      if (this.mDashboard.ext.unit && !this.mUnits.find((it) => this.unitValue(it) == this.mDashboard.ext.unit)) {
+        this.mDashboard.ext.unit = null;
+      }
+    },
+
+    filterUnits(type) {
+      if (type == null) {
+        return this.$store.getters["view/dashboardUnits"];
+      }
+      let units = this.$store.getters["view/dashboardUnits"];
+      return units.filter((it) => it.physical_type == type);
+    },
     clear() {
       this.mDashboard = {};
     },

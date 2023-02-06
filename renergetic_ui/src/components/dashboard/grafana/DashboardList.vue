@@ -43,18 +43,21 @@
       </template>
     </Column>
 
-    <Column name="edit" :header="$t('view.edit')">
+    <Column v-if="canEdit" name="edit" :header="$t('view.edit')">
       <template #body="slotProps">
         <i v-tooltip="$t('view.edit')" class="pi pi-pencil" @click="edit(slotProps.data)" /></template
     ></Column>
 
-    <Column name="delete" :header="$t('view.delete')">
+    <Column v-if="canEdit" name="delete" :header="$t('view.delete')">
       <template #body="slotProps">
         <i v-tooltip="$t('view.delete')" class="pi pi-trash" @click="deleteConfirm(slotProps.data)" /></template
     ></Column>
     <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
     <template #header>
       <div class="flex justify-content-end align-content-end">
+        <div v-if="!canEdit" class="flex justify-content-start align-content-start" style="flex-grow: 1">
+          <i v-tooltip="$t('view.edit_locked')" class="pi pi-lock" />
+        </div>
         <div class="flex align-items-center" style="flex-grow: 0">
           <!-- <i class="pi pi-search" /> -->
           <InputText v-model="filters['global'].value" :placeholder="$t('view.search')" />
@@ -90,7 +93,7 @@
             @click="next"
           /> -->
         </div>
-        <div style="text-align: end">
+        <div v-if="canEdit" style="text-align: end">
           <i class="pi pi-plus-circle ren add-button" label="$t('view.button.add')" @click="addDialog = true" />
         </div>
       </div>
@@ -114,9 +117,11 @@
 </template>
 
 <script>
+import { RenRoles } from "@/plugins/model/Enums";
 import DashboardForm from "./DashboardForm.vue";
 import DeleteDashboard from "@/components/dashboard/grafana/DeleteDashboard.vue";
 
+var flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
 // const PAGE_SIZE = 10;
 export default {
   name: "DashboardList",
@@ -125,6 +130,7 @@ export default {
   emits: ["reload"],
   data() {
     return {
+      canEdit: flags & this.$store.getters["auth/renRole"],
       mDashboards: this.dashboards,
       page: 0,
       selectedRow: null,

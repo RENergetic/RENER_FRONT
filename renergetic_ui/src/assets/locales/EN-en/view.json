@@ -12,6 +12,7 @@
   "delete": "Delete",  
   "delete_area": "Delete area",  
   "edit_dashboard":"Edit dashboard",
+  "edit_locked": "Edit options are locked",
   "find_asset": "Find asset",
   "find_measurement": "Find measurement",
   "heatmap_area_delete": "Delete heatmap",
