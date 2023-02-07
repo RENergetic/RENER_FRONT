@@ -36,7 +36,8 @@
         <div class="flex">{{ demand.demand_definition.message }}</div>
       </div>
     </div>
-    <div class="flex-none flex align-items-center justify-content-center">
+    <!-- <div class="flex-none flex align-items-center justify-content-center"> -->
+    <div class="col-2 flex-none flex align-items-center justify-content-center notification-icon">
       <i v-if="demandIncrease" class="pi pi-arrow-up-right"></i>
       <i v-else-if="demandDecrease" class="pi pi-arrow-down-right"></i>
       <!-- TODO: set empty icon ??? <i v-else class="pi pi-arrow-down-right"></i> -->
@@ -113,7 +114,7 @@ export default {
   // border: solid;
 
   i {
-    font-size: 2rem;
+    font-size: 2.5rem;
     margin-left: 0.75rem;
   }
   .description {

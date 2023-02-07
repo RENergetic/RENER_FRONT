@@ -1,13 +1,15 @@
 <template>
   <!-- <Card :class="' flex  flex-column    align-items-start'"> -->
-  <div>
-    <!-- {{ demands }} -->
-    <div style="height: 100%" class="flex flex-column align-items-start align-content-start">
-      <template v-for="d in demands" :key="d">
-        <UserDemand :demand="d" :pdata="pdata"></UserDemand>
-      </template>
-    </div>
+  <!-- <div> -->
+  <!-- {{ demands }} -->
+
+  <div style="height: 100%" class="flex flex-column align-items-start align-content-start">
+    <h3 v-if="title">{{ $t("view.demand_list") }}:</h3>
+    <template v-for="d in demands" :key="d">
+      <UserDemand :demand="d" :pdata="pdata"></UserDemand>
+    </template>
   </div>
+  <!-- </div> -->
   <!-- </Card> -->
 </template>
 <script>
@@ -19,6 +21,10 @@ export default {
     userId: {
       type: Number,
       default: null,
+    },
+    title: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {
@@ -46,28 +52,34 @@ export default {
 </script>
 
 <style lang="scss">
-.heatdemand {
-  padding: 0.5rem;
-  i {
-    font-size: 2rem;
-    margin-left: 0.75rem;
-  }
-  .description {
-    font-size: 1rem;
-    font-style: italic;
-  }
-  .message {
-    font-size: 1.5rem;
-    font-weight: 600;
-  }
-}
-#demandicon {
-  width: 5rem;
-  height: 5rem;
-  // display: inherit;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  margin-right: 1rem;
+// .heatdemand {
+//   padding: 0.5rem;
+//   i {
+//     font-size: 2rem;
+//     margin-left: 0.75rem;
+//   }
+//   .description {
+//     font-size: 1rem;
+//     font-style: italic;
+//   }
+//   .message {
+//     font-size: 1.5rem;
+//     font-weight: 600;
+//   }
+// }
+// #demandicon {
+//   width: 5rem;
+//   height: 5rem;
+//   // display: inherit;
+//   background-size: contain;
+//   background-repeat: no-repeat;
+//   background-position: center;
+//   margin-right: 1rem;
+// }
+h3 {
+  width: 100%;
+  color: white;
+  margin-bottom: 0.25rem;
+  margin-top: 1.5rem;
 }
 </style>

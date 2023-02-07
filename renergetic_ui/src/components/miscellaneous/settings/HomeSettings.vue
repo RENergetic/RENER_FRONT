@@ -72,6 +72,15 @@ export default {
           type: Boolean,
           key: "demandVisibility",
         },
+        {
+          label: this.$t("settings.information_panel_visibility"),
+          ext: {
+            true: this.$t("settings.visible"),
+            false: this.$t("settings.hidden"),
+          },
+          type: Boolean,
+          key: "panelVisibility",
+        },
       ];
       //TODO: get panel list from store
       if (this.panels.length > 0) {
