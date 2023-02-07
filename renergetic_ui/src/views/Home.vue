@@ -1,6 +1,8 @@
 <template>
   <DotMenu :model="menuModel" :fixed="true" />
   <div style="position: relative">
+    <!-- {{ panel }} -->
+    <!-- {{ $store.getters["view/informationPanels"] }} -->
     <energy-flow v-if="panel" ref="panel" :asset-id="null" :panel="panel" :settings="panelSettings"></energy-flow>
   </div>
   <div v-if="settings.demandVisibility" style="position: relative">

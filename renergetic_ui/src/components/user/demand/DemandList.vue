@@ -1,6 +1,7 @@
 <template>
   <!-- <Card :class="' flex  flex-column    align-items-start'"> -->
   <div>
+    <!-- {{ demands }} -->
     <div style="height: 100%" class="flex flex-column align-items-start align-content-start">
       <template v-for="d in demands" :key="d">
         <UserDemand :demand="d" :pdata="pdata"></UserDemand>
