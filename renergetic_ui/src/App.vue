@@ -4,12 +4,14 @@
     <ConfirmDialog></ConfirmDialog>
     <SideMenu ref="sideMenu" @refresh="onRefresh" />
 
+    <!-- <div style="color: white; margin-top: 10rem">{{ $route.path }}</div>
+    <div style="color: white">{{ $keycloak && $keycloak.isInitialized() }}</div> -->
+
     <router-view v-if="hasAccess" :key="$route.path" :class="layout()" @update-menu="updateMenu()" />
     <div v-else :class="layout()">
+      no access TODO:
       <!-- TODO: login button -->
     </div>
-    <!-- TODO: v-else -->
-    <!-- {{ $keycloak && $keycloak.isInitialized() }} -->
 
     <Footer>
       <template #right> </template>

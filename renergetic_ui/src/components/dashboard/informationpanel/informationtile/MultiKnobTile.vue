@@ -223,4 +223,9 @@ h2 {
 .knob-component {
   margin-top: 0.75rem;
 }
+.demand-box {
+  .knob-component {
+    margin-top: 0;
+  }
+}
 </style>

@@ -171,7 +171,14 @@ export default {
       return state.informationPanels;
     },
     homePanel(state) {
-      if (state.informationPanels && state.informationPanels.length > 0) return state.informationPanels[0];
+      if (state.informationPanels && state.informationPanels.length > 0) {
+        if (state.default_asset) {
+          let panel = state.informationPanels[0];
+          panel.asset = state.default_asset;
+          return panel;
+        }
+        return state.informationPanels.find((it) => !it.is_template);
+      }
       return null;
     },
     assetPanelsMap: (state /* getters*/) => {

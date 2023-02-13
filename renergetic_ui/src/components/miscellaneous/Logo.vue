@@ -14,6 +14,7 @@ export default {
   width: 25vw;
   display: inherit;
   height: inherit;
+  max-width: 100%;
   // height: $sidemenu-logo-height; TODO: make working global variables
   /* background-size: 100%; */
   background-repeat: no-repeat;

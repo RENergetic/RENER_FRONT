@@ -1,5 +1,4 @@
 <template>
-  <!-- {{ settings }} -->
   <InformationPanel :edit="false" :panel="panel" :locked="locked" :settings="settings" :asset-id="assetId" />
 </template>
 
@@ -48,20 +47,20 @@ export default {
     };
   },
   computed: {
-    tiles: function () {
-      // return this.panel != null ? this.panel.tiles : [];
-      return this.mPanel != null ? this.mPanel.tiles : [];
-    },
-    gridItems: function () {
-      return this.grid != null ? this.grid.getGridItems() : [];
-    },
+    // tiles: function () {
+    //   // return this.panel != null ? this.panel.tiles : [];
+    //   return this.mPanel != null ? this.mPanel.tiles : [];
+    // },
+    // gridItems: function () {
+    //   return this.grid != null ? this.grid.getGridItems() : [];
+    // },
   },
   watch: {
-    manageSensorsDialog: function (newValue) {
-      if (!newValue) {
-        this.mPanel.tiles[this.selectedItem.index] = this.selectedItem.tile;
-      }
-    },
+    // manageSensorsDialog: function (newValue) {
+    //   if (!newValue) {
+    //     this.mPanel.tiles[this.selectedItem.index] = this.selectedItem.tile;
+    //   }
+    // },
     // panel: {
     //   handler: function (newValue) {
     //     this.mPanel = newValue;
@@ -70,14 +69,7 @@ export default {
     //   deep: true,
     // },
   },
-  // async mounted() {
-  //   await this.loadData();
-  //   // this.reloadGrid();
-  // },
-  // async updated() {
-  // await this.loadData();
-  // this.reloadGrid();
-  // },
+
   methods: {},
 };
 </script>

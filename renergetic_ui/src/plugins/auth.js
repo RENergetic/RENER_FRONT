@@ -3,6 +3,9 @@ import axios from "axios";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.headers.delete["Content-Type"] = "application/json";
+axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+axios.defaults.headers.common["Access-Control-Allow-Credentials"] = true;
+
 //TODO: translate to english
 // https://www.keycloak.org/docs/11.0/securing_apps/#usage-2
 //https://stackoverflow.com/questions/65398657/keycloak-and-node-js-how-to-keep-user-logged-in-after-keycloak-access-token-get

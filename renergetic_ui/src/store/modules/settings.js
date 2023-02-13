@@ -5,6 +5,7 @@ export var DefaultSettings = {
     feedbackVisibility: false,
     notificationVisibility: false,
     demandVisibility: true,
+    panelVisibility: true,
   },
   homeLayout: {
     // demandTile: { x: 8, y: 0, w: 4, h: 5 },

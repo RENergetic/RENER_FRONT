@@ -1,6 +1,7 @@
 <template>
   <div style="height: 100%" class="flex flex-column align-items-center align-content-start">
     <!-- {{ mNotifications }} -->
+    <h3 v-if="title">{{ $t("view.notification_list") }}:</h3>
     <template v-for="n in mNotifications" :key="n.id">
       <NotificationItem :notification="n"></NotificationItem>
     </template>
@@ -17,6 +18,10 @@ export default {
     notifications: {
       type: Array,
       default: () => null,
+    },
+    title: {
+      type: Boolean,
+      default: true,
     },
     // objectId: { type: Number, default: null },
     // context: { type: String, default: NotificationContext.USER },
@@ -63,4 +68,11 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+h3 {
+  width: 100%;
+  color: white;
+  margin-bottom: 0.25rem;
+  margin-top: 1.5rem;
+}
+</style>

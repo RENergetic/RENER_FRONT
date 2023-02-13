@@ -81,11 +81,12 @@ function validateTileSettings(tile, settings, ctx) {
       icon_visibility: tile.props.icon_visibility != null ? tile.props.icon_visibility : true,
       legend: tile.props.legend != null ? tile.props.legend : settings.legend,
       title_visibility:
-        tile.props.title_visibility != null
+        !ctx.demand &&
+        (tile.props.title_visibility != null
           ? tile.props.title_visibility
           : settings.title_visibility != null
           ? settings.title_visibility
-          : true,
+          : true),
       measurement_list: tile.props.measurement_list != null ? tile.props.measurement_list : true,
       fontSize: settings.fontSize,
       background: tile.props.mask,
@@ -112,6 +113,7 @@ export default {
   },
   props: {
     edit: { type: Boolean, default: false },
+    demand: { type: Boolean, default: false },
     tile: {
       type: Object,
       default: () => null,
@@ -179,5 +181,11 @@ export default {
   align-content: center;
   // position: absolute;
   // height: 100%;
+}
+
+.demand-box {
+  .tile_wrapper {
+    padding: 0.5rem;
+  }
 }
 </style>

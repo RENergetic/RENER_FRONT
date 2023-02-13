@@ -1,6 +1,4 @@
 <template>
-  <!-- {{ pdata }}
-  {{ mPData }} -->
   <div v-if="mPanel && mPData" id="panel-grid-stack" style="" class="grid-stack">
     <InformationTile
       v-for="(tile, index) in tiles"
@@ -14,6 +12,16 @@
       @notification="viewNotification"
     />
   </div>
+  <!-- <div style="color: white">
+    {{ mSettings }}
+  </div>
+  <div style="color: white">
+    {{ settings }}
+  </div>
+  <div style="color: white">
+    {{ mPanel.props }}
+  </div> -->
+
   <Dialog
     v-model:visible="notificationDialog"
     :style="{ width: '50vw' }"
@@ -29,20 +37,45 @@ import InformationTile from "./informationtile/InformationTile.vue";
 import NotificationList from "../../management/notification/NotificationList.vue";
 import { GridStack } from "gridstack";
 // import { TileTypes, NotificationContext } from "@/plugins/model/Enums.js";
-import { NotificationContext } from "@/plugins/model/Enums.js";
+import { NotificationContext, RenRoles } from "@/plugins/model/Enums.js";
 // import "gridstack/dist/h5/gridstack-dd-native";
 import "gridstack/dist/gridstack.min.css";
+let role = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
 
-function validateSettings(settings) {
+function validateSettings(settings, panel, ctx) {
+  let mSettings = {};
   if (settings == null) {
-    settings = {};
+    mSettings = {};
+  } else {
+    mSettings = settings;
   }
-  settings.legend = settings.legend != null ? settings.legend : true;
+  if (panel.props) {
+    let props = panel.props;
+    let overrideMode = props.overrideMode;
+    if (role & ctx.$store.getters["auth/renRole"] && mSettings.ignoreOverrideMode) {
+      // alert("");
+      mSettings = { ...panel.props, ...mSettings };
+    } else
+      switch (overrideMode) {
+        case "fixed":
+          mSettings = panel.props;
+          break;
+        case "override":
+          mSettings = { ...mSettings, ...panel.props };
+          break;
+        case "default":
+        default:
+          mSettings = { ...panel.props, ...mSettings };
+          break;
+      }
+  }
+  // mSettings.legend = mSettings.legend != null ? mSettings.legend : true;
+  mSettings.legend = mSettings.legend != null ? mSettings.legend : false;
   // settings.title = settings.title != null ? settings.title : true;
   // settings.color = settings.color != null ? settings.color : "#d6ebff";
-  let size = settings != null && settings.fontSize != null ? settings.fontSize : `${2.0}rem`;
-  settings.fontSize = size;
-  return settings;
+  let size = mSettings != null && mSettings.fontSize != null ? mSettings.fontSize : `${2.0}rem`;
+  mSettings.fontSize = size;
+  return mSettings;
 }
 
 export default {
@@ -90,7 +123,7 @@ export default {
     return {
       grid: null,
 
-      mSettings: validateSettings(this.settings),
+      mSettings: validateSettings(this.settings, this.panel, this),
       // loaded: false,
       notificationDialog: false,
       selectedItem: null,

@@ -3,14 +3,8 @@
     <DotMenu :model="menuModel" />
 
     <!-- <NotificationList v-if="settings.notificationVisibility" :notifications="notifications"></NotificationList> -->
-
-    <energy-flow
-      v-if="panel"
-      :key="reload"
-      :asset-id="$route.params.asset_id"
-      :panel="panel"
-      :settings="settings"
-    ></energy-flow>
+    <!-- v-if="panel" -->
+    <energy-flow :key="reload" :asset-id="$route.params.asset_id" :panel="panel" :settings="settings"></energy-flow>
   </div>
   <!--dialogs -->
   <div>

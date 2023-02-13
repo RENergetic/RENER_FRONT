@@ -1,7 +1,7 @@
 <template>
   <Button id="sideMenuButton" icon="pi pi-arrow-right" @click="visible = true" />
 
-  <Sidebar v-model:visible="visible" class="ren-sidebar">
+  <Sidebar v-model:visible="visible" class="ren-sidebar" :show-close-icon="false">
     <div id="sideMenuLogo"><Logo /></div>
     <!-- {{ notificationCount }} -->
     <PanelMenu class="ren" :model="menuModel" />
@@ -173,7 +173,7 @@ export default {
             // let to = `/dashboard/view/${dashboardItem.id}`;
             return {
               // label: this.$t("menu.group_list"),
-              label: dashboardItem.label,
+              label: dashboardItem.label ? dashboardItem.label : dashboardItem.name,
               icon: "pi pi-fw pi-align-left",
               // to: to,
               command: () => {
@@ -185,16 +185,16 @@ export default {
       }
       flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
       if ((flags & this.role) > 0) {
-        items.push({
-          // label: this.$t("menu.group_list"),
-          label: this.$t("menu.add_dashboard"),
-          icon: "pi pi-fw pi-plus",
-          // to: "/dashboard/add",
-          command: () => {
-            this.dashboardDialog = !this.dashboardDialog;
-            // this.$router.push({ name: "DashboadAdd" });
-          },
-        });
+        // items.push({
+        //   // label: this.$t("menu.group_list"),
+        //   label: this.$t("menu.add_dashboard"),
+        //   icon: "pi pi-fw pi-plus",
+        //   // to: "/dashboard/add",
+        //   command: () => {
+        //     this.dashboardDialog = !this.dashboardDialog;
+        //     // this.$router.push({ name: "DashboadAdd" });
+        //   },
+        // });
         items.push({
           // label: this.$t("menu.group_list"),
           label: this.$t("menu.manage_dashboard"),
@@ -438,6 +438,7 @@ export default {
   margin-top: 0;
   bottom: initial;
   width: 90%;
+  height: 5rem;
 }
 .p-sidebar .p-sidebar-header {
   padding-bottom: 0;

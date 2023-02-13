@@ -15,6 +15,7 @@
           <h3>{{ $t("view.connected_assets") }}</h3>
           <DataTable :value="connectedAssets" :lazy="true" data-key="id">
             <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false"></Column>
+            <Column field="label" :header="$t('model.asset.label')" :show-filter-menu="false"></Column>
           </DataTable>
         </div>
       </template>
@@ -78,6 +79,7 @@ export default {
       this.dialog = true;
       this.selectedAsset = selectedAsset;
       this.connectedAssets = await this.$ren.managementApi.listConnectedAssets(this.selectedAsset.id, 0, 200);
+      console.log(this.connectedAssets);
       this.allAssets = await this.$ren.managementApi.listAsset(undefined, 0, 1000);
       this.loading = false;
     },

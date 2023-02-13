@@ -1,10 +1,15 @@
 <template>
   <DotMenu :model="menuModel" :fixed="true" />
-  <div style="position: relative">
+  <div v-if="settings.panelVisibility" style="position: relative">
+    <!-- {{ panel }} -->
+    <!-- {{ $store.getters["view/informationPanels"] }} -->
     <energy-flow v-if="panel" ref="panel" :asset-id="null" :panel="panel" :settings="panelSettings"></energy-flow>
   </div>
   <div v-if="settings.demandVisibility" style="position: relative">
     <DemandList id="demand-list" />
+  </div>
+  <div v-if="settings.notificationVisibility" style="position: relative">
+    <NotificationList id="notification-list" />
   </div>
 
   <RenSettingsDialog ref="homeSettingsDialog">
@@ -26,6 +31,7 @@
 <script>
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import HomeSettings from "@/components/miscellaneous/settings/HomeSettings.vue";
+import NotificationList from "@/components/management/notification/NotificationList.vue";
 // import SettingsDialog from "@/components/miscellaneous/settings/SettingsDialog.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 import EnergyFlow from "@/components/dashboard/EnergyFlow.vue";
@@ -44,7 +50,7 @@ export default {
     DemandList,
     HomeSettings,
     PanelSettings,
-    // NotificationList,
+    NotificationList,
     EnergyFlow,
   },
   data() {
@@ -160,6 +166,11 @@ export default {
   max-width: 95vw;
   margin: auto;
   color: #3182ce;
+}
+#notification-list {
+  width: 50rem;
+  max-width: 95vw;
+  margin: auto;
 }
 // .grid-stack-item {
 //   margin: 0;

@@ -86,18 +86,25 @@ export default {
 
 <style lang="scss">
 .notification-box {
-  max-width: 90%;
-  width: 90vw;
+  // max-width: 90%;
+  padding-right: 1.5rem;
+  width: 100%;
   margin-top: 0.5rem;
+  i {
+    font-size: 1.5rem;
+    margin-left: 0.75rem;
+  }
+
+  .notification-icon {
+    i {
+      font-size: 2.5rem;
+    }
+  }
   .p-card-body {
     padding: 0.5rem !important;
     .p-card-content {
       padding: 0.5rem 0;
     }
   }
-}
-
-.notification-icon {
-  font-size: 2.5rem;
 }
 </style>

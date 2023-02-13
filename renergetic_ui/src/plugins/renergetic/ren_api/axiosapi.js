@@ -33,7 +33,10 @@ export default class AxiosAPI {
         if (req.spinner) {
           this.storeCommit("spinner/start");
         }
+        // currently server doesnt work with cors
         req.withCredentials = true;
+        //req.withCredentials = false;
+        req.credentials = "include";
         console.log(`${req.method} ${req.url} ${req.spinner}`);
         // Important: request interceptors **must** return the request.
         return req;

@@ -33,6 +33,7 @@ import Dialog from "primevue/dialog";
 import NotificationList from "../management/notification/NotificationList.vue";
 import DashboardForm from "../dashboard/grafana/DashboardForm.vue";
 import LocaleSettings from "@/components/miscellaneous/settings/LocaleSettings.vue";
+
 export default {
   name: "MenuDialogs",
   components: {
@@ -64,6 +65,7 @@ export default {
       notifications: [],
     };
   },
+
   watch: {
     //dashboard
     mAddDashboard: {

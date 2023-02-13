@@ -7,7 +7,7 @@ var dashboardRoutes = [
     meta: {
       isAuthenticated: true,
       layout: "fullscr",
-      roles: ["ren-admin", "ren-dev", "ren-manager", "ren-technical-manager"],
+      roles: ["ren-admin", "ren-manager", "ren-technical-manager"],
       roleFlag: RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
     },
     component: () => import("../views/dashboard/Dashboard.vue"),
@@ -32,7 +32,7 @@ var dashboardRoutes = [
     props: {},
     meta: {
       isAuthenticated: true,
-      roles: ["ren-admin", "ren-dev", "ren-technical-manager"],
+      roles: ["ren-admin", "ren-technical-manager"],
       roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
     },
 
@@ -45,7 +45,7 @@ var dashboardRoutes = [
     meta: {
       isAuthenticated: true,
       layout: "fullscr",
-      roles: ["ren-admin", "ren-dev", "ren-technical-manager"],
+      roles: ["ren-admin", "ren-technical-manager"],
       roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
     },
     component: () => import("../views/dashboard/GrafanaDashboardListView.vue"),
@@ -57,7 +57,7 @@ var dashboardRoutes = [
     meta: {
       isAuthenticated: true,
       layout: "fullscr",
-      roles: ["ren-admin", "ren-dev", "ren-manager", "ren-technical-manager"],
+      roles: ["ren-admin", "ren-manager", "ren-technical-manager"],
       roleFlag: RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
     },
     component: () => import("../views/dashboard/heatmap/HeatMap.vue"),
@@ -69,7 +69,7 @@ var dashboardRoutes = [
     meta: {
       isAuthenticated: true,
       layout: "fullscr",
-      roles: ["ren-admin", "ren-dev", "ren-technical-manager"],
+      roles: ["ren-admin", "ren-technical-manager"],
       roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
     },
     component: () => import("../views/dashboard/heatmap/HeatMapEditView.vue"),
@@ -80,7 +80,7 @@ var dashboardRoutes = [
     props: {},
     meta: {
       isAuthenticated: true,
-      roles: ["ren-admin", "ren-dev", "ren-manager", "ren-technical-manager"],
+      roles: ["ren-admin", "ren-manager", "ren-technical-manager"],
       roleFlag: RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
     },
     component: () => import("../views/dashboard/heatmap/HeatMapListView.vue"),
@@ -97,7 +97,7 @@ var dashboardRoutes = [
     meta: {
       isAuthenticated: true,
       layout: "fullscr",
-      roles: ["ren-admin", "ren-dev", "ren-manager", "ren-user", "ren-visitor", "ren-technical-manager"],
+      roles: ["ren-admin", "ren-manager", "ren-user", "ren-visitor", "ren-staff", "ren-technical-manager"],
 
       roleFlag:
         RenRoles.REN_USER |
@@ -115,7 +115,7 @@ var dashboardRoutes = [
     meta: {
       isAuthenticated: true,
       layout: "fullscr",
-      roles: ["ren-admin", "ren-dev", "ren-manager", "ren-user", "ren-visitor", "ren-technical-manager"],
+      roles: ["ren-admin", "ren-manager", "ren-user", "ren-visitor", "ren-staff", "ren-technical-manager"],
 
       roleFlag:
         RenRoles.REN_USER |
@@ -134,7 +134,7 @@ var dashboardRoutes = [
     meta: {
       isAuthenticated: true,
       layout: "fullscr",
-      roles: ["ren-admin", "ren-dev", "ren-manager", "ren-user", "ren-visitor", "ren-technical-manager"],
+      roles: ["ren-admin", "ren-manager", "ren-user", "ren-visitor", "ren-staff", "ren-technical-manager"],
       roleFlag:
         RenRoles.REN_USER |
         RenRoles.REN_VISITOR |
@@ -150,7 +150,7 @@ var dashboardRoutes = [
     name: "InformationPanelListView",
     meta: {
       isAuthenticated: true,
-      roles: ["ren-admin", "ren-dev", "ren-manager", "ren-user", "ren-technical-manager"],
+      roles: ["ren-admin", "ren-manager", "ren-user", "ren-visitor", "ren-staff", "ren-technical-manager"],
       roleFlag:
         RenRoles.REN_USER |
         RenRoles.REN_VISITOR |
@@ -166,8 +166,8 @@ var dashboardRoutes = [
     name: "InformationPanelCreator",
     meta: {
       isAuthenticated: true,
-      roles: ["ren-admin", "ren-dev", "ren-technical-manager"],
-      roleFlag: RenRoles.REN_USER | RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
+      roles: ["ren-admin", "ren-technical-manager"],
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN, // RenRoles.REN_USER |
     },
     component: () => import("../views/dashboard/InformationPanelCreator.vue"),
   },
