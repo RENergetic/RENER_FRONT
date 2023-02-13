@@ -34,8 +34,8 @@ function timeout(ms) {
 }
 function hasAccess(assignedRoles, allowedRoles) {
   //TODO: make it configurable
-  allowedRoles.push("ren-dev");
   if (!allowedRoles || allowedRoles.length == 0) return true;
+  allowedRoles.push("ren-dev");
   for (var i = 0; i < allowedRoles.length; i++) {
     if (assignedRoles.indexOf(allowedRoles[i]) !== -1) return true;
   }
