@@ -1,16 +1,25 @@
 <template>
-  <div v-if="keycloakState == 1" :key="refresh">
-    <Toast />
-    <ConfirmDialog></ConfirmDialog>
-    <SideMenu ref="sideMenu" @refresh="onRefresh" />
-
-    <!-- <div style="color: white; margin-top: 10rem">{{ $route.path }}</div>
+  <Toast />
+  <ConfirmDialog></ConfirmDialog>
+  <SideMenu v-if="keycloakState == 1" :key="`menu_${refresh}`" ref="sideMenu" @refresh="onRefresh" />
+  <div
+    v-if="keycloakState == 1"
+    :key="`content_${refresh}`"
+    :class="layout() + ' flex flex-column card-container green-container'"
+  >
+    <!-- <div style="color: white; margin-top: 10rem">{{ $route.path }}  style="min-height: 95vh"</div>
     <div style="color: white">{{ $keycloak && $keycloak.isInitialized() }}</div> -->
+    <div v-if="hasAccess" class="flex" style="display: initial !important; margin-bottom: 1rem">
+      <router-view :key="$route.path" @update-menu="updateMenu()" />
+    </div>
+    <div v-else :class="layout()">no access TODO:</div>
 
-    <router-view v-if="hasAccess" :key="$route.path" :class="layout()" @update-menu="updateMenu()" />
-    <div v-else :class="layout()">
-      no access TODO:
-      <!-- TODO: login button -->
+    <div v-if="$store.getters['auth/renRole'] == 0" class="grid flex flex-none" style="margin: 2rem 0">
+      <div class="col"></div>
+      <div class="col-fixed flex-none" style="width: 20rem; text-align: center">
+        <Button icon="pi pi-sign-in" style="width: 100%" :label="$t('view.button.sign_in')" @click="login" />
+      </div>
+      <div class="col"></div>
     </div>
 
     <Footer>
@@ -95,6 +104,9 @@ export default {
     } else this.keycloakState = 0;
   },
   methods: {
+    login() {
+      this.$router.push("/login");
+    },
     onRefresh() {
       this.refresh = !this.refresh;
     },

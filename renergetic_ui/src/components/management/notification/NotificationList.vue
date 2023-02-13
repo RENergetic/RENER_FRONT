@@ -1,10 +1,13 @@
 <template>
-  <div style="height: 100%" class="flex flex-column align-items-center align-content-start">
+  <div v-if="notification" style="height: 100%" class="flex flex-column align-items-center align-content-start">
     <!-- {{ mNotifications }} -->
     <h3 v-if="title">{{ $t("view.notification_list") }}:</h3>
     <template v-for="n in mNotifications" :key="n.id">
       <NotificationItem :notification="n"></NotificationItem>
     </template>
+  </div>
+  <div v-else>
+    <h4 v-if="title">{{ $t("view.no_notification_list") }}</h4>
   </div>
 </template>
 <script>
@@ -69,7 +72,8 @@ export default {
 </script>
 
 <style lang="scss">
-h3 {
+h3,
+h4 {
   width: 100%;
   color: white;
   margin-bottom: 0.25rem;

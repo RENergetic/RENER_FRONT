@@ -19,6 +19,7 @@ export default {
 </script>
 <style>
 #pagefooter {
+  max-height: 4rem;
   height: 4rem;
   display: flex;
   position: relative;

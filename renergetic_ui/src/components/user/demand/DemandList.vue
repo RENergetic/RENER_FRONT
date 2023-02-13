@@ -1,16 +1,13 @@
 <template>
-  <!-- <Card :class="' flex  flex-column    align-items-start'"> -->
-  <!-- <div> -->
-  <!-- {{ demands }} -->
-
-  <div style="height: 100%" class="flex flex-column align-items-start align-content-start">
+  <div v-if="demands" style="height: 100%" class="flex flex-column align-items-start align-content-start">
     <h3 v-if="title">{{ $t("view.demand_list") }}:</h3>
     <template v-for="d in demands" :key="d">
       <UserDemand :demand="d" :pdata="pdata"></UserDemand>
     </template>
   </div>
-  <!-- </div> -->
-  <!-- </Card> -->
+  <div v-else>
+    <h4 v-if="title">{{ $t("view.no_demand_list") }}</h4>
+  </div>
 </template>
 <script>
 import UserDemand from "./UserDemand.vue";
@@ -76,7 +73,8 @@ export default {
 //   background-position: center;
 //   margin-right: 1rem;
 // }
-h3 {
+h3,
+h4 {
   width: 100%;
   color: white;
   margin-bottom: 0.25rem;
