@@ -12,7 +12,7 @@
 <script>
 import ProgressSpinner from "primevue/progressspinner";
 export default {
-  name: "Spinner",
+  name: "RenSpinner",
   components: { ProgressSpinner },
   props: {
     lock: { default: null, type: Boolean },

@@ -9,40 +9,20 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    meta: {
-      isAuthenticated: false,
-    },
+    meta: { isAuthenticated: false },
     component: HomePage,
   },
   {
     path: "/about",
     name: "RenAbout",
-    meta: {
-      isAuthenticated: true,
-    },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ "../views/RenAbout.vue"),
-  },
-  {
-    path: "/profile/:username?",
-    name: "Profile",
     meta: { isAuthenticated: true },
-    component: () => import("../views/user/Profile.vue"),
+    component: () => import("../views/RenAbout.vue"),
   },
   {
     path: "/unauthorized",
     name: "Unauthorized",
     meta: { isAuthenticated: false },
-    //TODO: login page?
-    component: () => import("../views/RenAbout.vue"),
-  },
-  {
-    path: "/login",
-    name: "Login",
-    meta: { isAuthenticated: true },
-    component: () => import("../views/LoginSuccess.vue"),
+    component: () => import("../views/user/Unauthorized.vue"),
   },
   ...dashboardRoutes,
   ...adminRoutes,
@@ -53,6 +33,8 @@ function timeout(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 function hasAccess(assignedRoles, allowedRoles) {
+  //TODO: make it configurable
+  allowedRoles.push("ren-dev");
   if (!allowedRoles || allowedRoles.length == 0) return true;
   for (var i = 0; i < allowedRoles.length; i++) {
     if (assignedRoles.indexOf(allowedRoles[i]) !== -1) return true;

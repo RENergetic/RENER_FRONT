@@ -7,8 +7,8 @@ var management = [
     props: {},
     meta: {
       isAuthenticated: true,
-      roles: ["ren-admin", "ren-dev"],
-      roleFlag: RenRoles.REN_ADMIN,
+      roles: ["ren-admin", "ren-technical-manager"],
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
     },
     component: () => import("../views/management/infrastructure/AssetListView.vue"),
   },
@@ -16,7 +16,11 @@ var management = [
     path: "/management/measurement",
     name: "MeasurementList",
     props: {},
-    meta: { isAuthenticated: true, roles: ["ren-admin", "ren-dev"], roleFlag: RenRoles.REN_ADMIN },
+    meta: {
+      isAuthenticated: true,
+      roles: ["ren-admin", "ren-technical-manager"],
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
+    },
     component: () => import("../views/management/infrastructure/MeasurementListView.vue"),
   },
 ];

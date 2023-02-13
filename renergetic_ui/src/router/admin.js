@@ -4,8 +4,15 @@ var adminRoutes = [
     path: "/admin/users",
     name: "Users",
     props: {},
-    meta: { isAuthenticated: true, roles: ["ren-admin"], roleFlag: RenRoles.REN_ADMIN },
+    meta: { isAuthenticated: true, roles: ["ren-admin", "ren-dev"], roleFlag: RenRoles.REN_ADMIN },
     component: () => import("../views/admin/Users.vue"),
+  },
+
+  {
+    path: "/profile/:username",
+    name: "Profile",
+    meta: { isAuthenticated: true, roles: ["ren-admin", "ren-dev"], roleFlag: RenRoles.REN_ADMIN },
+    component: () => import("../views/user/Profile.vue"),
   },
 ];
 
