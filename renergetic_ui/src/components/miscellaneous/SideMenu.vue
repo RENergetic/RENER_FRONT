@@ -7,12 +7,15 @@
   </Sidebar>
   <Dialogs
     :notification-dialog="notificationDialog"
+    :demand-dialog="demandDialog"
     :locales="localesDialog"
     :add-dashboard="dashboardDialog"
     @update:notification-dialog="notificationDialog = $event"
+    @update:demand-dialog="demandDialog = $event"
     @update-menu="reload"
     @update:notifications="onNotificationChange($event)"
   ></Dialogs>
+  <!-- @update:demands="onDemandChange($event)" -->
 </template>
 
 <script>
@@ -33,10 +36,12 @@ export default {
       menuModel: [],
       dashboards: [],
       notificationDialog: false,
+      demandDialog: false,
       dashboardDialog: false,
       localesDialog: false,
       informationPanels: [],
       notificationCount: 0,
+      demandCount: this.$store.getters["view/demands"].length,
       isAdmin: false, //this.$store.getters["user/isAdmin"],
     };
   },
@@ -80,11 +85,17 @@ export default {
         // ...this.infrastructureItems(),
         // ...this.administrationItems(),
         ...this.notificationsItem(),
+        ...this.demandsItem(),
+
         ...this.userItems(),
       ];
     },
     onNotificationChange(notifications) {
       this.notificationCount = notifications.length;
+      this.menuModel = this.initMenu();
+    },
+    onDemandChange(demands) {
+      this.demandCount = demands.length;
       this.menuModel = this.initMenu();
     },
     async reload() {
@@ -356,7 +367,12 @@ export default {
     },
 
     notificationsItem() {
-      let flags = RenRoles.REN_ADMIN | this.REN_USER | this.REN_MANAGER | this.REN_TECHNICAL_MANAGER | this.REN_STAFF;
+      let flags =
+        RenRoles.REN_ADMIN |
+        RenRoles.REN_USER |
+        RenRoles.REN_MANAGER |
+        RenRoles.REN_TECHNICAL_MANAGER |
+        RenRoles.REN_STAFF;
       if ((flags & this.role) == 0) {
         return [];
       }
@@ -369,6 +385,23 @@ export default {
             this.notificationDialog = !this.notificationDialog;
           },
           class: this.notificationCount == 0 ? "" : "hl-warning",
+        },
+      ];
+    },
+    demandsItem() {
+      let flags = RenRoles.REN_USER;
+      if ((flags & this.role) == 0) {
+        return [];
+      }
+      return [
+        {
+          label: this.$t("menu.demands"),
+          icon: "pi pi-fw  pi-bell",
+          command: () => {
+            // this.$emit("notification");
+            this.demandDialog = !this.demandDialog;
+          },
+          class: this.demandCount == 0 ? "" : "hl-warning",
         },
       ];
     },

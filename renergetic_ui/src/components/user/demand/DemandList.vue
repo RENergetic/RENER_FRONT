@@ -25,6 +25,7 @@ export default {
       default: true,
     },
   },
+  // emits: ["update"],
   data() {
     return { demands: [], pdata: {} };
   },
@@ -35,8 +36,11 @@ export default {
     if (demands) {
       this.demands = demands;
     } else {
+      //TODO: user apropriate api
+      alert("todo:");
       this.demands = await this.$ren.userApi.getDemand();
     }
+
     let pdata = this.$store.getters["view/data"];
     if (pdata) {
       this.pdata = pdata;
