@@ -2,7 +2,20 @@
 $inputwidth: 100%;
 $maxInputwidth: 20rem;
 $primary-color: #94ba39; //#F1F2F2;//#0D89EC
-$secondary-color: #f1f2f2; //#F1F2F2;//#0D89EC
+$ren-primary-color: $primary-color;
+$primary-font-color: #f0f0f0;
+$ren-primary-font-color: $primary-font-color;
+$secondary-color: #ffffff; //#F1F2F2;//#0D89EC
+$secondary-font-color: #0f0f0f; 
 $sidemenu-button-width: 2rem; 
 $sidemenu-logo-height: 4rem;
 
+
+/*
+ * State colours
+**/
+$ren-state-color-ok:#50b482; 
+$ren-state-color-error:crimson; 
+$ren-state-color-warning:sandybrown; 
+$ren-state-color-unknown:lightgray; 
+ 

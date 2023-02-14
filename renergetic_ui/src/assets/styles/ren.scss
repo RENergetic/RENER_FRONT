@@ -20,6 +20,10 @@ body {
     background: linear-gradient(to right, #232526, #414345);
     margin: 0;
 }
+.p-button{background-color: $primary-color;}
+
+
+
 .ren-control-bg {
     background: linear-gradient(to bottom, #190a05, #870000);
     color: $secondary-color;
@@ -71,17 +75,19 @@ body {
     .state.ok,
     .cell.ok,
     .cell-state.ok {
-        background-color: #50b482;
-    }
+        background-color:$ren-state-color-ok;
+    } 
+ 
+
     .state.error,
     .cell.error,
     .cell-state.error {
-        background-color: crimson;
+        background-color:$ren-state-color-error
     }
     .state.warning,
     .cell.warning,
     .cell-state.warning {
-        background-color: sandybrown;
+        background-color: $ren-state-color-warning
     }
     .hl-warning {
         .p-panelmenu-header-content {
@@ -96,7 +102,7 @@ body {
     }
     .row.unknown {
         opacity: 0.65;
-        background: lightgray;
+        background:$ren-state-color-unknown ; 
         // .cell.ok,
         // .cell-state.ok {
         //     background-color: lightgray;

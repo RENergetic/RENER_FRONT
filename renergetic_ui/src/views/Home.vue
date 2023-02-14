@@ -11,7 +11,7 @@
   <div v-if="settings.notificationVisibility" style="position: relative">
     <NotificationList id="notification-list" />
   </div>
-
+  <RoleMatrix />
   <RenSettingsDialog ref="homeSettingsDialog">
     <!--  @update="onSettingsUpdate()" -->
     <template #settings><HomeSettings @update="reloadSettings()"></HomeSettings></template>
@@ -31,6 +31,7 @@
 <script>
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import HomeSettings from "@/components/miscellaneous/settings/HomeSettings.vue";
+import RoleMatrix from "@/components/miscellaneous/settings/RoleMatrix.vue";
 import NotificationList from "@/components/management/notification/NotificationList.vue";
 // import SettingsDialog from "@/components/miscellaneous/settings/SettingsDialog.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
@@ -45,6 +46,7 @@ export default {
   components: {
     // SettingsDialog,
     DotMenu,
+    RoleMatrix,
     FilterSettings,
     ConversionSettings,
     DemandList,

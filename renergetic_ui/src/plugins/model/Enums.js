@@ -1,3 +1,11 @@
+function init(m) {
+  let k = Object.entries(m)
+    .filter(([, value]) => typeof value !== "function")
+    .map((it) => it[0]);
+  // Object.keys(m.filter())
+
+  return Object.freeze({ ...m, keys: () => k, values: () => Object.values(m) });
+}
 const Colors = Object.freeze({
   OK: "#8fe388",
   WARNING: "#ffa059",
@@ -60,7 +68,7 @@ const AssetConnectionType = Object.freeze({
   VISITOR: "visitor",
 });
 
-const RenRoles = Object.freeze({
+const RenRoles = init({
   REN_GUEST: 0x00000000,
   "ren-guest": 0x00000000,
   REN_VISITOR: 0x00000010,
@@ -77,6 +85,7 @@ const RenRoles = Object.freeze({
   "ren-staff": 0x01000000,
   REN_DEV: 0x11111111,
   "ren-dev": 0x11111111,
+
   parseError: (flag) => {
     let msg = "";
     if ((flag & this.REN_VISITOR) > 0) msg += " ren-visitor,";
@@ -92,6 +101,29 @@ const RenRoles = Object.freeze({
   },
 });
 
+const RenRolesStr = init({
+  REN_GUEST: "ren-guest",
+  REN_VISITOR: "ren-visitor",
+  REN_USER: "ren-user",
+  REN_MANAGER: "ren-manager",
+  REN_TECHNICAL_MANAGER: "ren-technical-manager",
+  REN_ADMIN: "ren-admin",
+  REN_STAFF: "ren-staff",
+  REN_DEV: "ren-dev",
+});
+const RenFeatures = init({
+  PUBLIC_REPORTS: "public_reports",
+  GRAFANA_ACCESS: "grafana_access",
+  GRAFANA_MANAGEMENT: "grafana_management",
+  USER_MANAGEMENT: "user_management",
+  ROLE_MANAGEMENT: "role_management",
+  REPORT: "report",
+  MANAGE_ASSET: "manage_asset",
+  OWNER: "owner",
+  NOTIFICATION: "notification",
+  READ: "read",
+});
+
 // AssetTypes,
 // AssetDetailsKeys,
 export {
@@ -101,6 +133,8 @@ export {
   AssetConnectionType,
   HeatMapType,
   RenRoles,
+  RenRolesStr,
+  RenFeatures,
   DemandActionType,
   MeasurementDetailsKeys,
   DashboardMeasurementTypes,

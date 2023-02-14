@@ -7,17 +7,14 @@
     <template #content>
       <div class="ren">
         <!-- {{ $store.getters["view/dashboardUnits"] }} -->
-        {{ mDashboard }}
-        <!--name-->
+        <!-- {{ mDashboard }} -->
         <div class="field grid">
           <label for="dasboardName" class="col-12 mb-2 md:col-2 md:mb-0">
             {{ $t("model.dashboard.name") }}
           </label>
-
           <div class="col-12 md:col-10">
             <InputText id="dasboardName" v-model="mDashboard.name" />
           </div>
-
           <span v-if="v$.mDashboard.name.$invalid">
             <span v-for="(error, index) of v$.mDashboard.name.$silentErrors" id="name-error" :key="index">
               <small class="p-error">{{ error.$message }}</small>
@@ -55,9 +52,8 @@
             </span>
           </span>
         </div>
-        <!-- label -->
-
-        <div class="field grid">
+        <!-- model -->
+        <div v-if="false" class="field grid">
           <label for="dasboardModel" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.dashboard.model") }} </label>
 
           <div class="col-12 md:col-10">
@@ -104,10 +100,6 @@
         <div class="field grid">
           <Button :disabled="v$.$invalid" :label="$t('view.button.submit')" @click="submit" />
           <!-- <Button :label="$t('view.button.cancel')" @click="cancel" /> -->
-          <!-- <div class="col-6 md:col-6"></div>
-          <div class="col-6 md:col-6"></div> -->
-
-          <!-- {{ v$.$silentErrors }} -->
         </div>
       </div>
     </template>
@@ -115,9 +107,7 @@
 </template>
 <script>
 import { useVuelidate } from "@vuelidate/core";
-// import { url, maxLength } from "@vuelidate/validators";
 import { required, minLength, url, maxLength } from "@/plugins/validators.js";
-// requiredTr
 import { DashboardMeasurementTypes } from "@/plugins/model/Enums.js";
 export default {
   name: "DashboardForm",
@@ -210,9 +200,6 @@ export default {
     clear() {
       this.mDashboard = {};
     },
-    // cancel() {
-    //   this.$emit("cancel");
-    // },
     async submit() {
       this.$emit("save", this.mDashboard);
     },
