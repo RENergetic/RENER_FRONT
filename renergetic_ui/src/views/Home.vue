@@ -11,7 +11,7 @@
   <div v-if="settings.notificationVisibility" style="position: relative">
     <NotificationList id="notification-list" />
   </div>
-  <RoleMatrix />
+  <RoleMatrix v-if="false" />
   <RenSettingsDialog ref="homeSettingsDialog">
     <!--  @update="onSettingsUpdate()" -->
     <template #settings><HomeSettings @update="reloadSettings()"></HomeSettings></template>
