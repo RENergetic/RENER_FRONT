@@ -1,8 +1,14 @@
 <template>
-  <div style="position: relative">
-    <Knob v-model="value" :style="{ textAlign: 'center' }" :min="0" :max="100.0" />
-    <div style="text-align: center">
-      <div v-if="measurement">{{ mSettings.tile.label }}</div>
+  <div class="knob-component">
+    <Knob
+      v-model="value"
+      class="flex-grow-1 flex"
+      :style="{ textAlign: 'center', maxHeight: '80%' }"
+      :min="minV"
+      :max="maxV"
+    />
+    <div class="flex-none flex" style="text-align: center">
+      <div v-if="measurement" id="label">{{ mSettings.tile.label }}</div>
     </div>
   </div>
 </template>
@@ -27,21 +33,39 @@ export default {
     if (this.tile.measurements) {
       measurement = this.tile.measurements[0];
     }
+    let maxV;
+    let minV;
+    try {
+      maxV = this.pdata.max[this.measurement.aggregation_function][measurement.id];
+    } catch {
+      maxV = 100.0;
+    }
+    try {
+      minV = this.pdata.max[this.measurement.aggregation_function][measurement.id];
+    } catch {
+      minV = 0.0;
+    }
     return {
       mSettings: this.settings,
       measurement: measurement,
+      maxV: maxV,
+      minV: minV,
     };
   },
   computed: {
     value: function () {
-      if (this.measurement) {
-        let id = this.measurement.id;
-        if (!(this.pdata && this.pdata.current)) {
-          return null;
+      //todo support  min max
+      try {
+        let v;
+        if (this.mSettings.panel.relativeValues && this.measurement.type.base_unit != "%") {
+          v = (this.pdata.current[this.measurement.aggregation_function][this.measurement.id] / this.maxV) * 100.0;
+        } else {
+          v = this.pdata.current[this.measurement.aggregation_function][this.measurement.id];
         }
-        return this.pdata.current[id];
+        return Math.round(v * 10) / 10.0;
+      } catch (e) {
+        return null;
       }
-      return null;
     },
   },
 
@@ -50,4 +74,19 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.demand-box {
+  #tileicon {
+    height: 35%;
+  }
+  #label {
+    font-size: 0.75rem;
+  }
+}
+.knob-component {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+</style>

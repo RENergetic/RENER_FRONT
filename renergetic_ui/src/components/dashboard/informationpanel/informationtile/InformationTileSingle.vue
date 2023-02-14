@@ -37,7 +37,6 @@ export default {
       type: Object,
       default: () => ({}),
     },
-
     settings: { type: Object, default: () => ({}) },
     conversionSettings: { type: Object, default: () => ({}) },
   },

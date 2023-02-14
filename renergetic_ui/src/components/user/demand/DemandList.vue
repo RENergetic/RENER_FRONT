@@ -1,4 +1,5 @@
 <template>
+  <!-- {{ demands }} -->
   <div v-if="demands" style="height: 100%" class="flex flex-column align-items-start align-content-start">
     <h3 v-if="title">{{ $t("view.demand_list") }}:</h3>
     <template v-for="d in demands" :key="d">

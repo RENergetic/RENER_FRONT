@@ -15,7 +15,8 @@
     <KnobTile
       v-else-if="tile.type == 'knob'"
       :tile="tile"
-      :pdata="pdata.data"
+      :pdata="pdata"
+      :settings="mSettings"
       :conversion-settings="conversionSettings"
     ></KnobTile>
     <DoughnutTile
