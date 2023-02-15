@@ -50,6 +50,7 @@ export default function (Vue) {
           realmRoles = keycloak.realmAccess.roles;
         }
         const data = {
+          token: keycloak.token,
           authenticated: keycloak.authenticated,
           appRoles: keycloak.resourceAccess, //[appName].roles,
           accountRoles: accountRoles,
