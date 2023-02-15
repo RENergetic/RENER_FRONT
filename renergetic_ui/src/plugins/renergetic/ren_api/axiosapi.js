@@ -37,6 +37,7 @@ export default class AxiosAPI {
         // req.withCredentials = true;
         //req.withCredentials = false;
         // req.credentials = "include";
+        req.headers["Authorization"] = this.vueInstance.config.globalProperties.$store.getters["auth/token"];
         console.log(`${req.method} ${req.url} ${req.spinner}`);
         // Important: request interceptors **must** return the request.
         return req;

@@ -65,5 +65,12 @@ export default {
         return RenRoles.REN_GUEST;
       }
     },
+    token: (state /* getters*/) => {
+      try {
+        return state.data.token;
+      } catch (error) {
+        return undefined;
+      }
+    },
   },
 };
