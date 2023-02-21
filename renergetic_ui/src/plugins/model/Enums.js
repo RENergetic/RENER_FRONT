@@ -2,6 +2,11 @@ function init(m) {
   let k = Object.entries(m)
     .filter(([, value]) => typeof value !== "function")
     .map((it) => it[0]);
+  // let valueMap = new Map(
+  //   Object.entries(m)
+  //     .filter(([, value]) => typeof value !== "function")
+  //     .map((it) => [it[1], it[0]]),
+  // );
   // Object.keys(m.filter())
 
   return Object.freeze({ ...m, keys: () => k, values: () => Object.values(m) });

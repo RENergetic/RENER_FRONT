@@ -1,5 +1,4 @@
 import RestComponent from "./restcomponent";
-// import storage from "../../../assets/dummy/storage.js";
 // const USER_API_KEY = "user_api";
 // const SETTINGS_KEY = "settings";
 export default class UserApi extends RestComponent {
@@ -8,6 +7,19 @@ export default class UserApi extends RestComponent {
   }
   getProfile() {
     return this.get(`/api/users/profile`);
+  }
+  async listUsers(role = undefined, offset = 0, limit = 20) {
+    let params = { role: role, offset: offset, limit: limit };
+    return this.get(`/api/users`, params);
+  }
+  async assignRole(userId, role) {
+    return this.put(`/api/users/${userId}/roles/${role}`);
+  }
+  async revokeRole(userId, role) {
+    return this.delete(`/api/users/${userId}/roles/${role}`);
+  }
+  async getRoles(userId) {
+    return this.get(`/api/users/${userId}/roles`);
   }
   getNotifications() {
     return this.get(`/api/users/notifications`);

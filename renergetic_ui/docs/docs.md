@@ -8,5 +8,7 @@
 
 
 ### important notes
+* TODO: auth token is stored in the session storage!
+* 
 * Any object e.g. infrasturcture, sensor, area, dashboard should have unique id . Usecase: Get notifcations by id list (no need to use object types and dynamic keys in the query result )
  
