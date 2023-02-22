@@ -200,7 +200,7 @@ export default function (Vue) {
         Accept: "*/*",
         "Content-Type": "application/json",
       };
-      return axios.post(`${info.url}/admin/realms/${info.realm}/users`, body, config);
+      return await axios.post(`${info.url}/admin/realms/${info.realm}/users`, body, config);
     },
     async updateUser(body) {
       let config = {
@@ -208,7 +208,7 @@ export default function (Vue) {
         Accept: "*/*",
         "Content-Type": "application/json",
       };
-      return axios.put(`${info.url}/admin/realms/${info.realm}/users/${body.id}`, body, config);
+      return await axios.put(`${info.url}/admin/realms/${info.realm}/users/${body.id}`, body, config);
     },
     async deleteUser(userId) {
       let config = {
@@ -216,7 +216,7 @@ export default function (Vue) {
         Accept: "*/*",
         "Content-Type": "application/json",
       };
-      return axios.delete(`${info.url}/admin/realms/${info.realm}/users/${userId}`, config);
+      return await axios.delete(`${info.url}/admin/realms/${info.realm}/users/${userId}`, config);
     },
     // hasAccess(assignedRoles, allowedRoles) {
     //   if (!allowedRoles || allowedRoles.length == 0) return true;

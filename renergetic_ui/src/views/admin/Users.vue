@@ -3,7 +3,7 @@
     <template #content>
       <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 80vw">
         <template #content>
-          <user-list :users="users" />
+          <user-list :users="users" @on-delete="confirmDeleteUser" @on-create="loadUsers" />
         </template>
       </RenSpinner>
     </template>
@@ -33,8 +33,26 @@ export default {
   },
   methods: {
     async loadUsers() {
-      this.$refs.spinner.run(async () => {
+      await this.$refs.spinner.run(async () => {
         this.users = await this.$ren.userApi.listUsers();
+      });
+    },
+    async deleteUser(user) {
+      await this.$refs.spinner.run(async () => {
+        await this.$ren.userApi.deleteUser(user.id);
+      });
+      await this.loadUsers();
+    },
+    confirmDeleteUser(user) {
+      this.$confirm.require({
+        message: this.$t("view.user_delete_confirm", {
+          user: user,
+          username: user.username,
+        }),
+        header: this.$t("view.user_delete"),
+        icon: "pi pi-exclamation-triangle",
+        accept: () => this.deleteUser(user),
+        reject: () => this.$confirm.close(),
       });
     },
   },

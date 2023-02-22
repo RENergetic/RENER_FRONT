@@ -1,9 +1,10 @@
 <template>
   <div>
-    TODO: view roless
+    TODO: headers translations
     <!-- v-model:expandedRows="users.roles" -->
     <!-- {{ expanded }} todo: expand on @row-click='onrowclick' -->
     <!-- https://stackoverflow.com/questions/33910615/is-there-an-api-call-for-changing-user-password-on-keycloak -->
+    <!-- {{ users }} -->
     <DataTable
       v-model:expandedRows="expanded"
       :value="users"
@@ -13,24 +14,14 @@
     >
       <Column :expander="true" header-style="width: 3rem" />
       <Column field="username" header="Username" sortable></Column>
-      <Column field="name" header="Name" sortable></Column>
+      <Column field="firstName" header="First name" sortable></Column>
+      <Column field="lastName" header="Last name" sortable></Column>
       <Column field="email" header="Email" sortable></Column>
       <Column :exportable="false" style="min-width: 8rem">
         <template #body="user">
           TODO:
-          <Button
-            icon="pi pi-user-edit"
-            class="p-button-rounded p-button-warning mr-2"
-            @click="
-              userToEdit = user.data;
-              addUserDialog = true;
-            "
-          />
-          <Button
-            icon="pi pi-trash"
-            class="p-button-rounded p-button-danger"
-            @click="openDialog('deleteUser', user.data)"
-          />
+          <Button icon="pi pi-user-edit" class="p-button-rounded p-button-warning mr-2" @click="edit(user.data)" />
+          <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteUser(user.data)" />
         </template>
       </Column>
       <template #expansion="user">
@@ -41,21 +32,13 @@
     </DataTable>
     <Toolbar>
       <template #start>
-        <Button
-          label="Add new user"
-          icon="pi pi-user-plus"
-          class="mr-2 p-button-success"
-          @click="
-            userToEdit = undefined;
-            addUserDialog = true;
-          "
-        />
+        <Button :label="$t('view.add_user')" icon="pi pi-user-plus" class="mr-2 p-button-success" @click="create" />
       </template>
     </Toolbar>
 
     <!-- <UserAdd  :edit-user="mUser" :visible="addUserDialog" @close="closeAddUserDialog"></UserAdd> -->
     <Dialog v-model:visible="editDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
-      <UserForm v-if="selectedRow" :user="selectedUser" @save="onEdit" @cancel="editDialog = false" />
+      <UserForm v-if="selectedUser" :user="selectedUser" @save="onEdit" @cancel="editDialog = false" />
       <UserForm v-else @save="onCreate" @cancel="editDialog = false" />
     </Dialog>
     <Dialog v-model:visible="addDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
@@ -78,6 +61,7 @@ export default {
   props: {
     users: { type: Array, default: () => [] },
   },
+  emits: ["onDelete", "onCreate"],
   data() {
     return {
       mUsers: this.$datausers,
@@ -95,37 +79,46 @@ export default {
   async created() {},
   mounted() {},
   methods: {
-    edit(row) {
+    edit(user) {
       // console.info(row);
-      this.selectedUser = row;
+      this.selectedUser = user;
       this.editDialog = true;
+    },
+    create() {
+      // console.info(row);
+      this.selectedUser = null;
+      this.addDialog = true;
     },
 
     async onEdit(o) {
-      await this.$ren.dashboardApi.update(o).then((res) => {
+      await this.$ren.userApi.updateUser(o).then((res) => {
         if (res) {
-          this.$emitter.emit("information", { message: this.$t("information.dashboard_updated") });
+          this.$emitter.emit("information", { message: this.$t("information.user_updated") });
           this.editDialog = false;
           this.reload();
         } else {
-          this.$emitter.emit("error", { message: this.$t("information.dashboard_not_updated") });
+          this.$emitter.emit("error", { message: this.$t("information.ser_not_updated") });
         }
       });
     },
     async onCreate(o) {
-      // console.log(o);
-      await this.$ren.dashboardApi.add(o).then((dashboard) => {
-        console.info("add dashboard:" + dashboard.name);
-        this.$emitter.emit("information", { message: this.$t("information.dashboard_created") });
+      console.log(o);
+      await this.$ren.userApi.addUser(o).then((user) => {
+        console.info("add dashboard:" + user.username);
+        this.$emitter.emit("information", { message: this.$t("information.user_created") });
+        this.$emit("onCreate", user);
       });
       this.addDialog = false;
-      this.reload();
     },
 
     onRolesReload(evt) {
       console.info(evt);
     },
     async onUserExpand() {},
+    async deleteUser(user) {
+      this.$emit("onDelete", user);
+    },
+
     // async onUserExpand(evt) {
     //   var user = evt.data;
     //   if (user.roles) {

@@ -6,11 +6,12 @@
     </template>
     <template #content>
       <div class="ren">
-        <!-- {{ $store.getters["view/dashboardUnits"] }} -->
-        <!-- {{ mDashboard }} -->
+        <!-- {{ mUser }} -->
         <div class="field grid">
           <label for="username" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.username") }} </label>
-          <div class="col-12 md:col-10"><InputText id="username" v-model="mUser.username" :aria-disabled="user" /></div>
+          <div class="col-12 md:col-10">
+            <InputText id="username" v-model="mUser.username" :disabled="user != null" />
+          </div>
           <span v-if="v$.mUser.username.$invalid">
             <span v-for="(error, index) of v$.mUser.username.$silentErrors" id="name-error" :key="index">
               <small class="p-error">{{ error.$message }}</small>
@@ -19,7 +20,7 @@
         </div>
         <!-- firstName -->
         <div class="field grid">
-          <label for="firstName" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.firstName") }} </label>
+          <label for="firstName" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.firstname") }} </label>
           <div class="col-12 md:col-10"><InputText id="firstName" v-model="mUser.firstName" /></div>
           <span v-if="v$.mUser.firstName.$invalid">
             <span v-for="(error, index) of v$.mUser.firstName.$silentErrors" id="name-error" :key="index">
@@ -29,7 +30,7 @@
         </div>
         <!-- lastName -->
         <div class="field grid">
-          <label for="lastName" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.firstName") }} </label>
+          <label for="lastName" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.lastname") }} </label>
           <div class="col-12 md:col-10"><InputText id="lastName" v-model="mUser.lastName" /></div>
           <span v-if="v$.mUser.lastName.$invalid">
             <span v-for="(error, index) of v$.mUser.lastName.$silentErrors" id="name-error" :key="index">
@@ -39,8 +40,10 @@
         </div>
         <!-- email -->
         <div class="field grid">
-          <label for="email" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.firstName") }} </label>
-          <div class="col-12 md:col-10"><InputText id="email" v-model="mUser.email" :aria-disabled="user" /></div>
+          <label for="email" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.email") }} </label>
+          <div class="col-12 md:col-10">
+            <InputText id="email" v-model="mUser.email" :disabled="user != null && mUser.email != null" />
+          </div>
           <span v-if="v$.mUser.email.$invalid">
             <span v-for="(error, index) of v$.mUser.email.$silentErrors" id="name-error" :key="index">
               <small class="p-error">{{ error.$message }}</small>
@@ -49,9 +52,9 @@
         </div>
 
         <!-- password -->
-        <div class="field grid">
-          <label for="password" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.firstName") }} </label>
-          <div class="col-12 md:col-10"><InputText id="password" v-model="mUser.password" /></div>
+        <div v-if="!user" class="field grid">
+          <label for="password" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.password") }} </label>
+          <div class="col-12 md:col-10"><Password id="password" v-model="mUser.password" /></div>
           <span v-if="v$.mUser.password.$invalid">
             <span v-for="(error, index) of v$.mUser.password.$silentErrors" id="name-error" :key="index">
               <small class="p-error">{{ error.$message }}</small>
@@ -86,15 +89,19 @@ export default {
     let mUser = this.user ? this.user : {};
 
     return {
-      mDashboard: mUser,
+      mUser: mUser,
     };
   },
   validationConfig: {
     $lazy: true,
   },
   validations() {
+    let pass;
+    if (this.user) pass = { minLength: minLength(7), maxLength: maxLength(20) };
+    else pass = { required, minLength: minLength(7), maxLength: maxLength(20) };
+
     return {
-      mDashboard: {
+      mUser: {
         username: {
           required,
           minLength: minLength(5),
@@ -107,12 +114,10 @@ export default {
         },
         password: {
           //TODO: password
-          required,
-          minLength: minLength(7),
-          maxLength: maxLength(20),
+          ...pass,
         },
-        firstname: { minLength: minLength(3), maxLength: maxLength(20) },
-        lastname: { minLength: minLength(3), maxLength: maxLength(20) },
+        firstName: { minLength: minLength(3), maxLength: maxLength(20) },
+        lastName: { minLength: minLength(3), maxLength: maxLength(20) },
       },
     };
   },

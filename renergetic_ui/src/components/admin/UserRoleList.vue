@@ -121,13 +121,6 @@ export default {
         this.selectedRole = null;
       });
     },
-    async revokeRole(role) {
-      this.$refs.spinner.run(async () => {
-        var roles = await this.$ren.userApi.revokeRole(this.mUser.id, role);
-        this.setRoles(roles);
-        this.selectedRole = null;
-      });
-    },
     confirmAdd() {
       this.$confirm.require({
         message: this.$t("view.user_role_add_confirm", {
@@ -138,6 +131,13 @@ export default {
         icon: "pi pi-exclamation-triangle",
         accept: () => this.addRole(this.selectedRole),
         reject: () => this.$confirm.close(),
+      });
+    },
+    async revokeRole(role) {
+      this.$refs.spinner.run(async () => {
+        var roles = await this.$ren.userApi.revokeRole(this.mUser.id, role);
+        this.setRoles(roles);
+        this.selectedRole = null;
       });
     },
     confirmRevoke(role) {
