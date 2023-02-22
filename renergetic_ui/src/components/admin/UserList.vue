@@ -19,7 +19,6 @@
       <Column field="email" header="Email" sortable></Column>
       <Column :exportable="false" style="min-width: 8rem">
         <template #body="user">
-          TODO:
           <Button icon="pi pi-user-edit" class="p-button-rounded p-button-warning mr-2" @click="edit(user.data)" />
           <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteUser(user.data)" />
         </template>
