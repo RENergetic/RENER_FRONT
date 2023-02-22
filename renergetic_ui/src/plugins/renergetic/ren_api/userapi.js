@@ -31,12 +31,24 @@ export default class UserApi extends RestComponent {
   async getSettings() {
     return this.get(`/api/users/profile/settings`);
   }
-  // TODO: implement
-  // async getDemad(userId) {}
+  create(user) {
+    //validate
+    // TODO:
+    return this.post(`/api-postgre/1.0/api/users/register`, user);
+  }
+  update(user) {
+    return this.put(`/api/users/${user.id}`, user, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`Dashboard ${user.id} not found: ${e.message}`, {
+          code: "user_not_found",
+          args: [user.id],
+        });
+        return true;
+      }
+    });
+    // return this.post(`/api-postgre/1.0/api/users/register`, user);
+  }
 
-  // async getAssets(){
-  // todo:
-  // }
   register(user) {
     //validate
     // TODO:

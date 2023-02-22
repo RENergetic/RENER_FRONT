@@ -2,6 +2,8 @@
   <div>
     TODO: view roless
     <!-- v-model:expandedRows="users.roles" -->
+    <!-- {{ expanded }} todo: expand on @row-click='onrowclick' -->
+    <!-- https://stackoverflow.com/questions/33910615/is-there-an-api-call-for-changing-user-password-on-keycloak -->
     <DataTable
       v-model:expandedRows="expanded"
       :value="users"
@@ -51,19 +53,26 @@
       </template>
     </Toolbar>
 
-    <UserAdd :users="users" :edit-user="mUser" :visible="addUserDialog" @close="closeAddUserDialog"></UserAdd>
+    <!-- <UserAdd  :edit-user="mUser" :visible="addUserDialog" @close="closeAddUserDialog"></UserAdd> -->
+    <Dialog v-model:visible="editDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
+      <UserForm v-if="selectedRow" :user="selectedUser" @save="onEdit" @cancel="editDialog = false" />
+      <UserForm v-else @save="onCreate" @cancel="editDialog = false" />
+    </Dialog>
+    <Dialog v-model:visible="addDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
+      <UserForm @save="onCreate" @cancel="addDialog = false" />
+    </Dialog>
   </div>
 </template>
 
 <script>
-import UserAdd from "@/components/admin/UserAdd.vue";
+import UserForm from "@/components/admin/UserForm.vue";
 import UserRoleList from "./UserRoleList.vue";
 
 import { RenRolesStr } from "@/plugins/model/Enums";
 export default {
   name: "Users",
   components: {
-    UserAdd,
+    UserForm,
     UserRoleList,
   },
   props: {
@@ -72,36 +81,60 @@ export default {
   data() {
     return {
       mUsers: this.$datausers,
-      mUser: null,
       roles: RenRolesStr.values(),
       expanded: [],
+      editDialog: false,
+      addDialog: false,
+      selectedUser: null,
       // userToEdit: undefined,
       // userToChange: undefined,
       // roleToChange: undefined,
-      // deleteDialog: {
-      //   visible: false,
-      //   header: "Delete",
-      //   text: "Are you sure to delete this",
-      //   delete: undefined, // user | role,
-      // },
-      addUserDialog: false,
+      // addUserDialog: false,
     };
   },
   async created() {},
   mounted() {},
   methods: {
+    edit(row) {
+      // console.info(row);
+      this.selectedUser = row;
+      this.editDialog = true;
+    },
+
+    async onEdit(o) {
+      await this.$ren.dashboardApi.update(o).then((res) => {
+        if (res) {
+          this.$emitter.emit("information", { message: this.$t("information.dashboard_updated") });
+          this.editDialog = false;
+          this.reload();
+        } else {
+          this.$emitter.emit("error", { message: this.$t("information.dashboard_not_updated") });
+        }
+      });
+    },
+    async onCreate(o) {
+      // console.log(o);
+      await this.$ren.dashboardApi.add(o).then((dashboard) => {
+        console.info("add dashboard:" + dashboard.name);
+        this.$emitter.emit("information", { message: this.$t("information.dashboard_created") });
+      });
+      this.addDialog = false;
+      this.reload();
+    },
+
     onRolesReload(evt) {
       console.info(evt);
     },
-    async onUserExpand(evt) {
-      var user = evt.data;
-      if (user.roles) {
-        return;
-      } else {
-        // await this.$refs["roles_" + user.id][0].reloadRoles();
-        // await this.getRoles(user);
-      }
-    },
+    async onUserExpand() {},
+    // async onUserExpand(evt) {
+    //   var user = evt.data;
+    //   if (user.roles) {
+    //     return;
+    //   } else {
+    //     // await this.$refs["roles_" + user.id][0].reloadRoles();
+    //     // await this.getRoles(user);
+    //   }
+    // },
   },
 };
 </script>

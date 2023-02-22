@@ -4,6 +4,7 @@
         "minLength": "The '{property}' field has a value of '{model}', but it must have a min length of {min}.",
         "maxLength": "The '{property}' field has a value of '{model}', but it must have a max length of {max}.",
         "url": "'{model}' is not valid url.",
+        "email": "'{model}' is not valid email.",
         "fields": {
             "name": "name",
             "url": "url",

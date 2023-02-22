@@ -43,3 +43,5 @@ export const maxLengthTr = (path) =>
 //
 export const url = withParametrizedMessage(validators.url);
 export const urlTr = (path) => withParametrizedMessage(validators.url, { propertyPath: path });
+export const email = withParametrizedMessage(validators.email);
+export const emailTr = (path) => withParametrizedMessage(validators.email, { propertyPath: path });

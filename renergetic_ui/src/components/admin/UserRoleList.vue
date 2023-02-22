@@ -5,14 +5,15 @@
         <DataTable :value="mRoles" responsive-layout="scroll">
           <Column :exportable="false" style="min-width: 8rem">
             <template #body="role">
-              <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmRevoke(role)" />
+              <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmRevoke(role.data)" />
             </template>
           </Column>
-          <Column field="name" header="Role Name" sortable>
+          <Column field="name" header="Role Name">
+            <!-- TODO: sortable -->
             <template #body="slotProps">
               {{ slotProps.data }}
-            </template></Column
-          >
+            </template>
+          </Column>
         </DataTable>
       </div>
       <Message v-else severity="info">{{ `${mUser.username} haven't assigned roles` }}</Message>
@@ -66,8 +67,7 @@ export default {
     // console.info("ddd333");
     if (!this.mUser.roles) {
       await this.reloadRoles();
-    }
-    if (this.mUser.roles) this.remainingRoles = await this.getRemainingRoles(this.mUser);
+    } else if (this.mUser.roles) this.remainingRoles = await this.getRemainingRoles(this.mUser);
     else {
       //roles notloaded todo:
     }
@@ -78,10 +78,7 @@ export default {
     async reloadRoles() {
       await this.$refs.spinner.run(async () => {
         let roles = await this.getRoles(this.mUser);
-        console.info(roles);
-        this.mUser.roles = roles;
-        this.mRoles = roles;
-        this.$emit("reloadRoles", this.mUser);
+        this.setRoles(roles);
       });
     },
     async getRoles(user) {
@@ -109,16 +106,26 @@ export default {
 
       return r;
     },
+    setRoles(roles) {
+      console.info(roles);
+      this.mUser.roles = roles;
+      this.mRoles = roles;
+      if (this.mUser.roles) this.remainingRoles = this.getRemainingRoles(this.mUser);
+      this.$emit("reloadRoles", this.mUser);
+    },
 
     async addRole(role) {
       this.$refs.spinner.run(async () => {
-        await this.$ren.userApi.assignRole(this.mUser.id, role);
+        let roles = await this.$ren.userApi.assignRole(this.mUser.id, role);
+        this.setRoles(roles);
         this.selectedRole = null;
       });
     },
     async revokeRole(role) {
       this.$refs.spinner.run(async () => {
-        await this.$ren.userApi.revokeRole(this.mUser.id, role);
+        var roles = await this.$ren.userApi.revokeRole(this.mUser.id, role);
+        this.setRoles(roles);
+        this.selectedRole = null;
       });
     },
     confirmAdd() {
