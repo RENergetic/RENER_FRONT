@@ -6,11 +6,13 @@
         "url": "'{model}' is not valid url.",
         "email": "'{model}' is not valid email.",
         "fields": {
+            "username":"username",
+            "email":"email",
             "name": "name",
             "url": "url",
             "label": "label",
-            "password":"Password",
-            "repeatPassword":"Repeat password"  
+            "password":"password",
+            "repeatPassword":"repeat password"  
         },
         "sameAs":"The '{property}' is not same as {same_as_property}."
     },

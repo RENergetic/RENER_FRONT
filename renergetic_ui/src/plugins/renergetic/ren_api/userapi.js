@@ -37,7 +37,7 @@ export default class UserApi extends RestComponent {
   updateUser(user) {
     return this.put(`/api/users/${user.id}`, user, null, null, (e) => {
       if (e.response.status == 404) {
-        this.emitError(`Dashboard ${user.id} not found: ${e.message}`, {
+        this.emitError(`User ${user.id} not found: ${e.message}`, {
           code: "user_not_found",
           args: [user.id],
         });

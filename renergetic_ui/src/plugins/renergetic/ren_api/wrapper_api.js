@@ -78,9 +78,10 @@ export default class WrapperApi extends RestComponent {
 
   get(query) {
     //TODO user id -> remove
-    const userId = "/" + this.USER_ID;
+    // const userId = "/" + this.USER_ID;
     console.info("query: " + JSON.stringify(query));
-    return this.post(`/api/ui/wrapper${userId}`, query);
+    // return this.post(`/api/ui/wrapper${userId}`, query);
+    return this.post(`/api/ui/wrapper`, query);
   }
   /** 
     * 
