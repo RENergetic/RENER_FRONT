@@ -77,7 +77,7 @@ export default {
         );
         let sum = data.reduce((partialSum, a) => partialSum + a, 0);
         // console.info(1.0 - sum);
-        console.info(sum);
+        // console.info(sum);
         data.push(1.0 - sum);
         backgroundColor.push("#01010110");
         labels.push("");

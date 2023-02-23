@@ -34,7 +34,6 @@ plugin.install = function (Vue /*, options*/) {
   Vue.component("AutoComplete", AutoComplete);
   Vue.component("Button", Button);
   Vue.component("Panel", Panel);
-  Vue.component("Dialog", Dialog);
   Vue.component("DataTable", DataTable);
   Vue.component("Column", Column);
   Vue.component("ColumnGroup", ColumnGroup);

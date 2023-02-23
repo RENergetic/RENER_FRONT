@@ -1,9 +1,9 @@
 <template>
   <div v-if="tile" :class="tileClass" :style="background">
     <!-- {{ pdata }} -->
-    <!-- {{ tile.props }} -->
     <!-- todo: group by sensor_name -->
     <!-- {{ tile }} -->
+    <!-- {{ tile.type }} -->
     <div
       v-if="(titleVisible || tile.measurements.length == 0) && tile.label"
       class="flex flex-column justify-content-center"
@@ -31,6 +31,7 @@
         :tile="tile"
         :pdata="pdata":settings="mSettings"
       ></MultiDoughnutTile> -->
+
     <MultiKnobTile
       v-else-if="tile.type == 'multi_knob'"
       :tile="tile"
@@ -71,10 +72,8 @@ import icons from "./icons";
 // import MultiDoughnutTile from "./MultiDoughnutTile.vue";
 
 function validateTileSettings(tile, settings, ctx) {
-  // console.info("icon for " + tile.props.icon + ": " + icons[tile.props.icon]);
-  // console.info(icons[tile.props.icon]);
-  // console.info(tile.props.icon);
-  // console.info(icons);
+  // console.info(tile);
+  // console.info(settings);
   if (tile.props) {
     return {
       label: ctx.$t(`enums.measurement_name.${tile.name}`, tile.label),

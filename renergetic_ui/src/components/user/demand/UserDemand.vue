@@ -5,7 +5,7 @@
   <div class="demand-box ren-control-bg flex">
     <div
       class="flex flex-none align-items-center justify-content-center"
-      :style="'height:7.5rem;width:7.5rem;margin-right: 1rem;position: relative;'"
+      :style="'height:9.5rem;width:9.5rem;margin-right: 1rem;position: relative;'"
     >
       <!-- {{ demand }} -->
       <span
@@ -20,9 +20,9 @@
         v-if="demand.demand_definition.tile != null"
         :key="demand.demand_definition.tile.id"
         :demand="true"
-        :tile="demand.demand_definition.tile"
+        :tile="mTile"
         :pdata="pdata"
-        :settings="{ legend: false, title: false, center: false }"
+        :settings="{ legend: false, title: false, center: false, cellWidth: 100 }"
       />
       <!-- </span> -->
     </div>
@@ -86,6 +86,13 @@ export default {
     },
     demandDecrease() {
       return this.actionType == DemandActionType.DECREASE;
+    },
+    mTile() {
+      let tile = this.demand.demand_definition.tile ? this.demand.demand_definition.tile : {};
+      var l = this.demand.demand_definition.tile.layout;
+      l = l ? { w: 1, h: 1, ...l } : { w: 1, h: 1 };
+      tile.layout = l;
+      return tile;
     },
   },
   watch: {},

@@ -1,18 +1,52 @@
 <template>
-  <!-- <div style="display: flex; flex-direction: column; align-items: flex-end"> -->
-  <div v-if="loaded" class="flex flex-column justify-content-start" style="height: 100%; width: 100%">
+  <div v-if="loaded" class="flex flex-column justify-content-center" style="height: 100%; width: 100%">
+    <!-- <div style="display: flex; flex-direction: column; align-items: flex-end"> -->
+    <div class="flex flex-none flex-column justify-content-center">
+      <h2 style="text-align: center">{{ mSettings.tile.label }}</h2>
+      <!-- v-if="legend"-->
+    </div>
+    <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
+    <div
+      class="flex flex-grow-0 flex-column align-items-center justify-content-center"
+      style="height: 100%; width: 100%"
+    >
+      <div class="flex flex-grow-0 flex-column align-items-center justify-content-center">
+        <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
+      </div>
+      <span
+        v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
+        id="tileicon"
+        :style="iconSize"
+        class="flex flex-none flex-column align-items-center justify-content-center"
+      >
+        <font-awesome-icon :icon="mSettings.tile.icon" />
+      </span>
+    </div>
+
+    <div
+      v-if="mSettings.tile.measurement_list"
+      class="flex flex-column flex-grow-1 knob-component"
+      style="position: relative; width: 100%"
+    >
+      <information-list-tile
+        :tile="tile"
+        :pdata="pdata"
+        :settings="mSettings"
+        :conversion-settings="conversionSettings"
+        @select="onMeasurementSelect"
+      >
+      </information-list-tile>
+    </div>
+  </div>
+
+  <!-- <div v-if="loaded && false" class="flex flex-column justify-content-start" style="height: 100%; width: 100%">
     <div
       v-if="mSettings.tile.title_visibility && mSettings.tile.label"
       class="flex flex-none align-items-center justify-content-center knob-component"
     >
       <h2 style="text-align: center">{{ mSettings.tile.label }}</h2>
     </div>
-
-    <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1">
-    
-      <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
-      <span v-if="settings.icon" id="tileicon" :style="'background-image: url(' + settings.icon + ')'"></span>
-    </div> -->
+ 
     <div
       class="flex flex-none flex-column align-items-center justify-content-center knob-component"
       style="position: relative; max-height: 100%; max-width: 100%"
@@ -45,7 +79,7 @@
       >
       </information-list-tile>
     </div>
-  </div>
+  </div> -->
 </template>
 <script>
 /**
@@ -70,6 +104,7 @@ export default {
   data() {
     return {
       mStyle: "width: 30rem; margin: auto;max-width: 100%;max-height:100%",
+      iconSize: `height: 10%;  width: 10%;`,
       relativeValues: false,
       mSettings: this.settings,
       tmpIndex: 0,
@@ -150,11 +185,14 @@ export default {
     },
   },
   mounted() {
-    // console.info(this.mSettings.panel);
-    this.mStyle = `max-width: 100%;max-height:100%;margin: auto;width:${
-      this.mSettings.panel.cellWidth * this.tile.layout.w * 0.6
-    }px`;
+    // console.info(this.tile);
+    // console.info(this.tile.layout.w);
 
+    var size = this.mSettings.tile.measurement_list ? 0.5 : 0.75;
+    this.mStyle = `max-width: 100%;max-height:100%;margin: auto;width:${
+      this.mSettings.panel.cellWidth * this.tile.layout.w * size
+    }px`;
+    this.iconSize = this.mSettings.tile.measurement_list ? `height: 10%;  width: 10%;` : `height: 15%;  width: 15%;`;
     this.loaded = true;
   },
   methods: {
@@ -201,17 +239,12 @@ export default {
 
 <style scoped lang="scss">
 #tileicon {
-  // width: 3rem;
-  // height: 3rem;
-  // display: inherit;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+  // background-size: contain;
+  // background-repeat: no-repeat;
+  // background-position: center;
+  // left: 40%;
+  // top: 40%;
   position: absolute;
-  height: 20%;
-  width: 20%;
-  left: 40%;
-  top: 40%;
   svg {
     height: 100%;
   }

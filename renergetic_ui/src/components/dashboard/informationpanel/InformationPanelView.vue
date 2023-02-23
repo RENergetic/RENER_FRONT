@@ -1,5 +1,6 @@
 <template>
   <div v-if="mPanel && mPData" id="panel-grid-stack" style="" class="grid-stack">
+    <!-- {{ mSettings }} -->
     <InformationTile
       v-for="(tile, index) in tiles"
       :key="tile.id"
@@ -12,15 +13,6 @@
       @notification="viewNotification"
     />
   </div>
-  <!-- <div style="color: white">
-    {{ mSettings }}
-  </div>
-  <div style="color: white">
-    {{ settings }}
-  </div>
-  <div style="color: white">
-    {{ mPanel.props }}
-  </div> -->
 
   <Dialog
     v-model:visible="notificationDialog"

@@ -71,9 +71,9 @@ export default {
       if (this.measurement.visible == null) state = true;
       else state = this.measurement.visible;
       if (state) {
-        return "tileitem flex-grow-1 flex flex-row justify-content-start flex-wrap";
+        return "tileitem flex-grow-0 flex flex-row justify-content-start flex-wrap";
       }
-      return "tileitem tileitem-hidden flex-grow-1 flex flex-row justify-content-start flex-wrap";
+      return "tileitem tileitem-hidden flex-grow-0 flex flex-row justify-content-start flex-wrap";
     },
     icon: function () {
       //todo: default
