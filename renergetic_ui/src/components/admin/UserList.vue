@@ -13,10 +13,10 @@
       @row-expand="onUserExpand"
     >
       <Column :expander="true" header-style="width: 3rem" />
-      <Column field="username" header="Username" sortable></Column>
-      <Column field="firstName" header="First name" sortable></Column>
-      <Column field="lastName" header="Last name" sortable></Column>
-      <Column field="email" header="Email" sortable></Column>
+      <Column field="username" :header="$t('model.user.username')" sortable></Column>
+      <Column field="firstName" :header="$t('model.user.firstname')" sortable></Column>
+      <Column field="lastName" :header="$t('model.user.lastname')" sortable></Column>
+      <Column field="email" :header="$t('model.user.email')" sortable></Column>
       <Column :exportable="false" style="min-width: 8rem">
         <template #body="user">
           <Button icon="pi pi-user-edit" class="p-button-rounded p-button-warning mr-2" @click="edit(user.data)" />
@@ -25,7 +25,6 @@
       </Column>
       <template #expansion="user">
         <!-- refresh button: TODO: :ref="'roles_' + user.data.id" :user="user.data.id"-->
-
         <UserRoleList :user="user.data" @reload-roles="onRolesReload" />
       </template>
     </DataTable>
@@ -53,10 +52,7 @@ import UserRoleList from "./UserRoleList.vue";
 import { RenRolesStr } from "@/plugins/model/Enums";
 export default {
   name: "Users",
-  components: {
-    UserForm,
-    UserRoleList,
-  },
+  components: { UserForm, UserRoleList },
   props: {
     users: { type: Array, default: () => [] },
   },
@@ -69,10 +65,6 @@ export default {
       editDialog: false,
       addDialog: false,
       selectedUser: null,
-      // userToEdit: undefined,
-      // userToChange: undefined,
-      // roleToChange: undefined,
-      // addUserDialog: false,
     };
   },
   async created() {},

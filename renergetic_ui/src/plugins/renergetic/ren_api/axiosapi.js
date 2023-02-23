@@ -67,9 +67,12 @@ export default class AxiosAPI {
       },
       (error) => {
         console.error("Response error: " + error.message);
-        if (error.status == 401) {
+        if (error.response.status == 401) {
           if (this.vueInstance.config.globalProperties.$store.getters["auth/tokenExpired"]) {
+            this.vueInstance.config.globalProperties.$store.commit("auth/token", { token: null, exp: 0 });
             location.reload();
+          } else {
+            console.info("Token not expired");
           }
         }
         if (error.config.spinner) {

@@ -8,15 +8,19 @@
               <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmRevoke(role.data)" />
             </template>
           </Column>
-          <Column field="name" header="Role Name">
+          <Column>
             <!-- TODO: sortable -->
             <template #body="slotProps">
               {{ slotProps.data }}
             </template>
+            <template #header>
+              {{ $t("model.role.name") }}
+              <span class="pi pi-info-circle" style="margin-left: 0.5rem" @click="roleMatrixDialog = true" />
+            </template>
           </Column>
         </DataTable>
       </div>
-      <Message v-else severity="info">{{ `${mUser.username} haven't assigned roles` }}</Message>
+      <Message v-else severity="info">{{ $t("view.user_no_roles", { username: mUser.username }) }}</Message>
       <div v-if="remainingRoles.length > 0" class="grid p-fluid" style="margin: 0 2rem; max-width: 20rem">
         <div class="col-12">
           <div class="p-inputgroup">
@@ -32,20 +36,18 @@
       </div>
     </template>
   </RenSpinner>
+  <Dialog v-model:visible="roleMatrixDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
+    <RoleMatrix />
+  </Dialog>
 </template>
-<!-- option-label="label"
-            option-value="name" -->
-<!-- <select class="p-component" style="width: 100%; text-align: center" @change="selectRole($event, user.data)">
-            <option v-for="role of availableRoles(user.data)" :key="role.id" :value="JSON.stringify(role)">
-              {{ role }}
-            </option>
-          </select> -->
+
 <script>
 import { RenRolesStr } from "@/plugins/model/Enums";
+import RoleMatrix from "@/components/miscellaneous/settings/RoleMatrix.vue";
 //TODO: emit update
 export default {
   name: "UserRoleList",
-  components: {},
+  components: { RoleMatrix },
   props: {
     user: { type: Object, default: null },
   },
@@ -57,14 +59,10 @@ export default {
       mRoles: this.user ? this.user.roles : [],
       remainingRoles: [],
       selectedRole: null,
-      // roles: RenRolesStr,
+      roleMatrixDialog: false,
     };
   },
-  // computed: {
-
-  // },
   async mounted() {
-    // console.info("ddd333");
     if (!this.mUser.roles) {
       await this.reloadRoles();
     } else if (this.mUser.roles) this.remainingRoles = await this.getRemainingRoles(this.mUser);
@@ -72,8 +70,6 @@ export default {
       //roles notloaded todo:
     }
   },
-  // created() {
-  // },
   methods: {
     async reloadRoles() {
       await this.$refs.spinner.run(async () => {
@@ -88,8 +84,6 @@ export default {
       /**
        * roles available to add
        */
-      // console.info(this.renRoles);
-      // console.info(user);
       let r = [];
       for (let roleName of this.renRoles) {
         let push = true;
@@ -103,7 +97,6 @@ export default {
           r.push(roleName);
         }
       }
-
       return r;
     },
     setRoles(roles) {
@@ -161,18 +154,4 @@ export default {
   width: 100%;
   margin: 0;
 }
-// .confirmation-content {
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// }
-// @media screen and (max-width: 960px) {
-//   ::v-deep(.p-toolbar) {
-//     flex-wrap: wrap;
-
-//     .p-button {
-//       margin-bottom: 0.25rem;
-//     }
-//   }
-// }
 </style>

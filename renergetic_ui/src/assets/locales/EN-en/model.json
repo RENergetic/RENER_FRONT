@@ -67,6 +67,13 @@
      },
      "user": {
           "login": "Login",
-          "password": "Password"
+          "password": "Password",
+          "email":"Email",
+          "firstname":"First name",
+          "lastname":"Last name",
+          "username":"Username"          
+     },
+     "role":{
+          "name":"Name"
      }
 }
