@@ -87,14 +87,14 @@ export default {
           this.editDialog = false;
           this.reload();
         } else {
-          this.$emitter.emit("error", { message: this.$t("information.ser_not_updated") });
+          this.$emitter.emit("error", { message: this.$t("information.user_not_updated") });
         }
       });
     },
     async onCreate(o) {
       console.log(o);
       await this.$ren.userApi.addUser(o).then((user) => {
-        console.info("add dashboard:" + user.username);
+        console.info("add user:" + user.username);
         this.$emitter.emit("information", { message: this.$t("information.user_created") });
         this.$emit("onCreate", user);
       });

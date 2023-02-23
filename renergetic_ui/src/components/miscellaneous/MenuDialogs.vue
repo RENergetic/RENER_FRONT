@@ -18,14 +18,11 @@
     <DemandList @update="onDemandUpdate($event)"></DemandList>
   </Dialog>
 
-  <Dialog
-    v-model:visible="mAddDashboard"
-    :style="{ width: '50vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="mAddDashboard" :style="{ width: '50vw' }" :modal="true" :dismissable-mask="true">
     <DashboardForm @save="onSave" @cancel="mAddDashboard = false"></DashboardForm>
+  </Dialog>
+  <Dialog v-model:visible="mAddUser" :style="{ width: '50vw' }" :modal="true" :dismissable-mask="true">
+    <UserForm @save="onUserSave" @cancel="mAddUser = false" />
   </Dialog>
   <Dialog
     v-model:visible="mLocales"
@@ -39,20 +36,20 @@
 </template>
 
 <script>
-import Dialog from "primevue/dialog";
 import NotificationList from "../management/notification/NotificationList.vue";
 import DemandList from "@/components/user/demand/DemandList.vue";
 import DashboardForm from "../dashboard/grafana/DashboardForm.vue";
 import LocaleSettings from "@/components/miscellaneous/settings/LocaleSettings.vue";
-
+import UserForm from "@/components/admin/UserForm.vue";
+//TODO: add some spinner?
 export default {
   name: "MenuDialogs",
   components: {
-    Dialog,
     DemandList,
     NotificationList,
     DashboardForm,
     LocaleSettings,
+    UserForm,
   },
   props: {
     notificationDialog: {
@@ -67,6 +64,11 @@ export default {
       type: Boolean,
       default: false,
     },
+    addUser: {
+      type: Boolean,
+      default: false,
+    },
+
     locales: {
       type: Boolean,
       default: false,
@@ -79,6 +81,7 @@ export default {
     "UpdateMenu",
     "update:locales",
     "update:notifications",
+    "update:user",
     // "update:demands",
   ],
   data() {
@@ -87,6 +90,7 @@ export default {
       mDemandDialog: this.demandDialog,
       mAddDashboard: this.addDashboard,
       mLocales: this.locales,
+      mAddUser: this.addUser,
       notifications: [],
     };
   },
@@ -102,9 +106,25 @@ export default {
       },
       immediate: true,
     },
+
     addDashboard: {
       handler(newVal) {
         this.mAddDashboard = newVal;
+      },
+      immediate: true,
+    },
+    mAddUser: {
+      handler(newVal, oldValue) {
+        if (oldValue == null && newVal == null) {
+          return;
+        }
+        this.$emit("update:user", newVal);
+      },
+      immediate: true,
+    },
+    addUser: {
+      handler(newVal) {
+        this.mAddUser = newVal;
       },
       immediate: true,
     },
@@ -163,6 +183,14 @@ export default {
         this.mAddDashboard = false;
         this.$store.commit("view/dashboardsAdd", dashboardReq);
         this.$emit("UpdateMenu", null);
+      });
+    },
+    async onUserSave(o) {
+      await this.$ren.userApi.addUser(o).then((user) => {
+        console.info("add user:" + user.username);
+        this.$emitter.emit("information", { message: this.$t("information.user_created") });
+        this.mAddUser = false;
+        // this.$emit("UpdateMenu", null);
       });
     },
     onNotificationUpdate(notifications) {

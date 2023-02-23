@@ -10,6 +10,7 @@
     :demand-dialog="demandDialog"
     :locales="localesDialog"
     :add-dashboard="dashboardDialog"
+    :add-user="userDialog"
     @update:notification-dialog="notificationDialog = $event"
     @update:demand-dialog="demandDialog = $event"
     @update-menu="reload"
@@ -38,6 +39,7 @@ export default {
       notificationDialog: false,
       demandDialog: false,
       dashboardDialog: false,
+      userDialog: false,
       localesDialog: false,
       informationPanels: [],
       notificationCount: 0,
@@ -239,12 +241,14 @@ export default {
           // label: this.$t("menu.group_list"),
           label: this.$t("menu.add_user"),
           icon: "pi pi-fw pi-user-plus",
-          to: "/admin/users/add",
+          // to: "/admin/users/add",
           command: () => {
-            this.$router.push({ name: "AddUser" });
+            this.userDialog = !this.userDialog;
+            // this.$router.push({ name: "AddUser" });
           },
         },
       ];
+
       // let flags = RenRoles.REN_ADMIN;
       // if ((flags & this.role) == 0) {
       //   return [];

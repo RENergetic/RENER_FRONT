@@ -1,0 +1,12 @@
+{
+    "error": {
+        "rest_title": "API Error",
+        "user_not_found": "User: {0}  not found ",
+        "user_not_updated":"User not updated"
+    }
+    ,
+    "information":{
+        "user_updated":"User has been updated" ,
+        "user_created":"User has been created"
+    }
+}   
