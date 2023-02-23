@@ -1,9 +1,10 @@
 <template>
-  <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 80vw; width: 100%">
+  <RenSpinner ref="spinner" :lock="true" style="margin: auto; width: 100%">
+    <!-- max-width: 80vw; -->
     <template #content>
       <div v-if="mRoles && mRoles.length > 0" class="role-table">
         <DataTable :value="mRoles" responsive-layout="scroll">
-          <Column :exportable="false" style="min-width: 8rem">
+          <Column :exportable="false" :style="{ width: '5rem' }">
             <template #body="role">
               <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmRevoke(role.data)" />
             </template>
@@ -36,7 +37,12 @@
       </div>
     </template>
   </RenSpinner>
-  <Dialog v-model:visible="roleMatrixDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
+  <Dialog
+    v-model:visible="roleMatrixDialog"
+    :style="{ width: '95vw', height: '95vh' }"
+    :modal="true"
+    :dismissable-mask="true"
+  >
     <RoleMatrix />
   </Dialog>
 </template>

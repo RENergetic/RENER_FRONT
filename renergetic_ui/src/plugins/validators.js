@@ -20,6 +20,7 @@ const withParametrizedMessage = (
     withArguments: withArguments,
     messagePath: ({ $validator }) => `validations.${$validator}`,
     messageParams: (params) => {
+      params = { ...args, ...params };
       params.property = $t(p + params.property);
       return params;
     },
@@ -45,3 +46,8 @@ export const url = withParametrizedMessage(validators.url);
 export const urlTr = (path) => withParametrizedMessage(validators.url, { propertyPath: path });
 export const email = withParametrizedMessage(validators.email);
 export const emailTr = (path) => withParametrizedMessage(validators.email, { propertyPath: path });
+
+export const sameAs = (key) =>
+  withParametrizedMessage(validators.sameAs, { same_as_property: key, withArguments: true });
+export const sameAsTr = (path, key) =>
+  withParametrizedMessage(validators.sameAs, { same_as_property: key, propertyPath: path, withArguments: true });

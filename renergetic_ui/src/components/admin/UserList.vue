@@ -1,6 +1,5 @@
 <template>
   <div>
-    TODO: headers translations
     <!-- v-model:expandedRows="users.roles" -->
     <!-- {{ expanded }} todo: expand on @row-click='onrowclick' -->
     <!-- https://stackoverflow.com/questions/33910615/is-there-an-api-call-for-changing-user-password-on-keycloak -->

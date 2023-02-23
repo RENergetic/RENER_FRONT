@@ -8,8 +8,11 @@
         "fields": {
             "name": "name",
             "url": "url",
-            "label": "label"
-        }
+            "label": "label",
+            "password":"Password",
+            "repeatPassword":"Repeat password"  
+        },
+        "sameAs":"The '{property}' is not same as {same_as_property}."
     },
     "information": {
         "information": "Information",

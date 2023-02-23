@@ -1,13 +1,13 @@
 <template>
   <Card>
     <template #title>
-      <span v-if="user"> {{ $t("view.edit_user") }}</span>
+      <span v-if="user"> {{ $t("view.edit_user", { username: user.username }) }}</span>
       <span v-else> {{ $t("view.add_user") }}</span>
     </template>
     <template #content>
       <div class="ren">
         <!-- {{ mUser }} -->
-        <div class="field grid">
+        <div v-if="!user" class="field grid">
           <label for="username" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.username") }} </label>
           <div class="col-12 md:col-10">
             <InputText id="username" v-model="mUser.username" :disabled="user != null" />
@@ -42,7 +42,7 @@
         <div class="field grid">
           <label for="email" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.email") }} </label>
           <div class="col-12 md:col-10">
-            <InputText id="email" v-model="mUser.email" :disabled="user != null && mUser.email != null" />
+            <InputText id="email" v-model="mUser.email" :disabled="user != null && user.email != null" />
           </div>
           <span v-if="v$.mUser.email.$invalid">
             <span v-for="(error, index) of v$.mUser.email.$silentErrors" id="name-error" :key="index">
@@ -61,6 +61,17 @@
             </span>
           </span>
         </div>
+        <div v-if="!user && mUser.password" class="field grid">
+          <label for="passwordRepeat" class="col-12 mb-2 md:col-2 md:mb-0">
+            {{ $t("model.user.password_repeat") }}
+          </label>
+          <div class="col-12 md:col-10"><Password id="passwordRepeat" v-model="mUser.passwordRepeat" /></div>
+          <span v-if="v$.mUser.passwordRepeat.$invalid">
+            <span v-for="(error, index) of v$.mUser.passwordRepeat.$silentErrors" id="name-error" :key="index">
+              <small class="p-error">{{ error.$message }}</small>
+            </span>
+          </span>
+        </div>
 
         <div class="field grid">
           <Button :disabled="v$.$invalid" :label="$t('view.button.submit')" @click="submit" />
@@ -72,7 +83,7 @@
 </template>
 <script>
 import { useVuelidate } from "@vuelidate/core";
-import { required, minLength, email, maxLength } from "@/plugins/validators.js";
+import { required, minLength, email, maxLength, sameAs } from "@/plugins/validators.js";
 export default {
   name: "UserForm",
   components: {},
@@ -86,7 +97,7 @@ export default {
   setup: () => ({ v$: useVuelidate() }),
   data() {
     //TODO: copy dashboard object to mDashboard - otherwise we modife element  from the list and it hhas to be refreshed
-    let mUser = this.user ? this.user : {};
+    let mUser = this.user ? JSON.parse(JSON.stringify(this.user)) : {};
 
     return {
       mUser: mUser,
@@ -97,8 +108,18 @@ export default {
   },
   validations() {
     let pass;
-    if (this.user) pass = { minLength: minLength(7), maxLength: maxLength(20) };
-    else pass = { required, minLength: minLength(7), maxLength: maxLength(20) };
+    // TODO: password validator
+    if (this.user) {
+      pass = {
+        password: { minLength: minLength(7), maxLength: maxLength(20) },
+        passwordRepeat: { sameAs: sameAs(this.mUser.password) },
+      };
+    } else {
+      pass = {
+        password: { required, minLength: minLength(7), maxLength: maxLength(20) },
+        passwordRepeat: { sameAs: sameAs("test")(this.mUser.password) },
+      };
+    }
 
     return {
       mUser: {
@@ -112,10 +133,12 @@ export default {
           email,
           // uri: or(url, ipAddress),
         },
-        password: {
-          //TODO: password
-          ...pass,
-        },
+        ...pass,
+        // password: {
+        //   //
+
+        // },
+
         firstName: { minLength: minLength(3), maxLength: maxLength(20) },
         lastName: { minLength: minLength(3), maxLength: maxLength(20) },
       },

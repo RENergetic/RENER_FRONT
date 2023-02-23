@@ -71,7 +71,9 @@
           "email":"Email",
           "firstname":"First name",
           "lastname":"Last name",
-          "username":"Username"          
+          "username":"Username"    , 
+          "password_repeat":"Repeat password",
+          "temp_password":"Temporary password"      
      },
      "role":{
           "name":"Name"

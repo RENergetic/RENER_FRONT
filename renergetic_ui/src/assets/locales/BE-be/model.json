@@ -59,6 +59,7 @@
      },
      "user": {
           "login": "Login",
-          "password": "Password"
+          "password": "Password",
+          "password_repeat":"Repeat password"
      }
 }

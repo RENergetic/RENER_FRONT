@@ -1,7 +1,7 @@
 const HEADERS = { "Content-type": "application/json; charset=UTF-8" };
 export default class RestComponent {
   //TODO: remove temmporary user id
-  USER_ID = 2;
+  // USER_ID = 2;
 
   constructor(axiosInstance, vueInstance) {
     this.vueInstance = vueInstance;
