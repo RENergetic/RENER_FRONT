@@ -26,8 +26,12 @@ export default {
       };
     },
     token(state, payload) {
-      console.info("set token auth: " + payload);
-      state.data.token = payload;
+      if (!payload) {
+        return;
+      }
+      console.info("set token auth: " + payload.token);
+      state.data.token = payload.token;
+      state.data.tokenExp = payload.exp;
     },
     /**
      * set keyclock auth details
@@ -45,6 +49,7 @@ export default {
         payload.renRole = role;
       }
       state.data = payload;
+      if (payload.tokenParsed) state.data.tokenExp = payload.tokenParsed.exp * 1000;
     },
   },
   getters: {
@@ -68,6 +73,13 @@ export default {
       } catch (error) {
         return RenRoles.REN_GUEST;
       }
+    },
+    tokenExpired: (state) => {
+      if (state.data && state.data.token) {
+        return state.data.tokenExp < Date.now();
+      }
+      console.warn("No token");
+      return false;
     },
     token: (state /* getters*/) => {
       try {

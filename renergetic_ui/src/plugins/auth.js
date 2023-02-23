@@ -57,6 +57,7 @@ export default function (Vue) {
           realmRoles: realmRoles,
           clientId: keycloak.clientId,
         };
+
         Vue.config.globalProperties.$store.commit("auth/set", data);
         let config = {
           headers: { Authorization: "Bearer " + keycloak.token },

@@ -87,7 +87,13 @@ export default function (Vue) {
         await keycloak
           .updateToken(70)
           .then(() => {
-            Vue.config.globalProperties.$store.commit("auth/token", keycloak.token);
+            // console.error(keycloak.tokenParsed.exp + keycloak.timeSkew);
+            // console.error(keycloak.tokenParsed.exp * 1000 - Date.now());
+            Vue.config.globalProperties.$store.commit("auth/token", {
+              token: keycloak.token,
+              exp: keycloak.tokenParsed.exp * 1000,
+            });
+
             next();
           })
           .catch((err) => {

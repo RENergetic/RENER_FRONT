@@ -46,6 +46,10 @@ export default {
   },
   mutations: {
     wrapper(state, payload) {
+      if (!payload) {
+        console.error("Empty wrraper payload");
+        return;
+      }
       let getF = (key, defaultValue) => (payload[key] ? payload[key] : defaultValue);
       state.informationPanels = getF("panels", []);
 
