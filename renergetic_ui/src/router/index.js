@@ -87,6 +87,7 @@ export default function (Vue) {
         await keycloak
           .updateToken(70)
           .then(() => {
+            Vue.config.globalProperties.$store.commit("auth/token", keycloak.token);
             next();
           })
           .catch((err) => {

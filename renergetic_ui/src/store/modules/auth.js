@@ -25,6 +25,10 @@ export default {
         renRole: RenRoles.REN_GUEST,
       };
     },
+    token(state, payload) {
+      console.info("set token auth: " + payload);
+      state.data.token = payload;
+    },
     /**
      * set keyclock auth details
      * @param {*} state
