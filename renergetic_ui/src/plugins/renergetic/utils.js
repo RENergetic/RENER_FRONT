@@ -76,11 +76,12 @@ export default class RenUtils {
     // console.info(this.app.$store.getters["auth/renRole"]);
     let q = new QueryBuilder();
     q.measurementTypes();
+    q.panels();
     if ((RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER) & currentRole) {
       q.dashboards();
     }
     if ((RenRoles.REN_VISITOR | RenRoles.REN_USER) & currentRole) {
-      q.assets().assetPanels().panels();
+      q.assets().assetPanels();
     }
     if ((RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER) & currentRole) {
       q.assetMetaKeys();
