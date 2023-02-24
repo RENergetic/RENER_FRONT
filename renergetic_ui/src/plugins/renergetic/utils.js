@@ -86,7 +86,7 @@ export default class RenUtils {
     if ((RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER) & currentRole) {
       q.assetMetaKeys();
     }
-    if (RenRoles.REN_USER & currentRole) {
+    if ((RenRoles.REN_USER | RenRoles.REN_MANAGER) & currentRole) {
       q.demands();
     }
     let _this = this;

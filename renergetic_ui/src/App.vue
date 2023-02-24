@@ -2,11 +2,7 @@
   <Toast />
   <ConfirmDialog></ConfirmDialog>
   <SideMenu v-if="keycloakState == 1" :key="`menu_${refresh}`" ref="sideMenu" @refresh="onRefresh" />
-  <div
-    v-if="keycloakState == 1"
-    :key="`content_${refresh}`"
-    :class="layout() + ' flex flex-column card-container green-container'"
-  >
+  <div v-if="keycloakState == 1" :key="`content_${refresh}`" :class="layout() + ' flex flex-column card-container '">
     <!-- <div style="color: white; margin-top: 10rem">{{ $route.path }}  style="min-height: 95vh"</div>
     <div style="color: white">{{ $keycloak && $keycloak.isInitialized() }}</div> -->
     <div v-if="hasAccess" class="flex" style="display: initial !important; margin-bottom: 1rem">

@@ -1,7 +1,7 @@
 <template>
-  <Card class="col-12">
+  <Card class="col-12" style="width: 90%; margin: auto; margin-top: 1rem">
     <template #content>
-      <RenSpinner ref="spinner" :lock="true" style="margin: auto; width: 90%; max-width: 80rem">
+      <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 80rem">
         <!--  max-width: 80vw -->
         <template #content>
           <user-list :users="users" @on-delete="confirmDeleteUser" @on-create="loadUsers" />

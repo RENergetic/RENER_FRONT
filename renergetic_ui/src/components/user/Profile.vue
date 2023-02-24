@@ -15,7 +15,7 @@ export default {
   watch: {},
   async mounted() {
     try {
-      this.user = await this.$ren.userApi.getByUsername((await this.$keycloak.get()).tokenParsed.preferred_username);
+      this.user = await this.$ren.userApi.getProfile();
     } catch (err) {
       alert(err);
     }

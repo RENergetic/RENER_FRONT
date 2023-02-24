@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    Unauthorized access
+    Unauthorized access TODO:
 
     <div class="col">
       <Button :label="$t('view.button.login')" :to="{ path: '/login' }" />
