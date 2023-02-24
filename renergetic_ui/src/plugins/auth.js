@@ -21,12 +21,12 @@ let initOptions = {
 // let keycloak = Keycloak({ store: memoryStore }, initOptions);
 
 // var initialized = false;
-let info = {
-  app: process.env.VUE_APP_KEY_CLOAK_CLIENT_ID,
-  realm: process.env.VUE_APP_KEY_CLOAK_REALM,
-  url: process.env.VUE_APP_KEY_CLOAK_URL,
-  clientId: undefined,
-};
+// let info = {
+//   app: process.env.VUE_APP_KEY_CLOAK_CLIENT_ID,
+//   realm: process.env.VUE_APP_KEY_CLOAK_REALM,
+//   url: process.env.VUE_APP_KEY_CLOAK_URL,
+//   clientId: undefined,
+// };
 export default function (Vue) {
   let keycloak = Keycloak(initOptions);
   keycloak
@@ -59,15 +59,15 @@ export default function (Vue) {
         };
 
         Vue.config.globalProperties.$store.commit("auth/set", data);
-        let config = {
-          headers: { Authorization: "Bearer " + keycloak.token },
-        };
-        await axios
-          .get(`${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`, config)
-          .then((response) => (info.clientId = response.data[0].id))
-          .catch((error) => {
-            console.warn(error);
-          });
+        // let config = {
+        //   headers: { Authorization: "Bearer " + keycloak.token },
+        // };
+        // await axios
+        //   .get(`${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`, config)
+        //   .then((response) => (info.clientId = response.data[0].id))
+        //   .catch((error) => {
+        //     console.warn(error);
+        //   });
       } else {
         //clear stored data
         Vue.config.globalProperties.$store.commit("auth/reset");
@@ -83,6 +83,8 @@ export default function (Vue) {
     logout() {
       keycloak.logout({ redirectUri: window.location.origin });
       localStorage.setItem("data", null);
+      sessionStorage.clear();
+      localStorage.clear();
     },
     // instance: keycloak,
     // initialized: initialized,
@@ -92,133 +94,7 @@ export default function (Vue) {
     async get() {
       return this.executeAfterInitialized(keycloak);
     },
-    async getClientRoles() {
-      let config = {
-        headers: { Authorization: "Bearer " + keycloak.token },
-      };
-      return axios
-        .get(`${info.url}/admin/realms/${info.realm}/clients/${info.clientId}/roles`, config)
-        .then((res) => {
-          return res.data;
-        })
-        .catch((error) => {
-          console.warn(error.message);
-          console.warn(`No se puede conectar a ${info.url}`);
-        });
-    },
-    // KEYCLOAK API CALLS
-    //  Manage Clients Methods
-    async getClientId() {
-      let clientId;
-      let config = {
-        headers: { Authorization: "Bearer " + keycloak.token },
-      };
-      await axios
-        .get(`${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`, config)
-        .then((response) => (clientId = response.data.id));
 
-      return clientId;
-    },
-    //  Manage Users Methods
-    async getUsers() {
-      let config = {
-        headers: { Authorization: "Bearer " + keycloak.token },
-        params: { clientId: info.app },
-      };
-      return axios
-        .get(`${info.url}/admin/realms/${info.realm}/users`, config)
-        .then(async (res) => {
-          if (res.data && res.data.length > 0) {
-            let users = Array();
-            for (let user of res.data) {
-              user.name = `${user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : ""}`;
-              user.roles = await this.getUserRoles(user.id);
-              users.push(user);
-            }
-            return users;
-          }
-        })
-        .catch((error) => {
-          console.warn(error.message);
-          console.warn(`No se puede conectar a ${info.url}`);
-        });
-    },
-    async getUserRoles(user_id) {
-      let config = {
-        headers: { Authorization: "Bearer " + keycloak.token },
-      };
-      return axios
-        .get(`${info.url}/admin/realms/${info.realm}/users/${user_id}/role-mappings/clients/${info.clientId}`, config)
-        .then((res) => {
-          return res.data;
-        })
-        .catch((error) => {
-          console.warn(error.message);
-          console.warn(`No se puede conectar a ${info.url}`);
-        });
-    },
-    assignRolesToUser(userId, body) {
-      let config = {
-        headers: { Authorization: "Bearer " + keycloak.token },
-        Accept: "*/*",
-        "Content-Type": "application/json",
-      };
-      axios
-        .post(
-          `${info.url}/admin/realms/${info.realm}/users/${userId}/role-mappings/clients/${info.clientId}`,
-          body,
-          config,
-        )
-        .then((res) => {
-          return res;
-        })
-        .catch((error) => {
-          console.warn(error.message);
-          console.warn(`No se puede conectar a ${info.url}`);
-        });
-    },
-    unAssignRolesToUser(userId, body) {
-      let config = {
-        headers: {
-          Authorization: "Bearer " + keycloak.token,
-          Accept: "*/*",
-        },
-        data: body,
-      };
-      axios
-        .delete(`${info.url}/admin/realms/${info.realm}/users/${userId}/role-mappings/clients/${info.clientId}`, config)
-        .then((res) => {
-          return res;
-        })
-        .catch((error) => {
-          console.warn(error.message);
-          console.warn(`No se puede conectar a ${info.url}`);
-        });
-    },
-    async createUser(body) {
-      let config = {
-        headers: { Authorization: "Bearer " + keycloak.token },
-        Accept: "*/*",
-        "Content-Type": "application/json",
-      };
-      return await axios.post(`${info.url}/admin/realms/${info.realm}/users`, body, config);
-    },
-    async updateUser(body) {
-      let config = {
-        headers: { Authorization: "Bearer " + keycloak.token },
-        Accept: "*/*",
-        "Content-Type": "application/json",
-      };
-      return await axios.put(`${info.url}/admin/realms/${info.realm}/users/${body.id}`, body, config);
-    },
-    async deleteUser(userId) {
-      let config = {
-        headers: { Authorization: "Bearer " + keycloak.token },
-        Accept: "*/*",
-        "Content-Type": "application/json",
-      };
-      return await axios.delete(`${info.url}/admin/realms/${info.realm}/users/${userId}`, config);
-    },
     // hasAccess(assignedRoles, allowedRoles) {
     //   if (!allowedRoles || allowedRoles.length == 0) return true;
     //   else if (!assignedRoles || assignedRoles.length == 0) return false;
@@ -247,3 +123,131 @@ export default function (Vue) {
     },
   };
 }
+
+// async getClientRoles() {
+//   let config = {
+//     headers: { Authorization: "Bearer " + keycloak.token },
+//   };
+//   return axios
+//     .get(`${info.url}/admin/realms/${info.realm}/clients/${info.clientId}/roles`, config)
+//     .then((res) => {
+//       return res.data;
+//     })
+//     .catch((error) => {
+//       console.warn(error.message);
+//       console.warn(`No se puede conectar a ${info.url}`);
+//     });
+// },
+// KEYCLOAK API CALLS
+//  Manage Clients Methods
+// async getClientId() {
+//   let clientId;
+//   let config = {
+//     headers: { Authorization: "Bearer " + keycloak.token },
+//   };
+//   await axios
+//     .get(`${info.url}/admin/realms/${info.realm}/clients?clientId=${info.app}`, config)
+//     .then((response) => (clientId = response.data.id));
+
+//   return clientId;
+// },
+//  Manage Users Methods
+// async getUsers() {
+//   let config = {
+//     headers: { Authorization: "Bearer " + keycloak.token },
+//     params: { clientId: info.app },
+//   };
+//   return axios
+//     .get(`${info.url}/admin/realms/${info.realm}/users`, config)
+//     .then(async (res) => {
+//       if (res.data && res.data.length > 0) {
+//         let users = Array();
+//         for (let user of res.data) {
+//           user.name = `${user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : ""}`;
+//           user.roles = await this.getUserRoles(user.id);
+//           users.push(user);
+//         }
+//         return users;
+//       }
+//     })
+//     .catch((error) => {
+//       console.warn(error.message);
+//       console.warn(`No se puede conectar a ${info.url}`);
+//     });
+// },
+// async getUserRoles(user_id) {
+//   let config = {
+//     headers: { Authorization: "Bearer " + keycloak.token },
+//   };
+//   return axios
+//     .get(`${info.url}/admin/realms/${info.realm}/users/${user_id}/role-mappings/clients/${info.clientId}`, config)
+//     .then((res) => {
+//       return res.data;
+//     })
+//     .catch((error) => {
+//       console.warn(error.message);
+//       console.warn(`No se puede conectar a ${info.url}`);
+//     });
+// },
+// assignRolesToUser(userId, body) {
+//   let config = {
+//     headers: { Authorization: "Bearer " + keycloak.token },
+//     Accept: "*/*",
+//     "Content-Type": "application/json",
+//   };
+//   axios
+//     .post(
+//       `${info.url}/admin/realms/${info.realm}/users/${userId}/role-mappings/clients/${info.clientId}`,
+//       body,
+//       config,
+//     )
+//     .then((res) => {
+//       return res;
+//     })
+//     .catch((error) => {
+//       console.warn(error.message);
+//       console.warn(`No se puede conectar a ${info.url}`);
+//     });
+// },
+// unAssignRolesToUser(userId, body) {
+//   let config = {
+//     headers: {
+//       Authorization: "Bearer " + keycloak.token,
+//       Accept: "*/*",
+//     },
+//     data: body,
+//   };
+//   axios
+//     .delete(`${info.url}/admin/realms/${info.realm}/users/${userId}/role-mappings/clients/${info.clientId}`, config)
+//     .then((res) => {
+//       return res;
+//     })
+//     .catch((error) => {
+//       console.warn(error.message);
+//       console.warn(`No se puede conectar a ${info.url}`);
+//     });
+// },
+// async createUser(body) {
+//   let config = {
+//     headers: { Authorization: "Bearer " + keycloak.token },
+//     Accept: "*/*",
+//     "Content-Type": "application/json",
+//   };
+//   return await axios.post(`${info.url}/admin/realms/${info.realm}/users`, body, config);
+// },
+// async updateUser(body) {
+//   let config = {
+//     headers: { Authorization: "Bearer " + keycloak.token },
+//     Accept: "*/*",
+//     "Content-Type": "application/json",
+//   };
+//   return await axios.put(`${info.url}/admin/realms/${info.realm}/users/${body.id}`, body, config);
+// },
+// async deleteUser(userId) {
+//   let config = {
+//     headers: { Authorization: "Bearer " + keycloak.token },
+//     Accept: "*/*",
+//     "Content-Type": "application/json",
+//   };
+//   return await axios.delete(`${info.url}/admin/realms/${info.realm}/users/${userId}`, config);
+// },

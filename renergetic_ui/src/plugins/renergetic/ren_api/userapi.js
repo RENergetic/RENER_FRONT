@@ -8,6 +8,9 @@ export default class UserApi extends RestComponent {
   getProfile() {
     return this.get(`/api/users/profile`);
   }
+  async getDemands() {
+    return await this.get(`/api/users/demands`);
+  }
   async listUsers(role = undefined, offset = 0, limit = 20) {
     let params = { role: role, offset: offset, limit: limit };
     return this.get(`/api/users`, params);

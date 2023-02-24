@@ -1,8 +1,9 @@
 <template>
   <!-- {{ demands }} -->
-  <div v-if="demands" style="height: 100%" class="flex flex-column align-items-start align-content-start">
+  <div v-if="mDemands" style="height: 100%" class="flex flex-column align-items-start align-content-start">
     <h3 v-if="title">{{ $t("view.demand_list") }}:</h3>
-    <template v-for="d in demands" :key="d">
+    ff {{ mDemands }}aaa
+    <template v-for="d in mDemands" :key="d">
       <UserDemand :demand="d" :pdata="pdata"></UserDemand>
     </template>
   </div>
@@ -16,6 +17,10 @@ export default {
   name: "DemandList",
   components: { UserDemand },
   props: {
+    demands: {
+      type: Array,
+      default: () => null,
+    },
     userId: {
       type: Number,
       default: null,
@@ -27,25 +32,24 @@ export default {
   },
   // emits: ["update"],
   data() {
-    return { demands: [], pdata: {} };
+    return { mDemands: [], pdata: {} };
   },
   computed: {},
   watch: {},
   async mounted() {
-    let demands = this.$store.getters["view/demands"];
-    if (demands) {
-      this.demands = demands;
+    if (this.demands) {
+      this.mDemands = this.demands;
     } else {
-      //TODO: user apropriate api
-      alert("todo:");
-      this.demands = await this.$ren.userApi.getDemand();
+      let demands = this.$store.getters["view/demands"];
+      if (demands) this.mDemands = this.demands;
+      else this.mDemands = await this.$ren.userApi.getDemand(); //TODO: check it
     }
 
     let pdata = this.$store.getters["view/data"];
     if (pdata) {
       this.pdata = pdata;
     } else {
-      this.pdata = await this.$ren.dataApi.getDemandData(this.demands);
+      this.pdata = await this.$ren.dataApi.getDemandData(this.mDemands);
     }
   },
 

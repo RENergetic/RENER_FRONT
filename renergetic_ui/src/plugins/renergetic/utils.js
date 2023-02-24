@@ -64,8 +64,22 @@ export default class RenUtils {
    */
   async reloadStore() {
     console.info("reload user data");
-    await this.loadSettings();
     let currentRole = this.app.$store.getters["auth/renRole"];
+    if (!currentRole) {
+      console.error("TODO: handle not logged in user");
+      return;
+    }
+    if (
+      (RenRoles.REN_ADMIN |
+        RenRoles.REN_MANAGER |
+        RenRoles.REN_TECHNICAL_MANAGER |
+        RenRoles.REN_GUEST |
+        RenRoles.REN_USER |
+        RenRoles.REN_VISITOR) &
+      currentRole
+    ) {
+      await this.loadSettings();
+    }
     // console.info(this.app.$store.getters["auth/renRole"]);
     let q = new QueryBuilder();
     q.measurementTypes();

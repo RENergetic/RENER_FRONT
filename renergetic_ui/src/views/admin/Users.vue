@@ -25,10 +25,7 @@ export default {
       users: [],
     };
   },
-  async created() {
-    // this.users = await this.$keycloak.getUsers();
-    // console.log(this.users);
-  },
+  async created() {},
   mounted() {
     this.loadUsers();
   },

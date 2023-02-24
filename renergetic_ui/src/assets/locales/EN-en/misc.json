@@ -12,7 +12,7 @@
             "url": "url",
             "label": "label",
             "password":"password",
-            "repeatPassword":"repeat password"  
+            "passwordRepeat":"repeat password"  
         },
         "sameAs":"The '{property}' is not same as {same_as_property}."
     },
