@@ -67,6 +67,31 @@ export default {
      * @returns
      */
     renRole: (state /* getters*/) => {
+      // if (!state.data.authenticated) {
+      //   throw new Exception("Not authenticated");
+      // }
+      try {
+        if (state.data.renRole) return state.data.renRole;
+        return RenRoles.REN_GUEST;
+      } catch (error) {
+        return RenRoles.REN_GUEST;
+      }
+    },
+    /**
+     * return role mask
+     * @param {*} state
+     * @returns
+     */
+    isAuthenticated: (state /* getters*/) => {
+      return state.data.authenticated;
+    },
+
+    /**
+     * return role mask
+     * @param {*} state
+     * @returns
+     */
+    isrenRole: (state /* getters*/) => {
       try {
         if (state.data.renRole) return state.data.renRole;
         return RenRoles.REN_GUEST;

@@ -2,7 +2,7 @@
   <!-- {{ demands }} -->
   <div v-if="mDemands" style="height: 100%" class="flex flex-column align-items-start align-content-start">
     <h3 v-if="title">{{ $t("view.demand_list") }}:</h3>
-    ff {{ mDemands }}aaa
+
     <template v-for="d in mDemands" :key="d">
       <UserDemand :demand="d" :pdata="pdata"></UserDemand>
     </template>

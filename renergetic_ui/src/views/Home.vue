@@ -1,11 +1,13 @@
 <template>
-  <DotMenu :model="menuModel" :fixed="true" />
+  <DotMenu v-if="loggedIn" :model="menuModel" :fixed="true" />
   <div v-if="settings.panelVisibility" style="position: relative">
-    <!-- {{ panel }} -->
     <!-- {{ $store.getters["view/informationPanels"] }} -->
     <energy-flow v-if="panel" ref="panel" :asset-id="null" :panel="panel" :settings="panelSettings"></energy-flow>
+    <div v-else style="width: 50rem; max-width: 95vw; margin: auto; padding-top: 5rem">
+      <h4 style="width: 100%; margin: auto">{{ $t("view.empty_home_dashboard") }}</h4>
+    </div>
   </div>
-  <div v-if="settings.demandVisibility" style="position: relative">
+  <div v-if="settings.demandVisibility && loggedIn" style="position: relative">
     <DemandList id="demand-list" />
   </div>
   <div v-if="settings.notificationVisibility" style="position: relative">
@@ -71,6 +73,9 @@ export default {
     };
   },
   computed: {
+    loggedIn: function () {
+      return this.$store.getters["auth/isAuthenticated"];
+    },
     hasAccess: function () {
       return (this.$store.getters["auth/renRole"] | RenRoles.REN_ADMIN) > 0;
     },
@@ -127,12 +132,16 @@ export default {
     menuModel() {
       let model = [];
       // if (!this.locked) model.push(this.saveButton);
-      model.push(this.toggleButton);
-      model.push(this.settingsButton);
-      model.push(this.panelSettingsButton);
-      model.push(this.conversionSettingsButton);
+      let role = this.$store.getters["auth/renRole"];
 
-      model.push(this.filterSettingsButton);
+      // model.push(this.toggleButton);
+      model.push(this.settingsButton);
+      if ((role & (RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_MANAGER | RenRoles.REN_ADMIN)) > 0) {
+        model.push(this.panelSettingsButton);
+        model.push(this.conversionSettingsButton);
+        model.push(this.filterSettingsButton);
+      }
+
       return model;
     },
   },

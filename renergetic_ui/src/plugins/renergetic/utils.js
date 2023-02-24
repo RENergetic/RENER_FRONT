@@ -47,7 +47,7 @@ export default class RenUtils {
   }
   async loadSettings() {
     let settings = await this.app.$ren.userApi.getSettings();
-    // console.info(settings);
+    console.info(settings);
     this.app.$store.commit("settings", settings);
   }
 
@@ -64,22 +64,15 @@ export default class RenUtils {
    */
   async reloadStore() {
     console.info("reload user data");
-    let currentRole = this.app.$store.getters["auth/renRole"];
-    if (!currentRole) {
+    let isAuthenticated = this.app.$store.getters["auth/isAuthenticated"];
+    if (!isAuthenticated) {
       console.error("TODO: handle not logged in user");
       return;
     }
-    if (
-      (RenRoles.REN_ADMIN |
-        RenRoles.REN_MANAGER |
-        RenRoles.REN_TECHNICAL_MANAGER |
-        RenRoles.REN_GUEST |
-        RenRoles.REN_USER |
-        RenRoles.REN_VISITOR) &
-      currentRole
-    ) {
-      await this.loadSettings();
-    }
+    var currentRole = this.app.$store.getters["auth/renRole"];
+
+    await this.loadSettings();
+
     // console.info(this.app.$store.getters["auth/renRole"]);
     let q = new QueryBuilder();
     q.measurementTypes();

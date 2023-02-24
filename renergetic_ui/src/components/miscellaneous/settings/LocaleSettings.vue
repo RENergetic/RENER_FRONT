@@ -1,5 +1,4 @@
 <template>
-  <!-- {{ settings }} -->
   <Settings :schema="schema" :settings="settings"></Settings>
 </template>
 
@@ -20,9 +19,10 @@ export default {
     this.schema = this.getSchema();
   },
   methods: {
-    onClick() {
+    async onClick() {
       this.$store.commit("settings/locales", this.settings);
       this.$emitter.emit("localeSwitch", this.settings.selectedLocale);
+      if (this.$store.getters["auth/isAuthenticated"]) await this.$ren.utils.saveSettings();
     },
     getSchema() {
       let locales = Object.keys(allowedLocales).map((it) => ({ code: it }));

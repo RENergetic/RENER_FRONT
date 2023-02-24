@@ -17,6 +17,7 @@
   "edit_dashboard":"Edit dashboard",
   "edit_locked": "Edit options are locked",
   "edit_user":"Edit {username}",
+  "empty_home_dashboard":"No defined home dashboard",
   "find_asset": "Find asset",
   "find_measurement": "Find measurement",
   "heatmap_area_delete": "Delete heatmap",

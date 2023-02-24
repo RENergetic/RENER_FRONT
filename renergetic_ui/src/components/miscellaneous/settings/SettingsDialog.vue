@@ -40,9 +40,9 @@ export default {
     close() {
       this.dialogVisibility = false;
     },
-    onClose() {
+    async onClose() {
       console.info("onClose");
-      if (this.save) this.$ren.utils.saveSettings();
+      if (this.save) await this.$ren.utils.saveSettings();
     },
   },
 };

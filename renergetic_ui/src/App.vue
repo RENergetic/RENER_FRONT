@@ -14,7 +14,7 @@
     </div>
     <div v-else :class="layout()">no access TODO:</div>
 
-    <div v-if="$store.getters['auth/renRole'] == 0" class="grid flex flex-none" style="margin: 2rem 0">
+    <div v-if="!$store.getters['auth/isAuthenticated']" class="grid flex flex-none" style="margin: 2rem 0">
       <div class="col"></div>
       <div class="col-fixed flex-none" style="width: 20rem; text-align: center">
         <Button icon="pi pi-sign-in" style="width: 100%" :label="$t('view.button.sign_in')" @click="login" />

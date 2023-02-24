@@ -62,23 +62,23 @@ export default class UserApi extends RestComponent {
     // return this.post(`/api-postgre/1.0/api/users/register`, user);
   }
 
-  register(user) {
-    //validate
-    // TODO:
-    return this.post(`/api-postgre/1.0/api/users/register`, user);
-  }
-  getByUsername(userName) {
-    //validate
-    // TODO:
-    return this.get(`/api-postgre/1.0/api/users/info/keycloak_name`, { value: userName })
-      .then((data) => {
-        console.log(data);
-        return data[0];
-      })
-      .catch(function (error) {
-        console.error(error.response);
-      });
-  }
+  // register(user) {
+  //   //validate
+  //   // TODO:
+  //   return this.post(`/api-postgre/1.0/api/users/register`, user);
+  // }
+  // getByUsername(userName) {
+  //   //validate
+  //   // TODO:
+  //   return this.get(`/api-postgre/1.0/api/users/info/keycloak_name`, { value: userName })
+  //     .then((data) => {
+  //       console.log(data);
+  //       return data[0];
+  //     })
+  //     .catch(function (error) {
+  //       console.error(error.response);
+  //     });
+  // }
 
   // async getNotifications(objectIds) {
 

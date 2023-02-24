@@ -33,6 +33,7 @@ export default {
   data() {
     return {
       role: this.$store.getters["auth/renRole"],
+      isLoggedIn: this.$store.getters["auth/isAuthenticated"],
       visible: false,
       menuModel: [],
       dashboards: [],
@@ -51,16 +52,16 @@ export default {
     pluginLoaded() {
       return this.$pluginLoaded;
     },
-    isLoggedIn() {
-      let flags =
-        RenRoles.REN_USER |
-        RenRoles.REN_VISITOR |
-        RenRoles.REN_MANAGER |
-        RenRoles.REN_TECHNICAL_MANAGER |
-        RenRoles.REN_ADMIN |
-        RenRoles.REN_STAFF;
-      return (flags & this.role) > 0;
-    },
+    // isLoggedIn() {
+    //   let flags =
+    //     RenRoles.REN_USER |
+    //     RenRoles.REN_VISITOR |
+    //     RenRoles.REN_MANAGER |
+    //     RenRoles.REN_TECHNICAL_MANAGER |
+    //     RenRoles.REN_ADMIN |
+    //     RenRoles.REN_STAFF;
+    //   return (flags & this.role) > 0;
+    // },
   },
   watch: {
     // isAdmin: function () {
@@ -411,17 +412,17 @@ export default {
     },
 
     userItems() {
-      let flags = RenRoles.REN_USER;
-      if ((flags & this.role) == 0) {
+      if (!this.isLoggedIn) {
         return [
           {
             label: this.$t("menu.login"),
             icon: "pi pi-sign-in",
             to: "/login",
-            visible: () => this.role == 0 || !this.isLoggedIn,
+            // visible: () => !this.isLoggedIn,
           },
         ];
       }
+      let flags = RenRoles.REN_USER | RenRoles.REN_VISITOR;
       let items = [
         {
           label: this.$t("menu.profile"),
@@ -446,6 +447,7 @@ export default {
             {
               label: this.$t("menu.feedback"),
               icon: "pi pi-fw pi-check-square",
+              visible: () => (flags & this.role) > 0,
               command: () => {
                 alert("TODO: user feedback");
                 // this.$router.push("/feedback");
@@ -533,6 +535,7 @@ heatMapItems() {
   padding-bottom: 0;
 }
 #sideMenuButton {
+  background: none;
   width: $sidemenu-button-width;
   height: $sidemenu-button-width;
   font-size: $sidemenu-button-width;
