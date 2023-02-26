@@ -9,12 +9,12 @@ export default {
   components: {
     Settings,
   },
-  props: {},
+
+  props: { submit: { type: Boolean, default: false } },
   emits: ["update"],
   data() {
     return {
       settings: this.$store.getters["settings/conversion"],
-      panels: [],
       schema: {},
     };
   },
@@ -28,21 +28,28 @@ export default {
       deep: true,
     },
   },
-  async mounted() {
-    this.$ren.dashboardApi
-      .listInformationPanel()
-      .then((panels) => {
-        this.panels = panels;
-      })
-      .then(() => {
-        this.schema = this.getSchema();
-      });
+  mounted() {
+    this.schema = this.getSchema();
   },
 
   async created() {
     this.schema = this.getSchema();
   },
   methods: {
+    async onClick() {
+      this.$store.commit("settings/conversion", this.settings);
+      if (this.$store.getters["auth/isAuthenticated"]) await this.$ren.utils.saveSettings();
+    },
+    submitButton() {
+      return {
+        label: this.$t("settings.submit"),
+        ext: {
+          click: this.onClick,
+        },
+        type: "Submit",
+        key: "conversionSubmit",
+      };
+    },
     getSchema() {
       var types = this.$store.getters["view/measurementTypes"];
       var schema = [];
@@ -78,7 +85,9 @@ export default {
       //   },
 
       // ];
-
+      if (this.submit) {
+        schema.push(this.submitButton());
+      }
       return schema;
     },
     toggle(event) {

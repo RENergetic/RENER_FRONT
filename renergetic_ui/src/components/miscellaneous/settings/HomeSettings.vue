@@ -9,7 +9,7 @@ export default {
   components: {
     Settings,
   },
-  props: {},
+  props: { submit: { type: Boolean, default: false } },
   emits: ["update"],
   data() {
     return {
@@ -43,6 +43,20 @@ export default {
     this.schema = this.getSchema();
   },
   methods: {
+    async onClick() {
+      this.$store.commit("settings/home", this.settings);
+      if (this.$store.getters["auth/isAuthenticated"]) await this.$ren.utils.saveSettings();
+    },
+    submitButton() {
+      return {
+        label: this.$t("settings.submit"),
+        ext: {
+          click: this.onClick,
+        },
+        type: "Submit",
+        key: "homeSubmit",
+      };
+    },
     getSchema() {
       var schema = [
         {
@@ -83,18 +97,22 @@ export default {
         },
       ];
       //TODO: get panel list from store
-      if (this.panels.length > 0) {
-        schema.push({
-          label: this.$t("settings.selected_panel"),
-          ext: {
-            options: this.panels,
-            optionLabel: "label",
-            optionValue: "id",
-          },
-          type: Array,
-          key: "selectedPanel",
-        });
+      // if (this.panels.length > 0) {
+      //   schema.push({
+      //     label: this.$t("settings.selected_panel"),
+      //     ext: {
+      //       options: this.panels,
+      //       optionLabel: "label",
+      //       optionValue: "id",
+      //     },
+      //     type: Array,
+      //     key: "selectedPanel",
+      //   });
+      // }
+      if (this.submit) {
+        schema.push(this.submitButton());
       }
+
       return schema;
     },
     toggle(event) {

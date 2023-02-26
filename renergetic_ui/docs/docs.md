@@ -12,3 +12,8 @@
 * 
 * Any object e.g. infrasturcture, sensor, area, dashboard should have unique id . Usecase: Get notifcations by id list (no need to use object types and dynamic keys in the query result )
  
+keycloak links 
+https://www.keycloak.org/docs/11.0/server_admin/#_admin_permissions
+ https://gist.github.com/rosariop/0a689fe221760a3ce9cda77af0255f00
+ https://gist.github.com/thomasdarimont/c4e739c5a319cf78a4cff3b87173a84b
+ https://github.com/ioansurariu/keycloak/blob/master/src/main/java/ro/surariu/ioan/controller/KeycloakController.java

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="ren-profile">
     <ProfileComponent />
   </div>
 </template>
@@ -17,4 +17,11 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.ren-profile {
+  width: 90%;
+  margin: auto;
+  margin-top: 1rem;
+  max-width: 50rem;
+}
+</style>

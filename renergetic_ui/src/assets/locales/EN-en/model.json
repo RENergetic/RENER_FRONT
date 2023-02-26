@@ -73,7 +73,8 @@
           "lastname":"Last name",
           "username":"Username"    , 
           "password_repeat":"Repeat password",
-          "temp_password":"Temporary password"      
+          "temp_password":"Temporary password" ,    
+          "roles":"Roles"      
      },
      "role":{
           "name":"Name"

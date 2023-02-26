@@ -131,5 +131,13 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss"></style>
+<style lang="scss">
+.p-buttonset {
+  flex-wrap: wrap;
+  flex-direction: row;
+  .p-button {
+    flex: initial !important;
+    max-width: 20rem;
+  }
+}
+</style>

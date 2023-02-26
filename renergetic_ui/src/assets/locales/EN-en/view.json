@@ -39,8 +39,10 @@
   "no_dashboard": "No dashboard",
   "no_heatmap": "No heatmap",
   "no_parent": "No parent",
+  "no_roles":"No roles",
   "notification_list":"Notification list",
   "no_notification_list":"Currently there are no notifications",
+  "logged_in_as":"Logged in as: {username} ",
   "profile": "Profile",
   "heatmap_list": "Heatmap List",
   "role_name":"Role name",
@@ -80,6 +82,7 @@
     "add_measurement": "Add measurement",
     "add_connection": "Add connection",
     "edit_area": "Edit area",
+    "edit":"Edit",
     "cancel": "Cancel",
     "confirm_area": "Confirm area",
     "clear": "Clear",
@@ -93,9 +96,14 @@
     "filter": "Filter",
     "clear_filter": "Clear Filter"
   },
+  "home_settings":"Home Settings",
+  "panel_settings":"Panel settings",
+  "location_settings":"Language",
+  "conversion_settings": "Displayed unit conversion settings",
   "settings": {
     "true": {},
     "false": {}
     
   }
 }
+  

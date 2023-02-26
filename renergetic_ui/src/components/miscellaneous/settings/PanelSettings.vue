@@ -11,12 +11,12 @@ export default {
   components: {
     Settings,
   },
-  props: {},
+
+  props: { submit: { type: Boolean, default: false } },
   emits: ["update"],
   data() {
     return {
       settings: this.$store.getters["settings/panel"],
-      panels: [],
       schema: {},
     };
   },
@@ -32,20 +32,27 @@ export default {
   },
   async mounted() {
     this.settings = this.$store.getters["settings/panel"];
-    this.$ren.dashboardApi
-      .listInformationPanel()
-      .then((panels) => {
-        this.panels = panels;
-      })
-      .then(() => {
-        this.schema = this.getSchema();
-      });
+    this.schema = this.getSchema();
   },
 
   async created() {
     this.schema = this.getSchema();
   },
   methods: {
+    async onClick() {
+      this.$store.commit("settings/panel", this.settings);
+      if (this.$store.getters["auth/isAuthenticated"]) await this.$ren.utils.saveSettings();
+    },
+    submitButton() {
+      return {
+        label: this.$t("settings.submit"),
+        ext: {
+          click: this.onClick,
+        },
+        type: "Submit",
+        key: "panelSubmit",
+      };
+    },
     getSchema() {
       var schema = [
         {
@@ -152,6 +159,10 @@ export default {
           type: Boolean,
           key: "ignoreOverrideMode",
         });
+      }
+
+      if (this.submit) {
+        schema.push(this.submitButton());
       }
       return schema;
     },
