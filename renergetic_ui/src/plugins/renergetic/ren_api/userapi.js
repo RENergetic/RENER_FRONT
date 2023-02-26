@@ -8,6 +8,11 @@ export default class UserApi extends RestComponent {
   getProfile() {
     return this.get(`/api/users/profile`);
   }
+
+  async updateProfile(user) {
+    return await this.put(`/api/users/profile`, user);
+  }
+
   async getDemands() {
     return await this.get(`/api/users/demands`);
   }

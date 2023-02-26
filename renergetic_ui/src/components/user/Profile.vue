@@ -2,7 +2,7 @@
   <RenSpinner ref="spinner" :lock="true" style="margin: auto; width: 100%">
     <!-- max-width: 80vw; -->
     <template #content>
-      <UserForm v-if="user" v-model:edit="edit" :user="user" />
+      <UserForm v-if="user" v-model:edit="edit" :user="user" @save="onSave" />
       <Card v-if="user" class="user-roles">
         <template #title>
           <span v-if="user.roles"> {{ $t("model.user.roles") }}:</span>
@@ -76,7 +76,13 @@ export default {
       this.user = await this.$ren.userApi.getProfile();
     });
   },
-  methods: {},
+  methods: {
+    async onSave(user) {
+      await this.$refs.spinner.run(async () => {
+        this.user = await this.$ren.userApi.updateProfile(user);
+      });
+    },
+  },
 };
 </script>
 <style lang="scss">

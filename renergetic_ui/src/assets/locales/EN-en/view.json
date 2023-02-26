@@ -98,7 +98,7 @@
   },
   "home_settings":"Home Settings",
   "panel_settings":"Panel settings",
-  "location_settings":"Language",
+  "locale_settings":"Language",
   "conversion_settings": "Displayed unit conversion settings",
   "settings": {
     "true": {},

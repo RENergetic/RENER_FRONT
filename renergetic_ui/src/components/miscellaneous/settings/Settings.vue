@@ -140,4 +140,11 @@ export default {
     max-width: 20rem;
   }
 }
+.p-fluid {
+  .p-buttonset {
+    .p-button {
+      width: auto !important;
+    }
+  }
+}
 </style>
