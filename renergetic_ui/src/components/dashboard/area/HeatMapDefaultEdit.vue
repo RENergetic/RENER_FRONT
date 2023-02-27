@@ -70,7 +70,7 @@ const defaultSceneWidth = 0.7 * window.innerWidth;
 const defaultSceneHeight = (defaultSceneWidth * 9) / 16;
 
 export default {
-  name: "HeatMapDefault",
+  name: "HeatMapDefaultEdit",
   components: {
     // HeatMapSettings,
   },

@@ -34,7 +34,7 @@ import chartjsMoment from "chartjs-adapter-moment";
 import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 
 export default {
-  name: "MasurementChart",
+  name: "MeasurementChart",
   components: { Chart, InfoIcon },
   props: {
     datasets: { type: Array, default: () => null }, //,default:

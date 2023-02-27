@@ -30,30 +30,42 @@ export default {
       default: true,
     },
   },
+  emits: ["update"],
   // emits: ["update"],
   data() {
     return { mDemands: [], pdata: {} };
   },
   computed: {},
-  watch: {},
+  watch: {
+    demands: function (newValue) {
+      this.mDemands = newValue;
+    },
+  },
   async mounted() {
-    if (this.demands) {
-      this.mDemands = this.demands;
-    } else {
-      let demands = this.$store.getters["view/demands"];
-      if (demands) this.mDemands = this.demands;
-      else this.mDemands = await this.$ren.userApi.getDemand(); //TODO: check it
-    }
-
-    let pdata = this.$store.getters["view/data"];
-    if (pdata) {
-      this.pdata = pdata;
-    } else {
-      this.pdata = await this.$ren.dataApi.getDemandData(this.mDemands);
-    }
+    await this.loadDemands();
   },
 
-  methods: {},
+  methods: {
+    async loadDemands() {
+      if (this.demands) {
+        this.mDemands = this.demands;
+      } else {
+        let demands = this.$store.getters["view/demands"];
+        if (demands) {
+          this.mDemands = demands;
+        } else this.mDemands = await this.$ren.userApi.getDemand(); //TODO: check it
+      }
+
+      let pdata = this.$store.getters["view/data"];
+      if (pdata) {
+        this.pdata = pdata;
+      } else {
+        this.pdata = await this.$ren.dataApi.getDemandData(this.mDemands);
+      }
+      console.table(this.mDemands);
+      this.$emit("update", this.mDemands);
+    },
+  },
 };
 </script>
 
