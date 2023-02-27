@@ -170,15 +170,14 @@ export default {
     // },
     async loadData() {
       console.info("panel load data");
-
       let filter = this.$store.getters["settings/parsedFilter"];
       let predictions = this.$store.getters["settings/predictionMs"];
-
       // console.error(predictions);
       filter["prediction"] = predictions;
       if (this.panel.id != null) {
         if (this.panel.is_template) {
           this.$refs.spinner.run(async () => {
+            console.info("wait for panel data: " + this.panel.id + ": " + this.assetId);
             await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, filter).then((resp) => {
               this.mPanel = resp.panel;
               this.pdata = resp.data;
@@ -189,6 +188,7 @@ export default {
           // this.pdata = resp.data;
         } else {
           this.$refs.spinner.run(async () => {
+            console.info("wait for panel data: " + this.panel.id);
             await this.$ren.dataApi.getPanelData(this.panel.id, null, filter).then((resp) => {
               this.pdata = resp.data;
             });
@@ -197,6 +197,7 @@ export default {
           // this.pdata = resp.data;
         }
       }
+      console.info("Panel data loaded");
     },
     // gridWidth(tile) {
     //   return tile.col == null ? 2 : tile.col;

@@ -69,6 +69,9 @@ export default {
     //   deep: true,
     // },
   },
+  mounted() {
+    console.info(JSON.stringify(this.panel));
+  },
 
   methods: {},
 };
