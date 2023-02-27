@@ -138,9 +138,9 @@
 
 <script>
 import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
-import AssetForm from "./AssetForm.vue";
-import AssetSelect from "./AssetSelect.vue";
-import MeasurementSelect from "./MeasurementSelect.vue";
+import AssetForm from "../infrastructure/AssetForm.vue";
+import AssetSelect from "../infrastructure/AssetSelect.vue";
+import MeasurementSelect from "../infrastructure/MeasurementSelect.vue";
 // import { QueryBuilder } from "@/plugins/renergetic/ren_api/wrapper_api.js";
 export default {
   name: "DemandListManage",
