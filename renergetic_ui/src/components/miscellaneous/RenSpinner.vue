@@ -32,9 +32,10 @@ export default {
     },
   },
   watch: {},
-  updated() {
-    this.update();
-  },
+  // This causes a "Maximun call stack size exceeded" exception if application is compiled
+  // updated() {
+  //   this.update();
+  // },
   mounted() {
     this.update();
   },
