@@ -52,7 +52,7 @@ export default {
     },
     onHeatmapInit(heatmap) {
       this.heatmap = heatmap;
-      console.info(this.heatmap);
+      // console.info(this.heatmap);
       this.heatmapDialog = false;
     },
     onCancel() {

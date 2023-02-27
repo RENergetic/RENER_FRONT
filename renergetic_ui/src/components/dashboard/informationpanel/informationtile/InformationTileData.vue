@@ -72,8 +72,6 @@ import icons from "./icons";
 // import MultiDoughnutTile from "./MultiDoughnutTile.vue";
 
 function validateTileSettings(tile, settings, ctx) {
-  // console.info(tile);
-  // console.info(settings);
   if (tile.props) {
     return {
       label: ctx.$t(`enums.measurement_name.${tile.name}`, tile.label),
@@ -136,7 +134,6 @@ export default {
   },
   computed: {
     background: function () {
-      console.info(this.mSettings);
       return `background-color:${this.mSettings.tile.background}`;
     },
     tileClass: function () {

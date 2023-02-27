@@ -113,7 +113,6 @@ export default {
       }
     },
     locationList(state, payload) {
-      // console.info(payload);
       state.locationList = payload;
     },
   },
@@ -200,7 +199,6 @@ export default {
 // },
 
 // dashboards(state, payload) {
-//   // console.info(payload);
 //   state.dashboards = payload;
 //   state.dashboardMap = mapPanelId(payload);
 // },

@@ -14,6 +14,7 @@ export default createStore({
         console.info(`load settings error ${e}`);
       }
 
+      console.info("set settings: ");
       console.info(settings);
       state.settings = settings;
     },

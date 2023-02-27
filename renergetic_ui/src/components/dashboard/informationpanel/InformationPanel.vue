@@ -206,7 +206,6 @@ export default {
       //todo
       this.selectedItem = evt;
       this.editDialog = true;
-      // console.info(tile);
     },
 
     saveGrid() {

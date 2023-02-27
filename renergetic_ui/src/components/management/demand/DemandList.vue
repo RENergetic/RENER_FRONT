@@ -167,18 +167,15 @@ export default {
   },
   methods: {
     setParent(row) {
-      console.info(row);
       this.selectedRow = row;
       this.$refs.assetSelectDialog.open(row.parent);
     },
     viewChildren(row) {
-      console.info(row);
       this.selectedRow = row;
       this.childDialog = true;
     },
 
     viewMeasurements(row) {
-      console.info(row);
       this.selectedRow = row;
       this.measurementDialog = true;
     },

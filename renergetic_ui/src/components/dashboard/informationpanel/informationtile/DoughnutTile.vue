@@ -82,9 +82,6 @@ export default {
         backgroundColor.push("#01010110");
         labels.push("");
       }
-      // console.info(data);
-      // console.info(this.tile.measurements);
-
       return {
         labels: labels,
         //TODO: set colors

@@ -107,7 +107,7 @@ var dashboardRoutes = [
       //   RenRoles.REN_ADMIN |
       //   RenRoles.REN_STAFF,
     },
-    component: () => import("../views/dashboard/EnergyFlow.vue"),
+    component: () => import("../views/dashboard/EnergyFlowView.vue"),
   },
   {
     path: "/panel/view/:id?",

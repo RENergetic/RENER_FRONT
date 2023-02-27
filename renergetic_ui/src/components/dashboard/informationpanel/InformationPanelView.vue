@@ -188,7 +188,7 @@ export default {
     },
   },
   async updated() {
-    console.info("update");
+    console.info("update panel grid");
     this.reloadGrid();
   },
   convertData() {},
@@ -215,7 +215,12 @@ export default {
     reloadGrid() {
       if (this.grid != null) this.grid.destroy(false);
       let grid = GridStack.init({ float: true, column: 12, cellHeight: "8vh", margin: 5 }, "#panel-grid-stack");
-
+      if (grid == null) {
+        console.warn(
+          "Cannot find #panel-grid-stack, is panel:" + (this.mPanel != null) + ", is data:" + (this.pdata != null),
+        );
+        return;
+      }
       if (this.locked) {
         grid.disable();
       } else {

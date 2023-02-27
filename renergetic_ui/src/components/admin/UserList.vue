@@ -70,12 +70,10 @@ export default {
   mounted() {},
   methods: {
     edit(user) {
-      // console.info(row);
       this.selectedUser = user;
       this.editDialog = true;
     },
     create() {
-      // console.info(row);
       this.selectedUser = null;
       this.addDialog = true;
     },

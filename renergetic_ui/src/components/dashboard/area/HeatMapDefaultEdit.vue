@@ -306,7 +306,7 @@ export default {
       if (bgImage != null) {
         var scale = Math.min(this.width / bgImage.width, this.height / bgImage.height);
         this.scale = scale;
-        console.info(this.scale);
+        // console.info(this.scale);
         stage.width(bgImage.width * scale);
         stage.height(bgImage.height * scale);
         stage.scale({ x: scale, y: scale });
