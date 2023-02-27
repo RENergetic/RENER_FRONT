@@ -4,7 +4,7 @@
       <!-- some info -->
     </template>
   </InfoIcon>
-  <!--  measurement_id 	measurement_type_id 	sensor_name 	asset_type 	action 	message 	value 	properties 	demand_start 	demand_stop 	ext 	update_date 	 -->
+  <!--  measurement_id 	measurement_type_id	sensor_name	asset_type 	action 	message 	value 	properties 	demand_start 	demand_stop 	ext 	update_date 	 -->
 
   <DataTable :value="demandList">
     <Column field="demand_id" :header="$t('model.demand.demand_id')"> </Column>
@@ -143,7 +143,7 @@ import AssetSelect from "./AssetSelect.vue";
 import MeasurementSelect from "./MeasurementSelect.vue";
 // import { QueryBuilder } from "@/plugins/renergetic/ren_api/wrapper_api.js";
 export default {
-  name: "DemandList",
+  name: "DemandListManage",
   components: { InfoIcon, AssetForm, AssetSelect, MeasurementSelect },
   props: {},
   data() {
