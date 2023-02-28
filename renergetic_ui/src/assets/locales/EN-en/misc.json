@@ -6,15 +6,15 @@
         "url": "'{model}' is not valid url.",
         "email": "'{model}' is not valid email.",
         "fields": {
-            "username":"username",
-            "email":"email",
+            "username": "username",
+            "email": "email",
             "name": "name",
             "url": "url",
             "label": "label",
-            "password":"password",
-            "passwordRepeat":"repeat password"  
+            "password": "password",
+            "passwordRepeat": "repeat password"
         },
-        "sameAs":"The '{property}' is not same as {same_as_property}."
+        "sameAs": "The '{property}' is not same as {same_as_property}."
     },
     "information": {
         "information": "Information",
@@ -24,6 +24,11 @@
     },
     "error": {
         "error": "Error",
-        "dashboard_not_updated": "Dashboard has not been updated" 
+        "dashboard_not_updated": "Dashboard has not been updated"
+    },
+    "message": {
+        "anomaly": {
+            "high": "Anomaly - high"
+        }
     }
 }

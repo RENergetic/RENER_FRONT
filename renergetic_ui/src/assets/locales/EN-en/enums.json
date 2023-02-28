@@ -17,7 +17,7 @@
     "heat": "heat",
     "temperature": "temperature"
   },
-  "measurement_name": {
+  "measurement_name": { 
     "heat": "Heat",
     "electricity": "Electricity",
     "renewability": "Renewability",
@@ -30,7 +30,9 @@
     "supercomputer": "Supercomputers",
     "hvac": "HVACs",
     "waste": "Waste",
-    "fossil_fuels": "Fossil fuels"
+    "fossil_fuels": "Fossil fuels",
+    "heat_renewability":"Heat renewability",
+    "electricity_renewability":"Electricity renewability"
   },
   "tile_type": {
     "knob": "knob",
