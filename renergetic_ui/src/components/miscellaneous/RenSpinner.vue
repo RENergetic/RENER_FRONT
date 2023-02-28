@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       isContent: !!this.$slots.content,
-      size: 0,
+      // size: 0,
       strokeWidth: 2,
       counter: 0,
     };
@@ -30,8 +30,17 @@ export default {
     mLock: function () {
       return this.lock != null ? this.lock : this.isContent;
     },
+    size: function () {
+      if (this.$refs.spinnerContent)
+        return Math.min(this.$refs.spinnerContent.clientHeight, this.$refs.spinnerContent.clientWidth);
+      return 0;
+    },
   },
-  watch: {},
+  watch: {
+    size: function (newVal, oldValue) {
+      if (newVal != oldValue) this.update();
+    },
+  },
   // This causes a "Maximun call stack size exceeded" exception if application is compiled
   // updated() {
   //   this.update();
@@ -41,19 +50,26 @@ export default {
   },
   methods: {
     update() {
-      this.size = Math.min(this.$refs.spinnerContent.clientHeight, this.$refs.spinnerContent.clientWidth);
-      this.strokeWidth = this.size;
-      // console.info(this.size);
-      // console.info(this.$refs.spinnerContent.clientHeight);
-      // console.info(this.$refs.spinnerContent.clientWidth);
-      this.strokeWidth = Math.min(8, Math.max(2, this.size / 150));
+      try {
+        let size = Math.min(this.$refs.spinnerContent.clientHeight, this.$refs.spinnerContent.clientWidth);
+        // this.strokeWidth = this.size;
+        //
+        // console.info(this.$refs.spinnerContent.clientHeight);
+        // console.info(this.$refs.spinnerContent.clientWidth);
+        this.strokeWidth = Math.min(8, Math.max(2, size / 150));
+        console.info(size + " " + this.strokeWidth);
+      } catch (Exception) {
+        this.strokeWidth = 2;
+      }
     },
 
     async run(handler) {
       this.start();
       try {
+        this.update();
         // await new Promise((r) => setTimeout(r, 600000));
         await handler();
+
         // await new Promise((r) => setTimeout(r, 600000));
       } finally {
         this.stop();
