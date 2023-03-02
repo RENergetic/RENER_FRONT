@@ -1,0 +1,17 @@
+{
+    "message": {
+        "anomaly": {
+            "high": "El consumo de energía es anormalmente alto",
+            "low": "El consumo de energía es anormalmente bajo"
+        },
+        "renewability": "Reduce tu consumo, por favor, poca producción de energía renovable"
+    },
+    "heat": {
+        "increase": {},
+        "decrease": {}
+    },
+    "hot_water": {},
+    "dirty_water": {
+        "drink": "No beber {parameter_1} : and {param_2} "
+    }
+}

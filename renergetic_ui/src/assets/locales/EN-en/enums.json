@@ -30,7 +30,8 @@
     "supercomputer": "Supercomputers",
     "hvac": "HVACs",
     "waste": "Waste",
-    "fossil_fuels": "Fossil fuels"
+    "fossil_fuels": "Fossil fuels",
+    "heat_renewability": "Heat renewability"
   },
   "tile_type": {
     "knob": "knob",

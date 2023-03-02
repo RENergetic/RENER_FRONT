@@ -1,4 +1,11 @@
 {
+    "message": {
+        "anomaly": {
+            "high": "The energy consumption is abnormally high",
+            "low": "The energy consumption is abnormally low"
+        },
+        "renewability": "Please reduce your consumption, there isn't enough renewable energy"
+    },
     "heat": {
         "increase": {},
         "decrease": {}

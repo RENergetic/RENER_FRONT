@@ -1,7 +1,54 @@
 {
-  "on":"On",
-  "off":"Off",
-  "hidden":"Hidden",
-  "visible":"Visible",
-  "feedback":"Feedback"
+  "on": "On",
+  "off": "Off",
+  "enabled": "Enabled",
+  "disabled": "Disabled",
+  "hidden": "Hidden",
+  "visible": "Visible",
+  "feedback": "Feedback",
+
+  "group_by_direction": "Group by measurement's direction",
+  "group_by_direction_description": "Group by flow direction: In or Out ",
+  "group_by_domain": "Group by measurement's domain",
+  "group_by_domain_description": "Group by measurement's domain, for instance: heat, electricity",
+  "group_by_measurement": "Group by measurement name",
+  "group_by_measurement_description": "Group by measurement name, for instance: current_power, energy, inlet_temperature, air_temperature"  ,
+  "ignore_override_mode":"Ignore panel's override settings",
+  "ignore_override_mode_description":"Ignore panel's predefined settings policy.",
+  "tile_legend_visibility":"Tile's legend",
+  "tile_legend_visibility_description":"Toggle on/off the legend in the tile charts",
+  "notification": "Notifications:",
+  "measurements": "Measurements",
+  "prediction_interval":"Prediction interval",
+  "recommendations": "Recommendations",
+  "relative_values": "Use relatives values",
+  "relative_values_description": "Present values as fraction of aggregated values grouped by the provided parameters",
+  "selected_locale":"Selected Locale",
+  "selected_panel": "Selected Panel", 
+  "heatmap": "Heatmap",
+  "chart": "Chart",
+  "panel_font_size": "Panel font size",
+  "request_demand": "Demand requests:",
+  "request_demand_description": "Toggle demand requests list",
+  "information_panel_visibility":"Information panels:",
+  "time_filter": "Time filter",
+  "submit":"Submit",
+  "measurement_details": {
+    "color": "Color"
+  },
+  "time_filters": {
+    "current_day": "Current day",
+    "current_month": "Current month",
+    "current_year": "Current year",
+    "previous_year": "Previous year"
+  },
+  "measurement_type": {
+    "power": "Power",
+    "energy": "Energy",
+    "temperature": "Temperature",
+    "percentage": "Percentage",
+    "voltage": "Voltage",
+    "co2eq": "CO2 eq",
+    "flow": "Flow"
+  }
 }

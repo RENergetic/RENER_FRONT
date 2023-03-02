@@ -1,7 +1,99 @@
 {
   "asset_type": {
-    "bulding": "Bulding",
-    "flat": "Flat",
-    "heat_source": "Heat Source"
+    "bulding": "Edificio",
+    "flat": "Piso",
+    "heat_exchange": "Intercambio de calor",
+    "heat_exchanger": "Intercambiardor de calor",
+    "heat_source": "Fuente de calor",
+    "island": "Isla",
+    "pv": "pv"
+  },
+  "dashboard_measurement_types": {
+    "energy": "Energía",
+    "power": "Potencia"
+  },
+  "metric_type": {
+    "electricity": "electricidad",
+    "heat": "calor",
+    "temperature": "temperatura"
+  },
+  "measurement_name": {
+    "heat": "Calor",
+    "electricity": "Electricidad",
+    "renewability": "Renovabilidad",
+    "renewables": "Renovable",
+    "external": "Externo",
+    "non_renewables": "Combustibles fósiles",
+    "import": "Importado",
+    "office": "Oficinas",
+    "heat_exchanged": "Intercambiadores de calor",
+    "supercomputer": "Super ordenador",
+    "hvac": "HVACs",
+    "waste": "Desperdicio",
+    "fossil_fuels": "Combustibles fósiles",
+    "heat_renewability": "Renovalidad del calor"
+  },
+  "tile_type": {
+    "knob": "knob",
+    "doughnut": "doughnut",
+    "list": "list"
+  },
+  "heatmap_type": {
+    "default": "Normal",
+    "osm": "OpenStreetMap"
+  },
+  "demand_action": {
+    "increase_temperature": "Aumenta temperatura",
+    "decrease_temperature": "Reduce temperatura",
+    "increase_power": "Aumenta la potencia eléctrica",
+    "decrease_power": "Reduce la potencia eléctrica",
+    "increase_heat": "Aumenta la temperatura",
+    "decrease_heat": "Reduce la temperatura"
+  },
+  "demand_action_type": {
+    "increase": "Aumentar",
+    "decrease": "Reducir",
+    "stop": "Parar",
+    "start": "Iniciar",
+    "default": "Otro"
+  },
+  "asset_details_keys": {
+    "color": "Color"
+  },
+  "measurement_details_keys": {
+    "color": "Color"
+  },
+  "role_features": {
+    "public_reports": "Informes/Vistas públicas",
+    "grafana_access": "Acceso a Grafana",
+    "grafana_management": "Gestión de paneles de Grafana",
+    "user_management": "Gestión de usuarios",
+    "role_management": "Gestión de roles de usuarios",
+    "report": "Acceso a informes",
+    "manage_asset": "Administrar activos",
+    "owner": "Puede ser propietario de un asset",
+    "notification": "Acceso a notificaciones",
+    "read": "Puede recibir permisos de lectura para un panel o asset"
+  },
+  "role": {
+    "ren-staff": "Staff",
+    "ren-guest": "Guest",
+    "ren-visitor": "Visitante",
+    "ren-user": "Usuario",
+    "ren-manager": "Manager",
+    "ren-technical-manager": "Technical manager",
+    "ren-admin": "Administrador",
+    "ren-dev": "Desarrollador",
+    "description": {
+      "ren-staff": "Staff",
+      "ren-guest": "Guest",
+      "ren-visitor": "Visitante",
+      "ren-user": "Usuario",
+      "ren-manager": "Gestor",
+      "ren-technical-manager": "Gestor técnico",
+      "ren-admin": "Administrador",
+      "ren-dev": "Desarrollador"
+    }
   }
 }
+ 
