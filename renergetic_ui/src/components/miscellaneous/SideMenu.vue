@@ -230,8 +230,8 @@ export default {
     _userItems() {
       let items = [
         {
-          // label: this.$t("menu.group_list"),
-          label: this.$t("menu.manage"),
+          // label: this.$t("menu.manage"),
+          label: this.$t("menu.manage_users"),
           icon: "pi pi-fw pi-users",
           to: "/admin/users",
           command: () => {
@@ -254,46 +254,53 @@ export default {
       // if ((flags & this.role) == 0) {
       //   return [];
       // }
-      return [
-        {
-          label: this.$t("menu.manage_users"),
-          icon: "pi pi-fw pi-lock",
-          items: items,
-        },
-      ];
+      return items;
+      // return [
+      //   {
+      //     label: this.$t("menu.manage_users"),
+      //     icon: "pi pi-fw pi-lock",
+      //     items: items,
+      //   },
+      // ];
     },
     _assetItems() {
-      let items = [
+      // let items = [
+      //   {
+      //     label: this.$t("menu.manage"),
+      //     icon: "pi pi-fw pi-list",
+      //     to: "/management/asset",
+      //     command: () => {
+      //       this.$router.push({ name: "AssetList" });
+      //     },
+      //   },
+      //   {
+      //     label: this.$t("menu.add_asset"),
+      //     icon: "pi pi-fw pi-plus-circle",
+      //     to: "/management/asset/create",
+      //     command: () => {
+      //       alert("todo:");
+      //       // this.$router.push({ name: "Users" });
+      //     },
+      //   },
+      // ];
+      return [
         {
-          // label: this.$t("menu.group_list"),
-          label: this.$t("menu.manage"),
+          // label: this.$t("menu.manage"),
+          label: this.$t("menu.assets"),
           icon: "pi pi-fw pi-list",
           to: "/management/asset",
           command: () => {
             this.$router.push({ name: "AssetList" });
           },
         },
-        {
-          label: this.$t("menu.add_asset"),
-          icon: "pi pi-fw pi-plus-circle",
-          to: "/management/asset/create",
-          command: () => {
-            alert("todo:");
-            // this.$router.push({ name: "Users" });
-          },
-        },
       ];
-      // let flags = RenRoles.REN_ADMIN;
-      // if ((flags & this.role) == 0) {
-      //   return [];
-      // }
-      return [
-        {
-          label: this.$t("menu.assets"),
-          icon: "pi pi-fw pi-building",
-          items: items,
-        },
-      ];
+      // return [
+      //   {
+      //     label: this.$t("menu.assets"),
+      //     icon: "pi pi-fw pi-building",
+      //     items: items,
+      //   },
+      // ];
     },
 
     _measurementItems() {
@@ -311,33 +318,32 @@ export default {
     _panelManagementItems() {
       let items = [
         {
-          label: this.$t("menu.manage"),
+          // label: this.$t("menu.manage"),
+          label: this.$t("menu.manage_information_panels"),
+
           icon: "pi pi-fw  pi-list",
           to: "/panel",
           command: () => {
             this.$router.push({ name: "InformationPanelList" });
           },
         },
-        {
-          label: this.$t("menu.add_information_panel"),
-          icon: "pi pi-fw pi-plus-circle",
-          to: "/panel/add",
-          command: () => {
-            this.$router.push({ name: "InformationPanelCreator" });
-          },
-        },
+        // {
+        //   label: this.$t("menu.add_information_panel"),
+        //   icon: "pi pi-fw pi-plus-circle",
+        //   to: "/panel/add",
+        //   command: () => {
+        //     this.$router.push({ name: "InformationPanelCreator" });
+        //   },
+        // },
       ];
-      // let flags = RenRoles.REN_ADMIN;
-      // if ((flags & this.role) == 0) {
-      //   return [];
-      // }
-      return [
-        {
-          label: this.$t("menu.manage_information_panels"),
-          icon: "pi pi-fw pi-list",
-          items: items,
-        },
-      ];
+      return items;
+      // return [
+      //   {
+      //     label: this.$t("menu.manage_information_panels"),
+      //     icon: "pi pi-fw pi-list",
+      //     items: items,
+      //   },
+      // ];
     },
 
     _grafanaDashboardManagement() {
