@@ -55,7 +55,7 @@ export default {
   props: {
     users: { type: Array, default: () => [] },
   },
-  emits: ["onDelete", "onCreate"],
+  emits: ["onDelete", "onCreate", "onUpdate"],
   data() {
     return {
       mUsers: this.$datausers,
@@ -81,16 +81,18 @@ export default {
     async onEdit(o) {
       await this.$ren.userApi.updateUser(o).then((res) => {
         if (res) {
+          console.info("update user:" + o.username);
           this.$emitter.emit("information", { message: this.$t("information.user_updated") });
           this.editDialog = false;
-          this.reload();
+          // this.reload();
+          this.$emit("onUpdate", o);
         } else {
           this.$emitter.emit("error", { message: this.$t("information.user_not_updated") });
         }
       });
     },
     async onCreate(o) {
-      console.log(o);
+      // console.log(o);
       await this.$ren.userApi.addUser(o).then((user) => {
         console.info("add user:" + user.username);
         this.$emitter.emit("information", { message: this.$t("information.user_created") });
@@ -99,8 +101,10 @@ export default {
       this.addDialog = false;
     },
 
-    onRolesReload(evt) {
-      console.info(evt);
+    onRolesReload() {
+      //evt
+      // console.info("reload roles")
+      // console.info(evt);
     },
     async onUserExpand() {},
     async deleteUser(user) {
