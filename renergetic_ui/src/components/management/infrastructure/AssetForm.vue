@@ -28,7 +28,7 @@
       <Dropdown
         id="assetType"
         v-model="mModel.type"
-        :options="$store.getters['view/assetTypes']"
+        :options="assetTypes"
         option-label="label"
         option-value="value"
         :placeholder="$t('view.select_asset_type')"
@@ -58,8 +58,8 @@
 
   <Button :label="$t('view.button.submit')" @click="submit" />
   <Button :label="$t('view.button.cancel')" @click="cancel" />
-  <AssetSelect ref="assetSelectDialog" v-model="mModel.parent" />
-  <AssetSelect ref="ownerSelectDialog" v-model="mModel.owner" category="user" />
+  <AssetSelect ref="assetSelectDialog" @select="onAssetSelect" />
+  <AssetSelect ref="ownerSelectDialog" />
   <!-- change -->
 </template>
 
@@ -79,7 +79,7 @@ export default {
   data() {
     return {
       mModel: this.modelValue,
-      assetTypes: this.$store.getters["view/assetTypes"],
+      // assetTypes: this.$store.getters["view/assetTypes"],
       // assetTypes: [
       //   { value: "room", label: this.$t("model.asset.asset_types.room") },
       //   { value: "pv", label: this.$t("model.asset.asset_types.pv") },
@@ -92,6 +92,11 @@ export default {
     },
     ownerLabel: function () {
       return this.mModel != null && this.mModel.owner != null ? this.mModel.owner.label : null;
+    },
+    assetTypes: function () {
+      return this.$store.getters["view/assetTypes"].map((assetType) => {
+        return { value: assetType.id, label: assetType.label };
+      });
     },
   },
   watch: {},
@@ -108,6 +113,9 @@ export default {
     },
     cancel() {
       this.$emit("cancel", this.model);
+    },
+    onAssetSelect(selectedAsset) {
+      console.log(selectedAsset);
     },
   },
 };

@@ -92,11 +92,11 @@ export default {
       alert(o);
       alert(i);
     },
-    // async loadData() {
-    //   await this.$ren.measurementApi.measurements(this.objects).then((data) => {
-    //     this.data = data;
-    //   });
-    // },
+    async loadData() {
+      await this.$ren.measurementApi.measurements(this.objects).then((data) => {
+        this.data = data;
+      });
+    },
   },
 };
 </script>

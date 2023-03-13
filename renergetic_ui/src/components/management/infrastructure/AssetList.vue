@@ -91,7 +91,11 @@
     </Column>
     <Column field="child" :header="$t('model.asset.child')">
       <template #body="slotProps">
-        <span v-if="slotProps.data.child && slotProps.data.child.length > 0" @click="viewChildren(slotProps.data)">
+        <span
+          class="pointer"
+          v-if="slotProps.data.child && slotProps.data.child.length > 0"
+          @click="viewChildren(slotProps.data)"
+        >
           {{ $t("view.view_asset_children") }}
         </span>
         <span v-else class="disabled">
@@ -102,8 +106,10 @@
 
     <Column field="parent" :header="$t('model.asset.parent')">
       <template #body="slotProps">
-        <span v-if="slotProps.data.parent" @click="setParent(slotProps.data)"> {{ slotProps.data.parent.label }} </span>
-        <span v-else class="disabled" @click="setParent(slotProps.data)">
+        <span class="pointer" v-if="slotProps.data.parent" @click="setParent(slotProps.data)">
+          {{ slotProps.data.parent.label }}
+        </span>
+        <span v-else class="disabled pointer" @click="setParent(slotProps.data)">
           {{ $t("view.no_parent") }}
         </span>
       </template>
@@ -111,32 +117,36 @@
     <Column field="measurements" :header="$t('model.asset.measurements')">
       <template #body="slotProps">
         <span
+          class="pointer"
           v-if="slotProps.data.measurements && slotProps.data.measurements.length > 0"
           @click="viewMeasurements(slotProps.data)"
         >
           {{ $t("view.view_asset_measurements") }}
         </span>
-        <span v-else class="disabled">
+        <span v-else class="pointer disabled" @click="viewMeasurements(slotProps.data)">
           {{ $t("view.no_asset_measurements") }}
         </span>
       </template>
     </Column>
     <Column name="asset_connections" :header="$t('model.asset.asset_connections')">
       <template #body="slotProps">
-        <span @click="manageAssetConnections(slotProps.data)">
+        <span class="pointer" @click="manageAssetConnections(slotProps.data)">
           {{ $t("view.manage_asset_connections") }}
         </span>
       </template></Column
     >
     <Column name="edit" :header="$t('view.properties')">
-      <template #body
-        >popup - edit key-value asset_details - list of possible keys :
-        {{ $store.getters["view/assetDetailsKeys"] }}
-      </template></Column
-    >
+      <template #body="slotProps">
+        <span class="pointer" @click="manageAssetProperties(slotProps.data, $store.getters['view/assetDetailsKeys'])">
+          Manage properties
+        </span>
+      </template>
+    </Column>
     <Column name="edit" :header="$t('view.edit')">
-      <template #body>TODO: edit other asset properties here</template></Column
-    >
+      <template #body="slotProps">
+        <span class="pointer" @click="editAsset(slotProps.data)"> Edit Asset </span>
+      </template>
+    </Column>
     <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
     <template #header>
       <div class="flex justify-content-between">
@@ -188,6 +198,8 @@
   </Dialog>
   <AssetSelect ref="assetSelectDialog" @select="onParentChange" />
   <AssetConnectionManagement ref="assetConnectionManagementDialog" />
+  <AssetProperties ref="assetPropertiesDialog" @update-details="updateDetails" />
+  <AssetEdit ref="assetEditDialog" @update-asset="updateAsset" />
 
   <Dialog
     v-model:visible="childDialog"
@@ -266,11 +278,13 @@ import AssetForm from "./AssetForm.vue";
 import AssetSelect from "./AssetSelect.vue";
 import MeasurementSelect from "./MeasurementSelect.vue";
 import AssetConnectionManagement from "./AssetConnectionManagement.vue";
+import AssetProperties from "@/components/management/infrastructure/AssetProperties.vue";
+import AssetEdit from "@/components/management/infrastructure/AssetEdit.vue";
 
 const PAGE_SIZE = 10;
 export default {
   name: "AssetList",
-  components: { AssetForm, AssetSelect, MeasurementSelect, AssetConnectionManagement },
+  components: { AssetEdit, AssetProperties, AssetForm, AssetSelect, MeasurementSelect, AssetConnectionManagement },
   props: {},
   data() {
     return {
@@ -304,27 +318,46 @@ export default {
     manageAssetConnections(row) {
       this.$refs.assetConnectionManagementDialog.open(row);
     },
-
+    manageAssetProperties(row, detailsKeys) {
+      this.$refs.assetPropertiesDialog.open(row, detailsKeys);
+    },
+    editAsset(row) {
+      this.$refs.assetEditDialog.open(row);
+    },
     viewChildren(row) {
       console.info(row);
       this.selectedRow = row;
       this.childDialog = true;
     },
-
     viewMeasurements(row) {
       console.info(row);
       this.selectedRow = row;
       this.measurementDialog = true;
     },
 
-    onParentChange(parent) {
-      //tODO: integrate -TOMEK
-      this.selectedRow.parent = { name: parent.name, id: parent.id, label: parent.label };
-      //TODO: catch error
-      this.$ren.managementApi.updateAsset({ ...this.selectedRow });
+    async onParentChange(parent) {
+      await this.$ren.managementApi.setParent(this.selectedRow, parent.id);
+      await this.reload();
     },
     addMeasurement() {
       this.$refs.measurementSelectDialog.open();
+    },
+    async updateDetails(asset, details) {
+      for (const [key, value] of Object.entries(details)) {
+        if (value === "") {
+          continue;
+        }
+        if (asset.details[key] === null || asset.details[key] === undefined) {
+          await this.$ren.managementApi.addAssetDetail(asset.id, key, value);
+        } else {
+          await this.$ren.managementApi.updateAssetDetail(asset.id, key, value);
+        }
+      }
+      await this.reload();
+    },
+    async updateAsset(asset) {
+      await this.$ren.managementApi.updateAsset(asset);
+      await this.reload();
     },
     onMeasurementSelect(measurement) {
       this.selectedRow.measurements.push(measurement);
@@ -337,7 +370,7 @@ export default {
         // o.id = assetId;
         // this.assetList.push(o);
       });
-      this.reload();
+      await this.reload();
     },
 
     async reload() {
@@ -346,19 +379,25 @@ export default {
       let params = {
         label: this.filters.label.value,
         name: this.filters.name.value,
-        type: this.filters["type.label"] ? this.filters["type.label"].value.name : null,
-        category: this.filters["category.label"] ? this.filters["category.label"].value.name : null,
+        type:
+          this.filters["type.label"] && this.filters["type.label"].value ? this.filters["type.label"].value.name : null,
+        category:
+          this.filters["category.label"] && this.filters["type.label"].value
+            ? this.filters["category.label"].value.name
+            : null,
       };
 
       console.info(params);
       this.assetList = await this.$ren.managementApi.listAsset(params, PAGE_SIZE * this.page, PAGE_SIZE);
     },
-    next() {
+    async next() {
       if (this.assetList.length === 0) return;
       this.page += 1;
+      await this.reload();
     },
-    previous() {
+    async previous() {
       this.page = Math.max(0, this.page - 1);
+      await this.reload();
     },
     clearFilter() {
       this.filters = this.initFilter();
@@ -375,6 +414,9 @@ export default {
   },
 };
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.pointer {
+  cursor: pointer;
+}
+</style>

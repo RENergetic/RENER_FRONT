@@ -43,14 +43,23 @@ export default class ManagementApi extends RestComponent {
       }
     });
   }
-  submitAssetConnection(assetId, connectedAssetId, type) {
-    this.put(`/api/assets/connect/${assetId}`, { connected_asset_id: connectedAssetId, type: type }, null, (e) => {
-      if (e.response.status == 404) {
-        //TODO: handle connectedAssetId not found
-        this.emitError(`${assetId} not found: ${e.message}`, { code: "asset_not_found", args: [assetId] });
-        return true;
-      }
-    });
+  async submitAssetConnection(assetId, connectedAssetId, type) {
+    console.log("assetId", assetId);
+    console.log("connectedAssetId", connectedAssetId);
+    console.log("type", type);
+    await this.put(
+      `/api/assets/connect/${assetId}?connect_to=${connectedAssetId}&type=${type}`,
+      null,
+      null,
+      null,
+      (e) => {
+        if (e.response.status === 404) {
+          //TODO: handle connectedAssetId not found
+          this.emitError(`${assetId} not found: ${e.message}`, { code: "asset_not_found", args: [assetId] });
+          return true;
+        }
+      },
+    );
   }
 
   async addAsset(asset) {
@@ -66,6 +75,28 @@ export default class ManagementApi extends RestComponent {
     if (asset.owner != undefined && typeof asset === "object") assetCopy.owner = asset.owner.id;
     return this.put(`/api/assets/${asset.id}`, assetCopy, null, null, (e) => {
       if (e.response.status == 404) {
+        this.emitError(`${asset.id} not found: ${e.message}`, { code: "asset_not_found", args: [asset.id] });
+      } else {
+        this.emitError(`PUT /api/assets/${asset.id} -${e.message}`);
+      }
+    });
+  }
+
+  async setParent(asset, parentId) {
+    const assetCopy = {
+      id: asset.id,
+      name: asset.name,
+      type: asset.type.id,
+      label: asset.label,
+      description: asset.description,
+      geo_location: asset.geo_location,
+      parent: parentId,
+      user: asset.user,
+      asset_category: asset.category,
+      dashboards: asset.dashboards,
+    };
+    return this.put(`/api/assets/${asset.id}`, assetCopy, null, null, (e) => {
+      if (e.response.status === 404) {
         this.emitError(`${asset.id} not found: ${e.message}`, { code: "asset_not_found", args: [asset.id] });
       } else {
         this.emitError(`PUT /api/assets/${asset.id} -${e.message}`);
@@ -140,21 +171,41 @@ export default class ManagementApi extends RestComponent {
       }
     });
   }
+  async addAssetDetail(id, key, value) {
+    return await this.post(`/api/assets/${id}/info`, { key: key, value: value }, null, null, (e) => {
+      if (e.response.status === 404) {
+        this.emitError(`Asset ${id} not found: ${e.message}`, {
+          code: "asset_not_found",
+          args: [id],
+        });
+        return true;
+      }
+    });
+  }
+  async updateAssetDetail(id, key, value) {
+    return await this.put(`/api/assets/${id}/info`, { key: key, value: value }, null, null, (e) => {
+      this.emitError(`Asset ${id} not found: ${e.message}`, {
+        code: "asset_not_found",
+        args: [id],
+      });
+      return true;
+    });
+  }
+  async addMeasurement(measurement) {
+    if (measurement.type != undefined) measurement.type = measurement.type.id;
+    return this.axios
+      .post(`/api/measurements`, measurement, {
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error) {
+        console.error("add measurement error" + error.message);
+      });
+  }
 }
 
-// async addMeasurement(measurement) {
-//   if (measurement.type != undefined) measurement.type = measurement.type.id;
-//   return this.axios
-//     .post(`/api/measurements`, measurement, {
-//       headers: { "Content-type": "application/json; charset=UTF-8" },
-//     })
-//     .then((response) => {
-//       return response.data;
-//     })
-//     .catch(function (error) {
-//       console.error("add measurement error" + error.message);
-//     });
-// }
 // async searchMeasurement(q,assetId=null,offset=0,limit=20){}
 
 // async deleteMeasurement(id) {
