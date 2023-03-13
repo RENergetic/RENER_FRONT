@@ -1,0 +1,29 @@
+{
+    "validations": {
+        "required": "El campo '{property}' es necesario.",
+        "minLength": "El campo '{property}' tiene un valor de '{model}', pero debe tener una longitud mínima {min}.",
+        "maxLength": "El campo '{property}' tiene un valor de '{model}', pero debe tener una longitud máxima {max}.",
+        "url": "'{model}' no es una URL válida.",
+        "email": "'{model}' no es un email válido.",
+        "fields": {
+            "username":"Nombre de usuario",
+            "email":"Email",
+            "name": "Nombre",
+            "url": "URL",
+            "label": "Etiqueta",
+            "password":"Contraseña",
+            "passwordRepeat":"Repetir contraseña"  
+        },
+        "sameAs":"El campo '{property}' no es el mismo que {same_as_property}."
+    },
+    "information": {
+        "information": "Información",
+        "dashboard_created": "El panel ha sido creado",
+        "dashboard_updated": "El panel ha sido modificado",
+        "dashboard_not_updated": "El panel no ha sido modificado"
+    },
+    "error": {
+        "error": "Error",
+        "dashboard_not_updated": "El panel no ha sido modificado" 
+    }
+}

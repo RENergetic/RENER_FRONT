@@ -1,64 +1,82 @@
 {
+     
      "dashboard": {
-          "name": "Name",
+          "name": "Nombre",
           "url": "URL",
-          "label": "Label"
+          "label": "Etiqueta",
+          "model": "Modelo",
+          "measurement_type": "Tipo de medición",
+          "unit": "Unidad",
+          "user": "Usuario"
      },
      "heatmap": {
-          "name":"Name",
-          "label": "Label",
-          "areas": "Areas",
-          "attributes": "Attributes",
-          "recommendations": "Recommendations",
-          "notifications": "Notifications",
-          "dashboard": "Dashboard",
-          "heatmap": "Heatmap",
-          "imgUrl": "Image URL",
-          "description": "Description",
+          "name": "Nombre",
+          "label": "Etiqueta",
+          "areas": "Áreas",
+          "attributes": "Atributos",
+          "recommendations": "Recomendaciones",
+          "notifications": "Notificaciones",
+          "dashboard": "Panel",
+          "heatmap": "Mapa de calor",
+          "imgUrl": "URL de imagen",
+          "description": "Descripción",
           "id": "Id"
      },
      "asset": {
-          "name": "Name",
+          "asset_connections": "Conexiones entre activos",
+          "name": "Nombre",
           "id": "Id",
-          "child": "Sub assets",
-          "asset_type": "Asset type",
-          "label": "Label",
-          "measurements": "Measurements",
-          "geo_location": "Geo location",
-          "owner": "Owner",
-          "parent": "Parent",
-          "asset_types": {
-               "room": "Room",
+          "child": "Sub activos",
+          "asset_type": "Tipo de activo",
+          "asset_category": "Categoría de activo",
+          "label": "Etiqueta",
+          "measurements": "Mediciones",
+          "geo_location": "Geoposicionamiento",
+          "owner": "Propietario",
+          "parent": "Padre",
+          "type": {
+               "room": "Habitación",
                "pv": "PV"
-          }
+          },
+          "category": {}
      },
      "information_tile": {
-          "type": "type"
+          "type": "tipo"
      },
      "information_panel": {
           "id": "Id",
-          "label": "Label",
-          "name": "Name"
+          "label": "Etiqueta",
+          "name": "Nombre"
      },
      "measurement": {
-          "name": "Name",
-          "label": "Label",
-          "measurement_type": "Measurement type",
-          "location_name": "Location",
-          "type": "Measurement type",
+          "name": "Nombre",
+          "label": "Etiqueta",
+          "measurement_type": "Tipo de medición",
+          "location_name": "Ubicación",
+          "type": "Tipo de medición",
           "id": "Id",
-          "details": "Details",
-          "direction": "Direction",
-          "direction_out": "Out",
-          "direction_in": "In",
+          "details": "Detalles",
+          "direction": "Direcición",
+          "direction_out": "Salida",
+          "direction_in": "Entrada",
           "direction_null": "N/A"
      },
      "panel": {
-          "name": "Name",
-          "label": "Label"
+          "name": "Nombre",
+          "label": "Etiqueta"
      },
      "user": {
-          "login": "Login",
-          "password": "Password"
+          "login": "Iniciar sesión",
+          "password": "Contraseña",
+          "email":"Email",
+          "firstname":"Nombre",
+          "lastname":"Apellidos",
+          "username":"Usuario"    , 
+          "password_repeat":"Repetir contraseña",
+          "temp_password":"Contraseña temporal" ,    
+          "roles":"Roles"      
+     },
+     "role":{
+          "name":"Nombre"
      }
 }

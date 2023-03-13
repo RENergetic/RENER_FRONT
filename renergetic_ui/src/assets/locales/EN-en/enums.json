@@ -31,8 +31,8 @@
     "hvac": "HVACs",
     "waste": "Waste",
     "fossil_fuels": "Fossil fuels",
-    "heat_renewability":"Heat renewability",
-    "electricity_renewability":"Electricity renewability"
+    "electricity_renewability":"Electricity renewability",
+    "heat_renewability": "Heat renewability"
   },
   "tile_type": {
     "knob": "knob",
