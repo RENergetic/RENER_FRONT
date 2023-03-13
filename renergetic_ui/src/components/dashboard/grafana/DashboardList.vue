@@ -18,8 +18,8 @@
       </template>
     </Column>
     <Column field="ext.model" :header="$t('model.dashboard.model')" :show-filter-menu="false"> </Column>
-    <Column field="ext.measurement_type" :header="$t('model.dashboard.measurement_type')"> </Column>
-    <Column field="ext.unit" :header="$t('model.dashboard.unit')"> </Column>
+    <Column field="measurement_type.physical_name" :header="$t('model.dashboard.measurement_type')"> </Column>
+    <Column field="measurement_type.unit" :header="$t('model.dashboard.unit')"> </Column>
     <Column field="url" :header="$t('model.dashboard.url')">
       <template #body="slotProps">
         {{ slotProps.data.url }}

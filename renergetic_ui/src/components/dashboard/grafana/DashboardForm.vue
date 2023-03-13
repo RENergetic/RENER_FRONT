@@ -6,7 +6,8 @@
     </template>
     <template #content>
       <div class="ren">
-        <!-- {{ $store.getters["view/dashboardUnits"] }} -->
+        <!-- {{ $store.getters["view/dashboardUnits"] }} 
+        {{ measurementTypes }} -->
         <!-- {{ mDashboard }} -->
         <div class="field grid">
           <label for="dasboardName" class="col-12 mb-2 md:col-2 md:mb-0">
@@ -87,11 +88,11 @@
         <div class="field grid">
           <label for="dasboardUnit" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.dashboard.unit") }} </label>
           <div class="col-12 md:col-10">
+            <!-- :option-value="(opt) => `${opt.name} [${opt.symbol}]`" -->
             <Dropdown
               id="dasboardUnit"
-              v-model="mDashboard.ext.unit"
-              :option-label="(opt) => `[${opt.symbol}]`"
-              :option-value="(opt) => `${opt.name} [${opt.symbol}]`"
+              v-model="mDashboard.measurement_type"
+              :option-label="(opt) => `[${opt.unit}]`"
               :options="mUnits"
               :placeholder="$t('view.select_dashboard_unit')"
             />
@@ -136,11 +137,26 @@ export default {
       models: this.$store.getters["view/dashboardModels"],
       // units: this.$store.getters["view/dashboardUnits"],
       mUnits: mUnits,
+      selectedPhysicalUnit:
+        this.mDashboard && this.mDashboard.measurement_type ? this.mDashboard.measurement_type.physical_name : null,
+
       measurementTypes: Object.keys(DashboardMeasurementTypes),
     };
   },
   validationConfig: {
     $lazy: true,
+  },
+  computed: {
+    measurementType() {
+      if (this.mDashboard && this.mDashboard.measurement_type)
+        return this.mDashboard && this.mDashboard.measurement_type.physical_name;
+      return null;
+    },
+    unit() {
+      if (this.mDashboard && this.mDashboard.measurement_type)
+        return this.mDashboard && this.mDashboard.measurement_type.unit;
+      return null;
+    },
   },
   validations() {
     return {
@@ -195,7 +211,7 @@ export default {
         return this.$store.getters["view/dashboardUnits"];
       }
       let units = this.$store.getters["view/dashboardUnits"];
-      return units.filter((it) => it.physical_type == type);
+      return units.filter((it) => it.physical_name == type);
     },
     clear() {
       this.mDashboard = {};

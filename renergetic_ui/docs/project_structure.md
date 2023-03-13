@@ -5,6 +5,7 @@
 * src - [project sources](#src-directory) 
 * src/assets - [project assets](#assets) 
 * src/assets/styles - [project styles](#styles) 
+* src/assets/locales - [project language keys](#locales) 
 * src/views - [project views](#views) 
 * src/components - [project components](#components) 
 * src/plugins - [project plugins](#plugins) 
@@ -39,6 +40,17 @@
 * variables.scss - configurable variables
 * ren.scss - global classes , primefaces modifications
   
+[top](#project-structure)  
+
+#### Locales
+
+*  view (```view.*```)- general components items
+*  error - error messages (located in misc.json)
+*  information - information messages (located in misc.json)
+*  primevue.json - primevue library components translatons
+*  menu - menu options 
+
+
 [top](#project-structure)  
 
 #### Views

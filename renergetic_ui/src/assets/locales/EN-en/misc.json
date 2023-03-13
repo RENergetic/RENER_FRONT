@@ -20,11 +20,16 @@
         "information": "Information",
         "dashboard_created": "Dashboard has been created",
         "dashboard_updated": "Dashboard has been updated",
-        "dashboard_not_updated": "Dashboard has not been updated"
+        "dashboard_not_updated": "Dashboard has not been updated",
+        "user_updated": "User has been updated",
+        "user_created": "User has been created"
     },
     "error": {
         "error": "Error",
-        "dashboard_not_updated": "Dashboard has not been updated"
+        "dashboard_not_updated": "Dashboard has not been updated",
+        "rest_title": "API Error",
+        "user_not_found": "User: {0}  not found ",
+        "user_not_updated": "User not updated"
     },
     "message": {
         "anomaly": {
