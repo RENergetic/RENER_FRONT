@@ -9,11 +9,9 @@
       @filter="onFilter"
     >
       <Card>
-        <template #title> {{ $t("view.asset_select") }} </template>
+        <template #title> {{ $t("view.asset_select") }}</template>
         <template #content>
           <div class="flex flex-column">
-            <div v-if="initialAsset">selected: {{ initialAsset }}</div>
-
             <DataTable
               v-model:filters="filters"
               v-model:selection="selectedAsset"
@@ -111,14 +109,14 @@
                   <Button
                     type="button"
                     icon="pi pi-filter-slash"
-                    :label="$t('button.filter')"
+                    :label="$t('view.button.filter')"
                     class="p-button-outlined"
                     @click="searchAsset"
                   />
                   <Button
                     type="button"
                     icon="pi pi-filter-slash"
-                    :label="$t('button.clear_filter')"
+                    :label="$t('view.button.clear_filter')"
                     class="p-button-outlined"
                     @click="clearFilter"
                   />
@@ -129,7 +127,7 @@
                   <Button
                     type="button"
                     icon="pi pi-filter-slash"
-                    :label="$t('button.previous')"
+                    :label="$t('view.button.previous')"
                     class="p-button-outlined"
                     @click="previous"
                   />
@@ -137,7 +135,7 @@
                   <Button
                     type="button"
                     icon="pi pi-filter-slash"
-                    :label="$t('button.next')"
+                    :label="$t('view.button.next')"
                     class="p-button-outlined"
                     @click="next"
                   />
@@ -150,7 +148,9 @@
             <div class="col">
               <Button
                 :label="$t('view.button.submit')"
-                :disabled="assetList.length < 1 || !assetList.some((asset) => asset.name === selectedAsset.name)"
+                :disabled="
+                  assetList.length < 1 || !assetList.some((asset) => selectedAsset && asset.name === selectedAsset.name)
+                "
                 @click="submit"
               />
             </div>
@@ -204,18 +204,20 @@ export default {
       this.assetDialog = false;
     },
     next() {
-      if (this.assetList.lenth == 0) return;
+      if (this.assetList.length === 0) return;
       this.page += 1;
+      this.searchAsset();
     },
     previous() {
       this.page = Math.max(0, this.page - 1);
+      this.searchAsset();
     },
     clearFilter() {
       this.filters = this.initFilter();
     },
     async searchAsset() {
       //not implemented on backend
-      await this.$ren.managementApi.listAsset(this.filters, this.page * PAGE_SIZE, PAGE_SIZE).then((assetList) => {
+      await this.$ren.managementApi.listAsset(undefined, this.page * PAGE_SIZE, PAGE_SIZE).then((assetList) => {
         this.assetList = assetList;
       });
     },
@@ -224,8 +226,8 @@ export default {
       if (current != null) {
         this.selectedAsset = current;
         this.initialAsset = current;
-        this.searchAsset();
       }
+      await this.searchAsset();
     },
     onFilter(ev) {
       this.filters = ev.filters;

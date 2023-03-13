@@ -12,10 +12,14 @@
         <Spinner v-if="loading"></Spinner>
         <span v-if="!loading && connectedAssets.length === 0">{{ $t("view.no_connections_found") }}</span>
         <div v-if="!loading && connectedAssets.length > 0">
-          <h3>{{ $t("view.connected_assets") }}</h3>
           <DataTable :value="connectedAssets" :lazy="true" data-key="id">
             <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false"></Column>
             <Column field="label" :header="$t('model.asset.label')" :show-filter-menu="false"></Column>
+            <Column
+              field="connection_type"
+              :header="$t('model.asset.connection_type')"
+              :show-filter-menu="false"
+            ></Column>
           </DataTable>
         </div>
       </template>
@@ -31,14 +35,28 @@
     :modal="true"
     :dismissable-mask="true"
   >
-    <Dropdown
-      v-model="selectedAssetConnection"
-      :options="allAssets"
-      optionLabel="name"
-      :placeholder="$t('view.select_asset')"
-    >
-    </Dropdown>
-    <Button></Button>
+    <Card>
+      <template #title>{{ $t("view.add_asset") }}</template>
+      <template #content>
+        <div class="add-asset-connection-form">
+          <div class="select-asset-input">
+            <span v-if="!selectedAsset">No Asset Selected</span>
+            <span v-if="selectedAsset">{{ selectedAsset.label }}</span>
+            <Button v-if="!selectedAsset" @click="selectAsset">{{ $t("view.select_asset") }}</Button>
+            <Button v-if="selectedAsset" @click="selectAsset">{{ $t("view.change_asset") }}</Button>
+          </div>
+          <Dropdown
+            style="height: fit-content"
+            v-model="selectedAssetConnection"
+            :placeholder="$t('view.connection_type')"
+            :options="Object.entries(connectionTypes).map((entry) => entry[1])"
+          ></Dropdown>
+        </div>
+      </template>
+      <template #footer>
+        <Button @click="submitAssetConnection()">Submit</Button>
+      </template>
+    </Card>
   </Dialog>
   <AssetSelect ref="assetSelectDialog" @select="onAssetSelect" />
 </template>
@@ -46,8 +64,8 @@
 <script>
 import AssetSelect from "./AssetSelect.vue";
 import { AssetConnectionType } from "@/plugins/model/Enums.js";
-import Dropdown from "primevue/dropdown";
 import Spinner from "@/components/miscellaneous/Spinner";
+import Dropdown from "primevue/dropdown";
 
 export default {
   name: "AssetConnectionManagement",
@@ -62,7 +80,7 @@ export default {
       connectionTypes: AssetConnectionType,
       loading: true,
       connectedAssets: [],
-      allAssets: [],
+      initialAsset: null,
     };
   },
   computed: {},
@@ -75,32 +93,50 @@ export default {
   },
   methods: {
     async open(selectedAsset) {
-      this.loading = true;
       this.dialog = true;
-      this.selectedAsset = selectedAsset;
-      this.connectedAssets = await this.$ren.managementApi.listConnectedAssets(this.selectedAsset.id, 0, 200);
-      console.log(this.connectedAssets);
-      this.allAssets = await this.$ren.managementApi.listAsset(undefined, 0, 1000);
+      this.initialAsset = selectedAsset;
+      await this.reload();
+    },
+    async reload() {
+      this.loading = true;
+      this.connectedAssets = await this.$ren.managementApi.listConnectedAssets(this.initialAsset.id, 0, 200);
       this.loading = false;
     },
     selectAsset() {
       this.selectedAsset = null;
       this.selectedAssetConnection = null;
-      this.$refs.assetSelectDialog.open();
+      this.$refs.assetSelectDialog.open(this.initialAsset);
     },
     onAssetSelect(selectedAsset) {
       this.selectedAsset = selectedAsset;
     },
-    deleteAssetConnection() {
-      this.$ren.managementApi.unconnectAsset(this.asset.id, this.selectedAsset.id, this.selectedAssetConnection);
-      //tODO: rest integeation tomek
+    deleteAssetConnection(selectedAsset) {
+      this.$ren.managementApi.deleteAssetConnection(this.initialAsset.id, selectedAsset.id);
     },
-    submitAssetConnection() {
-      this.$ren.managementApi.connectAsset(this.asset.id, this.selectedAsset.id, this.selectedAssetConnection);
+    async submitAssetConnection() {
+      await this.$ren.managementApi.submitAssetConnection(
+        this.initialAsset.id,
+        this.selectedAsset.id,
+        this.selectedAssetConnection,
+      );
+      this.addDialog = false;
+      await this.reload();
     },
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.select-asset-input {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: max-content;
+}
+.add-asset-connection-form {
+  display: flex;
+  flex-direction: row;
+  gap: 5rem;
+}
+</style>
