@@ -214,10 +214,10 @@ export default {
 
       let items = [
         ...this._userItems(),
-        ...this._grafanaDashboardManagement(),
         ...this._assetItems(),
-        ...this._measurementItems(),
+        ...this._grafanaDashboardManagement(),
         ...this._panelManagementItems(),
+        ...this._measurementItems(),
       ];
       return [
         {
@@ -238,16 +238,16 @@ export default {
             this.$router.push({ name: "Users" });
           },
         },
-        {
-          // label: this.$t("menu.group_list"),
-          label: this.$t("menu.add_user"),
-          icon: "pi pi-fw pi-user-plus",
-          // to: "/admin/users/add",
-          command: () => {
-            this.userDialog = !this.userDialog;
-            // this.$router.push({ name: "AddUser" });
-          },
-        },
+        // {
+        //   // label: this.$t("menu.group_list"),
+        //   label: this.$t("menu.add_user"),
+        //   icon: "pi pi-fw pi-user-plus",
+        //   // to: "/admin/users/add",
+        //   command: () => {
+        //     this.userDialog = !this.userDialog;
+        //     // this.$router.push({ name: "AddUser" });
+        //   },
+        // },
       ];
 
       // let flags = RenRoles.REN_ADMIN;
