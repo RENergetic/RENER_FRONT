@@ -20,14 +20,24 @@ body {
     background: linear-gradient(to right, #232526, #414345);
     margin: 0;
 }
-.p-button{background-color: $ren-primary-color;border-color: $ren-primary-color;}
-.p-button:hover{background-color: $ren-primary-color-tr !important;}
-.p-button.p-button-text{color: $ren-primary-color }
-
+.p-button {
+    background-color: $ren-primary-color;
+    border-color: $ren-primary-color;
+    min-height: 2.5rem;
+}
+.p-button:hover {
+    background-color: $ren-primary-color-tr !important;
+}
+.p-button.p-button-text {
+    color: $ren-primary-color;
+}
 
 .ren-control-bg {
     background: linear-gradient(to bottom, #190a05, #870000);
     color: $secondary-color;
+}
+.ren-pointer {
+    cursor: pointer;
 }
 
 .disabled {
@@ -76,19 +86,18 @@ body {
     .state.ok,
     .cell.ok,
     .cell-state.ok {
-        background-color:$ren-state-color-ok;
-    } 
- 
+        background-color: $ren-state-color-ok;
+    }
 
     .state.error,
     .cell.error,
     .cell-state.error {
-        background-color:$ren-state-color-error
+        background-color: $ren-state-color-error;
     }
     .state.warning,
     .cell.warning,
     .cell-state.warning {
-        background-color: $ren-state-color-warning
+        background-color: $ren-state-color-warning;
     }
     .hl-warning {
         .p-panelmenu-header-content {
@@ -103,7 +112,7 @@ body {
     }
     .row.unknown {
         opacity: 0.65;
-        background:$ren-state-color-unknown ; 
+        background: $ren-state-color-unknown;
         // .cell.ok,
         // .cell-state.ok {
         //     background-color: lightgray;
@@ -122,7 +131,8 @@ body {
         // }
     }
 }
-.fullscr,.standard {
+.fullscr,
+.standard {
     max-width: 99.5vw;
     width: 100%;
     min-height: 100vh;
@@ -177,7 +187,7 @@ body {
         // top: initial;
     }
     .p-sidebar-header {
-        height: 0 ;
+        height: 0;
         padding: 0;
         margin-top: 1rem;
     }
@@ -265,6 +275,6 @@ body {
     cursor: pointer;
 }
 
-#pagefooter{
+#pagefooter {
     background-color: $secondary-color;
-} 
+}

@@ -25,10 +25,10 @@ module.exports = {
       2,
       {
         singleline: {
-          max: 5,
+          max: 6,
         },
         multiline: {
-          max: 3,
+          max: 4,
         },
       },
     ],
@@ -42,9 +42,9 @@ module.exports = {
       "error",
       {
         code: 120,
-        template: 120,
+        template: 190,
         tabWidth: 2,
-        comments: 160,
+        comments: 200,
         ignorePattern: "",
         ignoreComments: false,
         ignoreTrailingComments: false,

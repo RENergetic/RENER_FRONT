@@ -6,6 +6,11 @@
         "url": "'{model}' is not valid url.",
         "email": "'{model}' is not valid email.",
         "fields": {
+            "custom": {
+                "asset": {
+                    "type": "asset type"
+                }
+            },
             "username": "username",
             "email": "email",
             "name": "name",

@@ -9,6 +9,7 @@
   "asset_list": "Asset list",
   "asset_select": "Select asset",
   "change_asset": "Change Asset",
+  "current_page":"Current Page {page}",
   "connected_assets": "Connected Assets",
   "connection_type": "Connection Type",
   "dashboards": "Dashboards",
