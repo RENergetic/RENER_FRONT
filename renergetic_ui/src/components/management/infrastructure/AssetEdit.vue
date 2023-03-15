@@ -9,25 +9,25 @@
     <div class="edit-form">
       <div class="property-form">
         <label>Name</label>
-        <InputText type="text" v-model="this.updateAsset.name"></InputText>
+        <InputText v-model="updateAsset.name" type="text"></InputText>
       </div>
       <div class="property-form">
         <label>Label</label>
-        <InputText type="text" v-model="this.updateAsset.label"></InputText>
+        <InputText v-model="updateAsset.label" type="text"></InputText>
       </div>
       <div class="property-form">
         <label for="description">Description</label>
-        <Textarea id="description" auto-resize rows="5" cols="30" v-model="this.updateAsset.description"></Textarea>
+        <Textarea id="description" v-model="updateAsset.description" auto-resize rows="5" cols="30"></Textarea>
       </div>
       <div class="property-form">
         <label for="geo_location">Geo Location</label>
         <InputText
           id="geo_location"
+          v-model="updateAsset.geo_location"
           type="text"
           auto-resize
           rows="5"
           cols="30"
-          v-model="this.updateAsset.geo_location"
         ></InputText>
       </div>
       <div class="field grid">

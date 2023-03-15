@@ -63,7 +63,7 @@
   >
     <AssetForm @update:model-value="onCreate($event, 0)" @cancel="assetAdd = false"> </AssetForm>
   </Dialog>
-  <AssetSelect ref="assetSelectDialog" @change="onParentChange" />
+  <AssetSelectDialog ref="assetSelectDialog" @change="onParentChange" />
   <Dialog
     v-model:visible="childDialog"
     :style="{ width: '75vw' }"
@@ -139,12 +139,12 @@
 <script>
 import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import AssetForm from "../infrastructure/AssetForm.vue";
-import AssetSelect from "../infrastructure/AssetSelect.vue";
+import AssetSelectDialog from "@/components/management/infrastructure/AssetSelectDialog.vue";
 import MeasurementSelect from "../infrastructure/MeasurementSelect.vue";
 // import { QueryBuilder } from "@/plugins/renergetic/ren_api/wrapper_api.js";
 export default {
   name: "DemandListManage",
-  components: { InfoIcon, AssetForm, AssetSelect, MeasurementSelect },
+  components: { InfoIcon, AssetForm, AssetSelectDialog, MeasurementSelect },
   props: {},
   data() {
     return {

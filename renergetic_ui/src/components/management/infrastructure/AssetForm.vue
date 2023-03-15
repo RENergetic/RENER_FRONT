@@ -4,71 +4,67 @@
       <!-- some info -->
     </template>
   </InfoIcon>
-  <div class="field grid">
-    <label for="assetName" class="col-fixed" style="width: 5rem">
-      {{ $t("model.asset.name") }}
-    </label>
-    <div class="col">
-      <InputText id="assetName" v-model="mModel.name" :aria-readonly="!edit" />
-    </div>
-  </div>
-  <div class="field grid">
-    <label for="assetLabel" class="col-fixed" style="width: 5rem">
-      {{ $t("model.asset.label") }}
-    </label>
-    <div class="col">
-      <InputText id="assetLabel" v-model="mModel.label" :aria-readonly="!edit" />
-    </div>
-  </div>
-  <div class="field grid">
-    <label for="assetType" class="col-fixed" style="width: 5rem">
-      {{ $t("model.asset.asset_type") }}
-    </label>
-    <div class="col">
-      <Dropdown
-        id="assetType"
-        v-model="mModel.type"
-        :options="assetTypes"
-        option-label="label"
-        option-value="value"
-        :placeholder="$t('view.select_asset_type')"
-      />
-    </div>
-  </div>
+  <!-- {{ mModel }} -->
+  <Card v-if="mModel">
+    <!-- <template #title> </template> -->
+    <template #content>
+      <div class="ren">
+        <ren-input
+          v-model="mModel.name"
+          :text-label="'model.asset.name'"
+          :invalid="v$.mModel.name.$invalid"
+          :errors="v$.mModel.name.$silentErrors"
+        />
+        <ren-input v-model="mModel.label" :text-label="'model.asset.label'" />
+        <ren-input-wrapper
+          :text-label="'model.asset.asset_type'"
+          :invalid="v$.mModel.type.$invalid"
+          :errors="v$.mModel.type.$silentErrors"
+        >
+          <template #content>
+            <Dropdown
+              id="assetType"
+              v-model="mModel.type"
+              :options="assetTypes"
+              option-label="label"
+              option-value="value"
+              :placeholder="$t('view.select_asset_type')"
+            />
+          </template>
+        </ren-input-wrapper>
+        <ren-input-wrapper :text-label="'model.asset.parent'">
+          <template #content>
+            <span v-if="parentLabel" @click="selectAsset">{{ parentLabel }}</span>
+            <span v-else @click="selectAsset">{{ $t("view.select_parent_asset") }}</span>
+          </template>
+        </ren-input-wrapper>
+        <ren-input-wrapper :text-label="'model.asset.owner'">
+          <template #content>
+            <span v-if="ownerLabel" @click="selectOwner">{{ ownerLabel }}</span>
+            <span v-else @click="selectOwner">{{ $t("view.select_owner") }}</span>
+          </template>
+        </ren-input-wrapper>
+      </div>
+    </template>
+  </Card>
 
-  <div class="field grid">
-    <label for="assetParent" class="col-fixed" style="width: 5rem">
-      {{ $t("model.asset.parent") }}
-    </label>
-    <div class="col">
-      <span v-if="parentLabel" @click="selectAsset">{{ parentLabel }}</span>
-      <span v-else @click="selectAsset">{{ $t("view.select_parent_asset") }}</span>
-    </div>
-  </div>
+  <ren-submit :cancel-button="true" :disabled="v$.$invalid" @cancel="cancel" @submit="submit" />
 
-  <div class="field grid">
-    <label for="owner" class="col-fixed" style="width: 5rem">
-      {{ $t("model.asset.owner") }}
-    </label>
-    <div class="col">
-      <span v-if="ownerLabel" @click="selectOwner">{{ ownerLabel }}</span>
-      <span v-else @click="selectOwner">{{ $t("view.select_owner") }}</span>
-    </div>
-  </div>
-
-  <Button :label="$t('view.button.submit')" @click="submit" />
-  <Button :label="$t('view.button.cancel')" @click="cancel" />
-  <AssetSelect ref="assetSelectDialog" @select="onAssetSelect" />
-  <AssetSelect ref="ownerSelectDialog" />
-  <!-- change -->
+  <!-- <Button :label="$t('view.button.submit')" @click="submit" />
+  <Button :label="$t('view.button.cancel')" @click="cancel" /> -->
+  <AssetSelectDialog ref="assetSelectDialog" :current="mModel.parent" @submit="onParentSelect" />
+  <AssetSelectDialog ref="ownerSelectDialog" />
 </template>
 
 <script>
+//TODO: on owner select
+import { useVuelidate } from "@vuelidate/core";
+import { maxLength, required, requiredTr, minLength } from "@/plugins/validators.js"; //required,
 import InfoIcon from "../../miscellaneous/InfoIcon.vue";
-import AssetSelect from "./AssetSelect.vue";
+import AssetSelectDialog from "./AssetSelectDialog.vue";
 export default {
   name: "AssetForm",
-  components: { InfoIcon, AssetSelect },
+  components: { InfoIcon, AssetSelectDialog },
   props: {
     modelValue: {
       type: Object,
@@ -76,9 +72,10 @@ export default {
     },
   },
   emits: ["update:modelValue", "cancel"],
+  setup: () => ({ v$: useVuelidate() }),
   data() {
     return {
-      mModel: this.modelValue,
+      mModel: this.modelValue ? this.modelValue : { measurements: [] },
       // assetTypes: this.$store.getters["view/assetTypes"],
       // assetTypes: [
       //   { value: "room", label: this.$t("model.asset.asset_types.room") },
@@ -86,9 +83,22 @@ export default {
       // ],
     };
   },
+  validationConfig: {
+    $lazy: true,
+  },
+  validations() {
+    return {
+      mModel: {
+        name: { maxLength: maxLength(20), required: required, minLength: minLength(5) },
+        type: { required: requiredTr("validations.fields.custom.asset.") },
+      },
+    };
+  },
   computed: {
     parentLabel: function () {
-      return this.mModel != null && this.mModel.parent != null ? this.mModel.parent.label : null;
+      if (this.mModel != null && this.mModel.parent != null)
+        return this.mModel.parent.label ? this.mModel.parent.label : this.mModel.parent.name;
+      return null;
     },
     ownerLabel: function () {
       return this.mModel != null && this.mModel.owner != null ? this.mModel.owner.label : null;
@@ -114,8 +124,9 @@ export default {
     cancel() {
       this.$emit("cancel", this.model);
     },
-    onAssetSelect(selectedAsset) {
-      console.log(selectedAsset);
+    onParentSelect(selectedAsset) {
+      this.mModel.parent = selectedAsset;
+      // console.log(selectedAsset);
     },
   },
 };

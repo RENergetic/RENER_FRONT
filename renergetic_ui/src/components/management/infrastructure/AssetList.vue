@@ -3,7 +3,7 @@
     :value="assetList"
     :lazy="true"
     data-key="id"
-    :filters="filters"
+    :filters="mFilters"
     filter-display="row"
     :loading="isLoading"
     responsive-layout="scroll"
@@ -92,8 +92,8 @@
     <Column field="child" :header="$t('model.asset.child')">
       <template #body="slotProps">
         <span
-          class="pointer"
           v-if="slotProps.data.child && slotProps.data.child.length > 0"
+          class="ren-pointer"
           @click="viewChildren(slotProps.data)"
         >
           {{ $t("view.view_asset_children") }}
@@ -106,10 +106,10 @@
 
     <Column field="parent" :header="$t('model.asset.parent')">
       <template #body="slotProps">
-        <span class="pointer" v-if="slotProps.data.parent" @click="setParent(slotProps.data)">
+        <span v-if="slotProps.data.parent" class="ren-pointer" @click="setParent(slotProps.data)">
           {{ slotProps.data.parent.label }}
         </span>
-        <span v-else class="disabled pointer" @click="setParent(slotProps.data)">
+        <span v-else class="disabled ren-pointer" @click="setParent(slotProps.data)">
           {{ $t("view.no_parent") }}
         </span>
       </template>
@@ -117,34 +117,37 @@
     <Column field="measurements" :header="$t('model.asset.measurements')">
       <template #body="slotProps">
         <span
-          class="pointer"
           v-if="slotProps.data.measurements && slotProps.data.measurements.length > 0"
+          class="ren-pointer"
           @click="viewMeasurements(slotProps.data)"
         >
           {{ $t("view.view_asset_measurements") }}
         </span>
-        <span v-else class="pointer disabled" @click="viewMeasurements(slotProps.data)">
+        <span v-else class="ren-pointer disabled" @click="viewMeasurements(slotProps.data)">
           {{ $t("view.no_asset_measurements") }}
         </span>
       </template>
     </Column>
     <Column name="asset_connections" :header="$t('model.asset.asset_connections')">
       <template #body="slotProps">
-        <span class="pointer" @click="manageAssetConnections(slotProps.data)">
+        <span class="ren-pointer" @click="manageAssetConnections(slotProps.data)">
           {{ $t("view.manage_asset_connections") }}
         </span>
       </template></Column
     >
     <Column name="edit" :header="$t('view.properties')">
       <template #body="slotProps">
-        <span class="pointer" @click="manageAssetProperties(slotProps.data, $store.getters['view/assetDetailsKeys'])">
+        <span
+          class="ren-pointer"
+          @click="manageAssetProperties(slotProps.data, $store.getters['view/assetDetailsKeys'])"
+        >
           Manage properties
         </span>
       </template>
     </Column>
     <Column name="edit" :header="$t('view.edit')">
       <template #body="slotProps">
-        <span class="pointer" @click="editAsset(slotProps.data)"> Edit Asset </span>
+        <span class="ren-pointer" @click="editAsset(slotProps.data)"> Edit Asset </span>
       </template>
     </Column>
     <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
@@ -175,7 +178,7 @@
           class="p-button-outlined"
           @click="previous"
         />
-
+        <span>{{ $t("view.current_page", { page: mPage }) }}</span>
         <Button
           type="button"
           icon="pi pi-filter-slash"
@@ -189,14 +192,14 @@
   <Button :label="$t('view.button.add')" @click="assetAdd = true" />
   <Dialog
     v-model:visible="assetAdd"
-    :style="{ width: '75vw' }"
+    :style="{ width: '50vw' }"
     :maximizable="true"
     :modal="true"
     :dismissable-mask="true"
   >
     <AssetForm @update:model-value="onCreate($event, 0)" @cancel="assetAdd = false"> </AssetForm>
   </Dialog>
-  <AssetSelect ref="assetSelectDialog" @select="onParentChange" />
+  <AssetSelectDialog ref="assetSelectDialog" @select="onParentChange" />
   <AssetConnectionManagement ref="assetConnectionManagementDialog" />
   <AssetProperties ref="assetPropertiesDialog" @update-details="updateDetails" />
   <AssetEdit ref="assetEditDialog" @update-asset="updateAsset" />
@@ -275,40 +278,59 @@
 
 <script>
 import AssetForm from "./AssetForm.vue";
-import AssetSelect from "./AssetSelect.vue";
+import AssetSelectDialog from "./AssetSelectDialog.vue";
 import MeasurementSelect from "./MeasurementSelect.vue";
 import AssetConnectionManagement from "./AssetConnectionManagement.vue";
 import AssetProperties from "@/components/management/infrastructure/AssetProperties.vue";
 import AssetEdit from "@/components/management/infrastructure/AssetEdit.vue";
 
-const PAGE_SIZE = 10;
+function initFilter() {
+  return {
+    label: { value: null },
+    name: { value: null },
+    "type.label": { value: null },
+    "category.label": { value: null },
+  };
+}
 export default {
   name: "AssetList",
-  components: { AssetEdit, AssetProperties, AssetForm, AssetSelect, MeasurementSelect, AssetConnectionManagement },
-  props: {},
+  components: {
+    AssetEdit,
+    AssetProperties,
+    AssetForm,
+    AssetSelectDialog,
+    MeasurementSelect,
+    AssetConnectionManagement,
+  },
+
+  props: {
+    assetList: { type: Array, default: () => [] },
+    filters: { type: Array, default: () => initFilter() },
+    page: { type: Number, default: 0 },
+  },
+  emits: ["update:filters", "reload", "update:page"],
   data() {
     return {
-      page: 0,
-      isLoading: false,
+      mPage: this.page,
       assetAdd: false,
-      assetList: [],
-      columns: [],
+      mFilters: this.filters ? this.filters : initFilter(),
       selectedRow: null,
       childDialog: false,
       measurementDialog: false,
-      filters: this.initFilter(),
     };
   },
-  computed: {},
-  async created() {
-    this.assetList = await this.$ren.managementApi.listAsset();
-    if (this.assetList != null && this.assetList.length > 0) {
-      this.columns = Object.keys(this.assetList[0]);
-    }
+  computed: {
+    columns() {
+      if (this.assetList != null && this.assetList.length > 0) {
+        return Object.keys(this.assetList[0]);
+      }
+      return [];
+    },
   },
   methods: {
     onFilter(ev) {
-      this.filters = ev.filters;
+      this.mFilters = ev.filters;
+      this.$emit("update:filters", ev.filters);
     },
     setParent(row) {
       console.info(row);
@@ -337,7 +359,7 @@ export default {
 
     async onParentChange(parent) {
       await this.$ren.managementApi.setParent(this.selectedRow, parent.id);
-      await this.reload();
+      this.$emit("reload");
     },
     addMeasurement() {
       this.$refs.measurementSelectDialog.open();
@@ -363,7 +385,6 @@ export default {
       this.selectedRow.measurements.push(measurement);
     },
     async onCreate(o) {
-      console.error("AQUI HA LLEGADO");
       console.log(o);
       await this.$ren.managementApi.addAsset(o).then((assetId) => {
         console.info("add asset:" + assetId);
@@ -374,49 +395,23 @@ export default {
     },
 
     async reload() {
-      //TODO: tomek will manage filtering feature with api
-      console.info(this.filters);
-      let params = {
-        label: this.filters.label.value,
-        name: this.filters.name.value,
-        type:
-          this.filters["type.label"] && this.filters["type.label"].value ? this.filters["type.label"].value.name : null,
-        category:
-          this.filters["category.label"] && this.filters["type.label"].value
-            ? this.filters["category.label"].value.name
-            : null,
-      };
-
-      console.info(params);
-      this.assetList = await this.$ren.managementApi.listAsset(params, PAGE_SIZE * this.page, PAGE_SIZE);
+      this.$emit("reload");
     },
     async next() {
       if (this.assetList.length === 0) return;
-      this.page += 1;
-      await this.reload();
+      this.mPage += 1;
+      this.$emit("update:page", this.mPage);
     },
     async previous() {
-      this.page = Math.max(0, this.page - 1);
-      await this.reload();
+      this.mPage = Math.max(0, this.mPage - 1);
+      this.$emit("update:page", this.mPage);
     },
     clearFilter() {
-      this.filters = this.initFilter();
-    },
-
-    initFilter() {
-      return {
-        label: { value: null },
-        name: { value: null },
-        "type.label": { value: null },
-        "category.label": { value: null },
-      };
+      this.mFilters = initFilter();
+      this.$emit("update:filters", this.mFilters);
     },
   },
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-.pointer {
-  cursor: pointer;
-}
-</style>
+<style scoped lang="scss"></style>

@@ -101,13 +101,13 @@
 
     <HeatMapSelect ref="heatmapSelectDialog" :current="mArea.dashboard" @change="updateHeatMap"></HeatMapSelect>
     <DashboardSelect ref="dashboardDialog" @change="onDashboardUpdate"></DashboardSelect>
-    <AssetSelect ref="assetSelectDialog" @change="onAssetUpdate"></AssetSelect>
+    <AssetSelectDialog ref="assetSelectDialog" @change="onAssetUpdate"></AssetSelectDialog>
     <AssetView ref="assetViewDialog"></AssetView>
   </div>
 </template>
 <script>
 import MeasurementChart from "../measurements/MeasurementChart.vue";
-import AssetSelect from "../../management/infrastructure/AssetSelect.vue";
+import AssetSelectDialog from "@/components/management/infrastructure/AssetSelectDialog.vue";
 import HeatMapSelect from "./HeatMapSelect.vue";
 import DashboardSelect from "../grafana/DashboardSelect.vue";
 import AssetView from "@/components/management/infrastructure/AssetView.vue";
@@ -117,7 +117,7 @@ export default {
     MeasurementChart,
     HeatMapSelect,
     DashboardSelect,
-    AssetSelect,
+    AssetSelectDialog,
     AssetView,
   },
   props: {
