@@ -286,7 +286,7 @@ export default {
       return [
         {
           // label: this.$t("menu.manage"),
-          label: this.$t("menu.assets"),
+          label: this.$t("menu.manage_assets"),
           icon: "pi pi-fw pi-list",
           to: "/management/asset",
           command: () => {
@@ -296,7 +296,7 @@ export default {
       ];
       // return [
       //   {
-      //     label: this.$t("menu.assets"),
+      //     label: this.$t("menu.manage_assets"),
       //     icon: "pi pi-fw pi-building",
       //     items: items,
       //   },
