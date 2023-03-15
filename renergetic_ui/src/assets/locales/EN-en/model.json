@@ -31,6 +31,7 @@
           "asset_category": "Asset category",
           "label": "Label",
           "measurements": "Measurements",
+          "description":"Description",
           "geo_location": "Geo location",
           "owner": "Owner",
           "parent": "Parent",

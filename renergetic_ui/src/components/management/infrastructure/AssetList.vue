@@ -201,8 +201,8 @@
   </Dialog>
   <AssetSelectDialog ref="assetSelectDialog" @select="onParentChange" />
   <AssetConnectionManagement ref="assetConnectionManagementDialog" />
-  <AssetProperties ref="assetPropertiesDialog" @update-details="updateDetails" />
-  <AssetEdit ref="assetEditDialog" @update-asset="updateAsset" />
+  <AssetProperties ref="assetPropertiesDialog" @submit="updateDetails" />
+  <AssetEdit ref="assetEditDialog" @submit="updateAsset" />
 
   <Dialog
     v-model:visible="childDialog"

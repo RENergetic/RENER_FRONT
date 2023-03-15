@@ -6,20 +6,22 @@
     :modal="true"
     :dismissable-mask="true"
   >
-    <div class="properties-form">
+    <div class="ren">
       <div v-for="detailsKey in detailsKeys" :key="detailsKey" class="property-form">
-        <span>{{ detailsKey }}</span>
-        <InputText type="text" v-model="this.details[detailsKey]"></InputText>
+        <ren-input v-model="details[detailsKey]" :text-label="detailsKey" />
+        <!-- <span>{{ detailsKey }}</span>
+        <InputText v-model="details[detailsKey]" type="text"></InputText> -->
       </div>
     </div>
-    <Button @click="submit">Submit</Button>
+    <ren-submit @submit="submit" />
+    <!-- <Button @click="submit">Submit</Button> -->
   </Dialog>
 </template>
 
 <script>
 export default {
   name: "AssetProperties",
-  emits: ["updateDetails"],
+  emits: ["submit"],
   data() {
     return {
       initialAsset: null,
@@ -41,7 +43,7 @@ export default {
       this.dialog = true;
     },
     submit() {
-      this.$emit("updateDetails", this.initialAsset, this.details);
+      this.$emit("submit", this.initialAsset, this.details);
       this.dialog = false;
     },
   },
