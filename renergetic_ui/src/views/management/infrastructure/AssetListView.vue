@@ -57,7 +57,7 @@ export default {
               : null,
         };
       await this.$refs.spinner.run(async () => {
-        this.assetList = await this.$ren.managementApi.listAsset(params, this.page, PAGE_SIZE);
+        this.assetList = await this.$ren.managementApi.listAsset(params, this.page * PAGE_SIZE, PAGE_SIZE);
       });
     },
     // async deleteUser(user) {
