@@ -18,60 +18,38 @@
             </span>
           </span>
         </div>
-        <!-- firstName -->
-        <div class="field grid">
-          <label for="firstName" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.firstname") }} </label>
-          <div class="col-12 md:col-10"><InputText id="firstName" v-model="mUser.firstName" /></div>
-          <span v-if="v$.mUser.firstName.$invalid">
-            <span v-for="(error, index) of v$.mUser.firstName.$silentErrors" id="name-error" :key="index">
-              <small class="p-error">{{ error.$message }}</small>
-            </span>
-          </span>
-        </div>
-        <!-- lastName -->
-        <div class="field grid">
-          <label for="lastName" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.lastname") }} </label>
-          <div class="col-12 md:col-10"><InputText id="lastName" v-model="mUser.lastName" /></div>
-          <span v-if="v$.mUser.lastName.$invalid">
-            <span v-for="(error, index) of v$.mUser.lastName.$silentErrors" id="name-error" :key="index">
-              <small class="p-error">{{ error.$message }}</small>
-            </span>
-          </span>
-        </div>
-        <!-- email -->
-        <div class="field grid">
-          <label for="email" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.email") }} </label>
-          <div class="col-12 md:col-10">
-            <InputText id="email" v-model="mUser.email" :disabled="user != null && user.email != null" />
-          </div>
-          <span v-if="v$.mUser.email.$invalid">
-            <span v-for="(error, index) of v$.mUser.email.$silentErrors" id="name-error" :key="index">
-              <small class="p-error">{{ error.$message }}</small>
-            </span>
-          </span>
-        </div>
-
-        <!-- password -->
-        <div v-if="!user" class="field grid">
-          <label for="password" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.password") }} </label>
-          <div class="col-12 md:col-10"><Password id="password" v-model="mUser.password" /></div>
-          <span v-if="v$.mUser.password.$invalid">
-            <span v-for="(error, index) of v$.mUser.password.$silentErrors" id="name-error" :key="index">
-              <small class="p-error">{{ error.$message }}</small>
-            </span>
-          </span>
-        </div>
-        <div v-if="!user && mUser.password" class="field grid">
-          <label for="passwordRepeat" class="col-12 mb-2 md:col-2 md:mb-0">
-            {{ $t("model.user.password_repeat") }}
-          </label>
-          <div class="col-12 md:col-10"><Password id="passwordRepeat" v-model="mUser.passwordRepeat" /></div>
-          <span v-if="v$.mUser.passwordRepeat.$invalid">
-            <span v-for="(error, index) of v$.mUser.passwordRepeat.$silentErrors" id="name-error" :key="index">
-              <small class="p-error">{{ error.$message }}</small>
-            </span>
-          </span>
-        </div>
+        <ren-input
+          v-model="mUser.firstName"
+          :invalid="v$.mUser.firstName.$invalid"
+          :errors="v$.mUser.firstName.$silentErrors"
+          :text-label="'model.user.firstname'"
+        />
+        <ren-input
+          v-model="mUser.lastName"
+          :invalid="v$.mUser.lastName.$invalid"
+          :errors="v$.mUser.lastName.$silentErrors"
+          :text-label="'model.user.lastname'"
+        />
+        <ren-input
+          v-model="mUser.email"
+          :invalid="v$.mUser.email.$invalid"
+          :errors="v$.mUser.email.$silentErrors"
+          :text-label="'model.user.email'"
+        />
+        <ren-password
+          v-if="!user"
+          v-model="mUser.password"
+          :invalid="v$.mUser.password.$invalid"
+          :errors="v$.mUser.password.$silentErrors"
+          :text-label="'model.user.password'"
+        />
+        <ren-password
+          v-if="!user && mUser.password"
+          v-model="mUser.passwordRepeat"
+          :invalid="v$.mUser.passwordRepeat.$invalid"
+          :errors="v$.mUser.passwordRepeat.$silentErrors"
+          :text-label="'model.user.password_repeat'"
+        />
 
         <div class="field grid">
           <Button :disabled="v$.$invalid" :label="$t('view.button.submit')" @click="submit" />
@@ -86,7 +64,6 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, minLength, email, maxLength, sameAs } from "@/plugins/validators.js";
 export default {
   name: "UserForm",
-  components: {},
   props: {
     user: {
       type: Object,
