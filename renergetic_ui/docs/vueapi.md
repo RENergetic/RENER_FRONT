@@ -107,6 +107,8 @@ if ((required_flags & user_role_flag) > 0)
 ### Components
 
 * RenSpinner [docs](./components/renspinner.md)
+* Ren form components [docs](./components/form.md)
+* Settings - > todo: describe usage of application settings 
 
 [top](#vuejs-api) 
 

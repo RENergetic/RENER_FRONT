@@ -79,7 +79,7 @@
           <!-- TODO: pagination buttons ?-->
           <!-- <Button
             type="button"
-            icon="pi pi-filter-slash"
+            icon="pi pi-chevron-circle-left"
             :label="$t('view.button.previous')"
             class="p-button-outlined"
             @click="previous"
@@ -89,7 +89,8 @@
             type="button"
                   icon="pi pi-chevron-circle-right"
             :label="$t('view.button.next')"
-            class="p-button-outlined"
+            class="p-button-outlined" 
+             iconPos="right"
             @click="next"
           /> -->
         </div>
