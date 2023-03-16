@@ -3,10 +3,7 @@ function mapPanelId(objectArray) {
   return dict;
 }
 function mapAssetPanelId(objectArray) {
-  let dict = objectArray.reduce(
-    (dict, el, index) => ((dict[el["panel"]["id"] + "_" + el["asset"]["id"]] = index), dict),
-    {},
-  );
+  let dict = objectArray.reduce((dict, el, index) => ((dict[el["panel"]["id"] + "_" + el["asset"]["id"]] = index), dict), {});
   return dict;
 }
 function groupMeasurementTypes(measurementTypes) {

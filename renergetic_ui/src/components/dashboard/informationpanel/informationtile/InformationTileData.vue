@@ -4,28 +4,12 @@
     <!-- todo: group by sensor_name -->
     <!-- {{ tile }} -->
     <!-- {{ tile.type }} -->
-    <div
-      v-if="(titleVisible || tile.measurements.length == 0) && tile.label"
-      class="flex flex-column justify-content-center"
-      style="height: 100%"
-    >
+    <div v-if="(titleVisible || tile.measurements.length == 0) && tile.label" class="flex flex-column justify-content-center" style="height: 100%">
       <h3 style="margin: 0; text-align: center">{{ tile.label }}</h3>
     </div>
 
-    <KnobTile
-      v-else-if="tile.type == 'knob'"
-      :tile="tile"
-      :pdata="pdata"
-      :settings="mSettings"
-      :conversion-settings="conversionSettings"
-    ></KnobTile>
-    <DoughnutTile
-      v-else-if="isDoughnut"
-      :tile="tile"
-      :pdata="pdata"
-      :settings="mSettings"
-      :conversion-settings="conversionSettings"
-    ></DoughnutTile>
+    <KnobTile v-else-if="tile.type == 'knob'" :tile="tile" :pdata="pdata" :settings="mSettings" :conversion-settings="conversionSettings"></KnobTile>
+    <DoughnutTile v-else-if="isDoughnut" :tile="tile" :pdata="pdata" :settings="mSettings" :conversion-settings="conversionSettings"></DoughnutTile>
     <!-- <MultiDoughnutTile
         v-else-if="tile.type == 'multi_doughnut'"
         :tile="tile"
@@ -39,12 +23,7 @@
       :settings="mSettings"
       :conversion-settings="conversionSettings"
     ></MultiKnobTile>
-    <PanelTile
-      v-else-if="tile.type == 'panel'"
-      :tile="tile"
-      :pdata="pdata"
-      :conversion-settings="conversionSettings"
-    ></PanelTile>
+    <PanelTile v-else-if="tile.type == 'panel'" :tile="tile" :pdata="pdata" :conversion-settings="conversionSettings"></PanelTile>
     <InformationTileSingle
       v-else-if="tile.type == 'single'"
       :tile="tile"
@@ -52,13 +31,7 @@
       :settings="mSettings"
       :conversion-settings="conversionSettings"
     ></InformationTileSingle>
-    <InformationListTile
-      v-else
-      :tile="tile"
-      :pdata="pdata"
-      :settings="mSettings"
-      :conversion-settings="conversionSettings"
-    ></InformationListTile>
+    <InformationListTile v-else :tile="tile" :pdata="pdata" :settings="mSettings" :conversion-settings="conversionSettings"></InformationListTile>
   </div>
 </template>
 <script>
@@ -80,11 +53,7 @@ function validateTileSettings(tile, settings, ctx) {
       legend: tile.props.legend != null ? tile.props.legend : settings.legend,
       title_visibility:
         !ctx.demand &&
-        (tile.props.title_visibility != null
-          ? tile.props.title_visibility
-          : settings.title_visibility != null
-          ? settings.title_visibility
-          : true),
+        (tile.props.title_visibility != null ? tile.props.title_visibility : settings.title_visibility != null ? settings.title_visibility : true),
       measurement_list: tile.props.measurement_list != null ? tile.props.measurement_list : true,
       fontSize: settings.fontSize,
       background: tile.props.mask,

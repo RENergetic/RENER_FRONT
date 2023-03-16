@@ -45,9 +45,7 @@ export default class RestComponent {
       headers = HEADERS;
     }
     return this.securizeAPI(headers).then((headers) => {
-      return (
-        params ? this.axios.get(path, { headers: headers, params: params }) : this.axios.get(path, { headers: headers })
-      )
+      return (params ? this.axios.get(path, { headers: headers, params: params }) : this.axios.get(path, { headers: headers }))
         .then((response) => {
           return response.data;
         })
@@ -75,11 +73,7 @@ export default class RestComponent {
     }
     return this.securizeAPI(headers).then((headers) => {
       return (
-        (
-          params
-            ? this.axios.delete(path, { headers: headers, params: params })
-            : this.axios.delete(path, { headers: headers })
-        )
+        (params ? this.axios.delete(path, { headers: headers, params: params }) : this.axios.delete(path, { headers: headers }))
           // : this.axios.get(path, { headers: headers })
           .then((response) => {
             return response.data;
@@ -110,11 +104,7 @@ export default class RestComponent {
     return this.securizeAPI(headers).then((headers) => {
       console.error("POST REQUEST OAUTH");
       console.table(headers);
-      return (
-        params
-          ? this.axios.post(path, data, { headers: headers, params: params })
-          : this.axios.post(path, data, { headers: headers })
-      )
+      return (params ? this.axios.post(path, data, { headers: headers, params: params }) : this.axios.post(path, data, { headers: headers }))
         .then((response) => {
           return response.data;
         })
@@ -141,11 +131,7 @@ export default class RestComponent {
       headers = HEADERS;
     }
     return this.securizeAPI(headers).then((headers) => {
-      return (
-        params
-          ? this.axios.put(path, data, { headers: headers, params: params })
-          : this.axios.put(path, data, { headers: headers })
-      )
+      return (params ? this.axios.put(path, data, { headers: headers, params: params }) : this.axios.put(path, data, { headers: headers }))
         .then((response) => {
           return response.data;
         })

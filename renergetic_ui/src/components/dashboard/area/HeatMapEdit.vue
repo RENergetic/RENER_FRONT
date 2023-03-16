@@ -14,22 +14,11 @@
             @click="onAreaClick"
           />
 
-          <HeatMapOSMEdit
-            v-else-if="mHeatmap.type == HeatMapType.OSM"
-            :heatmap="mHeatmap"
-            @area-details="showAreaDetails"
-            @click="onAreaClick"
-          />
+          <HeatMapOSMEdit v-else-if="mHeatmap.type == HeatMapType.OSM" :heatmap="mHeatmap" @area-details="showAreaDetails" @click="onAreaClick" />
         </template>
       </Card>
     </div>
-    <Dialog
-      v-model:visible="areaDetailsDialog"
-      :style="{ width: '50vw' }"
-      :maximizable="true"
-      :modal="true"
-      :dismissable-mask="false"
-    >
+    <Dialog v-model:visible="areaDetailsDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="false">
       <AreaDetails
         :edit="true"
         class="tile"

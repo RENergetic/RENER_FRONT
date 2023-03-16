@@ -5,13 +5,7 @@
         {{ $t("enums.role." + row.data) }}
       </template>
     </Column>
-    <Column
-      v-for="feature of headers"
-      :key="feature"
-      :field="feature"
-      :name="feature"
-      :header="$t('enums.role_features.' + feature)"
-    >
+    <Column v-for="feature of headers" :key="feature" :field="feature" :name="feature" :header="$t('enums.role_features.' + feature)">
       <template #body="row">
         <div :class="`cell-state-${featureState(row.data, feature)}`">
           <span v-if="featureState(row.data, feature) != 0">X</span>

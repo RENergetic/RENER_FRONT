@@ -378,12 +378,7 @@ export default {
     },
 
     notificationsItem() {
-      let flags =
-        RenRoles.REN_ADMIN |
-        RenRoles.REN_USER |
-        RenRoles.REN_MANAGER |
-        RenRoles.REN_TECHNICAL_MANAGER |
-        RenRoles.REN_STAFF;
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_USER | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_STAFF;
       if ((flags & this.role) == 0) {
         return [];
       }

@@ -74,11 +74,7 @@ export default {
       });
     });
     this.$emitter.on("information", (evt) => {
-      let title = evt.titleCode
-        ? this.$t(`information.${evt.titleCode}`)
-        : evt.title
-        ? evt.title
-        : this.$t(`information.information`);
+      let title = evt.titleCode ? this.$t(`information.${evt.titleCode}`) : evt.title ? evt.title : this.$t(`information.information`);
       let msg = evt.code ? this.$t(`information.${evt.code}`, evt.args) : evt.message;
       this.$toast.add({
         severity: "information",

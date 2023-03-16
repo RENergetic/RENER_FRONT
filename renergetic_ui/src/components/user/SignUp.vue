@@ -13,9 +13,7 @@
             />
             <label for="username">Choose a Username</label>
           </span>
-          <small id="username-help" :class="error.username.value ? 'p-error' : 'p-sr-only'">{{
-            error.username.msg
-          }}</small>
+          <small id="username-help" :class="error.username.value ? 'p-error' : 'p-sr-only'">{{ error.username.msg }}</small>
 
           <span class="p-float-label mt-4">
             <InputText
@@ -27,9 +25,7 @@
             />
             <label for="firstname">Your First Name</label>
           </span>
-          <small id="firstname-help" :class="error.firstName.value ? 'p-error' : 'p-sr-only'"
-            >First name is required</small
-          >
+          <small id="firstname-help" :class="error.firstName.value ? 'p-error' : 'p-sr-only'">First name is required</small>
 
           <span class="p-float-label mt-4">
             <InputText
@@ -41,18 +37,10 @@
             />
             <label for="lastname">Your Last Name</label>
           </span>
-          <small id="lastname-help" :class="error.lastName.value ? 'p-error' : 'p-sr-only'"
-            >Last name is required</small
-          >
+          <small id="lastname-help" :class="error.lastName.value ? 'p-error' : 'p-sr-only'">Last name is required</small>
 
           <span class="p-float-label mt-4">
-            <InputText
-              id="email"
-              v-model="user.email"
-              type="text"
-              :class="error.email.value ? 'p-invalid' : ''"
-              @focus="error.email.value = false"
-            />
+            <InputText id="email" v-model="user.email" type="text" :class="error.email.value ? 'p-invalid' : ''" @focus="error.email.value = false" />
             <label for="email">Your E-mail</label>
           </span>
           <small id="email-help" :class="error.email.value ? 'p-error' : 'p-sr-only'">{{ error.email.msg }}</small>
@@ -97,9 +85,7 @@
             />
             <label for="geo_location">Location (Latitude, Longitude)</label>
           </span>
-          <small id="geo_location-help" :class="error.geoLocation.value ? 'p-error' : 'p-sr-only'"
-            >Geolocation is required</small
-          >
+          <small id="geo_location-help" :class="error.geoLocation.value ? 'p-error' : 'p-sr-only'">Geolocation is required</small>
 
           <span class="p-float-label mt-4">
             <Dropdown
@@ -118,22 +104,10 @@
     </TabView>
     <Toolbar>
       <template #start>
-        <Button
-          label="Clear"
-          icon="pi pi-undo"
-          class="p-button-text p-left"
-          style="color: var(--orange-300)"
-          @click="clear()"
-        />
+        <Button label="Clear" icon="pi pi-undo" class="p-button-text p-left" style="color: var(--orange-300)" @click="clear()" />
       </template>
       <template #end>
-        <Button
-          label="Sign in"
-          icon="pi pi-user-plus"
-          class="p-button-sucess"
-          style="width: 10vw"
-          @click="signIn()"
-        ></Button>
+        <Button label="Sign in" icon="pi pi-user-plus" class="p-button-sucess" style="width: 10vw" @click="signIn()"></Button>
       </template>
     </Toolbar>
   </div>

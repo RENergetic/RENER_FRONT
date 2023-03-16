@@ -74,9 +74,7 @@ export default {
         heat: require(`../../../assets/img/tileicons/heat.png`),
         default: require(`../../../assets/img/tileicons/default.png`),
       },
-      actionType: this.demand.demand_definition.action_type
-        ? this.demand.demand_definition.action_type.toLowerCase()
-        : null,
+      actionType: this.demand.demand_definition.action_type ? this.demand.demand_definition.action_type.toLowerCase() : null,
       action: this.demand.demand_definition.action.toLowerCase(),
     };
   },

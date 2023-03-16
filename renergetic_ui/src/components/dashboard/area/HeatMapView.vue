@@ -47,13 +47,7 @@
       <Accordion class="tile" :active-index="0">
         <AccordionTab>
           <template #header> {{ $t("model.heatmap.areas") }}</template>
-          <Listbox
-            v-if="heatmap != null"
-            v-model="selectedArea"
-            :options="heatmap.areas"
-            option-label="label"
-            style="width: 15rem"
-          />
+          <Listbox v-if="heatmap != null" v-model="selectedArea" :options="heatmap.areas" option-label="label" style="width: 15rem" />
         </AccordionTab>
       </Accordion>
       <Accordion v-if="attributes" class="tile" :active-index="0">
@@ -82,13 +76,7 @@
       </Accordion>
     </div>
   </div>
-  <Dialog
-    v-model:visible="settingsDialog"
-    :style="{ width: '50vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="settingsDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <HeatMapSettings @update="reloadSettings()"></HeatMapSettings>
   </Dialog>
 </template>

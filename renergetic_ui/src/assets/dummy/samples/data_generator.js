@@ -147,11 +147,4 @@ function generateTimeseries(ids, n = 50) {
   return { datasets: datasets, labels: labels };
 }
 
-export {
-  generatePanelData,
-  generateDemandData,
-  generateTimeseries,
-  generatePanelState,
-  generateAssetData,
-  generateHeatMapState,
-};
+export { generatePanelData, generateDemandData, generateTimeseries, generatePanelState, generateAssetData, generateHeatMapState };

@@ -9,18 +9,9 @@
     <!-- <template #title> </template> -->
     <template #content>
       <div class="ren">
-        <ren-input
-          v-model="mModel.name"
-          :text-label="'model.asset.name'"
-          :invalid="v$.mModel.name.$invalid"
-          :errors="v$.mModel.name.$silentErrors"
-        />
+        <ren-input v-model="mModel.name" :text-label="'model.asset.name'" :invalid="v$.mModel.name.$invalid" :errors="v$.mModel.name.$silentErrors" />
         <ren-input v-model="mModel.label" :text-label="'model.asset.label'" />
-        <ren-input-wrapper
-          :text-label="'model.asset.asset_type'"
-          :invalid="v$.mModel.type.$invalid"
-          :errors="v$.mModel.type.$silentErrors"
-        >
+        <ren-input-wrapper :text-label="'model.asset.asset_type'" :invalid="v$.mModel.type.$invalid" :errors="v$.mModel.type.$silentErrors">
           <template #content>
             <Dropdown
               id="assetType"
@@ -96,8 +87,7 @@ export default {
   },
   computed: {
     parentLabel: function () {
-      if (this.mModel != null && this.mModel.parent != null)
-        return this.mModel.parent.label ? this.mModel.parent.label : this.mModel.parent.name;
+      if (this.mModel != null && this.mModel.parent != null) return this.mModel.parent.label ? this.mModel.parent.label : this.mModel.parent.name;
       return null;
     },
     ownerLabel: function () {

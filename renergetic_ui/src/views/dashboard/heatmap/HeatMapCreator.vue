@@ -1,11 +1,5 @@
 <template>
-  <Dialog
-    v-model:visible="heatmapDialog"
-    :style="{ width: '50vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="false"
-  >
+  <Dialog v-model:visible="heatmapDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="false">
     <HeatMapForm @save="onHeatmapInit" @cancel="onCancel"></HeatMapForm>
   </Dialog>
   <HeatMapEdit v-if="heatmap != null" v-model="heatmap" @update="onSave" />

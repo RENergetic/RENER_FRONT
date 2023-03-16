@@ -4,13 +4,7 @@
     <!-- {{ expanded }} todo: expand on @row-click='onrowclick' -->
     <!-- https://stackoverflow.com/questions/33910615/is-there-an-api-call-for-changing-user-password-on-keycloak -->
     <!-- {{ users }} -->
-    <DataTable
-      v-model:expandedRows="expanded"
-      :value="users"
-      data-key="id"
-      responsive-layout="scroll"
-      @row-expand="onUserExpand"
-    >
+    <DataTable v-model:expandedRows="expanded" :value="users" data-key="id" responsive-layout="scroll" @row-expand="onUserExpand">
       <Column :expander="true" header-style="width: 3rem" />
       <Column field="username" :header="$t('model.user.username')" sortable></Column>
       <Column field="firstName" :header="$t('model.user.firstname')" sortable></Column>

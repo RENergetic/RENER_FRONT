@@ -38,10 +38,7 @@
     </Column>
     <Column field="measurements" :header="$t('model.asset.measurements')">
       <template #body="slotProps">
-        <span
-          v-if="slotProps.data.measurements && slotProps.data.measurements.length > 0"
-          @click="viewMeasurements(slotProps.data)"
-        >
+        <span v-if="slotProps.data.measurements && slotProps.data.measurements.length > 0" @click="viewMeasurements(slotProps.data)">
           {{ $t("view.view_asset_measurements") }}
         </span>
         <span v-else class="disabled">
@@ -54,23 +51,11 @@
     <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
   </DataTable>
   <Button :label="$t('view.button.add')" @click="assetAdd = true" />
-  <Dialog
-    v-model:visible="assetAdd"
-    :style="{ width: '75vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="assetAdd" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <AssetForm @update:model-value="onCreate($event, 0)" @cancel="assetAdd = false"> </AssetForm>
   </Dialog>
   <AssetSelectDialog ref="assetSelectDialog" @change="onParentChange" />
-  <Dialog
-    v-model:visible="childDialog"
-    :style="{ width: '75vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="childDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <Card>
       <template #title> {{ $t("model.asset.child") }} </template>
       <template #content>
@@ -86,13 +71,7 @@
       </template>
     </Card>
   </Dialog>
-  <Dialog
-    v-model:visible="measurementDialog"
-    :style="{ width: '75vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="measurementDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <Card>
       <template #title> {{ $t("model.asset.measurements") }} </template>
       <template #content>
@@ -126,11 +105,7 @@
         </span>
 
         <Button :label="$t('view.button.add_measurement')" @click="addMeasurement" />
-        <measurement-select
-          ref="measurementSelectDialog"
-          :asset-id="selectedRow.id"
-          @select="onMeasurementSelect"
-        ></measurement-select>
+        <measurement-select ref="measurementSelectDialog" :asset-id="selectedRow.id" @select="onMeasurementSelect"></measurement-select>
       </template>
     </Card>
   </Dialog>

@@ -15,13 +15,7 @@
     </template>
   </Dock>
   <DeleteDashboard v-if="dashboard != null" ref="deleteDashboard" :dashboard="dashboard" />
-  <Dialog
-    v-model:visible="updateDialog"
-    :style="{ width: '50vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="updateDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <DashboardForm :dashboard="dashboard" @save="onSave" @cancel="updateDialog = false"></DashboardForm>
   </Dialog>
 </template>

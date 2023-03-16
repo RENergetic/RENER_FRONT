@@ -47,14 +47,8 @@ export default {
         params = {
           label: this.filters.label.value,
           name: this.filters.name.value,
-          type:
-            this.filters["type.label"] && this.filters["type.label"].value
-              ? this.filters["type.label"].value.name
-              : null,
-          category:
-            this.filters["category.label"] && this.filters["type.label"].value
-              ? this.filters["category.label"].value.name
-              : null,
+          type: this.filters["type.label"] && this.filters["type.label"].value ? this.filters["type.label"].value.name : null,
+          category: this.filters["category.label"] && this.filters["type.label"].value ? this.filters["category.label"].value.name : null,
         };
       await this.$refs.spinner.run(async () => {
         this.assetList = await this.$ren.managementApi.listAsset(params, this.page * PAGE_SIZE, PAGE_SIZE);

@@ -6,10 +6,7 @@
       <!-- v-if="legend"-->
     </div>
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
-    <div
-      class="flex flex-grow-0 flex-column align-items-center justify-content-center"
-      style="height: 100%; width: 100%"
-    >
+    <div class="flex flex-grow-0 flex-column align-items-center justify-content-center" style="height: 100%; width: 100%">
       <div class="flex flex-grow-0 flex-column align-items-center justify-content-center">
         <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
       </div>
@@ -23,11 +20,7 @@
       </span>
     </div>
 
-    <div
-      v-if="mSettings.tile.measurement_list"
-      class="flex flex-column flex-grow-1 knob-component"
-      style="position: relative; width: 100%"
-    >
+    <div v-if="mSettings.tile.measurement_list" class="flex flex-column flex-grow-1 knob-component" style="position: relative; width: 100%">
       <information-list-tile
         :tile="tile"
         :pdata="pdata"
@@ -189,9 +182,7 @@ export default {
     // console.info(this.tile.layout.w);
 
     var size = this.mSettings.tile.measurement_list ? 0.5 : 0.75;
-    this.mStyle = `max-width: 100%;max-height:100%;margin: auto;width:${
-      this.mSettings.panel.cellWidth * this.tile.layout.w * size
-    }px`;
+    this.mStyle = `max-width: 100%;max-height:100%;margin: auto;width:${this.mSettings.panel.cellWidth * this.tile.layout.w * size}px`;
     this.iconSize = this.mSettings.tile.measurement_list ? `height: 10%;  width: 10%;` : `height: 15%;  width: 15%;`;
     this.loaded = true;
   },
@@ -221,14 +212,7 @@ export default {
         // }
         // throw new Error();
       } catch (error) {
-        let c = [
-          "rgba(255,0,0,1.0)",
-          "rgba(255,0,0,0.25)",
-          "rgba(0, 255,0,1.0)",
-          "rgba(0, 255,0,0.25)",
-          "rgba(0,0,255,1.0)",
-          "rgba(0, 0,255,0.25)",
-        ];
+        let c = ["rgba(255,0,0,1.0)", "rgba(255,0,0,0.25)", "rgba(0, 255,0,1.0)", "rgba(0, 255,0,0.25)", "rgba(0,0,255,1.0)", "rgba(0, 0,255,0.25)"];
         let idx = this.tmpIndex++ % 3;
         return [c[2 * idx], c[2 * idx + 1]];
       }

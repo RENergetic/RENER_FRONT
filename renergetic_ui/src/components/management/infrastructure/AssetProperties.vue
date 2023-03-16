@@ -1,11 +1,5 @@
 <template>
-  <Dialog
-    v-model:visible="dialog"
-    :style="{ width: '75vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="dialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <div class="ren">
       <div v-for="detailsKey in detailsKeys" :key="detailsKey" class="property-form">
         <ren-input v-model="details[detailsKey]" :text-label="detailsKey" />
@@ -37,8 +31,7 @@ export default {
       this.details = {};
       this.detailsKeys.forEach(
         (detailsKey) =>
-          (this.details[detailsKey] =
-            selectedAsset.details && selectedAsset.details[detailsKey] ? selectedAsset.details[detailsKey] : ""),
+          (this.details[detailsKey] = selectedAsset.details && selectedAsset.details[detailsKey] ? selectedAsset.details[detailsKey] : ""),
       );
       this.dialog = true;
     },

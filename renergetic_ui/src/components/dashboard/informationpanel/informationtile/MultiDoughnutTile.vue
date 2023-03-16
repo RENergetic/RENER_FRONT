@@ -42,9 +42,7 @@ export default {
       let data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
 
       // console.info(this.tile.measurements);
-      let backgroundColor = this.tile.measurements.map((m) =>
-        m.measurement_details.color ? m.measurement_details.color : "#90A4AE",
-      );
+      let backgroundColor = this.tile.measurements.map((m) => (m.measurement_details.color ? m.measurement_details.color : "#90A4AE"));
 
       return {
         labels: labels,

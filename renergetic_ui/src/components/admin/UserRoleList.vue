@@ -25,24 +25,14 @@
       <div v-if="remainingRoles.length > 0" class="grid p-fluid" style="margin: 0 2rem; max-width: 20rem">
         <div class="col-12">
           <div class="p-inputgroup">
-            <Dropdown
-              id="selectRole"
-              v-model="selectedRole"
-              :options="remainingRoles"
-              :placeholder="$t('view.select_role')"
-            />
+            <Dropdown id="selectRole" v-model="selectedRole" :options="remainingRoles" :placeholder="$t('view.select_role')" />
             <Button v-if="selectedRole" icon="pi pi-plus" class="p-button-success" @click="confirmAdd()" />
           </div>
         </div>
       </div>
     </template>
   </RenSpinner>
-  <Dialog
-    v-model:visible="roleMatrixDialog"
-    :style="{ width: '95vw', height: '95vh' }"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="roleMatrixDialog" :style="{ width: '95vw', height: '95vh' }" :modal="true" :dismissable-mask="true">
     <RoleMatrix />
   </Dialog>
 </template>

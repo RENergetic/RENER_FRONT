@@ -61,13 +61,7 @@
 
     <AssetSelect ref="assetSelectDialog" @change="onParentChange" />
 
-    <Dialog
-      v-model:visible="childDialog"
-      :style="{ width: '75vw' }"
-      :maximizable="true"
-      :modal="true"
-      :dismissable-mask="true"
-    >
+    <Dialog v-model:visible="childDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
       <Card>
         <template #title> {{ $t("model.asset.child") }} </template>
         <template #content>
@@ -83,13 +77,7 @@
         </template>
       </Card>
     </Dialog>
-    <Dialog
-      v-model:visible="measurementDialog"
-      :style="{ width: '75vw' }"
-      :maximizable="true"
-      :modal="true"
-      :dismissable-mask="true"
-    >
+    <Dialog v-model:visible="measurementDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
       <Card>
         <template #title> {{ $t("model.asset.measurements") }} </template>
         <template #content>
@@ -105,11 +93,7 @@
           </span>
 
           <Button :label="$t('view.button.add_measurement')" @click="addMeasurement" />
-          <measurement-select
-            ref="measurementSelectDialog"
-            :asset-id="mAsset.id"
-            @select="onMeasurementSelect"
-          ></measurement-select>
+          <measurement-select ref="measurementSelectDialog" :asset-id="mAsset.id" @select="onMeasurementSelect"></measurement-select>
         </template>
       </Card>
     </Dialog>

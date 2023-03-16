@@ -1,12 +1,6 @@
 <template>
   <div>
-    <Dialog
-      v-model:visible="dashboardDialog"
-      :style="{ width: '75vw' }"
-      :maximizable="true"
-      :modal="true"
-      :dismissable-mask="true"
-    >
+    <Dialog v-model:visible="dashboardDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
       <Card>
         <template #title> {{ $t("view.dashboard_list") }} </template>
         <template #content>

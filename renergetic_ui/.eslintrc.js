@@ -25,7 +25,7 @@ module.exports = {
       2,
       {
         singleline: {
-          max: 6,
+          max: 8,
         },
         multiline: {
           max: 4,
@@ -41,8 +41,8 @@ module.exports = {
     "vue/max-len": [
       "error",
       {
-        code: 120,
-        template: 190,
+        code: 150,
+        template: 150,
         tabWidth: 2,
         comments: 200,
         ignorePattern: "",

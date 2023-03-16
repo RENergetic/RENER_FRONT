@@ -12,24 +12,12 @@
   >
     <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false">
       <template #filter="{ filterModel, filterCallback }">
-        <InputText
-          v-model="filterModel.value"
-          type="text"
-          class="p-column-filter"
-          :placeholder="$t('view.search')"
-          @input="filterCallback()"
-        />
+        <InputText v-model="filterModel.value" type="text" class="p-column-filter" :placeholder="$t('view.search')" @input="filterCallback()" />
       </template>
     </Column>
     <Column field="label" :header="$t('model.asset.label')" :show-filter-menu="false">
       <template #filter="{ filterModel, filterCallback }">
-        <InputText
-          v-model="filterModel.value"
-          type="text"
-          class="p-column-filter"
-          :placeholder="$t('view.search')"
-          @input="filterCallback()"
-        />
+        <InputText v-model="filterModel.value" type="text" class="p-column-filter" :placeholder="$t('view.search')" @input="filterCallback()" />
       </template>
     </Column>
     <Column field="type.label" :header="$t('model.asset.asset_type')" :show-filter-menu="false">
@@ -91,11 +79,7 @@
     </Column>
     <Column field="child" :header="$t('model.asset.child')">
       <template #body="slotProps">
-        <span
-          v-if="slotProps.data.child && slotProps.data.child.length > 0"
-          class="ren-pointer"
-          @click="viewChildren(slotProps.data)"
-        >
+        <span v-if="slotProps.data.child && slotProps.data.child.length > 0" class="ren-pointer" @click="viewChildren(slotProps.data)">
           {{ $t("view.view_asset_children") }}
         </span>
         <span v-else class="disabled">
@@ -137,12 +121,7 @@
     >
     <Column name="edit" :header="$t('view.properties')">
       <template #body="slotProps">
-        <span
-          class="ren-pointer"
-          @click="manageAssetProperties(slotProps.data, $store.getters['view/assetDetailsKeys'])"
-        >
-          Manage properties
-        </span>
+        <span class="ren-pointer" @click="manageAssetProperties(slotProps.data, $store.getters['view/assetDetailsKeys'])"> Manage properties </span>
       </template>
     </Column>
     <Column name="edit" :header="$t('view.edit')">
@@ -153,31 +132,13 @@
     <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
     <template #header>
       <div class="flex justify-content-between">
-        <Button
-          type="button"
-          icon="pi pi-filter-slash"
-          :label="$t('view.button.filter')"
-          class="p-button-outlined"
-          @click="reload"
-        />
-        <Button
-          type="button"
-          icon="pi pi-filter-slash"
-          :label="$t('view.button.clear_filter')"
-          class="p-button-outlined"
-          @click="clearFilter"
-        />
+        <Button type="button" icon="pi pi-filter-slash" :label="$t('view.button.filter')" class="p-button-outlined" @click="reload" />
+        <Button type="button" icon="pi pi-filter-slash" :label="$t('view.button.clear_filter')" class="p-button-outlined" @click="clearFilter" />
       </div>
     </template>
     <template #footer>
       <div class="flex justify-content-between">
-        <Button
-          type="button"
-          icon="pi pi-chevron-circle-left"
-          :label="$t('view.button.previous')"
-          class="p-button-outlined"
-          @click="previous"
-        />
+        <Button type="button" icon="pi pi-chevron-circle-left" :label="$t('view.button.previous')" class="p-button-outlined" @click="previous" />
         <span>{{ $t("view.current_page", { page: mPage }) }}</span>
         <Button
           type="button"
@@ -191,13 +152,7 @@
     </template>
   </DataTable>
   <Button :label="$t('view.button.add')" @click="assetAdd = true" />
-  <Dialog
-    v-model:visible="assetAdd"
-    :style="{ width: '50vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="assetAdd" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <AssetForm @update:model-value="onCreate($event, 0)" @cancel="assetAdd = false"> </AssetForm>
   </Dialog>
   <AssetSelectDialog ref="assetSelectDialog" @select="onParentChange" />
@@ -205,13 +160,7 @@
   <AssetProperties ref="assetPropertiesDialog" @submit="updateDetails" />
   <AssetEdit ref="assetEditDialog" @submit="updateAsset" />
 
-  <Dialog
-    v-model:visible="childDialog"
-    :style="{ width: '75vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="childDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <Card>
       <template #title> {{ $t("model.asset.child") }} </template>
       <template #content>
@@ -227,13 +176,7 @@
       </template>
     </Card>
   </Dialog>
-  <Dialog
-    v-model:visible="measurementDialog"
-    :style="{ width: '75vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="measurementDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <Card>
       <template #title> {{ $t("model.asset.measurements") }} </template>
       <template #content>
@@ -267,11 +210,7 @@
         </span>
 
         <Button :label="$t('view.button.add_measurement')" @click="addMeasurement" />
-        <measurement-select
-          ref="measurementSelectDialog"
-          :asset-id="selectedRow.id"
-          @select="onMeasurementSelect"
-        ></measurement-select>
+        <measurement-select ref="measurementSelectDialog" :asset-id="selectedRow.id" @select="onMeasurementSelect"></measurement-select>
       </template>
     </Card>
   </Dialog>

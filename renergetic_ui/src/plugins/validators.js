@@ -10,10 +10,7 @@ const { createI18nMessage } = validators; //  implicite import
 // Create your i18n message instance. Used for vue-i18n@9
 const $t = i18n.global.t.bind(i18n);
 const withI18nMessage = createI18nMessage({ t: $t });
-const withParametrizedMessage = (
-  v /*validator*/,
-  args = { propertyPath: "validations.fields.", withArguments: false },
-) => {
+const withParametrizedMessage = (v /*validator*/, args = { propertyPath: "validations.fields.", withArguments: false }) => {
   let withArguments = args.withArguments == null ? false : args.withArguments;
   let p = args.propertyPath ? args.propertyPath : "validations.fields.";
   return withI18nMessage(v, {
@@ -35,19 +32,15 @@ export const requiredTr = (path) => withParametrizedMessage(validators.required,
 
 export const minLength = withParametrizedMessage(validators.minLength, { withArguments: true });
 //suffix `Tr` - add i18n path to property
-export const minLengthTr = (path) =>
-  withParametrizedMessage(validators.minLength, { propertyPath: path, withArguments: true });
+export const minLengthTr = (path) => withParametrizedMessage(validators.minLength, { propertyPath: path, withArguments: true });
 //
 export const maxLength = withParametrizedMessage(validators.maxLength, { withArguments: true });
-export const maxLengthTr = (path) =>
-  withParametrizedMessage(validators.maxLength, { propertyPath: path, withArguments: true });
+export const maxLengthTr = (path) => withParametrizedMessage(validators.maxLength, { propertyPath: path, withArguments: true });
 //
 export const url = withParametrizedMessage(validators.url);
 export const urlTr = (path) => withParametrizedMessage(validators.url, { propertyPath: path });
 export const email = withParametrizedMessage(validators.email);
 export const emailTr = (path) => withParametrizedMessage(validators.email, { propertyPath: path });
 
-export const sameAs = (key) =>
-  withParametrizedMessage(validators.sameAs, { same_as_property: key, withArguments: true });
-export const sameAsTr = (path, key) =>
-  withParametrizedMessage(validators.sameAs, { same_as_property: key, propertyPath: path, withArguments: true });
+export const sameAs = (key) => withParametrizedMessage(validators.sameAs, { same_as_property: key, withArguments: true });
+export const sameAsTr = (path, key) => withParametrizedMessage(validators.sameAs, { same_as_property: key, propertyPath: path, withArguments: true });

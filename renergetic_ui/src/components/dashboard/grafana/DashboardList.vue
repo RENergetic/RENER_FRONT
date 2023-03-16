@@ -23,12 +23,7 @@
     <Column field="url" :header="$t('model.dashboard.url')">
       <template #body="slotProps">
         {{ slotProps.data.url }}
-        <i
-          v-if="slotProps.data.url"
-          v-tooltip="$t('view.go_to_dashboard')"
-          class="pi pi-arrow-circle-right"
-          @click="navigate(slotProps.data.url)"
-        />
+        <i v-if="slotProps.data.url" v-tooltip="$t('view.go_to_dashboard')" class="pi pi-arrow-circle-right" @click="navigate(slotProps.data.url)" />
       </template>
     </Column>
 
@@ -44,13 +39,11 @@
     </Column>
 
     <Column v-if="canEdit" name="edit" :header="$t('view.edit')">
-      <template #body="slotProps">
-        <i v-tooltip="$t('view.edit')" class="pi pi-pencil" @click="edit(slotProps.data)" /></template
+      <template #body="slotProps"> <i v-tooltip="$t('view.edit')" class="pi pi-pencil" @click="edit(slotProps.data)" /></template
     ></Column>
 
     <Column v-if="canEdit" name="delete" :header="$t('view.delete')">
-      <template #body="slotProps">
-        <i v-tooltip="$t('view.delete')" class="pi pi-trash" @click="deleteConfirm(slotProps.data)" /></template
+      <template #body="slotProps"> <i v-tooltip="$t('view.delete')" class="pi pi-trash" @click="deleteConfirm(slotProps.data)" /></template
     ></Column>
     <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
     <template #header>
@@ -63,12 +56,7 @@
           <InputText v-model="filters['global'].value" :placeholder="$t('view.search')" />
           <i v-if="filters.state" class="pi pi-filter active" :label="$t('view.button.filter')" @click="setFilter" />
           <i v-else class="pi pi-filter" :label="$t('view.button.filter')" @click="setFilter" />
-          <i
-            v-if="filters.state"
-            class="pi pi-filter-slash"
-            :label="$t('view.button.clear_filter')"
-            @click="clearFilter"
-          />
+          <i v-if="filters.state" class="pi pi-filter-slash" :label="$t('view.button.clear_filter')" @click="clearFilter" />
         </div>
       </div>
       <div class="flex justify-content-between"></div>
@@ -101,13 +89,7 @@
     </template>
   </DataTable>
 
-  <Dialog
-    v-model:visible="editDialog"
-    :style="{ width: '75vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="editDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <DashboardForm v-if="selectedRow" :dashboard="selectedRow" @save="onEdit" @cancel="editDialog = false" />
     <DashboardForm v-else @save="onCreate" @cancel="editDialog = false" />
   </Dialog>
@@ -201,11 +183,7 @@ export default {
       }
       let q = this.filters.global.value;
       function f(d) {
-        return (
-          d.name.toLowerCase().includes(q) ||
-          d.url.includes(q) ||
-          (d.label != null && d.label.toLowerCase().includes(q))
-        );
+        return d.name.toLowerCase().includes(q) || d.url.includes(q) || (d.label != null && d.label.toLowerCase().includes(q));
       }
       this.mDashboards = this.dashboards.filter(f);
       // this.reload()

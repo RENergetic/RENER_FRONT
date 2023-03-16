@@ -1,12 +1,6 @@
 <template>
   <div class="knob-component">
-    <Knob
-      v-model="value"
-      class="flex-grow-1 flex"
-      :style="{ textAlign: 'center', maxHeight: '80%' }"
-      :min="minV"
-      :max="maxV"
-    />
+    <Knob v-model="value" class="flex-grow-1 flex" :style="{ textAlign: 'center', maxHeight: '80%' }" :min="minV" :max="maxV" />
     <div class="flex-none flex" style="text-align: center">
       <div v-if="measurement" id="label">{{ mSettings.tile.label }}</div>
     </div>

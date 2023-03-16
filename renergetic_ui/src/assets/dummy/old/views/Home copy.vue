@@ -1,14 +1,7 @@
 <template>
   <div>
     <DotMenu :model="menuModel" :fixed="true" />
-    <Dialog
-      v-model:visible="settingsDialog"
-      :style="{ width: '50vw' }"
-      :maximizable="true"
-      :modal="true"
-      :dismissable-mask="true"
-      @hide="reload"
-    >
+    <Dialog v-model:visible="settingsDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true" @hide="reload">
       <!--  @update="onSettingsUpdate()" -->
       <HomeSettings></HomeSettings>
     </Dialog>
@@ -25,20 +18,9 @@
       <div v-if="settings.notificationVisibility" :class="'grid-stack-item ren'" v-bind="getLayout('notificationTile')">
         <NotificationList :class="'grid-stack-item-content'"></NotificationList>
       </div>
-      <div
-        v-if="settings.selectedPanel"
-        :class="'grid-stack-item ren'"
-        style="background: transparent"
-        v-bind="getLayout('panelTile')"
-      >
+      <div v-if="settings.selectedPanel" :class="'grid-stack-item ren'" style="background: transparent" v-bind="getLayout('panelTile')">
         <div class="grid-stack-item-content" sty>
-          <InformationPanel
-            v-if="loaded && panel != null"
-            ref="panel"
-            :panel="panel"
-            :edit-mode="false"
-            style="background: transparent"
-          ></InformationPanel>
+          <InformationPanel v-if="loaded && panel != null" ref="panel" :panel="panel" :edit-mode="false" style="background: transparent"></InformationPanel>
         </div>
       </div>
     </div>

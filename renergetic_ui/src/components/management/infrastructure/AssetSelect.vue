@@ -18,24 +18,12 @@
           >
             <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false">
               <template #filter="{ filterModel, filterCallback }">
-                <InputText
-                  v-model="filterModel.value"
-                  type="text"
-                  class="p-column-filter"
-                  :placeholder="$t('view.search')"
-                  @input="filterCallback"
-                />
+                <InputText v-model="filterModel.value" type="text" class="p-column-filter" :placeholder="$t('view.search')" @input="filterCallback" />
               </template>
             </Column>
             <Column field="label" :header="$t('model.asset.label')" :show-filter-menu="false">
               <template #filter="{ filterModel, filterCallback }">
-                <InputText
-                  v-model="filterModel.value"
-                  type="text"
-                  class="p-column-filter"
-                  :placeholder="$t('view.search')"
-                  @input="filterCallback"
-                />
+                <InputText v-model="filterModel.value" type="text" class="p-column-filter" :placeholder="$t('view.search')" @input="filterCallback" />
               </template>
             </Column>
             <Column field="type.label" :header="$t('model.asset.asset_type')" :show-filter-menu="false">
@@ -98,13 +86,7 @@
             <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
             <template #header>
               <div class="flex justify-content-between">
-                <Button
-                  type="button"
-                  icon="pi pi-filter-slash"
-                  :label="$t('view.button.filter')"
-                  class="p-button-outlined"
-                  @click="searchAsset"
-                />
+                <Button type="button" icon="pi pi-filter-slash" :label="$t('view.button.filter')" class="p-button-outlined" @click="searchAsset" />
                 <Button
                   type="button"
                   icon="pi pi-filter-slash"
@@ -172,10 +154,7 @@ export default {
   },
   computed: {
     canSubmit() {
-      return !(
-        this.assetList.length < 1 ||
-        !this.assetList.some((asset) => this.selectedAsset && asset.name === this.selectedAsset.name)
-      );
+      return !(this.assetList.length < 1 || !this.assetList.some((asset) => this.selectedAsset && asset.name === this.selectedAsset.name));
     },
   },
   mounted() {

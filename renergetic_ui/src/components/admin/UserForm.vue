@@ -30,12 +30,7 @@
           :errors="v$.mUser.lastName.$silentErrors"
           :text-label="'model.user.lastname'"
         />
-        <ren-input
-          v-model="mUser.email"
-          :invalid="v$.mUser.email.$invalid"
-          :errors="v$.mUser.email.$silentErrors"
-          :text-label="'model.user.email'"
-        />
+        <ren-input v-model="mUser.email" :invalid="v$.mUser.email.$invalid" :errors="v$.mUser.email.$silentErrors" :text-label="'model.user.email'" />
         <ren-password
           v-if="!user"
           v-model="mUser.password"

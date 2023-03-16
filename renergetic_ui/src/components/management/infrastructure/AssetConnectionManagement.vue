@@ -10,22 +10,14 @@
           <DataTable :value="connectedAssets" :lazy="true" data-key="id">
             <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false"></Column>
             <Column field="label" :header="$t('model.asset.label')" :show-filter-menu="false"></Column>
-            <Column
-              field="connection_type"
-              :header="$t('model.asset.connection_type')"
-              :show-filter-menu="false"
-            ></Column>
+            <Column field="connection_type" :header="$t('model.asset.connection_type')" :show-filter-menu="false"></Column>
             <Column :exportable="false" style="min-width: 8rem">
               <template #body="conn">
                 <!--edit connection type? <Button
                   icon="pi pi-pencil"                  class="p-button-rounded p-button-warning mr-2"
                   @click="edit(conn.data)"
                 /> -->
-                <Button
-                  icon="pi pi-trash"
-                  class="p-button-rounded p-button-danger"
-                  @click="deleteConnection(conn.data)"
-                />
+                <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteConnection(conn.data)" />
               </template>
             </Column>
           </DataTable>
@@ -38,13 +30,7 @@
     </template>
   </Card>
 
-  <Dialog
-    v-model:visible="addDialog"
-    :style="{ width: '75vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="addDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <Card>
       <template #title>{{ $t("view.add_asset_connection") }}</template>
       <template #content>
@@ -154,11 +140,7 @@ export default {
     },
     async deleteConnection(conn) {
       //TODO: confirm dialog, TODO: delete by connection type ?, can two assets can have more than 1 connection (different type)?
-      console.info(
-        `connection type: ${conn.type.id}, connected asset : ${conn.id}:${conn.name}(${
-          conn.label ? conn.label : "no label"
-        }) `,
-      );
+      console.info(`connection type: ${conn.type.id}, connected asset : ${conn.id}:${conn.name}(${conn.label ? conn.label : "no label"}) `);
 
       this.$refs.spinner.run(async () => {
         await this.$ren.managementApi.deleteAssetConnection(this.asset.id, conn.id);

@@ -1,11 +1,5 @@
 <template>
-  <Dialog
-    v-model:visible="dialog"
-    :style="{ width: '75vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="dialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <Card v-if="mModel">
       <!-- <template #title> </template> -->
       <template #content>
@@ -19,11 +13,7 @@
           <ren-input v-model="mModel.label" :text-label="'model.asset.label'" />
           <ren-input-text v-model="mModel.description" :text-label="'model.asset.description'" />
           <ren-input v-model="mModel.geo_location" :text-label="'model.asset.geo_location'" />
-          <ren-input-wrapper
-            :text-label="'model.asset.asset_type'"
-            :invalid="v$.mModel.type.$invalid"
-            :errors="v$.mModel.type.$silentErrors"
-          >
+          <ren-input-wrapper :text-label="'model.asset.asset_type'" :invalid="v$.mModel.type.$invalid" :errors="v$.mModel.type.$silentErrors">
             <template #content>
               <Dropdown
                 id="assetType"

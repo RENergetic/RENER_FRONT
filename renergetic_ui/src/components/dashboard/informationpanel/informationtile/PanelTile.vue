@@ -1,10 +1,5 @@
 <template>
-  <div
-    v-if="pdata"
-    :id="gridId"
-    style="width: 100%; position: relative; display: block; height: fit-content"
-    class="grid-stack"
-  >
+  <div v-if="pdata" :id="gridId" style="width: 100%; position: relative; display: block; height: fit-content" class="grid-stack">
     <InformationTile
       v-for="(t, index) in tiles"
       :key="t.id"

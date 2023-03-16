@@ -14,13 +14,7 @@
     />
   </div>
 
-  <Dialog
-    v-model:visible="notificationDialog"
-    :style="{ width: '50vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="notificationDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <notification-list v-if="selectedItem" :context="notificationContext" :object-id="selectedItem.tile.id" />
   </Dialog>
 </template>
@@ -147,19 +141,11 @@ export default {
     pdata: {
       handler: function (newValue) {
         if (this.mSettings.relativeValues && newValue) {
-          this.mPData = this.$ren.utils.convertPanelData(
-            this.mPanel,
-            newValue,
-            this.$store.getters["settings/conversion"],
-          );
+          this.mPData = this.$ren.utils.convertPanelData(this.mPanel, newValue, this.$store.getters["settings/conversion"]);
           this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, this.mSettings);
         } else {
           console.info("watch pdata");
-          this.mPData = this.$ren.utils.convertPanelData(
-            this.mPanel,
-            newValue,
-            this.$store.getters["settings/conversion"],
-          );
+          this.mPData = this.$ren.utils.convertPanelData(this.mPanel, newValue, this.$store.getters["settings/conversion"]);
         }
         // this.reloadGrid();
       },
@@ -170,18 +156,10 @@ export default {
         console.info("watch mSettings");
         if (newVal.relativeValues && this.pdata) {
           // this.mPData = this.pdata;
-          this.mPData = this.$ren.utils.convertPanelData(
-            this.mPanel,
-            this.pdata,
-            this.$store.getters["settings/conversion"],
-          );
+          this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.$store.getters["settings/conversion"]);
           this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, newVal);
         } else {
-          this.mPData = this.$ren.utils.convertPanelData(
-            this.mPanel,
-            this.pdata,
-            this.$store.getters["settings/conversion"],
-          );
+          this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.$store.getters["settings/conversion"]);
         }
       },
       deep: true,
@@ -195,18 +173,10 @@ export default {
   async mounted() {
     if (this.pdata != null) {
       if (this.settings.relativeValues && this.pdata) {
-        this.mPData = this.$ren.utils.convertPanelData(
-          this.mPanel,
-          this.pdata,
-          this.$store.getters["settings/conversion"],
-        );
+        this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.$store.getters["settings/conversion"]);
         this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, this.settings);
       } else {
-        this.mPData = this.$ren.utils.convertPanelData(
-          this.mPanel,
-          this.pdata,
-          this.$store.getters["settings/conversion"],
-        );
+        this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.$store.getters["settings/conversion"]);
       }
       this.reloadGrid();
     }
@@ -216,9 +186,7 @@ export default {
       if (this.grid != null) this.grid.destroy(false);
       let grid = GridStack.init({ float: true, column: 12, cellHeight: "8vh", margin: 5 }, "#panel-grid-stack");
       if (grid == null) {
-        console.warn(
-          "Cannot find #panel-grid-stack, is panel:" + (this.mPanel != null) + ", is data:" + (this.pdata != null),
-        );
+        console.warn("Cannot find #panel-grid-stack, is panel:" + (this.mPanel != null) + ", is data:" + (this.pdata != null));
         return;
       }
       if (this.locked) {

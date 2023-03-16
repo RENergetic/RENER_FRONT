@@ -42,8 +42,7 @@ export default class AxiosAPI {
           this.vueInstance.config.globalProperties.$store.getters["auth/token"] &&
           this.vueInstance.config.globalProperties.$store.getters["auth/token"] != "undefined"
         )
-          req.headers["Authorization"] =
-            "Bearer " + this.vueInstance.config.globalProperties.$store.getters["auth/token"];
+          req.headers["Authorization"] = "Bearer " + this.vueInstance.config.globalProperties.$store.getters["auth/token"];
         console.log(`${req.method} ${req.url} ${req.spinner}`);
         // Important: request interceptors **must** return the request.
         return req;

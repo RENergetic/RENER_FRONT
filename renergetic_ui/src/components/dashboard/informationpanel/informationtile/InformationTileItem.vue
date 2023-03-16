@@ -58,9 +58,7 @@ export default {
   },
   computed: {
     iconVisibility: function () {
-      return (
-        (this.mSettings && this.mSettings.tile ? this.mSettings.tile.icon_visibility : true) && this.mSettings.tile.icon
-      );
+      return (this.mSettings && this.mSettings.tile ? this.mSettings.tile.icon_visibility : true) && this.mSettings.tile.icon;
     },
     style: function () {
       let color = this.$ren.utils.measurementColor(this.measurement, this.value);

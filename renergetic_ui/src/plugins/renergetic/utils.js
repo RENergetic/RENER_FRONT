@@ -114,9 +114,7 @@ export default class RenUtils {
 
   knobColors(measurement) {
     if (measurement.type.color) {
-      let color = measurement.measurement_details.color
-        ? measurement.measurement_details.color
-        : measurement.type.color;
+      let color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
       // console.info(measurement);
       // console.info(color);
       if (color.length == 7) {
@@ -130,9 +128,7 @@ export default class RenUtils {
     //tODO add alpha supprot
     let alpha = "80";
     if (measurement.type.color) {
-      let color = measurement.measurement_details.color
-        ? measurement.measurement_details.color
-        : measurement.type.color;
+      let color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
       // console.info(measurement);
       // console.info(color);
       if (color.length == 7) {

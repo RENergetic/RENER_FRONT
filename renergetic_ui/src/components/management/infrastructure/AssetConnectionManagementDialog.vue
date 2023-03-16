@@ -1,11 +1,5 @@
 <template>
-  <Dialog
-    v-model:visible="dialog"
-    :style="{ width: '75vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="dialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <AssetConnectionManagement :asset="asset" />
   </Dialog>
 </template>

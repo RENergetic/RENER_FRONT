@@ -1,12 +1,5 @@
 <template>
-  <Dialog
-    v-model:visible="dialogVisibility"
-    :style="{ width: '50vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-    @hide="onClose"
-  >
+  <Dialog v-model:visible="dialogVisibility" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true" @hide="onClose">
     <!-- @after-hide="" -->
     <slot name="settings" />
   </Dialog>

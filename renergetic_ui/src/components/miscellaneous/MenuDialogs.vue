@@ -1,20 +1,8 @@
 <template>
-  <Dialog
-    v-model:visible="mNotificationDialog"
-    :style="{ width: '75vw' }"
-    :maximizable="false"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="mNotificationDialog" :style="{ width: '75vw' }" :maximizable="false" :modal="true" :dismissable-mask="true">
     <NotificationList @update="onNotificationUpdate($event)"></NotificationList>
   </Dialog>
-  <Dialog
-    v-model:visible="mDemandDialog"
-    :style="{ width: '75vw' }"
-    :maximizable="false"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="mDemandDialog" :style="{ width: '75vw' }" :maximizable="false" :modal="true" :dismissable-mask="true">
     <DemandList @update="onDemandUpdate($event)"></DemandList>
   </Dialog>
 
@@ -24,13 +12,7 @@
   <Dialog v-model:visible="mAddUser" :style="{ width: '50vw' }" :modal="true" :dismissable-mask="true">
     <UserForm @save="onUserSave" @cancel="mAddUser = false" />
   </Dialog>
-  <Dialog
-    v-model:visible="mLocales"
-    :style="{ width: '50vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="mLocales" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <LocaleSettings></LocaleSettings>
   </Dialog>
 </template>

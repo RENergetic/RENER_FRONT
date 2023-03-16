@@ -47,19 +47,13 @@ export default class ManagementApi extends RestComponent {
     console.log("assetId", assetId);
     console.log("connectedAssetId", connectedAssetId);
     console.log("type", type);
-    await this.put(
-      `/api/assets/connect/${assetId}?connect_to=${connectedAssetId}&type=${type}`,
-      null,
-      null,
-      null,
-      (e) => {
-        if (e.response.status === 404) {
-          //TODO: handle connectedAssetId not found
-          this.emitError(`${assetId} not found: ${e.message}`, { code: "asset_not_found", args: [assetId] });
-          return true;
-        }
-      },
-    );
+    await this.put(`/api/assets/connect/${assetId}?connect_to=${connectedAssetId}&type=${type}`, null, null, null, (e) => {
+      if (e.response.status === 404) {
+        //TODO: handle connectedAssetId not found
+        this.emitError(`${assetId} not found: ${e.message}`, { code: "asset_not_found", args: [assetId] });
+        return true;
+      }
+    });
   }
 
   async addAsset(asset) {

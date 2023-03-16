@@ -1,7 +1,5 @@
 <template>
-  <div style="display: block; width: 10rem">
-    todo view list of recommendation {{ mRecommendations }} objects:{{ objects }}
-  </div>
+  <div style="display: block; width: 10rem">todo view list of recommendation {{ mRecommendations }} objects:{{ objects }}</div>
 </template>
 <script>
 //todo: download recommendations

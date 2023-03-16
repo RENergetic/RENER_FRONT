@@ -55,11 +55,7 @@ export default {
         return;
       }
       if (
-        (RenRoles.REN_ADMIN |
-          RenRoles.REN_USER |
-          RenRoles.REN_MANAGER |
-          RenRoles.REN_TECHNICAL_MANAGER |
-          RenRoles.REN_STAFF) &
+        (RenRoles.REN_ADMIN | RenRoles.REN_USER | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_STAFF) &
         this.$store.getters["auth/renRole"]
       ) {
         this.mNotifications = await this.$ren.userApi.getNotifications();

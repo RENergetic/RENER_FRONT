@@ -42,10 +42,7 @@ export default {
       let roles = ["ren-guest"];
 
       if (payload != null && payload.appRoles != null) {
-        if (
-          payload.appRoles[process.env.VUE_APP_KEY_CLOAK_CLIENT_ID] &&
-          payload.appRoles[process.env.VUE_APP_KEY_CLOAK_CLIENT_ID].roles
-        )
+        if (payload.appRoles[process.env.VUE_APP_KEY_CLOAK_CLIENT_ID] && payload.appRoles[process.env.VUE_APP_KEY_CLOAK_CLIENT_ID].roles)
           roles = payload.appRoles[process.env.VUE_APP_KEY_CLOAK_CLIENT_ID].roles;
         let role = RenRoles.REN_GUEST;
         roles.forEach((it) => {

@@ -29,24 +29,12 @@
     </Column>
     <Column field="edit" :header="$t('view.edit')"> <template #body>todo:</template></Column>
   </DataTable>
-  <Dialog
-    v-model:visible="measurementDetailsDialog"
-    :style="{ width: '75vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="measurementDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <MeasurementDetails :model="selectedRow.data.measurement_details" @update="onDetailsUpdate"></MeasurementDetails>
     <!-- @update:model-value="onCreate($event, 0)" -->
   </Dialog>
   <!-- <Button :label="$t('view.button.add')" @click="measurementAdd = true" /> -->
-  <Dialog
-    v-model:visible="measurementEditDialog"
-    :style="{ width: '75vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="measurementEditDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <MeasurementForm @update:model-value="onCreate($event, 0)"></MeasurementForm>
   </Dialog>
 </template>

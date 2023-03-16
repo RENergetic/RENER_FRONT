@@ -18,13 +18,7 @@ const getNavigatorLanguage = () => {
     if (navigator.languages && navigator.languages.length) {
       return navigator.languages[0].split("-")[0].toLowerCase();
     } else {
-      return (
-        navigator.userLanguage ||
-        navigator.language ||
-        navigator.browserLanguage ||
-        process.env.VUE_APP_I18N_LOCALE ||
-        "en"
-      );
+      return navigator.userLanguage || navigator.language || navigator.browserLanguage || process.env.VUE_APP_I18N_LOCALE || "en";
     }
   } catch (error) {
     console.error(error);

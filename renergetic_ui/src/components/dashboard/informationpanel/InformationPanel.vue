@@ -16,13 +16,7 @@
       />
     </template>
   </RenSpinner>
-  <Dialog
-    v-model:visible="editDialog"
-    :style="{ width: '50vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="editDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <div class="field grid">
       <label for="assetType" class="col-fixed" style="width: 5rem">
         {{ $t("model.information_tile.type") }}
@@ -39,22 +33,12 @@
       </div>
     </div>
     <div class="field grid">
-      <Button
-        :label="$t('view.button.manage_measurement')"
-        icon="pi pi-plus"
-        @click="() => (manageSensorsDialog = !manageSensorsDialog)"
-      />
+      <Button :label="$t('view.button.manage_measurement')" icon="pi pi-plus" @click="() => (manageSensorsDialog = !manageSensorsDialog)" />
     </div>
     <div class="field grid">
       <Button :label="$t('view.button.submit')" icon="pi pi-plus" @click="saveGrid" />
     </div>
-    <Dialog
-      v-model:visible="manageSensorsDialog"
-      :style="{ width: '75vw' }"
-      :maximizable="true"
-      :modal="true"
-      :dismissable-mask="true"
-    >
+    <Dialog v-model:visible="manageSensorsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
       <!-- {{ selectedTile.tile.measurements }} -->
       <ManageSensors v-model="selectedItem.tile.measurements"></ManageSensors>
     </Dialog>

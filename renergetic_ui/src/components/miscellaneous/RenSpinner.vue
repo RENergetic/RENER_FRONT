@@ -31,8 +31,7 @@ export default {
       return this.lock != null ? this.lock : this.isContent;
     },
     size: function () {
-      if (this.$refs.spinnerContent)
-        return Math.min(this.$refs.spinnerContent.clientHeight, this.$refs.spinnerContent.clientWidth);
+      if (this.$refs.spinnerContent) return Math.min(this.$refs.spinnerContent.clientHeight, this.$refs.spinnerContent.clientWidth);
       return 0;
     },
   },

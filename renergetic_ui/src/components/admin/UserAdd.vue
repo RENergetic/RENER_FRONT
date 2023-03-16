@@ -1,12 +1,6 @@
 <template>
   <!-- TODO add locale keys -->
-  <Dialog
-    :visible="visible"
-    :style="{ width: '30rem' }"
-    :header="$t('view.add_new_user')"
-    :modal="true"
-    @update:visible="cancelAdd"
-  >
+  <Dialog :visible="visible" :style="{ width: '30rem' }" :header="$t('view.add_new_user')" :modal="true" @update:visible="cancelAdd">
     <div class="field grid">
       <label for="username" class="col-fixed" style="width: 10rem">
         {{ $t("model.user.username") }}
@@ -65,13 +59,7 @@
     </div>
 
     <template #footer>
-      <Button
-        label="No"
-        icon="pi pi-times"
-        class="p-button-text p-left"
-        style="color: var(--orange-300)"
-        @click="cancelAdd()"
-      />
+      <Button label="No" icon="pi pi-times" class="p-button-text p-left" style="color: var(--orange-300)" @click="cancelAdd()" />
       <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="confirmAdd()" />
     </template>
   </Dialog>
@@ -137,8 +125,7 @@ export default {
       for (let user of this.users) {
         if (
           this.user.username === undefined ||
-          (this.user.username === user.username &&
-            (this.editUser == undefined || this.user.username != this.editUser.username))
+          (this.user.username === user.username && (this.editUser == undefined || this.user.username != this.editUser.username))
         ) {
           error = true;
           this.error.username = true;

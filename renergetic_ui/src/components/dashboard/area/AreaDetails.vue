@@ -89,13 +89,7 @@
   </Card>
   <!-- Dialog section -->
   <div v-if="mArea">
-    <Dialog
-      v-model:visible="measurementDialog"
-      :style="{ width: '75vw' }"
-      :maximizable="true"
-      :modal="true"
-      :dismissable-mask="true"
-    >
+    <Dialog v-model:visible="measurementDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
       <MeasurementChart v-if="mArea != null" :objects="[mArea.id]"></MeasurementChart>
     </Dialog>
 
@@ -169,16 +163,12 @@ export default {
     },
     async selectAsset() {
       if (this.mArea.asset != null) {
-        await this.$ren.managementApi
-          .getAsset(this.mArea.asset.id)
-          .then((asset) => this.$refs.assetSelectDialog.open(asset));
+        await this.$ren.managementApi.getAsset(this.mArea.asset.id).then((asset) => this.$refs.assetSelectDialog.open(asset));
       } else this.$refs.assetSelectDialog.open();
     },
     async showAsset() {
       if (this.mArea.asset != null) {
-        await this.$ren.managementApi
-          .getAsset(this.mArea.asset.id)
-          .then((asset) => this.$refs.assetViewDialog.open(asset));
+        await this.$ren.managementApi.getAsset(this.mArea.asset.id).then((asset) => this.$refs.assetViewDialog.open(asset));
       }
     },
 

@@ -11,13 +11,7 @@
     <Button :label="$t('view.button.add_sensor')" @click="() => (sensorSearchDialog = !sensorSearchDialog)" />
   </div>
 
-  <Dialog
-    v-model:visible="sensorSearchDialog"
-    :style="{ width: '50vw' }"
-    :maximizable="true"
-    :modal="true"
-    :dismissable-mask="true"
-  >
+  <Dialog v-model:visible="sensorSearchDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <p>todo edit options, list of metrics</p>
   </Dialog>
 </template>

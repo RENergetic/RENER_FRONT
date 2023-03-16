@@ -5,7 +5,7 @@
           "label": "Label"
      },
      "heatmap": {
-          "name":"Name",
+          "name": "Name",
           "label": "Label",
           "areas": "Areas",
           "attributes": "Attributes",
@@ -60,6 +60,6 @@
      "user": {
           "login": "Login",
           "password": "Password",
-          "password_repeat":"Repeat password"
+          "password_repeat": "Repeat password"
      }
 }

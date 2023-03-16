@@ -137,8 +137,7 @@ export default {
       models: this.$store.getters["view/dashboardModels"],
       // units: this.$store.getters["view/dashboardUnits"],
       mUnits: mUnits,
-      selectedPhysicalUnit:
-        this.mDashboard && this.mDashboard.measurement_type ? this.mDashboard.measurement_type.physical_name : null,
+      selectedPhysicalUnit: this.mDashboard && this.mDashboard.measurement_type ? this.mDashboard.measurement_type.physical_name : null,
 
       measurementTypes: Object.keys(DashboardMeasurementTypes),
     };
@@ -148,13 +147,11 @@ export default {
   },
   computed: {
     measurementType() {
-      if (this.mDashboard && this.mDashboard.measurement_type)
-        return this.mDashboard && this.mDashboard.measurement_type.physical_name;
+      if (this.mDashboard && this.mDashboard.measurement_type) return this.mDashboard && this.mDashboard.measurement_type.physical_name;
       return null;
     },
     unit() {
-      if (this.mDashboard && this.mDashboard.measurement_type)
-        return this.mDashboard && this.mDashboard.measurement_type.unit;
+      if (this.mDashboard && this.mDashboard.measurement_type) return this.mDashboard && this.mDashboard.measurement_type.unit;
       return null;
     },
   },
