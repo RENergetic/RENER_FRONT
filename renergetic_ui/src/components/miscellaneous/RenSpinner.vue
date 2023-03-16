@@ -62,15 +62,20 @@ export default {
         this.strokeWidth = 2;
       }
     },
+    async sleep(timeMillis) {
+      if (timeMillis == null || timeMillis <= 0) {
+        return;
+      }
+      let t = Math.min(timeMillis, 600000);
+      await new Promise((r) => setTimeout(r, t));
+    },
 
-    async run(handler) {
+    async run(handler, t = null) {
       this.start();
       try {
         this.update();
-        // await new Promise((r) => setTimeout(r, 600000));
+        await this.sleep(t);
         await handler();
-
-        // await new Promise((r) => setTimeout(r, 600000));
       } finally {
         this.stop();
       }

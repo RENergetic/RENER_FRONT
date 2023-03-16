@@ -87,7 +87,7 @@
 
           <Button
             type="button"
-            icon="pi pi-filter-slash"
+                  icon="pi pi-chevron-circle-right"
             :label="$t('view.button.next')"
             class="p-button-outlined"
             @click="next"

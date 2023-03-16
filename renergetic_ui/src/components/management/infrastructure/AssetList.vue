@@ -173,7 +173,7 @@
       <div class="flex justify-content-between">
         <Button
           type="button"
-          icon="pi pi-filter-slash"
+          icon="pi pi-chevron-circle-left"
           :label="$t('view.button.previous')"
           class="p-button-outlined"
           @click="previous"
@@ -181,9 +181,10 @@
         <span>{{ $t("view.current_page", { page: mPage }) }}</span>
         <Button
           type="button"
-          icon="pi pi-filter-slash"
+          icon="pi pi-chevron-circle-right"
           :label="$t('view.button.next')"
           class="p-button-outlined"
+          icon-pos="right"
           @click="next"
         />
       </div>
@@ -200,7 +201,7 @@
     <AssetForm @update:model-value="onCreate($event, 0)" @cancel="assetAdd = false"> </AssetForm>
   </Dialog>
   <AssetSelectDialog ref="assetSelectDialog" @select="onParentChange" />
-  <AssetConnectionManagement ref="assetConnectionManagementDialog" />
+  <AssetConnectionManagementDialog ref="assetConnectionManagementDialog" />
   <AssetProperties ref="assetPropertiesDialog" @submit="updateDetails" />
   <AssetEdit ref="assetEditDialog" @submit="updateAsset" />
 
@@ -280,7 +281,7 @@
 import AssetForm from "./AssetForm.vue";
 import AssetSelectDialog from "./AssetSelectDialog.vue";
 import MeasurementSelect from "./MeasurementSelect.vue";
-import AssetConnectionManagement from "./AssetConnectionManagement.vue";
+import AssetConnectionManagementDialog from "./AssetConnectionManagementDialog.vue";
 import AssetProperties from "@/components/management/infrastructure/AssetProperties.vue";
 import AssetEdit from "@/components/management/infrastructure/AssetEdit.vue";
 
@@ -300,7 +301,7 @@ export default {
     AssetForm,
     AssetSelectDialog,
     MeasurementSelect,
-    AssetConnectionManagement,
+    AssetConnectionManagementDialog,
   },
 
   props: {

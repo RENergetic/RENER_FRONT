@@ -38,7 +38,7 @@
                 />
               </template>
             </Column>
-            <Column field="type.label" :header="$t('model.asset.type')" :show-filter-menu="false">
+            <Column field="type.label" :header="$t('model.asset.asset_type')" :show-filter-menu="false">
               <template #filter="{ filterModel, filterCallback }">
                 <Dropdown
                   v-model="filterModel.value"
@@ -118,7 +118,7 @@
               <div class="flex justify-content-between">
                 <Button
                   type="button"
-                  icon="pi pi-filter-slash"
+                  icon="pi pi-chevron-circle-left"
                   :label="$t('view.button.previous')"
                   class="p-button-outlined"
                   @click="previous"
@@ -126,9 +126,10 @@
                 <span>{{ $t("view.current_page", { page: page }) }}</span>
                 <Button
                   type="button"
-                  icon="pi pi-filter-slash"
+                  icon="pi pi-chevron-circle-right"
                   :label="$t('view.button.next')"
                   class="p-button-outlined"
+                  icon-pos="right"
                   @click="next"
                 />
               </div>

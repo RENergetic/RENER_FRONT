@@ -17,7 +17,10 @@
             "url": "url",
             "label": "label",
             "password": "password",
-            "passwordRepeat": "repeat password"
+            "passwordRepeat": "repeat password",
+            "selectedAsset":"Selected asset",
+            "connectedAsset":"Connected asset",
+            "connectionType": "Connection type"
         },
         "sameAs": "The '{property}' is not same as {same_as_property}."
     },

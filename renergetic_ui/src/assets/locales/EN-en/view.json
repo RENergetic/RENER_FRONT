@@ -4,10 +4,12 @@
   "add_measurement": "Add measurement",
   "add_user":"Add user",
   "add_asset": "Add Asset",
+  "add_asset_connection":"Connect asset ",
   "asset": "Asset",
   "asset_child_empty": "No sub assets",
   "asset_list": "Asset list",
   "asset_select": "Select asset",
+  "asset_not_selected":"Asset is not selected",
   "change_asset": "Change Asset",
   "current_page":"Current Page {page}",
   "connected_assets": "Connected Assets",
@@ -99,7 +101,9 @@
     "next": "Next",
     "previous": "Previous",
     "filter": "Filter",
-    "clear_filter": "Clear Filter"
+    "clear_filter": "Clear Filter",
+    "yes":"Yes",
+    "no":"No"
   },
   "home_settings":"Home Settings",
   "panel_settings":"Panel settings",

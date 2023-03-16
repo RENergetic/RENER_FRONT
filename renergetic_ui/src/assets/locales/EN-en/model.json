@@ -1,5 +1,4 @@
 {
-     
      "dashboard": {
           "name": "Name",
           "url": "URL",
@@ -22,8 +21,14 @@
           "description": "Description",
           "id": "Id"
      },
+     "asset_connection": {
+          "connected_asset": "Connected asset",
+          "connection_type": "Connection type",
+          "bi_directional": "Bi directional"
+     },
      "asset": {
           "asset_connections": "Asset connections",
+          "connection_type": "Connection type",
           "name": "Name",
           "id": "Id",
           "child": "Sub assets",
@@ -31,7 +36,7 @@
           "asset_category": "Asset category",
           "label": "Label",
           "measurements": "Measurements",
-          "description":"Description",
+          "description": "Description",
           "geo_location": "Geo location",
           "owner": "Owner",
           "parent": "Parent",
@@ -69,15 +74,15 @@
      "user": {
           "login": "Login",
           "password": "Password",
-          "email":"Email",
-          "firstname":"First name",
-          "lastname":"Last name",
-          "username":"Username"    , 
-          "password_repeat":"Repeat password",
-          "temp_password":"Temporary password" ,    
-          "roles":"Roles"      
+          "email": "Email",
+          "firstname": "First name",
+          "lastname": "Last name",
+          "username": "Username",
+          "password_repeat": "Repeat password",
+          "temp_password": "Temporary password",
+          "roles": "Roles"
      },
-     "role":{
-          "name":"Name"
+     "role": {
+          "name": "Name"
      }
 }
