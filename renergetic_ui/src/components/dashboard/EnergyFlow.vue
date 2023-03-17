@@ -70,20 +70,11 @@ export default {
     // },
   },
   mounted() {
-    console.info(JSON.stringify(this.panel));
+    // console.info(JSON.stringify(this.panel));
   },
 
   methods: {},
 };
 </script>
 
-<style lang="scss">
-// #energy-flow {
-//   display: block;
-//   width: 100%;
-//   height: 100%;
-//   background: rgba(255, 0, 247, 0.463);
-//   font-size: 30 rem;
-//   padding: 10%;
-// }
-</style>
+<style lang="scss"></style>

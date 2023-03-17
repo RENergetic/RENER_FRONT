@@ -84,12 +84,12 @@ export default {
         ...this.featuredPanels(), //public dashboard
         ...this.assetsItems(), //private dashboard
         ...this.dashboardItems(), //grafana  dashboardss
-        ...this.managementItems(),
         // ...this.infrastructureItems(),
         // ...this.administrationItems(),
         ...this.notificationsItem(),
         ...this.demandsItem(),
 
+        ...this.managementItems(),
         ...this.userItems(),
       ];
     },
@@ -149,7 +149,7 @@ export default {
         return {
           // label: this.$t("menu.group_list"),
           label: assetPanel.panel.label.replace("{asset}", assetPanel.asset.label),
-          icon: "pi pi-fw pi-align-left",
+          icon: "pi pi-fw pi-th-large",
           // to: to,
           command: () => {
             this.$router.push({
@@ -187,7 +187,7 @@ export default {
             return {
               // label: this.$t("menu.group_list"),
               label: dashboardItem.label ? dashboardItem.label : dashboardItem.name,
-              icon: "pi pi-fw pi-align-left",
+              icon: "pi pi-fw pi-th-large",
               // to: to,
               command: () => {
                 window.open(dashboardItem.url, "_blank");
@@ -321,7 +321,7 @@ export default {
           // label: this.$t("menu.manage"),
           label: this.$t("menu.manage_information_panels"),
 
-          icon: "pi pi-fw  pi-list",
+          icon: "pi pi-fw  pi-th-large",
           to: "/panel",
           command: () => {
             this.$router.push({ name: "InformationPanelList" });
@@ -361,7 +361,7 @@ export default {
       items.push({
         // label: this.$t("menu.group_list"),
         label: this.$t("menu.manage_grafana_dashboard"),
-        icon: "pi pi-fw pi-list",
+        icon: "pi pi-fw pi-th-large",
         to: "/dashboard/grafana/list",
         command: () => {
           this.$router.push({ name: "GrafanaDashboardList" });
