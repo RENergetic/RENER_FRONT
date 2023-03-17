@@ -32,7 +32,7 @@ if (!(localeCode in allowedLocales)) {
   console.warn(`Locale not supported ${localeCode}`);
   localeCode = process.env.VUE_APP_I18N_LOCALE || "en";
 }
-localeCode = "pl";
+// localeCode = "pl";
 
 const i18n = createI18n({
   locale: localeCode,
@@ -64,5 +64,5 @@ export async function setLocale(localeCode) {
 }
 // console.info(i18n.global);
 await setLocale(localeCode);
-
+// console.info(i18n.global);
 export default i18n;

@@ -4,10 +4,12 @@
     <template #content>
       <div class="flex">
         <!-- <div class="flex align-items-center justify-content-center"></div> -->
-
+        <!-- {{ notification }}  -->
+        <!-- {{ notification.measurement }} -->
+        <!-- {{ messageParams }} -->
         <div class="flex-grow-1 flex flex-column justify-content-center flex-wrap">
-          <span v-if="$te('notifications.' + notification.message)">
-            {{ $t("notifications." + notification.message) }}
+          <span v-if="$te('notifications.' + notification.message, 'en')">
+            {{ $t("notifications." + notification.message, messageParams) }}
           </span>
           <span v-else>
             {{ notification.message }}
@@ -74,7 +76,17 @@ export default {
   data() {
     return {};
   },
-  computed: {},
+
+  computed: {
+    messageParams: function () {
+      let unit = this.measurement.type ? this.measurement.type.unit : "";
+      return {
+        asset_name: this.notification.asset ? this.notification.asset.name : "No asset",
+        timestamp: this.notification.timestamp ? this.$ren.utils.parseUnixTimestamp(this.notification.timestamp) : "No timestamp",
+        value: this.notification.value ? `${Math.round(this.notification.value * 1000) / 1000.0} ${unit}` : "No value",
+      };
+    },
+  },
   watch: {},
   methods: {
     navigate(url) {
