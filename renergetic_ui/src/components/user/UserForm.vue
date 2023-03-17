@@ -84,7 +84,7 @@
 </template>
 <script>
 import { useVuelidate } from "@vuelidate/core";
-import { required, minLength, email, maxLength, sameAs } from "@/plugins/validators.js";
+import { required, minLength, minLengthTr, email, maxLength, maxLengthTr, sameAs } from "@/plugins/validators.js";
 export default {
   name: "UserForm",
   components: {},
@@ -115,13 +115,13 @@ export default {
     // TODO: password validator
     if (this.user) {
       pass = {
-        password: { minLength: minLength(7), maxLength: maxLength(20) },
+        password: { minLength: minLengthTr(null, "passMinLength")(7), maxLength: maxLengthTr(null, "passMaxLength")(20) },
         passwordRepeat: { sameAs: sameAs(this.mUser.password) },
       };
     } else {
       pass = {
-        password: { required, minLength: minLength(7), maxLength: maxLength(20) },
-        passwordRepeat: { sameAs: sameAs(this.mUser.password) },
+        password: { required, minLength: minLengthTr(null, "passMinLength")(7), maxLength: maxLengthTr(null, "passMaxLength")(20) },
+        passwordRepeat: { sameAs: sameAs("test")(this.mUser.password) },
       };
     }
     return {

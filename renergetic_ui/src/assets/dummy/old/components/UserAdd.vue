@@ -1,5 +1,4 @@
 <template>
-  <!-- TODO add locale keys -->
   <Dialog :visible="visible" :style="{ width: '30rem' }" :header="$t('view.add_new_user')" :modal="true" @update:visible="cancelAdd">
     <div class="field grid">
       <label for="username" class="col-fixed" style="width: 10rem">

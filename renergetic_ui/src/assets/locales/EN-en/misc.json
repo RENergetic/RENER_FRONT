@@ -3,6 +3,8 @@
         "required": "The field '{property}' is required.",
         "minLength": "The '{property}' field has a value of '{model}', but it must have a min length of {min}.",
         "maxLength": "The '{property}' field has a value of '{model}', but it must have a max length of {max}.",
+        "passMinLength": "The '{property}', but it must have a min length of {min}.",
+        "passMaxLength": "The '{property}', but it must have a max length of {max}.",
         "url": "'{model}' is not valid url.",
         "email": "'{model}' is not valid email.",
         "fields": {

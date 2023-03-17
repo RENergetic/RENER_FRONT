@@ -12,7 +12,6 @@
 </template>
 
 <script>
-// import UserAdd from "@/components/admin/UserAdd.vue"; @reload="reload"
 import UserList from "@/components/admin/UserList.vue";
 
 export default {
