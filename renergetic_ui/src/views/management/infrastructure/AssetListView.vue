@@ -4,7 +4,7 @@
       <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 80rem">
         <!--  max-width: 80vw -->
         <template #content>
-          <asset-list v-model:filters="filters" v-model:page="page" :asset-list="assetList" @reload="loadAssets" />
+          <asset-list v-model:filters="filters" :asset-list="assetList" @reload="loadAssets" />
         </template>
       </RenSpinner>
     </template>
@@ -20,7 +20,6 @@ export default {
   },
   data() {
     return {
-      page: 0,
       assetAdd: false,
       assetList: [],
       columns: [],
@@ -31,22 +30,21 @@ export default {
     };
   },
   watch: {
-    page: function () {
-      //TODO pass newval ?
-      this.loadAssets();
-    },
+    // page: function () {
+    //   //TODO pass newval ?
+    //   this.loadAssets();
+    // },
   },
   mounted() {
     this.loadAssets();
   },
   methods: {
     async loadAssets(evt) {
-      let offset = this.page * PAGE_SIZE;
+      let offset = PAGE_SIZE;
       let limit = PAGE_SIZE;
       if (evt) {
         offset = evt.offset;
         limit = evt.limit;
-        console.info(`${offset} ${limit} aaaaaaaaaa`);
       }
       //TODO: tomek will manage filtering feature with api
       let params = null;
