@@ -10,7 +10,7 @@
 - [Properties](#properties)
 
 ### Description
-Run spinner in the VUE component if it's counter != 0
+Run spinner in the VUE component, it's enabled when it's counter != 0 (each started call inside spinner increase counter by one, finished call  descreases it by one)
 
 ### Examples
 

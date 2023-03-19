@@ -1,3 +1,4 @@
+
 Each key must start with 'VUE_APP_'
 ### Application
 `VUE_APP_HOST` *str* - host
@@ -28,6 +29,6 @@ TODO: describe parameters
 #### GRAFANA
 VUE_APP_GRAFANA_URL *str* -http://grafana-ren-prototype.apps.paas-dev.psnc.pl/d-solo/{dashboard-id}/{dashboard-name}?orgId=1&from=1634427441815&to=1636724258711&theme=light&panelId={panel-id}
 
-# HEATMAP
+### HEATMAP
 VUE_APP_HEATMAP_TRANSPARENCY=77
 VUE_APP_HEATMAP_SELECTED_TRANSPARENCY=CC

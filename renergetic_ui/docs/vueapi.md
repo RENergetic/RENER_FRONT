@@ -13,8 +13,7 @@ TODO: restApiName - describe
 * 
   example: `$store.getters["view/get"]` - get user
 * `this.$confirm` -> confirm dialog (YES/NO)
-* `v-tooltip`  -> tooltip attribute for vue templates
-*  RenSpinner -> loading spinner todo:
+* `v-tooltip`  -> tooltip attribute for vue templates 
 
 ### colors & icons
 https://materialui.co/colors
@@ -107,6 +106,7 @@ if ((required_flags & user_role_flag) > 0)
 ### Components
 
 * RenSpinner [docs](./components/renspinner.md)
+* RenPaginator [docs](./components/renpaginator.md)
 * Ren form components [docs](./components/form.md)
 * Settings - > todo: describe usage of application settings 
 

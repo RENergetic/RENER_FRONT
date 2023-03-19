@@ -90,6 +90,7 @@ reused modules included in the views or other components
   * `/ren_api` -> REST API, `this.$ren.{apiName}` , apiName:  [`dashboardApi`,`dataApi`,`managementApi`,`userApi`,`userApi`] 
   * `/utils.js` -> miscellaneous functions `this.$ren.utils`
 * `ren_import.js` -> import global ren components (all global ren components starts with prefix `Ren`)
+* `primevue_import.js` -> import global primevue components  
   
 [top](#project-structure) 
 
