@@ -1,11 +1,13 @@
 <template>
+  <!-- <Paginator v-model:first="mPage" :rows="1" :total-records="mPage + 2"
+   template="FirstPageLink PrevPageLink PageLinks NextPageLink    " /> -->
+
   <DataTable
     :value="assetList"
     :lazy="true"
     data-key="id"
     :filters="mFilters"
     filter-display="row"
-    :loading="isLoading"
     responsive-layout="scroll"
     :global-filter-fields="['name', 'label', 'type.name', 'category.label']"
     @filter="onFilter"
@@ -126,7 +128,8 @@
     </Column>
     <Column name="edit" :header="$t('view.edit')">
       <template #body="slotProps">
-        <span class="ren-pointer" @click="editAsset(slotProps.data)"> Edit Asset </span>
+        <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
+        <!-- <span class="ren-pointer" @click="editAsset(slotProps.data)"> Edit Asset </span> -->
       </template>
     </Column>
     <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
@@ -137,7 +140,8 @@
       </div>
     </template>
     <template #footer>
-      <div class="flex justify-content-between">
+      <RenPaginator v-model:offset="mOffset" :current-rows="assetList.length" @update="reloadAssets" />
+      <!-- <div class="flex justify-content-between">
         <Button type="button" icon="pi pi-chevron-circle-left" :label="$t('view.button.previous')" class="p-button-outlined" @click="previous" />
         <span>{{ $t("view.current_page", { page: mPage }) }}</span>
         <Button
@@ -148,10 +152,11 @@
           icon-pos="right"
           @click="next"
         />
-      </div>
+      </div> -->
     </template>
   </DataTable>
-  <Button :label="$t('view.button.add')" @click="assetAdd = true" />
+
+  <Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="assetAdd = true" />
   <Dialog v-model:visible="assetAdd" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <AssetForm @update:model-value="onCreate($event, 0)" @cancel="assetAdd = false"> </AssetForm>
   </Dialog>
@@ -247,11 +252,13 @@ export default {
     assetList: { type: Array, default: () => [] },
     filters: { type: Array, default: () => initFilter() },
     page: { type: Number, default: 0 },
+    offset: { type: Number, default: 0 },
   },
   emits: ["update:filters", "reload", "update:page"],
   data() {
     return {
       mPage: this.page,
+      mOffset: this.offset,
       assetAdd: false,
       mFilters: this.filters ? this.filters : initFilter(),
       selectedRow: null,
@@ -333,7 +340,9 @@ export default {
       });
       await this.reload();
     },
-
+    async reloadAssets(evt) {
+      this.$emit("reload", evt);
+    },
     async reload() {
       this.$emit("reload");
     },

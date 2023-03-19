@@ -15,6 +15,7 @@
             :loading="isLoading"
             responsive-layout="scroll"
             :global-filter-fields="['name', 'label', 'type.name', 'category.label']"
+            @row-dblclick="submit"
           >
             <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false">
               <template #filter="{ filterModel, filterCallback }">
@@ -97,24 +98,7 @@
               </div>
             </template>
             <template #footer>
-              <div class="flex justify-content-between">
-                <Button
-                  type="button"
-                  icon="pi pi-chevron-circle-left"
-                  :label="$t('view.button.previous')"
-                  class="p-button-outlined"
-                  @click="previous"
-                />
-                <span>{{ $t("view.current_page", { page: page }) }}</span>
-                <Button
-                  type="button"
-                  icon="pi pi-chevron-circle-right"
-                  :label="$t('view.button.next')"
-                  class="p-button-outlined"
-                  icon-pos="right"
-                  @click="next"
-                />
-              </div>
+              <RenPaginator v-model:offset="mOffset" :limit="limit" :current-rows="assetList.length" @update="searchAsset" />
             </template>
           </DataTable>
         </template>
@@ -143,13 +127,13 @@ export default {
   emits: ["submit", "cancel"],
   data() {
     return {
-      page: 0,
+      limit: PAGE_SIZE,
+      mOffset: 0,
       isLoading: false,
       assetList: [],
       measurementDialog: false,
       filters: this.initFilter(),
       selectedAsset: this.current,
-      // initialAsset: this.current,
     };
   },
   computed: {
@@ -167,22 +151,22 @@ export default {
       this.$emit("submit", this.selectedAsset);
       // this.$emit("update:modelValue", this.selectedAsset);
     },
-    next() {
-      if (this.assetList.length === 0) return;
-      this.page += 1;
-      this.searchAsset();
-    },
-    previous() {
-      this.page = Math.max(0, this.page - 1);
-      this.searchAsset();
-    },
+    // next() {
+    //   if (this.assetList.length === 0) return;
+    //   this.page += 1;
+    //   this.searchAsset();
+    // },
+    // previous() {
+    //   this.page = Math.max(0, this.page - 1);
+    //   this.searchAsset();
+    // },
     clearFilter() {
       this.filters = this.initFilter();
     },
     async searchAsset() {
       //TODO: filter not implemented on backend
       this.$refs.spinner.run(async () => {
-        await this.$ren.managementApi.listAsset(undefined, this.page * PAGE_SIZE, PAGE_SIZE).then((assetList) => {
+        await this.$ren.managementApi.listAsset(undefined, this.mOffset, this.limit + this.mOffset).then((assetList) => {
           this.assetList = assetList;
         });
       });

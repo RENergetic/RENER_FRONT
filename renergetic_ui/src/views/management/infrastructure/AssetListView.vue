@@ -40,7 +40,14 @@ export default {
     this.loadAssets();
   },
   methods: {
-    async loadAssets() {
+    async loadAssets(evt) {
+      let offset = this.page * PAGE_SIZE;
+      let limit = PAGE_SIZE;
+      if (evt) {
+        offset = evt.offset;
+        limit = evt.limit;
+        console.info(`${offset} ${limit} aaaaaaaaaa`);
+      }
       //TODO: tomek will manage filtering feature with api
       let params = null;
       if (this.filters)
@@ -51,7 +58,7 @@ export default {
           category: this.filters["category.label"] && this.filters["type.label"].value ? this.filters["category.label"].value.name : null,
         };
       await this.$refs.spinner.run(async () => {
-        this.assetList = await this.$ren.managementApi.listAsset(params, this.page * PAGE_SIZE, PAGE_SIZE);
+        this.assetList = await this.$ren.managementApi.listAsset(params, offset, limit);
       });
     },
     // async deleteUser(user) {

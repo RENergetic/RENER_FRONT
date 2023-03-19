@@ -22,6 +22,7 @@ import Card from "primevue/card";
 import FileUpload from "primevue/fileupload";
 import Listbox from "primevue/listbox";
 import Tree from "primevue/tree";
+// import Paginator from "primevue/paginator";
 
 import Accordion from "primevue/accordion";
 
@@ -55,5 +56,6 @@ plugin.install = function (Vue /*, options*/) {
   Vue.component("Tree", Tree);
   Vue.component("Accordion", Accordion);
   Vue.component("AccordionTab", AccordionTab);
+  // Vue.component("Paginator", Paginator);
 }; // install
 export default plugin;

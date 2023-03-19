@@ -20,13 +20,29 @@
         <!-- refresh button: TODO: :ref="'roles_' + user.data.id" :user="user.data.id"-->
         <UserRoleList :user="user.data" @reload-roles="onRolesReload" />
       </template>
+      <template #footer>
+        <div class="flex justify-content-between">
+          <Button type="button" icon="pi pi-chevron-circle-left" :label="$t('view.button.previous')" class="p-button-outlined" @click="previous" />
+          <span>{{ $t("view.current_page", { page: mPage }) }}</span>
+          <Button
+            type="button"
+            icon="pi pi-chevron-circle-right"
+            :label="$t('view.button.next')"
+            class="p-button-outlined"
+            icon-pos="right"
+            @click="next"
+          />
+        </div>
+      </template>
     </DataTable>
+    <!-- JumpToPageInput -->
     <Toolbar>
       <template #start>
         <Button :label="$t('view.add_user')" icon="pi pi-user-plus" class="mr-2 p-button-success" @click="create" />
       </template>
     </Toolbar>
 
+    <!-- <UserAdd  :edit-user="mUser" :visible="addUserDialog" @close="closeAddUserDialog"></UserAdd> -->
     <Dialog v-model:visible="editDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
       <UserForm v-if="selectedUser" :user="selectedUser" @save="onEdit" @cancel="editDialog = false" />
       <UserForm v-else @save="onCreate" @cancel="editDialog = false" />
@@ -47,8 +63,10 @@ export default {
   components: { UserForm, UserRoleList },
   props: {
     users: { type: Array, default: () => [] },
+    // filters: { type: Array, default: () => initFilter() },
+    page: { type: Number, default: 0 },
   },
-  emits: ["onDelete", "onCreate", "onUpdate"],
+  emits: ["onDelete", "onCreate", "onUpdate", "update:page"],
   data() {
     return {
       mUsers: this.$datausers,
@@ -57,6 +75,7 @@ export default {
       editDialog: false,
       addDialog: false,
       selectedUser: null,
+      mPage: this.page,
     };
   },
   async created() {},
@@ -93,7 +112,15 @@ export default {
       });
       this.addDialog = false;
     },
-
+    async next() {
+      if (this.assetList.length === 0) return;
+      this.mPage += 1;
+      this.$emit("update:page", this.mPage);
+    },
+    async previous() {
+      this.mPage = Math.max(0, this.mPage - 1);
+      this.$emit("update:page", this.mPage);
+    },
     onRolesReload() {
       //evt
       // console.info("reload roles")

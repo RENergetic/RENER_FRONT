@@ -2,13 +2,16 @@
   <!-- {{ mDashboards }} -->
   <!-- :filters="filters"
     filter-display="row"
-    :global-filter-fields="['name', 'label','url']" -->
-  <DataTable
-    v-if="mDashboards"
-    paginator-template="CurrentPageReport  PrevPageLink PageLinks NextPageLink    "
+    :global-filter-fields="['name', 'label','url']" 
     :paginator="true"
-    :rows="10"
+    :rows="10" -->
+  <DataTable
+    v-if="mDashboards && limit != null"
     :value="mDashboards"
+    :rows="limit"
+    :first="mOffset"
+    paginator-template=""
+    paginator
     data-key="name"
     responsive-layout="scroll"
   >
@@ -39,12 +42,16 @@
     </Column>
 
     <Column v-if="canEdit" name="edit" :header="$t('view.edit')">
-      <template #body="slotProps"> <i v-tooltip="$t('view.edit')" class="pi pi-pencil" @click="edit(slotProps.data)" /></template
-    ></Column>
+      <template #body="slotProps">
+        <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="edit(slotProps.data)" />
+      </template>
+    </Column>
 
     <Column v-if="canEdit" name="delete" :header="$t('view.delete')">
-      <template #body="slotProps"> <i v-tooltip="$t('view.delete')" class="pi pi-trash" @click="deleteConfirm(slotProps.data)" /></template
-    ></Column>
+      <template #body="slotProps">
+        <Button v-tooltip="$t('view.delete')" icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteConfirm(slotProps.data)" />
+      </template>
+    </Column>
     <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
     <template #header>
       <div class="flex justify-content-end align-content-end">
@@ -61,34 +68,28 @@
       </div>
       <div class="flex justify-content-between"></div>
     </template>
-    <template #footer>
+    <!-- <template #footer>
       <div class="flex justify-content-between">
-        <div>
-          <!-- TODO: pagination buttons ?-->
-          <!-- <Button
-            type="button"
-            icon="pi pi-chevron-circle-left"
-            :label="$t('view.button.previous')"
-            class="p-button-outlined"
-            @click="previous"
-          />
+        <RenPaginator ref="pag" v-model:offset="mOffset" :total-rows="mDashboards.length" @update="searchAsset" />
 
-          <Button
-            type="button"
-                  icon="pi pi-chevron-circle-right"
-            :label="$t('view.button.next')"
-            class="p-button-outlined" 
-             iconPos="right"
-            @click="next"
-          /> -->
-        </div>
-        <div v-if="canEdit" style="text-align: end">
-          <i class="pi pi-plus-circle ren add-button" label="$t('view.button.add')" @click="addDialog = true" />
+        <div class="flex justify-content-between">
+          <div v-if="canEdit" style="text-align: end">
+            <Button icon="pi pi-plus-circle" :label="$t('view.button.add')" @click="addDialog = true" />
+          </div>
         </div>
       </div>
-    </template>
+    </template> -->
   </DataTable>
-
+  <div>
+    <div class="flex justify-content-between">
+      <RenPaginator ref="pag" v-model:offset="mOffset" :total-rows="mDashboards.length" @update="searchAsset" />
+    </div>
+    <div class="flex justify-content-between">
+      <div v-if="canEdit" style="text-align: end">
+        <Button icon="pi pi-plus-circle" :label="$t('view.button.add')" @click="addDialog = true" />
+      </div>
+    </div>
+  </div>
   <Dialog v-model:visible="editDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <DashboardForm v-if="selectedRow" :dashboard="selectedRow" @save="onEdit" @cancel="editDialog = false" />
     <DashboardForm v-else @save="onCreate" @cancel="editDialog = false" />
@@ -105,7 +106,6 @@ import DashboardForm from "./DashboardForm.vue";
 import DeleteDashboard from "@/components/dashboard/grafana/DeleteDashboard.vue";
 
 var flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
-// const PAGE_SIZE = 10;
 export default {
   name: "DashboardList",
   components: { DashboardForm, DeleteDashboard },
@@ -115,21 +115,22 @@ export default {
     return {
       canEdit: flags & this.$store.getters["auth/renRole"],
       mDashboards: this.dashboards,
-      page: 0,
+      limit: null,
+      mOffset: 0,
       selectedRow: null,
       editDialog: false,
       addDialog: false,
       filters: this.initFilter(),
     };
   },
-  // mounted: {
-  //     mDashboards= this.dashboards,
-  // },
   watch: {
     dashboards: function (v) {
       this.mDashboards = v;
       this.filter();
     },
+  },
+  mounted() {
+    this.limit = this.$refs && this.$refs.pag ? this.$refs.pag.limit : 10;
   },
   async created() {},
   methods: {
@@ -169,12 +170,10 @@ export default {
 
     async reload() {
       //TODO: filter
-      this.$emit("reload", { q: this.filters.global.value, page: this.page });
+      this.$emit("reload", { q: this.filters.global.value, limit: this.limit, offset: this.mOffset });
     },
     async setFilter() {
-      // console.info(this.filters.global.value);
       this.filters.state = true;
-
       this.filter();
     },
     filter() {
@@ -188,13 +187,6 @@ export default {
       this.mDashboards = this.dashboards.filter(f);
       // this.reload()
     },
-    next() {
-      if (this.assetList.length == 0) return;
-      this.page += 1;
-    },
-    previous() {
-      this.page = Math.max(0, this.page - 1);
-    },
     clearFilter() {
       this.filters = this.initFilter();
       this.mDashboards = this.dashboards;
@@ -206,7 +198,7 @@ export default {
     // onDelete(o){
     onDelete() {
       this.selectedRow = null;
-      this.$emit("reload", { q: this.filters.global.value, page: this.page });
+      this.reload();
     },
     initFilter() {
       return {
