@@ -18,7 +18,7 @@
 <script>
 import Paginator from "primevue/paginator";
 export default {
-  name: "RenSpinner",
+  name: "RenPaginator",
   components: { Paginator },
   props: {
     page: { default: null, type: Number },
@@ -27,7 +27,7 @@ export default {
     limit: { default: 10, type: Number },
     currentRows: { default: 0, type: Number },
   },
-  emits: ["update:offset", "update:page", "update"],
+  emits: ["update:offset", "update:page", "update", "created"],
   data() {
     let v = this.init();
     return {
@@ -46,7 +46,7 @@ export default {
         if (newVal != oldValue) {
           this.$emit("update:offset", newVal);
           this.$emit("update:page", newVal / this.limit);
-          this.$emit("update", { offset: this.mOffset, limit: this.limit, page: newVal / this.limit });
+          this.$emit("update", { offset: newVal, limit: this.limit, page: newVal / this.limit });
         }
       },
       immediate: false,
@@ -72,6 +72,7 @@ export default {
     let v = this.init();
     this.mPage = v.mPage;
     this.mOffset = v.mOffset;
+    this.$emit("created", { offset: this.mOffset, limit: this.limit, page: this.mOffset / this.limit });
   },
   methods: {
     init() {

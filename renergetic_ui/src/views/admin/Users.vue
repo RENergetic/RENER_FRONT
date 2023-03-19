@@ -4,7 +4,7 @@
       <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 80rem">
         <!--  max-width: 80vw -->
         <template #content>
-          <user-list :users="users" @on-delete="confirmDeleteUser" @on-create="loadUsers" @on-update="loadUsers" />
+          <user-list v-model:pagination="pagination" :users="users" @on-delete="confirmDeleteUser" @on-create="loadUsers" @on-update="loadUsers" />
         </template>
       </RenSpinner>
     </template>
@@ -21,17 +21,23 @@ export default {
   },
   data() {
     return {
+      pagination: null,
       users: [],
     };
   },
+  watch: {
+    pagination: function () {
+      this.loadUsers();
+    },
+  },
   async created() {},
   mounted() {
-    this.loadUsers();
+    if (this.pagination != null) this.loadUsers();
   },
   methods: {
     async loadUsers() {
       await this.$refs.spinner.run(async () => {
-        this.users = await this.$ren.userApi.listUsers();
+        this.users = await this.$ren.userApi.listUsers(null, this.pagination.offset, this.pagination.limit);
       });
     },
     async deleteUser(user) {
