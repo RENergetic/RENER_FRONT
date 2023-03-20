@@ -8,7 +8,7 @@
             v-model="selectedMeasurement"
             :placeholder="$t('view.find_measurement')"
             :suggestions="measurementList"
-            field="label"
+            field="name"
             @complete="searchMeasurement($event)"
           />
           <div v-if="selectedMeasurement" class="field grid">
