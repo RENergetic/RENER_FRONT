@@ -198,9 +198,13 @@ export default class ManagementApi extends RestComponent {
         console.error("add measurement error" + error.message);
       });
   }
+  async searchMeasurement(q) {
+    if (q === "") {
+      return [];
+    }
+    return await this.get(`/api/measurements`, { name: q }, null, null);
+  }
 }
-
-// async searchMeasurement(q,assetId=null,offset=0,limit=20){}
 
 // async deleteMeasurement(id) {
 //   return this.axios
