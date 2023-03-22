@@ -6,7 +6,8 @@
           "model": "Model",
           "measurement_type": "Measurement type",
           "unit": "Unit",
-          "user": "User"
+          "user": "User",
+          "grafana_id":"Grafana id"
      },
      "heatmap": {
           "name": "Name",

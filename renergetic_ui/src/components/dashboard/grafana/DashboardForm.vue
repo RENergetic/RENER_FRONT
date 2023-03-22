@@ -9,50 +9,34 @@
         <!-- {{ $store.getters["view/dashboardUnits"] }} 
         {{ measurementTypes }} -->
         <!-- {{ mDashboard }} -->
-        <div class="field grid">
-          <label for="dasboardName" class="col-12 mb-2 md:col-2 md:mb-0">
-            {{ $t("model.dashboard.name") }}
-          </label>
-          <div class="col-12 md:col-10">
-            <InputText id="dasboardName" v-model="mDashboard.name" />
-          </div>
-          <span v-if="v$.mDashboard.name.$invalid">
-            <span v-for="(error, index) of v$.mDashboard.name.$silentErrors" id="name-error" :key="index">
-              <small class="p-error">{{ error.$message }}</small>
-            </span>
-          </span>
-          <!-- {{ v$.mDashboard.name.$invalid }}
-          {{ v$.mDashboard.name.$silentErrors }} -->
-        </div>
+        <ren-input
+          v-model="mDashboard.name"
+          :text-label="'model.dashboard.name'"
+          :invalid="v$.mDashboard.name.$invalid"
+          :errors="v$.mDashboard.name.$silentErrors"
+        />
         <!--url-->
+        <ren-input
+          v-model="mDashboard.url"
+          :text-label="'model.dashboard.url'"
+          :invalid="v$.mDashboard.url.$invalid"
+          :errors="v$.mDashboard.url.$silentErrors"
+        />
 
-        <div class="field grid">
-          <label for="dasboardUrl" class="col-12 mb-2 md:col-2 md:mb-0">
-            {{ $t("model.dashboard.url") }}
-          </label>
+        <ren-input
+          v-model="mDashboard.grafana_id"
+          :text-label="'model.dashboard.grafana_id'"
+          :invalid="v$.mDashboard.grafana_id.$invalid"
+          :errors="v$.mDashboard.grafana_id.$silentErrors"
+        />
 
-          <div class="col-12 md:col-10"><InputText id="dasboardUrl" v-model="mDashboard.url" /></div>
-          <span v-if="v$.mDashboard.url.$invalid">
-            <span v-for="(error, index) of v$.mDashboard.url.$silentErrors" id="url-error" :key="index">
-              <small class="p-error">{{ error.$message }}</small>
-            </span>
-          </span>
-        </div>
+        <ren-input
+          v-model="mDashboard.label"
+          :text-label="'model.dashboard.label'"
+          :invalid="v$.mDashboard.label.$invalid"
+          :errors="v$.mDashboard.label.$silentErrors"
+        />
 
-        <!-- label -->
-
-        <div class="field grid">
-          <label for="dasboardLabel" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.dashboard.label") }} </label>
-
-          <div class="col-12 md:col-10">
-            <InputText id="dasboardLabel" v-model="mDashboard.label" />
-          </div>
-          <span v-if="v$.mDashboard.label.$invalid">
-            <span v-for="(error, index) of v$.mDashboard.label.$silentErrors" id="label-error" :key="index">
-              <small class="p-error">{{ error.$message }}</small>
-            </span>
-          </span>
-        </div>
         <!-- model -->
         <div v-if="false" class="field grid">
           <label for="dasboardModel" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.dashboard.model") }} </label>
@@ -68,13 +52,8 @@
             />
           </div>
         </div>
-
-        <div class="field grid">
-          <label for="dashboardMeasurementType" class="col-12 mb-2 md:col-2 md:mb-0">
-            {{ $t("model.dashboard.measurement_type") }}
-          </label>
-
-          <div class="col-12 md:col-10">
+        <ren-input-wrapper :text-label="'model.dashboard.measurement_type'">
+          <template #content>
             <Dropdown
               id="dashboardMeasurementType"
               v-model="mDashboard.ext.measurement_type"
@@ -83,12 +62,10 @@
               :placeholder="$t('view.select_dashboard_measurement_type')"
               @change="typeChange"
             />
-          </div>
-        </div>
-        <div class="field grid">
-          <label for="dasboardUnit" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.dashboard.unit") }} </label>
-          <div class="col-12 md:col-10">
-            <!-- :option-value="(opt) => `${opt.name} [${opt.symbol}]`" -->
+          </template>
+        </ren-input-wrapper>
+        <ren-input-wrapper :text-label="'model.dashboard.unit'">
+          <template #content>
             <Dropdown
               id="dasboardUnit"
               v-model="mDashboard.measurement_type"
@@ -96,19 +73,16 @@
               :options="mUnits"
               :placeholder="$t('view.select_dashboard_unit')"
             />
-          </div>
-        </div>
-        <div class="field grid">
-          <Button :disabled="v$.$invalid" :label="$t('view.button.submit')" @click="submit" />
-          <!-- <Button :label="$t('view.button.cancel')" @click="cancel" /> -->
-        </div>
+          </template>
+        </ren-input-wrapper>
+        <ren-submit :disabled="v$.$invalid" @submit="submit" />
       </div>
     </template>
   </Card>
 </template>
 <script>
 import { useVuelidate } from "@vuelidate/core";
-import { required, minLength, url, maxLength } from "@/plugins/validators.js";
+import { required, requiredTr, minLength, url, maxLength, maxLengthTr } from "@/plugins/validators.js";
 import { DashboardMeasurementTypes } from "@/plugins/model/Enums.js";
 export default {
   name: "DashboardForm",
@@ -158,6 +132,10 @@ export default {
   validations() {
     return {
       mDashboard: {
+        grafana_id: {
+          required: requiredTr("model.dashboard."),
+          maxLength: maxLengthTr("model.dashboard.", null)(30),
+        },
         name: {
           required,
           minLength: minLength(5),

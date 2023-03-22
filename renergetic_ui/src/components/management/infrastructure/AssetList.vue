@@ -140,7 +140,7 @@
       </div>
     </template>
     <template #footer>
-      <RenPaginator v-model:offset="mOffset" :current-rows="assetList.length" @update="reloadAssets" />
+      <ren-paginator v-model:offset="mOffset" :current-rows="assetList.length" @update="reloadAssets" />
       <!-- <div class="flex justify-content-between">
         <Button type="button" icon="pi pi-chevron-circle-left" :label="$t('view.button.previous')" class="p-button-outlined" @click="previous" />
         <span>{{ $t("view.current_page", { page: mPage }) }}</span>

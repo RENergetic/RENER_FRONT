@@ -29,7 +29,7 @@
         <i v-if="slotProps.data.url" v-tooltip="$t('view.go_to_dashboard')" class="pi pi-arrow-circle-right" @click="navigate(slotProps.data.url)" />
       </template>
     </Column>
-
+    <Column field="grafana_id" :header="$t('model.dashboard.grafana_id')"> </Column>
     <Column field="user" :header="$t('model.dashboard.user')">
       <template #body="slotProps">
         <span v-if="slotProps.data.user">
