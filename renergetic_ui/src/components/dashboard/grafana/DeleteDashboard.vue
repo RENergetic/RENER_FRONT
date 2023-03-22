@@ -14,29 +14,29 @@ export default {
   emits: ["delete"],
   mounted() {},
   methods: {
-    async delete() {
-      if (this.dashboard == null) {
+    async delete(dashboard) {
+      let mDashboard = dashboard ? dashboard : this.dashboard;
+      if (mDashboard == null) {
         return;
         //todo: log error ?
       }
       await this.$confirm.require({
         message: this.$t("view.dashboard_delete_confirm", {
-          label: this.dashboard.label ? this.dashboard.label : this.dashboard.name,
+          label: mDashboard.label ? mDashboard.label : mDashboard.name,
         }),
         header: this.$t("view.dashboard_delete"),
         icon: "pi pi-exclamation-triangle",
         accept: async () => {
-          this.$store.commit("view/dashboardsDel", this.dashboard.id);
-          let res = await this.deleteDashboard(this.dashboard.id);
-          if (res) this.$emit("delete", this.dashboard);
-          // this.$router.replace("Dashboard");
+          this.$store.commit("view/dashboardsDel", mDashboard.id);
+          let res = await this.deleteConfirmed(mDashboard.id);
+          if (res) this.$emit("delete", mDashboard);
         },
         reject: () => {
           this.$confirm.close();
         },
       });
     },
-    async deleteDashboard(id) {
+    async deleteConfirmed(id) {
       return await this.$ren.dashboardApi
         .deleteDashboard(id)
         .then(() => {

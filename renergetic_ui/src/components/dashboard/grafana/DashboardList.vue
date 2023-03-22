@@ -193,7 +193,7 @@ export default {
     },
     deleteConfirm(o) {
       this.selectedRow = o;
-      this.$refs.deleteDashboard.delete();
+      this.$refs.deleteDashboard.delete(0);
     },
     // onDelete(o){
     onDelete() {
