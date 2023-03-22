@@ -9,7 +9,7 @@ export default {
 </script>
 <style lang="scss">
 #pagelogo {
-  background-image: url("../../assets/logo.png");
+  background-image: url("../../assets/logo.svg");
   /* width: 7.5rem; */
   width: 25vw;
   display: inherit;

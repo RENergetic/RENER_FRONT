@@ -335,6 +335,7 @@ export default {
       console.log(o);
       await this.$ren.managementApi.addAsset(o).then((assetId) => {
         console.info("add asset:" + assetId);
+
         // o.id = assetId;
         // this.assetList.push(o);
       });
