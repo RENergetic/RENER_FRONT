@@ -31,6 +31,7 @@
   "manage_grafana_dashboard": "Grafana dashboards",
   "manage_information_panels": "Private/Public dashboards",
   "manage_measurements": "Measurements",
+  "manage_categories": "Categories",
   "manage_users": "Users",
   "measurements": "Measurements",
   "management": "Management",

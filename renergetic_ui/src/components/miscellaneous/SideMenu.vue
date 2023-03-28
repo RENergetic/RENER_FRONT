@@ -218,6 +218,7 @@ export default {
         ...this._grafanaDashboardManagement(),
         ...this._panelManagementItems(),
         ...this._measurementItems(),
+        ...this._categoryItems(),
       ];
       return [
         {
@@ -311,6 +312,18 @@ export default {
           to: "/management/measurement",
           command: () => {
             this.$router.push({ name: "MeasurementList" });
+          },
+        },
+      ];
+    },
+    _categoryItems() {
+      return [
+        {
+          label: this.$t("menu.manage_categories"),
+          icon: "pi pi-fw pi-list",
+          to: "/management/category",
+          command: () => {
+            this.$router.push({ name: "CategoryList" });
           },
         },
       ];
