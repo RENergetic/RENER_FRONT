@@ -1,6 +1,56 @@
 import { v4 as uuidv4 } from "uuid";
 import { QueryBuilder } from "./ren_api/wrapper_api";
 import { RenRoles } from "../model/Enums";
+class DeferredFunction {
+  timeoutInstance = null;
+  timeout = null;
+  deferredF = null;
+  constructor(deferredF = null, timeout = 1500) {
+    this.deferredF = deferredF;
+    this.timeout = timeout;
+  }
+  _clear() {
+    if (this.timeoutInstance) {
+      clearTimeout(this.timeoutInstance);
+    }
+    this.timeoutInstance = null;
+  }
+  /**
+   *
+   * @param {*} deferredF deferred function
+   * @param {*} timeout
+   */
+  run(deferredF = this.deferredF, timeout = this.timeout) {
+    // let f = deferredF ? deferredF : this.deferredF;
+    var _this = this;
+    if (this.timeoutInstance) {
+      _this._clear();
+    }
+    var wrapper = () => {
+      // console.info("emitFilter");
+      deferredF();
+      _this._clear();
+    };
+    this.timeoutInstance = setTimeout(wrapper, timeout);
+  }
+  /**
+   *
+   * @param {*} deferredF deferred function
+   * @param {*} timeout
+   */
+  runAsync(deferredF = this.deferredF, timeout = this.timeout) {
+    var _this = this;
+    if (this.timeoutInstance) {
+      _this._clear();
+    }
+    var wrapper = async () => {
+      await deferredF();
+      _this._clear();
+    };
+    this.timeoutInstance = setTimeout(wrapper, timeout);
+  }
+}
+
 export default class RenUtils {
   vueInstance = null;
   host = document.location.origin;
@@ -283,3 +333,5 @@ export default class RenUtils {
     return dict;
   }
 }
+
+export { DeferredFunction };

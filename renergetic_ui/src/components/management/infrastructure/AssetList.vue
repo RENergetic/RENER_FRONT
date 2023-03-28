@@ -155,8 +155,10 @@
       </div> -->
     </template>
   </DataTable>
+  <Toolbar>
+    <template #end><Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="assetAdd = true" /> </template>
+  </Toolbar>
 
-  <Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="assetAdd = true" />
   <Dialog v-model:visible="assetAdd" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <AssetForm @update:model-value="onCreate($event, 0)" @cancel="assetAdd = false"> </AssetForm>
   </Dialog>
@@ -228,7 +230,7 @@ import MeasurementSelect from "./MeasurementSelect.vue";
 import AssetConnectionManagementDialog from "./AssetConnectionManagementDialog.vue";
 import AssetProperties from "@/components/management/infrastructure/AssetProperties.vue";
 import AssetEdit from "@/components/management/infrastructure/AssetEdit.vue";
-
+import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 function initFilter() {
   return {
     label: { value: null },
@@ -264,6 +266,7 @@ export default {
       selectedRow: null,
       childDialog: false,
       measurementDialog: false,
+      deferredEmitFilter: null,
     };
   },
   computed: {
@@ -274,10 +277,17 @@ export default {
       return [];
     },
   },
+  created() {
+    this.deferredEmitFilter = new DeferredFunction(this._emitFilter);
+  },
   methods: {
+    _emitFilter() {
+      // console.info("emitFilter: " + new Date());
+      this.$emit("update:filters", this.mFilters);
+    },
     onFilter(ev) {
       this.mFilters = ev.filters;
-      this.$emit("update:filters", ev.filters);
+      this.deferredEmitFilter.run();
     },
     setParent(row) {
       console.info(row);

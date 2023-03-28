@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: "RenInput",
+  name: "RenInputText",
   props: {
     invalid: { type: Boolean, default: false },
     //vuelidate errors

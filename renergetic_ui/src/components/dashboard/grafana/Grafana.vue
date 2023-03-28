@@ -13,12 +13,6 @@ export default {
       default: null,
     },
   },
-  // data() {
-  //   return {};
-  // },
-
-  mounted() {},
-  methods: {},
 };
 </script>
 

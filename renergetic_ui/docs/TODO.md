@@ -1,4 +1,6 @@
 higher priority:   
+- define i18n keys structure
+- define style structure
 - define add button location
 
 

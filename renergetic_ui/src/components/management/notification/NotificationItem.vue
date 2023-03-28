@@ -15,10 +15,6 @@
             {{ notification.message }}
           </span>
           <div v-if="notification.dashboard" class="flex flex-grow-1">
-            <!-- {{ notification.dashboard }} -->
-            <!-- {{ $t("view.go_to_dashboard") }} -->
-            <!-- @click="$router.push(`/dashboard/view/${notification.dashboard.id}`)" -->
-            <!-- {{ notification.dashboard.url }} -->
             <i
               v-if="notification.dashboard"
               v-tooltip="$t('view.go_to_dashboard')"

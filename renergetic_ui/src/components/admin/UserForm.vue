@@ -7,7 +7,7 @@
     <template #content>
       <div class="ren">
         <!-- {{ mUser }} -->
-        <div v-if="!user" class="field grid">
+        <!-- <div v-if="!user" class="field grid">
           <label for="username" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.username") }} </label>
           <div class="col-12 md:col-10">
             <InputText id="username" v-model="mUser.username" :disabled="user != null" />
@@ -17,7 +17,13 @@
               <small class="p-error">{{ error.$message }}</small>
             </span>
           </span>
-        </div>
+        </div> -->
+        <ren-input
+          v-model="mUser.username"
+          :invalid="v$.mUser.username.$invalid"
+          :errors="v$.mUser.username.$silentErrors"
+          :text-label="'model.user.username'"
+        />
         <ren-input
           v-model="mUser.firstName"
           :invalid="v$.mUser.firstName.$invalid"
@@ -45,11 +51,7 @@
           :errors="v$.mUser.passwordRepeat.$silentErrors"
           :text-label="'model.user.password_repeat'"
         />
-
-        <div class="field grid">
-          <Button :disabled="v$.$invalid" :label="$t('view.button.submit')" @click="submit" />
-          <!-- <Button :label="$t('view.button.cancel')" @click="cancel" /> -->
-        </div>
+        <ren-submit :disabled="v$.$invalid" @submit="submit" />
       </div>
     </template>
   </Card>
@@ -92,7 +94,6 @@ export default {
         passwordRepeat: { sameAs: sameAs("test")(this.mUser.password) },
       };
     }
-
     return {
       mUser: {
         username: {

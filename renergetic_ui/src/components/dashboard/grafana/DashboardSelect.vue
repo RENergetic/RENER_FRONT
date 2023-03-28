@@ -23,6 +23,9 @@
   </div>
 </template>
 <script>
+/**
+ * Currently not used
+ */
 import Listbox from "primevue/listbox";
 
 import Card from "primevue/card";
