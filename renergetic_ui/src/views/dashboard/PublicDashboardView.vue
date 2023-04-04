@@ -3,13 +3,14 @@
     <DotMenu :model="menuModel" />
     <InformationPanelWrapper
       ref="panel"
+      :key="reload"
       :asset-id="$route.params.asset_id"
       :locked="locked"
       :panel="panel"
-      :edit-mode="editMode"
+      :edit-mode="false"
       :settings="settings"
     ></InformationPanelWrapper>
-    TODO: key
+    <!-- <energy-flow :key="reload" :asset-id="$route.params.asset_id" :panel="panel" :settings="settings"></energy-flow> -->
   </div>
   <RenSettingsDialog ref="settingsDialog">
     <template #settings><PanelSettings @update="reloadSettings()"></PanelSettings></template>
@@ -18,31 +19,35 @@
     <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="filterSettingsDialog" :save="false">
-    <template #settings><BasicFilterSettings @update="reloadSettings()"></BasicFilterSettings></template>
+    <template #settings><FilterSettings @update="reloadSettings()"></FilterSettings></template>
   </RenSettingsDialog>
 </template>
 <script>
 import InformationPanelWrapper from "@/components/dashboard/informationpanel/InformationPanelWrapper.vue";
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
-import BasicFilterSettings from "@/components/miscellaneous/settings/BasicFilterSettings.vue";
-
+import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
+import FilterSettings from "@/components/miscellaneous/settings/FilterSettings.vue";
 export default {
-  name: "InformationPanelView",
+  name: "PublicDashboardView",
   components: {
     InformationPanelWrapper,
+    FilterSettings,
     DotMenu,
     PanelSettings,
-    BasicFilterSettings,
+    // NotificationList,
+    ConversionSettings,
   },
   data() {
-    alert("todo settings key");
     return {
+      reload: false,
       panel: null,
-      locked: false,
-      editMode: false,
+      // locked: false,
+      notifications: [],
       settings: this.$store.getters["settings/panel"],
       settingsDialog: false,
+      filterSettingsDialog: false,
+      conversionSettingsDialog: false,
     };
   },
   computed: {
@@ -55,42 +60,20 @@ export default {
     filterSettingsButton: function () {
       return { label: this.$t("menu.filter_settings"), icon: "pi pi-fw pi-filter", command: () => this.$refs.filterSettingsDialog.open() };
     },
-    // toggleButton: function () {
-    //   let label = this.locked ? this.$t("menu.panel_grid_unlock") : this.$t("menu.panel_grid_lock");
-    //   return { label: label, icon: "pi pi-fw pi-lock", command: () => this.toggleLock() };
-    // },
-    // saveButton: function () {
-    //   return { label: this.$t("menu.save_panel_grid"), icon: "pi pi-fw pi-save", command: () => this.saveGrid() };
-    // },
-
     menuModel() {
-      return [/*this.toggleButton*/ this.settingsButton, this.conversionSettingsButton, this.filterSettingsButton];
+      let menu = [
+        // {
+        //   label: this.$t("menu.save_panel_grid"),
+        //   icon: "pi pi-fw pi-save",
+        //   command: () => this.saveGrid(),
+        // },
+      ];
+      menu.push(this.settingsButton);
+      menu.push(this.conversionSettingsButton);
+      menu.push(this.filterSettingsButton);
+      return menu;
     },
-    // editModelButton: function () {
-    //   let label = this.editMode ? this.$t("menu.panel_grid_edit_on") : this.$t("menu.panel_grid_edit_off");
-    //   return { label: label, icon: "pi pi-fw pi-lock", command: () => this.toggleEditMode() };
-    // },
-    // addButton: function () {
-    //   return { label: this.$t("menu.panel_grid_add_tile"), icon: "pi pi-fw pi-plus", command: () => this.addTile() };
-    // },
-    // menuModel() {
-    //   let menu = [
-    //     {
-    //       label: this.$t("menu.save_panel_grid"),
-    //       icon: "pi pi-fw pi-save",
-    //       command: () => this.saveGrid(),
-    //     },
-    //   ]; //TODO: if permission
-    //   //todo: add to menu model
-
-    //   menu.push(this.toggleButton);
-    //   menu.push(this.addButton);
-    //   if (this.locked) menu.push(this.editModelButton);
-    //   menu.push(this.settingsButton);
-    //   return menu;
-    // },
   },
-  watch: {},
   async mounted() {
     await this.loadStructure();
   },
@@ -102,31 +85,17 @@ export default {
     async loadStructure() {
       let informationPanel = this.$ren.utils.localPanel(this.$route.params.id, this.$route.params.asset_id);
       if (informationPanel == null) {
-        informationPanel = await this.$ren.dashboardApi.getInformationPanel(this.$route.params.id, this.$route.params.asset_id);
+        this.$ren.dashboardApi.getInformationPanel(this.$route.params.id, this.$route.params.asset_id).then((panel) => {
+          this.panel = panel;
+        });
+      } else {
+        this.panel = informationPanel;
       }
-      this.panel = informationPanel;
     },
     reloadSettings() {
+      this.filterSettings = this.$store.getters["settings/filter"];
       this.settings = this.$store.getters["settings/panel"];
-    },
-    async toggleLock() {
-      this.locked = !this.locked;
-    },
-    async toggleEditMode() {
-      this.editMode = !this.editMode;
-    },
-    addTile() {
-      //TODO: get unique id?
-      this.panel.tiles.push({
-        // layout: { x: 0, y: 0, h: 3, w: 3 },
-        id: this.$ren.utils.uuid(),
-        label: null,
-        props: { items: [] },
-      });
-    },
-
-    saveGrid() {
-      this.$refs.panel.saveGrid();
+      this.conversionSettings = this.$store.getters["settings/conversion"];
     },
   },
 };

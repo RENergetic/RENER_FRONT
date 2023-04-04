@@ -92,8 +92,8 @@ var dashboardRoutes = [
   //   component: () => import("../views/dashboard/InformationPanel.vue"),
   // },
   {
-    path: "/flowpanel/view/:id?",
-    name: "EnergyFlowView",
+    path: "/public/dashboard/:id?",
+    name: "PublicDashboardView",
     meta: {
       isAuthenticated: true,
       layout: "fullscr",
@@ -107,7 +107,7 @@ var dashboardRoutes = [
       //   RenRoles.REN_ADMIN |
       //   RenRoles.REN_STAFF,
     },
-    component: () => import("../views/dashboard/EnergyFlowView.vue"),
+    component: () => import("../views/dashboard/PublicDashboardView.vue"),
   },
   {
     path: "/panel/view/:id?",

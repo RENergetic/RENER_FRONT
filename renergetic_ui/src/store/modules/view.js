@@ -59,6 +59,7 @@ export default {
       state.measurementTypes = groupMeasurementTypes(getF("measurement_types", []));
       state.assetPanels = getF("asset_panels", []);
       state.assetPanelsMap = mapAssetPanelId(state.assetPanels);
+      console.info(state.assetPanelsMap);
       state.dashboards = getF("dashboards", []);
       state.dashboardMap = mapPanelId(state.dashboards);
       state.demands = getF("demands", []);
@@ -181,8 +182,9 @@ export default {
       }
       return null;
     },
-    assetPanelsMap: (state /* getters*/) => {
-      return state.assetPanelsMap;
+    assetPanel: (state /* getters*/) => (panelId, assetId) => {
+      let index = state.assetPanelsMap[`${panelId}_${assetId}`];
+      return state.assetPanels[index] ? state.assetPanels[index].panel : null;
     },
     informationPanelsMap: (state /* getters*/) => {
       return state.informationPanelsMap;

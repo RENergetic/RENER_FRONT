@@ -95,6 +95,21 @@ export default class RenUtils {
     // console.info(settings);
     this.app.$store.commit("settings", settings);
   }
+
+  localPanel(id, assetId) {
+    let panel = null;
+    if (assetId != null) {
+      panel = this.app.$store.getters["view/assetPanel"](id, assetId);
+    } else {
+      let index = this.app.$store.getters["view/informationPanelsMap"][id];
+      if (index != null) {
+        panel = this.app.$store.getters["view/informationPanels"][index];
+      }
+    }
+    // console.info(panel);
+    return panel;
+  }
+
   async loadSettings() {
     let settings = await this.app.$ren.userApi.getSettings();
     console.info(settings);

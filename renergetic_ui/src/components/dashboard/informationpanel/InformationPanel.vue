@@ -1,66 +1,80 @@
 <template>
-  <!-- {{ $store.getters["view/measurementTypes"] }}  -->
-  <!-- {{ $store.getters["settings/filter"] }} -->
+  <div v-if="mPanel && mPData" id="panel-grid-stack" style="" class="grid-stack">
+    <!-- {{ mSettings }} -->
+    <InformationTile
+      v-for="(tile, index) in tiles"
+      :key="tile.id"
+      class="card-container"
+      :slot-props="{ tile: tile, index: index }"
+      :edit="edit"
+      :pdata="mPData"
+      :settings="mSettings"
+      @edit="$emit('editTile', { tile: tile, index: index })"
+      @notification="viewNotification"
+    />
+  </div>
 
-  <RenSpinner ref="spinner" :lock="true" style="width: 100%; min-height: 15rem">
-    <template #content>
-      <InformationPanelView
-        v-if="mPanel"
-        :edit="editMode"
-        :pdata="pdata"
-        :panel="mPanel"
-        :locked="locked"
-        :settings="settings"
-        :asset-id="assetId"
-        @edit="onEdit"
-      />
-    </template>
-  </RenSpinner>
-  <Dialog v-model:visible="editDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <div class="field grid">
-      <label for="assetType" class="col-fixed" style="width: 5rem">
-        {{ $t("model.information_tile.type") }}
-      </label>
-      <div class="col">
-        <Dropdown
-          id="assetType"
-          v-model="selectedItem.tile.type"
-          :options="tileTypes"
-          option-label="label"
-          option-value="value"
-          :placeholder="$t('view.select_tile_type')"
-        />
-      </div>
-    </div>
-    <div class="field grid">
-      <Button :label="$t('view.button.manage_measurement')" icon="pi pi-plus" @click="() => (manageSensorsDialog = !manageSensorsDialog)" />
-    </div>
-    <div class="field grid">
-      <Button :label="$t('view.button.submit')" icon="pi pi-plus" @click="saveGrid" />
-    </div>
-    <Dialog v-model:visible="manageSensorsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-      <!-- {{ selectedTile.tile.measurements }} -->
-      <ManageSensors v-model="selectedItem.tile.measurements"></ManageSensors>
-    </Dialog>
+  <Dialog v-model:visible="notificationDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <notification-list v-if="selectedItem" :context="notificationContext" :object-id="selectedItem.tile.id" />
   </Dialog>
 </template>
 <script>
-// import NotificationList from "@/components/management/notification/NotificationList.vue";
-import InformationPanelView from "./InformationPanelView.vue";
-import ManageSensors from "../measurements/ManageSensors.vue";
-// import { GridStack } from "gridstack";
-import { TileTypes, NotificationContext } from "@/plugins/model/Enums.js";
-// THEN to get HTML5 drag&drop
+import InformationTile from "./informationtile/InformationTile.vue";
+import NotificationList from "../../management/notification/NotificationList.vue";
+import { GridStack } from "gridstack";
+// import { TileTypes, NotificationContext } from "@/plugins/model/Enums.js";
+import { NotificationContext, RenRoles } from "@/plugins/model/Enums.js";
 // import "gridstack/dist/h5/gridstack-dd-native";
-// import "gridstack/dist/gridstack.min.css";
+import "gridstack/dist/gridstack.min.css";
+let role = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
+
+function validateSettings(settings, panel, ctx) {
+  let mSettings = {};
+  if (settings == null) {
+    mSettings = {};
+  } else {
+    mSettings = settings;
+  }
+  if (panel.props) {
+    let props = panel.props;
+    let overrideMode = props.overrideMode;
+    if (role & ctx.$store.getters["auth/renRole"] && mSettings.ignoreOverrideMode) {
+      // alert("");
+      mSettings = { ...panel.props, ...mSettings };
+    } else
+      switch (overrideMode) {
+        case "fixed":
+          mSettings = panel.props;
+          break;
+        case "override":
+          mSettings = { ...mSettings, ...panel.props };
+          break;
+        case "default":
+        default:
+          mSettings = { ...panel.props, ...mSettings };
+          break;
+      }
+  }
+  // mSettings.legend = mSettings.legend != null ? mSettings.legend : true;
+  mSettings.legend = mSettings.legend != null ? mSettings.legend : false;
+  // settings.title = settings.title != null ? settings.title : true;
+  // settings.color = settings.color != null ? settings.color : "#d6ebff";
+  let size = mSettings != null && mSettings.fontSize != null ? mSettings.fontSize : `${2.0}rem`;
+  mSettings.fontSize = size;
+  return mSettings;
+}
+
 export default {
   name: "InformationPanel",
   components: {
-    InformationPanelView,
-    ManageSensors,
-    // NotificationList,
+    InformationTile,
+    NotificationList,
   },
   props: {
+    pdata: {
+      type: Object,
+      default: () => null,
+    },
     assetId: {
       type: Number,
       default: null,
@@ -79,32 +93,31 @@ export default {
         return {};
       },
     },
-    conversionSettings: {
-      type: Object,
-      default: () => {
-        return {};
-      },
-    },
-
-    editMode: {
+    // conversionSettings: {
+    //   type: Object,
+    //   default: () => {
+    //     return {};
+    //   },
+    // },
+    edit: {
       type: Boolean,
       default: false,
     },
   },
-  emits: ["update"],
+  emits: ["editTile", "update"],
   data() {
     return {
-      mNotifications: [],
       grid: null,
+
+      mSettings: validateSettings(this.settings, this.panel, this),
+      // loaded: false,
       notificationDialog: false,
-      editDialog: false,
       selectedItem: null,
-      mPanel: null,
-      manageSensorsDialog: false,
-      pdata: null,
-      tileTypes: Object.entries(TileTypes).map((k) => {
-        return { value: k[1], label: this.$t("enums.tile_type." + k[1]) };
-      }),
+      mPanel: this.panel,
+      mPData: null,
+      // tileTypes: Object.entries(TileTypes).map((k) => {
+      //   return { value: k[1], label: this.$t("enums.tile_type." + k[1]) };
+      // }),
       notificationContext: NotificationContext.TILE,
     };
   },
@@ -118,113 +131,93 @@ export default {
     },
   },
   watch: {
-    manageSensorsDialog: function (newValue) {
-      if (!newValue) {
-        this.mPanel.tiles[this.selectedItem.index] = this.selectedItem.tile;
-      }
+    panel: {
+      handler: function (newValue) {
+        this.mPanel = newValue;
+        this.reloadGrid();
+      },
+      deep: true,
     },
-    // panel: {
-    //   handler: function (newValue) {
-    //     this.mPanel = newValue;
-    //     this.reloadGrid();
-    //   },
-    //   deep: true,
-    // },
+    pdata: {
+      handler: function (newValue) {
+        if (this.mSettings.relativeValues && newValue) {
+          this.mPData = this.$ren.utils.convertPanelData(this.mPanel, newValue, this.$store.getters["settings/conversion"]);
+          this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, this.mSettings);
+        } else {
+          console.info("watch pdata");
+          this.mPData = this.$ren.utils.convertPanelData(this.mPanel, newValue, this.$store.getters["settings/conversion"]);
+        }
+        // this.reloadGrid();
+      },
+      deep: true,
+    },
+    mSettings: {
+      handler(newVal) {
+        console.info("watch mSettings");
+        if (newVal.relativeValues && this.pdata) {
+          // this.mPData = this.pdata;
+          this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.$store.getters["settings/conversion"]);
+          this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, newVal);
+        } else {
+          this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.$store.getters["settings/conversion"]);
+        }
+      },
+      deep: true,
+    },
   },
-  async beforeMount() {
-    if (!this.panel.is_template) {
-      this.mPanel = this.panel;
+  async updated() {
+    console.info("update panel grid");
+    this.reloadGrid();
+  },
+  convertData() {},
+  async mounted() {
+    if (this.pdata != null) {
+      if (this.settings.relativeValues && this.pdata) {
+        this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.$store.getters["settings/conversion"]);
+        this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, this.settings);
+      } else {
+        this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.$store.getters["settings/conversion"]);
+      }
+      this.reloadGrid();
     }
   },
-  async mounted() {
-    this.loadData();
-    // this.reloadGrid();
-  },
   methods: {
-    // reloadGrid() {
-    //   if (this.grid != null) this.grid.destroy(false);
-    //   let grid = GridStack.init({ float: true }, "#panel-grid-stack");
-    //   if (this.locked) {
-    //     grid.disable();
-    //   } else {
-    //     grid.enable();
-    //   }
-    //   grid.disable();
-    //   this.grid = grid;
-    // },
-    async loadData() {
-      console.info("panel load data");
-      let filter = this.$store.getters["settings/parsedFilter"];
-      let predictions = this.$store.getters["settings/predictionMs"];
-      // console.error(predictions);
-      filter["prediction"] = predictions;
-      if (this.panel.id != null) {
-        if (this.panel.is_template) {
-          this.$refs.spinner.run(async () => {
-            console.info("wait for panel data: " + this.panel.id + ": " + this.assetId);
-            await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, filter).then((resp) => {
-              this.mPanel = resp.panel;
-              this.pdata = resp.data;
-            });
-          });
-          // let resp = await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, filter);
-          // this.mPanel = resp.panel;
-          // this.pdata = resp.data;
-        } else {
-          this.$refs.spinner.run(async () => {
-            console.info("wait for panel data: " + this.panel.id);
-            await this.$ren.dataApi.getPanelData(this.panel.id, null, filter).then((resp) => {
-              this.pdata = resp.data;
-            });
-          });
-          // let resp = await this.$ren.dataApi.getPanelData(this.panel.id, null, filter);
-          // this.pdata = resp.data;
-        }
+    reloadGrid() {
+      if (this.grid != null) this.grid.destroy(false);
+      let grid = GridStack.init({ float: true, column: 12, cellHeight: "8vh", margin: 5 }, "#panel-grid-stack");
+      if (grid == null) {
+        console.warn("Cannot find #panel-grid-stack, is panel:" + (this.mPanel != null) + ", is data:" + (this.pdata != null));
+        return;
       }
-      console.info("Panel data loaded");
+      if (this.locked) {
+        grid.disable();
+      } else {
+        grid.enable();
+      }
+      grid.disable();
+      this.mSettings.cellWidth = grid.el.clientWidth / 12;
+
+      this.grid = grid;
     },
-    // gridWidth(tile) {
-    //   return tile.col == null ? 2 : tile.col;
-    // },
-    onEdit(evt) {
-      //todo
+
+    gridWidth(tile) {
+      return tile.col == null ? 2 : tile.col;
+    },
+
+    viewNotification(evt) {
+      //TODO: load here notifications for tile
       this.selectedItem = evt;
-      this.editDialog = true;
+      this.notificationDialog = true;
     },
-
-    saveGrid() {
-      //TODO: save
-      let nodes = this.gridItems;
-      let tiles = this.tiles;
-      nodes.forEach((node) => {
-        let gridstackNode = node.gridstackNode;
-        const tile = tiles.find((t) => t.id === gridstackNode.id);
-        if (tile) {
-          tile.layout = {
-            x: gridstackNode.x,
-            y: gridstackNode.y,
-            w: gridstackNode.w,
-            h: gridstackNode.h,
-          };
-        }
-      });
-      this.mPanel.tiles = tiles;
-      this.$emit("update", this.mPanel);
-    },
-
-    // viewNotification(evt) {
-    //   //TODO: load here notifications for tile
-    //   this.selectedItem = evt;
-    //   this.notificationDialog = true;
-    // },
   },
 };
 </script>
 
 <style lang="scss">
-// #panel-grid-stack {
-//   width: 100%;
-//   position: absolute;
-//   top: 0;
-// }
+#panel-grid-stack {
+  width: 100%;
+  // margin: 1%;
+  // position: absolute;
+  // top: 0;
+}
 </style>

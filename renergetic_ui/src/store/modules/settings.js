@@ -66,6 +66,7 @@ export default {
     },
     conversion: {},
     filter: {},
+    filters: {},
   },
   mutations: {
     locales(state, payload) {
@@ -92,6 +93,16 @@ export default {
       console.info(payload);
       state.filter = payload;
     },
+    filters(state, payload, filterKey) {
+      console.info("filter: " + filterKey);
+      console.info(payload);
+      if (filterKey == "filter") {
+        return (state.filter = payload);
+      } else {
+        state.filters[filterKey] = payload;
+      }
+    },
+    // filters: (state) => (filterKey) => {
 
     toggle(state, payload) {
       state[payload.section][payload.key] = !state[payload.section][payload.key];
@@ -155,6 +166,16 @@ export default {
     filter: (state) => {
       return state.filter;
     },
+    filters: (state) => (filterKey) => {
+      if (filterKey == "filter") {
+        return state.filter;
+      }
+      if (!state.filters[filterKey]) {
+        return {};
+      }
+      return state.filters[filterKey];
+    },
+
     all: (state) => {
       console.info(state);
       return state;
