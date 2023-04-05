@@ -1,9 +1,9 @@
 <template>
-  <div class="p-fluid">
-    <!-- {{ settings }} -->
-    <div v-for="s in schema" :key="s" :class="'field grid'">
-      <label v-if="s.type != 'Submit' && s.description" v-tooltip.top="{ value: s.description, class: '' }" :for="s.key" class="col-12"
-        >{{ s.label }}
+  <div class="p-fluid formgrid grid">
+    <!-- {{ mModel }} -->
+    <div v-for="s in schema" :key="s" :class="getClass(s)">
+      <label v-if="s.type != 'Submit' && s.description" v-tooltip.top="{ value: s.description, class: '' }" :for="s.key" class="col-12">
+        {{ s.label }}
       </label>
       <label v-else-if="s.type != 'Submit'" :for="s.key" class="col-12">{{ s.label }}</label>
 
@@ -94,6 +94,7 @@ export default {
     // ToggleButton
   },
   props: {
+    columns: { type: Number, default: 12 },
     settings: {
       type: Object,
       default: () => ({}),
@@ -120,6 +121,20 @@ export default {
 
   async created() {},
   methods: {
+    getClass(setting) {
+      let columns; //= setting.col ? setting.col : this.col;
+      switch (setting.type) {
+        case Array:
+          columns = Math.min(12, Math.round(1.5 * (setting.col ? setting.col : this.columns)));
+          break;
+        default:
+          columns = setting.col ? setting.col : this.columns;
+          break;
+      }
+      console.info(columns);
+      // s.type == Number && s.mode == 'slider'
+      return `field grid col-${columns}`;
+    },
     toggle(event) {
       this.$refs.menu.toggle(event);
     },

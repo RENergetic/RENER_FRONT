@@ -10,7 +10,6 @@
       :edit-mode="false"
       :settings="settings"
     ></InformationPanelWrapper>
-    <!-- <energy-flow :key="reload" :asset-id="$route.params.asset_id" :panel="panel" :settings="settings"></energy-flow> -->
   </div>
   <RenSettingsDialog ref="settingsDialog">
     <template #settings><PanelSettings @update="reloadSettings()"></PanelSettings></template>

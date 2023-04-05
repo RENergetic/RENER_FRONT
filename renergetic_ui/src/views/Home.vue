@@ -1,8 +1,6 @@
 <template>
   <DotMenu v-if="loggedIn" :model="menuModel" :fixed="true" />
   <div v-if="settings.panelVisibility" style="position: relative">
-    <!-- {{ $store.getters["view/informationPanels"] }} -->
-    <!-- <energy-flow v-if="panel" ref="panel" :asset-id="null" :panel="panel" :settings="panelSettings"></energy-flow> -->
     <InformationPanelWrapper v-if="panel" ref="panel" :locked="locked" :panel="panel" :settings="settings"></InformationPanelWrapper>
     <div v-else style="width: 50rem; max-width: 95vw; margin: auto; padding-top: 5rem">
       <h4 style="width: 100%; margin: auto">{{ $t("view.empty_home_dashboard") }}</h4>
@@ -16,11 +14,9 @@
   </div>
   <RoleMatrix v-if="false" />
   <RenSettingsDialog ref="homeSettingsDialog">
-    <!--  @update="onSettingsUpdate()" -->
     <template #settings><HomeSettings @update="reloadSettings()"></HomeSettings></template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="panelSettingsDialog">
-    <!--  @update="onSettingsUpdate()" -->
     <template #settings><PanelSettings @update="reloadPanelSettings()"></PanelSettings></template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="conversionSettingsDialog">
@@ -60,17 +56,12 @@ export default {
   },
   data() {
     return {
-      roles: RenRoles,
-
       loaded: false,
       grid: null,
       locked: true,
-      notifiationDialog: false,
-      settingsChange: false,
       settings: this.$store.getters["settings/home"],
       panel: this.$store.getters["view/homePanel"],
-      panelSettings: this.$store.getters["settings/panel"],
-      // layout: this.$store.getters["settings/homeLayout"],
+      // panelSettings: this.$store.getters["settings/panel"],
     };
   },
   computed: {
@@ -159,14 +150,8 @@ export default {
     reloadPanelSettings() {
       this.panelSettingsDialog = this.$store.getters["settings/panel"];
     },
-
     async toggleLock() {
       this.locked = !this.locked;
-    },
-
-    viewNotification() {
-      //TODO: load here notifications for tile
-      this.notifiationDialog = true;
     },
   },
 };

@@ -100,6 +100,12 @@ export default class RenUtils {
     let panel = null;
     if (assetId != null) {
       panel = this.app.$store.getters["view/assetPanel"](id, assetId);
+      if (!panel.is_template) {
+        let index = this.app.$store.getters["view/informationPanelsMap"][id];
+        if (index != null) {
+          panel = this.app.$store.getters["view/informationPanels"][index];
+        }
+      }
     } else {
       let index = this.app.$store.getters["view/informationPanelsMap"][id];
       if (index != null) {

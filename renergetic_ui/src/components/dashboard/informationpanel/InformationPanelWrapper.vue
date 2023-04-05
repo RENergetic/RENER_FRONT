@@ -1,7 +1,6 @@
 <template>
   <!-- {{ $store.getters["view/measurementTypes"] }}  -->
   <!-- {{ $store.getters["settings/filter"] }} -->
-  <!-- {{ mPanel }} -->
   <!-- {{ pdata }} -->
   <RenSpinner ref="spinner" :lock="true" style="width: 100%; min-height: 15rem">
     <template #content>
@@ -11,7 +10,7 @@
         :pdata="pdata"
         :panel="mPanel"
         :locked="locked"
-        :settings="settings"
+        :settings="panelSettings"
         :asset-id="assetId"
         @edit="onEdit"
       />
@@ -49,6 +48,7 @@
 // import NotificationList from "@/components/management/notification/NotificationList.vue";
 import InformationPanel from "./InformationPanel.vue";
 import ManageSensors from "../measurements/ManageSensors.vue";
+import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 // import { GridStack } from "gridstack";
 import { TileTypes, NotificationContext } from "@/plugins/model/Enums.js";
 // THEN to get HTML5 drag&drop
@@ -74,13 +74,18 @@ export default {
       type: Object,
       default: () => null,
     },
-    settings: {
+    filter: {
+      type: Object,
+      default: null,
+    },
+    conversionSettings: {
       type: Object,
       default: () => {
         return {};
       },
     },
-    conversionSettings: {
+
+    panelSettings: {
       type: Object,
       default: () => {
         return {};
@@ -96,6 +101,7 @@ export default {
   data() {
     return {
       mNotifications: [],
+      mFilter: this.filter ? this.filter : this.$store.getters["settings/parsedFilter"]("filter"),
       grid: null,
       notificationDialog: false,
       editDialog: false,
@@ -103,6 +109,7 @@ export default {
       mPanel: null,
       manageSensorsDialog: false,
       pdata: null,
+      deferredFilter: null,
       tileTypes: Object.entries(TileTypes).map((k) => {
         return { value: k[1], label: this.$t("enums.tile_type." + k[1]) };
       }),
@@ -124,13 +131,15 @@ export default {
         this.mPanel.tiles[this.selectedItem.index] = this.selectedItem.tile;
       }
     },
-    // panel: {
-    //   handler: function (newValue) {
-    //     this.mPanel = newValue;
-    //     this.reloadGrid();
-    //   },
-    //   deep: true,
-    // },
+    filter: {
+      handler: function () {
+        this.deferredFilter.run();
+      },
+      deep: true,
+    },
+  },
+  created() {
+    this.deferredFilter = new DeferredFunction(this.loadData, 1000);
   },
   async beforeMount() {
     if (!this.panel.is_template) {
@@ -155,16 +164,13 @@ export default {
     // },
     async loadData() {
       console.info("panel load data");
-      let filter = this.$store.getters["settings/parsedFilter"];
-      let predictions = this.$store.getters["settings/predictionMs"];
-      // console.error(this.panel);
-      filter["prediction"] = predictions;
+
       if (this.panel.id != null) {
         console.info("load data, is template: " + this.panel.is_template);
         if (this.panel.is_template) {
           this.$refs.spinner.run(async () => {
             console.info("wait for panel data: " + this.panel.id + ": " + this.assetId);
-            await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, filter).then((resp) => {
+            await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, this.mFilter).then((resp) => {
               this.mPanel = resp.panel;
               this.pdata = resp.data;
             });
@@ -175,7 +181,7 @@ export default {
         } else {
           this.$refs.spinner.run(async () => {
             console.info("wait for panel data: " + this.panel.id);
-            await this.$ren.dataApi.getPanelData(this.panel.id, null, filter).then((resp) => {
+            await this.$ren.dataApi.getPanelData(this.panel.id, null, this.mFilter).then((resp) => {
               this.pdata = resp.data;
             });
           });

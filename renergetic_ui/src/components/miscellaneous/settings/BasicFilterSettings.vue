@@ -1,5 +1,5 @@
 <template>
-  <Settings :schema="schema" :settings="settings"></Settings>
+  <Settings :schema="schema" :settings="settings" :columns="columns" />
   <!-- {{ $store.getters["settings/all"].filters }} -->
 </template>
 
@@ -11,7 +11,9 @@ export default {
     Settings,
   },
   props: {
+    columns: { type: Number, default: 12 },
     settingKey: { type: String, default: "filter" },
+    submitButton: { type: Boolean, default: true },
   },
   emits: ["update"],
   data() {
@@ -23,6 +25,17 @@ export default {
     };
   },
   computed: {},
+  watch: {
+    //watch only without submit button
+    settings: {
+      handler: function (newVal) {
+        if (this.submitButton) return;
+        this.$store.commit("settings/filters", { payload: newVal, key: this.settingKey });
+        this.$emit("update");
+      },
+      deep: true,
+    },
+  },
   async mounted() {
     (this.settings = this.$store.getters["settings/filters"](this.settingKey)),
       await this.$ren.dashboardApi.listInformationPanel().then((panels) => {
@@ -40,9 +53,10 @@ export default {
   methods: {
     async onClick() {
       this.settings["predictionIntervalms"] = this.settings.predictionInterval * 3600;
-      this.$store.commit("settings/filter", this.settings, this.settingKey);
+      this.$store.commit("settings/filters", this.settings, this.settingKey);
 
       await this.$ren.utils.saveSettings();
+
       this.$emit("update");
     },
     getSchema() {
@@ -72,16 +86,17 @@ export default {
           mode: "slider",
           key: "predictionInterval",
         },
-        {
+      ];
+      if (this.submitButton) {
+        schema.push({
           label: this.$t("settings.submit"),
           ext: {
             click: this.onClick,
           },
           type: "Submit",
           key: "filterSubmit",
-        },
-      ];
-
+        });
+      }
       return schema;
     },
     toggle(event) {

@@ -1,15 +1,22 @@
 <template>
   <div v-if="panel" id="panel-box">
     <DotMenu :model="menuModel" />
+
     <InformationPanelWrapper
       ref="panel"
       :asset-id="$route.params.asset_id"
       :locked="locked"
       :panel="panel"
       :edit-mode="editMode"
-      :settings="settings"
-    ></InformationPanelWrapper>
-    TODO: key
+      :filter="filter"
+      :panel-settings="settings"
+    />
+    <Card style="width: 90%; margin: auto; margin-top: 1rem">
+      <template #content>
+        todo make own card component
+        <BasicFilterSettings :setting-key="'private'" :submit-button="false" :columns="3" @update="reloadSettings()" />
+      </template>
+    </Card>
   </div>
   <RenSettingsDialog ref="settingsDialog">
     <template #settings><PanelSettings @update="reloadSettings()"></PanelSettings></template>
@@ -18,7 +25,7 @@
     <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="filterSettingsDialog" :save="false">
-    <template #settings><BasicFilterSettings @update="reloadSettings()"></BasicFilterSettings></template>
+    <template #settings><BasicFilterSettings :setting-key="'private'" @update="reloadSettings()" /></template>
   </RenSettingsDialog>
 </template>
 <script>
@@ -36,12 +43,12 @@ export default {
     BasicFilterSettings,
   },
   data() {
-    alert("todo settings key");
     return {
       panel: null,
       locked: false,
       editMode: false,
       settings: this.$store.getters["settings/panel"],
+      filter: this.$store.getters["settings/parsedFilter"]("private"),
       settingsDialog: false,
     };
   },
@@ -102,13 +109,21 @@ export default {
     async loadStructure() {
       let informationPanel = this.$ren.utils.localPanel(this.$route.params.id, this.$route.params.asset_id);
       if (informationPanel == null) {
-        informationPanel = await this.$ren.dashboardApi.getInformationPanel(this.$route.params.id, this.$route.params.asset_id);
+        this.$ren.dashboardApi.getInformationPanel(this.$route.params.id, this.$route.params.asset_id).then((panel) => {
+          this.panel = panel;
+        });
+      } else {
+        this.panel = informationPanel;
       }
-      this.panel = informationPanel;
     },
     reloadSettings() {
+      // console.info("reloadSettings");
+      // this.$store.getters["settings/filter"];
+      this.filter = this.$store.getters["settings/parsedFilter"]("private");
       this.settings = this.$store.getters["settings/panel"];
+      this.conversionSettings = this.$store.getters["settings/conversion"];
     },
+
     async toggleLock() {
       this.locked = !this.locked;
     },
