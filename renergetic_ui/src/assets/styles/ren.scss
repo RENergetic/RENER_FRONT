@@ -35,6 +35,9 @@ body {
     color: $ren-primary-font-color ;
     min-height: 2.5rem;
 } 
+.p-selectbutton.p-buttonset.p-component{
+background: none; /*remove background for empty space*/
+}
 .p-button:hover {
     background-color: $ren-primary-color-tr !important;
 }
@@ -285,7 +288,9 @@ body {
     background: $primary-color;
     cursor: pointer;
 }
-
+.ren-card{
+    width: 90%; margin: auto; margin-top: 1rem
+}
 #pagefooter {
     background-color: $secondary-color;
 }

@@ -1,6 +1,7 @@
 <template>
   <div v-if="panel" id="panel-box">
     <DotMenu :model="menuModel" />
+    <BasicFilterSettings class="ren-card" :setting-key="'private'" :submit-button="false" :columns="3" :labels="false" @update="reloadSettings()" />
 
     <InformationPanelWrapper
       ref="panel"
@@ -11,12 +12,12 @@
       :filter="filter"
       :panel-settings="settings"
     />
-    <Card style="width: 90%; margin: auto; margin-top: 1rem">
+    <!-- <Card style="width: 90%; margin: auto; margin-top: 1rem">
       <template #content>
-        todo make own card component
-        <BasicFilterSettings :setting-key="'private'" :submit-button="false" :columns="3" @update="reloadSettings()" />
-      </template>
-    </Card>
+        todo make own card component -->
+    <BasicFilterSettings class="ren-card" :setting-key="'private'" :submit-button="false" :columns="3" :labels="false" @update="reloadSettings()" />
+    <!-- </template>
+    </Card> -->
   </div>
   <RenSettingsDialog ref="settingsDialog">
     <template #settings><PanelSettings @update="reloadSettings()"></PanelSettings></template>

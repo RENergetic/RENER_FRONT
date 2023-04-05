@@ -1,5 +1,5 @@
 <template>
-  <Settings :schema="schema" :settings="settings" :columns="columns" />
+  <Settings :schema="schema" :settings="settings" :columns="columns" :labels="labels" />
   <!-- {{ $store.getters["settings/all"].filters }} -->
 </template>
 
@@ -14,6 +14,7 @@ export default {
     columns: { type: Number, default: 12 },
     settingKey: { type: String, default: "filter" },
     submitButton: { type: Boolean, default: true },
+    labels: { type: Boolean, default: true },
   },
   emits: ["update"],
   data() {
@@ -79,6 +80,7 @@ export default {
         {
           label: this.$t("settings.prediction_interval"),
           ext: {
+            valueTemplate: (v) => this.$t("settings.templates.prediction_interval", [v]),
             max: 48,
             unit: "h",
           },

@@ -32,6 +32,9 @@
   "information_panel_visibility": "Information panels:",
   "time_filter": "Time filter",
   "submit": "Submit",
+  "templates":{
+    "prediction_interval":"Predict by: {0}"
+  },
   "measurement_details": {
     "color": "Color"
   },

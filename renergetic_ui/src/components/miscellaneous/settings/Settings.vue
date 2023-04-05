@@ -2,10 +2,10 @@
   <div class="p-fluid formgrid grid">
     <!-- {{ mModel }} -->
     <div v-for="s in schema" :key="s" :class="getClass(s)">
-      <label v-if="s.type != 'Submit' && s.description" v-tooltip.top="{ value: s.description, class: '' }" :for="s.key" class="col-12">
+      <label v-if="labels && s.type != 'Submit' && s.description" v-tooltip.top="{ value: s.description, class: '' }" :for="s.key" class="col-12">
         {{ s.label }}
       </label>
-      <label v-else-if="s.type != 'Submit'" :for="s.key" class="col-12">{{ s.label }}</label>
+      <label v-else-if="labels && s.type != 'Submit'" :for="s.key" class="col-12">{{ s.label }}</label>
 
       <!-- <ToggleButton
         v-model="mModel['key']"
@@ -29,8 +29,8 @@
           ]"
         />
         <div v-else-if="s.type == Number && s.mode == 'slider'">
-          <Slider v-model="mModel[s.key]" v-tooltip="s.description" :max="s.ext && s.ext.max ? s.ext.max : 24" />
-          <span>{{ mModel[s.key] }} {{ s.ext ? s.ext.unit : "" }}</span>
+          <Slider v-model="mModel[s.key]" v-tooltip="s.description" class="settings-slider" :max="s.ext && s.ext.max ? s.ext.max : 24" />
+          <span>{{ s.ext && s.ext.valueTemplate ? s.ext.valueTemplate(mModel[s.key]) : mModel[s.key] }} {{ s.ext ? s.ext.unit : "" }}</span>
         </div>
         <InputNumber
           v-else-if="s.type == Number"
@@ -94,6 +94,7 @@ export default {
     // ToggleButton
   },
   props: {
+    labels: { type: Boolean, default: true },
     columns: { type: Number, default: 12 },
     settings: {
       type: Object,
@@ -143,6 +144,9 @@ export default {
 </script>
 
 <style lang="scss">
+.settings-slider {
+  margin-bottom: 0.35rem;
+}
 .p-buttonset {
   flex-wrap: wrap;
   flex-direction: row;
