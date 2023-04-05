@@ -48,7 +48,7 @@ export default {
 <style lang="scss">
 .cell-state-1 {
   background-color: $ren-state-color-ok;
-  color: $secondary-font-color;
+  color: $ren-secondary-font-color;
   display: flex;
   height: 100%;
 }
@@ -61,7 +61,7 @@ export default {
 }
 .cell-state-null {
   background-color: gray; // $ren-state-color-unknown;;
-  color: $secondary-font-color;
+  color: $ren-secondary-font-color;
   display: flex;
   height: 100%;
 }
