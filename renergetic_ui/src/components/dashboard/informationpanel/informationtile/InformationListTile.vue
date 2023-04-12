@@ -20,7 +20,6 @@ export default {
     pdata: { type: Object, default: () => ({}) },
     settings: { type: Object, default: () => ({}) },
     conversionSettings: { type: Object, default: () => ({}) },
-    fontSize: { type: String, default: "2rem" },
   },
   emits: ["select"],
   data() {

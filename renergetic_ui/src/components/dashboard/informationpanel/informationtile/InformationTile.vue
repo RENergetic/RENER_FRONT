@@ -1,167 +1,189 @@
 <template>
-  <div v-if="slotProps" :class="'grid-stack-item ren'" v-bind="gridStackAttributes">
-    <!-- :style="mStyle" -->
-    <div :class="'grid-stack-item-content ' + state" :style="background">
-      <div class="tile-bar">
-        <Button
-          v-if="edit"
-          id="menu-toggle"
-          :class="'p-button-rounded p-button-text edit-button'"
-          aria-haspopup="true"
-          icon="pi pi-pencil"
-          @click="$emit('edit', slotProps)"
-        />
-        <!-- <Button notifications for tile
-          v-if="notificationVisible"
-          id="notification"
-          :class="'p-button-rounded p-button-text bell-button '"
-          aria-haspopup="true"
-          icon="pi pi-bell"
-          @click="$emit('notification', slotProps)"
-        /> -->
-      </div>
-      <InformationTileData :tile="tile" :pdata="tileData" :settings="settings"></InformationTileData>
+  <div v-if="tile" :class="tileClass" :style="background">
+    <!-- {{ pdata }} -->
+    <!-- todo: group by sensor_name -->
+    <!-- {{ tile }} -->
+    <!-- {{ tile.type }} -->
+    <div v-if="(titleVisible || tile.measurements.length == 0) && tile.label" class="flex flex-column justify-content-center" style="height: 100%">
+      <h3 style="margin: 0; text-align: center">{{ tile.label }}</h3>
     </div>
+
+    <KnobTile v-else-if="tile.type == 'knob'" :tile="tile" :pdata="pdata" :settings="mSettings" :conversion-settings="conversionSettings"></KnobTile>
+
+    <ChartTile
+      v-else-if="isDoughnut"
+      :tile="tile"
+      :pdata="pdata"
+      :settings="mSettings"
+      :conversion-settings="conversionSettings"
+      @timeseries-update="onTimeseriesUpdate"
+    />
+
+    <DoughnutTile
+      v-else-if="!isDoughnut && tile.type == 'multi_knobs'"
+      :tile="tile"
+      :pdata="pdata"
+      :settings="mSettings"
+      :conversion-settings="conversionSettings"
+    ></DoughnutTile>
+    <!-- <MultiDoughnutTile
+        v-else-if="tile.type == 'multi_doughnut'"
+        :tile="tile"
+        :pdata="pdata":settings="mSettings"
+      ></MultiDoughnutTile> -->
+
+    <MultiKnobTile
+      v-else-if="tile.type == 'multi_knob'"
+      :tile="tile"
+      :pdata="pdata"
+      :settings="mSettings"
+      :conversion-settings="conversionSettings"
+    />
+    <PanelTile
+      v-else-if="tile.type == 'panel'"
+      :tile="tile"
+      :pdata="pdata"
+      :settings="mSettings"
+      :conversion-settings="conversionSettings"
+      @timeseries-update="onTimeseriesUpdate"
+    ></PanelTile>
+    <InformationTileSingle
+      v-else-if="tile.type == 'single'"
+      :tile="tile"
+      :pdata="pdata"
+      :settings="mSettings"
+      :conversion-settings="conversionSettings"
+    ></InformationTileSingle>
+    <InformationListTile v-else :tile="tile" :pdata="pdata" :settings="mSettings" :conversion-settings="conversionSettings"></InformationListTile>
   </div>
 </template>
 <script>
-import InformationTileData from "./InformationTileData.vue";
+import InformationListTile from "./InformationListTile.vue";
+import KnobTile from "./KnobTile.vue";
+import DoughnutTile from "./DoughnutTile.vue";
+import ChartTile from "./ChartTile.vue";
+import InformationTileSingle from "./InformationTileSingle.vue";
+import MultiKnobTile from "./MultiKnobTile.vue";
+import { TileTypes } from "@/plugins/model/Enums.js";
+import icons from "./icons";
+// import MultiDoughnutTile from "./MultiDoughnutTile.vue";
+
+function validateTileSettings(tile, settings, ctx) {
+  if (tile.props) {
+    return {
+      label: ctx.$t(`enums.measurement_name.${tile.name}`, tile.label),
+      icon: icons[tile.props.icon],
+      icon_visibility: tile.props.icon_visibility != null ? tile.props.icon_visibility : true,
+      legend: tile.props.legend != null ? tile.props.legend : settings.legend,
+      chart_type: tile.props.chart_type != null ? tile.props.chart_type : settings.chart_type,
+      title_visibility:
+        !ctx.demand &&
+        (tile.props.title_visibility != null ? tile.props.title_visibility : settings.title_visibility != null ? settings.title_visibility : true),
+      measurement_list: tile.props.measurement_list != null ? tile.props.measurement_list : true,
+      fontSize: settings.fontSize,
+      background: tile.props.mask,
+      template: tile.props.template,
+      // asset_id: settings.asset_id,
+    };
+  }
+  return settings;
+  // tileSettings.legend = settings.legend != null ? settings.legend : true;
+  // settings.title = settings.title != null ? settings.title : true;
+  // settings.color = settings.color != null ? settings.color : "#d6ebff";
+  // console.info(tile);
+}
 
 export default {
   name: "InformationTile",
-  components: { InformationTileData },
+  components: {
+    InformationListTile,
+    KnobTile,
+    DoughnutTile,
+    InformationTileSingle,
+    ChartTile,
+    // MultiDoughnutTile,
+    MultiKnobTile,
+    PanelTile: () => import("./PanelTile.vue"),
+  },
   props: {
-    edit: { type: Boolean, default: true },
-    slotProps: {
+    edit: { type: Boolean, default: false },
+    //Determines if it is wrapped by demand/recommendation compoent
+    demand: { type: Boolean, default: false },
+    tile: {
       type: Object,
-      default: () => ({}),
+      default: () => null,
     },
     pdata: {
       type: Object,
-      default: () => ({}),
+      default: () => null,
     },
     settings: {
       type: Object,
       default: () => ({}),
     },
   },
-  emits: ["edit", "notification"],
+  emits: ["edit", "notification", "timeseries-update"],
   data() {
     return {
-      tileData: this.pdata, //&& this.pdata.data ? this.pdata.data : {},
+      conversionSettings: this.$store.getters["settings/conversion"],
+      mSettings: { tile: validateTileSettings(this.tile, this.settings, this), panel: this.settings },
     };
   },
   computed: {
-    fontSize: function () {
-      let size = this.settings != null && this.settings.fontSize != null ? this.settings.fontSize : 2.0;
-      return `${size}rem`;
-    },
-    tile: function () {
-      return this.slotProps.tile;
+    background: function () {
+      return `background-color:${this.mSettings.tile.background}`;
     },
     tileClass: function () {
-      if (this.tile.type == "panel") {
-        return "block tile";
-      }
-      return "block";
+      return this.settings != null && !this.settings.center ? "flex tile_wrapper" : " flex tile_wrapper_center";
     },
-    background: function () {
-      if (this.tile.props) {
-        return "background: " + this.tile.props.background;
-      }
-      return "";
-    },
-    notificationVisible: function () {
-      //default visible
-      return !(this.settings != null && !this.settings.notificationVisibility);
-    },
-    state: function () {
-      // return state class
-      // let state = this.tile == null || this.tile.state == null ? "unknown" : this.tile.state;
-      let state = this.pdata && this.pdata.state ? this.pdata.state[this.tile.id] : "unknown";
-      if (state.toLowerCase() == "ok") {
-        return "";
-      }
-      if (state) return `state ${state.toLowerCase()}`;
-      //state not provided to the exists tile (e.g. tile not saved yet in the backend)
-      return `state unknown`;
+    isDoughnut: function () {
+      return this.tile != null && this.tile.type == TileTypes.doughnut;
     },
 
-    col: function () {
-      return this.tile == null || this.tile.col == null ? 2 : this.tile.col;
+    titleVisible: function () {
+      //default use/show title
+      return this.settings == null || this.settings.title;
     },
-    layout: function () {
-      return this.tile != null && this.tile.layout != null ? this.tile.layout : (() => ({}))();
-    },
-    gridStackAttributes() {
-      //TODO: other attributes?
-      //https://github.com/gridstack/gridstack.js/tree/master/doc#grid-attributes
-      // example with an old version https://codesandbox.io/s/grid-stack-js-integration-with-vuejs-72mrn?file=/src/App.vue
-      return {
-        id: this.tile.id,
-        "gs-id": this.tile.id,
-        "gs-x": this.layout.x,
-        "gs-y": this.layout.y,
-        "gs-w": this.layout.w,
-        "gs-h": this.layout.h,
-      };
+    title: function () {
+      return this.tile && this.tile.title != null ? this.tile.title : null;
     },
   },
   watch: {
-    pdata: {
+    tile: {
       handler: function (newValue) {
-        this.tileData = newValue; //&& newValue.data ? newValue.data : {};
+        this.mSettings = { tile: validateTileSettings(newValue, this.settings, this), panel: this.settings };
       },
       deep: true,
     },
   },
+
+  mounted() {},
+  methods: {
+    onTimeseriesUpdate(evt) {
+      this.$emit("timeseries-update", evt);
+    },
+  },
 };
 </script>
-
 <style lang="scss">
-.edit-button {
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-.bell-button {
-  position: absolute;
-  left: 0;
-  top: 0;
-}
-.grid-stack-item {
-  margin: 10px;
-}
-.grid-stack-item-content {
-  border-radius: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #d6ebff;
-  padding: 0;
-  // background-color: #bee3f8;
-  font-weight: 600;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  // background: #870000; /* fallback for old browsers */
-  // background: -webkit-linear-gradient(to bottom, #190a05, #870000); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to bottom, #190a05, #870000);
-  max-height: 100%;
-  width: 100%;
+.tile_wrapper {
   // display: flex;
-  // flex-direction: column;
-  // align-items: flex-end;
-}
-.tile {
-  height: 100%;
+  // align-content: center;
+  // height: 100%;
   width: 100%;
+  height: 100%;
+  position: absolute;
 }
-.tile-bar {
-  padding: 0.3rem;
+.tile_wrapper_center {
+  display: flex;
+  align-content: center;
+  // position: absolute;
+  // height: 100%;
 }
-.grid-stack-item {
-  margin: 0;
-}
-.grid-stack-item-content {
-  inset: 10px;
+
+.demand-box {
+  .tile_wrapper {
+    padding: 0.5rem;
+  }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div v-if="mPanel && mPData" id="panel-grid-stack" style="" class="grid-stack">
     <!-- {{ mSettings }} -->
-    <InformationTile
+    <InformationTileGridWrapper
       v-for="(tile, index) in tiles"
       :key="tile.id"
       class="card-container"
@@ -10,6 +10,7 @@
       :pdata="mPData"
       :settings="mSettings"
       @edit="$emit('editTile', { tile: tile, index: index })"
+      @timeseries-update="onTimeseriesUpdate"
       @notification="viewNotification"
     />
   </div>
@@ -19,7 +20,7 @@
   </Dialog>
 </template>
 <script>
-import InformationTile from "./informationtile/InformationTile.vue";
+import InformationTileGridWrapper from "./informationtile/InformationTileGridWrapper.vue";
 import NotificationList from "../../management/notification/NotificationList.vue";
 import { GridStack } from "gridstack";
 // import { TileTypes, NotificationContext } from "@/plugins/model/Enums.js";
@@ -57,6 +58,7 @@ function validateSettings(settings, panel, ctx) {
   }
   // mSettings.legend = mSettings.legend != null ? mSettings.legend : true;
   mSettings.legend = mSettings.legend != null ? mSettings.legend : false;
+  mSettings.asset_id = ctx.assetId;
   // settings.title = settings.title != null ? settings.title : true;
   // settings.color = settings.color != null ? settings.color : "#d6ebff";
   let size = mSettings != null && mSettings.fontSize != null ? mSettings.fontSize : `${2.0}rem`;
@@ -67,7 +69,7 @@ function validateSettings(settings, panel, ctx) {
 export default {
   name: "InformationPanel",
   components: {
-    InformationTile,
+    InformationTileGridWrapper,
     NotificationList,
   },
   props: {
@@ -104,7 +106,7 @@ export default {
       default: false,
     },
   },
-  emits: ["editTile", "update"],
+  emits: ["editTile", "update", "timeseries-update"],
   data() {
     return {
       grid: null,
@@ -140,6 +142,7 @@ export default {
     },
     pdata: {
       handler: function (newValue) {
+        console.error("TODO: convert timeseries");
         if (this.mSettings.relativeValues && newValue) {
           this.mPData = this.$ren.utils.convertPanelData(this.mPanel, newValue, this.$store.getters["settings/conversion"]);
           this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, this.mSettings);
@@ -182,6 +185,9 @@ export default {
     }
   },
   methods: {
+    onTimeseriesUpdate(evt) {
+      this.$emit("timeseries-update", evt);
+    },
     reloadGrid() {
       if (this.grid != null) this.grid.destroy(false);
       let grid = GridStack.init({ float: true, column: 12, cellHeight: "8vh", margin: 5 }, "#panel-grid-stack");
@@ -196,6 +202,7 @@ export default {
       }
       grid.disable();
       this.mSettings.cellWidth = grid.el.clientWidth / 12;
+      this.mSettings.cellHeight = grid.el.clientHeight / 12;
 
       this.grid = grid;
     },

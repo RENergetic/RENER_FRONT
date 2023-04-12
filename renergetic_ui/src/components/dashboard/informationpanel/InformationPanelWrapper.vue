@@ -13,6 +13,7 @@
         :settings="panelSettings"
         :asset-id="assetId"
         @edit="onEdit"
+        @timeseries-update="onTimeseriesUpdate"
       />
     </template>
   </RenSpinner>
@@ -162,6 +163,10 @@ export default {
     //   grid.disable();
     //   this.grid = grid;
     // },
+    onTimeseriesUpdate(evt) {
+      console.error("onTimeseriesUpdate TODO:");
+      console.error(evt);
+    },
     async loadData() {
       console.info("panel load data");
 
