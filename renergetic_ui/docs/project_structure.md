@@ -75,7 +75,7 @@ Page's layout templates
 #### Components
 
 reused modules included in the views or other components
-* admin -> system management components like: user management, privilages managements 
+* admin -> system management components like: user management, privileges management
 * dashboard -> data modules, grafana, information panel
   * grafana -> grafana
   * informationpanel -> main data view components

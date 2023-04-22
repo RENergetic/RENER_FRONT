@@ -76,7 +76,7 @@ export default function (Vue) {
     })
     .catch((e) => {
       console.log("failed to initialize ", e);
-      window.location.reload(); // Apparently needed to get initialized
+      if (window.location.pathname != "/unauthorized") window.location = "/unauthorized";
     });
   // Vue.component("keycloak", keycloak);
   return {

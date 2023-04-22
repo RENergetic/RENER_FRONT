@@ -22,6 +22,9 @@
       <template #right> </template>
     </Footer>
   </div>
+  <div v-else-if="keycloakState == -1">
+    <h2>Keycloak not initialized</h2>
+  </div>
   <div v-else-if="keycloakState == 0">
     <h2>Keycloak not initialized</h2>
   </div>
