@@ -11,7 +11,7 @@
     <KnobTile v-else-if="tile.type == 'knob'" :tile="tile" :pdata="pdata" :settings="mSettings" :conversion-settings="conversionSettings"></KnobTile>
 
     <ChartTile
-      v-else-if="isDoughnut"
+      v-else-if="tile.type == 'chart'"
       :tile="tile"
       :pdata="pdata"
       :settings="mSettings"
@@ -19,13 +19,7 @@
       @timeseries-update="onTimeseriesUpdate"
     />
 
-    <DoughnutTile
-      v-else-if="!isDoughnut && tile.type == 'multi_knobs'"
-      :tile="tile"
-      :pdata="pdata"
-      :settings="mSettings"
-      :conversion-settings="conversionSettings"
-    ></DoughnutTile>
+    <DoughnutTile v-else-if="isDoughnut" :tile="tile" :pdata="pdata" :settings="mSettings" :conversion-settings="conversionSettings"></DoughnutTile>
     <!-- <MultiDoughnutTile
         v-else-if="tile.type == 'multi_doughnut'"
         :tile="tile"
