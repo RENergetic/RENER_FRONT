@@ -22,6 +22,24 @@ export default class ManagementApi extends RestComponent {
     return this.get(`/api/assets`, params);
   }
 
+  async listCategories() {
+    return this.get(`/api/assetCategories`);
+  }
+  async updateCategory(category) {
+    return this.put("/api/assetCategories", category);
+  }
+  async addCategory(category) {
+    return this.post("/api/assetCategories", category);
+  }
+
+  async deleteCategory(category) {
+    return this.delete(`/api/assetCategories/${category.id}`);
+  }
+
+  async listCategoryAssets(category, offset, limit) {
+    return this.get(`/api/assetCategories/${category.id}/assets?offset=${offset}&limit=${limit}`);
+  }
+
   async listConnectedAssets(assetId, offset = 0, limit = 500) {
     let params = { offset: offset, limit: limit };
     return this.get(`/api/assets/connect/${assetId}`, params, null, (error) => {

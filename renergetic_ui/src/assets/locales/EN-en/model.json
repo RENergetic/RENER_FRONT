@@ -45,7 +45,15 @@
                "room": "Room",
                "pv": "PV"
           },
-          "category": {}
+          "category": {
+               "name": "Name",
+               "label": "Label",
+               "description": "Description",
+               "id": "ID",
+               "delete_prompt": "Do you really want to delete the category?",
+               "delete": "Delete",
+               "cancel": "Cancel"
+          }
      },
      "information_tile": {
           "type": "type"
