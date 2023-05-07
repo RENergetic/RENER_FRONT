@@ -337,7 +337,7 @@ export default {
           icon: "pi pi-fw  pi-th-large",
           to: "/panel",
           command: () => {
-            this.$router.push({ name: "InformationPanelList" });
+            this.$router.push({ name: "InformationPanelListView" });
           },
         },
         // {

@@ -70,7 +70,9 @@
      },
      "panel": {
           "name": "Name",
-          "label": "Label"
+          "label": "Label",
+          "featured":"Visibility",
+          "is_template":"Is template"
      },
      "user": {
           "login": "Login",

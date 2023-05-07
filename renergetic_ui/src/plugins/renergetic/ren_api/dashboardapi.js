@@ -1,11 +1,8 @@
 import RestComponent from "./restcomponent";
-import storage from "../../../assets/dummy/storage.js";
-import informationPanelList from "../../../assets/dummy/samples/informationpanels.js";
+// import storage from "../../../assets/dummy/storage.js";
+// import informationPanelList from "../../../assets/dummy/samples/informationpanels.js";
 // import heatmapList from "../../../assets/dummy/samples/heatmap.js";
 // import demandList from "../../../assets/dummy/samples/demand.js";
-const DASHBOARD_API_KEY = "dashboard_api";
-// const HEATMAP_KEY = "heatmap";
-const PANEL_KEY = "panel";
 export default class DashboardApi extends RestComponent {
   constructor(axiosInstance, vueInstance) {
     super(axiosInstance, vueInstance);
@@ -82,7 +79,6 @@ export default class DashboardApi extends RestComponent {
   //TODO:
   // }
   // async addInformationPanel(panel) {}
-  // async updateInformationPanel(panel) {}
   // async deleteInformationPanel(id) {}
 
   // HEATMAP REQUESTS
