@@ -56,7 +56,26 @@ export default class DashboardApi extends RestComponent {
   //// INFORMATION PANEL  Requests                       /////
   ////                                                   /////
   ////////////////////////////////////////////////////////////
+  // TEMPORAL CHANGES TO CONNECT WITH BACKEND
+  listInformationPanel(offset = 0, limit = 20) {
+    return this.get(`/api/informationPanel`, { offset: offset, limit: limit });
+  }
+  async updateInformationPanel(panel) {
+    return this.put(`/api/informationPanel`, panel);
+  }
 
+  async getInformationPanel(panelId) {
+    return this.get(`/api/informationPanel/${panelId}`);
+  }
+  async setFeatured(panelId, featured) {
+    return this.post(`/api/informationPanel/id/${panelId}`, featured);
+  }
+  async assignAsset(panelId, assetId) {
+    return this.put(`/api/informationPanel/id/${panelId}/asset/${assetId}`);
+  }
+  async revokeAsset(panelId, assetId) {
+    return this.delete(`/api/informationPanel/id/${panelId}/asset/${assetId}`);
+  }
   //TODO:
   // listInformationPanel(userId=null,offset=0,limit=10) {} =>  src/assets/dummy/samples/information_panel.js
   // async getInformationPanel(panelId,assetId) {
@@ -75,36 +94,19 @@ export default class DashboardApi extends RestComponent {
   // async deleteHeatMap(id) { }
   // This one may not be needed anymore and should use getDemand(assetId) in managementApi: async getDemand(areaId) {} ./docs/model/demand.json
 
-  // TEMPORAL CHANGES TO CONNECT WITH BACKEND
-  listInformationPanel(userId = null) {
-    console.info(`listInformationPanel for ${userId}`);
-    return storage.get(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, informationPanelList);
-  }
+  // async addInformationPanel(panel) {
+  //   panel.id = Math.floor(Math.random() * 1500);
+  //   storage.push(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, panel);
+  //   return new Promise((resolve) => {
+  //     resolve(panel.id);
+  //   });
+  // }
 
-  async getInformationPanel(panelId) {
-    let panels = await storage.get(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, informationPanelList);
-    return panels.find((it) => it.id == panelId);
-  }
-  async addInformationPanel(panel) {
-    panel.id = Math.floor(Math.random() * 1500);
-    storage.push(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, panel);
-    return new Promise((resolve) => {
-      resolve(panel.id);
-    });
-  }
-  async updateInformationPanel(panel) {
-    // console.info(panel);
-    // console.info(JSON.stringify(panel));
-    storage.updateList(`${DASHBOARD_API_KEY}.${PANEL_KEY}`, panel);
-    return new Promise((resolve) => {
-      resolve(panel.id);
-    });
-  }
-  async deleteInformationPanel(id) {
-    return new Promise((resolve) => {
-      resolve(id);
-    });
-  }
+  // async deleteInformationPanel(id) {
+  //   return new Promise((resolve) => {
+  //     resolve(id);
+  //   });
+  // }
 }
 
 // async listHeatMap(userId = null) {

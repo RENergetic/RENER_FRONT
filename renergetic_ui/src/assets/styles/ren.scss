@@ -28,6 +28,10 @@ body {
     border-color:$ren-secondary-border-color;
     color: $ren-secondary-font-color 
 }
+.p-card.p-component{    
+    background: $ren-secondary-bg;
+}
+.p-datatable .p-datatable-footer{ padding: 0;} 
 .p-button,.p-selectbutton .p-button.p-highlight {
     background-color: $ren-primary-color;
     background: $ren-primary-color; 

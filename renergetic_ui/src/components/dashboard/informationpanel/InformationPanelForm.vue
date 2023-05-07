@@ -1,69 +1,72 @@
 <template>
-  <InfoIcon :show-icon="false">
+  <InfoIcon :show-icon="false"> <template #content> </template> </InfoIcon>
+  <!-- {{ mModel }} -->
+  <Card v-if="mModel">
     <template #content>
-      <!-- some info -->
+      <div class="ren">
+        <div class="field grid">
+          <label for="panelLabel" class="col-fixed" style="width: 5rem">
+            {{ $t("model.panel.label") }}
+          </label>
+          <div class="col">
+            <InputText id="panelLabel" v-model="label" :aria-readonly="!edit" />
+          </div>
+        </div>
+        <div class="field grid">
+          <label for="panelName" class="col-fixed" style="width: 5rem">
+            {{ $t("model.panel.name") }}
+          </label>
+          <div class="col">
+            <InputText id="panelName" v-model="name" :aria-disabled="true" :aria-readonly="!edit" />
+          </div>
+        </div>
+        <ren-input v-model="mModel.name" :text-label="'model.panel.name'" :invalid="v$.mModel.name.$invalid" :errors="v$.mModel.name.$silentErrors" />
+        <ren-input v-model="mModel.label" :text-label="'model.panel.label'" />
+      </div>
     </template>
-  </InfoIcon>
-  <div class="field grid">
-    <label for="panelLabel" class="col-fixed" style="width: 5rem">
-      {{ $t("model.panel.label") }}
-    </label>
-    <div class="col">
-      <InputText id="panelLabel" v-model="label" :aria-readonly="!edit" />
-    </div>
-  </div>
-  <div class="field grid">
-    <label for="panelName" class="col-fixed" style="width: 5rem">
-      {{ $t("model.panel.name") }}
-    </label>
-    <div class="col">
-      <InputText id="panelName" v-model="name" :aria-disabled="true" :aria-readonly="!edit" />
-    </div>
-  </div>
-  <div class="field grid">
-    <div class="col">
-      <Button :label="$t('view.button.submit')" @click="submit" />
-    </div>
-    <div class="col">
-      <Button :label="$t('view.button.cancel')" @click="cancel" />
-    </div>
-  </div>
+  </Card>
 
-  <!-- change -->
+  <ren-submit :cancel-button="true" :disabled="v$.$invalid" @cancel="cancel" @submit="submit" />
 </template>
 
 <script>
+//TODO: on owner select
+import { useVuelidate } from "@vuelidate/core";
+import { maxLength, required, minLength } from "@/plugins/validators.js"; //required,
+import InfoIcon from "../../miscellaneous/InfoIcon.vue";
 export default {
   name: "InformationPanelForm",
-  components: {},
+  components: { InfoIcon },
   props: {
-    edit: { type: Boolean, default: true },
     modelValue: {
       type: Object,
-      default: () => ({}),
+      default: () => ({ measurements: [] }),
     },
   },
-  emits: ["update:modelValue", "cancel", "save"],
+  emits: ["update:modelValue", "cancel"],
+  setup: () => ({ v$: useVuelidate() }),
   data() {
     return {
-      name: "",
-      label: null,
+      mModel: this.modelValue ? this.modelValue : { measurements: [] },
+    };
+  },
+  validationConfig: {
+    $lazy: true,
+  },
+  validations() {
+    return {
+      mModel: {
+        name: { maxLength: maxLength(30), required: required, minLength: minLength(3) },
+        label: { maxLength: maxLength(50), minLength: minLength(3) },
+      },
     };
   },
   computed: {},
-  watch: {
-    label: {
-      handler(newVal) {
-        if (newVal == null) this.name = null;
-        else this.name = newVal.toLowerCase().trim().replace(" ", "_");
-      },
-    },
-  },
+  watch: {},
+  async mounted() {},
   methods: {
     submit() {
-      let model = { tiles: [], name: this.name, label: this.label };
-      this.$emit("update:modelValue", model);
-      this.$emit("save", model);
+      this.$emit("update:modelValue", this.mModel);
     },
     cancel() {
       this.$emit("cancel", this.model);
@@ -72,5 +75,4 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss"></style>
