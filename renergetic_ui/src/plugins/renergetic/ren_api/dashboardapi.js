@@ -69,7 +69,7 @@ export default class DashboardApi extends RestComponent {
   }
 
   async getPanelConnectedAssets(panelId) {
-    return this.get(`/api/informationPanel/id//asset${panelId}`);
+    return this.get(`/api/informationPanel/id/${panelId}/asset`);
   }
 
   async assignAsset(panelId, assetId) {
