@@ -1,7 +1,9 @@
 <template>
   <!-- <RenSpinner ref="spinner1"></RenSpinner> -->
-  todo: integracja z API
+  todo: API integration, confirm buttons
   <!-- {{ panelList }} -->
+  <RenSpinner ref="spinner"> </RenSpinner>
+
   <DataTable :key="headers" :value="panelList">
     <!-- <Column v-for="h of headers" :key="h" :field="h" :header="$t('model.information_panel.' + h)"></Column> -->
     <Column field="name" :header="$t('model.panel.name')" :show-filter-menu="false">
@@ -37,13 +39,13 @@
         <span v-else>
           {{ $t("view.asset_management_only_template") }}
         </span>
-        TODO:
       </template>
     </Column>
 
     <Column field="link" :header="$t('view.go_to_panel')">
       <template #body="item">
-        <i class="pi pi-chevron-circle-right" style="fontsize: 2rem" @click="view(item.data)" />
+        <i v-if="!item.data.is_template" class="pi pi-chevron-circle-right" style="fontsize: 2rem" @click="view(item.data)" />
+        <i v-else class="pi pi-chevron-circle-right disabled" style="fontsize: 2rem" />
       </template>
     </Column>
     <Column field="edit" :header="$t('view.edit')">
@@ -53,8 +55,37 @@
       </template>
     </Column>
   </DataTable>
-
-  <!-- <AssetConnectionManagementDialog ref="assetConnectionManagementDialog" /> -->
+  <RenSpinner ref="assetSpinner" :lock="true" style="margin: auto; max-width: 80rem">
+    <!--  max-width: 80vw -->
+    <template #content>
+      <Dialog v-model:visible="assetManagementDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+        <div v-if="selectedAsset">
+          <!-- <ren-input-wrapper :text-label="`${selectedAsset.label}(${selectedAsset.name})`"> -->
+          <ren-input-wrapper :text-label="null">
+            <template #content>
+              <Button
+                icon="pi pi-trash"
+                :label="$t('view.button.revoke_asset_assignment', [`${selectedAsset.label}(${selectedAsset.name})`])"
+                @click="revoke"
+              />
+            </template>
+          </ren-input-wrapper>
+          <!-- {{ selectedAsset }} -->
+        </div>
+        <asset-list :basic="true" :asset-list="assetList" hidden-filters="true" @on-select="(evt) => (selectedAsset = evt)" />
+        <div>
+          <!-- <ren-input-wrapper :text-label="`${selectedAsset.label}(${selectedAsset.name})`"> -->
+          <ren-input-wrapper :text-label="null">
+            <template #content>
+              <Button icon="pi pi-trash" :label="$t('view.asset_select')" @click="$refs.assetSelectDialog.open()" />
+            </template>
+          </ren-input-wrapper>
+          <!-- {{ selectedAsset }} -->
+        </div>
+      </Dialog>
+    </template>
+  </RenSpinner>
+  <AssetSelectDialog ref="assetSelectDialog" @submit="onAssetSelect" />
 
   <Dialog v-model:visible="panelEdit" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <InformationPanelForm @update:model-value="onEdit($event, 0)" @cancel="panelEdit = false" />
@@ -62,6 +93,8 @@
 </template>
 <script>
 import InformationPanelForm from "./InformationPanelForm.vue";
+import AssetSelectDialog from "@/components/management/infrastructure/AssetSelectDialog.vue";
+import AssetList from "@/components/management/infrastructure/AssetList.vue";
 function initFilter() {
   return {
     label: { value: null },
@@ -70,7 +103,7 @@ function initFilter() {
 }
 export default {
   name: "InformationPanelList",
-  components: { InformationPanelForm },
+  components: { InformationPanelForm, AssetSelectDialog, AssetList },
 
   props: {
     panelList: { type: Array, default: () => [] },
@@ -88,8 +121,12 @@ export default {
       mFilters: this.filters ? this.filters : initFilter(),
       selectedRow: null,
       assetDialog: false,
+      assetList: [],
+      assetManagementDialog: false,
+      selectedAsset: null,
     };
   },
+  updated() {},
   async mounted() {
     if (this.panelList.length > 0) {
       this.headers = Object.keys(this.panelList[0]).filter((it) => it != "tiles");
@@ -98,29 +135,57 @@ export default {
     }
   },
   methods: {
-    manageAssets() {
-      alert("TODO:1");
+    async manageAssets(item) {
+      this.assetList = [];
+      this.assetManagementDialog = true;
+      this.$refs.assetSpinner.run(async () => {
+        await this.$ren.dashboardApi.getPanelConnectedAssets(this.selectedRow.id).then((list) => {
+          this.assetList = list;
+        });
+      });
+      this.selectedRow = item;
+      // console.info(item);
     },
-    featureChange(item, evt) {
-      console.info(item);
-      console.info(evt);
+    async onAssetSelect(asset) {
+      await this.$refs.assetSpinner.run(async () => {
+        await this.$ren.dashboardApi.assignAsset(this.selectedRow.id, asset.id).then((res) => {
+          console.info(res);
+          alert("TODO: handle server response assign");
+        });
+      });
+      // await this.reload();
     },
-    onFilter(ev) {
-      this.mFilters = ev.filters;
-      this.deferredEmitFilter.run();
+    async revoke() {
+      await this.$refs.assetSpinner.run(async () => {
+        await this.$ren.dashboardApi.revokeAsset(this.selectedRow.id, this.selectedAsset.id).then((res) => {
+          console.info(res);
+          alert("TODO: handle server response revoke");
+        });
+      });
+      // await this.reload();
     },
-    view(selected) {
-      let to = `/panel/view/${selected.id}`;
-      this.$router.push(to);
-    },
-    //   manageAssetConnections(row) {
-    //   this.$refs.assetConnectionManagementDialog.open(row);
+    // onFilter(ev) {
+    //   this.mFilters = ev.filters;
+    //   this.deferredEmitFilter.run();
     // },
+    view(selected) {
+      // let to = `/panel/view/${selected.id}`;
+      // this.$router.push(to);
+      var parser = document.createElement("a");
+      parser.href = location;
+      parser.origin;
+      window.open(`${parser.origin}/panel/view/${selected.id}`, "_blank");
+    },
+
     editPanel(o) {
       this.selectedRow = o;
       alert("open edit form dialog");
     },
+    async reload() {
+      this.$emit("reload");
+    },
     async onEdit(o) {
+      alert("TODO: test");
       await this.$ren.dasboardApi.updateInformationPanel(o).then((panel) => {
         console.info("update panel:" + panel.id);
       });

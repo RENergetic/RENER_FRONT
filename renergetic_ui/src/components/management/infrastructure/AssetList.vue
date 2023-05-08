@@ -1,16 +1,20 @@
 <template>
   <!-- <Paginator v-model:first="mPage" :rows="1" :total-records="mPage + 2"
    template="FirstPageLink PrevPageLink PageLinks NextPageLink    " /> -->
-
+  <!-- TODO: unslect row event -->
   <DataTable
     :value="assetList"
     :lazy="true"
     data-key="id"
     :filters="mFilters"
-    filter-display="row"
+    :filter-display="hiddenFilters ? null : 'row'"
     responsive-layout="scroll"
     :global-filter-fields="['name', 'label', 'type.name', 'category.label']"
+    selection-mode="single"
+    :selection="selectedAssets"
     @filter="onFilter"
+    @row-unselect="$emit('onSelect', null)"
+    @update:selection="(evt) => $emit('onSelect', evt)"
   >
     <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false">
       <template #filter="{ filterModel, filterCallback }">
@@ -79,7 +83,7 @@
         </Dropdown>
       </template>
     </Column>
-    <Column field="child" :header="$t('model.asset.child')">
+    <Column field="child" :header="$t('model.asset.child')" :hidden="basic">
       <template #body="slotProps">
         <span v-if="slotProps.data.child && slotProps.data.child.length > 0" class="ren-pointer" @click="viewChildren(slotProps.data)">
           {{ $t("view.view_asset_children") }}
@@ -100,7 +104,7 @@
         </span>
       </template>
     </Column>
-    <Column field="measurements" :header="$t('model.asset.measurements')">
+    <Column field="measurements" :header="$t('model.asset.measurements')" :hidden="basic">
       <template #body="slotProps">
         <span
           v-if="slotProps.data.measurements && slotProps.data.measurements.length > 0"
@@ -114,19 +118,19 @@
         </span>
       </template>
     </Column>
-    <Column name="asset_connections" :header="$t('model.asset.asset_connections')">
+    <Column name="asset_connections" :header="$t('model.asset.asset_connections')" :hidden="basic">
       <template #body="slotProps">
         <span class="ren-pointer" @click="manageAssetConnections(slotProps.data)">
           {{ $t("view.manage_asset_connections") }}
         </span>
       </template></Column
     >
-    <Column name="edit" :header="$t('view.properties')">
+    <Column name="edit" :header="$t('view.properties')" :hidden="basic">
       <template #body="slotProps">
         <span class="ren-pointer" @click="manageAssetProperties(slotProps.data, $store.getters['view/assetDetailsKeys'])"> Manage properties </span>
       </template>
     </Column>
-    <Column name="edit" :header="$t('view.edit')">
+    <Column name="edit" :header="$t('view.edit')" :hidden="basic">
       <template #body="slotProps">
         <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
         <!-- <span class="ren-pointer" @click="editAsset(slotProps.data)"> Edit Asset </span> -->
@@ -134,7 +138,7 @@
     </Column>
     <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
     <template #header>
-      <div class="flex justify-content-between">
+      <div v-if="!hiddenFilters" class="flex justify-content-between">
         <Button type="button" icon="pi pi-filter-slash" :label="$t('view.button.filter')" class="p-button-outlined" @click="reload" />
         <Button type="button" icon="pi pi-filter-slash" :label="$t('view.button.clear_filter')" class="p-button-outlined" @click="clearFilter" />
       </div>
@@ -155,7 +159,7 @@
       </div> -->
     </template>
   </DataTable>
-  <Toolbar>
+  <Toolbar v-if="!basic">
     <template #end><Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="assetAdd = true" /> </template>
   </Toolbar>
 
@@ -255,8 +259,10 @@ export default {
     filters: { type: Array, default: () => initFilter() },
     page: { type: Number, default: 0 },
     offset: { type: Number, default: 0 },
+    hiddenFilters: { type: Boolean, default: false },
+    basic: { type: Boolean, default: false },
   },
-  emits: ["update:filters", "reload", "update:page"],
+  emits: ["update:filters", "reload", "update:page", "onSelect"],
   data() {
     return {
       mPage: this.page,
@@ -267,6 +273,7 @@ export default {
       childDialog: false,
       measurementDialog: false,
       deferredEmitFilter: null,
+      selectedAssets: null,
     };
   },
   computed: {
@@ -351,6 +358,7 @@ export default {
       });
       await this.reload();
     },
+
     async reloadAssets(evt) {
       this.$emit("reload", evt);
     },
