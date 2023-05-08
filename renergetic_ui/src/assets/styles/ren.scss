@@ -31,6 +31,10 @@ body {
 .p-card.p-component{    
     background: $ren-secondary-bg;
 }
+.p-dialog-content .p-card.p-component{
+    //TODO: set some color
+    background: #ffffff;
+}
 .p-datatable .p-datatable-footer{ padding: 0;} 
 .p-button,.p-selectbutton .p-button.p-highlight {
     background-color: $ren-primary-color;
