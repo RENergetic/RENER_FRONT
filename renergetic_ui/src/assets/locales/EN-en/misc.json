@@ -33,17 +33,22 @@
         "dashboard_not_updated": "Dashboard has not been updated",
         "user_updated": "User has been updated",
         "user_created": "User has been created",
-        "asset_panel_revoked":"Asset revoked from the dashboard",
-        "asset_panel_assigned":"Asset assigned to the panel"
+        "asset_panel_revoked": "Asset revoked from the dashboard",
+        "asset_panel_assigned": "Asset assigned to the panel",
+        "panel_update": "Panel {0} update success.",
+        "visibility_changed": "Visibility changed"
     },
     "error": {
         "error": "Error",
         "dashboard_not_updated": "Dashboard has not been updated",
         "rest_title": "API Error",
-        "user_not_found": "User: {0}  not found ",
+        "panel_not_found": "Panel: {0} not found.",
+        "panel_update": "Panel {0} update failed.",
+        "user_not_found": "User: {0} not found ",
         "user_not_updated": "User not updated",
-        "asset_panel_revoked":"Asset not revoked from the dashboard",
-        "asset_panel_assigned":"Asset not assigned to the panel"
+        "asset_panel_revoked": "Asset not revoked from the dashboard",
+        "asset_panel_assigned": "Asset not assigned to the panel",
+        "visibility_changed": "Visibility not changed"
     },
     "message": {
         "anomaly": {

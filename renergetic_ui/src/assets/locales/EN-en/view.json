@@ -113,6 +113,8 @@
   },
   "home_settings": "Home Settings",
   "panel_settings": "Panel settings",
+  "panel_label_info":"Each label requires following tag: '{0}' , if tag is not found, it will be added automatically.",
+  "panel_label_warning": "'{0}' tag  will be added automatically to the label.",
   "locale_settings": "Language",
   "conversion_settings": "Displayed unit conversion settings",
   "settings": {

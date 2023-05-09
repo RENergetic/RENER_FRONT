@@ -53,10 +53,7 @@ background: none; /*remove background for empty space*/
     color: $ren-primary-color;
 }
 
-.ren-control-bg {
-    background: linear-gradient(to bottom, #190a05, #870000);
-    color: $secondary-color;
-}
+
 .ren-pointer {
     cursor: pointer;
 }
@@ -298,6 +295,10 @@ background: none; /*remove background for empty space*/
 }
 .ren-card{
     width: 90%; margin: auto; margin-top: 1rem
+}
+.ren-control-bg {
+    background: linear-gradient(to bottom, #190a05, #870000);
+    color: $secondary-color;
 }
 #pagefooter {
     background-color: $secondary-color;

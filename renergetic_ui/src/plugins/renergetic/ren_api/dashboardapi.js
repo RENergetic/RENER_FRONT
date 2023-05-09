@@ -58,7 +58,22 @@ export default class DashboardApi extends RestComponent {
     return this.get(`/api/informationPanel`, { offset: offset, limit: limit });
   }
   async updateInformationPanel(panel) {
-    return this.put(`/api/informationPanel`, panel);
+    return this.put(`/api/informationPanel`, panel, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`Panel ${panel.id} not found: ${e.message}`, {
+          code: "panel_not_found",
+          args: [panel.id],
+        });
+        return true;
+      }
+      if (e.response.status != 200) {
+        this.emitError(`Panel ${panel.id} not found: ${e.message}`, {
+          code: "panel_update",
+          args: [panel.id],
+        });
+        return true;
+      }
+    });
   }
 
   async getInformationPanel(panelId) {
