@@ -77,6 +77,12 @@ export default class RenUtils {
     today = mm + "/" + dd + "/" + yyyy + " " + today.getHours() + ":" + today.getMinutes();
     return today;
   }
+  openNewTab(path) {
+    var parser = document.createElement("a");
+    parser.href = location;
+    parser.origin;
+    window.open(`${parser.origin}${path}`, "_blank");
+  }
   // saveSettings(settingsKey, settings) {
   //   this.app.$store.commit(settingsKey, settings);
   //   let allSettings = this.app.$store.getters["settings"];

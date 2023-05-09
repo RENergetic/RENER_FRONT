@@ -65,7 +65,9 @@ export default class DashboardApi extends RestComponent {
     return this.get(`/api/informationPanel/${panelId}`);
   }
   async setFeatured(panelId, featured) {
-    return this.post(`/api/informationPanel/id/${panelId}`, featured);
+    if (featured) {
+      return this.post(`/api/informationPanel/id/${panelId}/featured/true`);
+    } else return this.post(`/api/informationPanel/id/${panelId}/featured/false`);
   }
 
   async getPanelConnectedAssets(panelId) {
