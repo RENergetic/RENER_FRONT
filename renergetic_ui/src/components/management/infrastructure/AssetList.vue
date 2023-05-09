@@ -11,10 +11,11 @@
     responsive-layout="scroll"
     :global-filter-fields="['name', 'label', 'type.name', 'category.label']"
     selection-mode="single"
-    :selection="selectedAssets"
+    :selection="selectedAsset"
+    :meta-key-selection="false"
     @filter="onFilter"
     @row-unselect="$emit('onSelect', null)"
-    @update:selection="(evt) => $emit('onSelect', evt)"
+    @update:selection="onSelect"
   >
     <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false">
       <template #filter="{ filterModel, filterCallback }">
@@ -273,7 +274,7 @@ export default {
       childDialog: false,
       measurementDialog: false,
       deferredEmitFilter: null,
-      selectedAssets: null,
+      selectedAsset: null,
     };
   },
   computed: {
@@ -377,6 +378,14 @@ export default {
     clearFilter() {
       this.mFilters = initFilter();
       this.$emit("update:filters", this.mFilters);
+    },
+    onSelect(evt) {
+      if (this.selectedAsset == null || evt.id != this.selectedAsset.id) {
+        this.selectedAsset = evt;
+      } else {
+        this.selectedAsset = null;
+      }
+      this.$emit("onSelect", this.selectedAsset);
     },
   },
 };

@@ -1,6 +1,6 @@
 <template>
-  <!-- todo: readall button ? -->
-  <Card class="notification-box ren-control-bg">
+  <!-- todo: readall button  ren-control-bg? -->
+  <Card class="notification-box">
     <template #content>
       <div class="flex">
         <!-- <div class="flex align-items-center justify-content-center"></div> -->
