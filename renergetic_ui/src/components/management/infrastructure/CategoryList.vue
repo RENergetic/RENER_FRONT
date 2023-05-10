@@ -28,21 +28,46 @@
   <category-form ref="categoryForm" @submit="updateCategory"></category-form>
   <Dialog v-model:visible="deleteVisible" modal :header="$t('model.asset.category.delete') + ' ' + deleteHeader" :style="{ width: '50vw' }">
     <p>{{ $t("model.asset.category.delete_prompt") }}</p>
+    <p>{{ $t("model.asset.category.affected_assets") }}:</p>
+    <ul v-if="!affectedAssetsLoading">
+      <li v-for="asset in affectedAssets" :key="asset.id">
+        {{ asset.name }}
+      </li>
+    </ul>
+    <ul v-if="affectedAssetsLoading">
+      <li>
+        <Skeleton width="10rem"></Skeleton>
+      </li>
+      <li>
+        <Skeleton width="10rem"></Skeleton>
+      </li>
+    </ul>
     <template #footer>
       <Button :label="$t('model.asset.category.delete')" class="p-button-danger" icon="pi pi-trash" text @click="deleteSelectedCategory" />
       <Button :label="$t('model.asset.category.cancel')" autofocus @click="cancelDelete" />
     </template>
   </Dialog>
+  <Dialog v-if="selectedCategory" v-model:visible="assetListVisible" modal :header="selectedCategory.name" :style="{ width: '90vw' }">
+    <div v-if="affectedAssetsLoading">
+      <Skeleton width="100%" height="20rem"></Skeleton>
+    </div>
+    <AssetList v-if="affectedAssets && !affectedAssetsLoading" :asset-list="affectedAssets" @reload="updateAffectedAssets"></AssetList>
+    <p v-if="!affectedAssetsLoading && !affectedAssets">{{ $t("model.asset.category.no_assets_found") }}</p>
+  </Dialog>
+  <RenSpinner :lock="true"></RenSpinner>
 </template>
 
 <script>
 import { useVuelidate } from "@vuelidate/core";
 import { maxLength, minLength, required, requiredTr } from "@/plugins/validators";
 import CategoryForm from "@/components/management/infrastructure/CategoryForm.vue";
+import Skeleton from "primevue/skeleton";
+import AssetList from "@/components/management/infrastructure/AssetList.vue";
+import RenSpinner from "@/components/miscellaneous/RenSpinner.vue";
 
 export default {
   name: "CategoryList",
-  components: { CategoryForm },
+  components: { CategoryForm, Skeleton, AssetList, RenSpinner },
   props: {
     categoryList: { type: Array, default: () => [] },
   },
@@ -65,7 +90,10 @@ export default {
       deleteVisible: false,
       editCategoryModel: null,
       deleteHeader: "",
-      selectedCategoryForDelete: null,
+      selectedCategory: null,
+      affectedAssets: null,
+      affectedAssetsLoading: false,
+      assetListVisible: false,
     };
   },
   methods: {
@@ -80,25 +108,44 @@ export default {
         this.$emit("update", category);
       } else this.$emit("create", category);
     },
-    promptDeleteCategory(category) {
-      this.selectedCategoryForDelete = category;
+    async promptDeleteCategory(category) {
+      this.selectedCategory = category;
       this.deleteVisible = true;
       this.deleteHeader = category.name;
-      //this.$emit("delete", category);
+      this.affectedAssetsLoading = true;
+      await this.updateAffectedAssets();
+      this.affectedAssetsLoading = false;
     },
     deleteSelectedCategory() {
-      if (this.selectedCategoryForDelete) {
-        this.$emit("delete", this.selectedCategoryForDelete);
+      if (this.selectedCategory) {
+        this.$emit("delete", this.selectedCategory);
       }
       this.deleteVisible = false;
     },
     cancelDelete() {
-      this.selectedCategoryForDelete = null;
+      this.selectedCategory = null;
       this.deleteVisible = false;
     },
     async showAssets(category) {
-      const assets = await this.$ren.managementApi.listCategoryAssets(category, 0, 100);
-      console.log(assets);
+      this.assetListVisible = true;
+      this.affectedAssetsLoading = true;
+      this.selectedCategory = category;
+      await this.updateAffectedAssets();
+      this.affectedAssetsLoading = false;
+    },
+    async updateAffectedAssets(evt) {
+      try {
+        let offset = 0;
+        let limit = 10;
+        if (evt) {
+          offset = evt.offset;
+          limit = evt.limit;
+        }
+        this.affectedAssets = await this.$ren.managementApi.listCategoryAssets(this.selectedCategory, offset, limit);
+      } catch (e) {
+        console.log(e);
+        this.affectedAssets = [];
+      }
     },
   },
 };
