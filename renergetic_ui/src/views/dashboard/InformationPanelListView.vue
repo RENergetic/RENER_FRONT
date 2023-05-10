@@ -4,7 +4,7 @@
       <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 80rem">
         <!--  max-width: 80vw -->
         <template #content>
-          <InformationPanelList v-model:filters="filters" :panel-list="panelList" @reload="loadAssets" />
+          <InformationPanelList v-model:filters="filters" :panel-list="panelList" @reload="loadData" />
         </template>
       </RenSpinner>
     </template>

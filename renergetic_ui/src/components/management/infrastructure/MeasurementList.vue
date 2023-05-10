@@ -6,6 +6,7 @@
   </InfoIcon>
   <DataTable :value="measurementList">
     <!-- <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.measurement.' + col)"></Column> -->
+    <Column field="id" :header="$t('model.measurement.id')"></Column>
     <Column field="name" :header="$t('model.measurement.name')"></Column>
     <Column field="label" :header="$t('model.measurement.label')"></Column>
     <Column field="type" :header="$t('model.measurement.type')">
