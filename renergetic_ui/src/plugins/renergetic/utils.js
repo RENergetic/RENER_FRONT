@@ -63,6 +63,33 @@ export default class RenUtils {
   uuid() {
     return uuidv4();
   }
+
+  downloadJSON(obj, filename) {
+    var file = new Blob([JSON.stringify(obj)], { type: "application/json" });
+    var downloadLink = document.createElement("a");
+    downloadLink.download = filename + ".json";
+    downloadLink.href = window.URL.createObjectURL(file);
+    downloadLink.style.display = "none";
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+  }
+  readJSONFile(file) {
+    return new Promise((resolve, reject) => {
+      let content = "";
+      const reader = new FileReader();
+      // Wait till complete
+      reader.onloadend = function (e) {
+        content = e.target.result;
+        const result = JSON.parse(content); //content.split(/\r\n|\n/);
+        resolve(result);
+      };
+      reader.onerror = function (e) {
+        reject(e);
+      };
+      reader.readAsText(file);
+    });
+  }
   /**
    * get default value if null/undefined
    */

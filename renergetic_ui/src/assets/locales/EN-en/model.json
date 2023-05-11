@@ -82,7 +82,8 @@
           "name": "Name",
           "label": "Label",
           "featured":"Visibility",
-          "is_template":"Is template"
+          "is_template":"Is template",
+          "structure":"Structure"
      },
      "user": {
           "login": "Login",

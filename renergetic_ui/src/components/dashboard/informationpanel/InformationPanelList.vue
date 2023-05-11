@@ -52,6 +52,11 @@
         <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editPanel(item.data)" />
       </template>
     </Column>
+    <Column field="export" :header="$t('view.export_json')">
+      <template #body="item">
+        <Button v-tooltip="$t('view.export_json')" icon="pi pi-file" class="p-button-rounded" @click="exportJSON(item.data)" />
+      </template>
+    </Column>
   </DataTable>
   <RenSpinner ref="assetSpinner" :lock="true" style="margin: auto; max-width: 80rem">
     <template #content>
@@ -198,6 +203,13 @@ export default {
     editPanel(o) {
       this.selectedRow = o;
       this.panelEdit = true;
+    },
+    async exportJSON(o) {
+      await this.$refs.assetSpinner.run(async () => {
+        await this.$ren.dashboardApi.getInformationPanel(o.id).then(async (res) => {
+          this.$ren.utils.downloadJSON(res, `${res.name}_${res.id}`);
+        });
+      });
     },
     reload() {
       this.$emit("reload");
