@@ -1,6 +1,7 @@
 <template>
   <InfoIcon :show-icon="false"> <template #content> </template> </InfoIcon>
   <!-- {{ mModel }} -->
+  addmode: {{ addMode }} todo:
   <Card v-if="mModel">
     <template #content>
       <div class="ren">
@@ -22,6 +23,7 @@
         </div> -->
         <ren-input v-model="mModel.name" :text-label="'model.panel.name'" :invalid="v$.mModel.name.$invalid" :errors="v$.mModel.name.$silentErrors" />
         <ren-input
+          :key="mModel ? mModel.label : ''"
           v-model="mModel.label"
           :text-info="mModel.is_template ? $t('view.panel_label_info', ['{asset}']) : null"
           :text-label="'model.panel.label'"
@@ -33,6 +35,7 @@
           <template #content>
             <!-- <span v-if="!selectedAsset">{{ $t("view.asset_not_selected") }}</span> -->
             <Button style="margin-left: 0.5rem" @click="importPanelDialog = true">{{ $t("view.upload_structure") }}</Button>
+            <span v-if="submittedFile">{{ $t("view.file_submitted") }}</span>
           </template>
         </ren-input-wrapper>
       </div>
@@ -46,7 +49,7 @@
       <template #content>
         <!-- with-credentials="true," -->
         <!-- :disabled="selectedModel == null" -->
-        <ren-submit :cancel-button="true" @submit="fileSubmit" @cancel="onFileClear" />
+        <ren-submit v-if="mPanelStructureText != null" :cancel-button="true" @submit="fileSubmit" @cancel="onFileClear" />
         <FileUpload
           ref="FileUpload"
           name="template[]"
@@ -97,11 +100,13 @@ export default {
   data() {
     return {
       mModel: this.modelValue ? this.modelValue : { measurements: [] },
+      addMode: this.modelValue == null || this.modelValue.name == null,
       mPanelStructure: null,
       mPanelStructureText: null,
       labelWarning: null,
       importPanelDialog: false,
       hasFiles: false,
+      submittedFile: false,
     };
   },
   validationConfig: {
@@ -119,6 +124,7 @@ export default {
   watch: {
     "mModel.label": function (t) {
       this.labelWarning = null;
+      console.info("ddd");
       if (this.mModel.is_template && t && !t.includes(ASSET_TAG)) {
         this.labelWarning = this.$t("view.panel_label_warning", [ASSET_TAG]);
         // this.mModel.label = this.mModel.label + " - ({asset})";
@@ -136,13 +142,24 @@ export default {
     onFileClear() {
       this.mPanelStructure = null;
       this.mPanelStructureText = null;
+
+      this.submittedFile = null;
+    },
+    fileSubmit() {
+      if (this.mPanelStructure) {
+        this.submittedFile = this.mPanelStructure;
+      }
+      this.importPanelDialog = false;
     },
     async onFileUpload(evt) {
-      console.info(evt.files);
+      this.submittedFile = null;
+      // console.info(evt.files);
       if (evt.files.length == 1) {
         this.mPanelStructure = await this.$ren.utils.readJSONFile(evt.files[0]);
         this.mPanelStructureText = JSON.stringify(this.mPanelStructure, null, "\t");
-        console.info(this.mPanelStructure);
+        this.mModel.label = this.mModel.label ? this.mModel.label : this.mPanelStructure.label;
+
+        // console.info(this.mPanelStructure);
       }
       // await this._submit(event.files);
     },
@@ -151,7 +168,12 @@ export default {
       if (this.mModel.label && !this.mModel.label.includes(ASSET_TAG) && this.mModel.is_template) {
         this.mModel.label = `${this.mModel.label} - (${ASSET_TAG})`;
       }
-      this.$emit("update:modelValue", this.mModel);
+      if (this.submittedFile) {
+        this.submittedFile.name = this.mModel.name;
+        this.submittedFile.label = this.mModel.label ? this.mModel.label : this.submittedFile.label;
+
+        this.$emit("update:modelValue", this.submittedFile);
+      } else this.$emit("update:modelValue", this.mModel);
     },
     cancel() {
       this.$emit("cancel", this.model);

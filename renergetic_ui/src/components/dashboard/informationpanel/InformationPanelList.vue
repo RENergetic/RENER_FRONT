@@ -55,9 +55,16 @@
     <Column field="export" :header="$t('view.export_json')">
       <template #body="item">
         <Button v-tooltip="$t('view.export_json')" icon="pi pi-file" class="p-button-rounded" @click="exportJSON(item.data)" />
+      </template> </Column
+    ><Column field="delete" :header="$t('view.button.delete')">
+      <template #body="item">
+        <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDelete(item.data)" />
       </template>
     </Column>
   </DataTable>
+  <Toolbar>
+    <template #end><Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="panelAdd = true" /> </template>
+  </Toolbar>
   <RenSpinner ref="assetSpinner" :lock="true" style="margin: auto; max-width: 80rem">
     <template #content>
       <Dialog v-model:visible="assetManagementDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
@@ -97,7 +104,9 @@
     </template>
   </RenSpinner>
   <AssetSelectDialog ref="assetSelectDialog" @submit="onAssetSelect" />
-
+  <Dialog v-model:visible="panelAdd" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <InformationPanelForm @update:model-value="onCreate($event, 0)" @cancel="panelAdd = false"> </InformationPanelForm>
+  </Dialog>
   <Dialog v-model:visible="panelEdit" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <InformationPanelForm :model-value="selectedRow" @update:model-value="onEdit($event, 0)" @cancel="panelEdit = false" />
   </Dialog>
@@ -134,6 +143,7 @@ export default {
       assetDialog: false,
       assetList: [],
       assetManagementDialog: false,
+      panelAdd: false,
       selectedAsset: null,
     };
   },
@@ -214,6 +224,25 @@ export default {
     reload() {
       this.$emit("reload");
     },
+    async deletePanel(panel) {
+      await this.exportJSON(panel);
+      await this.$refs.spinner.run(async () => {
+        await this.$ren.dashboardApi.deleteInformationPanel(panel.id);
+      });
+      await this.reload();
+    },
+    confirmDelete(panel) {
+      this.$confirm.require({
+        message: this.$t("view.panel_delete_confirm", {
+          panel: panel,
+          label: panel.label,
+        }),
+        header: this.$t("view.panel_delete"),
+        icon: "pi pi-exclamation-triangle",
+        accept: () => this.deletePanel(panel),
+        reject: () => this.$confirm.close(),
+      });
+    },
     async loadAssets() {
       this.$refs.assetSpinner.run(async () => {
         await this.$ren.dashboardApi.getPanelConnectedAssets(this.selectedRow.id).then((list) => {
@@ -221,7 +250,12 @@ export default {
         });
       });
     },
-
+    async onCreate(o) {
+      await this.$ren.dashboardApi.saveInformationPanel(o).then((panel) => {
+        this.$emitter.emit("information", { message: this.$t("information.panel_update", [panel.id]) });
+        this.reload();
+      });
+    },
     async onEdit(o) {
       await this.$ren.dashboardApi.updateInformationPanel(o).then((panel) => {
         this.$emitter.emit("information", { message: this.$t("information.panel_update", [panel.id]) });

@@ -57,6 +57,26 @@ export default class DashboardApi extends RestComponent {
   listInformationPanel(offset = 0, limit = 20) {
     return this.get(`/api/informationPanel`, { offset: offset, limit: limit });
   }
+
+  async saveInformationPanel(panel) {
+    return this.post(`/api/informationPanel/name/${panel.name}`, panel, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`Panel ${panel.id} not found: ${e.message}`, {
+          code: "panel_not_found",
+          args: [panel.id],
+        });
+        return true;
+      }
+      if (e.response.status != 200) {
+        this.emitError(`Panel ${panel.id} not found: ${e.message}`, {
+          code: "panel_update",
+          args: [panel.id],
+        });
+        return true;
+      }
+    });
+  }
+
   async updateInformationPanel(panel) {
     return this.put(`/api/informationPanel`, panel, null, null, (e) => {
       if (e.response.status == 404) {
@@ -79,6 +99,10 @@ export default class DashboardApi extends RestComponent {
   async getInformationPanel(panelId) {
     return this.get(`/api/informationPanel/${panelId}`);
   }
+  async deleteInformationPanel(panelId) {
+    return this.delete(`/api/informationPanel/${panelId}`);
+  }
+
   async setFeatured(panelId, featured) {
     if (featured) {
       return this.post(`/api/informationPanel/id/${panelId}/featured/true`);
