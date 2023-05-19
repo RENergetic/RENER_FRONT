@@ -123,11 +123,12 @@ export default {
   computed: {},
   watch: {
     "mModel.label": function (t) {
-      this.labelWarning = null;
-      console.info("ddd");
       if (this.mModel.is_template && t && !t.includes(ASSET_TAG)) {
         this.labelWarning = this.$t("view.panel_label_warning", [ASSET_TAG]);
         // this.mModel.label = this.mModel.label + " - ({asset})";
+      }
+      if (this.labelWarning != null) {
+        this.labelWarning = null;
       }
       // console.info(this.mModel);
       // console.info(t);
@@ -156,6 +157,13 @@ export default {
       // console.info(evt.files);
       if (evt.files.length == 1) {
         this.mPanelStructure = await this.$ren.utils.readJSONFile(evt.files[0]);
+        if (this.mPanelStructure.name !== undefined) {
+          delete this.mPanelStructure.name;
+        }
+        if (this.mPanelStructure.id !== undefined) {
+          delete this.mPanelStructure.id;
+        }
+
         this.mPanelStructureText = JSON.stringify(this.mPanelStructure, null, "\t");
         this.mModel.label = this.mModel.label ? this.mModel.label : this.mPanelStructure.label;
 
@@ -169,6 +177,7 @@ export default {
         this.mModel.label = `${this.mModel.label} - (${ASSET_TAG})`;
       }
       if (this.submittedFile) {
+        if (this.modelValue.id) this.submittedFile.id = this.modelValue.id;
         this.submittedFile.name = this.mModel.name;
         this.submittedFile.label = this.mModel.label ? this.mModel.label : this.submittedFile.label;
 

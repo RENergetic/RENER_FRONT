@@ -32,7 +32,8 @@
     "waste": "Waste",
     "fossil_fuels": "Fossil fuels",
     "electricity_renewability": "Electricity renewability",
-    "heat_renewability": "Heat renewability"
+    "heat_renewability": "Heat renewability", 
+    "co2_reduction": "CO2 emissions reduction" 
   },
   "tile_type": {
     "knob": "knob",
