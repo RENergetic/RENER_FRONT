@@ -1,6 +1,7 @@
 <template>
   <div v-if="panel" id="panel-box">
     <DotMenu :model="menuModel" />
+    <!-- {{ settings }}  -->
     <InformationPanelWrapper
       ref="panel"
       :key="reload"
@@ -8,7 +9,7 @@
       :locked="locked"
       :panel="panel"
       :edit-mode="false"
-      :settings="settings"
+      :panel-settings="settings"
     ></InformationPanelWrapper>
   </div>
   <RenSettingsDialog ref="settingsDialog">

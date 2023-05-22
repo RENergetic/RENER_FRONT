@@ -19,7 +19,7 @@
         <font-awesome-icon :icon="mSettings.tile.icon" />
       </span>
     </div>
-
+    <!-- {{ conversionSettings }} -->
     <div v-if="mSettings.tile.measurement_list" class="flex flex-column flex-grow-1 knob-component" style="position: relative; width: 100%">
       <information-list-tile
         :tile="tile"
@@ -95,6 +95,7 @@ export default {
     },
   },
   data() {
+    var _this = this;
     return {
       mStyle: "width: 30rem; margin: auto;max-width: 100%;max-height:100%",
       iconSize: `height: 10%;  width: 10%;`,
@@ -110,7 +111,21 @@ export default {
             callbacks: {
               label: function (context) {
                 const labelIndex = context.datasetIndex * 2 + context.dataIndex;
-                return context.chart.data.labels[labelIndex] + ": " + context.formattedValue;
+                var id = _this.tile.measurements[context.dataIndex].id;
+                var aggregation_function = _this.tile.measurements[context.dataIndex].aggregation_function;
+                var value;
+                try {
+                  if (_this.mSettings.panel.relativeValues) {
+                    value = context.formattedValue;
+                  } else {
+                    value = `${_this.pdata.current[aggregation_function][id]}`;
+                  }
+                } catch {
+                  value = context.formattedValue;
+                }
+                console.error(_this.tile.measurements[context.dataIndex]);
+                // console.error(_this.pdata.current[aggregation_function][id]);
+                return context.chart.data.labels[labelIndex] + ": " + value;
               },
             },
           },
@@ -134,13 +149,22 @@ export default {
       }
 
       let data = null;
+      // console.info(this.pdata);
       if (!this.mSettings.panel.relativeValues) {
+        // console.info("use relative values");
         // let data = this.tile.measurements.map((m) => this.pdata[m.id]);
         //TODO: make it comgigurable in tile / args prediction & aggregation func
-        data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
-        let total = data.reduce((partialSum, a) => partialSum + a, 0);
-        data = data.map((v) => v / total);
+        // data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
+        // let total = data.reduce((partialSum, a) => partialSum + a, 0);
+        // data = data.map((v) => v / total);
+        console.info(this.pdata);
+        data = this.tile.measurements.map((m) =>
+          m.type.base_unit != "%"
+            ? this.pdata.current[m.aggregation_function][m.id] / this.pdata.max[m.aggregation_function][m.id]
+            : this.pdata.current[m.aggregation_function][m.id],
+        );
       } else {
+        // console.info("use no relative values");
         //todo include min offset
         // console.info(this.pdata.current);
         data = this.tile.measurements.map((m) =>

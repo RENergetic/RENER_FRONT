@@ -66,6 +66,7 @@ export default {
       if (!this.mSettings.panel.relativeValues) {
         data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
       } else {
+        //console.info("use relative values");
         //todo include min offset
         // console.info(this.pdata.current);
         data = this.tile.measurements.map((m) =>

@@ -1,6 +1,7 @@
 <template>
   <div v-if="mPanel && mPData" id="panel-grid-stack" style="" class="grid-stack">
     <!-- {{ mSettings }} -->
+    <!-- {{ mPData }} -->
     <InformationTileGridWrapper
       v-for="(tile, index) in tiles"
       :key="tile.id"
@@ -108,6 +109,8 @@ export default {
   },
   emits: ["editTile", "update", "timeseries-update"],
   data() {
+    // console.error(this.settings);
+    // console.error(this.panel);
     return {
       grid: null,
 
@@ -146,9 +149,13 @@ export default {
         if (this.mSettings.relativeValues && newValue) {
           this.mPData = this.$ren.utils.convertPanelData(this.mPanel, newValue, this.$store.getters["settings/conversion"]);
           this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, this.mSettings);
-        } else {
+        } else if (newValue) {
           console.info("watch pdata");
           this.mPData = this.$ren.utils.convertPanelData(this.mPanel, newValue, this.$store.getters["settings/conversion"]);
+          console.error(this.mPData);
+          //TODO: check this
+          this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, this.mSettings);
+          console.error(this.mPData);
         }
         // this.reloadGrid();
       },
@@ -161,8 +168,10 @@ export default {
           // this.mPData = this.pdata;
           this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.$store.getters["settings/conversion"]);
           this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, newVal);
-        } else {
+        } else if (this.pdata) {
           this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.$store.getters["settings/conversion"]);
+          //TODO: check this:
+          this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, newVal);
         }
       },
       deep: true,
@@ -180,6 +189,8 @@ export default {
         this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, this.settings);
       } else {
         this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.$store.getters["settings/conversion"]);
+        //TODO: check this:
+        this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, this.settings);
       }
       this.reloadGrid();
     }

@@ -270,17 +270,21 @@ export default class RenUtils {
     return key;
   }
   getUnit(measurement, panelSettings, conversionSettings) {
-    if (panelSettings.relativeValues) {
+    if (panelSettings && panelSettings.relativeValues) {
       return "%";
     }
-    let mt = conversionSettings[measurement.type.physical_name];
+    let domainKey = measurement.domain + "_" + measurement.type.physical_name;
+    let defaultKey = "default_" + measurement.type.physical_name;
+    let mt = conversionSettings[domainKey] ? conversionSettings[domainKey] : conversionSettings[defaultKey];
     // console.info(conversionSettings);
     return mt ? mt : measurement.type.unit;
   }
 
   convertPanelData(panel, pData, settings) {
     var mDict = {};
+    alert("check tile unit");
     //TODO: initialize this dictionary in the vuex store
+    console.error(settings);
     let cp = JSON.parse(JSON.stringify(pData));
     if (panel && panel.tiles) {
       for (let tile of panel.tiles) {
@@ -293,7 +297,8 @@ export default class RenUtils {
     // console.info(pData);
     for (let mId in mDict) {
       let m = mDict[mId];
-      var newUnit = settings[m.type.physical_name];
+      console.info(m);
+      var newUnit = this.getUnit(m, null, settings); // settings[m.type.physical_name];
       // console.info(m.type.physical_name + " " + newUnit);
       if (newUnit) {
         let value = pData.current[m.aggregation_function][m.id];

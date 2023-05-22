@@ -1,7 +1,7 @@
 <template>
   <DotMenu v-if="loggedIn" :model="menuModel" :fixed="true" />
   <div v-if="settings.panelVisibility" style="position: relative">
-    <InformationPanelWrapper v-if="panel" ref="panel" :locked="locked" :panel="panel" :settings="settings"></InformationPanelWrapper>
+    <InformationPanelWrapper v-if="panel" ref="panel" :locked="locked" :panel="panel" :panel-settings="settings"></InformationPanelWrapper>
     <div v-else style="width: 50rem; max-width: 95vw; margin: auto; padding-top: 5rem">
       <h4 style="width: 100%; margin: auto">{{ $t("view.empty_home_dashboard") }}</h4>
     </div>

@@ -10,7 +10,6 @@
       :labels="false"
       @update="reloadSettings()"
     />
-
     <InformationPanelWrapper
       ref="panel"
       :asset-id="$route.params.asset_id"

@@ -1,4 +1,5 @@
 <template>
+  <!-- {{ mSettings }} -->
   <div v-if="tile" :class="tileClass" :style="background">
     <!-- {{ pdata }} -->
     <!-- todo: group by sensor_name -->

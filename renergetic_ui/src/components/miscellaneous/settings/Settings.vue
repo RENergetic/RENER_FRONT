@@ -2,10 +2,15 @@
   <div class="p-fluid formgrid grid">
     <!-- {{ mModel }} -->
     <div v-for="s in schema" :key="s" :class="getClass(s)">
-      <label v-if="labels && s.type != 'Submit' && s.description" v-tooltip.top="{ value: s.description, class: '' }" :for="s.key" class="col-12">
+      <label
+        v-if="labels && s.type != 'Submit' && s.description && s.type != 'Header'"
+        v-tooltip.top="{ value: s.description, class: '' }"
+        :for="s.key"
+        class="col-12"
+      >
         {{ s.label }}
       </label>
-      <label v-else-if="labels && s.type != 'Submit'" :for="s.key" class="col-12">{{ s.label }}</label>
+      <label v-else-if="labels && s.type != 'Submit' && s.type != 'Header'" :for="s.key" class="col-12">{{ s.label }}</label>
 
       <!-- <ToggleButton
         v-model="mModel['key']"
@@ -70,6 +75,9 @@
 
         <div v-else-if="s.type == 'Submit'">
           <Button :id="s.key" v-tooltip="s.description" :label="s.label" @click="s.ext.click" />
+        </div>
+        <div v-else-if="s.type == 'Header'">
+          <h2 :id="s.key" v-tooltip="s.description">{{ s.label }}</h2>
         </div>
         <InputText v-else :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" />
       </div>
