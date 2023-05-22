@@ -282,7 +282,6 @@ export default class RenUtils {
 
   convertPanelData(panel, pData, settings) {
     var mDict = {};
-    alert("check tile unit");
     //TODO: initialize this dictionary in the vuex store
     console.error(settings);
     let cp = JSON.parse(JSON.stringify(pData));
