@@ -104,11 +104,11 @@
     </template>
   </RenSpinner>
   <AssetSelectDialog ref="assetSelectDialog" @submit="onAssetSelect" />
-  <Dialog v-model:visible="panelAdd" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+  <Dialog v-model:visible="panelAdd" :style="{ width: '75vw', height: '95vh' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <InformationPanelForm @update:model-value="onCreate($event, 0)" @cancel="panelAdd = false"> </InformationPanelForm>
   </Dialog>
-  <Dialog v-model:visible="panelEdit" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <InformationPanelForm :model-value="selectedRow" @update:model-value="onEdit($event, 0)" @cancel="panelEdit = false" />
+  <Dialog v-model:visible="panelEdit" :style="{ width: '75vw', height: '95vh' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <InformationPanelForm :model-value="editedPanel" @update:model-value="onEdit($event, 0)" @cancel="panelEdit = false" />
   </Dialog>
 </template>
 <script>
@@ -140,6 +140,7 @@ export default {
       mOffset: this.offset,
       mFilters: this.filters ? this.filters : initFilter(),
       selectedRow: null,
+      editedPanel: null,
       assetDialog: false,
       assetList: [],
       assetManagementDialog: false,
@@ -210,12 +211,17 @@ export default {
       this.$ren.utils.openNewTab(`/asset/${this.selectedAsset.id}/panel/view/${this.selectedRow.id}`);
     },
 
-    editPanel(o) {
+    async editPanel(o) {
       this.selectedRow = o;
+      await this.$refs.spinner.run(async () => {
+        await this.$ren.dashboardApi.getInformationPanel(o.id).then(async (res) => {
+          this.editedPanel = res;
+        });
+      });
       this.panelEdit = true;
     },
     async exportJSON(o) {
-      await this.$refs.assetSpinner.run(async () => {
+      await this.$refs.spinner.run(async () => {
         await this.$ren.dashboardApi.getInformationPanel(o.id).then(async (res) => {
           this.$ren.utils.downloadJSON(res, `${res.name}_${res.id}`);
         });

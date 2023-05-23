@@ -1,26 +1,12 @@
 <template>
   <InfoIcon :show-icon="false"> <template #content> </template> </InfoIcon>
   <!-- {{ mModel }} -->
-  addmode: {{ addMode }} todo:
-  <Card v-if="mModel">
-    <template #content>
-      <div class="ren">
-        <!-- <div class="field grid"> -->
-        <!-- <label for="panelLabel" class="col-fixed" style="width: 5rem">
-            {{ $t("model.panel.label") }}
-          </label>
-          <div class="col">
-            <InputText id="panelLabel" v-model="label" :aria-readonly="!edit" />
-          </div>
-        </div>
-        <div class="field grid">
-          <label for="panelName" class="col-fixed" style="width: 5rem">
-            {{ $t("model.panel.name") }}
-          </label>
-          <div class="col">
-            <InputText id="panelName" v-model="name" :aria-disabled="true" :aria-readonly="!edit" />
-          </div>
-        </div> -->
+  <!-- addmode: {{ addMode }} todo: -->
+  <!-- <Card v-if="mModel">
+    <template #content> -->
+  <div v-if="mModel" id="panelForm" class="ren">
+    <Accordion :active-index="0">
+      <AccordionTab :header="$t('model.panel.name')">
         <ren-input v-model="mModel.name" :text-label="'model.panel.name'" :invalid="v$.mModel.name.$invalid" :errors="v$.mModel.name.$silentErrors" />
         <ren-input
           :key="mModel ? mModel.label : ''"
@@ -31,16 +17,27 @@
           :errors="v$.mModel.label.$silentErrors"
         />
         {{ labelWarning }}
+      </AccordionTab>
+      <!-- {{ modelValue }} -->
+
+      <AccordionTab :header="$t('model.panel.structure')">
+        <ren-input-wrapper v-if="mPanelStructureText" :text-label="null">
+          <template #content>
+            <Textarea v-model="mPanelStructureText" style="width: 100%" :maxlength="20000" rows="15" :cols="80"></Textarea>
+          </template>
+        </ren-input-wrapper>
         <ren-input-wrapper v-if="modelValue" :text-label="null">
           <template #content>
             <!-- <span v-if="!selectedAsset">{{ $t("view.asset_not_selected") }}</span> -->
             <Button style="margin-left: 0.5rem" @click="importPanelDialog = true">{{ $t("view.upload_structure") }}</Button>
-            <span v-if="submittedFile">{{ $t("view.file_submitted") }}</span>
+            <span v-if="submittedPanel">{{ $t("view.file_submitted") }}</span>
           </template>
         </ren-input-wrapper>
-      </div>
-    </template>
-  </Card>
+      </AccordionTab>
+    </Accordion>
+  </div>
+  <!-- </template>
+  </Card> -->
   <Dialog v-model:visible="importPanelDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <Card>
       <template #header>
@@ -49,7 +46,7 @@
       <template #content>
         <!-- with-credentials="true," -->
         <!-- :disabled="selectedModel == null" -->
-        <ren-submit v-if="mPanelStructureText != null" :cancel-button="true" @submit="fileSubmit" @cancel="onFileClear" />
+        <ren-submit v-if="submittedPanel != null" :cancel-button="true" @submit="fileSubmit" @cancel="onFileClear" />
         <FileUpload
           ref="FileUpload"
           name="template[]"
@@ -68,7 +65,7 @@
         >
           <!-- @upload="onFileUpload" -->
           <template #empty>
-            <ren-input-text v-if="mPanelStructureText" v-model="mPanelStructureText" :text-label="null" :cols="50" :maxlength="10000" />
+            <ren-input-text v-if="submittedPanel" v-model="submittedPanel" :text-label="null" :cols="50" :maxlength="10000" />
             <p v-else>{{ $t("view.file_drag_drop") }}</p>
           </template>
         </FileUpload>
@@ -80,7 +77,31 @@
 
 <script>
 //TODO: on owner select
-
+function getStructureText(panel) {
+  let mPanel = JSON.parse(JSON.stringify(panel));
+  if (mPanel.name !== undefined) delete mPanel.name;
+  if (mPanel.id !== undefined) delete mPanel.id;
+  for (let tile of mPanel.tiles) {
+    if (tile.measurements) {
+      tile.measurements = tile.measurements.map((m) => {
+        let obj;
+        if (m.id !== undefined) {
+          obj = { id: m.id, aggregation_function: m.aggregation_function };
+        } else {
+          obj = { name: m.name, domain: m.domain, direction: m.direction, sensor_name: m.sensor_name, aggregation_function: m.aggregation_function };
+          if (m.type) {
+            obj.type = { id: m.type.id, physical_name: m.type.physical_name };
+          }
+          if (m.asset) {
+            obj.asset = { id: m.asset.id };
+          }
+        }
+        return obj;
+      });
+    }
+  }
+  return JSON.stringify(mPanel, null, "\t");
+}
 import FileUpload from "primevue/fileupload";
 import { useVuelidate } from "@vuelidate/core";
 import { maxLength, required, minLength } from "@/plugins/validators.js"; //required,
@@ -92,21 +113,22 @@ export default {
   props: {
     modelValue: {
       type: Object,
-      default: () => ({ measurements: [] }),
+      default: () => ({ tiles: [] }),
     },
   },
   emits: ["update:modelValue", "cancel"],
   setup: () => ({ v$: useVuelidate() }),
   data() {
+    let mModel = this.modelValue ? this.modelValue : { tiles: [] };
     return {
-      mModel: this.modelValue ? this.modelValue : { measurements: [] },
+      mModel: mModel,
       addMode: this.modelValue == null || this.modelValue.name == null,
-      mPanelStructure: null,
-      mPanelStructureText: null,
+      // mPanelStructure: null,
+      mPanelStructureText: getStructureText(mModel),
       labelWarning: null,
       importPanelDialog: false,
       hasFiles: false,
-      submittedFile: false,
+      submittedPanel: null,
     };
   },
   validationConfig: {
@@ -141,33 +163,31 @@ export default {
       else this.hasFiles = false;
     },
     onFileClear() {
-      this.mPanelStructure = null;
-      this.mPanelStructureText = null;
+      // this.mPanelStructure = null;
+      this.mPanelStructureText = getStructureText(this.mModel);
 
-      this.submittedFile = null;
+      this.submittedPanel = null;
     },
     fileSubmit() {
-      if (this.mPanelStructure) {
-        this.submittedFile = this.mPanelStructure;
-      }
+      this.mPanelStructureText = this.submittedPanel;
       this.importPanelDialog = false;
     },
     async onFileUpload(evt) {
-      this.submittedFile = null;
+      this.submittedPanel = null;
       // console.info(evt.files);
       if (evt.files.length == 1) {
-        this.mPanelStructure = await this.$ren.utils.readJSONFile(evt.files[0]);
-        if (this.mPanelStructure.name !== undefined) {
-          delete this.mPanelStructure.name;
+        let mPanelStructure = await this.$ren.utils.readJSONFile(evt.files[0]);
+        if (mPanelStructure.name !== undefined) {
+          delete mPanelStructure.name;
         }
-        if (this.mPanelStructure.id !== undefined) {
-          delete this.mPanelStructure.id;
+        if (mPanelStructure.id !== undefined) {
+          delete mPanelStructure.id;
         }
+        // this.mPanelStructureText = getStructureText(mPanelStructure);
+        // this.mModel.label = this.mModel.label ? this.mModel.label : mPanelStructure.label;
 
-        this.mPanelStructureText = JSON.stringify(this.mPanelStructure, null, "\t");
-        this.mModel.label = this.mModel.label ? this.mModel.label : this.mPanelStructure.label;
-
-        // console.info(this.mPanelStructure);
+        console.error(mPanelStructure);
+        this.submittedPanel = getStructureText(mPanelStructure);
       }
       // await this._submit(event.files);
     },
@@ -176,13 +196,13 @@ export default {
       if (this.mModel.label && !this.mModel.label.includes(ASSET_TAG) && this.mModel.is_template) {
         this.mModel.label = `${this.mModel.label} - (${ASSET_TAG})`;
       }
-      if (this.submittedFile) {
-        if (this.modelValue.id) this.submittedFile.id = this.modelValue.id;
-        this.submittedFile.name = this.mModel.name;
-        this.submittedFile.label = this.mModel.label ? this.mModel.label : this.submittedFile.label;
 
-        this.$emit("update:modelValue", this.submittedFile);
-      } else this.$emit("update:modelValue", this.mModel);
+      let panel = JSON.parse(this.mPanelStructureText);
+      panel.name = this.mModel.name;
+      panel.id = this.mModel.id;
+      panel.label = this.mModel.label ? this.mModel.label : this.panel.label;
+      this.mModel = panel;
+      this.$emit("update:modelValue", this.mModel);
     },
     cancel() {
       this.$emit("cancel", this.model);
@@ -191,4 +211,12 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style lang="scss">
+#panelForm {
+  .p-dialog-content,
+  .p-accordion-content {
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+  }
+}
+</style>

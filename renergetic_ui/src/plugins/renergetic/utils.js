@@ -283,8 +283,8 @@ export default class RenUtils {
   convertPanelData(panel, pData, settings) {
     var mDict = {};
     //TODO: initialize this dictionary in the vuex store
-    console.error(settings);
-    let cp = JSON.parse(JSON.stringify(pData));
+    // console.error(settings);
+    var cp = pData; //
     if (panel && panel.tiles) {
       for (let tile of panel.tiles) {
         for (let m of tile.measurements) {
@@ -293,24 +293,27 @@ export default class RenUtils {
       }
     }
     //TODO: convert min, max, prediction etc
-    // console.info(pData);
     for (let mId in mDict) {
       let m = mDict[mId];
-      console.info(m);
+      // console.info(m);
       var newUnit = this.getUnit(m, null, settings); // settings[m.type.physical_name];
       // console.info(m.type.physical_name + " " + newUnit);
       if (newUnit) {
         let value = pData.current[m.aggregation_function][m.id];
         let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
         cp.current[m.aggregation_function][m.id] = newV;
+        if (pData.max) {
+          let value = pData.max[m.aggregation_function][m.id];
+          let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
+          cp.max[m.aggregation_function][m.id] = newV;
+        }
       }
     }
-    // console.info(cp);
     return cp;
   }
   calcPanelRelativeValues(panel, pData, settings) {
     var accuDict = {};
-
+    // console.info(settings);
     // var aggDict = { current: { last: {} }, predictions: pData.predictions };
     //TODO: aggregate also predictions - not only current values
     //TODO: include min values
@@ -340,6 +343,7 @@ export default class RenUtils {
       let m = mDict[mId];
       // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
       let key = this.aggKey(m, settings);
+      // console.info(key);
       let factor = m.type.factor;
       // let value = pData.current.last[m.id] * factor;
       // let aggValue = this.valueAgg(key, value, m.type.base_unit, accuDict);

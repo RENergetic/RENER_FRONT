@@ -121,12 +121,15 @@ export default {
     measurementTypes: (state) => {
       return state.measurementTypes;
     },
-    convertValue: (state) => (measurementType, value, unit) => {
-      if (unit == null || measurementType.unit == unit || measurementType.unit == "%" || unit == "%") {
+    convertValue: (state) => (currentMeasurementType, value, newUnit) => {
+      if (newUnit == null || currentMeasurementType.unit == newUnit || currentMeasurementType.unit == "%" || newUnit == "%") {
         return value;
       }
-      let mt = state.measurementTypes[measurementType.physical_name].find((mt) => mt.unit == unit);
-      return (value * measurementType.factor) / mt.factor;
+      //get new unit
+      let mt = state.measurementTypes[currentMeasurementType.physical_name].find((mt) => mt.unit == newUnit);
+
+      // return (value * currentMeasurementType.factor) / mt.factor;
+      return (value / currentMeasurementType.factor) * mt.factor;
     },
     locationList: (state /* getters*/) => {
       return state.locationList;

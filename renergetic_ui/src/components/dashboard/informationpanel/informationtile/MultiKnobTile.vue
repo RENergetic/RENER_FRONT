@@ -111,6 +111,9 @@ export default {
             callbacks: {
               label: function (context) {
                 const labelIndex = context.datasetIndex * 2 + context.dataIndex;
+                if (_this.tile.measurements[context.dataIndex] === undefined) {
+                  return "";
+                }
                 var id = _this.tile.measurements[context.dataIndex].id;
                 var aggregation_function = _this.tile.measurements[context.dataIndex].aggregation_function;
                 var value;
@@ -119,13 +122,13 @@ export default {
                     value = context.formattedValue;
                   } else {
                     value = `${_this.pdata.current[aggregation_function][id]}`;
+                    // console.error(_this.pdata.current[aggregation_function][id]);
                   }
                 } catch {
                   value = context.formattedValue;
                 }
-                console.error(_this.tile.measurements[context.dataIndex]);
                 // console.error(_this.pdata.current[aggregation_function][id]);
-                return context.chart.data.labels[labelIndex] + ": " + value;
+                return context.chart.data.labels[labelIndex] + ": " + value + " .";
               },
             },
           },

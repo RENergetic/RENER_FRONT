@@ -79,6 +79,10 @@ background: none; /*remove background for empty space*/
         width: $inputwidth !important;
         max-width: $maxInputwidth;
     }
+    .p-inputtextarea {
+        max-width: initial;
+
+    }
     td {
         margin: 0;
         padding: 0 !important;
