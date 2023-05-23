@@ -220,6 +220,7 @@ export default {
     getDataset(value, index) {
       let state = this.tile.measurements[index].visible == null ? true : this.tile.measurements[index].visible;
 
+      // console.error(this.getColor(index));
       return {
         data: [value, 1.0 - value],
         backgroundColor: this.getColor(index),
@@ -239,6 +240,7 @@ export default {
         // }
         // throw new Error();
       } catch (error) {
+        console.error(error);
         let c = ["rgba(255,0,0,1.0)", "rgba(255,0,0,0.25)", "rgba(0, 255,0,1.0)", "rgba(0, 255,0,0.25)", "rgba(0,0,255,1.0)", "rgba(0, 0,255,0.25)"];
         let idx = this.tmpIndex++ % 3;
         return [c[2 * idx], c[2 * idx + 1]];
