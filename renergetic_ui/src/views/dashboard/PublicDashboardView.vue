@@ -1,7 +1,6 @@
 <template>
   <div v-if="panel" id="panel-box">
     <DotMenu :model="menuModel" />
-    <!-- {{ settings }}  -->
     <InformationPanelWrapper
       ref="panel"
       :key="reload"

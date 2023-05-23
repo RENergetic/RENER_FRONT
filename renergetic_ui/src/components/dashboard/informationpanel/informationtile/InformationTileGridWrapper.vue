@@ -20,7 +20,7 @@
           @click="$emit('notification', slotProps)"
         /> -->
       </div>
-      <InformationTile :tile="tile" :pdata="tileData" :settings="settings" @timeseries-update="onTimeseriesUpdate" />
+      <InformationTile :tile="tile" :pdata="tileData" :filter="filter" :settings="settings" @timeseries-update="onTimeseriesUpdate" />
     </div>
   </div>
 </template>
@@ -43,6 +43,12 @@ export default {
     settings: {
       type: Object,
       default: () => ({}),
+    },
+    filter: {
+      type: Object,
+      default: () => {
+        return {};
+      },
     },
   },
   emits: ["edit", "notification", "timeseries-update"],

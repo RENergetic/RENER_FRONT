@@ -12,6 +12,7 @@
         :locked="locked"
         :settings="panelSettings"
         :asset-id="assetId"
+        :filter="mFilter"
         @edit="onEdit"
         @timeseries-update="onTimeseriesUpdate"
       />
@@ -92,6 +93,10 @@ export default {
         return {};
       },
     },
+    filterKey: {
+      type: String,
+      default: "filter",
+    },
 
     editMode: {
       type: Boolean,
@@ -102,7 +107,7 @@ export default {
   data() {
     return {
       mNotifications: [],
-      mFilter: this.filter ? this.filter : this.$store.getters["settings/parsedFilter"]("filter"),
+      mFilter: this.filter ? this.filter : this.$store.getters["settings/parsedFilter"](this.filterKey),
       grid: null,
       notificationDialog: false,
       editDialog: false,

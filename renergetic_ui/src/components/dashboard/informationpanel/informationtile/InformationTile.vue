@@ -1,6 +1,7 @@
 <template>
   <!-- {{ mSettings }} -->
   <div v-if="tile" :class="tileClass" :style="background">
+    {{ filter }}
     <!-- {{ pdata }} -->
     <!-- todo: group by sensor_name -->
     <!-- {{ tile }} -->
@@ -16,6 +17,7 @@
       :tile="tile"
       :pdata="pdata"
       :settings="mSettings"
+      :filter="filter"
       :conversion-settings="conversionSettings"
       @timeseries-update="onTimeseriesUpdate"
     />
@@ -115,6 +117,12 @@ export default {
     settings: {
       type: Object,
       default: () => ({}),
+    },
+    filter: {
+      type: Object,
+      default: () => {
+        return {};
+      },
     },
   },
   emits: ["edit", "notification", "timeseries-update"],

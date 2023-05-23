@@ -27,18 +27,22 @@ export default {
   components: { Chart },
   props: {
     settings: { type: Object, default: () => ({}) },
-    filter: { type: Object, default: null },
     pdata: { type: Object, default: () => ({}) },
     // chartType: { type: String, default: "line" },
     tile: {
       type: Object,
       default: () => ({}),
     },
+    filter: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
   emits: ["timeseries-update"],
   data() {
     return {
-      mFilter: this.filter ? this.filter : this.$store.getters["settings/parsedFilter"]("filter"),
       labels: this.pdata["timeseries_labels"] ? this.pdata["timeseries_labels"] : [],
       datasets: [],
       plugins: [chartjsMoment],
@@ -121,8 +125,7 @@ export default {
       }
       let data;
       if (!hasAllData) {
-        //todo: filters
-        let timeseriesData = await this.$ren.dataApi.getTimeseries(null, this.tile.id, this.settings.panel.asset_id, {});
+        let timeseriesData = await this.$ren.dataApi.getTimeseries(null, this.tile.id, this.settings.panel.asset_id, this.filter);
 
         this.labels = timeseriesData["timestamps"];
         data = timeseriesData["current"];

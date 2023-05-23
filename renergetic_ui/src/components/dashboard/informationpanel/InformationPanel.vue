@@ -11,6 +11,7 @@
       :edit="edit"
       :pdata="mPData"
       :settings="mSettings"
+      :filter="filter"
       @edit="$emit('editTile', { tile: tile, index: index })"
       @timeseries-update="onTimeseriesUpdate"
       @notification="viewNotification"
@@ -92,6 +93,12 @@ export default {
       default: () => null,
     },
     settings: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
+    filter: {
       type: Object,
       default: () => {
         return {};
