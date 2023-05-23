@@ -1,7 +1,7 @@
 <template>
   <!-- {{ mSettings }} -->
   <div v-if="tile" :class="tileClass" :style="background">
-    {{ filter }}
+    <!-- {{ filter }} -->
     <!-- {{ pdata }} -->
     <!-- todo: group by sensor_name -->
     <!-- {{ tile }} -->
