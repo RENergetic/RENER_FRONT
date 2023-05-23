@@ -121,6 +121,7 @@
   "panel_settings": "Panel settings",
   "panel_label_info":"Each label requires following tag: '{0}' , if tag is not found, it will be added automatically.",
   "panel_label_warning": "'{0}' tag  will be added automatically to the label.",
+  "panel_delete_confirm":"Do you want to delete panel?",
   "locale_settings": "Language",
   "conversion_settings": "Displayed unit conversion settings",
   "settings": {
