@@ -128,8 +128,8 @@ export default {
       //get new unit
       let mt = state.measurementTypes[currentMeasurementType.physical_name].find((mt) => mt.unit == newUnit);
 
-      // return (value * currentMeasurementType.factor) / mt.factor;
-      return (value / currentMeasurementType.factor) * mt.factor;
+      return (value * currentMeasurementType.factor) / mt.factor;
+      // return (value / currentMeasurementType.factor) * mt.factor;
     },
     locationList: (state /* getters*/) => {
       return state.locationList;

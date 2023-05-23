@@ -228,11 +228,17 @@ export default class RenUtils {
     }
   }
 
-  measurementBackgroundColor(measurement /*,alpha*/) {
+  measurementBackgroundColor(measurement, tileSettings /*,alpha*/) {
     //tODO add alpha supprot
     let alpha = "80";
+    if (tileSettings && tileSettings.background == "none") {
+      return "none";
+    }
     if (measurement.type.color) {
-      let color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
+      let color;
+      if (tileSettings && tileSettings.background) {
+        color = tileSettings.background;
+      } else color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
       // console.info(measurement);
       // console.info(color);
       if (color.length == 7) {

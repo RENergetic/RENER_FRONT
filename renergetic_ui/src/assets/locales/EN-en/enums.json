@@ -28,6 +28,7 @@
     "office": "Offices",
     "heat_exchanged": "Heat Exchangers",
     "supercomputer": "Supercomputers",
+    "datacenter": "Datacenter",
     "hvac": "HVACs",
     "waste": "Waste",
     "fossil_fuels": "Fossil fuels",
