@@ -95,7 +95,7 @@
           <!-- <ren-input-wrapper :text-label="`${selectedAsset.label}(${selectedAsset.name})`"> -->
           <ren-input-wrapper :text-label="null">
             <template #content>
-              <Button icon="pi pi-trash" :label="$t('view.asset_select')" @click="$refs.assetSelectDialog.open()" />
+              <Button :label="$t('view.select_asset')" @click="$refs.assetSelectDialog.open()" />
             </template>
           </ren-input-wrapper>
           <!-- {{ selectedAsset }} -->
