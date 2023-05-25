@@ -16,7 +16,9 @@
           :invalid="v$.mModel.label.$invalid"
           :errors="v$.mModel.label.$silentErrors"
         />
+
         {{ labelWarning }}
+        <ren-switch v-if="addMode" v-model="mModel.is_template" :text-label="'model.panel.is_template_new_panel'" />
       </AccordionTab>
       <!-- {{ modelValue }} -->
 
@@ -77,27 +79,37 @@
 
 <script>
 //TODO: on owner select
-function getStructureText(panel) {
+function getStructureText(panel, isTemplate) {
   let mPanel = JSON.parse(JSON.stringify(panel));
   if (mPanel.name !== undefined) delete mPanel.name;
   if (mPanel.id !== undefined) delete mPanel.id;
+  console.info(isTemplate);
   for (let tile of mPanel.tiles) {
     if (tile.measurements) {
-      tile.measurements = tile.measurements.map((m) => {
-        let obj;
-        if (m.id !== undefined) {
-          obj = { id: m.id, aggregation_function: m.aggregation_function };
-        } else {
-          obj = { name: m.name, domain: m.domain, direction: m.direction, sensor_name: m.sensor_name, aggregation_function: m.aggregation_function };
-          if (m.type) {
-            obj.type = { id: m.type.id, physical_name: m.type.physical_name };
+      tile.measurements = tile.measurements
+        .map((m) => {
+          let obj;
+          if (m.id !== undefined && m.id != null) {
+            return { id: m.id, aggregation_function: m.aggregation_function };
+          } else if (isTemplate) {
+            obj = {
+              name: m.name,
+              domain: m.domain,
+              direction: m.direction,
+              sensor_name: m.sensor_name,
+              aggregation_function: m.aggregation_function,
+            };
+            if (m.type) {
+              obj.type = { id: m.type.id, physical_name: m.type.physical_name };
+            }
+            if (m.asset) {
+              obj.asset = { id: m.asset.id };
+            }
+            return obj;
           }
-          if (m.asset) {
-            obj.asset = { id: m.asset.id };
-          }
-        }
-        return obj;
-      });
+          return null;
+        })
+        .filter((m) => m != null);
     }
   }
   return JSON.stringify(mPanel, null, "\t");
@@ -124,7 +136,7 @@ export default {
       mModel: mModel,
       addMode: this.modelValue == null || this.modelValue.name == null,
       // mPanelStructure: null,
-      mPanelStructureText: getStructureText(mModel),
+      mPanelStructureText: getStructureText(mModel, mModel.is_template),
       labelWarning: null,
       importPanelDialog: false,
       hasFiles: false,
@@ -164,7 +176,7 @@ export default {
     },
     onFileClear() {
       // this.mPanelStructure = null;
-      this.mPanelStructureText = getStructureText(this.mModel);
+      this.mPanelStructureText = getStructureText(this.mModel, this.mModel.is_template);
 
       this.submittedPanel = null;
     },
@@ -183,11 +195,9 @@ export default {
         if (mPanelStructure.id !== undefined) {
           delete mPanelStructure.id;
         }
-        // this.mPanelStructureText = getStructureText(mPanelStructure);
-        // this.mModel.label = this.mModel.label ? this.mModel.label : mPanelStructure.label;
 
         console.error(mPanelStructure);
-        this.submittedPanel = getStructureText(mPanelStructure);
+        this.submittedPanel = getStructureText(mPanelStructure, this.mModel.is_template);
       }
       // await this._submit(event.files);
     },
