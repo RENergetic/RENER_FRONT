@@ -204,8 +204,53 @@ export default class ManagementApi extends RestComponent {
     }
     return await this.get(`/api/measurements`, { name: q }, null, null);
   }
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  async getCategoryFromAsset(id) {
+    return this.get(`/api/assets/category/${id}`, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`Asset category for ${id} not found: ${e.message}`, {
+          code: "asset_category_not_found",
+          args: [id],
+        });
+        return true;
+      }
+    });
+  }
+  async getAllCategories() {
+    return this.get(`/api/assetCategories`, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`Asset categories not found`, {
+          code: "asset_category_not_found",
+        });
+        return true;
+      }
+    });
+  }
+  async updateCategoryFromAsset(id, category) {
+    return this.put(`/api/assets/${id}/category`, category, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`Asset category ${id} error: ${e.message}`, {
+          code: "asset_category_error",
+          args: [id],
+        });
+        return true;
+      }
+    });
+  }
+  async deleteCategoryFromAsset(id) {
+    return this.delete(`/api/assets/${id}/category`, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`Asset ${id} not found: ${e.message}`, { code: "asset_category_error", args: [id] });
+        return true;
+      }
+    });
+  }
 }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // async deleteMeasurement(id) {
 //   return this.axios
 //     .delete(`/api/measurements/${id}`, {
