@@ -1,5 +1,6 @@
 <template>
   <!-- TODO: -->
+  <!-- there might be no difference with ChartTile - so we can remove this one -->
   <Chart style="max-width: 20rem" type="doughnut" :data="chartData" :options="options" />
 </template>
 <script>
@@ -8,9 +9,7 @@ export default {
   name: "DoughnutTile",
   components: { Chart },
   props: {
-    // legend: { type: Boolean, default: true },
-
-    settings: { type: Object, default: () => ({}) },
+    legend: { type: Boolean, default: true },
     pdata: { type: Object, default: () => ({}) },
     tile: {
       type: Object,
@@ -23,7 +22,7 @@ export default {
         responsive: true,
         plugins: {
           legend: {
-            display: this.settings.tile.legend,
+            display: this.legend,
             labels: {
               color: "#495057",
             },

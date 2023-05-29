@@ -1,6 +1,6 @@
 <template>
-  <!-- todo: readall button ? -->
-  <Card class="notification-box ren-control-bg">
+  <!-- todo: readall button  ren-control-bg? -->
+  <Card class="notification-box">
     <template #content>
       <div class="flex">
         <!-- <div class="flex align-items-center justify-content-center"></div> -->
@@ -15,10 +15,6 @@
             {{ notification.message }}
           </span>
           <div v-if="notification.dashboard" class="flex flex-grow-1">
-            <!-- {{ notification.dashboard }} -->
-            <!-- {{ $t("view.go_to_dashboard") }} -->
-            <!-- @click="$router.push(`/dashboard/view/${notification.dashboard.id}`)" -->
-            <!-- {{ notification.dashboard.url }} -->
             <i
               v-if="notification.dashboard"
               v-tooltip="$t('view.go_to_dashboard')"

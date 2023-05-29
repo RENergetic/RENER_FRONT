@@ -1,33 +1,62 @@
 <template>
-  <div id="panel-box">
-    <div v-if="panel">
-      <DotMenu :model="menuModel" />
-      <Dialog v-model:visible="settingsDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-        <PanelSettings @update="reloadSettings()"></PanelSettings>
-      </Dialog>
-      <InformationPanel
-        v-if="panel"
-        ref="panel"
-        :asset-id="$route.params.asset_id"
-        :locked="locked"
-        :panel="panel"
-        :edit-mode="editMode"
-        :settings="settings"
-      ></InformationPanel>
-    </div>
+  <div v-if="panel" id="panel-box">
+    <DotMenu :model="menuModel" />
+    <BasicFilterSettings
+      style="width: 90%; margin: auto; margin-top: 1rem"
+      class="ren-card"
+      :setting-key="'private'"
+      :submit-button="false"
+      :columns="3"
+      :labels="false"
+      @update="reloadSettings()"
+    />
+    <InformationPanelWrapper
+      ref="panel"
+      :asset-id="$route.params.asset_id"
+      :locked="locked"
+      :panel="panel"
+      :edit-mode="editMode"
+      :filter="filter"
+      :panel-settings="settings"
+    />
+    <!-- <Card style="width: 90%; margin: auto; margin-top: 1rem">
+      <template #content>
+        todo make own card component -->
+    <BasicFilterSettings
+      v-if="false"
+      class="ren-card"
+      :setting-key="'private'"
+      :submit-button="false"
+      :columns="3"
+      :labels="false"
+      @update="reloadSettings()"
+    />
+    <!-- </template>
+    </Card> -->
   </div>
+  <RenSettingsDialog ref="settingsDialog">
+    <template #settings><PanelSettings @update="reloadSettings()"></PanelSettings></template>
+  </RenSettingsDialog>
+  <RenSettingsDialog ref="conversionSettingsDialog">
+    <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
+  </RenSettingsDialog>
+  <RenSettingsDialog ref="filterSettingsDialog" :save="false">
+    <template #settings><BasicFilterSettings :setting-key="'private'" @update="reloadSettings()" /></template>
+  </RenSettingsDialog>
 </template>
 <script>
-import InformationPanel from "@/components/dashboard/informationpanel/InformationPanel.vue";
+import InformationPanelWrapper from "@/components/dashboard/informationpanel/InformationPanelWrapper.vue";
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
+import BasicFilterSettings from "@/components/miscellaneous/settings/BasicFilterSettings.vue";
 
 export default {
   name: "InformationPanelView",
   components: {
-    InformationPanel,
+    InformationPanelWrapper,
     DotMenu,
     PanelSettings,
+    BasicFilterSettings,
   },
   data() {
     return {
@@ -35,86 +64,66 @@ export default {
       locked: false,
       editMode: false,
       settings: this.$store.getters["settings/panel"],
+      filter: this.$store.getters["settings/parsedFilter"]("private"),
       settingsDialog: false,
     };
   },
   computed: {
-    toggleButton: function () {
-      let label = this.locked ? this.$t("menu.panel_grid_unlock") : this.$t("menu.panel_grid_lock");
-      return {
-        label: label,
-        icon: "pi pi-fw pi-lock",
-        command: () => this.toggleLock(),
-      };
-    },
     settingsButton: function () {
-      //TODO: set icon
-      return {
-        label: this.$t("menu.settings"),
-        icon: "pi pi-fw pi-plus-circle",
-        command: () => (this.settingsDialog = !this.settingsDialog),
-      };
+      return { label: this.$t("menu.panel_settings"), command: () => this.$refs.settingsDialog.open(), icon: "pi pi-fw pi-plus-circle" };
     },
-    editModelButton: function () {
-      let label = this.editMode ? this.$t("menu.panel_grid_edit_on") : this.$t("menu.panel_grid_edit_off");
-      return {
-        label: label,
-        icon: "pi pi-fw pi-lock",
-        command: () => this.toggleEditMode(),
-      };
+    conversionSettingsButton: function () {
+      return { label: this.$t("menu.unit_settings"), command: () => this.$refs.conversionSettingsDialog.open(), icon: "pi pi-fw pi-plus-circle" };
     },
-    addButton: function () {
-      return {
-        label: this.$t("menu.panel_grid_add_tile"),
-        icon: "pi pi-fw pi-plus",
-        command: () => this.addTile(),
-      };
+    filterSettingsButton: function () {
+      return { label: this.$t("menu.filter_settings"), icon: "pi pi-fw pi-filter", command: () => this.$refs.filterSettingsDialog.open() };
     },
-    menuModel() {
-      let menu = [
-        {
-          label: this.$t("menu.save_panel_grid"),
-          icon: "pi pi-fw pi-save",
-          command: () => this.saveGrid(),
-        },
-      ]; //TODO: if permission
-      //todo: add to menu model
+    // toggleButton: function () {
+    //   let label = this.locked ? this.$t("menu.panel_grid_unlock") : this.$t("menu.panel_grid_lock");
+    //   return { label: label, icon: "pi pi-fw pi-lock", command: () => this.toggleLock() };
+    // },
+    // saveButton: function () {
+    //   return { label: this.$t("menu.save_panel_grid"), icon: "pi pi-fw pi-save", command: () => this.saveGrid() };
+    // },
 
-      menu.push(this.toggleButton);
-      menu.push(this.addButton);
-      if (this.locked) menu.push(this.editModelButton);
-      menu.push(this.settingsButton);
-      return menu;
+    menuModel() {
+      return [/*this.toggleButton*/ this.settingsButton, this.conversionSettingsButton, this.filterSettingsButton];
     },
+    // editModelButton: function () {
+    //   let label = this.editMode ? this.$t("menu.panel_grid_edit_on") : this.$t("menu.panel_grid_edit_off");
+    //   return { label: label, icon: "pi pi-fw pi-lock", command: () => this.toggleEditMode() };
+    // },
+    // addButton: function () {
+    //   return { label: this.$t("menu.panel_grid_add_tile"), icon: "pi pi-fw pi-plus", command: () => this.addTile() };
+    // },
+    // menuModel() {
+    //   let menu = [
+    //     {
+    //       label: this.$t("menu.save_panel_grid"),
+    //       icon: "pi pi-fw pi-save",
+    //       command: () => this.saveGrid(),
+    //     },
+    //   ]; //TODO: if permission
+    //   //todo: add to menu model
+
+    //   menu.push(this.toggleButton);
+    //   menu.push(this.addButton);
+    //   if (this.locked) menu.push(this.editModelButton);
+    //   menu.push(this.settingsButton);
+    //   return menu;
+    // },
   },
   watch: {},
   async mounted() {
     await this.loadStructure();
   },
-  async updated() {
-    await this.loadStructure();
-  },
+  // async updated() {
+  //   await this.loadStructure();
+  // },
 
   methods: {
-    localPanel(id, assetId) {
-      console.error("asset panels templates not supported: " + assetId);
-      // if (assetId != null) {
-      //   let index = this.$store.getters("view/assetPanelsMap")[id + "_" + assetId];
-      //   if (index != null) {
-      //     return   let index = this.$store.getters("view/assetPanels")[index];
-      //   }
-      //   return null;
-      // }
-      // console.info(this.$store.getters["view/informationPanelsMap"][id]);
-      let index = this.$store.getters["view/informationPanelsMap"][id];
-      if (index != null) {
-        return this.$store.getters["view/informationPanels"][index];
-      }
-      return null;
-    },
     async loadStructure() {
-      let informationPanel = this.localPanel(this.$route.params.id, this.$route.params.asset_id);
-      // console.info(informationPanel);
+      let informationPanel = this.$ren.utils.localPanel(this.$route.params.id, this.$route.params.asset_id);
       if (informationPanel == null) {
         this.$ren.dashboardApi.getInformationPanel(this.$route.params.id, this.$route.params.asset_id).then((panel) => {
           this.panel = panel;
@@ -124,8 +133,13 @@ export default {
       }
     },
     reloadSettings() {
+      // console.info("reloadSettings");
+      // this.$store.getters["settings/filter"];
+      this.filter = this.$store.getters["settings/parsedFilter"]("private");
       this.settings = this.$store.getters["settings/panel"];
+      this.conversionSettings = this.$store.getters["settings/conversion"];
     },
+
     async toggleLock() {
       this.locked = !this.locked;
     },

@@ -49,9 +49,9 @@
       </Card>
     </template>
   </RenSpinner>
+  <!-- {{ $store.getters["auth/current"] }} -->
   <!-- {{ user }} -->
   <!-- {{ $store.getters["settings"] }} -->
-  <!-- <div>Auth data {{ data }}aa</div> -->
 </template>
 <script>
 import UserForm from "@/components/user/UserForm.vue";
@@ -65,7 +65,7 @@ export default {
   components: { UserForm, ConversionSettings, HomeSettings, LocaleSettings, PanelSettings },
   data() {
     return {
-      data: this.$store.getters["auth/current"],
+      // data: this.$store.getters["auth/current"],
       user: undefined,
       edit: false,
     };

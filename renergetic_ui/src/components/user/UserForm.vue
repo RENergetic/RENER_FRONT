@@ -2,22 +2,9 @@
   <Card>
     <template #title>
       <span> {{ $t("view.logged_in_as", { username: user.username }) }}</span>
-      <!-- <span> {{ $t("view.profile", { username: user.username }) }}</span> -->
     </template>
     <template #content>
       <div class="ren">
-        <!-- <div class="field grid">
-          <label for="username" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.username") }} </label>
-          <div class="col-12 md:col-10">
-            <InputText id="username" v-model="mUser.username" :disabled="true" />
-          </div>
-          <span v-if="v$.mUser.username.$invalid">
-            <span v-for="(error, index) of v$.mUser.username.$silentErrors" id="name-error" :key="index">
-              <small class="p-error">{{ error.$message }}</small>
-            </span>
-          </span>
-        </div> -->
-        <!-- firstName -->
         <div class="field grid">
           <label for="firstName" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.firstname") }} </label>
           <div class="col-12 md:col-10"><InputText id="firstName" v-model="mUser.firstName" :disabled="!mEdit" /></div>
@@ -27,30 +14,42 @@
             </span>
           </span>
         </div>
-        <!-- lastName -->
-        <div class="field grid">
-          <label for="lastName" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.lastname") }} </label>
-          <div class="col-12 md:col-10"><InputText id="lastName" v-model="mUser.lastName" :disabled="!mEdit" /></div>
-          <span v-if="v$.mUser.lastName.$invalid">
-            <span v-for="(error, index) of v$.mUser.lastName.$silentErrors" id="name-error" :key="index">
-              <small class="p-error">{{ error.$message }}</small>
-            </span>
-          </span>
-        </div>
-        <!-- email -->
-        <div class="field grid">
-          <label for="email" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.email") }} </label>
-          <div class="col-12 md:col-10">
-            <InputText id="email" v-model="mUser.email" :disabled="true" />
-          </div>
-          <span v-if="v$.mUser.email.$invalid">
-            <span v-for="(error, index) of v$.mUser.email.$silentErrors" id="name-error" :key="index">
-              <small class="p-error">{{ error.$message }}</small>
-            </span>
-          </span>
-        </div>
-        <!-- password -->
-        <div v-if="mEdit" class="field grid">
+        <ren-input
+          v-model="mUser.firstname"
+          :text-label="'model.user.firstname'"
+          :invalid="v$.mUser.firstName.$invalid"
+          :errors="v$.mUser.firstName.$silentErrors"
+          :disabled="!mEdit"
+        />
+        <ren-input
+          v-model="mUser.lastName"
+          :text-label="'model.user.lastname'"
+          :invalid="v$.mUser.lastName.$invalid"
+          :errors="v$.mUser.lastName.$silentErrors"
+          :disabled="!mEdit"
+        />
+        <ren-input
+          v-model="mUser.email"
+          :text-label="'model.user.email'"
+          :invalid="v$.mUser.email.$invalid"
+          :errors="v$.mUser.email.$silentErrors"
+          :disabled="!mEdit"
+        />
+        <ren-password
+          v-if="mEdit"
+          v-model="mUser.password"
+          :invalid="v$.mUser.password.$invalid"
+          :errors="v$.mUser.password.$silentErrors"
+          :text-label="'model.user.password'"
+        />
+        <ren-password
+          v-if="mEdit && mUser.password"
+          v-model="mUser.passwordRepeat"
+          :invalid="v$.mUser.passwordRepeat.$invalid"
+          :errors="v$.mUser.passwordRepeat.$silentErrors"
+          :text-label="'model.user.password_repeat'"
+        />
+        <!-- <div v-if="mEdit" class="field grid">
           <label for="password" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.password") }} </label>
           <div class="col-12 md:col-10">
             <Password id="password" v-model="mUser.password" autocomplete="off" />
@@ -71,11 +70,10 @@
               <small class="p-error">{{ error.$message }}</small>
             </span>
           </span>
-        </div>
+        </div> -->
+        <ren-submit v-if="mEdit" :disabled="v$.$invalid" :cancel-button="true" @submit="submit" @cancel="stopEdit" />
         <div class="field grid">
-          <Button v-if="mEdit" :disabled="v$.$invalid" :label="$t('view.button.submit')" @click="submit" />
           <Button v-if="!mEdit" :label="$t('view.button.edit')" @click="startEdit" />
-          <Button v-if="mEdit" style="margin-left: 0.5rem" :label="$t('view.button.cancel')" @click="stopEdit" />
           <!-- <Button :label="$t('view.button.cancel')" @click="cancel" /> -->
         </div>
       </div>

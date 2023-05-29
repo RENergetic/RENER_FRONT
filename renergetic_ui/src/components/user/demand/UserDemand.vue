@@ -16,15 +16,14 @@
       <!-- <span v-if="demand.demand_definition.tile != null" id="demandtile" @click="tileClick()"> -->
       <!-- {{ demand.tile }} -->
       <!-- {{ demand.demand_definition.tile }} -->
-      <InformationTileData
+      <InformationTile
         v-if="demand.demand_definition.tile != null"
         :key="demand.demand_definition.tile.id"
         :demand="true"
         :tile="mTile"
         :pdata="pdata"
-        :settings="{ legend: false, title: false, center: false, cellWidth: 100 }"
+        :settings="settings"
       />
-      <!-- </span> -->
     </div>
 
     <div class="flex-grow-1 flex flex-column justify-content-center flex-wrap">
@@ -51,11 +50,11 @@
   <!-- </div> -->
 </template>
 <script>
-import InformationTileData from "@/components/dashboard/informationpanel/informationtile/InformationTileData.vue";
+import InformationTile from "@/components/dashboard/informationpanel/informationtile/InformationTile.vue";
 import { DemandActionType } from "@/plugins/model/Enums.js";
 export default {
   name: "UserDemand",
-  components: { InformationTileData },
+  components: { InformationTile },
   props: {
     demand: {
       type: Object,
@@ -79,6 +78,9 @@ export default {
     };
   },
   computed: {
+    settings() {
+      return { legend: false, title: false, center: false, cellWidth: 100, asset_id: this.demand.asset ? this.demand.asset.id : null };
+    },
     demandIncrease() {
       return this.actionType == DemandActionType.INCREASE;
     },

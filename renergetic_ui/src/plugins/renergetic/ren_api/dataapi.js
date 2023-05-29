@@ -93,13 +93,31 @@ export default class DataApi extends RestComponent {
   dashboardApi = new DashboardApi();
   managementApi = new ManagementApi();
 
-  async getTimeseries(measurementIds, attributes = {}) {
+  async getDummyTimeseries(measurementIds, attributes = {}) {
     //TODO: TOMEK
     console.info(attributes);
 
     let timeseries = generator.generateTimeseries(measurementIds);
     console.info(JSON.stringify(timeseries));
     return timeseries;
+  }
+  async getTimeseries(panelId, tileId, assetId, filter) {
+    let endpoint = "/api/data/timeseries";
+    if (panelId) {
+      endpoint += `/panel/${panelId}`;
+    }
+    if (tileId) {
+      endpoint += `/tile/${tileId}`;
+    }
+    if (assetId) {
+      endpoint += `/asset/${assetId}`;
+    }
+    let args = this.parseArgs({ ...filter });
+    endpoint = `${endpoint}?${args}`;
+    if (!filter) {
+      filter = {};
+    }
+    return this.get(endpoint);
   }
 
   // async getCurrentData(measurementIds) {

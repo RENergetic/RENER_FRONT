@@ -34,13 +34,17 @@ export default {
     //   //TODO pass newval ?
     //   this.loadAssets();
     // },
+    filters: function () {
+      //TODO pass newval ?
+      this.loadAssets();
+    },
   },
   mounted() {
     this.loadAssets();
   },
   methods: {
     async loadAssets(evt) {
-      let offset = PAGE_SIZE;
+      let offset = 0;
       let limit = PAGE_SIZE;
       if (evt) {
         offset = evt.offset;
@@ -53,8 +57,9 @@ export default {
           label: this.filters.label.value,
           name: this.filters.name.value,
           type: this.filters["type.label"] && this.filters["type.label"].value ? this.filters["type.label"].value.name : null,
-          category: this.filters["category.label"] && this.filters["type.label"].value ? this.filters["category.label"].value.name : null,
+          category: this.filters["category.label"] && this.filters["category.label"].value ? this.filters["category.label"].value.name : null,
         };
+      // console.error(params);
       await this.$refs.spinner.run(async () => {
         this.assetList = await this.$ren.managementApi.listAsset(params, offset, limit);
       });

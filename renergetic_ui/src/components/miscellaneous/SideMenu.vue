@@ -124,7 +124,7 @@ export default {
           icon: "pi pi-fw pi-th-large",
 
           command: () => {
-            this.$router.push({ name: "EnergyFlowView", params: { id: panel.id } });
+            this.$router.push({ name: "PublicDashboardView", params: { id: panel.id } });
           },
         };
       });
@@ -218,6 +218,7 @@ export default {
         ...this._grafanaDashboardManagement(),
         ...this._panelManagementItems(),
         ...this._measurementItems(),
+        ...this._categoryItems(),
       ];
       return [
         {
@@ -315,6 +316,18 @@ export default {
         },
       ];
     },
+    _categoryItems() {
+      return [
+        {
+          label: this.$t("menu.manage_categories"),
+          icon: "pi pi-fw pi-list",
+          to: "/management/category",
+          command: () => {
+            this.$router.push({ name: "CategoryList" });
+          },
+        },
+      ];
+    },
     _panelManagementItems() {
       let items = [
         {
@@ -324,7 +337,7 @@ export default {
           icon: "pi pi-fw  pi-th-large",
           to: "/panel",
           command: () => {
-            this.$router.push({ name: "InformationPanelList" });
+            this.$router.push({ name: "InformationPanelListView" });
           },
         },
         // {

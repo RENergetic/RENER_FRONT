@@ -1,3 +1,35 @@
+function parseDateFilter(filter) {
+  //TODO:   time zone i should use?
+  let from = null;
+  let to = null;
+  var date = new Date();
+  let f = filter ? filter : {};
+  switch (f.timeInterval) {
+    case "current_day":
+      from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+      break;
+    case "current_month":
+      from = new Date(date.getFullYear(), date.getMonth(), 1).getTime();
+      break;
+    case "previous_month":
+      from = new Date(date.getFullYear(), date.getMonth() - 1, 1).getTime();
+      to = new Date(date.getFullYear(), date.getMonth(), 1).getTime();
+      break;
+    case "current_year":
+      from = new Date(date.getFullYear(), 0, 1).getTime();
+      break;
+    case "previous_year":
+      from = new Date(date.getFullYear() - 1, 0, 1).getTime();
+      to = new Date(date.getFullYear(), 0, 1).getTime();
+      break;
+    default:
+      from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+      break;
+  }
+
+  return { from: from, to: to };
+}
+
 export var DefaultSettings = {
   locales: {},
 
@@ -30,6 +62,7 @@ export var DefaultSettings = {
   },
   conversion: {},
   filter: { predictionInterval: 0, timeInterval: "current_day" },
+  filters: {},
 };
 export default {
   namespaced: true,
@@ -66,6 +99,7 @@ export default {
     },
     conversion: {},
     filter: {},
+    filters: {},
   },
   mutations: {
     locales(state, payload) {
@@ -88,10 +122,20 @@ export default {
       state.conversion = payload;
     },
     filter(state, payload) {
-      console.info("filter");
+      console.info("set filter");
       console.info(payload);
       state.filter = payload;
     },
+    filters(state, { payload, key }) {
+      console.info("filters: " + key);
+      console.info(payload);
+      if (key == "filter") {
+        return (state.filter = payload);
+      } else {
+        state.filters[key] = payload;
+      }
+    },
+    // filters: (state) => (filterKey) => {
 
     toggle(state, payload) {
       state[payload.section][payload.key] = !state[payload.section][payload.key];
@@ -117,46 +161,36 @@ export default {
     conversion: (state) => {
       return state.conversion;
     },
-    predictionMs(state) {
+    predictionFilterMs(state) {
       return state.filter && state.filter.predictionIntervalms ? state.predictionIntervalms : 0;
     },
-    parsedFilter(state) {
-      //TODO: what time zone i should use?
-      let from = null;
-      let to = null;
-      var date = new Date();
-      // console.info(state.filter);
-      let f = state.filter ? state.filter : {};
-      switch (f.timeInterval) {
-        case "current_day":
-          from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
-          break;
-        case "current_month":
-          from = new Date(date.getFullYear(), date.getMonth(), 1).getTime();
-          break;
-        case "previous_month":
-          from = new Date(date.getFullYear(), date.getMonth() - 1, 1).getTime();
-          to = new Date(date.getFullYear(), date.getMonth(), 1).getTime();
-          break;
-        case "current_year":
-          from = new Date(date.getFullYear(), 0, 1).getTime();
-          break;
-        case "previous_year":
-          from = new Date(date.getFullYear() - 1, 0, 1).getTime();
-          to = new Date(date.getFullYear(), 0, 1).getTime();
-          break;
-        default:
-          from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
-          break;
-      }
 
-      return { from: from, to: to };
+    parsedFilter: (state) => (filterKey) => {
+      let filter;
+      if (filterKey == "filter") {
+        filter = state.filter;
+      } else {
+        filter = state.filters[filterKey];
+      }
+      if (filter == null) console.error(filterKey + ": filter not found");
+      let parsed = parseDateFilter(filter);
+      parsed["predictions"] = filter && filter.predictionIntervalms ? filter.predictionIntervalms : 0;
+      return parsed;
     },
     filter: (state) => {
       return state.filter;
     },
+    filters: (state) => (filterKey) => {
+      if (filterKey == "filter") {
+        return state.filter;
+      }
+      if (!state.filters[filterKey]) {
+        return { predictionInterval: 0, timeInterval: "current_day" };
+      }
+      return state.filters[filterKey];
+    },
+
     all: (state) => {
-      console.info(state);
       return state;
     },
   },

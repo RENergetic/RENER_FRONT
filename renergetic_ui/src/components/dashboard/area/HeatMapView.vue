@@ -83,7 +83,7 @@
 <script>
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import AreaDetails from "./AreaDetails.vue";
-import RecommendationView from "@/components/management/RecommendationView.vue";
+// import RecommendationView from "@/components/management/RecommendationView.vue";
 import NotificationList from "../../management/notification/NotificationList.vue";
 import { NotificationContext, HeatMapType } from "../../../plugins/model/Enums";
 import HeatMapSettings from "../../miscellaneous/settings/HeatmapSettings.vue";
@@ -99,7 +99,6 @@ export default {
     HeatMapOSM,
     AreaDetails,
     HeatMapSettings,
-    RecommendationView,
     DotMenu,
     NotificationList,
     MeasurementChart,

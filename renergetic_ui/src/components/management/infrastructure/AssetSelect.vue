@@ -1,6 +1,6 @@
 <template>
   <Card>
-    <template #title> {{ $t("view.asset_select") }}</template>
+    <template #title> {{ $t("view.select_asset") }}</template>
     <template #content>
       <RenSpinner ref="spinner" :lock="true" style="margin: auto; width: 100%" class="flex flex-column">
         <template #content>

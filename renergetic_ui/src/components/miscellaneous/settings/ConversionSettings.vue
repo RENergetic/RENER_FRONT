@@ -53,26 +53,44 @@ export default {
     getSchema() {
       var types = this.$store.getters["view/measurementTypes"];
       var schema = [];
-      for (let mtKey in types) {
-        let mtList = types[mtKey].map((mt) => {
-          return {
-            id: mt.unit,
-            label: mt.unit,
-          };
-        });
-
+      var domains = {
+        default: { types: Object.keys(types), prefix: "" },
+        heat: { types: ["power", "energy", "co2eq"], prefix: "heat_" },
+        electricity: { types: ["power", "energy", "co2eq", "voltage"], prefix: "electricity_" },
+      };
+      //Default domain
+      for (let dKey in domains) {
+        let domain = domains[dKey];
         schema.push({
-          label: this.$t("settings.measurement_type." + mtKey),
-          ext: {
-            options: mtList,
-            optionLabel: "label",
-            optionValue: "id",
-          },
-          type: Array,
-          key: mtKey,
+          label: this.$t("settings.domain." + dKey),
+          type: "Header",
+          key: dKey,
         });
+        for (let mtKey of domain.types) {
+          let mtList = types[mtKey].map((mt) => {
+            return {
+              id: mt.unit,
+              label: mt.unit,
+            };
+          });
+          if (mtList.length > 1) {
+            schema.push({
+              label: this.$t("settings.measurement_type." + mtKey),
+              ext: {
+                options: mtList,
+                optionLabel: "label",
+                optionValue: "id",
+              },
+              type: Array,
+              key: domain.prefix + mtKey,
+            });
+          }
+        }
       }
-
+      //         Power
+      // Energy
+      // Voltage
+      // CO2 eq
       // var schema = [
       //   {
       //     label: this.$t("settings.notification"),

@@ -1,4 +1,5 @@
 <template>
+  <!-- {{ mSettings }} -->
   <div class="flex flex-column justify-content-center" :style="tileStyle">
     <div
       v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
@@ -65,7 +66,7 @@ export default {
       return `color:${color.color}`;
     },
     tileStyle: function () {
-      let color = this.$ren.utils.measurementBackgroundColor(this.measurement, this.value);
+      let color = this.$ren.utils.measurementBackgroundColor(this.measurement, this.settings.tile, this.value);
       return `height: 100%;background:${color} `;
     },
     value: function () {

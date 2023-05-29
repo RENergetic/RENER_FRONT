@@ -1,16 +1,21 @@
 <template>
   <!-- <Paginator v-model:first="mPage" :rows="1" :total-records="mPage + 2"
    template="FirstPageLink PrevPageLink PageLinks NextPageLink    " /> -->
-
+  <!-- TODO: unslect row event -->
   <DataTable
     :value="assetList"
     :lazy="true"
     data-key="id"
     :filters="mFilters"
-    filter-display="row"
+    :filter-display="hiddenFilters ? null : 'row'"
     responsive-layout="scroll"
     :global-filter-fields="['name', 'label', 'type.name', 'category.label']"
+    selection-mode="single"
+    :selection="selectedAsset"
+    :meta-key-selection="false"
     @filter="onFilter"
+    @row-unselect="$emit('onSelect', null)"
+    @update:selection="onSelect"
   >
     <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false">
       <template #filter="{ filterModel, filterCallback }">
@@ -87,7 +92,7 @@
         </span>
       </template>
     </Column>
-    <Column field="child" :header="$t('model.asset.child')">
+    <Column field="child" :header="$t('model.asset.child')" :hidden="basic">
       <template #body="slotProps">
         <span v-if="slotProps.data.child && slotProps.data.child.length > 0" class="ren-pointer" @click="viewChildren(slotProps.data)">
           {{ $t("view.view_asset_children") }}
@@ -108,7 +113,7 @@
         </span>
       </template>
     </Column>
-    <Column field="measurements" :header="$t('model.asset.measurements')">
+    <Column field="measurements" :header="$t('model.asset.measurements')" :hidden="basic">
       <template #body="slotProps">
         <span
           v-if="slotProps.data.measurements && slotProps.data.measurements.length > 0"
@@ -122,19 +127,19 @@
         </span>
       </template>
     </Column>
-    <Column name="asset_connections" :header="$t('model.asset.asset_connections')">
+    <Column name="asset_connections" :header="$t('model.asset.asset_connections')" :hidden="basic">
       <template #body="slotProps">
         <span class="ren-pointer" @click="manageAssetConnections(slotProps.data)">
           {{ $t("view.manage_asset_connections") }}
         </span>
       </template></Column
     >
-    <Column name="edit" :header="$t('view.properties')">
+    <Column name="edit" :header="$t('view.properties')" :hidden="basic">
       <template #body="slotProps">
         <span class="ren-pointer" @click="manageAssetProperties(slotProps.data, $store.getters['view/assetDetailsKeys'])"> Manage properties </span>
       </template>
     </Column>
-    <Column name="edit" :header="$t('view.edit')">
+    <Column name="edit" :header="$t('view.edit')" :hidden="basic">
       <template #body="slotProps">
         <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
         <!-- <span class="ren-pointer" @click="editAsset(slotProps.data)"> Edit Asset </span> -->
@@ -142,7 +147,7 @@
     </Column>
     <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
     <template #header>
-      <div class="flex justify-content-between">
+      <div v-if="!hiddenFilters" class="flex justify-content-between">
         <Button type="button" icon="pi pi-filter-slash" :label="$t('view.button.filter')" class="p-button-outlined" @click="reload" />
         <Button type="button" icon="pi pi-filter-slash" :label="$t('view.button.clear_filter')" class="p-button-outlined" @click="clearFilter" />
       </div>
@@ -163,8 +168,10 @@
       </div> -->
     </template>
   </DataTable>
+  <Toolbar v-if="!basic">
+    <template #end><Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="assetAdd = true" /> </template>
+  </Toolbar>
 
-  <Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="assetAdd = true" />
   <Dialog v-model:visible="assetAdd" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <AssetForm @update:model-value="onCreate($event, 0)" @cancel="assetAdd = false"> </AssetForm>
   </Dialog>
@@ -238,7 +245,7 @@ import AssetConnectionManagementDialog from "./AssetConnectionManagementDialog.v
 import AssetCategorySelection from "./AssetCategorySelection.vue";
 import AssetProperties from "@/components/management/infrastructure/AssetProperties.vue";
 import AssetEdit from "@/components/management/infrastructure/AssetEdit.vue";
-
+import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 function initFilter() {
   return {
     label: { value: null },
@@ -264,8 +271,10 @@ export default {
     filters: { type: Array, default: () => initFilter() },
     page: { type: Number, default: 0 },
     offset: { type: Number, default: 0 },
+    hiddenFilters: { type: Boolean, default: false },
+    basic: { type: Boolean, default: false },
   },
-  emits: ["update:filters", "reload", "update:page"],
+  emits: ["update:filters", "reload", "update:page", "onSelect"],
   data() {
     return {
       mPage: this.page,
@@ -275,6 +284,8 @@ export default {
       selectedRow: null,
       childDialog: false,
       measurementDialog: false,
+      deferredEmitFilter: null,
+      selectedAsset: null,
     };
   },
   computed: {
@@ -285,10 +296,17 @@ export default {
       return [];
     },
   },
+  created() {
+    this.deferredEmitFilter = new DeferredFunction(this._emitFilter);
+  },
   methods: {
+    _emitFilter() {
+      // console.info("emitFilter: " + new Date());
+      this.$emit("update:filters", this.mFilters);
+    },
     onFilter(ev) {
       this.mFilters = ev.filters;
-      this.$emit("update:filters", ev.filters);
+      this.deferredEmitFilter.run();
     },
     setParent(row) {
       console.info(row);
@@ -357,6 +375,7 @@ export default {
       });
       await this.reload();
     },
+
     async reloadAssets(evt) {
       this.$emit("reload", evt);
     },
@@ -375,6 +394,14 @@ export default {
     clearFilter() {
       this.mFilters = initFilter();
       this.$emit("update:filters", this.mFilters);
+    },
+    onSelect(evt) {
+      if (this.selectedAsset == null || evt.id != this.selectedAsset.id) {
+        this.selectedAsset = evt;
+      } else {
+        this.selectedAsset = null;
+      }
+      this.$emit("onSelect", this.selectedAsset);
     },
   },
 };

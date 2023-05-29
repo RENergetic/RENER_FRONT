@@ -1,6 +1,56 @@
 import { v4 as uuidv4 } from "uuid";
 import { QueryBuilder } from "./ren_api/wrapper_api";
 import { RenRoles } from "../model/Enums";
+class DeferredFunction {
+  timeoutInstance = null;
+  timeout = null;
+  deferredF = null;
+  constructor(deferredF = null, timeout = 1500) {
+    this.deferredF = deferredF;
+    this.timeout = timeout;
+  }
+  _clear() {
+    if (this.timeoutInstance) {
+      clearTimeout(this.timeoutInstance);
+    }
+    this.timeoutInstance = null;
+  }
+  /**
+   *
+   * @param {*} deferredF deferred function
+   * @param {*} timeout
+   */
+  run(deferredF = this.deferredF, timeout = this.timeout) {
+    // let f = deferredF ? deferredF : this.deferredF;
+    var _this = this;
+    if (this.timeoutInstance) {
+      _this._clear();
+    }
+    var wrapper = () => {
+      // console.info("emitFilter");
+      deferredF();
+      _this._clear();
+    };
+    this.timeoutInstance = setTimeout(wrapper, timeout);
+  }
+  /**
+   *
+   * @param {*} deferredF deferred function
+   * @param {*} timeout
+   */
+  runAsync(deferredF = this.deferredF, timeout = this.timeout) {
+    var _this = this;
+    if (this.timeoutInstance) {
+      _this._clear();
+    }
+    var wrapper = async () => {
+      await deferredF();
+      _this._clear();
+    };
+    this.timeoutInstance = setTimeout(wrapper, timeout);
+  }
+}
+
 export default class RenUtils {
   vueInstance = null;
   host = document.location.origin;
@@ -12,6 +62,33 @@ export default class RenUtils {
   }
   uuid() {
     return uuidv4();
+  }
+
+  downloadJSON(obj, filename) {
+    var file = new Blob([JSON.stringify(obj)], { type: "application/json" });
+    var downloadLink = document.createElement("a");
+    downloadLink.download = filename + ".json";
+    downloadLink.href = window.URL.createObjectURL(file);
+    downloadLink.style.display = "none";
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+  }
+  readJSONFile(file) {
+    return new Promise((resolve, reject) => {
+      let content = "";
+      const reader = new FileReader();
+      // Wait till complete
+      reader.onloadend = function (e) {
+        content = e.target.result;
+        const result = JSON.parse(content); //content.split(/\r\n|\n/);
+        resolve(result);
+      };
+      reader.onerror = function (e) {
+        reject(e);
+      };
+      reader.readAsText(file);
+    });
   }
   /**
    * get default value if null/undefined
@@ -26,6 +103,12 @@ export default class RenUtils {
     var yyyy = today.getFullYear();
     today = mm + "/" + dd + "/" + yyyy + " " + today.getHours() + ":" + today.getMinutes();
     return today;
+  }
+  openNewTab(path) {
+    var parser = document.createElement("a");
+    parser.href = location;
+    parser.origin;
+    window.open(`${parser.origin}${path}`, "_blank");
   }
   // saveSettings(settingsKey, settings) {
   //   this.app.$store.commit(settingsKey, settings);
@@ -45,6 +128,27 @@ export default class RenUtils {
     // console.info(settings);
     this.app.$store.commit("settings", settings);
   }
+
+  localPanel(id, assetId) {
+    let panel = null;
+    if (assetId != null) {
+      panel = this.app.$store.getters["view/assetPanel"](id, assetId);
+      if (!panel.is_template) {
+        let index = this.app.$store.getters["view/informationPanelsMap"][id];
+        if (index != null) {
+          panel = this.app.$store.getters["view/informationPanels"][index];
+        }
+      }
+    } else {
+      let index = this.app.$store.getters["view/informationPanelsMap"][id];
+      if (index != null) {
+        panel = this.app.$store.getters["view/informationPanels"][index];
+      }
+    }
+    // console.info(panel);
+    return panel;
+  }
+
   async loadSettings() {
     let settings = await this.app.$ren.userApi.getSettings();
     console.info(settings);
@@ -124,11 +228,17 @@ export default class RenUtils {
     }
   }
 
-  measurementBackgroundColor(measurement /*,alpha*/) {
+  measurementBackgroundColor(measurement, tileSettings /*,alpha*/) {
     //tODO add alpha supprot
     let alpha = "80";
+    if (tileSettings && tileSettings.background == "none") {
+      return "none";
+    }
     if (measurement.type.color) {
-      let color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
+      let color;
+      if (tileSettings && tileSettings.background) {
+        color = tileSettings.background;
+      } else color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
       // console.info(measurement);
       // console.info(color);
       if (color.length == 7) {
@@ -166,10 +276,12 @@ export default class RenUtils {
     return key;
   }
   getUnit(measurement, panelSettings, conversionSettings) {
-    if (panelSettings.relativeValues) {
+    if (panelSettings && panelSettings.relativeValues) {
       return "%";
     }
-    let mt = conversionSettings[measurement.type.physical_name];
+    let domainKey = measurement.domain + "_" + measurement.type.physical_name;
+    let defaultKey = "default_" + measurement.type.physical_name;
+    let mt = conversionSettings[domainKey] ? conversionSettings[domainKey] : conversionSettings[defaultKey];
     // console.info(conversionSettings);
     return mt ? mt : measurement.type.unit;
   }
@@ -177,7 +289,8 @@ export default class RenUtils {
   convertPanelData(panel, pData, settings) {
     var mDict = {};
     //TODO: initialize this dictionary in the vuex store
-    let cp = JSON.parse(JSON.stringify(pData));
+    // console.error(settings);
+    var cp = pData; //
     if (panel && panel.tiles) {
       for (let tile of panel.tiles) {
         for (let m of tile.measurements) {
@@ -186,23 +299,27 @@ export default class RenUtils {
       }
     }
     //TODO: convert min, max, prediction etc
-    // console.info(pData);
     for (let mId in mDict) {
       let m = mDict[mId];
-      var newUnit = settings[m.type.physical_name];
+      // console.info(m);
+      var newUnit = this.getUnit(m, null, settings); // settings[m.type.physical_name];
       // console.info(m.type.physical_name + " " + newUnit);
       if (newUnit) {
         let value = pData.current[m.aggregation_function][m.id];
         let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
         cp.current[m.aggregation_function][m.id] = newV;
+        if (pData.max) {
+          let value = pData.max[m.aggregation_function][m.id];
+          let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
+          cp.max[m.aggregation_function][m.id] = newV;
+        }
       }
     }
-    // console.info(cp);
     return cp;
   }
   calcPanelRelativeValues(panel, pData, settings) {
     var accuDict = {};
-
+    // console.info(settings);
     // var aggDict = { current: { last: {} }, predictions: pData.predictions };
     //TODO: aggregate also predictions - not only current values
     //TODO: include min values
@@ -232,6 +349,7 @@ export default class RenUtils {
       let m = mDict[mId];
       // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
       let key = this.aggKey(m, settings);
+      // console.info(key);
       let factor = m.type.factor;
       // let value = pData.current.last[m.id] * factor;
       // let aggValue = this.valueAgg(key, value, m.type.base_unit, accuDict);
@@ -283,3 +401,5 @@ export default class RenUtils {
     return dict;
   }
 }
+
+export { DeferredFunction };

@@ -1,8 +1,7 @@
 <template>
   <DotMenu v-if="loggedIn" :model="menuModel" :fixed="true" />
   <div v-if="settings.panelVisibility" style="position: relative">
-    <!-- {{ $store.getters["view/informationPanels"] }} -->
-    <energy-flow v-if="panel" ref="panel" :asset-id="null" :panel="panel" :settings="panelSettings"></energy-flow>
+    <InformationPanelWrapper v-if="panel" ref="panel" :locked="locked" :panel="panel" :panel-settings="panelSettings"></InformationPanelWrapper>
     <div v-else style="width: 50rem; max-width: 95vw; margin: auto; padding-top: 5rem">
       <h4 style="width: 100%; margin: auto">{{ $t("view.empty_home_dashboard") }}</h4>
     </div>
@@ -15,11 +14,9 @@
   </div>
   <RoleMatrix v-if="false" />
   <RenSettingsDialog ref="homeSettingsDialog">
-    <!--  @update="onSettingsUpdate()" -->
     <template #settings><HomeSettings @update="reloadSettings()"></HomeSettings></template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="panelSettingsDialog">
-    <!--  @update="onSettingsUpdate()" -->
     <template #settings><PanelSettings @update="reloadPanelSettings()"></PanelSettings></template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="conversionSettingsDialog">
@@ -37,7 +34,7 @@ import RoleMatrix from "@/components/miscellaneous/settings/RoleMatrix.vue";
 import NotificationList from "@/components/management/notification/NotificationList.vue";
 // import SettingsDialog from "@/components/miscellaneous/settings/SettingsDialog.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
-import EnergyFlow from "@/components/dashboard/EnergyFlow.vue";
+import InformationPanelWrapper from "@/components/dashboard/informationpanel/InformationPanelWrapper.vue";
 import DemandList from "@/components/user/demand/DemandList.vue";
 import FilterSettings from "@/components/miscellaneous/settings/FilterSettings.vue";
 import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
@@ -55,21 +52,16 @@ export default {
     HomeSettings,
     PanelSettings,
     NotificationList,
-    EnergyFlow,
+    InformationPanelWrapper,
   },
   data() {
     return {
-      roles: RenRoles,
-
       loaded: false,
       grid: null,
       locked: true,
-      notifiationDialog: false,
-      settingsChange: false,
       settings: this.$store.getters["settings/home"],
       panel: this.$store.getters["view/homePanel"],
       panelSettings: this.$store.getters["settings/panel"],
-      // layout: this.$store.getters["settings/homeLayout"],
     };
   },
   computed: {
@@ -158,14 +150,8 @@ export default {
     reloadPanelSettings() {
       this.panelSettingsDialog = this.$store.getters["settings/panel"];
     },
-
     async toggleLock() {
       this.locked = !this.locked;
-    },
-
-    viewNotification() {
-      //TODO: load here notifications for tile
-      this.notifiationDialog = true;
     },
   },
 };

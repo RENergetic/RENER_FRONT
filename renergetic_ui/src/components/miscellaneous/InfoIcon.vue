@@ -1,7 +1,7 @@
 <template>
   <OverlayPanel ref="InfoPanel" style="max-width: 25rem" append-to="body" :show-close-icon="showCloseIcon">
     <h3 v-if="header" class="info-header"><slot ref="header" name="header" /></h3>
-    <div v-if="content" class="info-content"><slot name="content" /></div>
+    <div class="info-content"><slot name="content" /></div>
   </OverlayPanel>
   <div v-if="!showIcon" @mouseleave="$refs.InfoPanel.toggle" @mouseover="$refs.InfoPanel.toggle">
     <slot name="body" />
@@ -43,6 +43,7 @@ export default {
   },
   updated: function () {
     this.isHeader = !!this.$slots.header;
+    this.isContent = !!this.$slots.content;
   },
   methods: {},
 };

@@ -84,11 +84,11 @@
     <div class="flex justify-content-between">
       <RenPaginator ref="pag" v-model:offset="mOffset" :total-rows="mDashboards.length" @update="searchAsset" />
     </div>
-    <div class="flex justify-content-between">
-      <div v-if="canEdit" style="text-align: end">
-        <Button icon="pi pi-plus-circle" :label="$t('view.button.add')" @click="addDialog = true" />
-      </div>
-    </div>
+    <Toolbar>
+      <template #end>
+        <Button icon="pi pi-plus-circle" :label="$t('view.button.add')" class="mr-2" @click="addDialog = true" />
+      </template>
+    </Toolbar>
   </div>
   <Dialog v-model:visible="editDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <DashboardForm v-if="selectedRow" :dashboard="selectedRow" @save="onEdit" @cancel="editDialog = false" />

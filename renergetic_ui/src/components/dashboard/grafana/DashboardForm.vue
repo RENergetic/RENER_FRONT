@@ -37,11 +37,8 @@
           :errors="v$.mDashboard.label.$silentErrors"
         />
 
-        <!-- model -->
-        <div v-if="false" class="field grid">
-          <label for="dasboardModel" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.dashboard.model") }} </label>
-
-          <div class="col-12 md:col-10">
+        <!-- <ren-input-wrapper v-if="false" :text-label="'model.dashboard.model'">
+          <template #content>
             <Dropdown
               id="dasboardModel"
               v-model="mDashboard.ext.model"
@@ -50,8 +47,8 @@
               :options="$store.getters['view/dashboardModels']"
               :placeholder="$t('view.select_dashboard_model')"
             />
-          </div>
-        </div>
+          </template>
+        </ren-input-wrapper> -->
         <ren-input-wrapper :text-label="'model.dashboard.measurement_type'">
           <template #content>
             <Dropdown
@@ -96,7 +93,7 @@ export default {
   emits: ["update:modelValue", "save", "cancel"],
   setup: () => ({ v$: useVuelidate() }),
   data() {
-    //TODO: copy dashboard object to mDashboard - otherwise we modife element  from the list and it hhas to be refreshed
+    //TODO: copy dashboard object to mDashboard - otherwise we modify element  from the list and it hhas to be refreshed
     let mDashboard = this.dashboard ? this.dashboard : { ext: {} };
     if (!mDashboard.ext) {
       mDashboard.ext = {};
@@ -109,7 +106,6 @@ export default {
     return {
       mDashboard: mDashboard,
       models: this.$store.getters["view/dashboardModels"],
-      // units: this.$store.getters["view/dashboardUnits"],
       mUnits: mUnits,
       selectedPhysicalUnit: this.mDashboard && this.mDashboard.measurement_type ? this.mDashboard.measurement_type.physical_name : null,
 

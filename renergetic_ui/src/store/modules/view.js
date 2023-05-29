@@ -59,6 +59,7 @@ export default {
       state.measurementTypes = groupMeasurementTypes(getF("measurement_types", []));
       state.assetPanels = getF("asset_panels", []);
       state.assetPanelsMap = mapAssetPanelId(state.assetPanels);
+      console.info(state.assetPanelsMap);
       state.dashboards = getF("dashboards", []);
       state.dashboardMap = mapPanelId(state.dashboards);
       state.demands = getF("demands", []);
@@ -120,12 +121,15 @@ export default {
     measurementTypes: (state) => {
       return state.measurementTypes;
     },
-    convertValue: (state) => (measurementType, value, unit) => {
-      if (unit == null || measurementType.unit == unit || measurementType.unit == "%" || unit == "%") {
+    convertValue: (state) => (currentMeasurementType, value, newUnit) => {
+      if (newUnit == null || currentMeasurementType.unit == newUnit || currentMeasurementType.unit == "%" || newUnit == "%") {
         return value;
       }
-      let mt = state.measurementTypes[measurementType.physical_name].find((mt) => mt.unit == unit);
-      return (value * measurementType.factor) / mt.factor;
+      //get new unit
+      let mt = state.measurementTypes[currentMeasurementType.physical_name].find((mt) => mt.unit == newUnit);
+
+      return (value * currentMeasurementType.factor) / mt.factor;
+      // return (value / currentMeasurementType.factor) * mt.factor;
     },
     locationList: (state /* getters*/) => {
       return state.locationList;
@@ -181,8 +185,9 @@ export default {
       }
       return null;
     },
-    assetPanelsMap: (state /* getters*/) => {
-      return state.assetPanelsMap;
+    assetPanel: (state /* getters*/) => (panelId, assetId) => {
+      let index = state.assetPanelsMap[`${panelId}_${assetId}`];
+      return state.assetPanels[index] ? state.assetPanels[index].panel : null;
     },
     informationPanelsMap: (state /* getters*/) => {
       return state.informationPanelsMap;

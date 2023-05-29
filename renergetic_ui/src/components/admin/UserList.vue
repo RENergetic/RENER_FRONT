@@ -26,8 +26,8 @@
     </DataTable>
     <!-- JumpToPageInput -->
     <Toolbar>
-      <template #start>
-        <Button :label="$t('view.add_user')" icon="pi pi-user-plus" class="mr-2 p-button-success" @click="create" />
+      <template #end>
+        <Button :label="$t('view.add_user')" icon="pi pi-user-plus" class="mr-2" @click="create" />
       </template>
     </Toolbar>
 
@@ -65,7 +65,6 @@ export default {
       editDialog: false,
       addDialog: false,
       selectedUser: null,
-      // mOffset: this.offset,
     };
   },
   async created() {},
@@ -102,15 +101,7 @@ export default {
       });
       this.addDialog = false;
     },
-    // async next() {
-    //   if (this.assetList.length === 0) return;
-    //   this.mPage += 1;
-    //   this.$emit("update:page", this.mPage);
-    // },
-    // async previous() {
-    //   this.mPage = Math.max(0, this.mPage - 1);
-    //   this.$emit("update:page", this.mPage);
-    // },
+
     onRolesReload() {
       //evt
       // console.info("reload roles")

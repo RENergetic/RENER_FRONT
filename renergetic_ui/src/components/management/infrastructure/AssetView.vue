@@ -100,6 +100,9 @@
   </div>
 </template>
 <script>
+/**
+ * currently not used
+ */
 export default {
   name: "AssetView",
   components: {},

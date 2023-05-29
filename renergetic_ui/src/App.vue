@@ -22,6 +22,9 @@
       <template #right> </template>
     </Footer>
   </div>
+  <div v-else-if="keycloakState == -1">
+    <h2>Keycloak not initialized</h2>
+  </div>
   <div v-else-if="keycloakState == 0">
     <h2>Keycloak not initialized</h2>
   </div>
@@ -127,7 +130,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   // text-align: center;
-  color: #2c3e50;
+  // color: #2c3e50;
 }
 
 #nav {

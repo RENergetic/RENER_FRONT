@@ -1,6 +1,6 @@
 <template>
   <div v-if="pdata" :id="gridId" style="width: 100%; position: relative; display: block; height: fit-content" class="grid-stack">
-    <InformationTile
+    <InformationTileGridWrapper
       v-for="(t, index) in tiles"
       :key="t.id"
       :slot-props="{ tile: t, index: index }"
@@ -9,24 +9,27 @@
       :settings="settings"
       @edit="onEdit"
       @notification="viewNotification"
+      @timeseries-update="onTimeseriesUpdate"
     />
   </div>
 </template>
 <script>
 import { GridStack } from "gridstack";
-import InformationTile from "./InformationTile.vue";
+import InformationTileGridWrapper from "./InformationTileGridWrapper.vue";
 // import "gridstack/dist/h5/gridstack-dd-native";
 import "gridstack/dist/gridstack.min.css";
 export default {
   name: "PanelTile",
-  components: { InformationTile },
+  components: { InformationTileGridWrapper },
   props: {
     pdata: { type: Object, default: () => null },
     tile: {
       type: Object,
       default: () => ({}),
     },
+    settings: { type: Object, default: () => ({}) },
   },
+  emits: ["timeseries-update"],
   data() {
     return {
       grid: null,
@@ -54,6 +57,9 @@ export default {
     this.initGrid();
   },
   methods: {
+    onTimeseriesUpdate(evt) {
+      this.$emit("timeseries-update", evt);
+    },
     initGrid() {
       if (this.grid != null) this.grid.destroy(false);
       let grid = GridStack.init({ float: true }, `#${this.gridId}`);

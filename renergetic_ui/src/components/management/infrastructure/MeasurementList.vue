@@ -6,13 +6,15 @@
   </InfoIcon>
   <DataTable :value="measurementList">
     <!-- <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.measurement.' + col)"></Column> -->
+    <Column field="id" :header="$t('model.measurement.id')"></Column>
     <Column field="name" :header="$t('model.measurement.name')"></Column>
     <Column field="label" :header="$t('model.measurement.label')"></Column>
     <Column field="type" :header="$t('model.measurement.type')">
       <template #body="slotProps">
-        <span> {{ $t("enums.metric_type." + slotProps.data.type.metric_type) }} [{{ slotProps.data.type.unit }}] </span>
+        <span> {{ $t("enums.metric_type." + slotProps.data.type.name) }} [{{ slotProps.data.type.unit }}] </span>
       </template>
     </Column>
+    <Column field="domain" :header="$t('model.measurement.domain')"></Column>
     <Column field="direction" :header="$t('model.measurement.direction')">
       <template #body="slotProps">
         <span v-if="slotProps.data.direction.direction"> {{ $t("model.measurement.direction_out") }}</span>

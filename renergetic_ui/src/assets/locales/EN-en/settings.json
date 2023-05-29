@@ -32,6 +32,9 @@
   "information_panel_visibility": "Information panels:",
   "time_filter": "Time filter",
   "submit": "Submit",
+  "templates": {
+    "prediction_interval": "Predict by: {0}"
+  },
   "measurement_details": {
     "color": "Color"
   },
@@ -49,5 +52,10 @@
     "voltage": "Voltage",
     "co2eq": "CO2 eq",
     "flow": "Flow"
+  },
+  "domain": {
+    "heat": "Heat",
+    "default": "Default",
+    "electricity": "Electricity"
   }
 }
