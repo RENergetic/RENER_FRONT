@@ -62,7 +62,7 @@
           v-model="filterModel.value"
           :options="$store.getters['view/assetCategories']"
           :placeholder="$t('view.select_asset_category')"
-          @change="filterCallback"
+          @change="filterCallback()"
         >
           <template #value="slotProps">
             <div v-if="slotProps.value">
@@ -82,6 +82,14 @@
             <div v-else>{{ slotProps.option.label }}</div>
           </template>
         </Dropdown>
+      </template>
+      <template #body="slotProps">
+        <span v-if="slotProps.data.asset_category" @click="manageAssetCategories(slotProps.data)">
+          {{ slotProps.data.asset_category.name }}
+        </span>
+        <span v-else class="disabled" @click="manageAssetCategories(slotProps.data)">
+          {{ $t("view.asset_category") }}
+        </span>
       </template>
     </Column>
     <Column field="child" :header="$t('model.asset.child')" :hidden="basic">
@@ -169,6 +177,7 @@
   </Dialog>
   <AssetSelectDialog ref="assetSelectDialog" @select="onParentChange" />
   <AssetConnectionManagementDialog ref="assetConnectionManagementDialog" />
+  <AssetCategorySelection ref="assetCategorySelection" />
   <AssetProperties ref="assetPropertiesDialog" @submit="updateDetails" />
   <AssetEdit ref="assetEditDialog" @submit="updateAsset" />
 
@@ -233,6 +242,7 @@ import AssetForm from "./AssetForm.vue";
 import AssetSelectDialog from "./AssetSelectDialog.vue";
 import MeasurementSelect from "./MeasurementSelect.vue";
 import AssetConnectionManagementDialog from "./AssetConnectionManagementDialog.vue";
+import AssetCategorySelection from "./AssetCategorySelection.vue";
 import AssetProperties from "@/components/management/infrastructure/AssetProperties.vue";
 import AssetEdit from "@/components/management/infrastructure/AssetEdit.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
@@ -253,6 +263,7 @@ export default {
     AssetSelectDialog,
     MeasurementSelect,
     AssetConnectionManagementDialog,
+    AssetCategorySelection,
   },
 
   props: {
@@ -308,6 +319,11 @@ export default {
     manageAssetProperties(row, detailsKeys) {
       this.$refs.assetPropertiesDialog.open(row, detailsKeys);
     },
+    ////
+    manageAssetCategories(row) {
+      this.$refs.assetCategorySelection.open(row);
+    },
+    ////
     editAsset(row) {
       this.$refs.assetEditDialog.open(row);
     },
