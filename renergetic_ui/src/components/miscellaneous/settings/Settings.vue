@@ -72,6 +72,9 @@
         <div v-else-if="s.type == 'Color'">
           <ColorPicker v-model="mModel[s.key]" v-tooltip="s.description" />
         </div>
+        <div v-else-if="s.type == 'Datetime'">
+          <Calendar :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" show-time hour-format="24" />
+        </div>
 
         <div v-else-if="s.type == 'Submit'">
           <Button :id="s.key" v-tooltip="s.description" :label="s.label" @click="s.ext.click" />
@@ -91,6 +94,7 @@ import Slider from "primevue/slider";
 import InputNumber from "primevue/inputnumber";
 import ListBox from "primevue/listbox";
 import ColorPicker from "primevue/colorpicker";
+import Calendar from "primevue/calendar";
 export default {
   name: "Settings",
   components: {
@@ -99,6 +103,7 @@ export default {
     InputNumber,
     ListBox,
     ColorPicker,
+    Calendar,
     // ToggleButton
   },
   props: {
@@ -120,7 +125,7 @@ export default {
   watch: {
     mModel: {
       handler: function (newVal) {
-        // console.debug(newVal);
+        console.debug(newVal);
         console.info("settings change");
         this.$emit("update:settings", newVal);
       },
@@ -140,7 +145,7 @@ export default {
           columns = setting.col ? setting.col : this.columns;
           break;
       }
-      console.info(columns);
+      // console.info(columns);
       // s.type == Number && s.mode == 'slider'
       return `field grid col-${columns}`;
     },
