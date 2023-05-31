@@ -34,6 +34,17 @@ var management = [
     },
     component: () => import("../views/management/infrastructure/CategoryListView.vue"),
   },
+  {
+    path: "/management/notification",
+    name: "NotificationList",
+    props: {},
+    meta: {
+      isAuthenticated: true,
+      roles: ["ren-admin", "ren-technical-manager"],
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
+    },
+    component: () => import("../views/management/NotificationListView.vue"),
+  },
 ];
 
 export default management;

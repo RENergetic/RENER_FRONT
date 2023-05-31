@@ -218,6 +218,8 @@ export default {
         ...this._grafanaDashboardManagement(),
         ...this._panelManagementItems(),
         ...this._measurementItems(),
+        ...this._notificationItems(),
+
         ...this._categoryItems(),
       ];
       return [
@@ -312,6 +314,19 @@ export default {
           to: "/management/measurement",
           command: () => {
             this.$router.push({ name: "MeasurementList" });
+          },
+        },
+      ];
+    },
+
+    _notificationItems() {
+      return [
+        {
+          label: this.$t("menu.manage_notifications"),
+          icon: "pi pi-fw pi-list",
+          to: "/management/notification",
+          command: () => {
+            this.$router.push({ name: "NotificationList" });
           },
         },
       ];

@@ -1,7 +1,7 @@
 function parseDateFilter(filter) {
   //TODO:   time zone i should use?
-  let from = null;
-  let to = null;
+  let from = filter.date_from ? filter.date_from.getTime() : null;
+  let to = filter.date_to ? filter.date_to.getTime() : null;
   var date = new Date();
   let f = filter ? filter : {};
   switch (f.timeInterval) {

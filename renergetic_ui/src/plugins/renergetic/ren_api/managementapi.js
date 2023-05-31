@@ -12,6 +12,17 @@ export default class ManagementApi extends RestComponent {
   ////                                                   /////
   ////////////////////////////////////////////////////////////
   //List assets
+
+  async listNotifications(filter = {}) {
+    let endpoint = "/api/notification";
+
+    let args = this.parseArgs({ ...filter });
+    endpoint = `${endpoint}?${args}`;
+    if (!filter) {
+      filter = {};
+    }
+    return this.get(endpoint);
+  }
   async listAsset(params = undefined, offset = 0, limit = 20) {
     // Params: category, type, name, owner_id, parent_id
     //TODO: add filtering in the backed

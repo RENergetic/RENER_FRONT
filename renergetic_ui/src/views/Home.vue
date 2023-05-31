@@ -31,7 +31,7 @@
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import HomeSettings from "@/components/miscellaneous/settings/HomeSettings.vue";
 import RoleMatrix from "@/components/miscellaneous/settings/RoleMatrix.vue";
-import NotificationList from "@/components/management/notification/NotificationList.vue";
+import NotificationList from "@/components/user/NotificationList.vue";
 // import SettingsDialog from "@/components/miscellaneous/settings/SettingsDialog.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 import InformationPanelWrapper from "@/components/dashboard/informationpanel/InformationPanelWrapper.vue";
