@@ -53,5 +53,6 @@
   "signup": "Sign Up",
   "settings": "Settings",
   "unit_settings": "Unit settings",
-  "view": "View"
+  "view": "View",
+  "manage_notifications":"Notifications"
 }

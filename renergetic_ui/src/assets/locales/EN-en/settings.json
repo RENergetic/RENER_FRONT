@@ -3,6 +3,9 @@
   "off": "Off",
   "enabled": "Enabled",
   "disabled": "Disabled",
+
+  "date_from":"From",
+  "date_to":"To",
   "hidden": "Hidden",
   "visible": "Visible",
   "feedback": "Feedback",

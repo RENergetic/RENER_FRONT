@@ -19,25 +19,28 @@ export default {
   components: { NotificationList, NotificationFilter },
   data() {
     return {
-      filters: null,
       notificationList: [],
     };
   },
   watch: {
-    filters: function () {
-      //TODO pass newval ?
-      this.loadData();
-    },
+    // filters: function () {
+    //   //TODO pass newval ?
+    //   this.loadData();
+    // },
   },
   async mounted() {
     await this.loadData();
   },
   methods: {
-    onSettingsUpdate() {},
+    async onSettingsUpdate() {
+      this.loadData();
+    },
     async loadData() {
       //todo: add some filters
+      var filter = this.$store.getters["settings/parsedFilter"]("notification_filter");
+      console.info(filter);
       this.$refs.spinner.run(async () => {
-        this.notificationList = await this.$ren.managementApi.listNotifications();
+        this.notificationList = await this.$ren.managementApi.listNotifications(filter);
       });
     },
   },

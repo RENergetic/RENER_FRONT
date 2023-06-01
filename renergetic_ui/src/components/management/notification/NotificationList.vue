@@ -26,7 +26,6 @@
       </Column>
       <Column field="message" :header="$t('model.notification.message')">
         <template #body="slotProps">
-          {{ slotProps.data }}
           <span v-if="$te('notifications.' + slotProps.data.message, 'en')">
             {{ $t("notifications." + slotProps.data.message, messageParams(slotProps.data)) }}
           </span>
@@ -71,9 +70,9 @@
     </DataTable>
     <!-- information_tile_id todo: -->
   </div>
-  <div v-else>
+  <!-- <div v-else>
     <h4 v-if="title">{{ $t("view.no_notification_list") }}</h4>
-  </div>
+  </div> -->
 </template>
 <script>
 // import { NotificationContext } from "@/plugins/model/Enums.js";

@@ -111,7 +111,8 @@
           "notification_timestamp":"Generation time",
           "value":"Value",
           "no_dashboard":"undefined",
-          "measurement":"Measurement"
+          "measurement":"Measurement",
+          "message":"Message"
           
      }
 }
