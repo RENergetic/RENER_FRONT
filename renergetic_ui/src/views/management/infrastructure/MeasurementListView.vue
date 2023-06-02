@@ -1,7 +1,7 @@
 <template>
-  <Card class="col-12" style="width: 90%; margin: auto; margin-top: 1rem">
+  <Card class="col-12" style="width: 95%; margin: auto; margin-top: 1rem">
     <template #content>
-      <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 80rem">
+      <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 100%">
         <!--  max-width: 80vw -->
         <template #content>
           <measurement-list v-model:filters="filters" :measurement-list="measurementList" @reload="loadMeasurements" />

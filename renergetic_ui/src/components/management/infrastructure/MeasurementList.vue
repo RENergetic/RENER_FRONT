@@ -4,24 +4,66 @@
       <!-- some info -->
     </template>
   </InfoIcon>
-  <DataTable :value="measurementList">
+  <DataTable
+    v-model:filters="filters"
+    :value="measurementList"
+    filter-display="row"
+    :global-filter-fields="['name', 'label', 'type.name', 'type.physical_name', 'domain', 'direction', 'asset.name']"
+  >
     <!-- <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.measurement.' + col)"></Column> -->
     <Column field="id" :header="$t('model.measurement.id')"></Column>
-    <Column field="name" :header="$t('model.measurement.name')"></Column>
-    <Column field="label" :header="$t('model.measurement.label')"></Column>
-    <Column field="type" :header="$t('model.measurement.type')">
+    <Column field="name" :header="$t('model.measurement.name')" :show-filter-menu="false">
+      <template #filter="{ filterModel, filterCallback }">
+        <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" /> </template
+    ></Column>
+    <Column field="label" :header="$t('model.measurement.label')" :show-filter-menu="false">
+      <template #filter="{ filterModel, filterCallback }">
+        <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
+      </template>
+    </Column>
+    <Column field="physical_name" filter-field="type.physical_name" :header="$t('model.measurement.physical_name')" :show-filter-menu="false">
+      <template #body="slotProps">
+        <span> {{ $t("enums.metric_type." + slotProps.data.type.physical_name) }} </span>
+      </template>
+      <template #filter="{ filterModel, filterCallback }">
+        <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
+      </template>
+    </Column>
+    <Column field="asset" filter-field="asset.name" :header="$t('model.measurement.asset')">
+      <template #body="slotProps">
+        <span> {{ slotProps.data.asset ? slotProps.data.asset.name : slotProps.data.asset_category }} </span>
+      </template>
+    </Column>
+    <Column field="type" filter-field="type.name" :header="$t('model.measurement.type')" :show-filter-menu="false">
       <template #body="slotProps">
         <span> {{ $t("enums.metric_type." + slotProps.data.type.name) }} [{{ slotProps.data.type.unit }}] </span>
       </template>
+      <template #filter="{ filterModel, filterCallback }">
+        <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
+      </template>
     </Column>
-    <Column field="domain" :header="$t('model.measurement.domain')"></Column>
-    <Column field="direction" :header="$t('model.measurement.direction')">
+
+    <Column field="domain" :header="$t('model.measurement.domain')" :show-filter-menu="false">
+      <template #filter="{ filterModel, filterCallback }">
+        <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
+      </template>
+    </Column>
+    <Column field="direction" :header="$t('model.measurement.direction')" :show-filter-menu="false">
       <template #body="slotProps">
         <span v-if="slotProps.data.direction.direction"> {{ $t("model.measurement.direction_out") }}</span>
         <span v-else-if="slotProps.data.direction == false"> {{ $t("model.measurement.direction_in") }}</span>
         <span v-else> {{ $t("model.measurement.direction_null") }}</span>
       </template>
+      <!-- <template #filter="{ filterModel, filterCallback }">
+        <TriStateCheckbox v-model="filterModel.value" @change="filterCallback()" />
+      </template> -->
     </Column>
+    <Column field="sensor_name" :header="$t('model.measurement.sensor_name')" :show-filter-menu="false">
+      <template #filter="{ filterModel, filterCallback }">
+        <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
+      </template>
+    </Column>
+
     <Column field="measurement_details" :header="$t('model.measurement.details')">
       <template #body="slotProps">
         <span @click="showDetails(slotProps)">
@@ -54,6 +96,7 @@ export default {
       // measurementAdd: false,
       measurementList: [],
       columns: [],
+      filters: this.initFilters(),
       selectedRow: null,
       measurementEditDialog: false,
       measurementDetailsDialog: false,
@@ -68,6 +111,18 @@ export default {
     }
   },
   methods: {
+    initFilters() {
+      return {
+        name: { value: null },
+        label: { value: null },
+        "type.name": { value: null },
+        "type.physical_name": { value: null },
+        domain: { value: null },
+        direction: { value: null },
+        sensor_name: { value: null },
+        // "asset.name": { value: null },
+      };
+    },
     onDetailsUpdate(details) {
       this.selectedRow.data.measuremet_details = details;
       alert("Save error, not implemented");

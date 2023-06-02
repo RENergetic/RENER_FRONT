@@ -1,11 +1,12 @@
 <template>
   <!-- {{ schema }} -->
   <Settings :schema="schema" :settings="mModel"></Settings>
+  <!-- {{ mModel }} -->
 </template>
 
 <script>
 import Settings from "@/components/miscellaneous/settings/Settings.vue";
-var types = {
+var detailTypes = {
   color: "Color",
 };
 export default {
@@ -33,18 +34,23 @@ export default {
   },
   async mounted() {
     this.keys = Object.keys(this.mModel);
+    this.detailKeys = Object.keys(detailTypes);
+
     this.schema = this.getSchema();
   },
 
   methods: {
     getType(key) {
-      if (types[key]) {
-        return types[key];
+      if (detailTypes[key]) {
+        return detailTypes[key];
       }
       return String;
     },
     getSetting(key) {
       let mt = this.getType(key);
+      if (!this.mModel[key]) {
+        this.mModel[key] = null;
+      }
       var ext = {};
       if (mt == Boolean) {
         ext = {
@@ -60,7 +66,7 @@ export default {
       };
     },
     getSchema() {
-      var schema = this.keys.map((k) => this.getSetting(k));
+      var schema = this.detailKeys.map((k) => this.getSetting(k));
       return schema;
     },
   },

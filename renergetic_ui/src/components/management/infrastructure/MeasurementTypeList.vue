@@ -21,6 +21,9 @@
         <span v-else> {{ $t("model.measurement.direction_null") }}</span>
       </template>
     </Column>
+    <Column field="sensor_name" :header="$t('model.measurement.sensor_name')"></Column>
+    <Column field="category" :header="$t('model.measurement.asset_category')"></Column>
+
     <Column field="measurement_details" :header="$t('model.measurement.details')">
       <template #body="slotProps">
         <span @click="showDetails(slotProps)">
@@ -45,7 +48,7 @@ import InfoIcon from "../../miscellaneous/InfoIcon.vue";
 import MeasurementForm from "./MeasurementForm.vue";
 import MeasurementDetails from "./MeasurementDetails.vue";
 export default {
-  name: "MeasurementList",
+  name: "MeasurementTypeList",
   components: { InfoIcon, MeasurementForm, MeasurementDetails },
   props: {},
   data() {

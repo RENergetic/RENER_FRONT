@@ -1,5 +1,4 @@
 function parseDateFilter(filter) {
-  //TODO:   time zone i should use?
   let from = filter.date_from ? filter.date_from.getTime() : null;
   let to = filter.date_to ? filter.date_to.getTime() : null;
   var date = new Date();
@@ -23,7 +22,7 @@ function parseDateFilter(filter) {
       to = new Date(date.getFullYear(), 0, 1).getTime();
       break;
     default:
-      from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+      if (from == null) from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
       break;
   }
 

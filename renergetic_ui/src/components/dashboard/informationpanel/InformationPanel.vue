@@ -213,9 +213,9 @@ export default {
       if (panelData) {
         let mPData = JSON.parse(JSON.stringify(panelData));
         mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, mPData, this.settings);
-        console.error(mPData.max);
+        // console.error(mPData.max);
         mPData = this.$ren.utils.convertPanelData(this.mPanel, mPData, this.$store.getters["settings/conversion"]);
-        console.error(mPData.max);
+        // console.error(mPData.max);
         this.mPData = mPData;
       }
     },

@@ -67,7 +67,7 @@ import icons from "./icons";
 function validateTileSettings(tile, settings, ctx) {
   if (tile.props) {
     return {
-      label: ctx.$t(`enums.measurement_name.${tile.name}`, tile.label),
+      label: ctx.$te(`enums.measurement_name.${tile.name}`) ? ctx.$t(`enums.measurement_name.${tile.name}`) : tile.label,
       icon: icons[tile.props.icon],
       icon_visibility: tile.props.icon_visibility != null ? tile.props.icon_visibility : true,
       legend: tile.props.legend != null ? tile.props.legend : settings.legend,

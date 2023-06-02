@@ -76,7 +76,13 @@
           "direction": "Direction",
           "direction_out": "Out",
           "direction_in": "In",
-          "direction_null": "N/A"
+          "direction_null": "N/A",
+          "domain":"Domain",
+          "sensor_name":"Sensor name",
+          "asset_category":"Asset category",
+          "physical_name":"Physical name",
+          "asset":"Asset"
+
      },
      "panel": {
           "name": "Name",
