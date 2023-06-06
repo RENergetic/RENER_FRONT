@@ -66,6 +66,17 @@ const DashboardMeasurementTypes = Object.freeze({
   energy: "energy",
   power: "power",
 });
+const MeasurementDomains = init({
+  electricity: "electricity",
+  heat: "heat",
+  none: "none",
+});
+
+const MeasurementDirection = init({
+  in: "in",
+  out: "out",
+  none: "none",
+});
 
 const AssetConnectionType = Object.freeze({
   OWNER: "owner",
@@ -143,4 +154,6 @@ export {
   DemandActionType,
   MeasurementDetailsKeys,
   DashboardMeasurementTypes,
+  MeasurementDomains,
+  MeasurementDirection,
 };

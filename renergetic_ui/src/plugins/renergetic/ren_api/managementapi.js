@@ -175,7 +175,11 @@ export default class ManagementApi extends RestComponent {
       params: { ...params, offset: offset, limit: limit },
     });
   }
-
+  async addMeasurement(measurement) {
+    // TODO: -> only allow to update labels ,  color, and key-value properties
+    if (measurement.type != undefined) measurement.type = measurement.type.id;
+    return this.post(`/api/measurements/${measurement.id}`, measurement);
+  }
   async updateMeasurement(measurement) {
     // TODO: -> only allow to update labels ,  color, and key-value properties
     if (measurement.type != undefined) measurement.type = measurement.type.id;
@@ -184,6 +188,18 @@ export default class ManagementApi extends RestComponent {
         this.emitError(`Measurement ${measurement.id} not found: ${e.message}`, {
           code: "measurement_not_found",
           args: [measurement.id],
+        });
+        return true;
+      }
+    });
+  }
+
+  async deleteMeasurement(measurementId) {
+    return this.delete(`/api/measurements/${measurementId}`, null, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`Measurement ${measurementId} not found: ${e.message}`, {
+          code: "measurement_not_found",
+          args: [measurementId],
         });
         return true;
       }
@@ -221,19 +237,7 @@ export default class ManagementApi extends RestComponent {
       return true;
     });
   }
-  async addMeasurement(measurement) {
-    if (measurement.type != undefined) measurement.type = measurement.type.id;
-    return this.axios
-      .post(`/api/measurements`, measurement, {
-        headers: { "Content-type": "application/json; charset=UTF-8" },
-      })
-      .then((response) => {
-        return response.data;
-      })
-      .catch(function (error) {
-        console.error("add measurement error" + error.message);
-      });
-  }
+
   async searchMeasurement(q) {
     if (q === "") {
       return [];
