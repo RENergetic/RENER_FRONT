@@ -42,6 +42,7 @@
     "default": "Normal",
     "osm": "OpenStreetMap"
   },
+  "measurement_direction":{"in":"In","out":"Out","none":"N/A"},
   "demand_action": {
     "increase_temperature": "Aumenta temperatura",
     "decrease_temperature": "Reduce temperatura",

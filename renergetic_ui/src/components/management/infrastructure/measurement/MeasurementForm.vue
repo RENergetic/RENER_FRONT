@@ -17,7 +17,7 @@
           :errors="v$.mModel.name.$silentErrors"
         />
         <ren-input v-model="mModel.label" :text-label="'model.measurement.label'" />
-
+        <!-- {{ mUnits }} -->
         <ren-input-wrapper :text-label="'model.measurement.domain'" :invalid="v$.mModel.domain.$invalid" :errors="v$.mModel.domain.$silentErrors">
           <template #content>
             <Dropdown
@@ -113,7 +113,7 @@ export default {
       default: () => ({}),
     },
   },
-  emits: ["update:modelValue", "cancel"],
+  emits: ["update:modelValue", "cancel", "update"],
   setup: () => ({ v$: useVuelidate() }),
   validationConfig: {
     $lazy: true,
@@ -192,7 +192,14 @@ export default {
       this.mModel.asset = selectedAsset;
     },
     submit() {
+      this.mModel.type = {
+        id: this.mUnits.find((it) => it.unit == this.mModel.unit).id,
+        unit: this.mModel.unit,
+        physical_name: this.mModel.physical_type,
+      };
+
       this.$emit("update:modelValue", this.mModel);
+      this.$emit("update", this.mModel);
     },
     cancel() {
       this.$emit("update:modelValue", this.modelValue);

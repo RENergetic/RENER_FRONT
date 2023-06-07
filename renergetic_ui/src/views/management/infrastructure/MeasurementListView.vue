@@ -11,7 +11,7 @@
   </Card>
 </template>
 <script>
-import MeasurementList from "@/components/management/infrastructure/MeasurementList.vue";
+import MeasurementList from "@/components/management/infrastructure/measurement/MeasurementList.vue";
 export default {
   name: "MeasurementListView",
   components: {
@@ -22,8 +22,17 @@ export default {
       measurementList: [],
     };
   },
+  mounted() {
+    this.loadMeasurements();
+  },
   methods: {
-    loadMeasurements() {},
+    async loadMeasurements() {
+      await this.$refs.spinner.run(async () => {
+        await this.$ren.managementApi.listMeasurement().then((data) => {
+          this.measurementList = data;
+        });
+      });
+    },
   },
 };
 </script>

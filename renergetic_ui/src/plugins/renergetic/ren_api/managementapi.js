@@ -166,23 +166,19 @@ export default class ManagementApi extends RestComponent {
   ////                                                   /////
   ////////////////////////////////////////////////////////////
 
-  async listMeasurement(params = undefined, offset = 0, limit = 20) {
+  async listMeasurement(params = undefined, offset = 0, limit = 200) {
     if (!params) {
       params = {};
     }
-    return this.get(`/api/measurements`, {
-      headers: { "Content-type": "application/json; charset=UTF-8" },
-      params: { ...params, offset: offset, limit: limit },
-    });
+    return this.get(`/api/measurements`, { ...params, offset: offset, limit: limit });
   }
   async addMeasurement(measurement) {
     // TODO: -> only allow to update labels ,  color, and key-value properties
-    if (measurement.type != undefined) measurement.type = measurement.type.id;
-    return this.post(`/api/measurements/${measurement.id}`, measurement);
+
+    return this.post(`/api/measurements`, measurement);
   }
   async updateMeasurement(measurement) {
     // TODO: -> only allow to update labels ,  color, and key-value properties
-    if (measurement.type != undefined) measurement.type = measurement.type.id;
     return this.put(`/api/measurements/${measurement.id}`, measurement, null, null, (e) => {
       if (e.response.status == 404) {
         this.emitError(`Measurement ${measurement.id} not found: ${e.message}`, {

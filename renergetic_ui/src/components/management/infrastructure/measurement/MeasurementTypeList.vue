@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import InfoIcon from "../../miscellaneous/InfoIcon.vue";
+import InfoIcon from "../../../miscellaneous/InfoIcon.vue";
 import MeasurementForm from "./MeasurementForm.vue";
 import MeasurementDetails from "./MeasurementDetails.vue";
 export default {
