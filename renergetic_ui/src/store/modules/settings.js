@@ -1,8 +1,8 @@
 function parseDateFilter(filter) {
-  let from = filter.date_from ? filter.date_from.getTime() : null;
-  let to = filter.date_to ? filter.date_to.getTime() : null;
-  var date = new Date();
   let f = filter ? filter : {};
+  let from = f.date_from ? f.date_from.getTime() : null;
+  let to = f.date_to ? f.date_to.getTime() : null;
+  var date = new Date();
   switch (f.timeInterval) {
     case "current_day":
       from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
