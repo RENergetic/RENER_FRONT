@@ -57,11 +57,18 @@ export default {
       }
 
       let pdata = this.$store.getters["view/data"];
-      if (pdata) {
-        this.pdata = pdata;
-      } else {
-        this.pdata = await this.$ren.dataApi.getDemandData(this.mDemands);
+
+      if (!pdata) {
+        pdata = await this.$ren.dataApi.getDemandData(this.mDemands);
       }
+      //TODO: comvert units
+      // if (pdata) {
+      //   let mPData = JSON.parse(JSON.stringify(panelData));
+      //   mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, mPData, this.settings);
+      //   // console.error(mPData.max);
+      //   mPData = this.$ren.utils.convertPanelData(this.mPanel, mPData, this.$store.getters["settings/conversion"]);
+      // }
+      this.pdata = pdata;
       console.table(this.mDemands);
       this.$emit("update", this.mDemands);
     },

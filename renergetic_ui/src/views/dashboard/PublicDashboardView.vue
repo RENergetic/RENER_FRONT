@@ -3,7 +3,6 @@
     <DotMenu :model="menuModel" />
     <InformationPanelWrapper
       ref="panel"
-      :key="reload"
       :asset-id="$route.params.asset_id"
       :locked="locked"
       :panel="panel"
@@ -39,7 +38,6 @@ export default {
   },
   data() {
     return {
-      reload: false,
       panel: null,
       // locked: false,
       notifications: [],

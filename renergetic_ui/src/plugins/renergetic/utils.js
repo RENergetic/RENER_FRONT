@@ -285,7 +285,12 @@ export default class RenUtils {
     // console.info(conversionSettings);
     return mt ? mt : measurement.type.unit;
   }
-
+  convertDemandData(demandList, pData, settings) {
+    console.info(demandList);
+    console.info(pData);
+    console.info(settings);
+    //todo:
+  }
   convertPanelData(panel, pData, settings) {
     var mDict = {};
     //TODO: initialize this dictionary in the vuex store

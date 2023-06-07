@@ -153,29 +153,36 @@ export default {
 
       let data = null;
       // console.info(this.pdata);
-      if (!this.mSettings.panel.relativeValues) {
-        // console.info("use relative values");
-        // let data = this.tile.measurements.map((m) => this.pdata[m.id]);
-        //TODO: make it comgigurable in tile / args prediction & aggregation func
-        // data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
-        // let total = data.reduce((partialSum, a) => partialSum + a, 0);
-        // data = data.map((v) => v / total);
-        console.info(this.pdata);
-        data = this.tile.measurements.map((m) =>
-          m.type.base_unit != "%"
-            ? this.pdata.current[m.aggregation_function][m.id] / this.pdata.max[m.aggregation_function][m.id]
-            : this.pdata.current[m.aggregation_function][m.id],
-        );
-      } else {
-        // console.info("use no relative values");
-        //todo include min offset
-        // console.info(this.pdata.current);
-        data = this.tile.measurements.map((m) =>
-          m.type.base_unit != "%"
-            ? this.pdata.current[m.aggregation_function][m.id] / this.pdata.max[m.aggregation_function][m.id]
-            : this.pdata.current[m.aggregation_function][m.id],
-        );
-      }
+      // if (!this.mSettings.panel.relativeValues) {
+      //   // console.info("use relative values");
+      //   // let data = this.tile.measurements.map((m) => this.pdata[m.id]);
+      //   //TODO: make it comgigurable in tile / args prediction & aggregation func
+      //   // data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
+      //   // let total = data.reduce((partialSum, a) => partialSum + a, 0);
+      //   // data = data.map((v) => v / total);
+      //   console.info(this.pdata);
+      //   data = this.tile.measurements.map((m) =>
+      //     m.type.base_unit != "%"
+      //       ? this.pdata.current[m.aggregation_function][m.id] / this.pdata.max[m.aggregation_function][m.id]
+      //       : this.pdata.current[m.aggregation_function][m.id],
+      //   );
+      // } else {
+      //   // console.info("use no relative values");
+      //   //todo include min offset
+      //   // console.info(this.pdata.current);
+      //   data = this.tile.measurements.map((m) =>
+      //     m.type.base_unit != "%"
+      //       ? this.pdata.current[m.aggregation_function][m.id] / this.pdata.max[m.aggregation_function][m.id]
+      //       : this.pdata.current[m.aggregation_function][m.id],
+      //   );
+      // }
+      data = this.tile.measurements.map((m) => {
+        let maxV =
+          this.pdata.max && this.pdata.max[m.aggregation_function][m.id]
+            ? this.pdata.max[m.aggregation_function][m.id]
+            : this.pdata.current[m.aggregation_function][m.id];
+        return m.type.base_unit != "%" ? this.pdata.current[m.aggregation_function][m.id] / maxV : this.pdata.current[m.aggregation_function][m.id];
+      });
       let labels = []; // this.tile.measurements.map((m) => m.label);
       //todo remove labels ?
       for (let idx in this.tile.measurements) {

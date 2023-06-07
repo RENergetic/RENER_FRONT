@@ -154,6 +154,7 @@ export default {
     pdata: {
       handler: function (newValue) {
         console.error("TODO: convert timeseries");
+        console.error(newValue);
         // if (this.mSettings.relativeValues && newValue) {
         //   this.mPData = this.$ren.utils.convertPanelData(this.mPanel, newValue, this.$store.getters["settings/conversion"]);
         //   this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, this.mSettings);
@@ -170,6 +171,7 @@ export default {
         // this.reloadGrid();
       },
       deep: true,
+      immediate: true,
     },
     mSettings: {
       // handler(newVal) {
