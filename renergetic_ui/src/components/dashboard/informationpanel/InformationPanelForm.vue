@@ -100,7 +100,7 @@ function getStructureText(panel, isTemplate) {
               aggregation_function: m.aggregation_function,
             };
             if (m.type) {
-              obj.type = { id: m.type.id, physical_name: m.type.physical_name };
+              obj.type = { id: m.type.id, physical_name: m.type.physical_name, unit: m.type.unit };
             }
             if (m.asset) {
               obj.asset = { id: m.asset.id };

@@ -18,6 +18,7 @@
     "energy": "Energy",
     "temperature": "temperature",
     "energy_kwh": "Energy",
+    "energy_wh":"Energy",
     "power_w": "Power",
     "heat_energy_gj": "Heat energy",
     "energy_gj": "Heat energy",
