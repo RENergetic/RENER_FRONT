@@ -88,6 +88,7 @@
   </DataTable>
   <Toolbar>
     <template #end><Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="addDialog = true" /> </template>
+    <template #start><Button :label="$t('view.button.measurement_types')" icon="pi pi-list" @click="typeDialog = true" /> </template>
   </Toolbar>
 
   <Dialog v-model:visible="measurementDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
@@ -105,6 +106,9 @@
   <Dialog v-model:visible="addDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
     <MeasurementForm @update="onCreate($event)" @cancel="addDialog = false" />
   </Dialog>
+  <Dialog v-model:visible="typeDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
+    <MeasurementTypeList />
+  </Dialog>
 </template>
 
 <script>
@@ -112,10 +116,11 @@ import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import MeasurementForm from "./MeasurementForm.vue";
 import MeasurementDetails from "./MeasurementDetails.vue";
 import DeleteMeasurement from "./DeleteMeasurement.vue";
+import MeasurementTypeList from "./MeasurementTypeList.vue";
 
 export default {
   name: "MeasurementList",
-  components: { InfoIcon, MeasurementForm, MeasurementDetails, DeleteMeasurement },
+  components: { InfoIcon, MeasurementForm, MeasurementDetails, DeleteMeasurement, MeasurementTypeList },
   props: {
     measurementList: { type: Array, default: () => [] },
   },
@@ -129,6 +134,7 @@ export default {
       selectedMeasurement: null,
       editDialog: false,
       addDialog: false,
+      typeDialog: false,
       measurementDetailsDialog: false,
     };
   },

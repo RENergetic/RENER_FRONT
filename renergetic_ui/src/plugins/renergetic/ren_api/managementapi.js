@@ -172,6 +172,10 @@ export default class ManagementApi extends RestComponent {
     }
     return this.get(`/api/measurements`, { ...params, offset: offset, limit: limit });
   }
+  async listMeasurementType() {
+    return this.get(`/api/measurements/type`);
+  }
+
   async addMeasurement(measurement) {
     // TODO: -> only allow to update labels ,  color, and key-value properties
 
