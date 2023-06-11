@@ -25,6 +25,7 @@
     "percentage": "Percentage",
     "power": "Power"
   },
+  
   "measurement_name": {
     "heat": "Heat",
     "electricity": "Electricity",

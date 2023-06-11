@@ -65,6 +65,18 @@
           "label": "Label",
           "name": "Name"
      },
+     "measurement_type":{
+          "id":"ID",
+          "name":"Name",
+          "label":"Label",
+          "unit":"Unit",	 
+          "factor":"Base multiplier factor",
+          "color":"Measurement default color",
+          "dashboardVisibility": "Grafana support." ,
+          "physical_name":"Physical name",
+          "base_unit":"Base unit", 
+          "description":"Description"
+     },
      "measurement": {
           "name": "Name",
           "label": "Label",

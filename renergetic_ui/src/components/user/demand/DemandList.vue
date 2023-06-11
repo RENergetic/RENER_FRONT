@@ -55,21 +55,10 @@ export default {
           this.mDemands = demands;
         } else this.mDemands = await this.$ren.userApi.getDemand(); //TODO: check it
       }
-
       let pdata = this.$store.getters["view/data"];
+      pdata = this.$ren.utils.convertDemandData(this.mDemands, pdata, this.$store.getters["settings/conversion"]);
 
-      if (!pdata) {
-        pdata = await this.$ren.dataApi.getDemandData(this.mDemands);
-      }
-      //TODO: comvert units
-      // if (pdata) {
-      //   let mPData = JSON.parse(JSON.stringify(panelData));
-      //   mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, mPData, this.settings);
-      //   // console.error(mPData.max);
-      //   mPData = this.$ren.utils.convertPanelData(this.mPanel, mPData, this.$store.getters["settings/conversion"]);
-      // }
       this.pdata = pdata;
-      console.table(this.mDemands);
       this.$emit("update", this.mDemands);
     },
   },

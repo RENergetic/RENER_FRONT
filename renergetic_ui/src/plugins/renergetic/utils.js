@@ -286,10 +286,34 @@ export default class RenUtils {
     return mt ? mt : measurement.type.unit;
   }
   convertDemandData(demandList, pData, settings) {
-    console.info(demandList);
-    console.info(pData);
-    console.info(settings);
+    var cp = pData;
+    var mDict = {};
+    for (let demand of demandList) {
+      if (demand.demand_definition && demand.demand_definition.tile) {
+        let tile = demand.demand_definition.tile;
+        for (let m of tile.measurements) {
+          mDict[m.id] = m;
+        }
+      }
+    }
+    for (let mId in mDict) {
+      let m = mDict[mId];
+      // console.info(m);
+      var newUnit = this.getUnit(m, null, settings); // settings[m.type.physical_name];
+      // console.info(m.type.physical_name + " " + newUnit);
+      if (newUnit) {
+        let value = pData.current[m.aggregation_function][m.id];
+        let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
+        cp.current[m.aggregation_function][m.id] = newV;
+        if (pData.max && pData.max[m.aggregation_function]) {
+          let value = pData.max[m.aggregation_function][m.id];
+          let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
+          cp.max[m.aggregation_function][m.id] = newV;
+        }
+      }
+    }
     //todo:
+    return cp;
   }
   convertPanelData(panel, pData, settings) {
     var mDict = {};
