@@ -73,6 +73,7 @@
           "factor":"Base multiplier factor",
           "color":"Measurement default color",
           "dashboardVisibility": "Grafana support." ,
+          "dashboard_visibility": "Grafana support." ,
           "physical_name":"Physical name",
           "base_unit":"Base unit", 
           "description":"Description"

@@ -175,6 +175,10 @@ export default class ManagementApi extends RestComponent {
   async listMeasurementType() {
     return this.get(`/api/measurements/type`);
   }
+  async setMeasurementTypeVisibility(id, visibility) {
+    if (visibility) return this.post(`/api/measurements/type/${id}/dashboard/true`);
+    else return this.post(`/api/measurements/type/${id}/dashboard/false`);
+  }
 
   async addMeasurement(measurement) {
     // TODO: -> only allow to update labels ,  color, and key-value properties

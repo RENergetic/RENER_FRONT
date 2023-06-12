@@ -4,7 +4,6 @@
       <!-- some info -->
     </template>
   </InfoIcon>
-
   <DataTable
     v-model:filters="filters"
     :rows="50"
@@ -14,17 +13,27 @@
     filter-display="row"
     :global-filter-fields="['name', 'label', 'type.name', 'type.physical_name', 'domain', 'direction', 'asset.name']"
   >
+    <template #header>
+      <span class="p-input-icon-left">
+        <i class="pi pi-search" />
+        <InputText v-model="filters['global'].value" :placeholder="$t('view.search')" />
+      </span>
+    </template>
     <!-- <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.measurement.' + col)"></Column> -->
     <Column field="id" :header="$t('model.measurement.id')"></Column>
     <Column field="name" :header="$t('model.measurement.name')" :show-filter-menu="false">
-      <template #filter="{ filterModel, filterCallback }">
-        <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" /> </template
-    ></Column>
-    <Column field="label" :header="$t('model.measurement.label')" :show-filter-menu="false">
+      <!-- <template #filter="{ filterModel, filterCallback }">
+        <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
+      </template> -->
+      <template #body="slotProps">
+        <span> {{ slotProps.data.label ? `${slotProps.data.label} (${slotProps.data.name})` : slotProps.data.name }}</span>
+      </template>
+    </Column>
+    <!-- <Column field="label" :header="$t('model.measurement.label')" :show-filter-menu="false">
       <template #filter="{ filterModel, filterCallback }">
         <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
       </template>
-    </Column>
+    </Column> -->
     <Column field="physical_name" filter-field="type.physical_name" :header="$t('model.measurement.physical_name')" :show-filter-menu="false">
       <template #body="slotProps">
         <span> {{ $t("enums.metric_type." + slotProps.data.type.physical_name) }} </span>
@@ -40,7 +49,7 @@
     </Column>
     <Column field="type" filter-field="type.name" :header="$t('model.measurement.type')" :show-filter-menu="false">
       <template #body="slotProps">
-        <span> {{ $t("enums.metric_type." + slotProps.data.type.name) }} [{{ slotProps.data.type.unit }}] </span>
+        <span> ({{ slotProps.data.type.id }}){{ $t("enums.metric_type." + slotProps.data.type.name) }} [{{ slotProps.data.type.unit }}] </span>
       </template>
       <template #filter="{ filterModel, filterCallback }">
         <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
@@ -139,7 +148,12 @@ export default {
     };
   },
   computed: {},
-  watch: {},
+  watch: {
+    // "filters.name": function (f1 ) {
+    //   this.filters.label.value = f1.value;
+    //   // alert(value);
+    // },
+  },
   mounted() {
     if (this.measurementList != null && this.measurementList.length > 0) {
       this.columns = Object.keys(this.measurementList[0]);
@@ -148,6 +162,7 @@ export default {
   methods: {
     initFilters() {
       return {
+        global: { value: null },
         name: { value: null },
         label: { value: null },
         "type.name": { value: null },
@@ -157,6 +172,9 @@ export default {
         sensor_name: { value: null },
         // "asset.name": { value: null },
       };
+    },
+    filterNameCallback(f) {
+      this.filters.label = f;
     },
     onDetailsUpdate(details) {
       this.selectedMeasurement.data.measuremet_details = details;
