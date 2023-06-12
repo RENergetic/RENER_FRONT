@@ -241,8 +241,6 @@ export default class ManagementApi extends RestComponent {
     return await this.get(`/api/measurements`, { name: q }, null, null);
   }
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   async getCategoryFromAsset(id) {
     return this.get(`/api/assets/category/${id}`, null, null, (e) => {
       if (e.response.status == 404) {
@@ -283,6 +281,48 @@ export default class ManagementApi extends RestComponent {
       }
     });
   }
+  //
+  async getAbstracMeterList() {
+    return this.get(`/api/meter/list`, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`Abstract meter list not found`, {
+          code: "abstract_meter_list_error",
+        });
+        return true;
+      }
+    });
+  }
+  async getAnAbstracMeterConfiguration(meter_name, domain) {
+    return this.get(`/api/meter/${domain}/${meter_name}`, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`Abstract meter list not found`, {
+          code: "abstract_meter_list_error",
+        });
+        return true;
+      }
+    });
+  }
+  async addAbstractMeter(abstractMeter) {
+    return await this.post(`/api/meter`, abstractMeter, null, null, (e) => {
+      if (e.response.status === 404) {
+        this.emitError(`Abstract meter not added: ${e.message}`, {
+          code: "abstract_meter_adding_error",
+        });
+        return true;
+      }
+    });
+  }
+  async updateAbstractMeter(abstractMeter) {
+    return this.put(`/api/meter`, abstractMeter, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`The abstract meter doesn´t exist: ${e.message}`, {
+          code: "update_abstract_meter_error",
+        });
+        return true;
+      }
+    });
+  }
+  //
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

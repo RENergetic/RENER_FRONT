@@ -9,7 +9,7 @@
           <p v-else-if="asset.asset_category != null">The actual category is {{ asset.asset_category.name }}</p>
           <p v-else>This asset doesn´t have a category</p>
         </div>
-        <ren-input-wrapper :text-label="'model.asset_connection.connection_type'">
+        <ren-input-wrapper :text-label="$t('model.asset.asset_category')">
           <template #content>
             <Dropdown v-model="assetCategoryName" :placeholder="$t('view.select_asset_category')" :options="assetCategoriesNamesList" />
           </template>
@@ -73,13 +73,8 @@ export default {
         //console.log(this.i + " : " + this.assetCategory.name + " : " + this.assetCategoriesList[this.i].name);
       }
       if (this.assetCategory.name == nameCategory) {
-        //console.log(id + " : " + nameCategory + " : " + this.assetCategory.name);
-        //console.log(this.assetId + " : " + this.assetCategory.name);
         console.log(this.asset.id + " : " + this.assetCategory.name);
         await this.$ren.managementApi.updateCategoryFromAsset(this.asset.id, this.assetCategory);
-        //console.log("El botón funciona");
-        //console.log(this.assetCategoriesNamesList);
-        //
       } else {
         console.error("The asset category has not been found");
       }

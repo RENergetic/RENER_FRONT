@@ -45,6 +45,17 @@ var management = [
     },
     component: () => import("../views/management/NotificationListView.vue"),
   },
+  {
+    path: "/management/abstract",
+    name: "AbstractMeters",
+    props: {},
+    meta: {
+      isAuthenticated: true,
+      roles: ["ren-admin", "ren-technical-manager"],
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN | RenRoles.REN_MANAGER,
+    },
+    component: () => import("../views/management/abstract/AbstractMetersView.vue"),
+  },
 ];
 
 export default management;
