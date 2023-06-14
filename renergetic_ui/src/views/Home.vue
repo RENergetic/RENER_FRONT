@@ -1,14 +1,21 @@
 <template>
   <DotMenu v-if="loggedIn" :model="menuModel" :fixed="true" />
   <div v-if="settings.panelVisibility" style="position: relative">
+    <!-- {{ $store.getters["view/featuredPanels"] }}ddddddddddddddd -->
+    <!-- {{ $store.getters["view/assetPanels"] }}d -->
+    <!-- panel: {{ panel.name }}, {{ panel.id }}, {{ assetId }} -->
     <InformationPanelWrapper
       v-if="panel"
       ref="panel"
+      :key="panel.id"
+      :asset-id="assetId"
       :locked="locked"
       :edit-mode="false"
       :panel="panel"
+      :auto-reload="autoReload"
       :panel-settings="panelSettings"
     ></InformationPanelWrapper>
+
     <div v-else style="width: 50rem; max-width: 95vw; margin: auto; padding-top: 5rem">
       <h4 style="width: 100%; margin: auto">{{ $t("view.empty_home_dashboard") }}</h4>
     </div>
@@ -46,6 +53,8 @@ import DemandList from "@/components/user/demand/DemandList.vue";
 import FilterSettings from "@/components/miscellaneous/settings/FilterSettings.vue";
 import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
 import { RenRoles } from "../plugins/model/Enums.js";
+import { DeferredFunction } from "@/plugins/renergetic/utils.js";
+import LoopRunner from "@/plugins/utils/loop_runner.js";
 
 export default {
   name: "Home",
@@ -66,8 +75,11 @@ export default {
       loaded: false,
       grid: null,
       locked: true,
+      slideshow: null,
+      autoReload: true,
       settings: this.$store.getters["settings/home"],
       panel: this.$store.getters["view/homePanel"],
+      assetId: null,
       panelSettings: this.$store.getters["settings/panel"],
     };
   },
@@ -148,9 +160,32 @@ export default {
   async created() {
     this.loaded = false;
   },
-  async mounted() {},
+  async mounted() {
+    var df = new DeferredFunction(this.slideshowLoop, 1000);
+    df.run();
+  },
   updated() {},
   methods: {
+    async slideshowLoop() {
+      let _this = this;
+      let f = async () => {
+        let panelDetails = await _this.$store.dispatch("slideshow/next");
+        // console.error(panelDetails);
+        if (panelDetails) {
+          _this.autoReload = false;
+          let panel = await _this.$ren.utils.getPanelStructure(panelDetails.panelId, panelDetails.assetId);
+          _this.assetId = panelDetails.assetId;
+          _this.panel = panel;
+        } else {
+          _this.autoReload = true;
+        }
+      };
+      if (this.settings.slideshowLoopInterval > 0) {
+        this.slideshow = LoopRunner.init(f, this.settings.slideshowLoopInterval);
+        this.slideshow.start();
+      }
+    },
+
     reloadSettings() {
       this.settings = this.$store.getters["settings/home"];
     },

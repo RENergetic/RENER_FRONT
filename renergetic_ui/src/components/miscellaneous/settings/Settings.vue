@@ -44,7 +44,7 @@
           v-tooltip="s.description"
           :min-fraction-digits="0"
           :max-fraction-digits="5"
-          :mode="s.ext.mode"
+          :mode="s.ext && s.ext.mode ? s.ext.mode : 'decimal'"
           :use-grouping="false"
         />
 
@@ -120,7 +120,14 @@ export default {
   },
   emits: ["update:settings"],
   data() {
-    return { mModel: this.settings };
+    let mModel = this.settings;
+    for (let s of this.schema) {
+      if ((mModel[s.key] == null || mModel[s.key] === undefined) && s.defaultValue != null && s.defaultValue !== undefined) {
+        mModel[s.key] = s.defaultValue;
+      }
+    }
+
+    return { mModel: mModel };
   },
   watch: {
     mModel: {

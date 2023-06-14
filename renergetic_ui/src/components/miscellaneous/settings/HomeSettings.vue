@@ -60,6 +60,11 @@ export default {
     getSchema() {
       var schema = [
         {
+          label: this.$t("settings.home_page_items"),
+          type: "Header",
+          key: "homePageitems",
+        },
+        {
           label: this.$t("settings.feedback"),
           ext: {
             true: this.$t("settings.visible"),
@@ -94,6 +99,36 @@ export default {
           },
           type: Boolean,
           key: "panelVisibility",
+        },
+        {
+          label: this.$t("settings.slideshow"),
+          type: "Header",
+          key: "slideshow",
+        },
+        {
+          label: this.$t("settings.loop_public_dashboard"),
+          ext: {
+            true: this.$t("settings.yes"),
+            false: this.$t("settings.no"),
+          },
+          type: Boolean,
+          key: "publicLoop",
+        },
+        {
+          label: this.$t("settings.loop_private_dashboard"),
+          ext: {
+            true: this.$t("settings.yes"),
+            false: this.$t("settings.no"),
+          },
+          type: Boolean,
+          key: "privateLoop",
+        },
+        {
+          label: this.$t("settings.panel_loop_interval"),
+          description: this.$t("settings.panel_loop_interval_description"),
+          type: Number,
+          defaultValue: 300000,
+          key: "slideshowLoopInterval",
         },
       ];
       //TODO: get panel list from store

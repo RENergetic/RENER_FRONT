@@ -129,24 +129,38 @@ export default class RenUtils {
     this.app.$store.commit("settings", settings);
   }
 
-  localPanel(id, assetId) {
-    let panel = null;
-    if (assetId != null) {
-      panel = this.app.$store.getters["view/assetPanel"](id, assetId);
-      if (!panel.is_template) {
-        let index = this.app.$store.getters["view/informationPanelsMap"][id];
-        if (index != null) {
-          panel = this.app.$store.getters["view/informationPanels"][index];
-        }
-      }
-    } else {
-      let index = this.app.$store.getters["view/informationPanelsMap"][id];
+  // localPanel(id, assetId) {
+  //   let panel = null;
+  //   if (assetId != null) {
+  //     panel = this.app.$store.getters["view/assetPanel"](id, assetId);
+  //     if (!panel.is_template) {
+  //       let index = this.app.$store.getters["view/informationPanelsMap"][id];
+  //       if (index != null) {
+  //         panel = this.app.$store.getters["view/informationPanels"][index];
+  //       }
+  //     }
+  //   } else {
+  //     let index = this.app.$store.getters["view/informationPanelsMap"][id];
+  //     if (index != null) {
+  //       panel = this.app.$store.getters["view/informationPanels"][index];
+  //     }
+  //   }
+  //   // console.info(panel);
+  //   return panel;
+  // }
+
+  async getPanelStructure(panelId, assetId) {
+    let informationPanel = null;
+    if (assetId == null) {
+      let index = this.app.$store.getters["view/informationPanelsMap"][panelId];
       if (index != null) {
-        panel = this.app.$store.getters["view/informationPanels"][index];
+        informationPanel = this.app.$store.getters["view/informationPanels"][index];
       }
     }
-    // console.info(panel);
-    return panel;
+    if (informationPanel == null) {
+      informationPanel = await this.app.$ren.dashboardApi.getInformationPanel(panelId, assetId);
+    }
+    return informationPanel;
   }
 
   async loadSettings() {
@@ -196,6 +210,7 @@ export default class RenUtils {
     let _this = this;
     await this.app.$ren.wrapperApi.get(q.build()).then((data) => {
       _this.app.$store.commit("view/wrapper", data);
+      _this.app.$store.dispatch("slideshow/set");
     });
   }
   // async reloadDashboard() {

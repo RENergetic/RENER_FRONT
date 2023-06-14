@@ -56,6 +56,13 @@ export default {
     getSchema() {
       var schema = [
         {
+          label: this.$t("settings.panel_reload_time_ms"),
+          description: this.$t("settings.panel_reload_time_ms_description"),
+          type: Number,
+          defaultValue: 60000,
+          key: "refreshTime",
+        },
+        {
           label: this.$t("settings.relative_values"),
           description: this.$t("settings.relative_values_description"),
           ext: {

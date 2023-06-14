@@ -123,14 +123,14 @@ export default {
 
   methods: {
     async loadStructure() {
-      let informationPanel = this.$ren.utils.localPanel(this.$route.params.id, this.$route.params.asset_id);
-      if (informationPanel == null) {
-        this.$ren.dashboardApi.getInformationPanel(this.$route.params.id, this.$route.params.asset_id).then((panel) => {
-          this.panel = panel;
-        });
-      } else {
-        this.panel = informationPanel;
-      }
+      this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id);
+      // if (informationPanel == null) {
+      //   this.$ren.dashboardApi.getInformationPanel(this.$route.params.id, this.$route.params.asset_id).then((panel) => {
+      //     this.panel = panel;
+      //   });
+      // } else {
+      //   this.panel = informationPanel;
+      // }
     },
     reloadSettings() {
       // console.info("reloadSettings");

@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import auth from "./modules/auth";
 import view from "./modules/view";
+import slideshow from "./modules/slideshow";
 import settings, { DefaultSettings } from "./modules/settings";
 import createPersistedState from "vuex-persistedstate";
 export default createStore({
@@ -26,11 +27,11 @@ export default createStore({
     },
   },
   actions: {},
-  modules: { auth, view, settings },
+  modules: { auth, view, settings, slideshow },
 
   plugins: [
     createPersistedState({
-      paths: ["auth", "view", "settings"],
+      paths: ["auth", "view", "settings", "slideshow"],
       storage: window.sessionStorage,
     }),
   ],

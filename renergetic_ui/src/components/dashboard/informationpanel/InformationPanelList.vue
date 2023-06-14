@@ -184,8 +184,8 @@ export default {
           } else this.$emitter.emit("error", { message: this.$t("information.visibility_changed") });
         });
       });
-      console.info(selectedPanel);
-      console.info(state);
+      // console.info(selectedPanel);
+      // console.info(state);
     },
     async revoke() {
       await this.$refs.assetSpinner.run(async () => {
