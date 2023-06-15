@@ -15,6 +15,11 @@ export default {
     _setCurrent(state, current) {
       state.current = current;
     },
+    /**
+     *
+     * @param {*} state
+     * @param {*} {links} ->  [ { assetId, panelId }]
+     */
     set(state, { links }) {
       state.links = links;
       state.current = -1;

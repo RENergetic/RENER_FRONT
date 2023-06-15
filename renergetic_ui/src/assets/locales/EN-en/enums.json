@@ -56,8 +56,8 @@
     "temperature": "Temperature"
   },
   "measurement_direction": {
-    "in": "In",
-    "out": "Out",
+    "in": "IN",
+    "out": "OUT",
     "none": "N/A"
   },
   "tile_type": {

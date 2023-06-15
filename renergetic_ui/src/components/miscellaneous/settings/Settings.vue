@@ -121,11 +121,13 @@ export default {
   emits: ["update:settings"],
   data() {
     let mModel = this.settings;
-    for (let s of this.schema) {
-      if ((mModel[s.key] == null || mModel[s.key] === undefined) && s.defaultValue != null && s.defaultValue !== undefined) {
-        mModel[s.key] = s.defaultValue;
+    // console.info(Object.keys(this.schema).length);
+    if (Object.keys(this.schema).length > 0)
+      for (let s of this.schema) {
+        if ((mModel[s.key] == null || mModel[s.key] === undefined) && s.defaultValue != null && s.defaultValue !== undefined) {
+          mModel[s.key] = s.defaultValue;
+        }
       }
-    }
 
     return { mModel: mModel };
   },

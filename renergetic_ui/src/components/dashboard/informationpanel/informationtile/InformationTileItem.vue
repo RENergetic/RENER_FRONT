@@ -4,6 +4,7 @@
       <!-- <span v-if="icon != null" id="tileicon" :style="'background-image: url(' + icon + ')'"></span> -->
       <!-- {{ settings }}fff -->
       <!-- {{ measurement }} -->
+
       <span
         v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
         id="tileicon"
@@ -16,7 +17,7 @@
     </div>
     <div class="flex flex-grow-1 flex-column align-items-start justify-content-center message">
       <div class="flex flex-grow-1 align-items-center justify-content-center" style="width: 100%">
-        <div class="flex flex-grow-1 message align-items-start">{{ label }}:</div>
+        <div v-tooltip="labelTooltip" class="flex flex-grow-1 message align-items-start">{{ label }}:</div>
         <div class="flex flex-none message align-items-end">{{ Math.round(value * 1000.0) / 1000.0 }} {{ unit }}</div>
       </div>
       <div v-if="measurement.description" class="flex">
@@ -102,13 +103,26 @@ export default {
       // this.pdata.current.last[m.id];
       // return this.pdata ? this.pdata[this.tileItem.id] : null;
     },
-    label: function () {
+    assetStr: function () {
+      let m = this.measurement;
+      return m.asset ? (m.asset.label ? `- ${m.asset.label}` : `- ${m.asset.name}}`) : "";
+    },
+    measurementlabel: function () {
       if (this.measurement.label != null) {
         return this.measurement.label;
       } else {
         //TODO: translate it
         return this.measurement.name;
       }
+    },
+    label: function () {
+      return `${this.measurementlabel}${this.assetStr}`;
+    },
+    labelTooltip: function () {
+      let m = this.measurement;
+      let directionStr = m.direction ? ` (${this.$t("enums.measurement_direction." + m.direction)})` : "";
+      let assetStr = m.asset ? (m.asset.label ? `- ${m.asset.label} (${m.asset.name})` : `- ${m.asset.name}}`) : "";
+      return `${this.measurementlabel}${assetStr}${directionStr}`;
     },
   },
   mounted() {},

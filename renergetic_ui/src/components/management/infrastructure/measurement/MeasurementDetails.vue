@@ -1,6 +1,6 @@
 <template>
   <!-- {{ schema }} -->
-  <Settings :schema="schema" :settings="mModel"></Settings>
+  <Settings v-if="schema" :schema="schema" :settings="mModel"></Settings>
   <!-- {{ mModel }} -->
 </template>
 
@@ -8,6 +8,7 @@
 import Settings from "@/components/miscellaneous/settings/Settings.vue";
 var detailTypes = {
   color: "Color",
+  cumulative: Boolean,
 };
 export default {
   name: "MeasurementDetails",
@@ -20,7 +21,7 @@ export default {
     return {
       mModel: this.model,
       keys: [],
-      schema: {},
+      schema: null,
     };
   },
   computed: {},
@@ -54,8 +55,8 @@ export default {
       var ext = {};
       if (mt == Boolean) {
         ext = {
-          true: this.$t("settings.visible"),
-          false: this.$t("settings.hidden"),
+          true: this.$t("settings.yes"),
+          false: this.$t("settings.no"),
         };
       }
       return {
