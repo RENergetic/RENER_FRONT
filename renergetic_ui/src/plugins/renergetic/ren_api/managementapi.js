@@ -198,6 +198,19 @@ export default class ManagementApi extends RestComponent {
     });
   }
 
+  async updateMeasurementProperties(measurement, properties) {
+    // TODO: -> only allow to update labels ,  color, and key-value properties
+    return this.put(`/api/measurements/${measurement.id}/properties`, properties, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`Measurement ${measurement.id} not found: ${e.message}`, {
+          code: "measurement_not_found",
+          args: [measurement.id],
+        });
+        return true;
+      }
+    });
+  }
+
   async deleteMeasurement(measurementId) {
     return this.delete(`/api/measurements/${measurementId}`, null, null, null, (e) => {
       if (e.response.status == 404) {

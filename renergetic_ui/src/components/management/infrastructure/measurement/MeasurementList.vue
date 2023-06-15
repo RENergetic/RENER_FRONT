@@ -79,7 +79,7 @@
 
     <Column field="measurement_details" :header="$t('model.measurement.details')">
       <template #body="slotProps">
-        <span @click="showDetails(slotProps)">
+        <span @click="showDetails(slotProps.data)">
           {{ $t("view.show_details") }}
         </span>
       </template>
@@ -101,7 +101,7 @@
   </Toolbar>
 
   <Dialog v-model:visible="measurementDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <MeasurementDetails :model="selectedMeasurement.data.measurement_details" @update="onDetailsUpdate"></MeasurementDetails>
+    <MeasurementDetails :model="selectedMeasurement.measurement_details" @update="onDetailsUpdate"></MeasurementDetails>
     <!-- @update:model-value="onCreate($event, 0)" -->
   </Dialog>
   <!-- <Button :label="$t('view.button.add')" @click="measurementAdd = true" /> -->
@@ -177,8 +177,11 @@ export default {
       this.filters.label = f;
     },
     onDetailsUpdate(details) {
-      this.selectedMeasurement.data.measuremet_details = details;
-      alert("Save error, not implemented");
+      this.selectedMeasurement.measuremet_details = details;
+      this.$ren.managementApi.updateMeasurementProperties(this.selectedMeasurement, details).then(() => {
+        this.reload();
+      });
+      // alert("Save error, not implemented");
       //todo: store to db save
     },
     showDetails(row) {
