@@ -9,7 +9,7 @@
           <p v-else-if="asset.asset_category != null">The actual category is {{ asset.asset_category.name }}</p>
           <p v-else>This asset doesn´t have a category</p>
         </div>
-        <ren-input-wrapper :text-label="'model.asset_connection.connection_type'">
+        <ren-input-wrapper :text-label="$t('model.asset_connection.connection_type')">
           <template #content>
             <Dropdown v-model="assetCategoryName" :placeholder="$t('view.select_asset_category')" :options="assetCategoriesNamesList" />
           </template>
