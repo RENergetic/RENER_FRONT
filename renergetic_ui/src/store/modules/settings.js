@@ -121,13 +121,12 @@ export default {
       state.conversion = payload;
     },
     filter(state, payload) {
-      console.info("set filter");
-      console.info(payload);
+      console.debug(payload);
       state.filter = payload;
     },
     filters(state, { payload, key }) {
       console.info("filters: " + key);
-      console.info(payload);
+      console.debug(payload);
       if (key == "filter") {
         return (state.filter = payload);
       } else {

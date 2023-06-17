@@ -64,7 +64,7 @@ export default function (Vue) {
         console.info("no timeout");
       }
       keycloak = await keycloak.get();
-      console.info(keycloak.authenticated);
+      // console.info(keycloak.authenticated);
       // Get the actual url of the app, it's needed for Keycloak
       // const basePath = window.location.toString();
       if (!keycloak.authenticated) {

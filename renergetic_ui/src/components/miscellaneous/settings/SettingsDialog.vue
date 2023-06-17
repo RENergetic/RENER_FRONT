@@ -1,6 +1,6 @@
 <template>
-  <Dialog v-model:visible="dialogVisibility" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true" @hide="onClose">
-    <!-- @after-hide="" -->
+  <Dialog v-model:visible="dialogVisibility" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <!-- @hide="onClose" -->
     <slot name="settings" />
   </Dialog>
 </template>
@@ -19,8 +19,8 @@ export default {
   },
   watch: {
     dialogVisibility: {
-      handler: function (newVal) {
-        if (newVal == false) {
+      handler: function (newVal, oldVal) {
+        if (newVal == false && oldVal) {
           this.onClose();
         }
       },

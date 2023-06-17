@@ -153,8 +153,6 @@ export default {
     },
     pdata: {
       handler: function (newValue) {
-        console.error("TODO: convert timeseries");
-        console.error(newValue);
         // if (this.mSettings.relativeValues && newValue) {
         //   this.mPData = this.$ren.utils.convertPanelData(this.mPanel, newValue, this.$store.getters["settings/conversion"]);
         //   this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, this.mSettings);
@@ -211,8 +209,9 @@ export default {
   },
   methods: {
     recalculateData(panelData) {
-      console.error(panelData);
       if (panelData) {
+        console.error("TODO: convert timeseries");
+        console.debug(panelData);
         let mPData = JSON.parse(JSON.stringify(panelData));
         mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, mPData, this.settings);
         // console.error(mPData.max);

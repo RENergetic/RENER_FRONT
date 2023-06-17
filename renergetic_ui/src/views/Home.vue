@@ -12,6 +12,7 @@
       :locked="locked"
       :edit-mode="false"
       :panel="panel"
+      :filter="filter"
       :auto-reload="autoReload"
       :panel-settings="panelSettings"
     ></InformationPanelWrapper>
@@ -37,7 +38,7 @@
     <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="filterSettingsDialog" :save="false">
-    <template #settings><FilterSettings @update="reloadSettings()"></FilterSettings></template>
+    <template #settings><FilterSettings @update="updateFilter()"></FilterSettings></template>
   </RenSettingsDialog>
   <div v-if="$refs.panelSettingsDialog">{{ $refs.panelSettingsDialog.settingsDialog }}</div>
 </template>
@@ -59,7 +60,6 @@ import LoopRunner from "@/plugins/utils/loop_runner.js";
 export default {
   name: "Home",
   components: {
-    // SettingsDialog,
     DotMenu,
     RoleMatrix,
     FilterSettings,
@@ -77,9 +77,10 @@ export default {
       locked: true,
       slideshow: null,
       autoReload: true,
-      settings: this.$store.getters["settings/home"],
-      panel: this.$store.getters["view/homePanel"],
       assetId: null,
+      panel: this.$store.getters["view/homePanel"],
+      settings: this.$store.getters["settings/home"],
+      filter: this.$store.getters["settings/filter"],
       panelSettings: this.$store.getters["settings/panel"],
     };
   },
@@ -183,11 +184,22 @@ export default {
       if (this.settings.slideshowLoopInterval > 0) {
         this.slideshow = LoopRunner.init(f, this.settings.slideshowLoopInterval);
         this.slideshow.start();
+      } else {
+        if (this.slideshow) {
+          this.slideshow.stop();
+        }
+        this.slideshow = null;
       }
     },
 
     reloadSettings() {
       this.settings = this.$store.getters["settings/home"];
+    },
+    updateFilter() {
+      this.filter = this.$store.getters["settings/filter"];
+      if (this.slideshow) {
+        this.slideshow.reset();
+      }
     },
     reloadPanelSettings() {
       this.panelSettingsDialog = this.$store.getters["settings/panel"];

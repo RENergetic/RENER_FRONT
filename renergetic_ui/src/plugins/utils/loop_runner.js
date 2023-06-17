@@ -20,14 +20,22 @@ export default class LoopRunner {
   }
   start() {
     if (this.running) return;
-    console.info(`start loop(${this.id}) : ${this.interval} `);
     this.running = true;
     this.id = this.id++;
+    console.info(`start loop(${this.id}) : ${this.interval} `);
     this.loop();
   }
   stop() {
     if (!this.running) return;
     this.running = false;
+  }
+  async reset() {
+    console.info(`reset loop(${this.id}) : ${this.interval} `);
+    this.stop();
+    let dt = Math.max(this.interval, this.minInterval);
+    // console.info(dt);
+    await new Promise((r) => setTimeout(r, dt));
+    this.start();
   }
   async loop() {
     var id = this.id; // in case we toggle rinning state it prevents from running many instances forever

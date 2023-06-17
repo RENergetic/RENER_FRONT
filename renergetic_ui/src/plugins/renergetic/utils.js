@@ -118,6 +118,7 @@ export default class RenUtils {
   //     .then(() => this.app.$emitter.emit("information", { message: this.app.$t("information.settings_saved") }));
   // }
   async saveSettings() {
+    console.error("saveSettings");
     let allSettings = this.app.$store.getters["settings"];
     let _this = this;
 

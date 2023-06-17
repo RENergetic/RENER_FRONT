@@ -217,28 +217,6 @@ export default {
             if (this.panel.is_template) this.mPanel = resp.panel;
           });
         });
-        // console.info("load data, is template: " + this.panel.is_template);
-        // if (this.panel.is_template) {
-        //   this.$refs.spinner.run(async () => {
-        //     console.info("wait for panel data: " + this.panel.id + ": " + this.assetId);
-        //     await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, this.mFilter).then((resp) => {
-        //       this.mPanel = resp.panel;
-        //       this.pdata = resp.data;
-        //     });
-        //   });
-        //   // let resp = await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, filter);
-        //   // this.mPanel = resp.panel;
-        //   // this.pdata = resp.data;
-        // } else {
-        //   this.$refs.spinner.run(async () => {
-        //     console.info("wait for panel data: " + this.panel.id);
-        //     await this.$ren.dataApi.getPanelData(this.panel.id, null, this.mFilter).then((resp) => {
-        //       this.pdata = resp.data;
-        //     });
-        //   });
-        //   // let resp = await this.$ren.dataApi.getPanelData(this.panel.id, null, filter);
-        //   // this.pdata = resp.data;
-        // }
       }
       console.info("Panel data loaded");
     },

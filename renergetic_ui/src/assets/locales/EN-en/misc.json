@@ -44,7 +44,7 @@
         "asset_panel_revoked": "Asset revoked from the dashboard",
         "asset_panel_assigned": "Asset assigned to the panel",
         "panel_update": "Panel {0} update success.",
-        
+        "settings_saved":"Settings saved",
         "visibility_changed": "Visibility changed"
     },
     "error": {
