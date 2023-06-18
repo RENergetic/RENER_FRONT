@@ -145,8 +145,8 @@ export default {
     },
     panel: function (newValue) {
       if (newValue != null) {
-        console.info("panel change");
-        console.info(newValue);
+        // console.info("panel change");
+        console.debug(newValue);
 
         if (this.autoReload) {
           if (this.loopRunner != null) this.loopRunner.stop();
@@ -161,26 +161,30 @@ export default {
     },
     "panel.id": function (newValue, oldValue) {
       if (newValue != null) {
-        console.info(newValue);
-        console.info(oldValue);
+        console.info(`Panel id change: ${newValue} - ${oldValue}`);
       }
     },
     filter: {
       handler: function () {
-        this.deferredFilter.run();
+        if (this.deferredFilter) this.deferredFilter.run();
       },
       deep: true,
     },
   },
-  created() {
-    this.deferredFilter = new DeferredFunction(this.loadData, 1000);
-  },
-  async beforeMount() {
-    if (!this.panel.is_template) {
-      this.mPanel = this.panel;
+  beforeUnmount() {
+    if (this.loopRunner) {
+      this.loopRunner.stop();
     }
   },
   async mounted() {
+    var _this = this;
+    var f = async () => {
+      if (_this.loopRunner) {
+        _this.loopRunner.reset();
+      }
+      await _this.loadData();
+    };
+    this.deferredFilter = new DeferredFunction(f, 1000);
     let refreshTime = this.$store.getters["settings/panel"].refreshTime ? this.$store.getters["settings/panel"].refreshTime : 60000;
 
     if (refreshTime > 0 && this.autoReload) {
@@ -215,6 +219,9 @@ export default {
           await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, this.mFilter).then((resp) => {
             this.pdata = resp.data;
             if (this.panel.is_template) this.mPanel = resp.panel;
+            else {
+              this.mPanel = this.panel;
+            }
           });
         });
       }

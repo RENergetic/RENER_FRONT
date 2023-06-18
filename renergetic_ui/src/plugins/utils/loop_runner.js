@@ -27,6 +27,7 @@ export default class LoopRunner {
   }
   stop() {
     if (!this.running) return;
+    console.info(`stop loop(${this.id}) : ${this.interval} `);
     this.running = false;
   }
   async reset() {

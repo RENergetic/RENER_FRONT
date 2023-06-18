@@ -8,6 +8,7 @@
       :panel="panel"
       :edit-mode="false"
       :panel-settings="settings"
+      :filter="filter"
     ></InformationPanelWrapper>
   </div>
   <RenSettingsDialog ref="settingsDialog">
@@ -17,7 +18,7 @@
     <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="filterSettingsDialog" :save="false">
-    <template #settings><FilterSettings @update="reloadSettings()"></FilterSettings></template>
+    <template #settings><FilterSettings @update="updateFilter()"></FilterSettings></template>
   </RenSettingsDialog>
 </template>
 <script>
@@ -42,6 +43,7 @@ export default {
       // locked: false,
       notifications: [],
       settings: this.$store.getters["settings/panel"],
+      filter: this.$store.getters["settings/filter"],
       settingsDialog: false,
       filterSettingsDialog: false,
       conversionSettingsDialog: false,
@@ -57,6 +59,7 @@ export default {
     filterSettingsButton: function () {
       return { label: this.$t("menu.filter_settings"), icon: "pi pi-fw pi-filter", command: () => this.$refs.filterSettingsDialog.open() };
     },
+
     menuModel() {
       let menu = [
         // {
@@ -74,13 +77,12 @@ export default {
   async mounted() {
     await this.loadStructure();
   },
-  // async updated() {
-  //   await this.loadStructure();
-  // },
-
   methods: {
     async loadStructure() {
       this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id);
+    },
+    updateFilter() {
+      this.filter = this.$store.getters["settings/filter"];
     },
     reloadSettings() {
       this.filterSettings = this.$store.getters["settings/filter"];
@@ -91,10 +93,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-#panel-box {
-  background: #232526; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #232526, #414345); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #232526, #414345); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-}
-</style>
+<style lang="scss"></style>

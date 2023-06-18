@@ -1,7 +1,7 @@
 <template>
   <DotMenu v-if="loggedIn" :model="menuModel" :fixed="true" />
   <div v-if="settings.panelVisibility" style="position: relative">
-    <!-- {{ $store.getters["view/featuredPanels"] }}ddddddddddddddd -->
+    <!-- {{ $store.getters["view/featuredPanels"] }}  -->
     <!-- {{ $store.getters["view/assetPanels"] }}d -->
     <!-- panel: {{ panel.name }}, {{ panel.id }}, {{ assetId }} -->
     <InformationPanelWrapper
@@ -164,6 +164,11 @@ export default {
   async mounted() {
     var df = new DeferredFunction(this.slideshowLoop, 1000);
     df.run();
+  },
+  beforeUnmount() {
+    if (this.slideshow) {
+      this.slideshow.stop();
+    }
   },
   updated() {},
   methods: {
