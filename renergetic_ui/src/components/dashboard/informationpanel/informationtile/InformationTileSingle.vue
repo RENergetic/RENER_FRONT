@@ -9,7 +9,6 @@
       <!-- {{ mSettings.tile.icon }} -->
       <font-awesome-icon :icon="mSettings.tile.icon" />
     </div>
-
     <div v-if="mSettings.tile.template" class="flex flex-none flex-column align-items-center justify-content-center">
       <span id="value" :style="color">
         {{ $t(`tile_templates.${tile.name}`, { value: `${Math.round(value * 1000) / 1000.0} ${unit} ` }) }}
@@ -63,6 +62,8 @@ export default {
     },
     color: function () {
       let color = this.$ren.utils.measurementColor(this.measurement, this.value);
+      console.error(color);
+      console.error(this.measurement);
       return `color:${color.color}`;
     },
     tileStyle: function () {

@@ -70,7 +70,7 @@
           />
         </div>
         <div v-else-if="s.type == 'Color'">
-          <ColorPicker v-model="mModel[s.key]" v-tooltip="s.description" />
+          <ColorPicker v-model="mModel[s.key]" v-tooltip="s.description" @change="colorChange(s.key)" />
         </div>
         <div v-else-if="s.type == 'Datetime'">
           <Calendar :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" show-time hour-format="24" />
@@ -144,6 +144,10 @@ export default {
 
   async created() {},
   methods: {
+    colorChange(k) {
+      // console.info(this.mModel[k]);
+      this.mModel[k] = "#" + this.mModel[k];
+    },
     getClass(setting) {
       let columns; //= setting.col ? setting.col : this.col;
       switch (setting.type) {
