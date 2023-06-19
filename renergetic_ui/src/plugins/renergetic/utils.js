@@ -244,28 +244,30 @@ export default class RenUtils {
     }
   }
 
-  measurementBackgroundColor(measurement, tileSettings /*,alpha*/) {
-    //tODO add alpha supprot
-    let alpha = "80";
+  measurementBackgroundColor(measurement, tileSettings, value) {
+    let alpha = value ? 0.75 : 0.75 - value * 0.5;
+    let alphaHex = Math.round(alpha * 255).toString(16);
     if (tileSettings && tileSettings.background == "none") {
       return "none";
     }
-    if (measurement.type.color) {
-      let color;
-      if (tileSettings && tileSettings.background) {
-        color = tileSettings.background;
-      } else color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
-      // console.info(measurement);
-      // console.info(color);
-      if (color.length == 7) {
-        return `#${color.slice(1)}${alpha}`;
-      }
-      return `#${color.slice(1, color.length - 2)}${alpha}`;
+    let color;
+    if (tileSettings && tileSettings.background) {
+      color = tileSettings.background;
+    } else {
+      color = measurement.measurement_details.background
+        ? measurement.measurement_details.background
+        : this.measurementColor(measurement, null).color;
     }
+    if (color.length == 7) {
+      return `#${color.slice(1)}${alphaHex}`;
+    }
+    return `#${color.slice(1, color.length - 2)}${alphaHex}`;
   }
+
   measurementColor(measurement, value) {
-    let alpha = value ? 1.0 : 0.5;
+    let alpha = value ? 1.0 : 1.0 - value / 2;
     let color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
+
     return { alpha: alpha, color: color };
   }
 

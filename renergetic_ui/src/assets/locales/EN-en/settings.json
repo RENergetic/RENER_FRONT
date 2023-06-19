@@ -49,7 +49,8 @@
   },
   "measurement_details": {
     "color": "Color",
-    "cumulative": "Is timeseries cumulative"
+    "cumulative": "Is timeseries cumulative",
+    "background":"Background color"
   },
   "time_filters": {
     "current_day": "Current day",

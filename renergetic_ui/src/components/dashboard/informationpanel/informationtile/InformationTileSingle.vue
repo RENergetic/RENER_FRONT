@@ -62,8 +62,6 @@ export default {
     },
     color: function () {
       let color = this.$ren.utils.measurementColor(this.measurement, this.value);
-      console.error(color);
-      console.error(this.measurement);
       return `color:${color.color}`;
     },
     tileStyle: function () {

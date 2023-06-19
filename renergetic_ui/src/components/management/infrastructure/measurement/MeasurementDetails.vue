@@ -9,6 +9,7 @@ import Settings from "@/components/miscellaneous/settings/Settings.vue";
 var detailTypes = {
   color: "Color",
   cumulative: Boolean,
+  background: "Color",
 };
 export default {
   name: "MeasurementDetails",
