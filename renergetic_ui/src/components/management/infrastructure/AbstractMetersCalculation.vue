@@ -1,49 +1,26 @@
 <template>
   <Dialog v-model:visible="dialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <Card>
-      <template #title>{{ $t("view.add_asset_category") }}</template>
+      <p></p>
       <template #content>
-        <InputText v-model="formulaMeter" type="text" :placeholder="'Condition to calculate the meter'" />
-        <ren-input-wrapper :text-label="'Domain list (Dropdown)'">
-          <template #content>
-            <Dropdown v-model="domain" :placeholder="'Domain list (dropdown)'" :options="dropdownDomain" />
-          </template>
-        </ren-input-wrapper>
-        <ren-input-wrapper :text-label="'Domain list (Dropdown)'">
-          <template #content>
-            <Dropdown v-model="domain" :placeholder="'Domain list (dropdown)'" :options="dropdownDomain" />
-          </template>
-        </ren-input-wrapper>
-        <div>
-          <div>
-            <h1>Tags</h1>
-            <InputText v-model="formulaMeter" type="text" :placeholder="'Condition to calculate the meter'" />
-            <Button label="-" />
-          </div>
-          <div>
-            <ren-input-wrapper :text-label="'Domain list (Dropdown)'">
-              <template #content>
-                <Dropdown v-model="domain" :placeholder="'Domain list (dropdown)'" :options="dropdownDomain" />
-              </template>
-            </ren-input-wrapper>
-            <InputText v-model="formulaMeter" type="text" :placeholder="'Condition to calculate the meter'" />
-            <Button label="-" />
-          </div>
+        <DataTable
+          v-model:selection="selectedMeasurement"
+          selection-mode="single"
+          :meta-key-selection="metaKey"
+          data-key="id"
+          :value="measurementListAbstracMeter"
+          :paginator="true"
+          :rows="10"
+        >
+          <Column field="id" header="ID" :sortable="true" />
+          <Column field="name" header="Name" :sortable="true" />
+          <Column field="type.name" header="Type_name" :sortable="true" />
+        </DataTable>
+        <div class="card flex flex-wrap gap-5 field grid box">
+          <Button :disabled="buttonDisabled" label="Select" @click="selectCurrentMeasurement" />
+          <Button label="Create new measurement" @click="addNewMeasurement" />
+          <Button label="Cancel" @click="cancelMeasurementAddition" />
         </div>
-        <!-- Only one option can be selected between filter by asset and filter by category -->
-        <div class="card flex justify-content-center">
-          <SelectButton v-model="value" :options="options" option-label="value" data-key="value" aria-labelledby="custom">
-            <template #option="slotProps">
-              <i :class="slotProps.option.icon"></i>
-            </template>
-          </SelectButton>
-        </div>
-        <ren-input-wrapper :text-label="'Domain list (Dropdown)'">
-          <template #content>
-            <Dropdown v-model="domain" :placeholder="'Domain list (dropdown)'" :options="dropdownDomain" />
-          </template>
-        </ren-input-wrapper>
-        <Button label="Add" />
       </template>
     </Card>
   </Dialog>
@@ -51,28 +28,57 @@
 <script>
 export default {
   name: "AbstractMetersCalculation",
+  emits: ["selected-measurement-formula", "selected-measurement-condition"],
   data() {
     return {
-      dialog: true,
-      abstractMeterList: [],
-      measurementNamesList: [],
-      measurementTypesList: [],
+      dialog: false,
+      selectedMeasurement: null,
+      measurementListAbstracMeter: [],
+      calculationType: null,
     };
   },
+  async created() {
+    this.measurementListAbstracMeter = await this.$ren.managementApi.listMeasurement();
+    //console.log(this.measurementListAbstracMeter);
+  },
   methods: {
-    async open() {
-      console.log("Función open");
+    async open(calculationType) {
       this.dialog = true;
-      this.abstractMeterList = await this.$ren.managementApi.getAbstracMeterList();
-      this.measurementNamesList = await this.$ren.managementApi.listMeasurement();
+      this.calculationType = calculationType;
     },
-    async prueba() {
-      console.log("Función prueba");
-      this.dialog = true;
-      this.abstractMeterList = await this.$ren.managementApi.getAbstracMeterList();
-      this.measurementNamesList = await this.$ren.managementApi.listMeasurement();
+    selectCurrentMeasurement() {
+      console.log("I will return this value: " + this.selectedMeasurement.id);
+      if (this.calculationType == "formula") {
+        console.log("The calculationType is formula");
+        this.$emit("selected-measurement-formula", this.selectedMeasurement.id);
+      } else if (this.calculationType == "condition") {
+        console.log("The calculationType is condition");
+        this.$emit("selected-measurement-condition", this.selectedMeasurement.id);
+      } else {
+        console.error("The calculationType is not correctly received");
+      }
+      this.dialog = false;
+    },
+    addNewMeasurement() {
+      console.log("add new measurement");
+    },
+    cancelMeasurementAddition() {
+      this.dialog = false;
+      this.selectedMeasurement = null;
     },
   },
+  /*
+  data() {
+    return {
+      tableData: [
+        { name: "John Doe", id: 25 },
+        { name: "Jane Smith", id: 30 },
+        { name: "Bob Johnson", id: 35 },
+      ],
+    };
+  },
+  */
 };
 </script>
+.selected-row { background-color: yellow; }
 <style scoped lang="scss"></style>

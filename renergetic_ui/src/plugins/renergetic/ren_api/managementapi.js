@@ -294,12 +294,12 @@ export default class ManagementApi extends RestComponent {
   }
   async getAnAbstracMeterConfiguration(meter_name, domain) {
     return this.get(`/api/meter/${domain}/${meter_name}`, null, null, (e) => {
-      if (e.response.status == 404) {
+      if (e.response.status != 404) {
         this.emitError(`Abstract meter list not found`, {
           code: "abstract_meter_list_error",
         });
-        return true;
       }
+      return true;
     });
   }
   async addAbstractMeter(abstractMeter) {
@@ -318,6 +318,14 @@ export default class ManagementApi extends RestComponent {
         this.emitError(`The abstract meter doesn´t exist: ${e.message}`, {
           code: "update_abstract_meter_error",
         });
+        return true;
+      }
+    });
+  }
+  async deleteAbstractMeter(name, domain) {
+    return this.delete(`/api/meter/${domain}/${name}`, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`There was a problem trying to delete de abstract meter: ${e.message}`, { code: "del_abstract_meter_error" });
         return true;
       }
     });
