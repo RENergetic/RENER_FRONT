@@ -165,7 +165,7 @@ export default {
 
     parsedFilter: (state) => (filterKey) => {
       let filter;
-      if (filterKey == "filter") {
+      if (filterKey == "filter" || !filterKey) {
         filter = state.filter;
       } else {
         filter = state.filters[filterKey];

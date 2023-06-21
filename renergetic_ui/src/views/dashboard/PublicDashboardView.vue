@@ -1,6 +1,7 @@
 <template>
   <div v-if="panel" id="panel-box">
     <DotMenu :model="menuModel" />
+    {{ filterSettings }}
     <InformationPanelWrapper
       ref="panel"
       :asset-id="$route.params.asset_id"
@@ -8,7 +9,7 @@
       :panel="panel"
       :edit-mode="false"
       :panel-settings="settings"
-      :filter="filter"
+      :filter="filterSettings"
     ></InformationPanelWrapper>
   </div>
   <RenSettingsDialog ref="settingsDialog">
@@ -43,7 +44,7 @@ export default {
       // locked: false,
       notifications: [],
       settings: this.$store.getters["settings/panel"],
-      filter: this.$store.getters["settings/filter"],
+      filterSettings: this.$store.getters["settings/parsedFilter"](),
       settingsDialog: false,
       filterSettingsDialog: false,
       conversionSettingsDialog: false,
@@ -82,10 +83,10 @@ export default {
       this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id);
     },
     updateFilter() {
-      this.filter = this.$store.getters["settings/filter"];
+      this.filterSettings = this.$store.getters["settings/parsedFilter"]();
     },
     reloadSettings() {
-      this.filterSettings = this.$store.getters["settings/filter"];
+      this.filterSettings = this.$store.getters["settings/parsedFilter"]();
       this.settings = this.$store.getters["settings/panel"];
       this.conversionSettings = this.$store.getters["settings/conversion"];
     },
