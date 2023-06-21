@@ -46,6 +46,9 @@
       <template #body="slotProps">
         <span> {{ slotProps.data.asset ? slotProps.data.asset.name : slotProps.data.asset_category }} </span>
       </template>
+      <template #filter="{ filterModel, filterCallback }">
+        <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
+      </template>
     </Column>
     <Column field="type" filter-field="type.name" :header="$t('model.measurement.type')" :show-filter-menu="false">
       <template #body="slotProps">
@@ -167,6 +170,7 @@ export default {
         label: { value: null },
         "type.name": { value: null },
         "type.physical_name": { value: null },
+        "asset.name": { value: null },
         domain: { value: null },
         direction: { value: null },
         sensor_name: { value: null },
