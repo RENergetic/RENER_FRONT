@@ -116,7 +116,13 @@ export default {
       }
     },
     label: function () {
-      return `${this.measurementlabel}${this.assetStr}`;
+      let label = `${this.measurementlabel}${this.assetStr}`;
+
+      if (label.length < 35) {
+        return label;
+      }
+      return label.substring(0, 32) + "...";
+      // return label;
     },
     labelTooltip: function () {
       let m = this.measurement;

@@ -1,7 +1,7 @@
 <template>
   <div v-if="panel" id="panel-box">
     <DotMenu :model="menuModel" />
-    {{ filterSettings }}
+    <!-- {{ filterSettings }} -->
     <InformationPanelWrapper
       ref="panel"
       :asset-id="$route.params.asset_id"

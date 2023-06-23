@@ -80,7 +80,7 @@ export default {
       assetId: null,
       panel: this.$store.getters["view/homePanel"],
       settings: this.$store.getters["settings/home"],
-      filter: this.$store.getters["settings/filter"],
+      filter: this.$store.getters["settings/parsedFilter"](),
       panelSettings: this.$store.getters["settings/panel"],
     };
   },
@@ -201,7 +201,7 @@ export default {
       this.settings = this.$store.getters["settings/home"];
     },
     updateFilter() {
-      this.filter = this.$store.getters["settings/filter"];
+      this.filter = this.$store.getters["settings/parsedFilter"]();
       if (this.slideshow) {
         this.slideshow.reset();
       }
