@@ -1,7 +1,8 @@
 <template>
   <!-- {{ schema }} -->
   <Settings v-if="schema" :schema="schema" :settings="mModel"></Settings>
-  <!-- {{ mModel }} -->
+  <!-- {{ mModel }}
+  {{ model }} -->
 </template>
 
 <script>

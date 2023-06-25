@@ -98,6 +98,7 @@
 
      },
      "panel": {
+          "id":"Id",
           "name": "Name",
           "label": "Label",
           "featured":"Visibility",

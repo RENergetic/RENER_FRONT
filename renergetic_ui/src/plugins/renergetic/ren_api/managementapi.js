@@ -170,7 +170,7 @@ export default class ManagementApi extends RestComponent {
     if (!params) {
       params = {};
     }
-    return this.get(`/api/measurements`, { ...params, offset: offset, limit: limit });
+    return this.get(`/api/measurements/report`, { ...params, offset: offset, limit: limit });
   }
   async listMeasurementType() {
     return this.get(`/api/measurements/type`);
@@ -196,6 +196,10 @@ export default class ManagementApi extends RestComponent {
         return true;
       }
     });
+  }
+
+  async getMeasurementProperties(id) {
+    return this.get(`/api/measurements/${id}/properties`);
   }
 
   async updateMeasurementProperties(measurement, properties) {

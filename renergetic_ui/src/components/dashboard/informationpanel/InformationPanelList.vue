@@ -5,6 +5,7 @@
 
   <DataTable :key="headers" :value="panelList">
     <!-- <Column v-for="h of headers" :key="h" :field="h" :header="$t('model.information_panel.' + h)"></Column> -->
+    <Column field="id" :header="$t('model.panel.id')" :show-filter-menu="false"> </Column>
     <Column field="name" :header="$t('model.panel.name')" :show-filter-menu="false">
       <template #filter="{ filterModel, filterCallback }">
         <InputText v-model="filterModel.value" type="text" class="p-column-filter" :placeholder="$t('view.search')" @input="filterCallback()" />

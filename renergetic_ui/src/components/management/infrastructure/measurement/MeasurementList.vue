@@ -8,6 +8,7 @@
     v-model:filters="filters"
     :rows="50"
     :paginator="true"
+    :row-class="rowClass"
     :rows-per-page-options="[10, 20, 50, 100]"
     :value="measurementList"
     filter-display="row"
@@ -104,6 +105,7 @@
   </Toolbar>
 
   <Dialog v-model:visible="measurementDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <!-- {{ selectedMeasurement.measurement_details }} -->
     <MeasurementDetails :model="selectedMeasurement.measurement_details" @update="onDetailsUpdate"></MeasurementDetails>
     <!-- @update:model-value="onCreate($event, 0)" -->
   </Dialog>
@@ -163,6 +165,12 @@ export default {
     }
   },
   methods: {
+    rowClass(data) {
+      if (data.panel_count === 0) {
+        return "disabled";
+      }
+      return "";
+    },
     initFilters() {
       return {
         global: { value: null },
@@ -180,22 +188,24 @@ export default {
     filterNameCallback(f) {
       this.filters.label = f;
     },
-    onDetailsUpdate(details) {
-      this.selectedMeasurement.measuremet_details = details;
-      this.$ren.managementApi.updateMeasurementProperties(this.selectedMeasurement, details).then(() => {
+    async onDetailsUpdate(details) {
+      this.selectedMeasurement.measurement_details = details;
+      await this.$ren.managementApi.updateMeasurementProperties(this.selectedMeasurement, details).then(() => {
         this.reload();
       });
       // alert("Save error, not implemented");
       //todo: store to db save
     },
-    showDetails(row) {
-      // console.info(row.data);
+    async showDetails(row) {
+      await this.$ren.managementApi.getMeasurementProperties(row.id).then((details) => {
+        row.measurement_details = details;
+      });
       this.selectedMeasurement = row;
       this.measurementDetailsDialog = true;
     },
 
     async onCreate(o) {
-      console.info(o);
+      // console.info(o);
       await this.$ren.managementApi.addMeasurement(o).then((measurement) => {
         console.info("add measurement:" + measurement.name);
         this.$emitter.emit("information", { message: this.$t("information.measurement_created") });
