@@ -73,7 +73,7 @@
           <ColorPicker v-model="mModel[s.key]" v-tooltip="s.description" @change="colorChange(s.key)" />
         </div>
         <div v-else-if="s.type == 'Datetime'">
-          <Calendar :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" show-time hour-format="24" />
+          <Calendar :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" :show-time="true" hour-format="24" />
         </div>
 
         <div v-else-if="s.type == 'Submit'">
@@ -135,7 +135,7 @@ export default {
     mModel: {
       handler: function (newVal) {
         console.debug(newVal);
-        console.info("settings change");
+        console.debug("settings change");
         this.$emit("update:settings", newVal);
       },
       deep: true,
