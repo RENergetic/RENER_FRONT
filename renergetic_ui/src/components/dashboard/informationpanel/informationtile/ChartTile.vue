@@ -77,7 +77,8 @@ export default {
         },
         scales: {
           x: {
-            type: "timeseries",
+            // type: "timeseries", //keep Equidistant  between points (labels are squished)
+            type: "time",
           },
           // y: {
           //   fill: true,
@@ -147,7 +148,7 @@ export default {
           fill: true,
         });
       }
-
+      // console.error(datasets);
       this.datasets = datasets;
     },
     async reload() {

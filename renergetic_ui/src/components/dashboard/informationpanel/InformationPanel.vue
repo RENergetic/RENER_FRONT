@@ -236,8 +236,9 @@ export default {
         grid.enable();
       }
       grid.disable();
-      this.mSettings.cellWidth = grid.el.clientWidth / 12;
-      this.mSettings.cellHeight = grid.el.clientHeight / 12;
+
+      this.mSettings.cellWidth = grid.el.clientWidth / grid.getColumn();
+      this.mSettings.cellHeight = grid.el.clientHeight / grid.getRow();
 
       this.grid = grid;
     },
