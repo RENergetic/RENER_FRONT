@@ -37,11 +37,11 @@ export default {
 
       let newVal = evt;
       // console.info(newVal);
-      if (newVal["timeInterval"] != null && oldValue["timeInterval"] == null) {
+      if (newVal["timeIntervalType"] != null && oldValue["timeIntervalType"] == null) {
         newVal["date_from"] = null;
         newVal["date_to"] = null;
-      } else if (newVal["timeInterval"] && (newVal["date_from"] != null || newVal["date_to"] != null)) {
-        newVal["timeInterval"] = null;
+      } else if (newVal["timeIntervalType"] && (newVal["date_from"] != null || newVal["date_to"] != null)) {
+        newVal["timeIntervalType"] = null;
       }
       if (newVal["date_to"] != null && newVal["date_from"] == null) {
         //TODO:
@@ -75,7 +75,7 @@ export default {
             optionValue: "id",
           },
           type: Array,
-          key: "timeInterval",
+          key: "timeIntervalType",
         },
         {
           label: this.$t("settings.date_from"),

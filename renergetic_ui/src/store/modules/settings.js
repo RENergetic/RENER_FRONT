@@ -1,11 +1,20 @@
 function parseDateFilter(filter) {
   let f = filter ? filter : {};
-  let from = f.date_from ? f.date_from.getTime() : null;
-  let to = f.date_to ? f.date_to.getTime() : null;
+  // if (typeof f.date_from !== undefined) return { from: new Date().getTime(), to: new Date().getTime() };
+  let from = f.date_from; // ? f.date_from.getTime() : null;
+  let to = f.date_to; //? f.date_to.getTime() : null;
   var date = new Date();
+
+  //"custom_interval"
   switch (f.timeInterval) {
     case "current_day":
       from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+      break;
+    case "last_24h":
+      from = new Date().getTime() - 3600 * 24 * 1000;
+      break;
+    case "last_week":
+      from = new Date().getTime() - 3600 * 24 * 1000 * 7;
       break;
     case "current_month":
       from = new Date(date.getFullYear(), date.getMonth(), 1).getTime();
@@ -25,7 +34,6 @@ function parseDateFilter(filter) {
       if (from == null) from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
       break;
   }
-
   return { from: from, to: to };
 }
 
@@ -122,6 +130,7 @@ export default {
     },
     filter(state, payload) {
       console.debug(payload);
+
       state.filter = payload;
     },
     filters(state, { payload, key }) {
