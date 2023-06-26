@@ -148,7 +148,7 @@ export default {
           fill: true,
         });
       }
-
+      // console.error(datasets);
       this.datasets = datasets;
     },
     async reload() {
