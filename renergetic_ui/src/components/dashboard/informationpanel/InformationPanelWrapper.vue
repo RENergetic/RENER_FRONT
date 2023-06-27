@@ -179,6 +179,7 @@ export default {
   async mounted() {
     var _this = this;
     var f = async () => {
+      _this.mFilter = _this.filter ? _this.filter : _this.$store.getters["settings/parsedFilter"](_this.filterKey);
       if (_this.loopRunner) {
         _this.loopRunner.reset();
       }
