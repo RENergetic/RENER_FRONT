@@ -6,7 +6,7 @@ function parseDateFilter(filter) {
   var date = new Date();
 
   //"custom_interval"
-  switch (f.timeInterval) {
+  switch (f.timeIntervalType) {
     case "current_day":
       from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
       break;
