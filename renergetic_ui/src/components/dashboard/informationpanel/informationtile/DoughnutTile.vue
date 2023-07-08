@@ -78,7 +78,7 @@ export default {
         // console.info(1.0 - sum);
         // console.info(sum);
         data.push(1.0 - sum);
-        backgroundColor.push("#01010110");
+        backgroundColor.push(backgroundColor);
         labels.push("");
       }
       return {

@@ -1,6 +1,7 @@
 <template>
   <!-- {{ tile }} -->
   <!-- {{ settings.panel }} -->
+  <!-- {{ filter }} -->
   <div class="flex flex-column justify-content-center" style="height: 100%">
     <!-- <div style="display: flex; flex-direction: column; align-items: flex-end"> -->
     <div class="flex flex-none flex-column justify-content-center">
@@ -104,6 +105,12 @@ export default {
       },
       deep: true,
     },
+    filter: {
+      handler: async function () {
+        await this.reload();
+      },
+      deep: true,
+    },
   },
   async mounted() {
     await this.reload();
@@ -148,7 +155,7 @@ export default {
           fill: true,
         });
       }
-
+      // console.error(datasets);
       this.datasets = datasets;
     },
     async reload() {
