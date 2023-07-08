@@ -189,6 +189,7 @@ export default {
         labels.push(this.tile.measurements[idx].label);
         labels.push(""); //label for remaining doughnut part
       }
+      // co jesli nie ma label
       let datasets = data.map((v, index) => this.getDataset(v, index));
 
       // if (datasets.length <= 2) {

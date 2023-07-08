@@ -5,6 +5,7 @@
   <!-- refreshTime: {{ $store.getters["settings/panel"].refreshTime }} -->
   <!-- {{ $store.getters["settings/panel"] }} -->
   <!-- panel: {{ panel.name }}{{ panel.id }} {{ assetId }} -->
+
   <RenSpinner ref="spinner" :lock="true" style="width: 100%; min-height: 15rem">
     <template #content>
       <InformationPanel
@@ -179,6 +180,10 @@ export default {
   async mounted() {
     var _this = this;
     var f = async () => {
+      console.error("deffererd");
+      console.error(_this.filter);
+      console.error(_this.filterKey);
+      console.error(_this.$store.getters["settings/parsedFilter"](_this.filterKey));
       _this.mFilter = _this.filter ? _this.filter : _this.$store.getters["settings/parsedFilter"](_this.filterKey);
       if (_this.loopRunner) {
         _this.loopRunner.reset();

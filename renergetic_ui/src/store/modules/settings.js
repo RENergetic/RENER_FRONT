@@ -4,20 +4,23 @@ function parseDateFilter(filter) {
   let from = f.date_from; // ? f.date_from.getTime() : null;
   let to = f.date_to; //? f.date_to.getTime() : null;
   var date = new Date();
-
   //"custom_interval"
   switch (f.timeIntervalType) {
     case "current_day":
       from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+      to = null;
       break;
     case "last_24h":
       from = new Date().getTime() - 3600 * 24 * 1000;
+      to = null;
       break;
     case "last_week":
       from = new Date().getTime() - 3600 * 24 * 1000 * 7;
+      to = null;
       break;
     case "current_month":
       from = new Date(date.getFullYear(), date.getMonth(), 1).getTime();
+      to = null;
       break;
     case "previous_month":
       from = new Date(date.getFullYear(), date.getMonth() - 1, 1).getTime();
@@ -25,6 +28,7 @@ function parseDateFilter(filter) {
       break;
     case "current_year":
       from = new Date(date.getFullYear(), 0, 1).getTime();
+      to = null;
       break;
     case "previous_year":
       from = new Date(date.getFullYear() - 1, 0, 1).getTime();
