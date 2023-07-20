@@ -1,6 +1,7 @@
 <template>
   <!-- {{ tile }} -->
   <!-- {{ settings.panel }} -->
+  <!-- {{ filter }} -->
   <div class="flex flex-column justify-content-center" style="height: 100%">
     <!-- <div style="display: flex; flex-direction: column; align-items: flex-end"> -->
     <div class="flex flex-none flex-column justify-content-center">
@@ -101,6 +102,12 @@ export default {
       handler: function (newValue) {
         this.width = newValue.panel.cellWidth * this.tile.layout.w * 0.95;
         this.height = newValue.panel.cellHeight * this.tile.layout.h * 0.75;
+      },
+      deep: true,
+    },
+    filter: {
+      handler: async function () {
+        await this.reload();
       },
       deep: true,
     },

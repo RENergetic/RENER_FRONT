@@ -2,9 +2,7 @@
   <Card>
     <template v-if="mArea != null" #title>
       <div class="flex">
-        <div class="flex flex-none">
-          <i v-tooltip="$t('view.measurements')" class="pi pi-chart-line" @click="viewMeasurements()" />
-        </div>
+        <div class="flex flex-none"></div>
         <div class="flex flex-none">
           <i v-if="edit" v-tooltip="$t('view.delete_area')" class="pi pi-times" @click="deleteArea" />
         </div>

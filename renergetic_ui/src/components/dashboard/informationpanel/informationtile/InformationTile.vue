@@ -1,6 +1,13 @@
 <template>
   <!-- {{ mSettings }} -->
   <div v-if="tile" :class="tileClass" :style="background">
+    <i
+      v-if="tile.measurements.length > 0"
+      v-tooltip="$t('view.measurements')"
+      class="pi pi-chart-line"
+      style="fontsize: 3rem; position: absolute; top: 0.5rem; right: 0.5rem"
+      @click="viewMeasurements()"
+    />
     <!-- {{ filter }} -->
     <!-- {{ pdata }} -->
     <!-- todo: group by sensor_name -->
