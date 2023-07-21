@@ -22,7 +22,7 @@
   "dashboard_delete_confirm": "Are you sure you want to remove dashboard: {label}",
   "measurement_delete": "Delete measurement",
   "measurement_delete_confirm": "Are you sure you want to remove measurement: {label}",
-  
+  "no_tag":"Tag not used",
   "delete": "Delete",
   "delete_area": "Delete area",
   "demand_list": "Recommendations",
@@ -66,6 +66,8 @@
   "heatmap_list": "Heatmap List",
   "role_name": "Role name",
   "show_details": "Show details",
+  "manage_tags": "Manage tags",
+  "list_panels":"List panels",
   "search": "Search",
   "selected_area": "Selected area",
   "select_asset_category": "Select asset category",

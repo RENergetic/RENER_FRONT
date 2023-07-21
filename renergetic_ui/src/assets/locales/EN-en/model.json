@@ -81,6 +81,7 @@
      "measurement": {
           "name": "Name",
           "label": "Label",
+          "panel_count":"Linked panels count", 
           "measurement_type": "Measurement type",
           "location_name": "Location",
           "type": "Measurement type",
