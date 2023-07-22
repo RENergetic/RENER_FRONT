@@ -223,6 +223,9 @@ export default class ManagementApi extends RestComponent {
         });
         return true;
       }
+      return false;
+    }).then((res) => {
+      return res;
     });
   }
 

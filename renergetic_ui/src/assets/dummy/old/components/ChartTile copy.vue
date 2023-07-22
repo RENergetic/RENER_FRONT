@@ -1,5 +1,7 @@
 <template>
-  >
+  <!-- {{ tile }} -->
+  <!-- {{ settings.panel }} -->
+  <!-- {{ filter }} -->
   <div class="flex flex-column justify-content-center" style="height: 100%">
     <!-- <div style="display: flex; flex-direction: column; align-items: flex-end"> -->
     <div class="flex flex-none flex-column justify-content-center">
@@ -9,30 +11,25 @@
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
     <div class="flex flex-grow-1 flex-column align-items-center justify-content-center" style="position: relative; height: 100%">
       <div class="flex flex-none flex-column align-items-center justify-content-center">
-        <MeasurementChart
-          ref="chart"
-          :filter="filter"
-          :height="height"
-          :width="width"
-          :style="mStyle"
-          :chart-type="chartType"
-          :tile="tile"
-          :asset-id="settings && settings.panel ? settings.panel.asset_id : null"
-          :legend="settings && settings.tile ? settings.tile.legend : false"
-          @timeseries-update="(timeseriesData) => $emit('timeseries-update', timeseriesData)"
-        />
+        <RenSpinner ref="spinner" :lock="true">
+          <template #content>
+            <Chart v-if="height && width" :style="mStyle" :type="chartType" :data="chartData" :options="options" :height="height" :width="width" />
+          </template>
+        </RenSpinner>
       </div>
     </div>
   </div>
 </template>
 <script>
-import MeasurementChart from "@/components/dashboard/MeasurementChart.vue";
+import Chart from "primevue/chart";
+import chartjsMoment from "chartjs-adapter-moment";
 export default {
   name: "ChartTile",
-  components: { MeasurementChart },
+  components: { Chart },
   props: {
     settings: { type: Object, default: () => ({}) },
     pdata: { type: Object, default: () => ({}) },
+    // chartType: { type: String, default: "line" },
     tile: {
       type: Object,
       default: () => ({}),
@@ -49,6 +46,7 @@ export default {
     return {
       labels: this.pdata["timeseries_labels"] ? this.pdata["timeseries_labels"] : [],
       datasets: [],
+      plugins: [chartjsMoment],
       mStyle: "max-width: 100rem;max-height:60rem; margin: auto;height:100%;width:100%",
       width: this.settings.panel.cellWidth * this.tile.layout.w * 0.95,
       height: this.settings.panel.cellHeight * this.tile.layout.h * 0.75,
@@ -92,6 +90,12 @@ export default {
     chartType: function () {
       return this.settings.tile.chartType ? this.settings.tile.chartType : "scatter";
     },
+    chartData: function () {
+      return {
+        labels: this.labels,
+        datasets: this.datasets,
+      };
+    },
   },
   watch: {
     settings: {
@@ -113,8 +117,55 @@ export default {
     // this.mStyle = `max-width: 100rem; margin: auto;width:${this.width}px;` + `max-height: 60rem; margin: auto;height:${this.height}px`;
   },
   methods: {
+    async loadData() {
+      //TODO: make it comgigurable in tile / args prediction & aggregation func
+      // let data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
+      // let measurementIds = this.tile.measurements.map((m) => m.id);
+      let datasets = [];
+      let hasAllData = false;
+      if (this.pdata["timeseries"]) {
+        hasAllData = true;
+        this.tile.measurements.forEach((m) => {
+          hasAllData &= this.pdata["timeseries"][m.id];
+        });
+        // check if all measurements are in pdata , if not load all for the tile and emit to the parent
+        console.info(hasAllData);
+      }
+      let data;
+      if (!hasAllData) {
+        let timeseriesData = await this.$ren.dataApi.getTimeseries(null, this.tile.id, this.settings.panel.asset_id, this.filter);
+
+        this.labels = timeseriesData["timestamps"];
+        data = timeseriesData["current"];
+        if (timeseriesData) {
+          this.$emit("timeseries-update", timeseriesData);
+        }
+      } else {
+        data = this.pdata["timeseries"]["current"];
+      }
+      for (let idx in this.tile.measurements) {
+        let m = this.tile.measurements[idx];
+        let color = m.measurement_details.color ? m.measurement_details.color : "#90A4AE";
+        datasets.push({
+          data: data[m.id],
+          label: `label_${m.id}`,
+          backgroundColor: color + "30",
+          borderColor: color + "FF",
+          showLine: true,
+          fill: true,
+        });
+      }
+      // console.error(datasets);
+      this.datasets = datasets;
+    },
     async reload() {
-      this.$refs.chart.reload();
+      let run = this.$refs.spinner.run;
+      await run(async () => {
+        // await new Promise((r) => setTimeout(r, 250));
+        await this.loadData();
+        this.loaded = true;
+        this.refreshDate = new Date();
+      });
     },
   },
 };

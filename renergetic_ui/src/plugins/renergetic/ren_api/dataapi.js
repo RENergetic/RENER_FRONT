@@ -119,7 +119,17 @@ export default class DataApi extends RestComponent {
     }
     return this.get(endpoint);
   }
+  async getMeasurementTimeseries(measurements, filter) {
+    let measurementsIds = measurements.map((m) => m.id).join(",");
+    let endpoint = `/api/data/timeseries/measurements/${measurementsIds}`;
 
+    let args = this.parseArgs({ ...filter });
+    endpoint = `${endpoint}?${args}`;
+    if (!filter) {
+      filter = {};
+    }
+    return this.get(endpoint);
+  }
   // async getCurrentData(measurementIds) {
   //   return generator.
   // }

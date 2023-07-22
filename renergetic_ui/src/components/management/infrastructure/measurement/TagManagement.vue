@@ -39,6 +39,7 @@ export default {
   name: "TagManagement",
   components: { InfoIcon },
   props: {},
+  emits: ["onDelete"],
   data() {
     return {
       // measurementAdd: false,
@@ -57,9 +58,13 @@ export default {
   methods: {
     async deleteTag(tag) {
       await this.$refs.spinner.run(async () => {
-        await this.$ren.managementApi.deleteTag(tag).then(async () => {
-          this.$emitter.emit("information", { message: this.$t("information.tag_deleted") });
-          await this.loadData();
+        await this.$ren.managementApi.deleteTag(tag).then(async (res) => {
+          if (res) {
+            this.$emitter.emit("information", { message: this.$t("information.tag_deleted") });
+            await this.loadData();
+            this.$emit("onDelete", tag);
+          }
+          // else {          }
           // if (res ) {
           //   this.$emitter.emit("information", { message: this.$t("information.visibility_changed") });
           //

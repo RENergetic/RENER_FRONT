@@ -69,25 +69,31 @@ export default {
     },
   },
   async mounted() {
-    var tags = await this.$ren.managementApi.listTags(this.measurement.id);
-    var availableTagsValues = {};
-    var availableTags = [];
-    for (let t of tags) {
-      if (availableTagsValues[t.key]) {
-        availableTagsValues[t.key].push(t.value);
-      } else {
-        availableTagsValues[t.key] = [];
-        availableTags.push(t.key);
-        availableTagsValues[t.key].push(t.value);
-      }
-    }
-    this.availableTags = availableTags;
-    this.availableTagsValues = availableTagsValues;
+    await this.loadTags();
   },
 
   methods: {
+    async loadTags() {
+      var tags = await this.$ren.managementApi.listTags(this.measurement.id);
+      var availableTagsValues = {};
+      var availableTags = [];
+      for (let t of tags) {
+        if (availableTagsValues[t.key]) {
+          availableTagsValues[t.key].push(t.value);
+        } else {
+          availableTagsValues[t.key] = [];
+          availableTags.push(t.key);
+          availableTagsValues[t.key].push(t.value);
+        }
+      }
+      this.availableTags = availableTags;
+      this.availableTagsValues = availableTagsValues;
+    },
     manageTags() {
       this.tagListDialog = true;
+    },
+    async tagOnDelete() {
+      await this.loadTags();
     },
     addTagForm() {
       this.newTagDialog = true;
@@ -107,6 +113,7 @@ export default {
       }
       this.updateKey = !this.updateKey;
     },
+
     tagCancel() {
       this.newTagDialog = false;
     },

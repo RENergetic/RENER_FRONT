@@ -15,7 +15,7 @@
         @click="listPanels()"
       />
       <Button v-tooltip="$t('view.manage_tags')" icon="pi pi-tags" class="p-button-rounded" @click="manageTags()" />
-      <Button v-tooltip="$t('view.view_data')" icon="pi pi-chart-line" class="p-button-rounded" @click="manageTags()" />
+      <Button v-tooltip="$t('view.view_data')" icon="pi pi-chart-line" class="p-button-rounded" @click="showData()" />
 
       <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="edit()" />
       <Button v-tooltip="$t('view.delete')" icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteConfirm()" />
@@ -49,6 +49,27 @@
   <Dialog v-model:visible="typeDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
     <MeasurementTypeList />
   </Dialog>
+  <Dialog v-model:visible="dataDialog" :style="{ width: '90vw' }" :modal="true" :dismissable-mask="true">
+    <div>
+      <MeasurementChart
+        ref="chart"
+        :filter="filter"
+        :style="'margin:auto;max-width: 90%;'"
+        width="1200"
+        height="500"
+        :measurements="[mMeasurement]"
+      />
+      <BasicFilterSettings
+        style="width: 100%; margin: auto; margin-top: 1rem"
+        class="ren-card"
+        :setting-key="'measurement'"
+        :submit-button="false"
+        :columns="3"
+        :labels="false"
+        @update="reloadSettings()"
+      />
+    </div>
+  </Dialog>
   <measurement-tags ref="tagDialog" :measurement="mMeasurement" />
 </template>
 
@@ -58,11 +79,22 @@ import MeasurementForm from "./MeasurementForm.vue";
 import MeasurementDetails from "./MeasurementDetails.vue";
 import DeleteMeasurement from "./DeleteMeasurement.vue";
 import MeasurementTypeList from "./MeasurementTypeList.vue";
+import MeasurementChart from "@/components/dashboard/MeasurementChart.vue";
 import MeasurementTags from "./MeasurementTags.vue";
+import BasicFilterSettings from "@/components/miscellaneous/settings/BasicFilterSettings.vue";
 
 export default {
   name: "MeasurementExtension",
-  components: { InfoIcon, MeasurementForm, MeasurementTags, MeasurementDetails, DeleteMeasurement, MeasurementTypeList },
+  components: {
+    InfoIcon,
+    BasicFilterSettings,
+    MeasurementForm,
+    MeasurementChart,
+    MeasurementTags,
+    MeasurementDetails,
+    DeleteMeasurement,
+    MeasurementTypeList,
+  },
   props: {
     measurement: { type: Object, required: true },
   },
@@ -75,7 +107,9 @@ export default {
       editDialog: false,
       addDialog: false,
       typeDialog: false,
+      dataDialog: false,
       measurementDetailsDialog: false,
+      filter: this.$store.getters["settings/parsedFilter"]("measurement"),
     };
   },
   computed: {},
@@ -87,6 +121,11 @@ export default {
   },
   mounted() {},
   methods: {
+    reloadSettings() {
+      this.filter = this.$store.getters["settings/parsedFilter"]("measurement");
+      // this.settings = this.$store.getters["settings/panel"];
+      // this.conversionSettings = this.$store.getters["settings/conversion"];
+    },
     async manageTags() {
       await this.$refs.tagDialog.open();
     },
@@ -97,6 +136,12 @@ export default {
       });
       // alert("Save error, not implemented");
       //todo: store to db save
+    },
+    async showData() {
+      await this.$ren.managementApi.getMeasurementProperties(this.mMeasurement.id).then((details) => {
+        this.mMeasurement.measurement_details = details;
+      });
+      this.dataDialog = true;
     },
     async showDetails() {
       await this.$ren.managementApi.getMeasurementProperties(this.mMeasurement.id).then((details) => {
