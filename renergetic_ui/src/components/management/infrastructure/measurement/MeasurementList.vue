@@ -4,8 +4,11 @@
       <!-- some info -->
     </template>
   </InfoIcon>
+  <!-- @row-expand="onexpand" -->
   <DataTable
+    v-model:expandedRows="expanded"
     v-model:filters="filters"
+    data-key="id"
     :rows="50"
     :paginator="true"
     :row-class="rowClass"
@@ -20,8 +23,12 @@
         <InputText v-model="filters['global'].value" :placeholder="$t('view.search')" />
       </span>
     </template>
-    <!-- <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.measurement.' + col)"></Column> -->
-    <Column field="id" :header="$t('model.measurement.id')"></Column>
+    <Column :expander="true" header-style="width: 3rem" />
+    <template #expansion="slotProps">
+      <!-- refresh button: TODO: :ref="'roles_' + user.data.id" :user="user.data.id"-->
+      <measurement-extension :measurement="slotProps.data" @reload="reload()" />
+    </template>
+    <!-- <Column field="id" :header="$t('model.measurement.id')"></Column> -->
     <Column field="name" :header="$t('model.measurement.name')" :show-filter-menu="false">
       <!-- <template #filter="{ filterModel, filterCallback }">
         <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
@@ -81,14 +88,14 @@
       </template>
     </Column>
 
-    <Column field="measurement_details" :header="$t('model.measurement.details')">
+    <!-- <Column field="measurement_details" :header="$t('model.measurement.details')">
       <template #body="slotProps">
         <span @click="showDetails(slotProps.data)">
           {{ $t("view.show_details") }}
         </span>
       </template>
-    </Column>
-    <Column field="edit" :header="$t('view.edit')">
+    </Column> -->
+    <!-- <Column field="edit" :header="$t('view.edit')">
       <template #body="slotProps">
         <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="edit(slotProps.data)" />
       </template>
@@ -97,26 +104,20 @@
       <template #body="slotProps">
         <Button v-tooltip="$t('view.delete')" icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteConfirm(slotProps.data)" />
       </template>
-    </Column>
+    </Column> -->
   </DataTable>
   <Toolbar>
     <template #end><Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="addDialog = true" /> </template>
     <template #start><Button :label="$t('view.button.measurement_types')" icon="pi pi-list" @click="typeDialog = true" /> </template>
   </Toolbar>
 
-  <Dialog v-model:visible="measurementDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <!-- {{ selectedMeasurement.measurement_details }} -->
+  <!-- <Dialog v-model:visible="measurementDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <MeasurementDetails :model="selectedMeasurement.measurement_details" @update="onDetailsUpdate"></MeasurementDetails>
-    <!-- @update:model-value="onCreate($event, 0)" -->
-  </Dialog>
-  <!-- <Button :label="$t('view.button.add')" @click="measurementAdd = true" /> -->
-  <!-- <Dialog v-model:visible="measurementEditDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <MeasurementForm @update:model-value="onCreate($event, 0)"></MeasurementForm>
   </Dialog> -->
-  <DeleteMeasurement ref="deleteMeasurement" :measurement="selectedMeasurement" @delete="onDelete" />
+  <!-- <DeleteMeasurement ref="deleteMeasurement" :measurement="selectedMeasurement" @delete="onDelete" />
   <Dialog v-model:visible="editDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <MeasurementForm v-if="selectedMeasurement" v-model="selectedMeasurement" @update="onEdit($event)" @cancel="editDialog = false" />
-  </Dialog>
+  </Dialog> -->
   <Dialog v-model:visible="addDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
     <MeasurementForm @update="onCreate($event)" @cancel="addDialog = false" />
   </Dialog>
@@ -128,13 +129,14 @@
 <script>
 import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import MeasurementForm from "./MeasurementForm.vue";
-import MeasurementDetails from "./MeasurementDetails.vue";
-import DeleteMeasurement from "./DeleteMeasurement.vue";
+// import MeasurementDetails from "./MeasurementDetails.vue";
+// import DeleteMeasurement from "./DeleteMeasurement.vue";
 import MeasurementTypeList from "./MeasurementTypeList.vue";
+import MeasurementExtension from "./MeasurementExtension.vue";
 
 export default {
   name: "MeasurementList",
-  components: { InfoIcon, MeasurementForm, MeasurementDetails, DeleteMeasurement, MeasurementTypeList },
+  components: { InfoIcon, MeasurementForm, MeasurementTypeList, MeasurementExtension },
   props: {
     measurementList: { type: Array, default: () => [] },
   },
@@ -143,6 +145,7 @@ export default {
     return {
       // measurementAdd: false,
 
+      expanded: [],
       columns: [],
       filters: this.initFilters(),
       selectedMeasurement: null,
@@ -188,21 +191,20 @@ export default {
     filterNameCallback(f) {
       this.filters.label = f;
     },
-    async onDetailsUpdate(details) {
-      this.selectedMeasurement.measurement_details = details;
-      await this.$ren.managementApi.updateMeasurementProperties(this.selectedMeasurement, details).then(() => {
-        this.reload();
-      });
-      // alert("Save error, not implemented");
-      //todo: store to db save
-    },
-    async showDetails(row) {
-      await this.$ren.managementApi.getMeasurementProperties(row.id).then((details) => {
-        row.measurement_details = details;
-      });
-      this.selectedMeasurement = row;
-      this.measurementDetailsDialog = true;
-    },
+    // async onDetailsUpdate(details) {
+    //   this.selectedMeasurement.measurement_details = details;
+    //   await this.$ren.managementApi.updateMeasurementProperties(this.selectedMeasurement, details).then(() => {
+    //     this.reload();
+    //   });
+    //   //todo: store to db save
+    // },
+    // async showDetails(row) {
+    //   await this.$ren.managementApi.getMeasurementProperties(row.id).then((details) => {
+    //     row.measurement_details = details;
+    //   });
+    //   this.selectedMeasurement = row;
+    //   this.measurementDetailsDialog = true;
+    // },
 
     async onCreate(o) {
       // console.info(o);
@@ -213,30 +215,30 @@ export default {
       this.addDialog = false;
       this.reload();
     },
-    edit(o) {
-      this.selectedMeasurement = o;
-      this.editDialog = true;
-    },
-    async onEdit(o) {
-      await this.$ren.managementApi.updateMeasurement(o).then((res) => {
-        if (res) {
-          this.$emitter.emit("information", { message: this.$t("information.measurement_updated") });
-          this.editDialog = false;
-          this.reload();
-        } else {
-          this.$emitter.emit("error", { message: this.$t("information.measurement_not_updated") });
-        }
-      });
-    },
-    deleteConfirm(o) {
-      this.selectedMeasurement = o;
-      this.$refs.deleteMeasurement.delete(o);
-    },
-    // onDelete(o){
-    onDelete() {
-      this.selectedMeasurement = null;
-      this.reload();
-    },
+    // edit(o) {
+    //   this.selectedMeasurement = o;
+    //   this.editDialog = true;
+    // },
+    // async onEdit(o) {
+    //   await this.$ren.managementApi.updateMeasurement(o).then((res) => {
+    //     if (res) {
+    //       this.$emitter.emit("information", { message: this.$t("information.measurement_updated") });
+    //       this.editDialog = false;
+    //       this.reload();
+    //     } else {
+    //       this.$emitter.emit("error", { message: this.$t("information.measurement_not_updated") });
+    //     }
+    //   });
+    // },
+    // deleteConfirm(o) {
+    //   this.selectedMeasurement = o;
+    //   this.$refs.deleteMeasurement.delete(o);
+    // },
+    // // onDelete(o){
+    // onDelete() {
+    //   this.selectedMeasurement = null;
+    //   this.reload();
+    // },
     reload() {
       //TODO: filter
       this.$emit("reload");

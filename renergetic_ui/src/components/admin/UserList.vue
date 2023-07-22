@@ -48,7 +48,7 @@ import UserRoleList from "./UserRoleList.vue";
 
 import { RenRolesStr } from "@/plugins/model/Enums";
 export default {
-  name: "Users",
+  name: "UserList",
   components: { UserForm, UserRoleList },
   props: {
     users: { type: Array, default: () => [] },

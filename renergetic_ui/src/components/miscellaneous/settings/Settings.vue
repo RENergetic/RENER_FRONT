@@ -69,8 +69,13 @@
             :option-label="s.ext.optionLabel"
           />
         </div>
-        <div v-else-if="s.type == 'Color'">
-          <ColorPicker v-model="mModel[s.key]" v-tooltip="s.description" @change="colorChange(s.key)" />
+        <div v-else-if="s.type == 'Color'" class="grid">
+          <div class="col-12 xl:col-3">
+            <ColorPicker :id="s.key + '_color'" v-model="mModel[s.key]" v-tooltip="s.description" @change="colorChange(s.key)" />
+          </div>
+          <div class="col-12 xl:col-6">
+            <InputText :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" @change="colorChange(s.key)" />
+          </div>
         </div>
         <div v-else-if="s.type == 'Datetime'">
           <Calendar :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" :show-time="true" hour-format="24" />
@@ -170,6 +175,18 @@ export default {
 </script>
 
 <style lang="scss">
+.p-colorpicker {
+  width: 100%;
+  min-height: 3rem;
+  min-width: 5rem;
+  padding: 0;
+  input {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+  }
+}
 .settings-slider {
   margin-bottom: 0.35rem;
 }

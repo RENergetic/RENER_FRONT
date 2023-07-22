@@ -68,7 +68,7 @@ export default {
     return {
       mModel: {
         key: { maxLength: maxLength(30), required: required, minLength: minLength(3) },
-        value: { maxLength: maxLength(30), required: required, minLength: minLength(3) },
+        value: { maxLength: maxLength(30), required: required, minLength: minLength(2) },
       },
     };
   },

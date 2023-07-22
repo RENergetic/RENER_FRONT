@@ -13,6 +13,8 @@
                     "type": "asset type"
                 }
             },
+            "key":"key",
+            "value":"value",
             "domain":"domain",
             "physical_type":"physical type",
             "sensor_name":"sensor name",
@@ -45,7 +47,8 @@
         "asset_panel_assigned": "Asset assigned to the panel",
         "panel_update": "Panel {0} update success.",
         "settings_saved":"Settings saved",
-        "visibility_changed": "Visibility changed"
+        "visibility_changed": "Visibility changed",
+        "tag_deleted":"Tag deleted"
     },
     "error": {
         "error": "Error",
