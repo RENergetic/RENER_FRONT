@@ -13,7 +13,6 @@ export default {
   components: { Chart },
   props: {
     pdata: { type: Object, default: () => ({}) },
-    // chartType: { type: String, default: "line" },
     measurements: { type: Array, default: null },
     tile: { type: Object, default: null },
     width: { type: Number, default: 1600 },
@@ -21,6 +20,7 @@ export default {
     chartType: { type: String, default: "scatter" },
     legend: { type: Boolean, default: false },
     assetId: { type: String, default: null },
+    immediate: { type: Boolean, default: true },
     filter: {
       type: Object,
       default: () => {
@@ -82,14 +82,16 @@ export default {
   },
   watch: {
     filter: {
-      handler: async function () {
-        await this.reload();
+      handler: async function (newV, oldV) {
+        if ((newV != oldV && oldV == null) || this.immediate) {
+          await this.reload();
+        }
       },
       deep: true,
     },
   },
   async mounted() {
-    await this.reload();
+    if (this.immediate) await this.reload();
   },
   methods: {
     localData() {
@@ -143,6 +145,7 @@ export default {
       this.datasets = datasets;
     },
     async reload() {
+      console.info("chart reload: " + this.mMeasurements[0].id);
       let run = this.$refs.spinner.run;
       await run(async () => {
         // await new Promise((r) => setTimeout(r, 250));

@@ -20,7 +20,14 @@
           @click="$emit('notification', slotProps)"
         /> -->
       </div>
-      <InformationTile :tile="tile" :pdata="tileData" :filter="filter" :settings="settings" @timeseries-update="onTimeseriesUpdate" />
+      <InformationTile
+        :tile="tile"
+        :pdata="tileData"
+        :filter="filter"
+        :settings="settings"
+        @preview-tile="onPreview"
+        @timeseries-update="onTimeseriesUpdate"
+      />
     </div>
   </div>
 </template>
@@ -51,7 +58,7 @@ export default {
       },
     },
   },
-  emits: ["edit", "notification", "timeseries-update"],
+  emits: ["edit", "notification", "timeseries-update", "preview-tile"],
   data() {
     return {
       tileData: this.pdata, //&& this.pdata.data ? this.pdata.data : {},
@@ -122,6 +129,9 @@ export default {
     },
   },
   methods: {
+    onPreview() {
+      this.$emit("preview-tile", this.tile);
+    },
     onTimeseriesUpdate(evt) {
       this.$emit("timeseries-update", evt);
     },

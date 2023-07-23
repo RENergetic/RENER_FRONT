@@ -13,11 +13,13 @@
       :settings="mSettings"
       :filter="filter"
       @edit="$emit('editTile', { tile: tile, index: index })"
+      @preview-tile="onPreview"
       @timeseries-update="onTimeseriesUpdate"
       @notification="viewNotification"
     />
   </div>
-
+  <TileMeasurementPreview ref="dataPreview" />
+  <!--  @on-load="onChartsLoad()" -->
   <Dialog v-model:visible="notificationDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <notification-list v-if="selectedItem" :context="notificationContext" :object-id="selectedItem.tile.id" />
   </Dialog>
@@ -25,6 +27,8 @@
 <script>
 import InformationTileGridWrapper from "./informationtile/InformationTileGridWrapper.vue";
 import NotificationList from "../../management/notification/NotificationList.vue";
+
+import TileMeasurementPreview from "./informationtile/TileMeasurementPreview.vue";
 import { GridStack } from "gridstack";
 // import { TileTypes, NotificationContext } from "@/plugins/model/Enums.js";
 import { NotificationContext, RenRoles } from "@/plugins/model/Enums.js";
@@ -74,6 +78,7 @@ export default {
   components: {
     InformationTileGridWrapper,
     NotificationList,
+    TileMeasurementPreview,
   },
   props: {
     pdata: {
@@ -117,21 +122,17 @@ export default {
   },
   emits: ["editTile", "update", "timeseries-update"],
   data() {
-    // console.error(this.settings);
-    // console.error(this.panel);
     return {
       grid: null,
-
       mSettings: validateSettings(this.settings, this.panel, this),
       // loaded: false,
       notificationDialog: false,
       selectedItem: null,
       mPanel: this.panel,
       mPData: null,
-      // tileTypes: Object.entries(TileTypes).map((k) => {
-      //   return { value: k[1], label: this.$t("enums.tile_type." + k[1]) };
-      // }),
+
       notificationContext: NotificationContext.TILE,
+      selectedTile: null,
     };
   },
   computed: {
@@ -166,7 +167,6 @@ export default {
         // }
 
         this.recalculateData(newValue);
-        // this.reloadGrid();
       },
       deep: true,
       immediate: true,
@@ -175,15 +175,6 @@ export default {
       // handler(newVal) {
       handler() {
         console.info("watch mSettings");
-        // if (newVal.relativeValues && this.pdata) {
-        //   // this.mPData = this.pdata;
-        //   this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.$store.getters["settings/conversion"]);
-        //   this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, newVal);
-        // } else if (this.pdata) {
-        //   this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.$store.getters["settings/conversion"]);
-        //   //TODO: check this:
-        //   this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, newVal);
-        // }
         this.recalculateData(this.pdata);
       },
       deep: true,
@@ -196,13 +187,6 @@ export default {
   convertData() {},
   async mounted() {
     if (this.pdata != null) {
-      // if (this.settings.relativeValues && this.pdata) {
-
-      //   this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.$store.getters["settings/conversion"]);
-      //   this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, this.settings);
-      // } else {
-      //   this.mPData = this.$ren.utils.convertPanelData(this.mPanel, this.pdata, this.$store.getters["settings/conversion"]);
-      // }
       this.recalculateData(this.pdata);
       this.reloadGrid();
     }
@@ -251,6 +235,9 @@ export default {
       //TODO: load here notifications for tile
       this.selectedItem = evt;
       this.notificationDialog = true;
+    },
+    onPreview(tile) {
+      this.$refs.dataPreview.open(tile);
     },
   },
 };

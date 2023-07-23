@@ -131,7 +131,7 @@ export default {
       },
     },
   },
-  emits: ["edit", "notification", "timeseries-update"],
+  emits: ["edit", "notification", "timeseries-update", "preview-tile"],
   data() {
     return {
       conversionSettings: this.$store.getters["settings/conversion"],
@@ -170,6 +170,9 @@ export default {
   methods: {
     onTimeseriesUpdate(evt) {
       this.$emit("timeseries-update", evt);
+    },
+    viewMeasurements() {
+      this.$emit("preview-tile", this.tile);
     },
   },
 };
