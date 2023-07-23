@@ -43,9 +43,10 @@ export default {
     };
   },
   methods: {
-    onLoad() {
+    async onLoad() {
       this.loaded = true;
       this.$emit("onLoad");
+      await this.reload();
     },
     async reloadSettings() {
       this.filter = this.$store.getters["settings/parsedFilter"]("measurement");

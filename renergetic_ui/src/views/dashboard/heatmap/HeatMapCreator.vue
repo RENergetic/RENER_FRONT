@@ -1,18 +1,18 @@
 <template>
   <Dialog v-model:visible="heatmapDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="false">
-    <HeatMapForm @save="onHeatmapInit" @cancel="onCancel"></HeatMapForm>
+    <!-- <HeatMapForm @save="onHeatmapInit" @cancel="onCancel"></HeatMapForm> -->
   </Dialog>
-  <HeatMapEdit v-if="heatmap != null" v-model="heatmap" @update="onSave" />
+  <!-- <HeatMapEdit v-if="heatmap != null" v-model="heatmap" @update="onSave" /> -->
 </template>
 <script>
-import HeatMapEdit from "@/components/dashboard/area/HeatMapEdit.vue";
-import HeatMapForm from "@/components/dashboard/area/HeatMapForm.vue";
+// import HeatMapEdit from "@/components/dashboard/area/HeatMapEdit.vue";
+// import HeatMapForm from "@/components/dashboard/area/HeatMapForm.vue";
 
 import { HeatMap } from "@/plugins/model/HeatMap";
 
 export default {
   name: "HeatMapCreator",
-  components: { HeatMapEdit, HeatMapForm },
+  // components: { HeatMapEdit, HeatMapForm },
   props: {
     id: {
       type: String,

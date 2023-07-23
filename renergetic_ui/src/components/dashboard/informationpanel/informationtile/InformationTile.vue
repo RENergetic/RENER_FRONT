@@ -11,7 +11,6 @@
     <!-- {{ filter }} -->
     <!-- {{ pdata }} -->
     <!-- todo: group by sensor_name -->
-    <!-- {{ tile.type }} -->
     <div v-if="(titleVisible || tile.measurements.length == 0) && tile.label" class="flex flex-column justify-content-center" style="height: 100%">
       <h3 style="margin: 0; text-align: center">{{ tile.label }}</h3>
     </div>

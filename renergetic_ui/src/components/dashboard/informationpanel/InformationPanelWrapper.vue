@@ -46,14 +46,15 @@
     </div>
     <Dialog v-model:visible="manageSensorsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
       <!-- {{ selectedTile.tile.measurements }} -->
-      <ManageSensors v-model="selectedItem.tile.measurements"></ManageSensors>
+      component to add measurements to the tile
+      <!-- <ManageSensors v-model="selectedItem.tile.measurements"></ManageSensors> -->
     </Dialog>
   </Dialog>
 </template>
 <script>
 // import NotificationList from "@/components/management/notification/NotificationList.vue";
 import InformationPanel from "./InformationPanel.vue";
-import ManageSensors from "../measurements/ManageSensors.vue";
+// import ManageSensors from "../measurements/ManageSensors.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 // import { GridStack } from "gridstack";
 import LoopRunner from "@/plugins/utils/loop_runner.js";
@@ -65,7 +66,7 @@ export default {
   name: "InformationPanelWrapper",
   components: {
     InformationPanel,
-    ManageSensors,
+    // ManageSensors,
     // NotificationList,
   },
   props: {
