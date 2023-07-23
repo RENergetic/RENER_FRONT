@@ -79,7 +79,7 @@ import MeasurementForm from "./MeasurementForm.vue";
 import MeasurementDetails from "./MeasurementDetails.vue";
 import DeleteMeasurement from "./DeleteMeasurement.vue";
 import MeasurementTypeList from "./MeasurementTypeList.vue";
-import MeasurementChart from "@/components/dashboard/MeasurementChart.vue";
+import MeasurementChart from "@/components/dashboard/measurement/MeasurementChart.vue";
 import MeasurementTags from "./MeasurementTags.vue";
 import BasicFilterSettings from "@/components/miscellaneous/settings/BasicFilterSettings.vue";
 

@@ -21,7 +21,7 @@
 
 <script>
 // import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
-import MeasurementChartList from "@/components/dashboard/MeasurementChartList.vue";
+import MeasurementChartList from "@/components/dashboard/measurement/MeasurementChartList.vue";
 import BasicFilterSettings from "@/components/miscellaneous/settings/BasicFilterSettings.vue";
 
 export default {

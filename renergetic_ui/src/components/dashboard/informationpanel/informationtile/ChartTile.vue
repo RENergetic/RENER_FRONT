@@ -1,5 +1,4 @@
 <template>
-  >
   <div class="flex flex-column justify-content-center" style="height: 100%">
     <!-- <div style="display: flex; flex-direction: column; align-items: flex-end"> -->
     <div class="flex flex-none flex-column justify-content-center">
@@ -26,7 +25,7 @@
   </div>
 </template>
 <script>
-import MeasurementChart from "@/components/dashboard/MeasurementChart.vue";
+import MeasurementChart from "@/components/dashboard/measurement/MeasurementChart.vue";
 export default {
   name: "ChartTile",
   components: { MeasurementChart },

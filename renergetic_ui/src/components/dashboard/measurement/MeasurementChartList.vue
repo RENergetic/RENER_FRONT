@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import MeasurementChart from "@/components/dashboard/MeasurementChart.vue";
+import MeasurementChart from "@/components/dashboard/measurement/MeasurementChart.vue";
 
 export default {
   name: "MeasurementChartList",

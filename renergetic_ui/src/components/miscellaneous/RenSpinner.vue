@@ -10,6 +10,9 @@
   </div>
 </template>
 <script>
+/**
+ * Simple data load/await spinner wrapper for the component
+ */
 import ProgressSpinner from "primevue/progressspinner";
 export default {
   name: "RenSpinner",

@@ -211,10 +211,4 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-.active {
-  background-color: rgba(100, 225, 100, 0.5);
-  border-radius: 100%;
-  padding: 0.4rem;
-}
-</style>
+<style scoped lang="scss"></style>
