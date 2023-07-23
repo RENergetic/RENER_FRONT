@@ -14,6 +14,7 @@
         :labels="false"
         @update="reloadSettings()"
       />
+      <!-- {{ tile.measurements }} -->
       <MeasurementChartList ref="dataPreview" :filter="filter" :chart-type="'scatter'" :measurements="tile.measurements" @on-load="onLoad()" />
     </div>
   </Dialog>
