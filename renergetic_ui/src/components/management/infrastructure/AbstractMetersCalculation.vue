@@ -21,13 +21,20 @@
           <Button label="Create new measurement" @click="addNewMeasurement" />
           <Button label="Cancel" @click="cancelMeasurementAddition" />
         </div>
+        <Dialog v-model:visible="measurementEditDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+          <MeasurementForm @update:model-value="onCreate($event, 0)"></MeasurementForm>
+        </Dialog>
       </template>
     </Card>
   </Dialog>
 </template>
 <script>
+import MeasurementForm from "@/components/management/infrastructure/MeasurementForm.vue";
 export default {
   name: "AbstractMetersCalculation",
+  components: {
+    MeasurementForm,
+  },
   emits: ["selected-measurement-formula", "selected-measurement-condition"],
   data() {
     return {
@@ -58,6 +65,7 @@ export default {
         console.error("The calculationType is not correctly received");
       }
       this.dialog = false;
+      this.selectedMeasurement = null;
     },
     addNewMeasurement() {
       console.log("add new measurement");
@@ -65,6 +73,10 @@ export default {
     cancelMeasurementAddition() {
       this.dialog = false;
       this.selectedMeasurement = null;
+    },
+    onCreate(o, i) {
+      alert(o);
+      alert(i);
     },
   },
   /*

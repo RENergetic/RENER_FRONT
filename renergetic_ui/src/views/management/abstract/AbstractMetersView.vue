@@ -1,76 +1,73 @@
 <template>
-  <div class="container">
-    <div class="centered-card">
-      <Card style="width: 95%; margin: auto; margin-top: 1rem">
-        <template #title> Abstract meter administration </template>
-        <template #content>
-          <div class="template_container" style="text">
-            <AbstractMetersCalculation ref="abstractMetersCalculation" />
-            <h1>Abstract meters management</h1>
-            <!--
-            <p>Value from meter: {{ abstractMeterGlobal }}</p>
-            <p>Value from domain: {{ domainGlobal }}</p>
-            <p>Vale from existance: {{ abstracMeterExists }}</p>
-            -->
-            <div class="card flex flex-wrap gap-3 field grid box">
-              <p>Abstract meter list</p>
-              <ren-input-wrapper>
-                <template #content>
-                  <Dropdown
-                    v-model="abstractMeter"
-                    :placeholder="dropdownAbstractMeter[0]"
-                    :options="dropdownAbstractMeter"
-                    @change="validateButton"
-                  />
-                </template>
-              </ren-input-wrapper>
-            </div>
-            <div class="card flex flex-wrap gap-3 field grid box">
-              <p>Domain list</p>
-              <ren-input-wrapper>
-                <template #content>
-                  <Dropdown v-model="domain" :placeholder="dropdownDomain[0]" :options="dropdownDomain" @change="validateButton" />
-                </template>
-              </ren-input-wrapper>
-            </div>
-            <div class="card flex flex-wrap gap-3 field grid box">
-              <InputText
-                v-model="formulaMeter"
-                class="inputTextFormula"
-                type="text"
-                :placeholder="'Formula to calculate the meter'"
-                @input="validateFormula"
+  <Card style="width: 60%; margin: auto; margin-top: 10%">
+    <template #title> Abstract meter administration </template>
+    <template #content>
+      <div class="container">
+        <div class="card flex-wrap gap-3 field grid box">
+          <p>Abstract meter list</p>
+          <ren-input-wrapper>
+            <template #content>
+              <Dropdown
+                v-model="abstractMeter"
+                :placeholder="dropdownAbstractMeter[0]"
+                :options="dropdownAbstractMeter"
+                class="w-full md:w-14rem"
+                @change="validateButton"
               />
-              <Button label="+" @click="openCalculationsFormula()" />
-              <!-- <p v-if="isValidInputFormula">The input is valid.</p> -->
-            </div>
-            <div class="card flex flex-wrap gap-3 field grid box">
-              <!-- <InputText class="" v-model="conditionMeter" type="text" :placeholder="'Condition to calculate the meter'" @input="validateCondition" /> -->
-              <InputText
-                v-model="conditionMeter"
-                class="inputTextCondition"
-                type="text"
-                :placeholder="'Condition to calculate the meter'"
-                @input="validateCondition"
+            </template>
+          </ren-input-wrapper>
+        </div>
+        <div class="card flex-wrap gap-3 field grid box sub_container">
+          <p>Domain list</p>
+          <ren-input-wrapper>
+            <template #content>
+              <Dropdown
+                v-model="domain"
+                :placeholder="dropdownDomain[0]"
+                :options="dropdownDomain"
+                class="w-full md:w-14rem"
+                @change="validateButton"
               />
-              <Button label="+" @click="openCalculationsCondition()" />
-              <!-- <p v-if="isValidInputCondition">The input is valid.</p> -->
-            </div>
-            <div class="card flex justify-content-center">
-              <Checkbox v-model="checked" :binary="true" />
-            </div>
-            <div class="card flex flex-wrap gap-5 field grid box">
-              <Button :disabled="buttonDisabled" label="Save" @click="addAbstractMeter" />
-              <Button :disabled="!abstracMeterExists" label="Delete" @click="deleteAbstractMeterFunc" />
-            </div>
-          </div>
-        </template>
-      </Card>
-    </div>
-  </div>
+            </template>
+          </ren-input-wrapper>
+        </div>
+        <div class="card flex-wrap gap-3 field grid box sub_container">
+          <InputText
+            v-model="formulaMeter"
+            class="inputTextFormula"
+            type="text"
+            :placeholder="'Formula to calculate the meter'"
+            @input="validateFormula"
+          />
+          <Button label="+" @click="openCalculationsFormula()" />
+          <!-- <p v-if="isValidInputFormula">The input is valid.</p> -->
+        </div>
+        <div class="gap-3 field grid">
+          <Checkbox v-model="conditionMeterShown" :binary="true" @change="conditionButtonCheck" />
+        </div>
+        <div class="card flex-wrap gap-3 field grid box sub_container">
+          <!-- <InputText class="" v-model="conditionMeter" type="text" :placeholder="'Condition to calculate the meter'" @input="validateCondition" /> -->
+          <InputText
+            v-model="conditionMeter"
+            class="inputTextCondition"
+            type="text"
+            :placeholder="'Condition to calculate the meter'"
+            :disabled="!conditionMeterShown"
+            @input="validateCondition"
+          />
+          <Button :disabled="!conditionMeterShown" label="+" @click="openCalculationsCondition()" />
+          <!-- <p v-if="isValidInputCondition">The input is valid.</p> -->
+        </div>
+        <div class="gap-3 field grid">
+          <Button :disabled="buttonDisabled" label="Save" @click="addAbstractMeter" />
+          <Button icon="pi pi-trash" class="p-button-danger" :disabled="!abstracMeterExists" label="Delete" @click="deleteAbstractMeterFunc" />
+        </div>
+      </div>
+    </template>
+  </Card>
   <AbstractMetersCalculation
     ref="abstractMetersCalculation"
-    @selected-measurement-formula="handleMeasurementReturnFormula"
+    @selected-measurement-formula="testFunction"
     @selected-measurement-condition="handleMeasurementReturnCondition"
   />
 </template>
@@ -78,13 +75,16 @@
 //import AbstractMetersCalculation from "@/views/management/abstract/AbstractMetersCalculation.vue";
 import AbstractMetersCalculation from "@/components/management/infrastructure/AbstractMetersCalculation.vue";
 //import AbstractMetersCalculation from "./AbstractMetersCalculation.vue";
+import Checkbox from "primevue/checkbox";
 export default {
   name: "AbstracMetersView",
   components: {
     AbstractMetersCalculation,
+    Checkbox,
   },
   data() {
     return {
+      dialog: true,
       abstractMeter: null,
       abstractMeterGlobal: null,
       domain: null,
@@ -100,10 +100,10 @@ export default {
       isValidInputCondition: false,
       buttonDisabled: true,
       abstracMeterExists: false,
-      conditionCheckPressed: false,
       abstractValudId: null,
       elementTextFormula: null,
       elementTextCondition: null,
+      conditionMeterShown: false,
     };
   },
   async created() {
@@ -170,7 +170,7 @@ export default {
       this.validateSave();
     },
     validateSave() {
-      if (this.conditionCheckPressed) {
+      if (this.conditionMeterShown) {
         this.buttonDisabled = !(this.isValidInputFormula && this.isValidInputCondition);
       } else {
         //this.buttonDisabled = !/*((this.abstractMeter != null) && (this.domain != null) &&*/ this.isValidInputFormula/*)*/;
@@ -281,6 +281,27 @@ export default {
       }
       console.log("After: " + this.conditionMeter);
     },
+    testFunction(value) {
+      console.log("AbstractMetersView: " + value);
+      console.log("Before: " + this.formulaMeter);
+      if (this.formulaMeter == null) {
+        this.formulaMeter = this.concatenateStrings("[" + value + "]", "");
+        console.log("AbstracMetersView vacio: " + this.formulaMeter);
+      } else {
+        console.log("AbstracMetersView con valor: " + this.formulaMeter);
+        this.formulaMeter = this.concatenateStrings(this.formulaMeter, "[" + value + "]");
+        console.log("AbstracMetersView con valor: " + this.formulaMeter);
+      }
+      console.log("After: " + this.formulaMeter);
+      this.validateFormula();
+    },
+    concatenateStrings(string1, string2) {
+      let concatString = string1 + string2;
+      return concatString;
+    },
+    conditionButtonCheck() {
+      this.validateSave();
+    },
   },
 };
 </script>
@@ -290,14 +311,6 @@ export default {
   text-align: center;
 }
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-.box {
-  flex: 1;
-  //border: 1px white; /* Optional: Add borders for visualization */
-  text-align: center; /* Optional: Align text in the center */
+  margin-left: 5%;
 }
 </style>

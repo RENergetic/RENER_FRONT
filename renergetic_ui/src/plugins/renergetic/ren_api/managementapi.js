@@ -395,6 +395,16 @@ export default class ManagementApi extends RestComponent {
     });
   }
   //
+  async getAllMeasurements() {
+    return this.get(`/api/measurements`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Measurements not found`, {
+          code: "measurement_list_error",
+        });
+      }
+      return true;
+    });
+  }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
