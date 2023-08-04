@@ -202,7 +202,7 @@ export default class RenUtils {
     if ((RenRoles.REN_VISITOR | RenRoles.REN_USER) & currentRole) {
       q.assets().assetPanels();
     }
-    if ((RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER) & currentRole) {
+    if ((RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN) & currentRole) {
       q.assetMetaKeys();
     }
     if ((RenRoles.REN_USER | RenRoles.REN_MANAGER) & currentRole) {
