@@ -1,0 +1,13 @@
+  {
+    "asset": {
+      "id": 1,
+      "name": "Building_A",
+      "label": "Building A",
+      //...
+    },
+    "panel": {
+      "name": "asset_template_view test",
+      "label": "View for Building_A test",
+      "id": 6,
+    },
+  },

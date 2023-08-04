@@ -1,0 +1,10 @@
+{
+  "id": 1,
+  "asset": {
+    "id": 1,
+    "name": "asset_name",
+    "label": "label"
+  },
+  "demand_start": 1646082303,
+  "demand_stop": 1646182303
+}

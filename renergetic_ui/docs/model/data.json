@@ -1,0 +1,29 @@
+{
+	"data": {
+		"current": {
+			"default": {
+				"1": 33
+			},
+			"max": {
+				"1": 33
+			},
+		},
+		"prediction": {
+			"default": {
+				"1": 33
+			},
+			"max": {
+				"1": 33
+			},
+		}
+	}
+	// tile state 
+	//,"state": {
+	// 	"1": "ERROR",
+	// 	"2": "OK",
+	// 	"3": "OK",
+	// 	"4": "WARNING",
+	// 	"5": "OK",
+	// 	"6": "OK"
+	// }
+}
