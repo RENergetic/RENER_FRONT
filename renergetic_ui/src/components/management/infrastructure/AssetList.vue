@@ -396,7 +396,7 @@ export default {
       this.$emit("update:filters", this.mFilters);
     },
     onSelect(evt) {
-      if (this.selectedAsset == null || evt.id != this.selectedAsset.id) {
+      if (this.selectedAsset == null || (evt != null && evt.id != this.selectedAsset.id)) {
         this.selectedAsset = evt;
       } else {
         this.selectedAsset = null;
