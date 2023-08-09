@@ -3,62 +3,46 @@
     <!-- obtained from the backend -->
     <Checkbox v-model="rowActiveCheckBox" :binary="true" />
     <Dropdown v-model="measurementList" :options="formattedOptions" :placeholder="'Measurements'" optionLabel="label" optionValue="value" />
-    <ren-input-wrapper>
-      <template #content>
-        <Dropdown
-          v-model="measurement1Function"
-          :placeholder="dropdownMeasurementFunction[0]"
-          :options="dropdownMeasurementFunction"
-          class="w-full md:w-8rem"
-        />
-      </template>
-    </ren-input-wrapper>
-    <InputText v-model="timeRange" class="inputTextCondition md:w-4rem" type="text" @input="validateInput" />
-    <ren-input-wrapper>
-      <template #content>
-        <Dropdown v-model="durationSyntax" :placeholder="dropdownDurationSyntax[0]" :options="dropdownDurationSyntax" class="w-full md:w-6rem" />
-      </template>
-    </ren-input-wrapper>
-    <ren-input-wrapper>
-      <template #content>
-        <Dropdown v-model="operationData" :placeholder="dropdownOperation[0]" :options="dropdownOperation" class="w-full md:w-5rem" />
-      </template>
-    </ren-input-wrapper>
-    <ren-input-wrapper>
-      <template #content>
-        <Dropdown
-          v-model="thresholdMeasurement"
-          :placeholder="dropdownThresholdMeasurement[0]"
-          :options="dropdownThresholdMeasurement"
-          class="w-full md:w-11rem"
-        />
-      </template>
-    </ren-input-wrapper>
-    <div v-if="thresholdMeasurement == 'Threshold'" class="card flex-wrap gap-3 field grid container">
+    <Dropdown
+      v-model="measurement1Function"
+      :placeholder="dropdownMeasurementFunction[0]"
+      :options="dropdownMeasurementFunction"
+      class="w-full md:w-8rem"
+    />
+    <InputText v-model="timeRange" class="md:w-4rem" :class="[borderColor0]" type="text" @input="validateInput(0)" />
+    <Dropdown v-model="durationSyntax" :placeholder="dropdownDurationSyntax[0]" :options="dropdownDurationSyntax" class="w-full md:w-6rem" />
+    <Dropdown v-model="operationData" :placeholder="dropdownOperation[0]" :options="dropdownOperation" class="w-full md:w-5rem" />
+    <Dropdown
+      v-model="thresholdMeasurement"
+      :placeholder="dropdownThresholdMeasurement[0]"
+      :options="dropdownThresholdMeasurement"
+      class="w-full md:w-11rem"
+    />
+    <div v-if="thresholdMeasurement == 'Threshold'" class="gap-3 container">
       <Checkbox v-model="checkBoxBool" :binary="true" />
       <p>from config</p>
-      <InputText v-model="valueMeasurement" class="inputTextCondition" type="text" :placeholder="'0'" @input="validateCondition" />
+      <InputText
+        v-model="valueMeasurement"
+        class="inputTextCondition"
+        :class="[borderColor2]"
+        type="text"
+        :placeholder="'0'"
+        @input="validateInput(2)"
+      />
     </div>
-    <div v-else-if="thresholdMeasurement == 'Measurement'" class="card flex-wrap gap-3 field grid">
+    <div v-else-if="thresholdMeasurement == 'Measurement'" class="gap-3 container">
       <Dropdown v-model="measurementList2" :options="formattedOptions" :placeholder="'Measurements'" optionLabel="label" optionValue="value" />
-      <ren-input-wrapper>
-        <template #content>
-          <Dropdown
-            v-model="measurement2Function"
-            :placeholder="dropdownMeasurementFunction[0]"
-            :options="dropdownMeasurementFunction"
-            class="w-full md:w-8rem"
-          />
-        </template>
-      </ren-input-wrapper>
-      <InputText v-model="timeRange2" class="inputTextCondition md:w-4rem" type="text" @input="validateInput" />
-      <ren-input-wrapper>
-        <template #content>
-          <Dropdown v-model="durationSyntax" :placeholder="dropdownDurationSyntax[0]" :options="dropdownDurationSyntax" class="w-full md:w-6rem" />
-        </template>
-      </ren-input-wrapper>
+      <Dropdown
+        v-model="measurement2Function"
+        :placeholder="dropdownMeasurementFunction[0]"
+        :options="dropdownMeasurementFunction"
+        class="w-full md:w-8rem"
+      />
+      <InputText v-model="timeRange2" class="inputTextCondition md:w-4rem" :class="[borderColor1]" type="text" @input="validateInput(1)" />
+      <Dropdown v-model="durationSyntax2" :placeholder="dropdownDurationSyntax[0]" :options="dropdownDurationSyntax" class="w-full md:w-6rem" />
     </div>
     <div v-else>ERROR</div>
+    <div v-if="detailsError"><p>Asset details don´t exist</p></div>
     <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteDemandResponseUI()" />
   </div>
 </template>
@@ -91,6 +75,13 @@ export default {
       measurement1function: null,
       dropdownMeasurementFunction: ["COUNT", "DISTINCT", "MEAN", "MEDIAN", "SUM", "MAX", "MIN", "FIRST", "LAST"],
       dropdownDurationSyntax: ["ns", "us", "ms", "s", "m", "h", "d", "w", "mo", "y"],
+      validInput0: true,
+      validInput1: true,
+      validInput2: true,
+      borderColor0: "",
+      borderColor1: "",
+      borderColor2: "",
+      detailsError: false,
     };
   },
   computed: {
@@ -119,12 +110,51 @@ export default {
     console.log("End of created");
   },
   methods: {
+    addPrecreatedAssetRule(assetRule) {
+      console.log("addPrecreatedAssetRule");
+      console.log(assetRule);
+      console.log(assetRule.timeRangeMeasurement1);
+      [this.timeRange1, this.durationSyntax1] = assetRule.timeRangeMeasurement1.split(" ");
+      console.log(this.timeRange1 + ":" + this.durationSyntax1);
+      //threshold
+      if (assetRule.timeRangeMeasurement2 == null) {
+        console.log("Threshold");
+        this.rowActiveCheckBox = assetRule.active;
+        this.measurementList = assetRule.measurement1Id;
+        this.measurement1Function = assetRule.functionMeasurement1;
+        [this.timeRange, this.durationSyntax] = assetRule.timeRangeMeasurement1.split(" ");
+        this.operationData = assetRule.comparator;
+        this.thresholdMeasurement = this.dropdownThresholdMeasurement[0];
+        this.checkBoxBool = assetRule.compareToConfigThreshold;
+        this.valueMeasurement = assetRule.manualThreshold;
+        this.measurementList2 = this.dropdownMeasurementFunction[0];
+        this.measurement2Function = this.dropdownMeasurementFunction[0];
+        this.timeRange2 = null;
+        this.durationSyntax2 = this.dropdownDurationSyntax[0];
+      } else if (assetRule.timeRangeMeasurement2 != null) {
+        //measurement
+        console.log("Measurement");
+        this.rowActiveCheckBox = assetRule.active;
+        this.measurementList = assetRule.measurement1Id;
+        this.measurement1Function = assetRule.functionMeasurement1;
+        [this.timeRange, this.durationSyntax] = assetRule.timeRangeMeasurement1.split(" ");
+        this.operationData = assetRule.comparator;
+        this.thresholdMeasurement = this.dropdownThresholdMeasurement[1];
+        this.checkBoxBool = null;
+        this.valueMeasurement = null;
+        this.measurementList2 = assetRule.measurement2Id;
+        this.measurement2Function = assetRule.functionMeasurement2;
+        [this.timeRange2, this.durationSyntax2] = assetRule.timeRangeMeasurement2.split(" ");
+      } else {
+        console.error("MESSAGE ERROR");
+      }
+    },
     async measurementsGetter() {
-      console.log("MeasurementGetter");
+      //console.log("MeasurementGetter");
       this.dropdownMeasurementList = await this.$ren.managementApi.getAllMeasurements();
       this.dropdownMeasurementList2 = this.dropdownMeasurementList;
-      console.log(this.dropdownMeasurementList);
-      console.log(this.dropdownMeasurementList2);
+      //console.log(this.dropdownMeasurementList);
+      //console.log(this.dropdownMeasurementList2);
     },
     async saveDemandResponse() {
       console.log("Save values");
@@ -138,50 +168,74 @@ export default {
     async deleteDemandResponseUI() {
       this.$emit("delete");
     },
-    validateInput() {
+    validateInput(index) {
+      console.log(index);
       const expressionRegex = /^[0-9]+$/;
-      let isValidInput1 = expressionRegex.test(this.timeRange);
-      let isValidInput2 = expressionRegex.test(this.timeRange2);
-      console.log(isValidInput1);
-      if (this.thresholdMeasurement == "Measurement") {
-        console.log(isValidInput2);
+      const decimalExpressionValidation = /^[+-]?\d+(\.\d+)?$/;
+      if (index == 0) {
+        this.validInput0 = expressionRegex.test(this.timeRange);
+        console.log("Index 0: " + this.validInput0);
+        if (!this.validInput0) {
+          this.borderColor0 = "p-invalid";
+        } else {
+          this.borderColor0 = "";
+        }
+        console.log(this.borderColor0);
+      } else if (index == 1) {
+        this.validInput1 = expressionRegex.test(this.timeRange2);
+        console.log("Index 1: " + this.validInput1);
+        if (!this.validInput1) {
+          this.borderColor1 = "p-invalid";
+        } else {
+          this.borderColor1 = "";
+        }
+        console.log(this.borderColor1);
+      } else if (index == 2) {
+        this.validInput2 = decimalExpressionValidation.test(this.valueMeasurement);
+        console.log("Index 2: " + this.validInput2);
+        if (!this.validInput2) {
+          this.borderColor2 = "p-invalid";
+        } else {
+          this.borderColor2 = "";
+        }
+        console.log(this.borderColor2);
       }
     },
     async returnInfo() {
-      console.log("Returning info: " + this.rowActiveCheckBox);
-      console.log("Returning info: " + this.measurement1Function);
-      return {
-        rowActiveCheckBox: this.rowActiveCheckBox,
-        measurementList: this.measurementList,
-        measurement1Function: this.measurement1Function,
-        timeRange: this.timeRange,
-        durationSyntax: this.durationSyntax,
-        operationData: this.operationData,
-        thresholdMeasurement: this.thresholdMeasurement,
-        checkBoxBool: this.checkBoxBool,
-        valueMeasurement: this.valueMeasurement,
-        measurementList2: this.measurementList2,
-        measurement2Function: this.measurement2Function,
-        timeRange2: this.timeRange2,
-        durationSyntax2: this.durationSyntax2,
-      };
-      /*
-      return [
-        this.rowActiveCheckBox,
-        this.measurementList,
-        this.measurement1Function,
-        this.timeRange,
-        this.durationSyntax,
-        this.operationData,
-        this.thresholdMeasurement,
-        this.checkBoxBool,
-        this.valueMeasurement,
-        this.measurementList2,
-        this.measurement2Function,
-        this.timeRange2,
-        this.durationSyntax2,
-      ];
-      */
+      if (this.thresholdMeasurement == "Threshold") {
+        return {
+          rowActiveCheckBox: this.rowActiveCheckBox,
+          measurementList: this.measurementList,
+          measurement1Function: this.measurement1Function,
+          timeRange: this.timeRange,
+          durationSyntax: this.durationSyntax,
+          operationData: this.operationData,
+          thresholdMeasurement: this.thresholdMeasurement,
+          checkBoxBool: this.checkBoxBool,
+          valueMeasurement: this.valueMeasurement,
+        };
+      } else {
+        return {
+          rowActiveCheckBox: this.rowActiveCheckBox,
+          measurementList: this.measurementList,
+          measurement1Function: this.measurement1Function,
+          timeRange: this.timeRange,
+          durationSyntax: this.durationSyntax,
+          operationData: this.operationData,
+          thresholdMeasurement: this.thresholdMeasurement,
+          measurementList2: this.measurementList2,
+          measurement2Function: this.measurement2Function,
+          timeRange2: this.timeRange2,
+          durationSyntax2: this.durationSyntax2,
+        };
+      }
+    },
+    async assetValid() {
+      this.detailsError = false;
+    },
+    async assetInvalid() {
+      this.rowActiveCheckBox = false;
+      this.detailsError = true;
     },
   },
 };
@@ -199,5 +253,8 @@ export default {
   /* Set the desired height for the container */
   height: 100%;
   margin-left: 5px;
+}
+.invalid-input {
+  border-color: red; /* Set any style you want for invalid input */
 }
 </style>

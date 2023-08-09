@@ -221,6 +221,16 @@ export default class ManagementApi extends RestComponent {
       return true;
     });
   }
+  async getAssetDetails(asset_id) {
+    return this.get(`api/assets/${asset_id}/info`, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`Asset details not found`, {
+          code: "asset_details_not_found",
+        });
+        return true;
+      }
+    });
+  }
   async addMeasurement(measurement) {
     if (measurement.type != undefined) measurement.type = measurement.type.id;
     return this.axios
@@ -339,6 +349,26 @@ export default class ManagementApi extends RestComponent {
         });
       }
       return true;
+    });
+  }
+  async getAssetRules(asset_id) {
+    return this.get(`/api/assetRules/asset/${asset_id}`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Asset rules not found`, {
+          code: "asset_rules_error",
+        });
+      }
+      return true;
+    });
+  }
+  async updateCreateDelete(assetRule, id) {
+    return await this.post(`api/assetRules/batch/update-create-delete/${id}`, assetRule, null, null, (e) => {
+      if (e.response.status === 404) {
+        this.emitError(`Asset rule not added: ${e.message}`, {
+          code: "asset_rule_adding_error",
+        });
+        return true;
+      }
     });
   }
 }
