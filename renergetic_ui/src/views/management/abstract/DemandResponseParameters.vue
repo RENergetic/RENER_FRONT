@@ -20,7 +20,7 @@
     />
     <div v-if="thresholdMeasurement == 'Threshold'" class="gap-3 container">
       <Checkbox v-model="checkBoxBool" :binary="true" />
-      <p>from config</p>
+      <label> {{ $t("view.from_config") }} </label>
       <InputText
         v-model="valueMeasurement"
         class="inputTextCondition"
@@ -42,7 +42,9 @@
       <Dropdown v-model="durationSyntax2" :placeholder="dropdownDurationSyntax[0]" :options="dropdownDurationSyntax" class="w-full md:w-6rem" />
     </div>
     <div v-else>ERROR</div>
-    <div v-if="detailsError"><p>Asset details don´t exist</p></div>
+    <div v-if="detailsError">
+      <label>{{ $t("view.asset_details_dont_exist") }}</label>
+    </div>
     <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteDemandResponseUI()" />
   </div>
 </template>
@@ -94,8 +96,6 @@ export default {
     },
   },
   created() {
-    console.log("Created");
-    //initialization of variables
     this.rowActiveCheckBox = false;
     this.measurementList = this.dropdownMeasurementList[0];
     this.measurement1Function = this.dropdownMeasurementFunction[0];
@@ -105,20 +105,14 @@ export default {
     this.measurement2Function = this.dropdownMeasurementFunction[0];
     this.durationSyntax = this.dropdownDurationSyntax[0];
     this.durationSyntax2 = this.dropdownDurationSyntax[0];
-    //end of initialization
     this.measurementsGetter();
-    console.log("End of created");
   },
   methods: {
+    //Process to obtain the asset rules from the DDBB
     addPrecreatedAssetRule(assetRule) {
-      console.log("addPrecreatedAssetRule");
-      console.log(assetRule);
-      console.log(assetRule.timeRangeMeasurement1);
       [this.timeRange1, this.durationSyntax1] = assetRule.timeRangeMeasurement1.split(" ");
-      console.log(this.timeRange1 + ":" + this.durationSyntax1);
       //threshold
       if (assetRule.timeRangeMeasurement2 == null) {
-        console.log("Threshold");
         this.rowActiveCheckBox = assetRule.active;
         this.measurementList = assetRule.measurement1Id;
         this.measurement1Function = assetRule.functionMeasurement1;
@@ -133,7 +127,6 @@ export default {
         this.durationSyntax2 = this.dropdownDurationSyntax[0];
       } else if (assetRule.timeRangeMeasurement2 != null) {
         //measurement
-        console.log("Measurement");
         this.rowActiveCheckBox = assetRule.active;
         this.measurementList = assetRule.measurement1Id;
         this.measurement1Function = assetRule.functionMeasurement1;
@@ -150,31 +143,17 @@ export default {
       }
     },
     async measurementsGetter() {
-      //console.log("MeasurementGetter");
       this.dropdownMeasurementList = await this.$ren.managementApi.getAllMeasurements();
       this.dropdownMeasurementList2 = this.dropdownMeasurementList;
-      //console.log(this.dropdownMeasurementList);
-      //console.log(this.dropdownMeasurementList2);
-    },
-    async saveDemandResponse() {
-      console.log("Save values");
-      if (this.thresholdMeasurement == "Threshold") {
-        console.log("test");
-      } else if (this.thresholdMeasurement == "Measurement") {
-        console.log("test2");
-      }
-      console.log("Values saved");
     },
     async deleteDemandResponseUI() {
       this.$emit("delete");
     },
     validateInput(index) {
-      console.log(index);
       const expressionRegex = /^[0-9]+$/;
       const decimalExpressionValidation = /^[+-]?\d+(\.\d+)?$/;
       if (index == 0) {
         this.validInput0 = expressionRegex.test(this.timeRange);
-        console.log("Index 0: " + this.validInput0);
         if (!this.validInput0) {
           this.borderColor0 = "p-invalid";
         } else {
@@ -183,7 +162,6 @@ export default {
         console.log(this.borderColor0);
       } else if (index == 1) {
         this.validInput1 = expressionRegex.test(this.timeRange2);
-        console.log("Index 1: " + this.validInput1);
         if (!this.validInput1) {
           this.borderColor1 = "p-invalid";
         } else {
@@ -192,13 +170,11 @@ export default {
         console.log(this.borderColor1);
       } else if (index == 2) {
         this.validInput2 = decimalExpressionValidation.test(this.valueMeasurement);
-        console.log("Index 2: " + this.validInput2);
         if (!this.validInput2) {
           this.borderColor2 = "p-invalid";
         } else {
           this.borderColor2 = "";
         }
-        console.log(this.borderColor2);
       }
     },
     async returnInfo() {
@@ -234,7 +210,6 @@ export default {
       this.detailsError = false;
     },
     async assetInvalid() {
-      this.rowActiveCheckBox = false;
       this.detailsError = true;
     },
   },

@@ -1,28 +1,30 @@
 <template>
-  <Card style="width: 85%; margin: auto; margin-top: 10%">
-    <template #title> Abstract meter administration </template>
-    <template #content>
-      <!-- Render existing questionnaires -->
-      <div class="w-full md:w-200rem">
-        <div>
-          <InputText v-model="assetId"></InputText>
-          <div v-for="(demandRes, index) in demandResponseList" :key="index">
-            <DemandResponseParameters ref="demandResponseParameters" @delete="deleteDemand(index)" />
+  <Dialog v-model:visible="visibleDemandResponse" :style="{ width: '95%' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <Card style="width: 95%; margin: auto; margin-top: 1%">
+      <template #title>{{ $t("view.asset_rules_administration") }} </template>
+      <template #content>
+        <!-- Render existing questionnaires -->
+        <div class="w-full md:w-200rem">
+          <div>
+            <div v-for="(demandRes, index) in demandResponseList" :key="index">
+              <DemandResponseParameters ref="demandResponseParameters" @delete="deleteDemand(index)" />
+            </div>
+            <!-- Button to add new questionnaire -->
           </div>
-          <!-- Button to add new questionnaire -->
         </div>
-      </div>
-      <div class="gap-3 field grid button_grid">
-        <Button @click="addDemandResponse">Add demand Response</Button>
-        <Button @click="saveDemands()">Save</Button>
-      </div>
-    </template>
-  </Card>
+        <div class="gap-3 field grid button_grid">
+          <Button @click="addDemandResponse">{{ $t("view.add_asset_rule") }}</Button>
+          <Button @click="saveDemands()">{{ $t("view.save_asset_rules") }}</Button>
+        </div>
+      </template>
+    </Card>
+  </Dialog>
 </template>
 
 <script>
 import DemandResponseParameters from "./DemandResponseParameters.vue";
 export default {
+  name: "DemandResponseView",
   components: {
     DemandResponseParameters,
   },
@@ -30,32 +32,30 @@ export default {
     return {
       demandResponseList: [], // Array to hold multiple questionnaires
       returnedInfo: null,
-      assetId: 1,
+      assetId: null,
       jsonMeasurementData: [],
       jsonThresholdData: null,
       questionnaire: null,
+      visibleDemandResponse: false,
     };
   },
-  async created() {
-    console.log("Demand response view created");
-    let oldValues = await this.$ren.managementApi.getAssetRules(this.assetId);
-    console.log(oldValues);
-    for (let j = 0; j < oldValues.length; j++) {
-      console.log(oldValues[j]);
-      const newDemandResponse = this.$refs.childComponentRef;
-      await this.demandResponseList.push(newDemandResponse);
-      //pasar el valor correcto por valor y comprobar que se guarden bien
-      await this.$refs.demandResponseParameters[j].addPrecreatedAssetRule(oldValues[j]);
-      console.log("Value written");
-      let aux = await this.$refs.demandResponseParameters[j].returnInfo();
-      console.log(aux);
-    }
-  },
   methods: {
+    async open(current) {
+      this.visibleDemandResponse = true;
+      this.assetId = current;
+      this.demandResponseList = [];
+      let oldValues = await this.$ren.managementApi.getAssetRules(this.assetId);
+      for (let j = 0; j < oldValues.length; j++) {
+        const newDemandResponse = this.$refs.childComponentRef;
+        await this.demandResponseList.push(newDemandResponse);
+        await this.$refs.demandResponseParameters[j].addPrecreatedAssetRule(oldValues[j]);
+        //let aux = await this.$refs.demandResponseParameters[j].returnInfo();
+        //console.log(aux);
+      }
+    },
     addDemandResponse() {
       // Create a new questionnaire object with default values or leave it empty
       const newDemandResponse = this.$refs.childComponentRef;
-
       // Push the new questionnaire to the questionnaires array
       this.demandResponseList.push(newDemandResponse);
     },
@@ -68,11 +68,8 @@ export default {
         for (let i = 0; i < this.demandResponseList.length; i++) {
           this.questionnaire = this.$refs.demandResponseParameters[i];
           this.returnedInfo = await this.questionnaire.returnInfo();
-          console.log("Questionnaire Info: ", this.returnedInfo);
           await this.jsonCreation();
-          console.log("end of jsoncreation");
         }
-        console.log("End of for");
         this.saveData();
       } else {
         console.log("No value to add");
@@ -82,7 +79,6 @@ export default {
       let assetDetails;
       if (this.returnedInfo.thresholdMeasurement == "Threshold") {
         this.jsonData = await {
-          //id: this.abstractValudId,
           assetId: this.assetId,
           measurement1Id: this.returnedInfo.measurementList,
           functionMeasurement1: this.returnedInfo.measurement1Function,
@@ -93,20 +89,18 @@ export default {
           active: this.returnedInfo.rowActiveCheckBox,
         };
         assetDetails = await this.getAssetDetails(this.jsonData.assetId);
-        console.log("assetDetails");
-        console.log(assetDetails.length);
+        console.log("Asset Details");
+        console.log(assetDetails);
         if (assetDetails.length != 0 || !this.jsonData.compareToConfigThreshold) {
           this.questionnaire.assetValid();
           console.log("The asset details exist");
-          console.log(assetDetails);
           this.jsonMeasurementData.push(this.jsonData);
           this.jsonData = null;
-          console.log("test");
         } else {
           console.log("The asset details are empty");
           console.log(await this.questionnaire.returnInfo());
-          console.log("The asset details are empty 2");
           this.questionnaire.assetInvalid();
+          this.jsonData = null;
         }
       } else {
         this.jsonData = await {
@@ -122,22 +116,21 @@ export default {
           active: this.returnedInfo.rowActiveCheckBox,
         };
         assetDetails = await this.getAssetDetails(this.jsonData.assetId);
-        console.log("assetDetails");
+        console.log("Asset details");
         console.log(assetDetails);
-        console.log("The asset details exist");
-        console.log(assetDetails);
+        console.log("Asset details correct");
         this.jsonMeasurementData.push(this.jsonData);
-        console.log(this.jsonData);
         this.jsonData = null;
       }
     },
     async getAssetDetails(id) {
       return await this.$ren.managementApi.getAssetDetails(id);
     },
-    saveData() {
-      console.log("Save data for asset: " + this.assetId);
-      console.log(this.jsonMeasurementData);
-      this.$ren.managementApi.updateCreateDelete(this.jsonMeasurementData, this.jsonMeasurementData[0].assetId);
+    async saveData() {
+      //console.log("Save data for asset: " + this.assetId);
+      //console.log(this.jsonMeasurementData);
+      await this.$ren.managementApi.updateCreateDelete(this.jsonMeasurementData, this.jsonMeasurementData[0].assetId);
+      console.log("Data saved");
     },
   },
 };
