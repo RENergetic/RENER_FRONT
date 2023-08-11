@@ -52,22 +52,8 @@ export default {
     pluginLoaded() {
       return this.$pluginLoaded;
     },
-    // isLoggedIn() {
-    //   let flags =
-    //     RenRoles.REN_USER |
-    //     RenRoles.REN_VISITOR |
-    //     RenRoles.REN_MANAGER |
-    //     RenRoles.REN_TECHNICAL_MANAGER |
-    //     RenRoles.REN_ADMIN |
-    //     RenRoles.REN_STAFF;
-    //   return (flags & this.role) > 0;
-    // },
   },
-  watch: {
-    // isAdmin: function () {
-    //   this.menuModel = this.initMenu();
-    // },
-  },
+  watch: {},
   mounted() {
     this.menuModel = this.initMenu();
     this.reload();

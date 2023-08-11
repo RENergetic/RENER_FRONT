@@ -1,11 +1,20 @@
 {
   "on": "On",
   "off": "Off",
+  "yes": "Yes",
+  "no": "No",
   "enabled": "Enabled",
   "disabled": "Disabled",
-
-  "date_from":"From",
-  "date_to":"To",
+  "home_page_items": "Home page items visibility",
+  "slideshow": "Panel loop settings",
+  "loop_public_dashboard": "Include public dashboards",
+  "loop_private_dashboard": "Include private dashboards",
+  "panel_loop_interval": "Set refresh interval between panel [ms]",
+  "panel_loop_interval_description": "Set refresh interval between panels [ms]",
+  "panel_reload_time_ms": "Data reload interval [ms]",
+  "panel_reload_time_ms_description": "Data reload interval [ms]",
+  "date_from": "From",
+  "date_to": "To",
   "hidden": "Hidden",
   "visible": "Visible",
   "feedback": "Feedback",
@@ -39,13 +48,18 @@
     "prediction_interval": "Predict by: {0}"
   },
   "measurement_details": {
-    "color": "Color"
+    "color": "Color",
+    "cumulative": "Is timeseries cumulative",
+    "background":"Background color"
   },
   "time_filters": {
     "current_day": "Current day",
     "current_month": "Current month",
+    "last_24h": "Last 24h",
+    "last_week": "Last week",
     "current_year": "Current year",
-    "previous_year": "Previous year"
+    "previous_year": "Previous year",
+    "custom_interval":"Custom interval"
   },
   "measurement_type": {
     "power": "Power",

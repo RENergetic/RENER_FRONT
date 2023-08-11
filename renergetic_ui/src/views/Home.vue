@@ -1,7 +1,22 @@
 <template>
   <DotMenu v-if="loggedIn" :model="menuModel" :fixed="true" />
   <div v-if="settings.panelVisibility" style="position: relative">
-    <InformationPanelWrapper v-if="panel" ref="panel" :locked="locked" :panel="panel" :panel-settings="panelSettings"></InformationPanelWrapper>
+    <!-- {{ $store.getters["view/featuredPanels"] }}  -->
+    <!-- {{ $store.getters["view/assetPanels"] }}d -->
+    <!-- panel: {{ panel.name }}, {{ panel.id }}, {{ assetId }} -->
+    <InformationPanelWrapper
+      v-if="panel"
+      ref="panel"
+      :key="panel.id"
+      :asset-id="assetId"
+      :locked="locked"
+      :edit-mode="false"
+      :panel="panel"
+      :filter="filter"
+      :auto-reload="autoReload"
+      :panel-settings="panelSettings"
+    ></InformationPanelWrapper>
+
     <div v-else style="width: 50rem; max-width: 95vw; margin: auto; padding-top: 5rem">
       <h4 style="width: 100%; margin: auto">{{ $t("view.empty_home_dashboard") }}</h4>
     </div>
@@ -23,7 +38,7 @@
     <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="filterSettingsDialog" :save="false">
-    <template #settings><FilterSettings @update="reloadSettings()"></FilterSettings></template>
+    <template #settings><FilterSettings @update="updateFilter()"></FilterSettings></template>
   </RenSettingsDialog>
   <div v-if="$refs.panelSettingsDialog">{{ $refs.panelSettingsDialog.settingsDialog }}</div>
 </template>
@@ -39,11 +54,12 @@ import DemandList from "@/components/user/demand/DemandList.vue";
 import FilterSettings from "@/components/miscellaneous/settings/FilterSettings.vue";
 import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
 import { RenRoles } from "../plugins/model/Enums.js";
+import { DeferredFunction } from "@/plugins/renergetic/utils.js";
+import LoopRunner from "@/plugins/utils/loop_runner.js";
 
 export default {
   name: "Home",
   components: {
-    // SettingsDialog,
     DotMenu,
     RoleMatrix,
     FilterSettings,
@@ -59,8 +75,12 @@ export default {
       loaded: false,
       grid: null,
       locked: true,
-      settings: this.$store.getters["settings/home"],
+      slideshow: null,
+      autoReload: true,
+      assetId: null,
       panel: this.$store.getters["view/homePanel"],
+      settings: this.$store.getters["settings/home"],
+      filter: this.$store.getters["settings/parsedFilter"](),
       panelSettings: this.$store.getters["settings/panel"],
     };
   },
@@ -141,11 +161,50 @@ export default {
   async created() {
     this.loaded = false;
   },
-  async mounted() {},
+  async mounted() {
+    var df = new DeferredFunction(this.slideshowLoop, 1000);
+    df.run();
+  },
+  beforeUnmount() {
+    if (this.slideshow) {
+      this.slideshow.stop();
+    }
+  },
   updated() {},
   methods: {
+    async slideshowLoop() {
+      let _this = this;
+      let f = async () => {
+        let panelDetails = await _this.$store.dispatch("slideshow/next");
+        // console.error(panelDetails);
+        if (panelDetails) {
+          _this.autoReload = false;
+          let panel = await _this.$ren.utils.getPanelStructure(panelDetails.panelId, panelDetails.assetId);
+          _this.assetId = panelDetails.assetId;
+          _this.panel = panel;
+        } else {
+          _this.autoReload = true;
+        }
+      };
+      if (this.settings.slideshowLoopInterval > 0) {
+        this.slideshow = LoopRunner.init(f, this.settings.slideshowLoopInterval);
+        this.slideshow.start();
+      } else {
+        if (this.slideshow) {
+          this.slideshow.stop();
+        }
+        this.slideshow = null;
+      }
+    },
+
     reloadSettings() {
       this.settings = this.$store.getters["settings/home"];
+    },
+    updateFilter() {
+      this.filter = this.$store.getters["settings/parsedFilter"]();
+      if (this.slideshow) {
+        this.slideshow.reset();
+      }
     },
     reloadPanelSettings() {
       this.panelSettingsDialog = this.$store.getters["settings/panel"];

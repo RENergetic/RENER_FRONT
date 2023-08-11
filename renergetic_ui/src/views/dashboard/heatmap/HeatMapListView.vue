@@ -1,12 +1,13 @@
 <template>
-  <div><HeatMapList></HeatMapList></div>
+  ;
+  <!-- <div><HeatMapList></HeatMapList></div> -->
 </template>
 <script>
-import HeatMapList from "@/components/dashboard/area/HeatMapList.vue";
+// import HeatMapList from "@/components/dashboard/area/HeatMapList.vue";
 
 export default {
   name: "HeatMapListView",
-  components: { HeatMapList },
+  // components: { HeatMapList },
   data() {
     return {};
   },

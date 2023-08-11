@@ -13,6 +13,7 @@ function groupMeasurementTypes(measurementTypes) {
       d[mt.physical_name] = [];
     }
     d[mt.physical_name].push({
+      id: mt.id,
       unit: mt.unit,
       factor: mt.factor,
       base_unit: mt.base_unit,

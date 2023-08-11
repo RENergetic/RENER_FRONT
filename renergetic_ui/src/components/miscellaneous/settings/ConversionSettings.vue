@@ -20,13 +20,13 @@ export default {
   },
   computed: {},
   watch: {
-    settings: {
-      handler: function (newVal) {
-        this.$store.commit("settings/conversion", newVal);
-        this.$emit("update");
-      },
-      deep: true,
-    },
+    // settings: {
+    //   handler: function (newVal) {
+    //     this.$store.commit("settings/conversion", newVal);
+    //     this.$emit("update");
+    //   },
+    //   deep: true,
+    // },
   },
   mounted() {
     this.schema = this.getSchema();

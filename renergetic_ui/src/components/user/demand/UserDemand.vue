@@ -23,7 +23,10 @@
         :tile="mTile"
         :pdata="pdata"
         :settings="settings"
+        :tile-preview="false"
+        @preview-tile="onPreview"
       />
+      <!-- -->
     </div>
 
     <div class="flex-grow-1 flex flex-column justify-content-center flex-wrap">
@@ -48,13 +51,16 @@
   <!-- </template>
   </Card> -->
   <!-- </div> -->
+  <TileMeasurementPreview ref="dataPreview" />
 </template>
 <script>
 import InformationTile from "@/components/dashboard/informationpanel/informationtile/InformationTile.vue";
+import TileMeasurementPreview from "@/components/dashboard/informationpanel/informationtile/TileMeasurementPreview.vue";
+
 import { DemandActionType } from "@/plugins/model/Enums.js";
 export default {
   name: "UserDemand",
-  components: { InformationTile },
+  components: { InformationTile, TileMeasurementPreview },
   props: {
     demand: {
       type: Object,
@@ -98,6 +104,9 @@ export default {
   watch: {},
 
   methods: {
+    onPreview() {
+      this.$refs.dataPreview.open(this.mTile);
+    },
     tileclick() {
       if (this.demand.demand_definition.tile && this.demand.demand_definition.tile.panel) {
         this.$router.push(`/panel/view/${this.demand.demand_definition.tile.panel.id}`);

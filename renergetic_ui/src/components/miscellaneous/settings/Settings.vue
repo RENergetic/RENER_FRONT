@@ -44,7 +44,7 @@
           v-tooltip="s.description"
           :min-fraction-digits="0"
           :max-fraction-digits="5"
-          :mode="s.ext.mode"
+          :mode="s.ext && s.ext.mode ? s.ext.mode : 'decimal'"
           :use-grouping="false"
         />
 
@@ -69,11 +69,16 @@
             :option-label="s.ext.optionLabel"
           />
         </div>
-        <div v-else-if="s.type == 'Color'">
-          <ColorPicker v-model="mModel[s.key]" v-tooltip="s.description" />
+        <div v-else-if="s.type == 'Color'" class="grid">
+          <div class="col-12 xl:col-3">
+            <ColorPicker :id="s.key + '_color'" v-model="mModel[s.key]" v-tooltip="s.description" @change="colorChange(s.key)" />
+          </div>
+          <div class="col-12 xl:col-6">
+            <InputText :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" @change="colorChange(s.key)" />
+          </div>
         </div>
         <div v-else-if="s.type == 'Datetime'">
-          <Calendar :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" show-time hour-format="24" />
+          <Calendar :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" :show-time="true" hour-format="24" />
         </div>
 
         <div v-else-if="s.type == 'Submit'">
@@ -120,13 +125,22 @@ export default {
   },
   emits: ["update:settings"],
   data() {
-    return { mModel: this.settings };
+    let mModel = this.settings;
+    // console.info(Object.keys(this.schema).length);
+    if (Object.keys(this.schema).length > 0)
+      for (let s of this.schema) {
+        if ((mModel[s.key] == null || mModel[s.key] === undefined) && s.defaultValue != null && s.defaultValue !== undefined) {
+          mModel[s.key] = s.defaultValue;
+        }
+      }
+
+    return { mModel: mModel };
   },
   watch: {
     mModel: {
       handler: function (newVal) {
         console.debug(newVal);
-        console.info("settings change");
+        console.debug("settings change");
         this.$emit("update:settings", newVal);
       },
       deep: true,
@@ -135,6 +149,10 @@ export default {
 
   async created() {},
   methods: {
+    colorChange(k) {
+      // console.info(this.mModel[k]);
+      this.mModel[k] = "#" + this.mModel[k];
+    },
     getClass(setting) {
       let columns; //= setting.col ? setting.col : this.col;
       switch (setting.type) {
@@ -157,6 +175,18 @@ export default {
 </script>
 
 <style lang="scss">
+.p-colorpicker {
+  width: 100%;
+  min-height: 3rem;
+  min-width: 5rem;
+  padding: 0;
+  input {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+  }
+}
 .settings-slider {
   margin-bottom: 0.35rem;
 }

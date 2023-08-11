@@ -92,7 +92,7 @@ export default function (Vue) {
       return keycloak.initialized;
     },
     async get() {
-      return this.executeAfterInitialized(keycloak);
+      return await this.executeAfterInitialized(keycloak);
     },
 
     // hasAccess(assignedRoles, allowedRoles) {
@@ -103,15 +103,19 @@ export default function (Vue) {
     //   }
     //   return false;
     // },
-    async executeAfterInitialized(method) {
+    async executeAfterInitialized(keyclock) {
       const TRIES = 4;
-      const TIME = 150;
+      const TIME = 1500;
+      // console.info(keyclock);
       return new Promise((resolve, reject) => {
         let tries = 0;
+        // console.info(keycloak);
+        // console.info(keycloak.initialized);
         const iteration = () => {
-          if (this.isInitialized()) {
-            resolve(method);
+          if (keyclock.initialized) {
+            resolve(keyclock);
           } else if (tries < TRIES) {
+            console.info(`${new Date()}: wait for keycloak: ${tries + 1}/${TRIES} ${keyclock.initialized}`);
             setTimeout(iteration, TIME);
             tries += 1;
           } else {

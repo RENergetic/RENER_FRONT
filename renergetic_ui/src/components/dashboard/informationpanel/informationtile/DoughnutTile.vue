@@ -78,7 +78,7 @@ export default {
         // console.info(1.0 - sum);
         // console.info(sum);
         data.push(1.0 - sum);
-        backgroundColor.push("#01010110");
+        backgroundColor.push(backgroundColor);
         labels.push("");
       }
       return {
@@ -95,8 +95,6 @@ export default {
   },
 
   mounted() {
-    // this.settings.cellWidth
-    // console.info(this.tile.layout.w + " " + this.settings.cellWidth);
     this.mStyle = `max-width: 30rem; margin: auto;width:${this.settings.panel.cellWidth * this.tile.layout.w * 0.7}px`;
   },
   methods: {},
@@ -105,17 +103,9 @@ export default {
 
 <style scoped lang="scss">
 #tileicon {
-  // width: 3rem;
-  // height: 3rem;
-  // display: inherit;
-  // background-size: contain;
-  // background-repeat: no-repeat;
-  // background-position: center;
   position: absolute;
   height: 20%;
   width: 20%;
-  // left: 37.5%;
-  // top: 37.5%;
   svg {
     height: 100%;
   }

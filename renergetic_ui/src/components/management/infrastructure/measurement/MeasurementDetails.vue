@@ -1,13 +1,16 @@
 <template>
   <!-- {{ schema }} -->
-  <Settings :schema="schema" :settings="mModel"></Settings>
-  <!-- {{ mModel }} -->
+  <Settings v-if="schema" :schema="schema" :settings="mModel"></Settings>
+  <!-- {{ mModel }}
+  {{ model }} -->
 </template>
 
 <script>
 import Settings from "@/components/miscellaneous/settings/Settings.vue";
 var detailTypes = {
   color: "Color",
+  cumulative: Boolean,
+  background: "Color",
 };
 export default {
   name: "MeasurementDetails",
@@ -20,16 +23,16 @@ export default {
     return {
       mModel: this.model,
       keys: [],
-      schema: {},
+      schema: null,
     };
   },
   computed: {},
   watch: {
     mModel: {
-      handler: function (newVal) {
-        this.$emit("update", newVal);
-      },
-      deep: true,
+      // handler: function (newVal) {
+      //   this.$emit("update", newVal);
+      // },
+      // deep: true,
     },
   },
   async mounted() {
@@ -40,6 +43,9 @@ export default {
   },
 
   methods: {
+    onClick() {
+      this.$emit("update", this.mModel);
+    },
     getType(key) {
       if (detailTypes[key]) {
         return detailTypes[key];
@@ -51,11 +57,18 @@ export default {
       if (!this.mModel[key]) {
         this.mModel[key] = null;
       }
+      if (mt == Boolean) {
+        // alert(this.mModel[key]);
+        this.mModel[key] = this.mModel[key] || this.mModel[key] === "true" ? true : false;
+
+        // this.mModel[key] = true;
+        // alert(this.mModel[key]);
+      }
       var ext = {};
       if (mt == Boolean) {
         ext = {
-          true: this.$t("settings.visible"),
-          false: this.$t("settings.hidden"),
+          true: this.$t("settings.yes"),
+          false: this.$t("settings.no"),
         };
       }
       return {
@@ -67,6 +80,14 @@ export default {
     },
     getSchema() {
       var schema = this.detailKeys.map((k) => this.getSetting(k));
+      schema.push({
+        label: this.$t("settings.submit"),
+        ext: {
+          click: this.onClick,
+        },
+        type: "Submit",
+        key: "detailsSubmit",
+      });
       return schema;
     },
   },

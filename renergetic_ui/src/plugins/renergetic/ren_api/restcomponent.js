@@ -102,8 +102,7 @@ export default class RestComponent {
       headers = HEADERS;
     }
     return this.securizeAPI(headers).then((headers) => {
-      console.error("POST REQUEST OAUTH");
-      console.table(headers);
+      // console.error("POST REQUEST OAUTH");
       return (params ? this.axios.post(path, data, { headers: headers, params: params }) : this.axios.post(path, data, { headers: headers }))
         .then((response) => {
           return response.data;

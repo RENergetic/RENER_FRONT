@@ -29,7 +29,7 @@
   </Dialog>
 </template>
 <script>
-import MeasurementForm from "@/components/management/infrastructure/MeasurementForm.vue";
+import MeasurementForm from "@/components/management/infrastructure/measurement/MeasurementForm.vue";
 export default {
   name: "AbstractMetersCalculation",
   components: {

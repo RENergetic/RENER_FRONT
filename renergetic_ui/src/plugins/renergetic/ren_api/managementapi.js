@@ -166,24 +166,94 @@ export default class ManagementApi extends RestComponent {
   ////                                                   /////
   ////////////////////////////////////////////////////////////
 
-  async listMeasurement(params = undefined, offset = 0, limit = 20) {
+  async listMeasurement(params = undefined, offset = 0, limit = 200) {
     if (!params) {
       params = {};
     }
-    return this.get(`/api/measurements`, {
-      headers: { "Content-type": "application/json; charset=UTF-8" },
-      params: { ...params, offset: offset, limit: limit },
-    });
+    return this.get(`/api/measurements/report`, { ...params, offset: offset, limit: limit });
   }
-
+  async listMeasurementType() {
+    return this.get(`/api/measurements/type`);
+  }
+  async setMeasurementTypeVisibility(id, visibility) {
+    if (visibility) return this.post(`/api/measurements/type/${id}/dashboard/true`);
+    else return this.post(`/api/measurements/type/${id}/dashboard/false`);
+  }
   async updateMeasurement(measurement) {
     // TODO: -> only allow to update labels ,  color, and key-value properties
-    if (measurement.type != undefined) measurement.type = measurement.type.id;
     return this.put(`/api/measurements/${measurement.id}`, measurement, null, null, (e) => {
       if (e.response.status == 404) {
         this.emitError(`Measurement ${measurement.id} not found: ${e.message}`, {
           code: "measurement_not_found",
           args: [measurement.id],
+        });
+        return true;
+      }
+    });
+  }
+
+  async getMeasurementProperties(id) {
+    return this.get(`/api/measurements/${id}/properties`);
+  }
+  async getMeasurementLinkedPanels(id) {
+    return this.get(`/api/measurements/${id}/panels`);
+  }
+  async getMeasurementTags(id) {
+    return this.get(`/api/measurements/${id}/tags`);
+  }
+  async listTags() {
+    return this.get(`/api/measurements/tags`);
+  }
+  async createNewTag(tag) {
+    // return this.put(`/api/measurements/tags/key/${tag.key}/value/${tag.value}`);
+    return this.post(`/api/measurements/tags`, tag);
+  }
+  async deleteTag(tag) {
+    return this.delete(`/api/measurements/tags/key/${tag.key}/value/${tag.value}`, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`Tag ${tag.key}:${tag.value} not found: ${e.message}`, {
+          code: "tag_not_found",
+          args: [tag.key, tag.value],
+        });
+        return true;
+      }
+      return false;
+    }).then((res) => {
+      return res;
+    });
+  }
+
+  async updateMeasurementTags(measurement, tags) {
+    // TODO: -> only allow to update labels ,  color, and key-value properties
+    return this.put(`/api/measurements/${measurement.id}/tags`, tags, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`Measurement ${measurement.id} not found: ${e.message}`, {
+          code: "measurement_not_found",
+          args: [measurement.id],
+        });
+        return true;
+      }
+    });
+  }
+  async updateMeasurementProperties(measurement, properties) {
+    // TODO: -> only allow to update labels ,  color, and key-value properties
+    return this.put(`/api/measurements/${measurement.id}/properties`, properties, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`Measurement ${measurement.id} not found: ${e.message}`, {
+          code: "measurement_not_found",
+          args: [measurement.id],
+        });
+        return true;
+      }
+    });
+  }
+
+  async deleteMeasurement(measurementId) {
+    return this.delete(`/api/measurements/${measurementId}`, null, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`Measurement ${measurementId} not found: ${e.message}`, {
+          code: "measurement_not_found",
+          args: [measurementId],
         });
         return true;
       }

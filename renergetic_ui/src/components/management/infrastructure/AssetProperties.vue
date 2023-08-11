@@ -1,6 +1,7 @@
 <template>
   <Dialog v-model:visible="dialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <div class="ren">
+      {{ initialAsset }}
       <div v-for="detailsKey in detailsKeys" :key="detailsKey" class="property-form">
         <ren-input v-model="details[detailsKey]" :text-label="detailsKey" />
         <!-- <span>{{ detailsKey }}</span>

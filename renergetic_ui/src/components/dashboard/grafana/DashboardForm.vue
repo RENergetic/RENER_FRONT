@@ -6,9 +6,7 @@
     </template>
     <template #content>
       <div class="ren">
-        <!-- {{ $store.getters["view/dashboardUnits"] }} 
-        {{ measurementTypes }} -->
-        <!-- {{ mDashboard }} -->
+        <!-- {{ $store.getters["view/dashboardUnits"] }}   {{ measurementTypes }}  {{ mDashboard }} -->
         <ren-input
           v-model="mDashboard.name"
           :text-label="'model.dashboard.name'"

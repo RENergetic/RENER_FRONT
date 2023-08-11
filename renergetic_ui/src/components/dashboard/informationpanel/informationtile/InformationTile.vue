@@ -1,18 +1,36 @@
 <template>
   <!-- {{ mSettings }} -->
-  <div v-if="tile" :class="tileClass" :style="background">
+  <div :class="tileClass" :style="background">
+    <i
+      v-if="tilePreview && tile.measurements.length > 0"
+      v-tooltip="$t('view.measurements')"
+      class="pi pi-chart-line"
+      style="fontsize: 3rem; position: absolute; top: 0.5rem; right: 0.5rem"
+      @click="viewMeasurements()"
+    />
     <!-- {{ filter }} -->
     <!-- {{ pdata }} -->
     <!-- todo: group by sensor_name -->
-    <!-- {{ tile.type }} -->
-    <div v-if="(titleVisible || tile.measurements.length == 0) && tile.label" class="flex flex-column justify-content-center" style="height: 100%">
+    <div
+      v-if="(titleVisible || tile.measurements.length == 0) && tile.label"
+      class="flex flex-column justify-content-center"
+      style="height: 100%; width: 100%"
+    >
       <h3 style="margin: 0; text-align: center">{{ tile.label }}</h3>
     </div>
 
-    <KnobTile v-else-if="tile.type == 'knob'" :tile="tile" :pdata="pdata" :settings="mSettings" :conversion-settings="conversionSettings"></KnobTile>
+    <KnobTile
+      v-else-if="tile.type == 'knob'"
+      :style="'width:100%'"
+      :tile="tile"
+      :pdata="pdata"
+      :settings="mSettings"
+      :conversion-settings="conversionSettings"
+    ></KnobTile>
 
     <ChartTile
       v-else-if="tile.type == 'chart'"
+      :style="'width:100%'"
       :tile="tile"
       :pdata="pdata"
       :settings="mSettings"
@@ -21,7 +39,14 @@
       @timeseries-update="onTimeseriesUpdate"
     />
 
-    <DoughnutTile v-else-if="isDoughnut" :tile="tile" :pdata="pdata" :settings="mSettings" :conversion-settings="conversionSettings"></DoughnutTile>
+    <DoughnutTile
+      v-else-if="isDoughnut"
+      :style="'width:100%'"
+      :tile="tile"
+      :pdata="pdata"
+      :settings="mSettings"
+      :conversion-settings="conversionSettings"
+    ></DoughnutTile>
     <!-- <MultiDoughnutTile
         v-else-if="tile.type == 'multi_doughnut'"
         :tile="tile"
@@ -30,6 +55,7 @@
 
     <MultiKnobTile
       v-else-if="tile.type == 'multi_knob'"
+      :style="'width:100%'"
       :tile="tile"
       :pdata="pdata"
       :settings="mSettings"
@@ -37,6 +63,7 @@
     />
     <PanelTile
       v-else-if="tile.type == 'panel'"
+      :style="'width:100%'"
       :tile="tile"
       :pdata="pdata"
       :settings="mSettings"
@@ -45,12 +72,20 @@
     ></PanelTile>
     <InformationTileSingle
       v-else-if="tile.type == 'single'"
+      :style="'width:100%'"
       :tile="tile"
       :pdata="pdata"
       :settings="mSettings"
       :conversion-settings="conversionSettings"
     ></InformationTileSingle>
-    <InformationListTile v-else :tile="tile" :pdata="pdata" :settings="mSettings" :conversion-settings="conversionSettings"></InformationListTile>
+    <InformationListTile
+      v-else
+      :style="'width:100%'"
+      :tile="tile"
+      :pdata="pdata"
+      :settings="mSettings"
+      :conversion-settings="conversionSettings"
+    ></InformationListTile>
   </div>
 </template>
 <script>
@@ -102,6 +137,7 @@ export default {
     PanelTile: () => import("./PanelTile.vue"),
   },
   props: {
+    tilePreview: { type: Boolean, default: true },
     edit: { type: Boolean, default: false },
     //Determines if it is wrapped by demand/recommendation compoent
     demand: { type: Boolean, default: false },
@@ -124,7 +160,7 @@ export default {
       },
     },
   },
-  emits: ["edit", "notification", "timeseries-update"],
+  emits: ["edit", "notification", "timeseries-update", "preview-tile"],
   data() {
     return {
       conversionSettings: this.$store.getters["settings/conversion"],
@@ -163,6 +199,9 @@ export default {
   methods: {
     onTimeseriesUpdate(evt) {
       this.$emit("timeseries-update", evt);
+    },
+    viewMeasurements() {
+      this.$emit("preview-tile", this.tile);
     },
   },
 };

@@ -118,6 +118,7 @@ export default class RenUtils {
   //     .then(() => this.app.$emitter.emit("information", { message: this.app.$t("information.settings_saved") }));
   // }
   async saveSettings() {
+    console.error("saveSettings");
     let allSettings = this.app.$store.getters["settings"];
     let _this = this;
 
@@ -129,24 +130,38 @@ export default class RenUtils {
     this.app.$store.commit("settings", settings);
   }
 
-  localPanel(id, assetId) {
-    let panel = null;
-    if (assetId != null) {
-      panel = this.app.$store.getters["view/assetPanel"](id, assetId);
-      if (!panel.is_template) {
-        let index = this.app.$store.getters["view/informationPanelsMap"][id];
-        if (index != null) {
-          panel = this.app.$store.getters["view/informationPanels"][index];
-        }
-      }
-    } else {
-      let index = this.app.$store.getters["view/informationPanelsMap"][id];
+  // localPanel(id, assetId) {
+  //   let panel = null;
+  //   if (assetId != null) {
+  //     panel = this.app.$store.getters["view/assetPanel"](id, assetId);
+  //     if (!panel.is_template) {
+  //       let index = this.app.$store.getters["view/informationPanelsMap"][id];
+  //       if (index != null) {
+  //         panel = this.app.$store.getters["view/informationPanels"][index];
+  //       }
+  //     }
+  //   } else {
+  //     let index = this.app.$store.getters["view/informationPanelsMap"][id];
+  //     if (index != null) {
+  //       panel = this.app.$store.getters["view/informationPanels"][index];
+  //     }
+  //   }
+  //   // console.info(panel);
+  //   return panel;
+  // }
+
+  async getPanelStructure(panelId, assetId) {
+    let informationPanel = null;
+    if (assetId == null) {
+      let index = this.app.$store.getters["view/informationPanelsMap"][panelId];
       if (index != null) {
-        panel = this.app.$store.getters["view/informationPanels"][index];
+        informationPanel = this.app.$store.getters["view/informationPanels"][index];
       }
     }
-    // console.info(panel);
-    return panel;
+    if (informationPanel == null) {
+      informationPanel = await this.app.$ren.dashboardApi.getInformationPanel(panelId, assetId);
+    }
+    return informationPanel;
   }
 
   async loadSettings() {
@@ -187,7 +202,7 @@ export default class RenUtils {
     if ((RenRoles.REN_VISITOR | RenRoles.REN_USER) & currentRole) {
       q.assets().assetPanels();
     }
-    if ((RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER) & currentRole) {
+    if ((RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN) & currentRole) {
       q.assetMetaKeys();
     }
     if ((RenRoles.REN_USER | RenRoles.REN_MANAGER) & currentRole) {
@@ -196,6 +211,7 @@ export default class RenUtils {
     let _this = this;
     await this.app.$ren.wrapperApi.get(q.build()).then((data) => {
       _this.app.$store.commit("view/wrapper", data);
+      _this.app.$store.dispatch("slideshow/set");
     });
   }
   // async reloadDashboard() {
@@ -228,28 +244,30 @@ export default class RenUtils {
     }
   }
 
-  measurementBackgroundColor(measurement, tileSettings /*,alpha*/) {
-    //tODO add alpha supprot
-    let alpha = "80";
+  measurementBackgroundColor(measurement, tileSettings, value) {
+    let alpha = value ? 0.75 : 0.75 - value * 0.5;
+    let alphaHex = Math.round(alpha * 255).toString(16);
     if (tileSettings && tileSettings.background == "none") {
       return "none";
     }
-    if (measurement.type.color) {
-      let color;
-      if (tileSettings && tileSettings.background) {
-        color = tileSettings.background;
-      } else color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
-      // console.info(measurement);
-      // console.info(color);
-      if (color.length == 7) {
-        return `#${color.slice(1)}${alpha}`;
-      }
-      return `#${color.slice(1, color.length - 2)}${alpha}`;
+    let color;
+    if (tileSettings && tileSettings.background) {
+      color = tileSettings.background;
+    } else {
+      color = measurement.measurement_details.background
+        ? measurement.measurement_details.background
+        : this.measurementColor(measurement, null).color;
     }
+    if (color.length == 7) {
+      return `#${color.slice(1)}${alphaHex}`;
+    }
+    return `#${color.slice(1, color.length - 2)}${alphaHex}`;
   }
+
   measurementColor(measurement, value) {
-    let alpha = value ? 1.0 : 0.5;
+    let alpha = value ? 1.0 : 1.0 - value / 2;
     let color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
+
     return { alpha: alpha, color: color };
   }
 
@@ -285,7 +303,36 @@ export default class RenUtils {
     // console.info(conversionSettings);
     return mt ? mt : measurement.type.unit;
   }
-
+  convertDemandData(demandList, pData, settings) {
+    var cp = pData;
+    var mDict = {};
+    for (let demand of demandList) {
+      if (demand.demand_definition && demand.demand_definition.tile) {
+        let tile = demand.demand_definition.tile;
+        for (let m of tile.measurements) {
+          mDict[m.id] = m;
+        }
+      }
+    }
+    for (let mId in mDict) {
+      let m = mDict[mId];
+      // console.info(m);
+      var newUnit = this.getUnit(m, null, settings); // settings[m.type.physical_name];
+      // console.info(m.type.physical_name + " " + newUnit);
+      if (newUnit) {
+        let value = pData.current[m.aggregation_function][m.id];
+        let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
+        cp.current[m.aggregation_function][m.id] = newV;
+        if (pData.max && pData.max[m.aggregation_function]) {
+          let value = pData.max[m.aggregation_function][m.id];
+          let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
+          cp.max[m.aggregation_function][m.id] = newV;
+        }
+      }
+    }
+    //todo:
+    return cp;
+  }
   convertPanelData(panel, pData, settings) {
     var mDict = {};
     //TODO: initialize this dictionary in the vuex store
@@ -308,7 +355,7 @@ export default class RenUtils {
         let value = pData.current[m.aggregation_function][m.id];
         let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
         cp.current[m.aggregation_function][m.id] = newV;
-        if (pData.max) {
+        if (pData.max && pData.max[m.aggregation_function]) {
           let value = pData.max[m.aggregation_function][m.id];
           let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
           cp.max[m.aggregation_function][m.id] = newV;

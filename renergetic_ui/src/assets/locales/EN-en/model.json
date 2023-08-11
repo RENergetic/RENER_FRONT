@@ -7,7 +7,7 @@
           "measurement_type": "Measurement type",
           "unit": "Unit",
           "user": "User",
-          "grafana_id":"Grafana id"
+          "grafana_id": "Grafana id"
      },
      "heatmap": {
           "name": "Name",
@@ -65,9 +65,27 @@
           "label": "Label",
           "name": "Name"
      },
+     "measurement_type": {
+          "id": "ID",
+          "name": "Name",
+          "label": "Label",
+          "unit": "Unit",
+          "factor": "Base multiplier factor",
+          "color": "Measurement default color",
+          "dashboardVisibility": "Grafana support.",
+          "dashboard_visibility": "Grafana support.",
+          "physical_name": "Physical name",
+          "base_unit": "Base unit",
+          "description": "Description"
+     },
+     "tag": {
+          "key": "Tag's name (key)",
+          "value": "Tag's value"
+     },
      "measurement": {
           "name": "Name",
           "label": "Label",
+          "panel_count": "Linked panels count",
           "measurement_type": "Measurement type",
           "location_name": "Location",
           "type": "Measurement type",
@@ -77,20 +95,20 @@
           "direction_out": "Out",
           "direction_in": "In",
           "direction_null": "N/A",
-          "domain":"Domain",
-          "sensor_name":"Sensor name",
-          "asset_category":"Asset category",
-          "physical_name":"Physical name",
-          "asset":"Asset"
-
+          "domain": "Domain",
+          "sensor_name": "Sensor name",
+          "asset_category": "Asset category",
+          "physical_name": "Physical name",
+          "asset": "Asset"
      },
      "panel": {
+          "id": "Id",
           "name": "Name",
           "label": "Label",
-          "featured":"Visibility",
-          "is_template":"Is template",
-          "is_template_new_panel":"Is panel a template for private dashboards view (Can't be changed later)",
-          "structure":"Structure"
+          "featured": "Visibility",
+          "is_template": "Is template",
+          "is_template_new_panel": "Is panel a template for private dashboards view (Can't be changed later)",
+          "structure": "Structure"
      },
      "user": {
           "login": "Login",
@@ -106,19 +124,18 @@
      "role": {
           "name": "Name"
      },
-     "notification":{
-          "id":"Id",
-          "type":"Type",
-          "notification_code":"Code",
-          "asset":"Asset",
-          "dashboard":"Dashboard",
-          "date_from":"From",
-          "date_to":"To",
-          "notification_timestamp":"Generation time",
-          "value":"Value",
-          "no_dashboard":"undefined",
-          "measurement":"Measurement",
-          "message":"Message"
-          
+     "notification": {
+          "id": "Id",
+          "type": "Type",
+          "notification_code": "Code",
+          "asset": "Asset",
+          "dashboard": "Dashboard",
+          "date_from": "From",
+          "date_to": "To",
+          "notification_timestamp": "Generation time",
+          "value": "Value",
+          "no_dashboard": "undefined",
+          "measurement": "Measurement",
+          "message": "Message"
      }
 }

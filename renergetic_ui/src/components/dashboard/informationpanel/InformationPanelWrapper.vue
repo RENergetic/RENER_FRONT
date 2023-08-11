@@ -2,6 +2,10 @@
   <!-- {{ $store.getters["view/measurementTypes"] }}  -->
   <!-- {{ $store.getters["settings/filter"] }} -->
   <!-- {{ pdata }} -->
+  <!-- refreshTime: {{ $store.getters["settings/panel"].refreshTime }} -->
+  <!-- {{ $store.getters["settings/panel"] }} -->
+  <!-- panel: {{ panel.name }}{{ panel.id }} {{ assetId }} -->
+
   <RenSpinner ref="spinner" :lock="true" style="width: 100%; min-height: 15rem">
     <template #content>
       <InformationPanel
@@ -42,16 +46,18 @@
     </div>
     <Dialog v-model:visible="manageSensorsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
       <!-- {{ selectedTile.tile.measurements }} -->
-      <ManageSensors v-model="selectedItem.tile.measurements"></ManageSensors>
+      component to add measurements to the tile
+      <!-- <ManageSensors v-model="selectedItem.tile.measurements"></ManageSensors> -->
     </Dialog>
   </Dialog>
 </template>
 <script>
 // import NotificationList from "@/components/management/notification/NotificationList.vue";
 import InformationPanel from "./InformationPanel.vue";
-import ManageSensors from "../measurements/ManageSensors.vue";
+// import ManageSensors from "../measurements/ManageSensors.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 // import { GridStack } from "gridstack";
+import LoopRunner from "@/plugins/utils/loop_runner.js";
 import { TileTypes, NotificationContext } from "@/plugins/model/Enums.js";
 // THEN to get HTML5 drag&drop
 // import "gridstack/dist/h5/gridstack-dd-native";
@@ -60,7 +66,7 @@ export default {
   name: "InformationPanelWrapper",
   components: {
     InformationPanel,
-    ManageSensors,
+    // ManageSensors,
     // NotificationList,
   },
   props: {
@@ -86,7 +92,10 @@ export default {
         return {};
       },
     },
-
+    autoReload: {
+      type: Boolean,
+      default: true,
+    },
     panelSettings: {
       type: Object,
       default: () => {
@@ -119,6 +128,7 @@ export default {
       tileTypes: Object.entries(TileTypes).map((k) => {
         return { value: k[1], label: this.$t("enums.tile_type." + k[1]) };
       }),
+      loopRunner: null,
       notificationContext: NotificationContext.TILE,
     };
   },
@@ -133,27 +143,63 @@ export default {
   },
   watch: {
     manageSensorsDialog: function (newValue) {
-      if (!newValue) {
-        this.mPanel.tiles[this.selectedItem.index] = this.selectedItem.tile;
+      if (!newValue) this.mPanel.tiles[this.selectedItem.index] = this.selectedItem.tile;
+    },
+    panel: function (newValue) {
+      if (newValue != null) {
+        // console.info("panel change");
+        console.debug(newValue);
+
+        if (this.autoReload) {
+          if (this.loopRunner != null) this.loopRunner.stop();
+          let refreshTime = this.$store.getters["settings/panel"].refreshTime ? this.$store.getters["settings/panel"].refreshTime : 60000;
+
+          this.loopRunner = LoopRunner.init(this.loadData, refreshTime);
+          this.loopRunner.start();
+        } else {
+          this.loadData();
+        }
+      }
+    },
+    "panel.id": function (newValue, oldValue) {
+      if (newValue != null) {
+        console.info(`Panel id change: ${newValue} - ${oldValue}`);
       }
     },
     filter: {
       handler: function () {
-        this.deferredFilter.run();
+        if (this.deferredFilter) this.deferredFilter.run();
       },
       deep: true,
     },
   },
-  created() {
-    this.deferredFilter = new DeferredFunction(this.loadData, 1000);
-  },
-  async beforeMount() {
-    if (!this.panel.is_template) {
-      this.mPanel = this.panel;
+  beforeUnmount() {
+    if (this.loopRunner) {
+      this.loopRunner.stop();
     }
   },
   async mounted() {
-    this.loadData();
+    var _this = this;
+    var f = async () => {
+      console.error("deffererd");
+      console.error(_this.filter);
+      console.error(_this.filterKey);
+      console.error(_this.$store.getters["settings/parsedFilter"](_this.filterKey));
+      _this.mFilter = _this.filter ? _this.filter : _this.$store.getters["settings/parsedFilter"](_this.filterKey);
+      if (_this.loopRunner) {
+        _this.loopRunner.reset();
+      }
+      await _this.loadData();
+    };
+    this.deferredFilter = new DeferredFunction(f, 1000);
+    let refreshTime = this.$store.getters["settings/panel"].refreshTime ? this.$store.getters["settings/panel"].refreshTime : 60000;
+
+    if (refreshTime > 0 && this.autoReload) {
+      this.loopRunner = LoopRunner.init(this.loadData, refreshTime);
+      this.loopRunner.start();
+    } else {
+      this.loadData();
+    }
     // this.reloadGrid();
   },
   methods: {
@@ -173,31 +219,18 @@ export default {
       console.error(evt);
     },
     async loadData() {
-      console.info("panel load data");
-
       if (this.panel.id != null) {
-        console.info("load data, is template: " + this.panel.is_template);
-        if (this.panel.is_template) {
-          this.$refs.spinner.run(async () => {
-            console.info("wait for panel data: " + this.panel.id + ": " + this.assetId);
-            await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, this.mFilter).then((resp) => {
-              this.mPanel = resp.panel;
-              this.pdata = resp.data;
-            });
+        console.info("panel load data: " + this.panel.id);
+        this.$refs.spinner.run(async () => {
+          console.info("wait for panel data: " + this.panel.id + " " + this.panel.is_template);
+          await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, this.mFilter).then((resp) => {
+            this.pdata = resp.data;
+            if (this.panel.is_template) this.mPanel = resp.panel;
+            else {
+              this.mPanel = this.panel;
+            }
           });
-          // let resp = await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, filter);
-          // this.mPanel = resp.panel;
-          // this.pdata = resp.data;
-        } else {
-          this.$refs.spinner.run(async () => {
-            console.info("wait for panel data: " + this.panel.id);
-            await this.$ren.dataApi.getPanelData(this.panel.id, null, this.mFilter).then((resp) => {
-              this.pdata = resp.data;
-            });
-          });
-          // let resp = await this.$ren.dataApi.getPanelData(this.panel.id, null, filter);
-          // this.pdata = resp.data;
-        }
+        });
       }
       console.info("Panel data loaded");
     },

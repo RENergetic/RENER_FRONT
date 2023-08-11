@@ -15,15 +15,17 @@
   "metric_type": {
     "electricity": "electricity",
     "heat": "heat",
-    "energy":"Energy",
+    "energy": "Energy",
     "temperature": "temperature",
-    "energy_kwh":"Energy",
-    "power_w":"Power",
-    "heat_energy_gj":"Heat energy",
-    "energy_gj":"Heat energy",
-    "percentage":"Percentage",
-    "power":"Power"
+    "energy_kwh": "Energy",
+    "energy_wh":"Energy",
+    "power_w": "Power",
+    "heat_energy_gj": "Heat energy",
+    "energy_gj": "Heat energy",
+    "percentage": "Percentage",
+    "power": "Power"
   },
+  
   "measurement_name": {
     "heat": "Heat",
     "electricity": "Electricity",
@@ -40,8 +42,23 @@
     "waste": "Waste",
     "fossil_fuels": "Fossil fuels",
     "electricity_renewability": "Renewable electricity",
-    "heat_renewability": "Renewable heat", 
-    "co2_reduction": "CO2 emissions reduction" 
+    "heat_renewability": "Renewable heat",
+    "co2_reduction": "CO2 emissions reduction"
+  },
+  "domain": {
+    "electricity": "Electricity",
+    "heat": "Heat",
+    "none": "N/A"
+  },
+  "physical_type": {
+    "energy": "Energy",
+    "power": "Power",
+    "temperature": "Temperature"
+  },
+  "measurement_direction": {
+    "in": "IN",
+    "out": "OUT",
+    "none": "N/A"
   },
   "tile_type": {
     "knob": "knob",

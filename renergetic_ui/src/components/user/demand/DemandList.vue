@@ -55,14 +55,10 @@ export default {
           this.mDemands = demands;
         } else this.mDemands = await this.$ren.userApi.getDemand(); //TODO: check it
       }
-
       let pdata = this.$store.getters["view/data"];
-      if (pdata) {
-        this.pdata = pdata;
-      } else {
-        this.pdata = await this.$ren.dataApi.getDemandData(this.mDemands);
-      }
-      console.table(this.mDemands);
+      pdata = this.$ren.utils.convertDemandData(this.mDemands, pdata, this.$store.getters["settings/conversion"]);
+
+      this.pdata = pdata;
       this.$emit("update", this.mDemands);
     },
   },

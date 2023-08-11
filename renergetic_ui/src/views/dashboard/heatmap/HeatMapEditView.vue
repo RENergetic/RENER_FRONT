@@ -1,13 +1,14 @@
 <template>
-  <HeatMapEdit v-if="heatmap != null" v-model="heatmap" @update="onSave" />
+  ;
+  <!-- <HeatMapEdit v-if="heatmap != null" v-model="heatmap" @update="onSave" /> -->
   <!-- todo: v else heatmap not found -->
 </template>
 <script>
-import HeatMapEdit from "@/components/dashboard/area/HeatMapEdit.vue";
+// import HeatMapEdit from "@/components/dashboard/area/HeatMapEdit.vue";
 
 export default {
   name: "HeatMapEditView",
-  components: { HeatMapEdit },
+  // components: { HeatMapEdit },
   props: {
     id: {
       type: String,
