@@ -16,16 +16,18 @@
           <Column field="name" header="Name" :sortable="true" />
           <Column field="type.name" header="Type_name" :sortable="true" />
         </DataTable>
-        <div class="card flex flex-wrap gap-5 field grid box">
-          <Button :disabled="buttonDisabled" label="Select" @click="selectCurrentMeasurement" />
-          <Button label="Create new measurement" @click="addNewMeasurement" />
-          <Button label="Cancel" @click="cancelMeasurementAddition" />
-        </div>
         <Dialog v-model:visible="measurementEditDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
           <MeasurementForm @update:model-value="onCreate($event, 0)"></MeasurementForm>
         </Dialog>
+        <Toolbar>
+          <template #start><Button :disabled="buttonDisabled" label="Select" @click="selectCurrentMeasurement" /></template>
+          <template #end><Button label="New measurement" icon="pi pi-plus-circle" @click="addDialog = true" /></template>
+        </Toolbar>
       </template>
     </Card>
+  </Dialog>
+  <Dialog v-model:visible="addDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
+    <MeasurementForm @update="onCreate($event)" @cancel="addDialog = false" />
   </Dialog>
 </template>
 <script>
@@ -42,6 +44,7 @@ export default {
       selectedMeasurement: null,
       measurementListAbstracMeter: [],
       calculationType: null,
+      addDialog: false,
     };
   },
   async created() {
@@ -74,9 +77,13 @@ export default {
       this.dialog = false;
       this.selectedMeasurement = null;
     },
-    onCreate(o, i) {
-      alert(o);
-      alert(i);
+    async onCreate(o) {
+      await this.$ren.managementApi.addMeasurement(o).then((measurement) => {
+        console.info("add measurement:" + measurement.name);
+        this.$emitter.emit("information", { message: this.$t("information.measurement_created") });
+      });
+      this.addDialog = false;
+      this.measurementListAbstracMeter = await this.$ren.managementApi.listMeasurement();
     },
   },
   /*

@@ -104,6 +104,7 @@ export default {
       elementTextFormula: null,
       elementTextCondition: null,
       conditionMeterShown: false,
+      conditionType: null,
     };
   },
   async created() {
@@ -249,17 +250,18 @@ export default {
       this.variableExistanceChecker();
     },
     openCalculationsFormula() {
-      let valueToAdd = this.openNewPage("formula");
+      this.conditionType = "formula";
+      let valueToAdd = this.openNewPage();
       console.log(valueToAdd);
     },
     openCalculationsCondition() {
-      let valueToAdd = this.openNewPage("condition");
+      this.conditionType = "condition";
+      let valueToAdd = this.openNewPage();
       console.log(valueToAdd);
     },
-    openNewPage(conditionType) {
+    openNewPage() {
       console.log(this.$refs.abstractMetersCalculation);
-      this.$refs.abstractMetersCalculation.open(conditionType);
-      //TODO: CHECK IF THIS RETURN IS NECESSARY -> I DON´T THINK SO
+      this.$refs.abstractMetersCalculation.open(this.conditionType);
     },
     handleMeasurementReturnFormula(value) {
       console.log("AbstractMetersView: " + value);
