@@ -145,6 +145,12 @@
         <!-- <span class="ren-pointer" @click="editAsset(slotProps.data)"> Edit Asset </span> -->
       </template>
     </Column>
+    <Column name="rule" :header="$t('view.rules')" :hidden="basic">
+      <template #body="slotProps">
+        <Button v-tooltip="$t('view.rules')" icon="pi pi-pencil" class="p-button-rounded" @click="editRules(slotProps.data)" />
+        <!-- <span class="ren-pointer" @click="editAsset(slotProps.data)"> Edit Asset </span> -->
+      </template>
+    </Column>
     <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
     <template #header>
       <div v-if="!hiddenFilters" class="flex justify-content-between">
@@ -180,6 +186,7 @@
   <AssetCategorySelection ref="assetCategorySelection" />
   <AssetProperties ref="assetPropertiesDialog" @submit="updateDetails" />
   <AssetEdit ref="assetEditDialog" @submit="updateAsset" />
+  <DemandResponseView ref="demandResponseView" />
 
   <Dialog v-model:visible="childDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <Card>
@@ -245,6 +252,7 @@ import AssetConnectionManagementDialog from "./AssetConnectionManagementDialog.v
 import AssetCategorySelection from "./AssetCategorySelection.vue";
 import AssetProperties from "@/components/management/infrastructure/AssetProperties.vue";
 import AssetEdit from "@/components/management/infrastructure/AssetEdit.vue";
+import DemandResponseView from "@/views/management/abstract/DemandResponseView.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 function initFilter() {
   return {
@@ -264,6 +272,7 @@ export default {
     MeasurementSelect,
     AssetConnectionManagementDialog,
     AssetCategorySelection,
+    DemandResponseView,
   },
 
   props: {
@@ -326,6 +335,9 @@ export default {
     ////
     editAsset(row) {
       this.$refs.assetEditDialog.open(row);
+    },
+    editRules(row) {
+      this.$refs.demandResponseView.open(row.id);
     },
     viewChildren(row) {
       console.info(row);

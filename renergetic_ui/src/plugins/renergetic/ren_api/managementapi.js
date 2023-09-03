@@ -179,12 +179,6 @@ export default class ManagementApi extends RestComponent {
     if (visibility) return this.post(`/api/measurements/type/${id}/dashboard/true`);
     else return this.post(`/api/measurements/type/${id}/dashboard/false`);
   }
-
-  async addMeasurement(measurement) {
-    // TODO: -> only allow to update labels ,  color, and key-value properties
-
-    return this.post(`/api/measurements`, measurement);
-  }
   async updateMeasurement(measurement) {
     // TODO: -> only allow to update labels ,  color, and key-value properties
     return this.put(`/api/measurements/${measurement.id}`, measurement, null, null, (e) => {
@@ -297,7 +291,23 @@ export default class ManagementApi extends RestComponent {
       return true;
     });
   }
-
+  async getAssetDetails(asset_id) {
+    return this.get(`api/assets/${asset_id}/info`, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`Asset details not found`, {
+          code: "asset_details_not_found",
+        });
+        return true;
+      }
+    });
+  }
+  async addMeasurement(measurement) {
+    // if (measurement.type != undefined) measurement.type = measurement.type.id;
+    return await this.post(`/api/measurements`, measurement);
+    // .catch(function (error) {
+    //   console.error("add measurement error" + error.message);
+    // });
+  }
   async searchMeasurement(q) {
     if (q === "") {
       return [];
@@ -368,12 +378,12 @@ export default class ManagementApi extends RestComponent {
   }
   async addAbstractMeter(abstractMeter) {
     return await this.post(`/api/meter`, abstractMeter, null, null, (e) => {
-      if (e.response.status === 404) {
-        this.emitError(`Abstract meter not added: ${e.message}`, {
-          code: "abstract_meter_adding_error",
-        });
-        return true;
-      }
+      // if (e.response.status === 404) {
+      this.emitError(`Abstract meter not added: ${e.message}`, {
+        code: "abstract_meter_adding_error",
+      });
+      return true;
+      // }
     });
   }
   async updateAbstractMeter(abstractMeter) {
@@ -403,6 +413,26 @@ export default class ManagementApi extends RestComponent {
         });
       }
       return true;
+    });
+  }
+  async getAssetRules(asset_id) {
+    return this.get(`/api/assetRules/asset/${asset_id}`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Asset rules not found`, {
+          code: "asset_rules_error",
+        });
+      }
+      return true;
+    });
+  }
+  async updateCreateDelete(assetRule, id) {
+    return await this.post(`api/assetRules/batch/update-create-delete/${id}`, assetRule, null, null, (e) => {
+      if (e.response.status === 404) {
+        this.emitError(`Asset rule not added: ${e.message}`, {
+          code: "asset_rule_adding_error",
+        });
+        return true;
+      }
     });
   }
 }
