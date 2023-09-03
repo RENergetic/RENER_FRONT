@@ -302,17 +302,11 @@ export default class ManagementApi extends RestComponent {
     });
   }
   async addMeasurement(measurement) {
-    if (measurement.type != undefined) measurement.type = measurement.type.id;
-    return this.axios
-      .post(`/api/measurements`, measurement, {
-        headers: { "Content-type": "application/json; charset=UTF-8" },
-      })
-      .then((response) => {
-        return response.data;
-      })
-      .catch(function (error) {
-        console.error("add measurement error" + error.message);
-      });
+    // if (measurement.type != undefined) measurement.type = measurement.type.id;
+    return await this.post(`/api/measurements`, measurement);
+    // .catch(function (error) {
+    //   console.error("add measurement error" + error.message);
+    // });
   }
   async searchMeasurement(q) {
     if (q === "") {
@@ -384,12 +378,12 @@ export default class ManagementApi extends RestComponent {
   }
   async addAbstractMeter(abstractMeter) {
     return await this.post(`/api/meter`, abstractMeter, null, null, (e) => {
-      if (e.response.status === 404) {
-        this.emitError(`Abstract meter not added: ${e.message}`, {
-          code: "abstract_meter_adding_error",
-        });
-        return true;
-      }
+      // if (e.response.status === 404) {
+      this.emitError(`Abstract meter not added: ${e.message}`, {
+        code: "abstract_meter_adding_error",
+      });
+      return true;
+      // }
     });
   }
   async updateAbstractMeter(abstractMeter) {
