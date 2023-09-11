@@ -31,7 +31,7 @@
 
     <div class="flex-grow-1 flex flex-column justify-content-center flex-wrap">
       <div v-if="demand.asset != null" class="flex align-content-end flex-wrap">
-        <div class="flex">{{ demand.asset.name }}</div>
+        <div class="flex">{{ demand.asset.label }}</div>
       </div>
       <div class="flex align-content-end flex-wrap">
         <div class="message">{{ $t(`enums.demand_action.${action}`) }}</div>

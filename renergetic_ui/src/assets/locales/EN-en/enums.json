@@ -75,7 +75,8 @@
     "increase_power": "Increase electrical power",
     "decrease_power": "Decrease electrical power",
     "increase_heat": "Increase heat",
-    "decrease_heat": "Decrease heat"
+    "decrease_heat": "Decrease heat",
+    "charge_ev": "Charge Electric Vehicle"
   },
   "demand_action_type": {
     "increase": "Increase",
