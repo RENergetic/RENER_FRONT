@@ -57,21 +57,19 @@ export default {
       this.calculationType = calculationType;
     },
     selectCurrentMeasurement() {
-      console.log("I will return this value: " + this.selectedMeasurement.id);
       if (this.calculationType == "formula") {
-        console.log("The calculationType is formula");
+        //console.log("The calculationType is formula");
+        this.dialog = false;
         this.$emit("selected-measurement-formula", this.selectedMeasurement.id);
+        this.selectedMeasurement = null;
       } else if (this.calculationType == "condition") {
-        console.log("The calculationType is condition");
+        //console.log("The calculationType is condition");
+        this.dialog = false;
         this.$emit("selected-measurement-condition", this.selectedMeasurement.id);
+        this.selectedMeasurement = null;
       } else {
         console.error("The calculationType is not correctly received");
       }
-      this.dialog = false;
-      this.selectedMeasurement = null;
-    },
-    addNewMeasurement() {
-      console.log("add new measurement");
     },
     cancelMeasurementAddition() {
       this.dialog = false;

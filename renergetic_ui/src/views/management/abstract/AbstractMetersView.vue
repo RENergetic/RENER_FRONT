@@ -59,15 +59,22 @@
           <!-- <p v-if="isValidInputCondition">The input is valid.</p> -->
         </div>
         <div class="gap-3 field grid">
-          <Button :disabled="buttonDisabled" label="Save" @click="addAbstractMeter" />
+          <Button :disabled="saveButtonDisabled" label="Save" @click="addAbstractMeter" />
           <Button icon="pi pi-trash" class="p-button-danger" :disabled="!abstracMeterExists" label="Delete" @click="deleteAbstractMeterFunc" />
         </div>
       </div>
     </template>
   </Card>
+  <Dialog v-model:visible="showingToast" :style="{ width: '15vw' }" :modal="true" :closable="false">
+    <Card>
+      <template #content>
+        <div class="toast_text">{{ toastMessage }}</div>
+      </template>
+    </Card>
+  </Dialog>
   <AbstractMetersCalculation
     ref="abstractMetersCalculation"
-    @selected-measurement-formula="testFunction"
+    @selected-measurement-formula="handleMeasurementReturnFormula"
     @selected-measurement-condition="handleMeasurementReturnCondition"
   />
 </template>
@@ -98,19 +105,17 @@ export default {
       AbstractMetersCalculation,
       isValidInputFormula: false,
       isValidInputCondition: false,
-      buttonDisabled: true,
+      saveButtonDisabled: true,
       abstracMeterExists: false,
       abstractValudId: null,
-      elementTextFormula: null,
-      elementTextCondition: null,
       conditionMeterShown: false,
       conditionType: null,
+      showingToast: false,
+      toastMessage: null,
     };
   },
   async created() {
     console.log("Created");
-    this.elementTextFormula = document.getElementById("inputTextFormula");
-    this.elementTextCondition = document.getElementById("inputTextCondition");
     //console.error("I arrived here");
     let abstractMeterList = await this.$ren.managementApi.getAbstracMeterList();
     //console.log(this.dropdownMeasurementNames);
@@ -124,37 +129,51 @@ export default {
     this.abstractMeterGlobal = this.dropdownAbstractMeter[0];
     this.domainGlobal = this.dropdownDomain[0];
     this.variableExistanceChecker();
-    console.log(
-      "Initial globals 3->" + this.abstractMeterGlobal + ":" + this.domainGlobal + " F-> " + this.formulaMeter + " C-> " + this.conditionMeter,
-    );
-    console.log("Initial globals->" + this.abstractMeterGlobal + ":" + this.domainGlobal);
-    console.log("End of created");
     //console.log(this.dropdownAbstractMeter);
   },
   methods: {
+    showToast(option) {
+      if (option == 0) {
+        this.toastMessage = "Content saved";
+      } else if (option == 1) {
+        this.toastMessage = "Content deleted";
+      } else if (option == 2) {
+        this.toastMessage = "Content updated";
+      } else if (option == 3) {
+        console.error("Option failed");
+      } else {
+        console.error("No correct option");
+      }
+      this.showingToast = true;
+      setTimeout(() => {
+        this.showingToast = false;
+      }, 1000); // Cierra el toast después de 3 segundos (ajusta el tiempo según tus necesidades).
+    },
     validateFormula() {
       this.isValidInputFormula = this.validateText(this.formulaMeter);
-      console.log("Validate formula-> " + this.isValidInputFormula);
       this.validateSave();
     },
     validateCondition() {
-      this.isValidInputCondition = this.validateText(this.conditionMeter);
-      /*if (this.isValidInputCondition) {
-        this.elementTextCondition.style.color = "black";
+      const operadores = />=|<=|<|>|=|!=/g; // Esta expresión regular busca los operadores "<", ">", "<=", ">=", o "="
+      let matches = this.conditionMeter.match(operadores);
+      if (matches && matches.length == 1) {
+        const conditions = this.conditionMeter.split(matches);
+        if ((conditions[0] && conditions[1]) != "") {
+          this.isValidInputCondition = this.validateText(conditions[0]) && this.validateText(conditions[1]);
+        } else {
+          this.isValidInputCondition = false;
+        }
+      } else if (matches && matches.length != 1) {
+        this.isValidInputCondition = false;
       } else {
-        this.elementTextCondition.style.color = "red";
-      }*/
-      console.log("Validate condition-> " + this.isValidInputCondition);
+        this.isValidInputCondition = false;
+      }
       this.validateSave();
     },
     validateText(text) {
-      //const pattern = /^[0-9[\]]+$/;
-      //const expressionRegex = /^(\d+(\s*[+\-\/*]\s*\[\d+\])*)$/;
       // eslint-disable-next-line no-useless-escape
       const expressionRegex = /^\(*((\d+(\.\d+)?)|(\[\d+\]))([+*^\/-]\(*((\d+(\.\d+)?)|(\[\d+\]))\)*)*$/;
-      console.log(text);
       let isValidInput = expressionRegex.test(text);
-      console.log(this.isValidInput);
       return isValidInput;
     },
     validateButton() {
@@ -172,81 +191,82 @@ export default {
     },
     validateSave() {
       if (this.conditionMeterShown) {
-        this.buttonDisabled = !(this.isValidInputFormula && this.isValidInputCondition);
+        this.saveButtonDisabled = !(this.isValidInputFormula && this.isValidInputCondition);
       } else {
-        //this.buttonDisabled = !/*((this.abstractMeter != null) && (this.domain != null) &&*/ this.isValidInputFormula/*)*/;
-        console.log("mostrar-> " + this.buttonDisabled);
-        this.buttonDisabled = !this.isValidInputFormula;
+        this.saveButtonDisabled = !this.isValidInputFormula;
       }
-      console.log(this.buttonDisabled);
-      if (this.buttonDisabled) {
-        console.log("The button cannot be pressed");
-      } else {
-        console.log("The button can be pressed");
-      }
-      console.log(this.buttonDisabled);
     },
     async addAbstractMeter() {
-      console.log(this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0]);
-      console.log("longitud" + this.conditionMeter);
-      // eslint-disable-next-line prettier/prettier
-      if (this.conditionMeter == '') {
-        // this won´t be neccessary when the checkbox exists, because the value will be changed to null when the checkbox is not with the tick
-        this.conditionMeter = null;
-      }
+      let returnValue = null;
       if (this.abstracMeterExists) {
         const jsonAbstractMeter = {
           id: this.abstractValudId,
-          name: this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0],
+          name: this.splitAbstractMeters(this.abstractMeterGlobal),
           formula: this.formulaMeter,
           condition: this.conditionMeter,
           domain: this.domainGlobal,
         };
-        console.log(jsonAbstractMeter);
-        await this.$ren.managementApi.updateAbstractMeter(jsonAbstractMeter);
+        console.log("Update abstract meter -> ");
+        returnValue = await this.$ren.managementApi.updateAbstractMeter(jsonAbstractMeter);
+        if (typeof returnValue == "object") {
+          this.showToast(2);
+        } else {
+          this.showToast(3);
+        }
       } else {
         const jsonAbstractMeter = {
-          name: this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0],
+          name: this.splitAbstractMeters(this.abstractMeterGlobal),
           formula: this.formulaMeter,
           condition: this.conditionMeter,
           domain: this.domainGlobal,
         };
-        console.log(jsonAbstractMeter);
-        await this.$ren.managementApi.addAbstractMeter(jsonAbstractMeter);
-        this.buttonDisabled = true;
+        returnValue = await this.$ren.managementApi.addAbstractMeter(jsonAbstractMeter);
+        if (typeof returnValue == "object") {
+          this.showToast(0);
+        } else {
+          this.showToast(3);
+        }
+        this.saveButtonDisabled = true;
       }
+      this.variableExistanceChecker();
     },
     async variableExistanceChecker() {
-      console.log("Initial globals 3->" + this.abstractMeterGlobal + ":" + this.domainGlobal);
-      console.log(this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0] + ":" + this.domainGlobal);
+      //let aux0 = this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0];
       let abstractValue = await this.$ren.managementApi.getAnAbstracMeterConfiguration(
-        this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0],
+        this.splitAbstractMeters(this.abstractMeterGlobal),
         this.domainGlobal,
       );
       if (abstractValue != null) {
         this.abstracMeterExists = true;
-        console.log("AbstractMeterExists-> " + this.abstracMeterExists);
         this.abstractValudId = abstractValue.id;
         this.formulaMeter = abstractValue.formula;
-        this.conditionMeter = abstractValue.condition;
-        console.log(
-          "Variable existance checker -> " + this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0] + ":" + this.domainGlobal + "- Exists",
-        );
-        this.buttonDisabled = false;
+        if (abstractValue.condition != null) {
+          this.conditionMeter = abstractValue.condition;
+          this.conditionMeterShown = true;
+        } else {
+          this.conditionMeter = null;
+        }
+        this.saveButtonDisabled = false;
       } else {
         this.abstracMeterExists = false;
-        console.log("AbstractMeterExists-> " + this.abstracMeterExists);
         this.abstractValudId = null;
-        console.log(this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0] + ":" + this.domainGlobal + "- Doesn´t exist");
+        this.resetData();
       }
       this.validateFormula();
-      this.validateCondition();
+      if (this.conditionMeter != null) {
+        this.validateCondition();
+      }
     },
     async deleteAbstractMeterFunc() {
-      console.log(this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0], this.domainGlobal);
-      await this.$ren.managementApi.deleteAbstractMeter(this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0], this.domainGlobal);
-      this.abstractMeterGlobal = this.dropdownAbstractMeter[0];
-      this.domainGlobal = this.dropdownDomain[0];
+      const returnValue = await this.$ren.managementApi.deleteAbstractMeter(this.splitAbstractMeters(this.abstractMeterGlobal), this.domainGlobal);
+      this.abstractMeterGlobal = this.abstractMeter;
+      this.domainGlobal = this.domain;
+      this.resetData();
+      if (returnValue) {
+        this.showToast(1);
+      } else {
+        this.showToast(3);
+      }
       this.variableExistanceChecker();
     },
     openCalculationsFormula() {
@@ -260,49 +280,44 @@ export default {
       console.log(valueToAdd);
     },
     openNewPage() {
-      console.log(this.$refs.abstractMetersCalculation);
       this.$refs.abstractMetersCalculation.open(this.conditionType);
     },
     handleMeasurementReturnFormula(value) {
-      console.log("AbstractMetersView: " + value);
-      console.log("Before: " + this.formulaMeter);
-      if (this.formulaMeter == null) {
-        this.formulaMeter = "[" + value + "]";
-      } else {
-        this.formulaMeter = this.formulaMeter + "[" + value + "]";
-      }
-      console.log("After: " + this.formulaMeter);
-    },
-    handleMeasurementReturnCondition(value) {
-      console.log("AbstractMetersView: " + value);
-      console.log("Before: " + this.conditionMeter);
-      if (this.conditionMeter == null) {
-        this.conditionMeter = "[" + value + "]";
-      } else {
-        this.conditionMeter = this.conditionMeter + "[" + value + "]";
-      }
-      console.log("After: " + this.conditionMeter);
-    },
-    testFunction(value) {
-      console.log("AbstractMetersView: " + value);
-      console.log("Before: " + this.formulaMeter);
       if (this.formulaMeter == null) {
         this.formulaMeter = this.concatenateStrings("[" + value + "]", "");
-        console.log("AbstracMetersView vacio: " + this.formulaMeter);
       } else {
-        console.log("AbstracMetersView con valor: " + this.formulaMeter);
         this.formulaMeter = this.concatenateStrings(this.formulaMeter, "[" + value + "]");
-        console.log("AbstracMetersView con valor: " + this.formulaMeter);
       }
-      console.log("After: " + this.formulaMeter);
       this.validateFormula();
+    },
+    handleMeasurementReturnCondition(value) {
+      if (this.conditionMeter == null) {
+        this.conditionMeter = this.concatenateStrings("[" + value + "]", "");
+      } else {
+        this.conditionMeter = this.concatenateStrings(this.conditionMeter, "[" + value + "]");
+        this.validateCondition();
+      }
     },
     concatenateStrings(string1, string2) {
       let concatString = string1 + string2;
       return concatString;
     },
     conditionButtonCheck() {
+      this.conditionMeter = null;
       this.validateSave();
+    },
+    resetData() {
+      this.conditionMeter = null;
+      this.formulaMeter = null;
+      this.conditionMeterShown = false;
+      this.isValidInputCondition = false;
+      this.isValidInputFormula = false;
+    },
+    isObject(value) {
+      return typeof value == "object" && value !== null;
+    },
+    splitAbstractMeters(absMet) {
+      return absMet.split(":")[0].substring(0, absMet.split(":")[0].length - 1);
     },
   },
 };
@@ -314,5 +329,24 @@ export default {
 }
 .container {
   margin-left: 5%;
+}
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  display: none;
+}
+
+.showing-toast {
+  display: block;
+}
+
+.toast_text {
+  text-align: center;
 }
 </style>
