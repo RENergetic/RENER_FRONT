@@ -207,6 +207,7 @@ export default {
         ...this._notificationItems(),
 
         ...this._categoryItems(),
+        ...this._abstractMeters(),
       ];
       return [
         {
@@ -325,6 +326,18 @@ export default {
           to: "/management/category",
           command: () => {
             this.$router.push({ name: "CategoryList" });
+          },
+        },
+      ];
+    },
+    _abstractMeters() {
+      return [
+        {
+          label: this.$t("menu.abstract_meter"),
+          icon: "pi pi-fw pi-list",
+          to: "/management/abstract",
+          command: () => {
+            this.$router.push({ name: "AbstractMeters" });
           },
         },
       ];
