@@ -133,21 +133,28 @@ export default {
   },
   methods: {
     showToast(option) {
+      let msgType = "error";
       if (option == 0) {
+        msgType = "information";
         this.toastMessage = "Content saved";
       } else if (option == 1) {
+        msgType = "information";
         this.toastMessage = "Content deleted";
       } else if (option == 2) {
+        msgType = "information";
         this.toastMessage = "Content updated";
       } else if (option == 3) {
+        this.toastMessage = "Content updated";
         console.error("Option failed");
       } else {
+        this.toastMessage = "Content updated";
         console.error("No correct option");
       }
       this.showingToast = true;
-      setTimeout(() => {
-        this.showingToast = false;
-      }, 1000); // Cierra el toast después de 3 segundos (ajusta el tiempo según tus necesidades).
+      this.$emitter.emit(msgType, { message: this.toastMessage });
+      // setTimeout(() => {
+      //   this.showingToast = false;
+      // }, 1000); // Cierra el toast después de 3 segundos (ajusta el tiempo según tus necesidades).
     },
     validateFormula() {
       this.isValidInputFormula = this.validateText(this.formulaMeter);
@@ -350,3 +357,4 @@ export default {
   text-align: center;
 }
 </style>
+
