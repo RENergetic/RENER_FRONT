@@ -59,19 +59,12 @@
           <!-- <p v-if="isValidInputCondition">The input is valid.</p> -->
         </div>
         <div class="gap-3 field grid">
-          <Button :disabled="saveButtonDisabled" label="Save" @click="addAbstractMeter" />
+          <Button :disabled="saveButtonDisabled" label="Save" @click="addUpdateAbstractMeter" />
           <Button icon="pi pi-trash" class="p-button-danger" :disabled="!abstracMeterExists" label="Delete" @click="deleteAbstractMeterFunc" />
         </div>
       </div>
     </template>
   </Card>
-  <Dialog v-model:visible="showingToast" :style="{ width: '15vw' }" :modal="true" :closable="false">
-    <Card>
-      <template #content>
-        <div class="toast_text">{{ toastMessage }}</div>
-      </template>
-    </Card>
-  </Dialog>
   <AbstractMetersCalculation
     ref="abstractMetersCalculation"
     @selected-measurement-formula="handleMeasurementReturnFormula"
@@ -107,10 +100,9 @@ export default {
       isValidInputCondition: false,
       saveButtonDisabled: true,
       abstracMeterExists: false,
-      abstractValudId: null,
+      abstractValueId: null,
       conditionMeterShown: false,
       conditionType: null,
-      showingToast: false,
       toastMessage: null,
     };
   },
@@ -144,13 +136,12 @@ export default {
         msgType = "information";
         this.toastMessage = "Content updated";
       } else if (option == 3) {
-        this.toastMessage = "Content updated";
+        this.toastMessage = "Addition error";
         console.error("Option failed");
       } else {
-        this.toastMessage = "Content updated";
+        this.toastMessage = "Option error";
         console.error("No correct option");
       }
-      this.showingToast = true;
       this.$emitter.emit(msgType, { message: this.toastMessage });
       // setTimeout(() => {
       //   this.showingToast = false;
@@ -203,11 +194,11 @@ export default {
         this.saveButtonDisabled = !this.isValidInputFormula;
       }
     },
-    async addAbstractMeter() {
+    async addUpdateAbstractMeter() {
       let returnValue = null;
       if (this.abstracMeterExists) {
         const jsonAbstractMeter = {
-          id: this.abstractValudId,
+          id: this.abstractValueId,
           name: this.splitAbstractMeters(this.abstractMeterGlobal),
           formula: this.formulaMeter,
           condition: this.conditionMeter,
@@ -239,13 +230,14 @@ export default {
     },
     async variableExistanceChecker() {
       //let aux0 = this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0];
+      console.log(this.splitAbstractMeters(this.abstractMeterGlobal) + ":" + this.domainGlobal);
       let abstractValue = await this.$ren.managementApi.getAnAbstracMeterConfiguration(
         this.splitAbstractMeters(this.abstractMeterGlobal),
         this.domainGlobal,
       );
       if (abstractValue != null) {
         this.abstracMeterExists = true;
-        this.abstractValudId = abstractValue.id;
+        this.abstractValueId = abstractValue.id;
         this.formulaMeter = abstractValue.formula;
         if (abstractValue.condition != null) {
           this.conditionMeter = abstractValue.condition;
@@ -256,7 +248,7 @@ export default {
         this.saveButtonDisabled = false;
       } else {
         this.abstracMeterExists = false;
-        this.abstractValudId = null;
+        this.abstractValueId = null;
         this.resetData();
       }
       this.validateFormula();
@@ -266,15 +258,14 @@ export default {
     },
     async deleteAbstractMeterFunc() {
       const returnValue = await this.$ren.managementApi.deleteAbstractMeter(this.splitAbstractMeters(this.abstractMeterGlobal), this.domainGlobal);
-      this.abstractMeterGlobal = this.abstractMeter;
-      this.domainGlobal = this.domain;
-      this.resetData();
       if (returnValue) {
         this.showToast(1);
       } else {
         this.showToast(3);
       }
-      this.variableExistanceChecker();
+      this.abstracMeterExists = false;
+      this.abstractValueId = null;
+      this.resetData();
     },
     openCalculationsFormula() {
       this.conditionType = "formula";
@@ -357,4 +348,3 @@ export default {
   text-align: center;
 }
 </style>
-
