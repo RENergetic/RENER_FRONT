@@ -264,7 +264,7 @@ export default {
         this.showToast(3);
       }
       this.abstracMeterExists = false;
-      this.abstractValudId = null;
+      this.abstractValueId = null;
       this.resetData();
     },
     openCalculationsFormula() {
