@@ -100,7 +100,7 @@ export default {
       isValidInputCondition: false,
       saveButtonDisabled: true,
       abstracMeterExists: false,
-      abstractValudId: null,
+      abstractValueId: null,
       conditionMeterShown: false,
       conditionType: null,
       toastMessage: null,
@@ -198,7 +198,7 @@ export default {
       let returnValue = null;
       if (this.abstracMeterExists) {
         const jsonAbstractMeter = {
-          id: this.abstractValudId,
+          id: this.abstractValueId,
           name: this.splitAbstractMeters(this.abstractMeterGlobal),
           formula: this.formulaMeter,
           condition: this.conditionMeter,
@@ -237,7 +237,7 @@ export default {
       );
       if (abstractValue != null) {
         this.abstracMeterExists = true;
-        this.abstractValudId = abstractValue.id;
+        this.abstractValueId = abstractValue.id;
         this.formulaMeter = abstractValue.formula;
         if (abstractValue.condition != null) {
           this.conditionMeter = abstractValue.condition;
@@ -248,7 +248,7 @@ export default {
         this.saveButtonDisabled = false;
       } else {
         this.abstracMeterExists = false;
-        this.abstractValudId = null;
+        this.abstractValueId = null;
         this.resetData();
       }
       this.validateFormula();
