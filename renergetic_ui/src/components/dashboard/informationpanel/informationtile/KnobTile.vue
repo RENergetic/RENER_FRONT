@@ -56,7 +56,7 @@ export default {
         } else {
           v = this.pdata.current[this.measurement.aggregation_function][this.measurement.id];
         }
-        return Math.round(v * 10) / 10.0;
+        return this.$ren.utils.roundValue(v); // Math.round(v * 10) / 10.0;
       } catch (e) {
         return null;
       }

@@ -18,7 +18,7 @@
     <div class="flex flex-grow-1 flex-column align-items-start justify-content-center message">
       <div class="flex flex-grow-1 align-items-center justify-content-center" style="width: 100%">
         <div v-tooltip="labelTooltip" class="flex flex-grow-1 message align-items-start">{{ label }}:</div>
-        <div class="flex flex-none message align-items-end">{{ Math.round(value * 1000.0) / 1000.0 }} {{ unit }}</div>
+        <div class="flex flex-none message align-items-end">{{ $ren.utils.roundValue(value) }} {{ unit }}</div>
       </div>
       <div v-if="measurement.description" class="flex">
         <div class="flex align-items-center justify-content-center">description: {{ measurement.description }}</div>

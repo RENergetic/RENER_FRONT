@@ -231,7 +231,16 @@ export default class RenUtils {
     let parsed = MM + "/" + dd + "/" + yyyy + " " + hh + ":" + mm;
     return parsed;
   }
+  roundValue(value) {
+    if (value >= 10.0) {
+      return Math.round(value);
+    }
+    if (value >= 1.0) {
+      return Math.round(value * 10.0) / 10.0;
+    }
 
+    return Math.round(value * 1000.0) / 1000.0;
+  }
   knobColors(measurement) {
     if (measurement.type.color) {
       let color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
