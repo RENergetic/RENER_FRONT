@@ -8,6 +8,7 @@
     <Accordion :active-index="0">
       <AccordionTab :header="$t('model.panel.name')">
         <ren-input v-model="mModel.name" :text-label="'model.panel.name'" :invalid="v$.mModel.name.$invalid" :errors="v$.mModel.name.$silentErrors" />
+
         <ren-input
           :key="mModel ? mModel.label : ''"
           v-model="mModel.label"
@@ -19,6 +20,13 @@
 
         {{ labelWarning }}
         <ren-switch v-if="addMode" v-model="mModel.is_template" :text-label="'model.panel.is_template_new_panel'" />
+        <!-- {{ mModel.priority }} -->
+        <ren-input-number
+          v-model="mModel.priority"
+          :text-label="'model.panel.priority'"
+          :invalid="v$.mModel.priority.$invalid"
+          :errors="v$.mModel.priority.$silentErrors"
+        />
       </AccordionTab>
       <!-- {{ modelValue }} -->
 
@@ -116,7 +124,7 @@ function getStructureText(panel, isTemplate) {
 }
 import FileUpload from "primevue/fileupload";
 import { useVuelidate } from "@vuelidate/core";
-import { maxLength, required, minLength } from "@/plugins/validators.js"; //required,
+import { maxLength, required, minLength, minValue, maxValue } from "@/plugins/validators.js";
 import InfoIcon from "../../miscellaneous/InfoIcon.vue";
 const ASSET_TAG = "{asset}";
 export default {
@@ -151,6 +159,7 @@ export default {
       mModel: {
         name: { maxLength: maxLength(30), required: required, minLength: minLength(3) },
         label: { maxLength: maxLength(50), minLength: minLength(3) },
+        priority: { minValue: minValue(0), maxValue: maxValue(1024) },
       },
     };
   },

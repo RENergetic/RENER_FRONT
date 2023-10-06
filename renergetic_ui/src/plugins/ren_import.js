@@ -3,6 +3,7 @@ import RenSpinner from "@/components/miscellaneous/RenSpinner";
 import RenPaginator from "@/components/miscellaneous/RenPaginator";
 import RenInput from "@/components/miscellaneous/form/RenInput.vue";
 import RenInputText from "@/components/miscellaneous/form/RenInputText.vue";
+import RenInputNumber from "@/components/miscellaneous/form/RenInputNumber.vue";
 import RenSwitch from "@/components/miscellaneous/form/RenSwitch.vue";
 import RenPassword from "@/components/miscellaneous/form/RenPassword.vue";
 import RenInputWrapper from "@/components/miscellaneous/form/RenInputWrapper.vue";
@@ -16,6 +17,7 @@ plugin.install = function (Vue) {
   Vue.component("RenPaginator", RenPaginator);
   Vue.component("RenInput", RenInput);
   Vue.component("RenInputText", RenInputText);
+  Vue.component("RenInputNumber", RenInputNumber);
   Vue.component("RenSwitch", RenSwitch);
   Vue.component("RenPassword", RenPassword);
   Vue.component("RenInputWrapper", RenInputWrapper);

@@ -26,9 +26,12 @@ const withParametrizedMessage = (v /*validator*/, args = { propertyPath: "valida
 // validators that expect a parameter should have `{ withArguments: true }` passed as a second parameter, to annotate they should be wrapped
 export const required = withParametrizedMessage(validators.required);
 export const requiredTr = (path) => withParametrizedMessage(validators.required, { propertyPath: path });
-// export const minLength = withI18nMessage(validators.minLength, { withArguments: true });
-// // or you can provide the param at definition, statically
-// export const maxLength = withI18nMessage(validators.maxLength(10));
+//
+export const maxValue = withParametrizedMessage(validators.maxValue, { withArguments: true });
+export const maxValueTr = (path) => withParametrizedMessage(validators.maxValue, { propertyPath: path, withArguments: true });
+//
+export const minValue = withParametrizedMessage(validators.minValue, { withArguments: true });
+export const minValueTr = (path) => withParametrizedMessage(validators.minValue, { propertyPath: path, withArguments: true });
 
 export const minLength = withParametrizedMessage(validators.minLength, { withArguments: true });
 //suffix `Tr` - add i18n path to property
@@ -44,6 +47,6 @@ export const url = withParametrizedMessage(validators.url);
 export const urlTr = (path) => withParametrizedMessage(validators.url, { propertyPath: path });
 export const email = withParametrizedMessage(validators.email);
 export const emailTr = (path) => withParametrizedMessage(validators.email, { propertyPath: path });
-
+//
 export const sameAs = (key) => withParametrizedMessage(validators.sameAs, { same_as_property: key, withArguments: true });
 export const sameAsTr = (path, key) => withParametrizedMessage(validators.sameAs, { same_as_property: key, propertyPath: path, withArguments: true });

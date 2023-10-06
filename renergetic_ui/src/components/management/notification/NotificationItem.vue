@@ -79,7 +79,7 @@ export default {
       return {
         asset_name: this.notification.asset ? this.notification.asset.name : "No asset",
         timestamp: this.notification.timestamp ? this.$ren.utils.parseUnixTimestamp(this.notification.timestamp) : "No timestamp",
-        value: this.notification.value ? `${Math.round(this.notification.value * 1000) / 1000.0} ${unit}` : "No value",
+        value: this.notification.value ? `${this.$ren.utils.roundValue(this.notification.value)} ${unit}` : "No value",
       };
     },
   },

@@ -232,13 +232,16 @@ export default class RenUtils {
     return parsed;
   }
   roundValue(value) {
-    if (value >= 10.0) {
+    if (value >= 5.0) {
       return Math.round(value);
     }
-    if (value >= 1.0) {
+    if (value >= 0.5) {
       return Math.round(value * 10.0) / 10.0;
     }
 
+    if (value >= 0.05) {
+      return Math.round(value * 100.0) / 100.0;
+    }
     return Math.round(value * 1000.0) / 1000.0;
   }
   knobColors(measurement) {

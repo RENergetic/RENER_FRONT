@@ -3,5 +3,8 @@
     "bulding": "Bulding",
     "flat": "Flat",
     "heat_source": "Heat Source"
+  },
+  "metric_type": {
+    "power": "Moc"
   }
 }
