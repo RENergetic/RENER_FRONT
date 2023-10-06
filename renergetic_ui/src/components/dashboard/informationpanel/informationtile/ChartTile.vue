@@ -7,7 +7,7 @@
     </div>
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
     <div class="flex flex-grow-1 flex-column align-items-center justify-content-center" style="position: relative; height: 100%">
-      <div class="flex flex-none flex-column align-items-center justify-content-center">
+      <div class="flex flex-none flex-column align-items-center justify-content-center" style="height: 85%">
         <MeasurementChart
           ref="chart"
           :filter="filter"

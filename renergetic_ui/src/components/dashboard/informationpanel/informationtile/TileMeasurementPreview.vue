@@ -4,6 +4,9 @@
       <template #content> 
       </template>
     </InfoIcon> -->
+
+    <!-- <Card>  <template #title> {{ $t("view.detailed_view_for_measurements") }} </template>
+      <template #content> -->
     <div v-if="tile" :key="tile.id" class="grid">
       <BasicFilterSettings
         style="width: 100%; margin: auto; margin-top: 1rem"
@@ -14,9 +17,12 @@
         :labels="false"
         @update="reloadSettings()"
       />
+      <!-- {{ tile }} -->
       <!-- {{ tile.measurements }} -->
       <MeasurementChartList ref="dataPreview" :filter="filter" :chart-type="'scatter'" :measurements="tile.measurements" @on-load="onLoad()" />
     </div>
+    <!-- </template>
+    </Card> -->
   </Dialog>
 </template>
 

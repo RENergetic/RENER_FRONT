@@ -1,6 +1,8 @@
 <template>
   <RenSpinner ref="spinner" :lock="true">
     <template #content>
+      <!-- {{ measurements }} -->
+      <h2>{{ title }}</h2>
       <Chart v-if="height && width" :style="mStyle" :type="chartType" :data="chartData" :options="options" :height="height" :width="width" />
     </template>
   </RenSpinner>
@@ -21,6 +23,7 @@ export default {
     legend: { type: Boolean, default: false },
     assetId: { type: String, default: null },
     immediate: { type: Boolean, default: true },
+    titleVisible: { type: Boolean, default: false },
     filter: {
       type: Object,
       default: () => {
@@ -39,6 +42,26 @@ export default {
     };
   },
   computed: {
+    title: function () {
+      if (this.titleVisible) {
+        // let label = " ";
+        var _l = this.measurements.map((m) => {
+          let assetName = m.asset.label ? m.asset.label : m.asset.name;
+
+          let measurementName = m.label ? m.label : m.name;
+          console.info(`${measurementName}(${assetName})`);
+          return `${measurementName}(${assetName})`;
+        });
+        // for (let m of this.measurements) {
+        //   let assetName = m.asset.label ? m.asset.label : m.asset.name;
+
+        //   let measurementName = m.label ? m.label : m.name;
+        //   label += ` ${assetName}:${measurementName}`;
+        // }
+        return this.$t("view.measurement_chart_title", { label: _l.join(",") });
+      }
+      return "";
+    },
     options: function () {
       return {
         responsive: true,

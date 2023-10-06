@@ -1,13 +1,15 @@
 <template>
   <div v-for="m in measurements" :key="m.id" class="col-12 md:col-10 xl:col-6">
+    <!-- :style="'margin:auto;max-width: 90%;'" -->
     <MeasurementChart
       :ref="`mChart_${m.id}`"
       :immediate="false"
       :filter="filter"
-      :style="'margin:auto;max-width: 90%;'"
+      :style="mStyle"
       width="1200"
       height="500"
       :chart-type="chartType"
+      :title-visible="true"
       :measurements="[m]"
     />
   </div>
@@ -31,6 +33,7 @@ export default {
     return {
       // mName: this.measurement.label ? `${this.measurement.label} (${this.measurement.name})` : this.measurement.name,
       loaded: false,
+      mStyle: "max-width: 80rem;max-height:40rem; margin: auto;height:100%;width:100%; ",
     };
   },
   computed: {},
