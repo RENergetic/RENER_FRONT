@@ -23,6 +23,9 @@
         <!-- {{ mModel.priority }} -->
         <ren-input-number
           v-model="mModel.priority"
+          :min="0"
+          :max="1024"
+          :only-integer="true"
           :text-label="'model.panel.priority'"
           :invalid="v$.mModel.priority.$invalid"
           :errors="v$.mModel.priority.$silentErrors"

@@ -4,6 +4,7 @@
     <!-- {{ $store.getters["view/featuredPanels"] }}  -->
     <!-- {{ $store.getters["view/assetPanels"] }}d -->
     <!-- panel: {{ panel.name }}, {{ panel.id }}, {{ assetId }} -->
+
     <InformationPanelWrapper
       v-if="panel"
       ref="panel"

@@ -35,6 +35,7 @@ export default {
             return {
               // label: panel.label ? panel.label : panel.name,
               // icon: "pi pi-fw pi-th-large",
+              priority: panel.priority ? panel.priority : 0,
               panelId: panel.id,
               assetId: null,
             };
@@ -47,12 +48,14 @@ export default {
             return {
               // label: assetPanel.panel.label.replace("{asset}", assetPanel.asset.label),
               // icon: "pi pi-fw pi-th-large",
+              priority: assetPanel.priority ? assetPanel.priority : 0,
               assetId: assetPanel.asset.id,
               panelId: assetPanel.panel.id,
             };
           }),
         );
       }
+      links.sort((a, b) => b.priority - a.priority);
       if (links) commit("set", { links: links });
     },
     next({ state, commit }) {

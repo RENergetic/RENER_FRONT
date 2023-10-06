@@ -43,6 +43,15 @@ body {
     color: $ren-primary-font-color ;
     min-height: 2.5rem;
 } 
+
+.p-inputnumber-button {
+    background-color: $ren-primary-color;
+    background: $ren-primary-color; 
+    border-color: $ren-primary-color;
+    color: $ren-primary-font-color ;
+    min-height: 1.1rem;
+} 
+
 .p-selectbutton.p-buttonset.p-component{
 background: none; /*remove background for empty space*/
 }
