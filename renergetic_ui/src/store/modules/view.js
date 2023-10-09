@@ -190,6 +190,11 @@ export default {
       let index = state.assetPanelsMap[`${panelId}_${assetId}`];
       return state.assetPanels[index] ? state.assetPanels[index].panel : null;
     },
+
+    panelAsset: (state /* getters*/) => (panelId, assetId) => {
+      let index = state.assetPanelsMap[`${panelId}_${assetId}`];
+      return state.assetPanels[index] ? state.assetPanels[index].asset : null;
+    },
     informationPanelsMap: (state /* getters*/) => {
       return state.informationPanelsMap;
     },

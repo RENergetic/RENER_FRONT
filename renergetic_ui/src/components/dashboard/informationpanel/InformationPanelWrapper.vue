@@ -5,9 +5,10 @@
   <!-- refreshTime: {{ $store.getters["settings/panel"].refreshTime }} -->
   <!-- {{ $store.getters["settings/panel"] }} -->
   <!-- panel: {{ panel.name }}{{ panel.id }} {{ assetId }} -->
-
+  <!-- {{ $store.getters["view/panelAsset"](panel.id, assetId) }} -->
   <RenSpinner ref="spinner" :lock="true" style="width: 100%; min-height: 15rem">
     <template #content>
+      <!-- {{ mPanel }} -->
       <InformationPanel
         v-if="mPanel"
         :edit="editMode"
@@ -224,6 +225,7 @@ export default {
         this.$refs.spinner.run(async () => {
           console.info("wait for panel data: " + this.panel.id + " " + this.panel.is_template);
           await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, this.mFilter).then((resp) => {
+            console.info(resp);
             this.pdata = resp.data;
             if (this.panel.is_template) this.mPanel = resp.panel;
             else {

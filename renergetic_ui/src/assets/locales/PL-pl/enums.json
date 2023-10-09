@@ -1,10 +1,126 @@
 {
   "asset_type": {
-    "bulding": "Bulding",
-    "flat": "Flat",
-    "heat_source": "Heat Source"
+    "bulding": "Budynek",
+    "flat": "Mieszkanie",
+    "heat_exchange": "Wymiennik ciepła",
+    "heat_exchanger": "Wymiennik ciepła",
+    "heat_source": "Źródło ciepła",
+    "island": "Wyspa energertyczna",
+    "pv": "Panel PV"
+  },
+  "dashboard_measurement_types": {
+    "energy": "Energia",
+    "power": "Moc"
   },
   "metric_type": {
+    "electricity": "Elektryczność",
+    "heat": "Ciepło",
+    "energy": "Energia",
+    "temperature": "Temperatura",
+    "energy_kwh": "Energia",
+    "energy_wh":"Energia",
+    "power_w": "Moc",
+    "heat_energy_gj": "Energia Cieplna",
+    "energy_gj": "Energia Cieplna",
+    "percentage": "Procent",
     "power": "Moc"
+  },
+  
+  "measurement_name": {
+    "heat": "Ciepło",
+    "electricity": "Elektryczność",
+    "renewability": "Odnawialność",
+    "renewables": "Odnawialne źródło energia",
+    "external": "Zewnętrzny",
+    "non_renewables": "Nieodnawialne źródło energia",
+    "import": "Zewnętrzne źródło",
+    "office": "Biura",
+    "heat_exchanged": "Wymiennik ciepła",
+    "supercomputer": "Super komputer",
+    "datacenter": "Centrum danych",
+    "hvac": "HVACs",
+    "waste": "Odpad",
+    "fossil_fuels": "Fossil fuels",
+    "electricity_renewability": "Odnawialność energii elektrycznej",
+    "heat_renewability": "Odnawialność energii cieplnej",
+    "co2_reduction": "Redukcja emisji CO₂"
+  },
+  "domain": {
+    "electricity": "Elektryczność",
+    "heat": "Ciepło",
+    "none": "Inne"
+  },
+  "physical_type": {
+    "energy": "Energia",
+    "power": "Moc",
+    "temperature": "Temperatura"
+  },
+  "measurement_direction": {
+    "in": "Konsumpcja",
+    "out": "Emisja",
+    "none": "Inne"
+  },
+  "tile_type": {
+    "knob": "Wykres zegarowy",
+    "doughnut": "Wykres pierścieniowy",
+    "list": "Lista",
+    "single":"Pojedyncza wartość"
+  },
+  "heatmap_type": {
+    "default": "Normal",
+    "osm": "OpenStreeMap"
+  },
+  "demand_action": {
+    "increase_temperature": "Zwiększ temperature",
+    "decrease_temperature": "Zmniejsz temperature",
+    "increase_power": "Zwiększ zużycie energii elektrycznej",
+    "decrease_power": "Zmniejsz zużycie energii elektrycznej",
+    "increase_heat": "Zwiększ zużycie energii cieplnej",
+    "decrease_heat": "Zmniejsz zużycie energii cieplnej"
+  },
+  "demand_action_type": {
+    "increase": "Zwiększ",
+    "decrease": "Zmniejsz",
+    "stop": "Stop",
+    "start": "Start",
+    "default": "Inna"
+  },
+  "asset_details_keys": {
+    "color": "Kolor"
+  },
+  "measurement_details_keys": {
+    "color": "Kolor"
+  },
+  "role_features": {
+    "public_reports": "Raporty/widoki",
+    "grafana_access": "Dostęp to Grafany",
+    "grafana_management": "Zarządzanie Grafaną",
+    "user_management": "Zarządzanie użytkownikami",
+    "role_management": "Zarządzanie rolami",
+    "report": "Zarządzanie raportami",
+    "manage_asset": "Zarządzanie obiektami",
+    "owner": "Może być włascicelem obiektu",
+    "notification": "Dostęp do powiadomień",
+    "read": "Może posiadać uprawnienia do Grafany oraz Can receive read privilages to asset or dashboard"
+  },
+  "role": {
+    "ren-staff": "Staff",
+    "ren-guest": "Guest",
+    "ren-visitor": "Visitor",
+    "ren-user": "User",
+    "ren-manager": "Manager",
+    "ren-technical-manager": "Technical manager",
+    "ren-admin": "Admin",
+    "ren-dev": "Developer",
+    "description": {
+      "ren-staff": "Staff",
+      "ren-guest": "Guest",
+      "ren-visitor": "Visitor",
+      "ren-user": "User",
+      "ren-manager": "Manager",
+      "ren-technical-manager": "Technical manager",
+      "ren-admin": "Admin",
+      "ren-dev": "Developer"
+    }
   }
 }

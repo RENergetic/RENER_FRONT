@@ -2,6 +2,7 @@
   <div v-if="panel" id="panel-box">
     <DotMenu :model="menuModel" />
     <BasicFilterSettings
+      v-if="!panelTitle"
       style="width: 90%; margin: auto; margin-top: 1rem"
       class="ren-card"
       :setting-key="'private'"
@@ -10,6 +11,7 @@
       :labels="false"
       @update="reloadSettings()"
     />
+    <h3 v-if="panelTitle" style="width: 90%; margin: auto; margin-top: 1rem">{{ panelTitle }}</h3>
     <InformationPanelWrapper
       ref="panel"
       :asset-id="$route.params.asset_id"
@@ -69,6 +71,14 @@ export default {
     };
   },
   computed: {
+    panelTitle: function () {
+      let asset = this.$store.getters["view/panelAsset"](this.panel.id, this.$route.params.asset_id);
+      if (asset) {
+        let name = asset.label ? asset.label : asset.name;
+        return this.$t("view.private_dashboard_title", { asset: name });
+      }
+      return this.panel.label;
+    },
     settingsButton: function () {
       return { label: this.$t("menu.panel_settings"), command: () => this.$refs.settingsDialog.open(), icon: "pi pi-fw pi-plus-circle" };
     },

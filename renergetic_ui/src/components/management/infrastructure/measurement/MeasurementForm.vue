@@ -156,7 +156,7 @@ export default {
         // },
         name: {
           required,
-          minLength: minLength(5),
+          minLength: minLength(2),
           maxLength: maxLength(50),
         },
         domain: { required },
