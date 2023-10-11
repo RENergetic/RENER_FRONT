@@ -157,7 +157,7 @@ export default {
         name: {
           required,
           minLength: minLength(2),
-          maxLength: maxLength(50),
+          maxLength: maxLength(100),
         },
         domain: { required },
         // type: { required },
@@ -170,7 +170,7 @@ export default {
         //   url,
         //   // uri: or(url, ipAddress),
         // },
-        label: { minLength: minLength(3), maxLength: maxLength(50) },
+        label: { minLength: minLength(3), maxLength: maxLength(100) },
       },
     };
   },

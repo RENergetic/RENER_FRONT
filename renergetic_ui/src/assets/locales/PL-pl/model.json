@@ -1,8 +1,13 @@
 {
      "dashboard": {
-          "name": "Name",
+          "name": "Nazwa",
           "url": "URL",
-          "label": "Label"
+          "label": "Etykieta",
+          "model": "Model",
+          "measurement_type": "Typ pomiaru",
+          "unit": "Jednostka",
+          "user": "Użytkownik",
+          "grafana_id": "Grafana id"
      },
      "heatmap": {
           "name": "Name",
@@ -17,19 +22,39 @@
           "description": "Description",
           "id": "Id"
      },
+     "asset_connection": {
+          "connected_asset": "Connected asset",
+          "connection_type": "Connection type",
+          "bi_directional": "Bi directional"
+     },
      "asset": {
+          "asset_connections": "Asset connections",
+          "connection_type": "Connection type",
           "name": "Name",
           "id": "Id",
           "child": "Sub assets",
           "asset_type": "Asset type",
+          "asset_category": "Asset category",
           "label": "Label",
           "measurements": "Measurements",
+          "description": "Description",
           "geo_location": "Geo location",
           "owner": "Owner",
           "parent": "Parent",
-          "asset_types": {
+          "type": {
                "room": "Room",
                "pv": "PV"
+          },
+          "category": {
+               "name": "Name",
+               "label": "Label",
+               "description": "Description",
+               "id": "ID",
+               "delete_prompt": "Do you really want to delete the category?",
+               "affected_assets": "These Assets are affected",
+               "no_assets_found": "No assets found for this category.",
+               "delete": "Delete",
+               "cancel": "Cancel"
           }
      },
      "information_tile": {
@@ -40,9 +65,27 @@
           "label": "Label",
           "name": "Name"
      },
+     "measurement_type": {
+          "id": "ID",
+          "name": "Name",
+          "label": "Label",
+          "unit": "Unit",
+          "factor": "Base multiplier factor",
+          "color": "Measurement default color",
+          "dashboardVisibility": "Grafana support.",
+          "dashboard_visibility": "Grafana support.",
+          "physical_name": "Physical name",
+          "base_unit": "Base unit",
+          "description": "Description"
+     },
+     "tag": {
+          "key": "Tag's name (key)",
+          "value": "Tag's value"
+     },
      "measurement": {
           "name": "Name",
           "label": "Label",
+          "panel_count": "Linked panels count",
           "measurement_type": "Measurement type",
           "location_name": "Location",
           "type": "Measurement type",
@@ -51,14 +94,48 @@
           "direction": "Direction",
           "direction_out": "Out",
           "direction_in": "In",
-          "direction_null": "N/A"
+          "direction_null": "N/A",
+          "domain": "Domain",
+          "sensor_name": "Sensor name",
+          "asset_category": "Asset category",
+          "physical_name": "Physical name",
+          "asset": "Asset"
      },
      "panel": {
+          "id": "Id",
           "name": "Name",
-          "label": "Label"
+          "label": "Label",
+          "featured": "Visibility",
+          "is_template": "Is template",
+          "is_template_new_panel": "Is panel a template for private dashboards view (Can't be changed later)",
+          "structure": "Structure"
      },
      "user": {
           "login": "Login",
-          "password": "Password"
+          "password": "Password",
+          "email": "Email",
+          "firstname": "First name",
+          "lastname": "Last name",
+          "username": "Username",
+          "password_repeat": "Repeat password",
+          "temp_password": "Temporary password",
+          "roles": "Roles"
+     },
+     "role": {
+          "name": "Name"
+     },
+     "notification": {
+          "id": "Id",
+          "type": "Type",
+          "notification_code": "Code",
+          "asset": "Asset",
+          "dashboard": "Dashboard",
+          "date_from": "From",
+          "date_to": "To",
+          "notification_timestamp": "Generation time",
+          "value": "Value",
+          "no_dashboard": "undefined",
+          "measurement": "Measurement",
+          "message": "Message"
      }
 }

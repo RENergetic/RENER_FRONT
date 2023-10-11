@@ -1,0 +1,18 @@
+{
+    "message": {
+        "anomaly": {
+            "high": "The energy consumption is abnormally high",
+            "low": "The energy consumption is abnormally low"
+        },
+        "renewability": "Please reduce your consumption, there isn't enough renewable energy"
+    },
+    "heat": {
+        "increase": {},
+        "decrease": {}
+    },
+    "hot_water": {},
+    "dirty_water": {
+        "drink": "Don't drink it {parameter_1} : and {param_2} "
+    },
+    "test_prediction_template":"Anomaly Detected for asset {asset_name}. Expected high consumption at {timestamp}. Value: {value}"
+}
