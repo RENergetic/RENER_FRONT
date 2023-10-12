@@ -118,19 +118,4 @@ span {
 h2 {
   margin: 0;
 }
-
-.demand-box {
-  #tileicon {
-    height: 35%;
-  }
-  #label {
-    font-size: 0.75rem;
-  }
-  #value {
-    h2 {
-      font-size: 1.25rem;
-    }
-    font-size: 1.25rem;
-  }
-}
 </style>

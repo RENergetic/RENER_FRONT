@@ -232,14 +232,14 @@ export default class RenUtils {
     return parsed;
   }
   roundValue(value) {
-    if (value >= 5.0) {
+    if (value >= 4.0) {
       return Math.round(value);
     }
-    if (value >= 0.5) {
+    if (value >= 0.4) {
       return Math.round(value * 10.0) / 10.0;
     }
 
-    if (value >= 0.05) {
+    if (value >= 0.04) {
       return Math.round(value * 100.0) / 100.0;
     }
     return Math.round(value * 1000.0) / 1000.0;
