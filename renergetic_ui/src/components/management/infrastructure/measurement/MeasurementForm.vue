@@ -68,6 +68,7 @@
             <Dropdown
               id="measurementDirection"
               v-model="mModel.direction"
+              show-clear
               :options="directions"
               :option-label="(opt) => $t('enums.measurement_direction.' + opt)"
               :placeholder="$t('view.select_direction')"
