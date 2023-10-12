@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model:visible="dialog" :style="{ width: '90vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+  <Dialog v-model:visible="dialog" :style="{ width: '90vw', height: '95vh' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <!-- <InfoIcon :show-icon="false">
       <template #content> 
       </template>
@@ -76,4 +76,8 @@ export default {
   },
 };
 </script>
-<style scoped lang="scss"></style>
+<style lang="scss">
+.p-dialog-content {
+  height: 100%;
+}
+</style>

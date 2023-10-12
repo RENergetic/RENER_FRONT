@@ -1,5 +1,5 @@
 <template>
-  <div v-for="m in measurements" :key="m.id" class="col-12 md:col-10 xl:col-6">
+  <div v-for="m in measurements" :key="m.id" class="col-12 md:col-10 xl:col-6" style="max-height: 50vh; max-width: 40vw">
     <!-- :style="'margin:auto;max-width: 90%;'" -->
     <MeasurementChart
       :ref="`mChart_${m.id}`"
@@ -10,6 +10,7 @@
       height="500"
       :chart-type="chartType"
       :title-visible="true"
+      :legend="true"
       :measurements="[m]"
     />
   </div>

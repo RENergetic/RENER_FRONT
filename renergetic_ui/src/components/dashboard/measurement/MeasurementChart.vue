@@ -33,12 +33,18 @@ export default {
   },
   emits: ["timeseries-update"],
   data() {
+    let mMeasurements = this.tile ? this.tile.measurements : this.measurements;
+    let yAxisTitle = null;
+    if (mMeasurements && mMeasurements.length == 1) {
+      yAxisTitle = `${this.$t("enums.physical_type." + mMeasurements[0].type.physical_name)} [${mMeasurements[0].type.unit}]`;
+    }
     return {
       labels: this.pdata["timeseries_labels"] ? this.pdata["timeseries_labels"] : [],
       datasets: [],
       plugins: [chartjsMoment],
       mStyle: "max-width: 100rem;max-height:60rem; margin: auto;height:100%;width:100%",
-      mMeasurements: this.tile ? this.tile.measurements : this.measurements,
+      mMeasurements: mMeasurements,
+      yAxisTitle: yAxisTitle,
     };
   },
   computed: {
@@ -46,11 +52,13 @@ export default {
       if (this.titleVisible) {
         // let label = " ";
         var _l = this.measurements.map((m) => {
-          let assetName = m.asset.label ? m.asset.label : m.asset.name;
-
           let measurementName = m.label ? m.label : m.name;
-          console.info(`${measurementName}(${assetName})`);
-          return `${measurementName}(${assetName})`;
+          if (m.asset) {
+            let assetName = m.asset.label ? m.asset.label : m.asset.name;
+            console.info(`${measurementName}(${assetName})`);
+            return `${measurementName}(${assetName})`;
+          }
+          return `${measurementName}`;
         });
         // for (let m of this.measurements) {
         //   let assetName = m.asset.label ? m.asset.label : m.asset.name;
@@ -89,9 +97,12 @@ export default {
             // type: "timeseries", //keep Equidistant  between points (labels are squished)
             type: "time",
           },
-          // y: {
-          //   fill: true,
-          // },
+          y: {
+            title: {
+              display: this.yAxisTitle != null,
+              text: this.yAxisTitle,
+            },
+          },
         },
       };
     },
@@ -155,9 +166,12 @@ export default {
       for (let idx in this.mMeasurements) {
         let m = this.mMeasurements[idx];
         let color = m.measurement_details.color ? m.measurement_details.color : "#90A4AE";
+        let unitLabel = `${this.$t("enums.physical_type." + m.type.physical_name)} [${m.type.unit}]`;
+        let label = m.label ? m.label : m.name;
         datasets.push({
           data: data[m.id],
-          label: `label_${m.id}`,
+          label: `${label}: ${unitLabel}`,
+          // label: `${label}(${m.id}) ${unitLabel}`,
           backgroundColor: color + "30",
           borderColor: color + "FF",
           showLine: true,
