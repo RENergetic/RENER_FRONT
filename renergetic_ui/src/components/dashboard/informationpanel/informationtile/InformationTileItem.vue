@@ -109,14 +109,16 @@ export default {
     },
     measurementlabel: function () {
       if (this.measurement.label != null) {
-        return this.measurement.label;
+        let k = `model.measurement.labels.${this.measurement.label}`;
+        return this.$te(k) ? this.$t(k) : this.measurement.label;
       } else {
         //TODO: translate it
         return this.measurement.name;
       }
     },
     label: function () {
-      let label = `${this.measurementlabel}${this.assetStr}`;
+      let assetStr = this.assetStr ? `: ${this.assetStr}` : "";
+      let label = `${this.measurementlabel}${assetStr}`;
 
       if (label.length < 35) {
         return label;
@@ -161,9 +163,11 @@ span {
 .tileitem {
   border: gray 2px solid;
   background: gray;
-  margin: 5px;
-  padding: 5px;
-  border-radius: 0.5rem;
+  margin-top: 5px;
+  padding: 0px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 0.25rem;
   // margin-left: 1rem;
 }
 .tileitem-hidden {
