@@ -101,6 +101,16 @@ var dashboardRoutes = [
     component: () => import("../views/dashboard/PublicDashboardView.vue"),
   },
   {
+    path: "/tv/public/dashboard/:id?",
+    name: "PublicDashboardViewTV",
+    meta: {
+      isAuthenticated: true,
+      layout: "fullscr",
+      tvMode: true,
+    },
+    component: () => import("../views/dashboard/PublicDashboardViewTV.vue"),
+  },
+  {
     path: "/panel/view/:id?",
     name: "InformationPanelView",
     meta: {

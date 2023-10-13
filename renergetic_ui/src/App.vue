@@ -1,34 +1,35 @@
 <template>
-  <Toast />
-  <ConfirmDialog></ConfirmDialog>
-  <SideMenu v-if="keycloakState == 1" :key="`menu_${refresh}`" ref="sideMenu" @refresh="onRefresh" />
-  <div v-if="keycloakState == 1" :key="`content_${refresh}`" :class="layout() + ' flex flex-column card-container '">
-    <!-- <div style="color: white; margin-top: 10rem">{{ $route.path }}  style="min-height: 95vh"</div>
+  <div :style="pageStyle">
+    <Toast />
+    <ConfirmDialog></ConfirmDialog>
+    <SideMenu v-if="!tvMode && keycloakState == 1" :key="`menu_${refresh}`" ref="sideMenu" @refresh="onRefresh" />
+    <div v-if="keycloakState == 1" :key="`content_${refresh}`" :class="layout() + ' flex flex-column card-container '">
+      <!-- <div style="color: white; margin-top: 10rem">{{ $route.path }}  style="min-height: 95vh"</div>
     <div style="color: white">{{ $keycloak && $keycloak.isInitialized() }}</div> -->
-    <div v-if="hasAccess" class="flex" style="display: initial !important; margin-bottom: 1rem">
-      <router-view :key="$route.path" @update-menu="updateMenu()" />
-    </div>
-    <div v-else :class="layout()">no access TODO:</div>
-
-    <div v-if="!$store.getters['auth/isAuthenticated'] || $store.getters['auth/tokenExpired']" class="grid flex flex-none" style="margin: 2rem 0">
-      <div class="col"></div>
-      <div class="col-fixed flex-none" style="width: 20rem; text-align: center">
-        <Button icon="pi pi-sign-in" style="width: 100%" :label="$t('view.button.sign_in')" @click="login" />
+      <div v-if="hasAccess" class="flex" style="display: initial !important; margin-bottom: 1rem">
+        <router-view :key="$route.path" @update-menu="updateMenu()" />
       </div>
-      <div class="col"></div>
+      <div v-else :class="layout()">no access TODO:</div>
+
+      <div v-if="!$store.getters['auth/isAuthenticated'] || $store.getters['auth/tokenExpired']" class="grid flex flex-none" style="margin: 2rem 0">
+        <div class="col"></div>
+        <div class="col-fixed flex-none" style="width: 20rem; text-align: center">
+          <Button icon="pi pi-sign-in" style="width: 100%" :label="$t('view.button.sign_in')" @click="login" />
+        </div>
+        <div class="col"></div>
+      </div>
+
+      <Footer>
+        <template #right> </template>
+      </Footer>
     </div>
-
-    <Footer>
-      <template #right> </template>
-    </Footer>
+    <div v-else-if="keycloakState == -1">
+      <h2>Keycloak not initialized</h2>
+    </div>
+    <div v-else-if="keycloakState == 0">
+      <h2>Keycloak not initialized</h2>
+    </div>
   </div>
-  <div v-else-if="keycloakState == -1">
-    <h2>Keycloak not initialized</h2>
-  </div>
-  <div v-else-if="keycloakState == 0">
-    <h2>Keycloak not initialized</h2>
-  </div>
-
   <!-- TODO: v-else do something when keycloakState == -1 -->
 </template>
 <script>
@@ -56,6 +57,15 @@ export default {
     hasAccess() {
       if (this.$route.meta.roleFlag == null || this.$route.meta.roleFlag == undefined) return true;
       return this.$ren.utils.checkAccess(this.$route.meta.roleFlag);
+    },
+    pageStyle() {
+      if (this.tvMode) {
+        return "max-height:99vh;overflow:hidden";
+      }
+      return "";
+    },
+    tvMode() {
+      return !(this.$route.meta.tvMode == null || this.$route.meta.tvMode == undefined);
     },
     isLoading() {
       return this.$store.getters["spinner/isLoading"];

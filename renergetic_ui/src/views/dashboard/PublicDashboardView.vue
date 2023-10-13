@@ -59,6 +59,15 @@ export default {
     filterSettingsButton: function () {
       return { label: this.$t("menu.filter_settings"), icon: "pi pi-fw pi-filter", command: () => this.$refs.filterSettingsDialog.open() };
     },
+    fullScreenButton: function () {
+      return {
+        label: this.$t("menu.tv_view_mode"),
+        icon: "pi pi-fw pi-window-maximize",
+        command: () => {
+          this.$router.push({ name: "PublicDashboardViewTV", params: { id: this.panel.id } });
+        },
+      };
+    },
 
     menuModel() {
       let menu = [
@@ -71,6 +80,7 @@ export default {
       menu.push(this.settingsButton);
       menu.push(this.conversionSettingsButton);
       menu.push(this.filterSettingsButton);
+      menu.push(this.fullScreenButton);
       return menu;
     },
   },

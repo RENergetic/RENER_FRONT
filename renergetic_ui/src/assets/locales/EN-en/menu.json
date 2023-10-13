@@ -55,5 +55,5 @@
   "settings": "Settings",
   "unit_settings": "Unit settings",
   "view": "View",
-  "manage_notifications": "Notifications"
+  "manage_notifications": "Notifications","tv_view_mode":"TV View","normal_view_mode":"Normal view"
 }
