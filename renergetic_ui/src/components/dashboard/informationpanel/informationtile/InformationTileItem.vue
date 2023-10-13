@@ -21,7 +21,7 @@
         <div class="flex flex-none message align-items-end">{{ $ren.utils.roundValue(value) }} {{ unit }}</div>
       </div>
       <div v-if="measurement.description" class="flex">
-        <div class="flex align-items-center justify-content-center">description: {{ measurement.description }}</div>
+        <div class="flex align-items-center justify-content-center">{{ measurement.description }}</div>
       </div>
     </div>
   </div>
@@ -105,16 +105,21 @@ export default {
     },
     assetStr: function () {
       let m = this.measurement;
-      return m.asset ? (m.asset.label ? `- ${m.asset.label}` : `- ${m.asset.name}}`) : "";
+      return m.asset ? (m.asset.label ? `${m.asset.label}` : `${m.asset.name}}`) : "";
     },
     measurementlabel: function () {
-      if (this.measurement.label != null) {
-        let k = `model.measurement.labels.${this.measurement.label}`;
-        return this.$te(k) ? this.$t(k) : this.measurement.label;
-      } else {
-        //TODO: translate it
-        return this.measurement.name;
+      let labelKey = `model.measurement.labels.${this.measurement.label}`;
+      if (this.measurement.label != null && this.$te(labelKey)) {
+        return this.$t(labelKey);
       }
+      let nameKey = `enums.measurement_name.${this.measurement.name}`;
+      if (this.$te(nameKey)) {
+        return this.$t(nameKey);
+      }
+      if (this.measurement.label != null) {
+        return this.measurement.label;
+      }
+      return this.measurement.name;
     },
     label: function () {
       let assetStr = this.assetStr ? `: ${this.assetStr}` : "";

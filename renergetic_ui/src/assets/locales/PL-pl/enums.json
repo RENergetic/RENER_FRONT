@@ -28,7 +28,9 @@
   
   "measurement_name": {
     "heat": "Ciepło",
+    "heat_energy":"Ciepło",
     "electricity": "Elektryczność",
+    "electricity_energy":"Elektryczność",
     "renewability": "Odnawialność",
     "renewables": "Odnawialne źródło energia",
     "external": "Zewnętrzny",

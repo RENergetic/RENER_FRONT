@@ -28,7 +28,9 @@
   
   "measurement_name": {
     "heat": "Heat",
+    "heat_energy":"Heat energy",
     "electricity": "Electricity",
+    "electricity_energy":"Electricity energy",
     "renewability": "Renewability",
     "renewables": "Renewables",
     "external": "External",

@@ -31,48 +31,6 @@
       </information-list-tile>
     </div>
   </div>
-
-  <!-- <div v-if="loaded && false" class="flex flex-column justify-content-start" style="height: 100%; width: 100%">
-    <div
-      v-if="mSettings.tile.title_visibility && mSettings.tile.label"
-      class="flex flex-none align-items-center justify-content-center knob-component"
-    >
-      <h2 style="text-align: center">{{ mSettings.tile.label }}</h2>
-    </div>
- 
-    <div
-      class="flex flex-none flex-column align-items-center justify-content-center knob-component"
-      style="position: relative; max-height: 100%; max-width: 100%"
-    >
-      <div
-        class="flex flex-none flex-column align-items-center justify-content-center"
-        style="position: relative; max-height: 100%; max-width: 100%"
-      >
-        <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
-      </div>
-      <span
-        v-if="iconVisibility"
-        id="tileicon"
-        class="flex flex-none flex-column align-items-center justify-content-center"
-      >
-        <font-awesome-icon :icon="mSettings.tile.icon" />
-      </span>
-    </div>
-    <div
-      v-if="mSettings.tile.measurement_list"
-      class="flex flex-column flex-none knob-component"
-      style="position: relative; width: 100%"
-    >
-      <information-list-tile
-        :tile="tile"
-        :pdata="pdata"
-        :settings="mSettings"
-        :conversion-settings="conversionSettings"
-        @select="onMeasurementSelect"
-      >
-      </information-list-tile>
-    </div>
-  </div> -->
 </template>
 <script>
 /**

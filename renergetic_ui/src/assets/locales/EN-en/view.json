@@ -69,6 +69,7 @@
   "go_to_panel": "Go to panel",
   "asset_management_only_template": "Asset management only available for templates",
   "heatmap_list": "Heatmap List",
+  "private_dashboard_title":"Dashboard for the {asset}",
   "role_name": "Role name",
   "rules": "Rules",
   "save_asset_rules": "Save asset rules",
