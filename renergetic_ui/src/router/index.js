@@ -13,6 +13,13 @@ const routes = [
     component: HomePage,
   },
   {
+    path: "/tv",
+    name: "HomeTV",
+    meta: { isAuthenticated: false, tvMode: true },
+    component: () => import("../views/HomeTV.vue"),
+  },
+
+  {
     path: "/about",
     name: "RenAbout",
     meta: { isAuthenticated: true },

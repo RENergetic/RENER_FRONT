@@ -25,49 +25,25 @@
   <div v-if="settings.demandVisibility && loggedIn" style="position: relative">
     <DemandList id="demand-list" />
   </div>
-  <div v-if="settings.notificationVisibility" style="position: relative">
+  <div v-if="settings.notificationVisibility && loggedIn" style="position: relative">
     <NotificationList id="notification-list" />
   </div>
-  <RoleMatrix v-if="false" />
-  <RenSettingsDialog ref="homeSettingsDialog">
-    <template #settings><HomeSettings @update="reloadSettings()"></HomeSettings></template>
-  </RenSettingsDialog>
-  <RenSettingsDialog ref="panelSettingsDialog">
-    <template #settings><PanelSettings @update="reloadPanelSettings()"></PanelSettings></template>
-  </RenSettingsDialog>
-  <RenSettingsDialog ref="conversionSettingsDialog">
-    <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
-  </RenSettingsDialog>
-  <RenSettingsDialog ref="filterSettingsDialog" :save="false">
-    <template #settings><FilterSettings @update="updateFilter()"></FilterSettings></template>
-  </RenSettingsDialog>
-  <div v-if="$refs.panelSettingsDialog">{{ $refs.panelSettingsDialog.settingsDialog }}</div>
 </template>
 <script>
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
-import HomeSettings from "@/components/miscellaneous/settings/HomeSettings.vue";
-import RoleMatrix from "@/components/miscellaneous/settings/RoleMatrix.vue";
 import NotificationList from "@/components/user/NotificationList.vue";
 // import SettingsDialog from "@/components/miscellaneous/settings/SettingsDialog.vue";
-import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 import InformationPanelWrapper from "@/components/dashboard/informationpanel/InformationPanelWrapper.vue";
 import DemandList from "@/components/user/demand/DemandList.vue";
-import FilterSettings from "@/components/miscellaneous/settings/FilterSettings.vue";
-import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
 import { RenRoles } from "../plugins/model/Enums.js";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 import LoopRunner from "@/plugins/utils/loop_runner.js";
 
 export default {
-  name: "Home",
+  name: "HomeTV",
   components: {
     DotMenu,
-    RoleMatrix,
-    FilterSettings,
-    ConversionSettings,
     DemandList,
-    HomeSettings,
-    PanelSettings,
     NotificationList,
     InformationPanelWrapper,
   },
@@ -109,62 +85,20 @@ export default {
     //     command: () => this.saveGrid(),
     //   };
     // },
-    filterSettingsButton: function () {
-      //TODO: set icon
+    normalViewButton: function () {
       return {
-        label: this.$t("menu.filter_settings"),
-        icon: "pi pi-fw pi-filter",
-        command: () => this.$refs.filterSettingsDialog.open(),
-      };
-    },
-    fullScreenButton: function () {
-      return {
-        label: this.$t("menu.tv_view_mode"),
-        icon: "pi pi-fw pi-window-maximize",
+        label: this.$t("menu.normal_view_mode"),
+        icon: "pi pi-fw pi-window-minimize",
         command: () => {
-          this.$router.push({ name: "HomeTV" });
+          document.exitFullscreen();
+          this.$router.push({ name: "Home" });
         },
       };
     },
 
-    conversionSettingsButton: function () {
-      //TODO: set icon
-      return {
-        label: this.$t("menu.unit_settings"),
-        icon: "pi pi-fw pi-cog",
-        command: () => this.$refs.conversionSettingsDialog.open(),
-      };
-    },
-
-    settingsButton: function () {
-      //TODO: set icon
-      return {
-        label: this.$t("menu.home_settings"),
-        icon: "pi pi-fw pi-home",
-        command: () => this.$refs.homeSettingsDialog.open(),
-      };
-    },
-    panelSettingsButton: function () {
-      //TODO: set icon
-      return {
-        label: this.$t("menu.panel_settings"),
-        icon: "pi pi-fw pi-cog",
-        command: () => this.$refs.panelSettingsDialog.open(),
-      };
-    },
     menuModel() {
       let model = [];
-      // if (!this.locked) model.push(this.saveButton);
-      let role = this.$store.getters["auth/renRole"];
-
-      // model.push(this.toggleButton);
-      model.push(this.settingsButton);
-      if ((role & (RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_MANAGER | RenRoles.REN_ADMIN)) > 0) {
-        model.push(this.panelSettingsButton);
-        model.push(this.conversionSettingsButton);
-        model.push(this.filterSettingsButton);
-      }
-      model.push(this.fullScreenButton);
+      model.push(this.normalViewButton);
 
       return model;
     },
@@ -176,6 +110,7 @@ export default {
   async mounted() {
     var df = new DeferredFunction(this.slideshowLoop, 1000);
     df.run();
+    document.documentElement.requestFullscreen();
   },
   beforeUnmount() {
     if (this.slideshow) {
