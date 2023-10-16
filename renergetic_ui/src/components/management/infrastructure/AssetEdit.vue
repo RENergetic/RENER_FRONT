@@ -94,7 +94,7 @@ export default {
   validations() {
     return {
       mModel: {
-        name: { maxLength: maxLength(30), required: required, minLength: minLength(3) },
+        name: { maxLength: maxLength(60), required: required, minLength: minLength(3) },
         type: { required: requiredTr("validations.fields.custom.asset.") },
       },
     };
