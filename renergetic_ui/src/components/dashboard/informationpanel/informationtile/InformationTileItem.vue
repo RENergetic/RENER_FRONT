@@ -17,7 +17,7 @@
     </div>
     <div class="flex flex-grow-1 flex-column align-items-start justify-content-center message">
       <div class="flex flex-grow-1 align-items-center justify-content-center" style="width: 100%">
-        <div v-tooltip="labelTooltip" class="flex flex-grow-1 message align-items-start">{{ label }}:</div>
+        <div v-tooltip="labelTooltip" class="flex flex-grow-1 message align-items-start">{{ label }}</div>
         <div class="flex flex-none message align-items-end">{{ $ren.utils.roundValue(value) }} {{ unit }}</div>
       </div>
       <div v-if="measurement.description" class="flex">
@@ -63,7 +63,7 @@ export default {
     },
     style: function () {
       let color = this.$ren.utils.measurementColor(this.measurement, this.value);
-      return `background:${color.color};opacity:${color.alpha}`;
+      return `background:${color.color};opacity:${color.alpha};color: set-text-color(${color.color});`;
     },
     state: function () {
       let state;

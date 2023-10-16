@@ -168,6 +168,7 @@ export default {
   background: linear-gradient(to bottom, #190a05, #870000);
   max-height: 100%;
   width: 100%;
+  text-shadow: 1px 1px 0 #333, -1px -1px 0 #333, 1px -1px 0 #333, -1px 1px 0 #333, 2px 2px 4px rgba(0, 0, 0, 0.15);
   // display: flex;
   // flex-direction: column;
   // align-items: flex-end;

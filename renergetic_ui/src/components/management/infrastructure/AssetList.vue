@@ -147,7 +147,7 @@
     </Column>
     <Column name="rule" :header="$t('view.rules')" :hidden="basic">
       <template #body="slotProps">
-        <Button v-tooltip="$t('view.rules')" icon="pi pi-pencil" class="p-button-rounded" @click="editRules(slotProps.data)" />
+        <Button v-tooltip="$t('view.rules')" icon="pi pi-code" class="p-button-rounded" @click="editRules(slotProps.data)" />
         <!-- <span class="ren-pointer" @click="editAsset(slotProps.data)"> Edit Asset </span> -->
       </template>
     </Column>

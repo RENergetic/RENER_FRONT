@@ -31,7 +31,7 @@
     "heat_energy":"Ciepło",
     "electricity": "Elektryczność",
     "electricity_energy":"Elektryczność",
-    "renewability": "Odnawialność",
+    "renewability": "Energia  z odnawialnych źródeł",
     "renewables": "Odnawialne źródło energia",
     "external": "Zewnętrzny",
     "non_renewables": "Nieodnawialne źródło energia",
@@ -43,9 +43,10 @@
     "hvac": "HVACs",
     "waste": "Odpad",
     "fossil_fuels": "Fossil fuels",
-    "electricity_renewability": "Odnawialność energii elektrycznej",
-    "heat_renewability": "Odnawialność energii cieplnej",
-    "co2_reduction": "Redukcja emisji CO₂"
+    "electricity_renewability": "Energia elektryczna z odnawialnych źródeł",
+    "heat_renewability": "Ciepło z odnawialnych źródeł",
+    "co2_reduction": "Redukcja emisji CO₂",
+    "current_power":"Actualna moc"
   },
   "domain": {
     "electricity": "Elektryczność",

@@ -24,7 +24,7 @@
       </Footer>
     </div>
     <div v-else-if="keycloakState == -1">
-      <h2>Keycloak not initialized</h2>
+      <h2 style="margin: 3rem">Loading....</h2>
     </div>
     <div v-else-if="keycloakState == 0">
       <h2>Keycloak not initialized</h2>

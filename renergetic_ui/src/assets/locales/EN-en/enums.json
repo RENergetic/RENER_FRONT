@@ -45,7 +45,8 @@
     "fossil_fuels": "Fossil fuels",
     "electricity_renewability": "Renewable electricity",
     "heat_renewability": "Renewable heat",
-    "co2_reduction": "CO₂ emissions reduction"
+    "co2_reduction": "CO₂ emissions reduction",
+    "current_power":"Current power"
   },
   "domain": {
     "electricity": "Electricity",

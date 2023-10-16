@@ -28,3 +28,11 @@ $ren-state-color-error:crimson;
 $ren-state-color-warning:sandybrown; 
 $ren-state-color-unknown:lightgray; 
  
+@function set-text-color($color) {
+    @if (lightness( $color ) > 50) {
+      @return $ren-secondary-font-color  ;
+    }
+    @else {
+      @return $ren-primary-font-color;
+    }
+}
