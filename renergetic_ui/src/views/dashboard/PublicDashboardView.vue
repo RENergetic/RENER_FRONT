@@ -10,6 +10,9 @@
       :panel-settings="settings"
       :filter="filterSettings"
     ></InformationPanelWrapper>
+    <div style="margin-left: 1rem; margin-top: 2rem">
+      <ParsedDateFilter />
+    </div>
   </div>
   <RenSettingsDialog ref="settingsDialog">
     <template #settings><PanelSettings @update="reloadSettings()"></PanelSettings></template>
@@ -27,11 +30,13 @@ import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
 import FilterSettings from "@/components/miscellaneous/settings/FilterSettings.vue";
+import ParsedDateFilter from "@/components/miscellaneous/settings/ParsedDateFilter.vue";
 export default {
   name: "PublicDashboardView",
   components: {
     InformationPanelWrapper,
     FilterSettings,
+    ParsedDateFilter,
     DotMenu,
     PanelSettings,
     // NotificationList,

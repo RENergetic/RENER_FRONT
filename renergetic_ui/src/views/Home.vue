@@ -4,7 +4,6 @@
     <!-- {{ $store.getters["view/featuredPanels"] }}  -->
     <!-- {{ $store.getters["view/assetPanels"] }}d -->
     <!-- panel: {{ panel.name }}, {{ panel.id }}, {{ assetId }} -->
-
     <InformationPanelWrapper
       v-if="panel"
       ref="panel"
@@ -20,6 +19,9 @@
 
     <div v-else style="width: 50rem; max-width: 95vw; margin: auto; padding-top: 5rem">
       <h4 style="width: 100%; margin: auto">{{ $t("view.empty_home_dashboard") }}</h4>
+    </div>
+    <div style="margin-left: 1rem; margin-top: 2rem">
+      <ParsedDateFilter />
     </div>
   </div>
   <div v-if="settings.demandVisibility && loggedIn" style="position: relative">
@@ -53,7 +55,9 @@ import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue
 import InformationPanelWrapper from "@/components/dashboard/informationpanel/InformationPanelWrapper.vue";
 import DemandList from "@/components/user/demand/DemandList.vue";
 import FilterSettings from "@/components/miscellaneous/settings/FilterSettings.vue";
+import ParsedDateFilter from "@/components/miscellaneous/settings/ParsedDateFilter.vue";
 import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
+
 import { RenRoles } from "../plugins/model/Enums.js";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 import LoopRunner from "@/plugins/utils/loop_runner.js";
@@ -70,6 +74,7 @@ export default {
     PanelSettings,
     NotificationList,
     InformationPanelWrapper,
+    ParsedDateFilter,
   },
   data() {
     return {

@@ -21,6 +21,9 @@
       :filter="filter"
       :panel-settings="settings"
     />
+    <div style="margin-left: 1rem; margin-top: 2rem">
+      <ParsedDateFilter />
+    </div>
     <!-- <Card style="width: 90%; margin: auto; margin-top: 1rem">
       <template #content>
         todo make own card component -->
@@ -51,6 +54,7 @@ import InformationPanelWrapper from "@/components/dashboard/informationpanel/Inf
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 import BasicFilterSettings from "@/components/miscellaneous/settings/BasicFilterSettings.vue";
+import ParsedDateFilter from "@/components/miscellaneous/settings/ParsedDateFilter.vue";
 
 export default {
   name: "InformationPanelView",
@@ -58,6 +62,7 @@ export default {
     InformationPanelWrapper,
     DotMenu,
     PanelSettings,
+    ParsedDateFilter,
     BasicFilterSettings,
   },
   data() {
