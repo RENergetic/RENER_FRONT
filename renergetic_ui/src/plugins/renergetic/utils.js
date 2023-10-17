@@ -403,7 +403,7 @@ export default class RenUtils {
       // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
       let factor = m.type.factor;
       console.info(m);
-      let value = pData.current[m.aggregation_function][m.id] / factor; //todo: raise exception if value not found
+      let value = pData.current[m.aggregation_function][m.id] * factor; //todo: raise exception if value not found
       accuDict = this.valueAccu(key, value, m.type.base_unit, accuDict);
     }
     pData.max = {};
