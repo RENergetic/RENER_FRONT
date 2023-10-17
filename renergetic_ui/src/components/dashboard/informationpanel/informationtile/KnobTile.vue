@@ -7,15 +7,19 @@
     > 
     <Knob v-model="value" class="flex-grow-1 flex" :style="{ textAlign: 'center', maxHeight: '80%' }" :min="minV" :max="maxV" />  
     </div> -->
+
     <div v-if="mSettings.tile.template" class="flex flex-none flex-column align-items-center justify-content-center">
       <span id="value" :style="color">
         {{ $t(`tile_templates.${tile.name}`, { value: `${$ren.utils.roundValue(value)} ${unit} ` }) }}
       </span>
     </div>
     <div v-else class="flex flex-none flex-column align-items-center justify-content-center">
-      <span id="label" :style="color"> {{ mSettings.tile.label ? mSettings.tile.label : measurementlabel }} </span>
+      <span id="label" :style="color"> {{ mSettings.tile.label ? mSettings.tile.label : measurementlabel }} {{ unitTitle }} </span>
     </div>
+    <!-- {{ valuetemplate }}{{ value }} -->
+    <!-- :value-template="valuetemplate" -->
     <Knob
+      v-if="valuetemplate"
       id="knob_component"
       v-model="value"
       :value-color="color"
@@ -25,6 +29,7 @@
       :style="{ textAlign: 'center', maxHeight: '80%', color: 'red' }"
       :min="minV"
       :max="maxV"
+      size="1000"
       :stroke-width="strokeWidth"
     />
   </div>
@@ -47,6 +52,7 @@ export default {
   props: {
     settings: { type: Object, default: () => ({}) },
     pdata: { type: Object, default: () => ({}) },
+    conversionSettings: { type: Object, default: () => ({}) },
     tile: {
       type: Object,
       default: () => ({}),
@@ -57,28 +63,36 @@ export default {
     if (this.tile.measurements) {
       measurement = this.tile.measurements[0];
     }
-    let maxV;
-    let minV;
-    try {
-      maxV = this.pdata.max[this.measurement.aggregation_function][measurement.id];
-    } catch {
-      maxV = 100.0;
-    }
-    try {
-      minV = this.pdata.max[this.measurement.aggregation_function][measurement.id];
-    } catch {
-      minV = 0.0;
-    }
+    let maxV =
+      this.settings.panel.relativeValues &&
+      this.pdata.max &&
+      this.pdata.max[measurement.aggregation_function] &&
+      this.pdata.max[measurement.aggregation_function][measurement.id]
+        ? this.pdata.max[measurement.aggregation_function][measurement.id]
+        : this.defaultMax(measurement);
+
+    let minV =
+      this.settings.panel.relativeValues &&
+      this.pdata.min &&
+      this.pdata.min[measurement.aggregation_function] &&
+      this.pdata.min[measurement.aggregation_function][measurement.id]
+        ? this.pdata.min[measurement.aggregation_function][measurement.id]
+        : 0.0;
+    let unit = this.$ren.utils.getUnit(measurement, this.settings.panel, this.conversionSettings);
     return {
       mSettings: this.settings,
       measurement: measurement,
       maxV: maxV,
       minV: minV,
+      valuetemplate: unit && unit != "any" ? "{value}[" + unit + "]" : "{value}",
     };
   },
   computed: {
     unit: function () {
       return this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings);
+    },
+    unitTitle: function () {
+      return `[${this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings)}]`;
     },
     color: function () {
       let color = this.$ren.utils.measurementColor(this.measurement, this.value);
@@ -97,6 +111,7 @@ export default {
         return this.measurement.name;
       }
     },
+
     strokeWidth: function () {
       return 12 + 2 * Math.min(this.tile.layout.w, this.tile.layout.h);
     },
@@ -125,7 +140,11 @@ export default {
   },
 
   mounted() {},
-  methods: {},
+  methods: {
+    defaultMax(measurement) {
+      return measurement.type.base_unit == "%" || this.settings.panel.relativeValues ? 100.0 : 1.0;
+    },
+  },
 };
 </script>
 
@@ -143,6 +162,9 @@ export default {
   width: 100%;
   // height: 4.5rem;
   height: 75%;
+  .p-knob-text {
+    // font-size: 1rem;
+  }
   // svg {
   //   height: 100%;
   // }

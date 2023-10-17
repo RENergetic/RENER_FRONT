@@ -310,8 +310,10 @@ export default class RenUtils {
       return "%";
     }
     let domainKey = measurement.domain + "_" + measurement.type.physical_name;
+    let mt;
     let defaultKey = "default_" + measurement.type.physical_name;
-    let mt = conversionSettings[domainKey] ? conversionSettings[domainKey] : conversionSettings[defaultKey];
+    if (conversionSettings) mt = conversionSettings[domainKey] ? conversionSettings[domainKey] : conversionSettings[defaultKey];
+    else mt = null;
     // console.info(conversionSettings);
     return mt ? mt : measurement.type.unit;
   }
@@ -400,6 +402,7 @@ export default class RenUtils {
       let key = this.aggKey(m, settings);
       // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
       let factor = m.type.factor;
+      console.info(m);
       let value = pData.current[m.aggregation_function][m.id] / factor; //todo: raise exception if value not found
       accuDict = this.valueAccu(key, value, m.type.base_unit, accuDict);
     }
