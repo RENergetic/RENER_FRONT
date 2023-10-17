@@ -1,13 +1,5 @@
 {
-  "asset_type": {
-    "bulding": "Budynek",
-    "flat": "Mieszkanie",
-    "heat_exchange": "Wymiennik ciepła",
-    "heat_exchanger": "Wymiennik ciepła",
-    "heat_source": "Źródło ciepła",
-    "island": "Wyspa energertyczna",
-    "pv": "Panel PV"
-  },
+  
   "dashboard_measurement_types": {
     "energy": "Energia",
     "power": "Moc"
@@ -24,8 +16,7 @@
     "energy_gj": "Energia Cieplna",
     "percentage": "Procent",
     "power": "Moc"
-  },
-  
+  }, 
   "measurement_name": {
     "heat": "Ciepło",
     "heat_energy":"Ciepło",
@@ -46,7 +37,7 @@
     "electricity_renewability": "Energia elektryczna z odnawialnych źródeł",
     "heat_renewability": "Ciepło z odnawialnych źródeł",
     "co2_reduction": "Redukcja emisji CO₂",
-    "current_power":"Actualna moc"
+    "current_power":"Actualna moc"  
   },
   "domain": {
     "electricity": "Elektryczność",

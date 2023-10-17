@@ -43,7 +43,15 @@
           "parent": "Parent",
           "type": {
                "room": "Room",
-               "pv": "PV"
+               "pv": "Panel PV",
+               "pv_plant": "Panel PV",
+               "bulding": "Budynek",
+               "flat": "Mieszkanie",
+               "heat_exchange": "Wymiennik ciepła",
+               "heat_exchanger": "Wymiennik ciepła",
+               "heat_source": "Źródło ciepła",
+               "island": "Wyspa energertyczna",
+               "dormitory": "Akademik"
           },
           "category": {
                "name": "Name",
