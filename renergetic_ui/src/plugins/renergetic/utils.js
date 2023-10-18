@@ -118,7 +118,7 @@ export default class RenUtils {
   //     .then(() => this.app.$emitter.emit("information", { message: this.app.$t("information.settings_saved") }));
   // }
   async saveSettings() {
-    console.error("saveSettings");
+    // console.error("saveSettings");
     let allSettings = this.app.$store.getters["settings"];
     let _this = this;
 
@@ -404,6 +404,7 @@ export default class RenUtils {
       let factor = m.type.factor;
       console.info(m);
       let value = pData.current[m.aggregation_function][m.id] * factor; //todo: raise exception if value not found
+      console.info(value);
       accuDict = this.valueAccu(key, value, m.type.base_unit, accuDict);
     }
     pData.max = {};
