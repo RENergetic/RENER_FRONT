@@ -72,7 +72,7 @@ export var DefaultSettings = {
     relativeValues: false,
   },
   conversion: {},
-  filter: { predictionInterval: 0, timeInterval: "current_day" },
+  filter: { predictionInterval: 0, timeIntervalType: "current_day" },
   filters: {},
 };
 export default {
@@ -196,7 +196,7 @@ export default {
         return state.filter;
       }
       if (!state.filters[filterKey]) {
-        return { predictionInterval: 0, timeInterval: "current_day" };
+        return { predictionInterval: 0, timeIntervalType: "current_day" };
       }
       return state.filters[filterKey];
     },

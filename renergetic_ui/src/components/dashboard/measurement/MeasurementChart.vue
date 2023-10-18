@@ -2,8 +2,30 @@
   <RenSpinner ref="spinner" :lock="true">
     <template #content>
       <!-- {{ measurements }} -->
-      <h2>{{ title }}</h2>
-      <Chart v-if="height && width" :style="mStyle" :type="chartType" :data="chartData" :options="options" :height="height" :width="width" />
+
+      <Chart
+        v-if="!titleVisible && height && width"
+        :style="mStyle"
+        :type="chartType"
+        :data="chartData"
+        :options="options"
+        :height="height"
+        :width="width"
+      />
+      <div v-if="titleVisible" class="flex flex-none flex-column justify-content-center">
+        <h2>{{ title }}</h2>
+        <!-- v-if="legend"-->
+      </div>
+      <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
+      <div
+        v-if="titleVisible"
+        class="flex flex-grow-1 flex-column align-items-center justify-content-center"
+        style="position: relative; height: 100%; width: 100%"
+      >
+        <div class="flex flex-none flex-column align-items-center justify-content-center" style="height: 85%; width: 100%">
+          <Chart v-if="height && width" :style="mStyle" :type="chartType" :data="chartData" :options="options" :height="height" :width="width" />
+        </div>
+      </div>
     </template>
   </RenSpinner>
 </template>

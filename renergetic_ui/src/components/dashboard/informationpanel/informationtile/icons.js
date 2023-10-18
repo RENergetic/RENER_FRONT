@@ -22,7 +22,8 @@ export default {
   import: "fa-solid fa-turn-down",
   district: "fa-solid fa-pipe-valve",
   hvac: "fa-solid fa-fan",
-  dormitory: "fa-solid fa-apartment",
+  flat: "fa-solid fa-bed",
+  dormitory: "fa-solid fa-bed",
 };
 // oil-well
 //radiation
