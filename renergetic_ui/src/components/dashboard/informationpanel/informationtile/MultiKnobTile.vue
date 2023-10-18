@@ -5,6 +5,8 @@
       <h2 style="text-align: center">{{ mSettings.tile.label }}</h2>
       <!-- v-if="legend"-->
     </div>
+    <!-- {{ pdata }} -->
+    <!-- {{ chartData }} -->
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
     <div class="flex flex-grow-0 flex-column align-items-center justify-content-center" style="height: 100%; width: 100%">
       <div class="flex flex-grow-0 flex-column align-items-center justify-content-center">
@@ -69,11 +71,11 @@ export default {
             callbacks: {
               label: function (context) {
                 const labelIndex = context.datasetIndex * 2 + context.dataIndex;
-                if (_this.tile.measurements[context.dataIndex] === undefined) {
+                if (_this.tile.measurements[context.datasetIndex] === undefined) {
                   return "";
                 }
-                var id = _this.tile.measurements[context.dataIndex].id;
-                var aggregation_function = _this.tile.measurements[context.dataIndex].aggregation_function;
+                var id = _this.tile.measurements[context.datasetIndex].id;
+                var aggregation_function = _this.tile.measurements[context.datasetIndex].aggregation_function;
                 var value;
                 try {
                   if (_this.mSettings.panel.relativeValues) {
@@ -85,8 +87,14 @@ export default {
                 } catch {
                   value = context.formattedValue;
                 }
+                value = _this.$ren.utils.roundValue(value);
                 // console.error(_this.pdata.current[aggregation_function][id]);
-                return context.chart.data.labels[labelIndex] + ": " + value + " .";
+                if (context.chart.data.labels[labelIndex]) return context.chart.data.labels[labelIndex] + ": " + value;
+                try {
+                  return context.chart.data.labels[labelIndex - 1] + ": " + value;
+                } catch {
+                  return value;
+                }
               },
             },
           },

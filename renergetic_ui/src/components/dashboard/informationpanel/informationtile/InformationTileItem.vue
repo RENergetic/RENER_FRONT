@@ -125,10 +125,10 @@ export default {
       let assetStr = this.assetStr ? `: ${this.assetStr}` : "";
       let label = `${this.measurementlabel}${assetStr}`;
 
-      if (label.length < 35) {
+      if (label.length < 33) {
         return label;
       }
-      return label.substring(0, 32) + "...";
+      return label.substring(0, 30) + "...";
       // return label;
     },
     labelTooltip: function () {

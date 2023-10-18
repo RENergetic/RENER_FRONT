@@ -413,7 +413,7 @@ export default class RenUtils {
       // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
       let key = this.aggKey(m, settings);
       // console.info(key);
-      let factor = m.type.factor;
+      // let factor = m.type.factor;
       // let value = pData.current.last[m.id] * factor;
       // let aggValue = this.valueAgg(key, value, m.type.base_unit, accuDict);
       // pData.current.last[m.id] = aggValue;
@@ -431,7 +431,7 @@ export default class RenUtils {
       if (!pData.max[m.aggregation_function][m.id]) {
         pData.max[m.aggregation_function][m.id] = {};
       }
-      pData.max[m.aggregation_function][m.id] = accuDict[key].accu * factor;
+      pData.max[m.aggregation_function][m.id] = accuDict[key].accu;
     }
 
     return pData;
