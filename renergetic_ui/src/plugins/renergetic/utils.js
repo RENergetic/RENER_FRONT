@@ -337,11 +337,11 @@ export default class RenUtils {
         let value = pData.current[m.aggregation_function][m.id];
         let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
         cp.current[m.aggregation_function][m.id] = newV;
-        if (pData.max && pData.max[m.aggregation_function]) {
-          let value = pData.max[m.aggregation_function][m.id];
-          let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
-          cp.max[m.aggregation_function][m.id] = newV;
-        }
+        // if (pData.max && pData.max[m.aggregation_function]) {
+        //   let value = pData.max[m.aggregation_function][m.id];
+        //   let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
+        //   cp.max[m.aggregation_function][m.id] = newV;
+        // }
       }
     }
     //todo:
