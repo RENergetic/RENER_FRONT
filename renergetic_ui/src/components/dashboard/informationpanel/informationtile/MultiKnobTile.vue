@@ -149,6 +149,8 @@ export default {
             : this.pdata.current[m.aggregation_function][m.id];
         return m.type.base_unit != "%" ? this.pdata.current[m.aggregation_function][m.id] / maxV : this.pdata.current[m.aggregation_function][m.id];
       });
+      console.info(this.pdata);
+      console.info(data);
       let labels = []; // this.tile.measurements.map((m) => m.label);
       //todo remove labels ?
       for (let idx in this.tile.measurements) {

@@ -132,6 +132,16 @@ export default {
       return (value * currentMeasurementType.factor) / mt.factor;
       // return (value / currentMeasurementType.factor) * mt.factor;
     },
+    convertSIValue: (state) => (physicalName, value, newUnit) => {
+      if (newUnit == null || newUnit == "%") {
+        return value;
+      }
+      //get new unit
+      let mt = state.measurementTypes[physicalName].find((mt) => mt.unit == newUnit);
+
+      return value / mt.factor;
+      // return (value / currentMeasurementType.factor) * mt.factor;
+    },
     locationList: (state /* getters*/) => {
       return state.locationList;
     },

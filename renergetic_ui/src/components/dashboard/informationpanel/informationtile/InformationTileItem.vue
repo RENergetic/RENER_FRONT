@@ -15,7 +15,7 @@
         <font-awesome-icon :icon="icon" />
       </span>
     </div>
-    <div class="flex flex-grow-1 flex-column align-items-start justify-content-center message">
+    <div class="flex flex-grow-1 flex-column align-items-start justify-content-center message" style="font-size: 0.85rem">
       <div class="flex flex-grow-1 align-items-center justify-content-center" style="width: 100%">
         <div v-tooltip="labelTooltip" class="flex flex-grow-1 message align-items-start">{{ label }}</div>
         <div class="flex flex-none message align-items-end">{{ $ren.utils.roundValue(value) }} {{ unit }}</div>
@@ -123,12 +123,12 @@ export default {
     },
     label: function () {
       let assetStr = this.assetStr ? `: ${this.assetStr}` : "";
-      let label = `${this.measurementlabel}${assetStr}`;
+      let label = `${this.measurement.aggregation_function}:${this.measurementlabel}${assetStr}`;
 
-      if (label.length < 33) {
+      if (label.length < 36) {
         return label;
       }
-      return label.substring(0, 30) + "...";
+      return label.substring(0, 33) + "...";
       // return label;
     },
     labelTooltip: function () {

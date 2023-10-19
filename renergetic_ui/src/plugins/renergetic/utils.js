@@ -324,7 +324,8 @@ export default class RenUtils {
       if (demand.demand_definition && demand.demand_definition.tile) {
         let tile = demand.demand_definition.tile;
         for (let m of tile.measurements) {
-          mDict[m.id] = m;
+          // mDict[m.id] = m;
+          mDict[`${m.id}_${m.aggregation_function}`] = m;
         }
       }
     }
@@ -337,11 +338,11 @@ export default class RenUtils {
         let value = pData.current[m.aggregation_function][m.id];
         let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
         cp.current[m.aggregation_function][m.id] = newV;
-        // if (pData.max && pData.max[m.aggregation_function]) {
-        //   let value = pData.max[m.aggregation_function][m.id];
-        //   let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
-        //   cp.max[m.aggregation_function][m.id] = newV;
-        // }
+        if (pData.max && pData.max[m.aggregation_function]) {
+          let value = pData.max[m.aggregation_function][m.id];
+          let newV = this.app.$store.getters["view/convertSIValue"](m.type.physical_name, value, newUnit);
+          cp.max[m.aggregation_function][m.id] = newV;
+        }
       }
     }
     //todo:
@@ -355,7 +356,8 @@ export default class RenUtils {
     if (panel && panel.tiles) {
       for (let tile of panel.tiles) {
         for (let m of tile.measurements) {
-          mDict[m.id] = m;
+          mDict[`${m.id}_${m.aggregation_function}`] = m;
+          // mDict[m.id] = m;
         }
       }
     }
@@ -369,11 +371,11 @@ export default class RenUtils {
         let value = pData.current[m.aggregation_function][m.id];
         let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
         cp.current[m.aggregation_function][m.id] = newV;
-        // if (pData.max && pData.max[m.aggregation_function]) {
-        //   let value = pData.max[m.aggregation_function][m.id];
-        //   let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
-        //   cp.max[m.aggregation_function][m.id] = newV;
-        // }
+        if (pData.max && pData.max[m.aggregation_function]) {
+          let value = pData.max[m.aggregation_function][m.id];
+          let newV = this.app.$store.getters["view/convertSIValue"](m.type.physical_name, value, newUnit);
+          cp.max[m.aggregation_function][m.id] = newV;
+        }
       }
     }
     return cp;
@@ -391,7 +393,7 @@ export default class RenUtils {
         if (tile.props && !tile.props.ignore_grouping) {
           for (let m of tile.measurements) {
             //TODO: ignore percentage type ?
-            if (m.type.base_unit != "%") mDict[m.id] = m;
+            if (m.type.base_unit != "%") mDict[`${m.id}_${m.aggregation_function}`] = m;
           }
         }
       }
@@ -428,22 +430,24 @@ export default class RenUtils {
       if (!pData.max[m.aggregation_function]) {
         pData.max[m.aggregation_function] = {};
       }
-      if (!pData.max[m.aggregation_function][m.id]) {
-        pData.max[m.aggregation_function][m.id] = {};
-      }
+      // if (!pData.max[m.aggregation_function][m.id]) {
+      //   pData.max[m.aggregation_function][m.id] = {};
+      // }
       pData.max[m.aggregation_function][m.id] = accuDict[key].accu;
     }
-
+    console.info(pData);
     return pData;
   }
   valueAccu(key, value, baseUnit, dict) {
     if (dict[key] == null) {
-      dict[key] = { accu: value, counter: 0 };
+      dict[key] = { accu: value, counter: 1 };
       return dict;
     }
+    dict[key].counter += 1;
     switch (baseUnit) {
       case "W":
       case "Wh":
+      case "any":
         dict[key].accu += value;
         break;
       default:
@@ -452,17 +456,17 @@ export default class RenUtils {
     }
     return dict;
   }
-  valueAgg(key, value, baseUnit, dict) {
-    switch (baseUnit) {
-      case "W":
-      case "Wh":
-        return dict[key].accu != 0 ? (value / dict[key].accu) * 100.0 : 0.0;
-      default:
-        console.error(`measurement type agreggation not defined for ${baseUnit}, ${key}`);
-        break;
-    }
-    return dict;
-  }
+  // valueAgg(key, value, baseUnit, dict) {
+  //   switch (baseUnit) {
+  //     case "W":
+  //     case "Wh":
+  //       return dict[key].accu != 0 ? (value / dict[key].accu) * 100.0 : 0.0;
+  //     default:
+  //       console.error(`measurement type agreggation not defined for ${baseUnit}, ${key}`);
+  //       break;
+  //   }
+  //   return dict;
+  // }
 }
 
 export { DeferredFunction };
