@@ -1,7 +1,6 @@
 <template>
   <!-- todo:  confirm buttons -->
   <!-- {{ panelList }} -->
-  <RenSpinner ref="spinner"> </RenSpinner>
 
   <DataTable :key="headers" :value="panelList">
     <!-- <Column v-for="h of headers" :key="h" :field="h" :header="$t('model.information_panel.' + h)"></Column> -->
@@ -48,17 +47,20 @@
         <i v-else class="pi pi-chevron-circle-right disabled" style="fontsize: 2rem" />
       </template>
     </Column>
-    <Column field="edit" :header="$t('view.edit')">
+    <Column field="edit">
       <template #body="item">
+        <!--  :header="$t('view.edit')" -->
         <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editPanel(item.data)" />
       </template>
     </Column>
-    <Column field="export" :header="$t('view.export_json')">
+    <Column field="export">
       <template #body="item">
+        <!--  :header="$t('view.export_json')" pi-file-export-->
         <Button v-tooltip="$t('view.export_json')" icon="pi pi-file" class="p-button-rounded" @click="exportJSON(item.data)" />
       </template> </Column
-    ><Column field="delete" :header="$t('view.button.delete')">
+    ><Column field="delete">
       <template #body="item">
+        <!-- :header="$t('view.button.delete')" -->
         <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDelete(item.data)" />
       </template>
     </Column>
@@ -66,7 +68,9 @@
   <Toolbar>
     <template #end><Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="panelAdd = true" /> </template>
   </Toolbar>
-  <RenSpinner ref="assetSpinner" :lock="true" style="margin: auto; max-width: 80rem">
+
+  <RenSpinner ref="spinner"> </RenSpinner>
+  <RenSpinner ref="assetSpinner" :lock="true" style="margin: auto; max-width: 95%">
     <template #content>
       <Dialog v-model:visible="assetManagementDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
         <div v-if="selectedAsset">

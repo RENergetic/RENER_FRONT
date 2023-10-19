@@ -1,7 +1,7 @@
 <template>
-  <Card class="col-12" style="width: 90%; margin: auto; margin-top: 1rem">
+  <Card style="margin: auto; margin-top: 1rem">
     <template #content>
-      <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 80rem">
+      <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 95%">
         <template #content>
           <InformationPanelList v-model:filters="filters" :panel-list="panelList" @reload="loadData" />
         </template>

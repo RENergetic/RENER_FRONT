@@ -56,6 +56,6 @@
   "unit_settings": "Ustawienia jednostek",
   "view": "Widok",
   "manage_notifications": "Powiadomienia",
-  "tv_view_mode": "TV View",
-  "normal_view_mode": "Normal view"
+  "tv_view_mode": "Widok prezentacji",
+  "normal_view_mode": "Widok normaly"
 }

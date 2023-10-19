@@ -98,21 +98,21 @@
     "read": "Może posiadać uprawnienia do Grafany oraz Can receive read privilages to asset or dashboard"
   },
   "role": {
-    "ren-staff": "Staff",
-    "ren-guest": "Guest",
-    "ren-visitor": "Visitor",
-    "ren-user": "User",
-    "ren-manager": "Manager",
-    "ren-technical-manager": "Technical manager",
+    "ren-staff": "Obsługa",
+    "ren-guest": "Gość",
+    "ren-visitor": "Odwiedzający",
+    "ren-user": "Użytkownik",
+    "ren-manager": "Menadżer",
+    "ren-technical-manager": "Menadżer techniczny",
     "ren-admin": "Admin",
     "ren-dev": "Developer",
     "description": {
-      "ren-staff": "Staff",
-      "ren-guest": "Guest",
-      "ren-visitor": "Visitor",
-      "ren-user": "User",
-      "ren-manager": "Manager",
-      "ren-technical-manager": "Technical manager",
+      "ren-staff": "Obsługa",
+      "ren-guest": "Gość",
+      "ren-visitor": "Odwiedzający",
+      "ren-user": "Użytkownik",
+      "ren-manager": "Menadżer",
+      "ren-technical-manager": "Menadżer techniczny",
       "ren-admin": "Admin",
       "ren-dev": "Developer"
     }

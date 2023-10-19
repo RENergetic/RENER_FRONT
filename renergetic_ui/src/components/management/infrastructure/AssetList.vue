@@ -127,28 +127,39 @@
         </span>
       </template>
     </Column>
-    <Column name="asset_connections" :header="$t('model.asset.asset_connections')" :hidden="basic">
+    <Column name="asset_connections" :hidden="basic">
       <template #body="slotProps">
-        <span class="ren-pointer" @click="manageAssetConnections(slotProps.data)">
-          {{ $t("view.manage_asset_connections") }}
-        </span>
-      </template></Column
-    >
-    <Column name="edit" :header="$t('view.properties')" :hidden="basic">
-      <template #body="slotProps">
-        <span class="ren-pointer" @click="manageAssetProperties(slotProps.data, $store.getters['view/assetDetailsKeys'])"> Manage properties </span>
+        <!-- :header="$t('model.asset.asset_connections')"  -->
+        <Button
+          v-tooltip="$t('view.manage_asset_connections')"
+          icon="pi pi-share-alt"
+          class="p-button-rounded"
+          @click="manageAssetConnections(slotProps.data)"
+        />
       </template>
     </Column>
-    <Column name="edit" :header="$t('view.edit')" :hidden="basic">
+    <Column name="edit" :hidden="basic">
       <template #body="slotProps">
+        <!-- :header="$t('view.properties')" -->
+        <Button
+          v-tooltip="$t('view.properties')"
+          icon="pi  pi-sliders-h"
+          class="p-button-rounded"
+          @click="manageAssetProperties(slotProps.data, $store.getters['view/assetDetailsKeys'])"
+        />
+      </template>
+    </Column>
+    <Column name="edit" :hidden="basic">
+      <template #body="slotProps">
+        <!-- :header="$t('view.edit')" -->
         <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
         <!-- <span class="ren-pointer" @click="editAsset(slotProps.data)"> Edit Asset </span> -->
       </template>
     </Column>
-    <Column name="rule" :header="$t('view.rules')" :hidden="basic">
+    <Column name="rule" :hidden="basic">
       <template #body="slotProps">
+        <!-- :header="$t('view.rules')" -->
         <Button v-tooltip="$t('view.rules')" icon="pi pi-code" class="p-button-rounded" @click="editRules(slotProps.data)" />
-        <!-- <span class="ren-pointer" @click="editAsset(slotProps.data)"> Edit Asset </span> -->
       </template>
     </Column>
     <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
