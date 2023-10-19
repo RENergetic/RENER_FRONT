@@ -64,7 +64,7 @@ function validateSettings(settings, panel, ctx) {
       }
   }
   // mSettings.legend = mSettings.legend != null ? mSettings.legend : true;
-  mSettings.legend = mSettings.legend != null ? mSettings.legend : false;
+  // mSettings.legend = mSettings.legend != null ? mSettings.legend : null;
   mSettings.asset_id = ctx.assetId;
   // settings.title = settings.title != null ? settings.title : true;
   // settings.color = settings.color != null ? settings.color : "#d6ebff";

@@ -42,7 +42,7 @@ export default {
         responsive: true,
         plugins: {
           legend: {
-            display: this.settings.tile.legend,
+            display: this.settings.tile.legend ? this.settings.tile.legend : false,
             labels: {
               // color: "#495057",
               color: this.settings.tile.color,
