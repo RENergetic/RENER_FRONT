@@ -476,8 +476,9 @@ export default {
               label: this.$t("menu.feedback"),
               icon: "pi pi-fw pi-check-square",
               visible: () => (flags & this.role) > 0,
+              to: "/profile/survey",
               command: () => {
-                alert("TODO: user feedback");
+                this.$router.push("/profile/survey");
                 // this.$router.push("/feedback");
               },
             },
