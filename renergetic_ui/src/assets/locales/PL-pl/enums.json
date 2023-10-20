@@ -17,6 +17,14 @@
     "percentage": "Procent",
     "power": "Moc"
   }, 
+  
+  "measurement_aggregation": {
+    "sum": "Suma",
+    "mean": "Średnia",
+    "min": "Min",
+    "max": "Maks",
+    "last": "Aktualna wartość"
+  },
   "measurement_name": {
     "heat": "Ciepło",
     "heat_energy":"Ciepło",

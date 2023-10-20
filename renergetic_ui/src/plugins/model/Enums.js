@@ -77,6 +77,13 @@ const MeasurementDirection = init({
   out: "out",
   none: "none",
 });
+const MeasurementAggregation = init({
+  sum: "sum",
+  mean: "mean",
+  min: "min",
+  max: "max",
+  last: "last",
+});
 
 const AssetConnectionType = Object.freeze({
   OWNER: "owner",
@@ -156,4 +163,5 @@ export {
   DashboardMeasurementTypes,
   MeasurementDomains,
   MeasurementDirection,
+  MeasurementAggregation,
 };

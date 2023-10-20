@@ -1,4 +1,4 @@
-{ 
+{
   "dashboard_measurement_types": {
     "energy": "Energy",
     "power": "Power"
@@ -9,19 +9,25 @@
     "energy": "Energy",
     "temperature": "temperature",
     "energy_kwh": "Energy",
-    "energy_wh":"Energy",
+    "energy_wh": "Energy",
     "power_w": "Power",
     "heat_energy_gj": "Heat energy",
     "energy_gj": "Heat energy",
     "percentage": "Percentage",
     "power": "Power"
   },
-  
+  "measurement_aggregation": {
+    "sum": "Sum",
+    "mean": "Mean",
+    "min": "Min",
+    "max": "Max",
+    "last": "Current"
+  },
   "measurement_name": {
     "heat": "Heat",
-    "heat_energy":"Heat energy",
+    "heat_energy": "Heat energy",
     "electricity": "Electricity",
-    "electricity_energy":"Electricity energy",
+    "electricity_energy": "Electricity energy",
     "renewability": "Renewability",
     "renewables": "Renewables",
     "external": "External",
@@ -37,7 +43,7 @@
     "electricity_renewability": "Renewable electricity",
     "heat_renewability": "Renewable heat",
     "co2_reduction": "CO₂ emissions reduction",
-    "current_power":"Current power"
+    "current_power": "Current power"
   },
   "domain": {
     "electricity": "Electricity",

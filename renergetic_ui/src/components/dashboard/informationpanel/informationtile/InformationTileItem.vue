@@ -123,7 +123,8 @@ export default {
     },
     label: function () {
       let assetStr = this.assetStr ? `: ${this.assetStr}` : "";
-      let label = `${this.measurement.aggregation_function}:${this.measurementlabel}${assetStr}`;
+      let aggFunc = this.$t("enums.measurement_aggregation." + this.measurement.aggregation_function);
+      let label = `${aggFunc}:${this.measurementlabel}${assetStr}`;
 
       if (label.length < 36) {
         return label;
