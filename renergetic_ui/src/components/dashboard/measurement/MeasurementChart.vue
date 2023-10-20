@@ -58,7 +58,9 @@ export default {
     let mMeasurements = this.tile ? this.tile.measurements : this.measurements;
     let yAxisTitle = null;
     if (mMeasurements && mMeasurements.length == 1) {
-      yAxisTitle = `${this.$t("enums.physical_type." + mMeasurements[0].type.physical_name)} [${mMeasurements[0].type.unit}]`;
+      console.error("TODO: convert timeseries unit");
+      let unit = mMeasurements[0].type.unit != "any" ? ` [${mMeasurements[0].type.unit}]` : "";
+      yAxisTitle = `${this.$t("enums.physical_type." + mMeasurements[0].type.physical_name)}${unit}`;
     }
     return {
       labels: this.pdata["timeseries_labels"] ? this.pdata["timeseries_labels"] : [],
@@ -188,11 +190,14 @@ export default {
       for (let idx in this.mMeasurements) {
         let m = this.mMeasurements[idx];
         let color = m.measurement_details.color ? m.measurement_details.color : "#90A4AE";
-        let unitLabel = `${this.$t("enums.physical_type." + m.type.physical_name)} [${m.type.unit}]`;
+        console.error("TODO: convert timeseries unit");
+        let aggFunc = this.$t("enums.measurement_aggregation." + m.aggregation_function);
+
+        let unitLabel = m.type.unit != "any" ? `: ${this.$t("enums.physical_type." + m.type.physical_name)} [${m.type.unit}]` : "";
         let label = m.label ? m.label : m.name;
         datasets.push({
           data: data[m.id],
-          label: `${label}: ${unitLabel}`,
+          label: `${label}(${aggFunc})${unitLabel}`,
           // label: `${label}(${m.id}) ${unitLabel}`,
           backgroundColor: color + "30",
           borderColor: color + "FF",

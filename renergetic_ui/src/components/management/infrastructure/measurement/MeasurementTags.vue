@@ -10,7 +10,6 @@
         <ren-input-wrapper :text-label="tag">
           <template #content>
             <Dropdown :id="`${tag}_value`" v-model="tags[tag]" show-clear :options="availableTagsValues[tag]" :placeholder="$t('view.no_tag')" />
-            <!-- :option-label="(opt) => `[${opt.unit}]`" -->
           </template>
         </ren-input-wrapper>
       </div>

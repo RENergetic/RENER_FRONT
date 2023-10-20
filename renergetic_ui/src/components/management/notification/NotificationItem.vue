@@ -75,7 +75,8 @@ export default {
 
   computed: {
     messageParams: function () {
-      let unit = this.notification.measurement ? this.notification.measurement.type.unit : "";
+      let unit = this.notification.measurement && this.notification.measurement.type.unit != "any" ? this.notification.measurement.type.unit : "";
+
       return {
         asset_name: this.notification.asset ? this.notification.asset.name : "No asset",
         timestamp: this.notification.timestamp ? this.$ren.utils.parseUnixTimestamp(this.notification.timestamp) : "No timestamp",

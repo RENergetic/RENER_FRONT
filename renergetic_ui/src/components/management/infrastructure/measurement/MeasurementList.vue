@@ -34,7 +34,8 @@
         <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
       </template> -->
       <template #body="slotProps">
-        <span> {{ slotProps.data.label ? `${slotProps.data.label} (${slotProps.data.name})` : slotProps.data.name }}</span>
+        <span v-if="slotProps.data._label"> {{ slotProps.data.label }} ({{ slotProps.data._label }})</span>
+        <span v-else> {{ slotProps.data.label }} </span>
       </template>
     </Column>
     <!-- <Column field="label" :header="$t('model.measurement.label')" :show-filter-menu="false">

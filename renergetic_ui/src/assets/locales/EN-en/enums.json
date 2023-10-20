@@ -53,7 +53,17 @@
   "physical_type": {
     "energy": "Energy",
     "power": "Power",
-    "temperature": "Temperature"
+    "temperature": "Temperature",
+    "percentage": "Percentage",
+    "voltage": "Voltage",
+    "co2eq": "CO₂ emissions",
+    "flow": "Flow",
+    "mass": "Mass",
+    "speed": "Speed",
+    "moisture": "Moisture",
+    "pressure": "Pressure",
+    "value": "Value",
+    "precipation": "Precipation"
   },
   "measurement_direction": {
     "in": "IN",

@@ -25,11 +25,6 @@
       </div>
     </div>
   </div>
-  <!-- <div :class="state" :style="style">
-    <span v-if="icon != null" id="tileicon" :style="'background-image: url(' + icon + ')'"></span>
-    <span> {{ label }}: {{ Math.round(value, 2) }} {{ tileItem.type.unit }} </span>
-    <div v-if="tileItem.description">description: {{ tileItem.description }}</div>
-  </div> -->
 </template>
 <script>
 import icons from "./icons";

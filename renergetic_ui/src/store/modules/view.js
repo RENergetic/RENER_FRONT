@@ -123,7 +123,14 @@ export default {
       return state.measurementTypes;
     },
     convertValue: (state) => (currentMeasurementType, value, newUnit) => {
-      if (newUnit == null || currentMeasurementType.unit == newUnit || currentMeasurementType.unit == "%" || newUnit == "%") {
+      if (
+        newUnit == null ||
+        currentMeasurementType.unit == newUnit ||
+        currentMeasurementType.unit == "%" ||
+        newUnit == "%" ||
+        currentMeasurementType.unit == "any" ||
+        newUnit == "any"
+      ) {
         return value;
       }
       //get new unit
@@ -133,7 +140,7 @@ export default {
       // return (value / currentMeasurementType.factor) * mt.factor;
     },
     convertSIValue: (state) => (physicalName, value, newUnit) => {
-      if (newUnit == null || newUnit == "%") {
+      if (newUnit == null || newUnit == "%" || newUnit == "any") {
         return value;
       }
       //get new unit

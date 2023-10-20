@@ -148,6 +148,7 @@ export default {
     panel: {
       handler: function (newValue) {
         this.mPanel = newValue;
+        this.setMeasurementLabels(this.mPanel);
         this.reloadGrid();
       },
       deep: true,
@@ -188,10 +189,20 @@ export default {
   async mounted() {
     if (this.pdata != null) {
       this.recalculateData(this.pdata);
+
       this.reloadGrid();
     }
   },
   methods: {
+    setMeasurementLabels(panel) {
+      if (panel) {
+        for (let t in panel.tiles) {
+          for (let m in t.measurements) {
+            this.$ren.utils.setMeasurementLabel(m);
+          }
+        }
+      }
+    },
     recalculateData(panelData) {
       if (panelData) {
         console.error("TODO: convert timeseries");

@@ -55,7 +55,17 @@
   "physical_type": {
     "energy": "Energia",
     "power": "Moc",
-    "temperature": "Temperatura"
+    "temperature": "Temperatura",
+    "percentage": "Procent",
+    "voltage": "Napięcia",
+    "co2eq": "Emisja CO₂",
+    "flow": "Przepływ",
+    "mass": "Masa",
+    "speed": "Prędkość",
+    "moisture": "Wilgotność",
+    "pressure": "Ciśnienie",
+    "value": "Liczba",
+    "precipation": "Precipation"
   },
   "measurement_direction": {
     "in": "Konsumpcja",

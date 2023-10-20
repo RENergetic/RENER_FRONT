@@ -282,7 +282,21 @@ export default class RenUtils {
 
     return { alpha: alpha, color: color };
   }
+  setMeasurementLabel(measurement) {
+    if (measurement.label) {
+      let k = `model.measurement.labels.${measurement.label}`;
+      if (this.app.$te(k)) {
+        measurement._label = measurement.label;
+        measurement.label = this.app.$t(k);
+      } else {
+        measurement._label = measurement.name;
+      }
+    } else {
+      measurement.label = measurement.name;
+    }
 
+    return measurement;
+  }
   aggKey(measurement, settings) {
     let key = `${measurement.type.base_unit}_${measurement.aggregation_function}`;
     if (settings.groupByDirection) {
@@ -315,7 +329,11 @@ export default class RenUtils {
     if (conversionSettings) mt = conversionSettings[domainKey] ? conversionSettings[domainKey] : conversionSettings[defaultKey];
     else mt = null;
     // console.info(conversionSettings);
-    return mt ? mt : measurement.type.unit;
+    let unit = mt ? mt : measurement.type.unit;
+    if (unit == "any") {
+      return null;
+    }
+    return unit;
   }
   convertDemandData(demandList, pData, settings) {
     var cp = pData;
@@ -331,9 +349,7 @@ export default class RenUtils {
     }
     for (let mId in mDict) {
       let m = mDict[mId];
-      // console.info(m);
       var newUnit = this.getUnit(m, null, settings); // settings[m.type.physical_name];
-      // console.info(m.type.physical_name + " " + newUnit);
       if (newUnit) {
         let value = pData.current[m.aggregation_function][m.id];
         let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
@@ -404,9 +420,7 @@ export default class RenUtils {
       let key = this.aggKey(m, settings);
       // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
       let factor = m.type.factor;
-      console.info(m);
       let value = pData.current[m.aggregation_function][m.id] * factor; //todo: raise exception if value not found
-      console.info(value);
       accuDict = this.valueAccu(key, value, m.type.base_unit, accuDict);
     }
     pData.max = {};
