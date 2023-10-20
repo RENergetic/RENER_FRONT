@@ -19,7 +19,7 @@
       />
       <!-- {{ tile }} -->
       <!-- {{ tile.measurements }} -->
-      <MeasurementChartList ref="dataPreview" :filter="filter" :chart-type="'scatter'" :measurements="tile.measurements" @on-load="onLoad()" />
+      <MeasurementChartList ref="dataPreview" :filter="filter" :chart-type="'scatter'" :measurements="measurements" @on-load="onLoad()" />
     </div>
     <!-- </template>
     </Card> -->
@@ -41,11 +41,13 @@ export default {
   props: {},
   emits: ["reload", "onLoad"],
   data() {
+    console.warn("TODO: removing aggregation functions");
+
     return {
       loaded: false,
       dialog: false,
       filter: this.$store.getters["settings/parsedFilter"]("measurement"),
-
+      measurements: [],
       tile: null,
     };
   },
@@ -61,6 +63,13 @@ export default {
     },
     async open(tile) {
       this.tile = tile;
+      var mDict = {};
+      for (let m of this.tile.measurements) {
+        // mDict[m.id] = m;
+        // mDict[`${m.id}_${m.aggregation_function}`] = m;
+        mDict[`${m.id}`] = m;
+      }
+      this.measurements = Object.values(mDict);
       this.dialog = true;
     },
     async reload() {
