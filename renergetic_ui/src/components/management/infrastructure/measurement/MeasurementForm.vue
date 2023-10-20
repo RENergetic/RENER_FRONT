@@ -128,6 +128,7 @@ export default {
       m.physical_type = this.modelValue.type != null ? this.modelValue.type.physical_name : null;
       m.unit = this.modelValue.type != null ? this.modelValue.type.unit : null;
       mUnits = this.$store.getters["view/measurementTypes"][m.physical_type];
+      m.label = this.modelValue._label && this.modelValue._label != this.modelValue.name ? this.modelValue._label : this.modelValue.label;
     }
 
     return {

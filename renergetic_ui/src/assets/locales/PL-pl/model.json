@@ -93,6 +93,16 @@
      "measurement": {
           "name": "Name",
           "label": "Label",
+          "labels": {
+               "kpi_peak": "Peak Value",
+               "kpi_sres": "Share of RES",
+               "kpi_snes": "Share of Non-RES",
+               "kpi_ess": "Energy Self-Sufficiency",
+               "kpi_ep": "Energy potency",
+               "kpi_co2": "CO₂ intensity",
+               "kpi_ee": "Energy efficency",
+               "kpi_es": "Energy savings"
+          },
           "panel_count": "Linked panels count",
           "measurement_type": "Measurement type",
           "location_name": "Location",
