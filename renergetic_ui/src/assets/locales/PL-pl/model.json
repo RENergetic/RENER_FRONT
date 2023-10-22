@@ -95,13 +95,13 @@
           "label": "Label",
           "labels": {
                "kpi_peak": "Peak Value",
-               "kpi_sres": "Share of RES",
-               "kpi_snes": "Share of Non-RES",
-               "kpi_ess": "Energy Self-Sufficiency",
-               "kpi_ep": "Energy potency",
-               "kpi_co2": "CO₂ intensity",
-               "kpi_ee": "Energy efficency",
-               "kpi_es": "Energy savings"
+               "kpi_sres": "Udział odnawialnych żródeł energii",
+               "kpi_snes": "Udział nieodnawialnych żródeł energii",
+               "kpi_ess": "Samowystarczalność",
+               "kpi_ep": "Potencjał",
+               "kpi_co2": "CO₂",
+               "kpi_ee": "Efektywność",
+               "kpi_es": "Oszczędność energii"
           },
           "panel_count": "Linked panels count",
           "measurement_type": "Measurement type",
