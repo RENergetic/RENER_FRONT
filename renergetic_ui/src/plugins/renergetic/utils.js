@@ -185,8 +185,8 @@ export default class RenUtils {
     console.info("reload user data");
     let isAuthenticated = this.app.$store.getters["auth/isAuthenticated"];
     if (!isAuthenticated) {
-      console.error("TODO: handle not logged in user");
-      return;
+      // console.error("TODO: handle not logged in user");
+      throw new Error({ isAuthenticated: isAuthenticated });
     }
     var currentRole = this.app.$store.getters["auth/renRole"];
 

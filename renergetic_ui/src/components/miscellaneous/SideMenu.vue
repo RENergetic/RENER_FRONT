@@ -97,7 +97,11 @@ export default {
           let menu = this.initMenu();
           this.menuModel = menu;
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          if (error == null || error.isAuthenticated != false) {
+            console.error(error);
+          }
+        });
     },
 
     featuredPanels() {
