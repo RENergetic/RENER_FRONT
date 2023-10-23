@@ -415,6 +415,16 @@ export default class ManagementApi extends RestComponent {
       return true;
     });
   }
+  async getAllMeasurementsPaginationWorkaround() {
+    return this.get(`/api/measurements?limit=1500`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Measurements not found`, {
+          code: "measurement_list_error",
+        });
+      }
+      return true;
+    });
+  }
   async getAssetRules(asset_id) {
     return this.get(`/api/assetRules/asset/${asset_id}`, null, null, (e) => {
       if (e.response.status != 404) {

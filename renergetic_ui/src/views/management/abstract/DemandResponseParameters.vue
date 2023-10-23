@@ -143,7 +143,7 @@ export default {
       }
     },
     async measurementsGetter() {
-      this.dropdownMeasurementList = await this.$ren.managementApi.getAllMeasurements();
+      this.dropdownMeasurementList = await this.$ren.managementApi.getAllMeasurementsPaginationWorkaround();
       this.dropdownMeasurementList2 = this.dropdownMeasurementList;
     },
     async deleteDemandResponseUI() {
