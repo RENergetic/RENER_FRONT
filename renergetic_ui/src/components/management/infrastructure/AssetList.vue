@@ -2,6 +2,7 @@
   <!-- <Paginator v-model:first="mPage" :rows="1" :total-records="mPage + 2"
    template="FirstPageLink PrevPageLink PageLinks NextPageLink    " /> -->
   <!-- TODO: unslect row event -->
+  <!--  -->
   <DataTable
     :value="assetList"
     :lazy="true"
@@ -11,8 +12,8 @@
     responsive-layout="scroll"
     :global-filter-fields="['name', 'label', 'type.name', 'category.label']"
     selection-mode="single"
-    :selection="selectedAsset"
     :meta-key-selection="false"
+    :selection="selectedRow"
     @filter="onFilter"
     @row-unselect="$emit('onSelect', null)"
     @update:selection="onSelect"
@@ -129,7 +130,6 @@
     </Column>
     <Column name="asset_connections" :hidden="basic">
       <template #body="slotProps">
-        <!-- :header="$t('model.asset.asset_connections')"  -->
         <Button
           v-tooltip="$t('view.manage_asset_connections')"
           icon="pi pi-share-alt"
@@ -138,9 +138,8 @@
         />
       </template>
     </Column>
-    <Column name="edit" :hidden="basic">
+    <Column name="edit_properties" :hidden="basic">
       <template #body="slotProps">
-        <!-- :header="$t('view.properties')" -->
         <Button
           v-tooltip="$t('view.properties')"
           icon="pi  pi-sliders-h"
@@ -151,21 +150,31 @@
     </Column>
     <Column name="edit" :hidden="basic">
       <template #body="slotProps">
-        <!-- :header="$t('view.edit')" -->
         <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
         <!-- <span class="ren-pointer" @click="editAsset(slotProps.data)"> Edit Asset </span> -->
       </template>
     </Column>
     <Column name="rule" :hidden="basic">
       <template #body="slotProps">
-        <!-- :header="$t('view.rules')" -->
         <Button v-tooltip="$t('view.rules')" icon="pi pi-code" class="p-button-rounded" @click="editRules(slotProps.data)" />
       </template>
     </Column>
+    <Column name="delete" :hidden="basic">
+      <template #body="slotProps">
+        <Button
+          v-tooltip="$t('view.delete')"
+          :disabled="slotProps.data.type.name == 'user' || (slotProps.data.measurements && slotProps.data.measurements.length > 0)"
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-danger"
+          @click="deleteAsset(slotProps.data)"
+        />
+      </template>
+    </Column>
+
     <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
     <template #header>
       <div v-if="!hiddenFilters" class="flex justify-content-between">
-        <Button type="button" icon="pi pi-filter-slash" :label="$t('view.button.filter')" class="p-button-outlined" @click="reload" />
+        <Button type="button" icon="pi pi-filter" :label="$t('view.button.filter')" class="p-button-outlined" @click="reload" />
         <Button type="button" icon="pi pi-filter-slash" :label="$t('view.button.clear_filter')" class="p-button-outlined" @click="clearFilter" />
       </div>
     </template>
@@ -203,7 +212,7 @@
     <Card>
       <template #title> {{ $t("model.asset.child") }} </template>
       <template #content>
-        <DataTable v-if="selectedRow" :value="selectedRow.child">
+        <DataTable v-if="selectedAsset" :value="selectedAsset.child">
           <!-- <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.asset.' + col)"></Column> -->
           <Column field="name" :header="$t('model.asset.name')"> </Column>
           <Column field="label" :header="$t('model.asset.label')"> </Column>
@@ -219,8 +228,8 @@
     <Card>
       <template #title> {{ $t("model.asset.measurements") }} </template>
       <template #content>
-        <!-- {{ selectedRow.measurements }} -->
-        <DataTable v-if="selectedRow" :value="selectedRow.measurements">
+        <!-- {{ selectedAsset.measurements }} -->
+        <DataTable v-if="selectedAsset" :value="selectedAsset.measurements">
           <!-- <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.asset.' + col)"></Column> -->
           <!-- TODO: field=direction? -->
           <Column field="name" :header="$t('model.measurement.name')"> </Column>
@@ -243,13 +252,22 @@
             "measurement_details": { "color": "#4CAF50" }
             </template> -->
           </Column>
+          <Column name="revoke_measurement">
+            <template #body="slotProps">
+              <Button
+                v-tooltip="$t('view.revoke')"
+                icon="pi pi-times"
+                class="p-button-rounded p-button-danger"
+                @click="revokeMeasurement(slotProps.data)"
+              />
+            </template>
+          </Column>
         </DataTable>
         <span v-else>
           {{ $t("view.no_asset_measurements") }}
         </span>
-
         <Button :label="$t('view.button.add_measurement')" @click="addMeasurement" />
-        <measurement-select ref="measurementSelectDialog" :asset-id="selectedRow.id" @select="onMeasurementSelect"></measurement-select>
+        <measurement-select ref="measurementSelectDialog" :asset-id="selectedAsset.id" @select="onMeasurementSelect"></measurement-select>
       </template>
     </Card>
   </Dialog>
@@ -301,7 +319,7 @@ export default {
       mOffset: this.offset,
       assetAdd: false,
       mFilters: this.filters ? this.filters : initFilter(),
-      selectedRow: null,
+      // selectedRow: null,
       childDialog: false,
       measurementDialog: false,
       deferredEmitFilter: null,
@@ -330,7 +348,7 @@ export default {
     },
     setParent(row) {
       console.info(row);
-      this.selectedRow = row;
+      this.selectedAsset = row;
       this.$refs.assetSelectDialog.open(row.parent);
     },
     manageAssetConnections(row) {
@@ -352,21 +370,66 @@ export default {
     },
     viewChildren(row) {
       console.info(row);
-      this.selectedRow = row;
+      this.selectedAsset = row;
       this.childDialog = true;
     },
     viewMeasurements(row) {
       console.info(row);
-      this.selectedRow = row;
+      this.selectedAsset = row;
       this.measurementDialog = true;
     },
 
     async onParentChange(parent) {
-      await this.$ren.managementApi.setParent(this.selectedRow, parent.id);
+      await this.$ren.managementApi.setParent(this.selectedAsset, parent.id);
       this.$emit("reload");
     },
     addMeasurement() {
       this.$refs.measurementSelectDialog.open();
+    },
+    revokeMeasurement(measurement) {
+      let asset = this.selectedAsset;
+      let label = measurement.label ? measurement.label : measurement.name;
+      this.$confirm.require({
+        message: this.$t("view.asset_measurement_revoke_confirm", {
+          label: label,
+        }),
+        header: this.$t("view.asset_measurement_revoke"),
+        icon: "pi pi-exclamation-triangle",
+        accept: () => {
+          this.$ren.managementApi.revokeAssetMeasurement(asset.id, measurement.id).then((measurement) => {
+            this.$emitter.emit("information", { message: this.$t("information.measurement_revoked") });
+            console.info(measurement);
+            // this.selectedAsset.measurements.remove(measurement); tODo: remove from the list measurement
+            this.reload();
+          });
+        },
+        reject: () => {
+          this.$confirm.close();
+        },
+      });
+    },
+    onMeasurementSelect(measurement) {
+      let asset = this.selectedAsset;
+      let label = measurement.label ? measurement.label : measurement.name;
+      this.$confirm.require({
+        message: this.$t("view.asset_measurement_assign_confirm", {
+          label: label,
+        }),
+        header: this.$t("view.asset_measurement_assign"),
+        icon: "pi pi-exclamation-triangle",
+        accept: () => {
+          this.$ren.managementApi.assignAssetMeasurement(asset.id, measurement.id).then((res) => {
+            if (res) {
+              this.$emitter.emit("information", { message: this.$t("information.measurement_assigned") });
+              this.selectedAsset.measurements.push(measurement);
+              this.reload();
+            }
+          });
+        },
+        reject: () => {
+          this.$confirm.close();
+        },
+      });
     },
     async updateDetails(asset, details) {
       for (const [key, value] of Object.entries(details)) {
@@ -385,9 +448,7 @@ export default {
       await this.$ren.managementApi.updateAsset(asset);
       await this.reload();
     },
-    onMeasurementSelect(measurement) {
-      this.selectedRow.measurements.push(measurement);
-    },
+
     async onCreate(o) {
       console.log(o);
       await this.$ren.managementApi.addAsset(o).then((assetId) => {
@@ -418,13 +479,32 @@ export default {
       this.mFilters = initFilter();
       this.$emit("update:filters", this.mFilters);
     },
+    deleteAsset(asset) {
+      let label = asset.label ? asset.label : asset.name;
+      this.$confirm.require({
+        message: this.$t("view.asset_delete_confirm", {
+          label: label,
+        }),
+        header: this.$t("view.asset_delete"),
+        icon: "pi pi-exclamation-triangle",
+        accept: () => {
+          this.$ren.managementApi.deleteAsset(asset.id).then(() => {
+            this.$emitter.emit("information", { message: this.$t("information.asset_deleted") });
+          });
+          this.reload();
+        },
+        reject: () => {
+          this.$confirm.close();
+        },
+      });
+    },
     onSelect(evt) {
-      if (this.selectedAsset == null || (evt != null && evt.id != this.selectedAsset.id)) {
-        this.selectedAsset = evt;
+      if (this.selectedRow == null || (evt != null && evt.id != this.selectedRow.id)) {
+        this.selectedRow = evt;
       } else {
-        this.selectedAsset = null;
+        this.selectedRow = null;
       }
-      this.$emit("onSelect", this.selectedAsset);
+      this.$emit("onSelect", this.selectedRow);
     },
   },
 };
