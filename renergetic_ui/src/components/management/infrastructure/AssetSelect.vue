@@ -141,6 +141,11 @@ export default {
       return !(this.assetList.length < 1 || !this.assetList.some((asset) => this.selectedAsset && asset.name === this.selectedAsset.name));
     },
   },
+  watch: {
+    filters: function () {
+      this.searchAsset();
+    },
+  },
   mounted() {
     this.page = 0;
     this.filters = this.initFilter();
@@ -164,9 +169,17 @@ export default {
       this.filters = this.initFilter();
     },
     async searchAsset() {
-      //TODO: filter not implemented on backend
+      //TODO: tomek will manage filtering feature with api
+      let params = null;
+      if (this.filters)
+        params = {
+          label: this.filters.label.value,
+          name: this.filters.name.value,
+          type: this.filters["type.label"] && this.filters["type.label"].value ? this.filters["type.label"].value.name : null,
+          category: this.filters["category.label"] && this.filters["category.label"].value ? this.filters["category.label"].value.name : null,
+        };
       this.$refs.spinner.run(async () => {
-        await this.$ren.managementApi.listAsset(undefined, this.mOffset, this.limit + this.mOffset).then((assetList) => {
+        await this.$ren.managementApi.listAsset(params, this.mOffset, this.limit).then((assetList) => {
           this.assetList = assetList;
         });
       });
