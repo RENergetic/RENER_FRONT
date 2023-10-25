@@ -10,7 +10,7 @@
     v-if="showIcon"
     id="infoicon"
     class="pi pi-info-circle"
-    style="fontsize: 2rem"
+    style="font-size: 1.5rem"
     @mouseleave="$refs.InfoPanel.toggle"
     @mouseover="$refs.InfoPanel.toggle"
     @click="$refs.InfoPanel.toggle"

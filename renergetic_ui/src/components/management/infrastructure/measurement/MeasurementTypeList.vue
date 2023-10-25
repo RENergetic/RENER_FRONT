@@ -19,8 +19,8 @@
 
         <Column field="dashboard_visibility" :header="$t('model.measurement_type.dashboardVisibility')" :show-filter-menu="false">
           <template #body="item">
-            <i v-if="item.data.dashboard_visibility" class="pi pi-eye" style="fontsize: 2rem" @click="setDashboardVisibility(item.data, false)" />
-            <i v-else class="pi pi-eye-slash" style="fontsize: 2rem" @click="setDashboardVisibility(item.data, true)" />
+            <i v-if="item.data.dashboard_visibility" class="pi pi-eye" style="font-size: 1.5rem" @click="setDashboardVisibility(item.data, false)" />
+            <i v-else class="pi pi-eye-slash" style="font-size: 1.5rem" @click="setDashboardVisibility(item.data, true)" />
           </template>
         </Column>
         <!-- <Column field="edit" :header="$t('view.edit')"> <template #body>todo:</template></Column> -->

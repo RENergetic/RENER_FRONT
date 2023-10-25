@@ -4,6 +4,7 @@
   <!-- TODO: unslect row event -->
   <!--  -->
   <DataTable
+    class="asset-list"
     :value="assetList"
     :lazy="true"
     data-key="id"
@@ -106,15 +107,16 @@
 
     <Column field="parent" :header="$t('model.asset.parent')">
       <template #body="slotProps">
-        <span v-if="slotProps.data.parent" class="ren-pointer" @click="setParent(slotProps.data)">
-          {{ slotProps.data.parent.label }}
+        <span v-if="slotProps.data.parent" class="ren-pointer">
+          <span @click="setParent(slotProps.data)"> {{ slotProps.data.parent.label }}</span>
+          <i class="pi pi-times" style="font-size: 1rem; color: rgba(250, 30, 30, 0.9)" @click="revokeParent(slotProps.data)" />
         </span>
         <span v-else class="disabled ren-pointer" @click="setParent(slotProps.data)">
           {{ $t("view.no_parent") }}
         </span>
       </template>
     </Column>
-    <Column field="measurements" :header="$t('model.asset.measurements')" :hidden="basic">
+    <!-- <Column field="measurements" :header="$t('model.asset.measurements')" :hidden="basic">
       <template #body="slotProps">
         <span
           v-if="slotProps.data.measurements && slotProps.data.measurements.length > 0"
@@ -127,14 +129,50 @@
           {{ $t("view.no_asset_measurements") }}
         </span>
       </template>
+    </Column> -->
+    <Column name="edit" :hidden="basic">
+      <template #body="slotProps">
+        <Button
+          v-if="slotProps.data.measurements && slotProps.data.measurements.length > 0"
+          v-tooltip="$t('view.view_asset_measurements')"
+          icon="pi  pi-chart-line"
+          class="p-button-rounded p-button-info"
+          @click="viewMeasurements(slotProps.data)"
+        />
+        <Button
+          v-else
+          v-tooltip="$t('view.no_asset_measurements')"
+          icon="pi  pi-chart-line"
+          class="p-button-rounded p-button-info disabled"
+          @click="viewMeasurements(slotProps.data)"
+        />
+
+        <Button
+          v-tooltip="$t('view.manage_asset_connections')"
+          icon="pi pi-share-alt"
+          class="p-button-rounded"
+          @click="manageConnections(slotProps.data)"
+        />
+        <Button v-tooltip="$t('view.properties')" icon="pi  pi-sliders-h" class="p-button-rounded" @click="manageAssetProperties(slotProps.data)" />
+        <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
+        <Button v-tooltip="$t('view.rules')" icon="pi pi-code" class="p-button-rounded" @click="editRules(slotProps.data)" />
+        <Button
+          v-tooltip="$t('view.delete')"
+          :disabled="slotProps.data.type.name == 'user' || (slotProps.data.measurements && slotProps.data.measurements.length > 0)"
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-danger"
+          @click="deleteAsset(slotProps.data)"
+        />
+      </template>
     </Column>
-    <Column name="asset_connections" :hidden="basic">
+
+    <!-- <Column name="asset_connections" :hidden="basic">
       <template #body="slotProps">
         <Button
           v-tooltip="$t('view.manage_asset_connections')"
           icon="pi pi-share-alt"
           class="p-button-rounded"
-          @click="manageAssetConnections(slotProps.data)"
+          @click="manageConnections(slotProps.data)"
         />
       </template>
     </Column>
@@ -144,14 +182,14 @@
           v-tooltip="$t('view.properties')"
           icon="pi  pi-sliders-h"
           class="p-button-rounded"
-          @click="manageAssetProperties(slotProps.data, $store.getters['view/assetDetailsKeys'])"
+          @click="manageAssetProperties(slotProps.data )"
         />
       </template>
     </Column>
     <Column name="edit" :hidden="basic">
       <template #body="slotProps">
         <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
-        <!-- <span class="ren-pointer" @click="editAsset(slotProps.data)"> Edit Asset </span> -->
+        
       </template>
     </Column>
     <Column name="rule" :hidden="basic">
@@ -169,7 +207,7 @@
           @click="deleteAsset(slotProps.data)"
         />
       </template>
-    </Column>
+    </Column> -->
 
     <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
     <template #header>
@@ -201,7 +239,7 @@
   <Dialog v-model:visible="assetAdd" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <AssetForm @update:model-value="onCreate($event, 0)" @cancel="assetAdd = false"> </AssetForm>
   </Dialog>
-  <AssetSelectDialog ref="assetSelectDialog" @select="onParentChange" />
+  <AssetSelectDialog ref="assetSelectDialog" @submit="onParentChange" />
   <AssetConnectionManagementDialog ref="assetConnectionManagementDialog" />
   <AssetCategorySelection ref="assetCategorySelection" />
   <AssetProperties ref="assetPropertiesDialog" @submit="updateDetails" />
@@ -351,10 +389,11 @@ export default {
       this.selectedAsset = row;
       this.$refs.assetSelectDialog.open(row.parent);
     },
-    manageAssetConnections(row) {
+    manageConnections(row) {
       this.$refs.assetConnectionManagementDialog.open(row);
     },
-    manageAssetProperties(row, detailsKeys) {
+    manageAssetProperties(row) {
+      let detailsKeys = this.$store.getters["view/assetDetailsKeys"];
       this.$refs.assetPropertiesDialog.open(row, detailsKeys);
     },
     ////
@@ -380,8 +419,25 @@ export default {
     },
 
     async onParentChange(parent) {
-      await this.$ren.managementApi.setParent(this.selectedAsset, parent.id);
+      await this.$ren.managementApi.assignParent(this.selectedAsset, parent.id);
       this.$emit("reload");
+    },
+
+    async revokeParent(asset) {
+      this.$confirm.require({
+        message: this.$t("view.asset_parent_revoke_confirm", {
+          label: asset.label ? asset.label : asset.name,
+        }),
+        header: this.$t("view.asset_parent_revoke"),
+        icon: "pi pi-exclamation-triangle",
+        accept: () => {
+          this.$ren.managementApi.revokeParent(asset).then(() => {
+            this.$emitter.emit("information", { message: this.$t("information.asset_parent_revoked") });
+            this.reload();
+          });
+        },
+        reject: () => this.$confirm.close(),
+      });
     },
     addMeasurement() {
       this.$refs.measurementSelectDialog.open();
@@ -510,4 +566,18 @@ export default {
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss"></style>
+<style lang="scss">
+.asset-list .p-datatable-tbody td {
+  padding: 0.5rem 0.5rem !important;
+  max-width: 15rem;
+}
+.asset-list .p-datatable-tbody button {
+  margin: 0.25rem 0.25rem;
+}
+.asset-list .p-datatable-tbody td:first-child {
+  padding-left: 0.75rem !important;
+}
+.asset-list .p-datatable-tbody td:last-child {
+  padding-right: 0.75rem !important;
+}
+</style>

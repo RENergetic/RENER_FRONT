@@ -112,28 +112,45 @@ export default class ManagementApi extends RestComponent {
     });
   }
 
-  async setParent(asset, parentId) {
-    const assetCopy = {
-      id: asset.id,
-      name: asset.name,
-      type: asset.type.id,
-      label: asset.label,
-      description: asset.description,
-      geo_location: asset.geo_location,
-      parent: parentId,
-      user: asset.user,
-      asset_category: asset.category,
-      dashboards: asset.dashboards,
-    };
-    return this.put(`/api/assets/${asset.id}`, assetCopy, null, null, (e) => {
+  // async setParent(asset, parentId) {
+  //   const assetCopy = {
+  //     id: asset.id,
+  //     name: asset.name,
+  //     type: asset.type.id,
+  //     label: asset.label,
+  //     description: asset.description,
+  //     geo_location: asset.geo_location,
+  //     parent: parentId,
+  //     user: asset.user,
+  //     asset_category: asset.category,
+  //     dashboards: asset.dashboards,
+  //   };
+  //   return this.put(`/api/assets/${asset.id}`, assetCopy, null, null, (e) => {
+  //     if (e.response.status === 404) {
+  //       this.emitError(`${asset.id} not found: ${e.message}`, { code: "asset_not_found", args: [asset.id] });
+  //     } else {
+  //       this.emitError(`PUT /api/assets/${asset.id} -${e.message}`);
+  //     }
+  //   });
+  // }
+  async assignParent(asset, parentId) {
+    return this.put(`/api/assets/${asset.id}/parent/${parentId}`, null, null, null, (e) => {
       if (e.response.status === 404) {
         this.emitError(`${asset.id} not found: ${e.message}`, { code: "asset_not_found", args: [asset.id] });
       } else {
-        this.emitError(`PUT /api/assets/${asset.id} -${e.message}`);
+        this.emitError(`PUT /api/assets/${asset.id}/parent/${parentId} -${e.message}`);
       }
     });
   }
-
+  async revokeParent(asset) {
+    return this.delete(`/api/assets/${asset.id}/parent`, null, null, null, (e) => {
+      if (e.response.status === 404) {
+        this.emitError(`${asset.id} not found: ${e.message}`, { code: "asset_not_found", args: [asset.id] });
+      } else {
+        this.emitError(`PUT /api/assets/${asset.id}/parent -${e.message}`);
+      }
+    });
+  }
   async getAsset(id) {
     return this.get(`/api/assets/${id}`, null, null, (e) => {
       if (e.response.status == 404) {
