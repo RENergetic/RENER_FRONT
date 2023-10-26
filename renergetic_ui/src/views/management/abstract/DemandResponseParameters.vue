@@ -110,14 +110,13 @@ export default {
   methods: {
     //Process to obtain the asset rules from the DDBB
     addPrecreatedAssetRule(assetRule) {
-      [this.timeRange1, this.durationSyntax1] = assetRule.timeRangeMeasurement1.split(" ");
-      //threshold
+      this.rowActiveCheckBox = assetRule.active;
+      this.measurementList = assetRule.measurement1Id;
+      this.measurement1Function = assetRule.functionMeasurement1;
+      [, this.timeRange, this.durationSyntax] = assetRule.timeRangeMeasurement1.match(/(\d+(?:\.\d+)?)([a-zA-Z]+)/);
+      this.operationData = assetRule.comparator;
       if (assetRule.timeRangeMeasurement2 == null) {
-        this.rowActiveCheckBox = assetRule.active;
-        this.measurementList = assetRule.measurement1Id;
-        this.measurement1Function = assetRule.functionMeasurement1;
-        [this.timeRange, this.durationSyntax] = assetRule.timeRangeMeasurement1.split(" ");
-        this.operationData = assetRule.comparator;
+        //threshold
         this.thresholdMeasurement = this.dropdownThresholdMeasurement[0];
         this.checkBoxBool = assetRule.compareToConfigThreshold;
         this.valueMeasurement = assetRule.manualThreshold;
@@ -127,17 +126,12 @@ export default {
         this.durationSyntax2 = this.dropdownDurationSyntax[0];
       } else if (assetRule.timeRangeMeasurement2 != null) {
         //measurement
-        this.rowActiveCheckBox = assetRule.active;
-        this.measurementList = assetRule.measurement1Id;
-        this.measurement1Function = assetRule.functionMeasurement1;
-        [this.timeRange, this.durationSyntax] = assetRule.timeRangeMeasurement1.split(" ");
-        this.operationData = assetRule.comparator;
         this.thresholdMeasurement = this.dropdownThresholdMeasurement[1];
         this.checkBoxBool = null;
         this.valueMeasurement = null;
         this.measurementList2 = assetRule.measurement2Id;
         this.measurement2Function = assetRule.functionMeasurement2;
-        [this.timeRange2, this.durationSyntax2] = assetRule.timeRangeMeasurement2.split(" ");
+        [, this.timeRange2, this.durationSyntax2] = assetRule.timeRangeMeasurement2.match(/(\d+(?:\.\d+)?)([a-zA-Z]+)/);
       } else {
         console.error("MESSAGE ERROR");
       }
