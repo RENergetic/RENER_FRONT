@@ -3,6 +3,7 @@
     <!-- obtained from the backend -->
     <Checkbox v-model="rowActiveCheckBox" :binary="true" />
     <Dropdown v-model="measurementList" :options="formattedOptions" :placeholder="'Measurements'" optionLabel="label" optionValue="value" />
+    <Button :label="formattedMeasurementValue" @click="measurementSelectionDialog"></Button>
     <Dropdown
       v-model="measurement1Function"
       :placeholder="dropdownMeasurementFunction[0]"
@@ -46,14 +47,17 @@
       <label>{{ $t("view.asset_details_dont_exist") }}</label>
     </div>
     <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteDemandResponseUI()" />
+    <MeasurementSelectionList ref="measurementSelectionList" @selected-measurement="handleMeasurementSelection"></MeasurementSelectionList>
   </div>
 </template>
 <script>
 import Checkbox from "primevue/checkbox";
+import MeasurementSelectionList from "@/components/management/infrastructure/MeasurementSelectionList.vue";
 export default {
   name: "DemandResponseParameters",
   components: {
     Checkbox,
+    MeasurementSelectionList,
   },
   data() {
     return {
@@ -92,6 +96,17 @@ export default {
         value: drop.id,
         label: drop.name + " : " + (drop.label || "No label"), // Example: Convert label to uppercase
       }));
+      return formattedMeasurement;
+    },
+    formattedMeasurementValue() {
+      let formattedMeasurement;
+      formattedMeasurement = this.dropdownMeasurementList.find((m) => m.id === this.measurementList);
+      console.log(formattedMeasurement);
+      if (formattedMeasurement) {
+        formattedMeasurement = formattedMeasurement.name + " : " + (formattedMeasurement.label || "No label");
+      } else {
+        formattedMeasurement = "Measurements";
+      }
       return formattedMeasurement;
     },
   },
@@ -205,6 +220,13 @@ export default {
     },
     async assetInvalid() {
       this.detailsError = true;
+    },
+    measurementSelectionDialog() {
+      this.$refs.measurementSelectionList.open();
+    },
+    handleMeasurementSelection(selectedId) {
+      this.measurementList = selectedId;
+      console.log(selectedId + " . " + this.measurementList);
     },
   },
 };
