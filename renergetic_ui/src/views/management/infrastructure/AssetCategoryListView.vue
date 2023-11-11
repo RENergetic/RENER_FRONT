@@ -18,10 +18,10 @@
 </template>
 
 <script>
-import CategoryList from "@/components/management/infrastructure/CategoryList.vue";
+import CategoryList from "@/components/management/infrastructure/AssetCategoryList.vue";
 
 export default {
-  name: "CategoryListView",
+  name: "AssetCategoryListView",
   components: { CategoryList },
   data() {
     return {

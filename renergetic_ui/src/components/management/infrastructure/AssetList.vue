@@ -233,7 +233,11 @@
     </template>
   </DataTable>
   <Toolbar v-if="!basic">
-    <template #end><Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="assetAdd = true" /> </template>
+    <template #end>
+      <Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="assetAdd = true" />
+
+      <Button style="margin-left: 0.5rem" icon="pi pi-list" :label="$t('view.button.manage_asset_categories')" @click="manageCategories" />
+    </template>
   </Toolbar>
 
   <Dialog v-model:visible="assetAdd" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
@@ -305,6 +309,7 @@
           {{ $t("view.no_asset_measurements") }}
         </span>
         <Button :label="$t('view.button.add_measurement')" @click="addMeasurement" />
+
         <measurement-select ref="measurementSelectDialog" :asset-id="selectedAsset.id" @select="onMeasurementSelect"></measurement-select>
       </template>
     </Card>
@@ -448,6 +453,10 @@ export default {
     addMeasurement() {
       this.$refs.measurementSelectDialog.open();
     },
+    manageCategories() {
+      this.$router.push({ name: "AssetCategoryList" });
+    },
+
     revokeMeasurement(measurement) {
       let asset = this.selectedAsset;
       let label = measurement.label ? measurement.label : measurement.name;

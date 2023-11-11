@@ -209,8 +209,6 @@ export default {
         ...this._panelManagementItems(),
         ...this._measurementItems(),
         ...this._notificationItems(),
-
-        ...this._categoryItems(),
         ...this._abstractMeters(),
       ];
       return [
@@ -322,18 +320,7 @@ export default {
         },
       ];
     },
-    _categoryItems() {
-      return [
-        {
-          label: this.$t("menu.manage_categories"),
-          icon: "pi pi-fw pi-list",
-          to: "/management/category",
-          command: () => {
-            this.$router.push({ name: "CategoryList" });
-          },
-        },
-      ];
-    },
+
     _abstractMeters() {
       return [
         {

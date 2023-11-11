@@ -66,7 +66,7 @@ import AssetList from "@/components/management/infrastructure/AssetList.vue";
 import RenSpinner from "@/components/miscellaneous/RenSpinner.vue";
 
 export default {
-  name: "CategoryList",
+  name: "AssetCategoryList",
   components: { CategoryForm, Skeleton, AssetList, RenSpinner },
   props: {
     categoryList: { type: Array, default: () => [] },
