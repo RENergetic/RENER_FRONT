@@ -157,7 +157,7 @@
         <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
         <Button v-tooltip="$t('view.rules')" icon="pi pi-code" class="p-button-rounded" @click="editRules(slotProps.data)" />
         <Button
-          v-tooltip="$t('view.delete')"
+          v-tooltip="$t('view.delete') + hasMeasurementsTooltip(slotProps.data)"
           :disabled="slotProps.data.type.name == 'user' || (slotProps.data.measurements && slotProps.data.measurements.length > 0)"
           icon="pi pi-trash"
           class="p-button-rounded p-button-danger"
@@ -383,6 +383,12 @@ export default {
     onFilter(ev) {
       this.mFilters = ev.filters;
       this.deferredEmitFilter.run();
+    },
+    hasMeasurementsTooltip(asset) {
+      if (asset.measurements && asset.measurements.length > 0) {
+        return ` (${this.$t("view.asset_has_assigned_measurements")})`;
+      }
+      return "";
     },
     setParent(row) {
       console.info(row);

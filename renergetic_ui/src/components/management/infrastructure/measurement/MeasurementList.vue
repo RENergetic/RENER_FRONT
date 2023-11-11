@@ -48,7 +48,21 @@
         <span> {{ $t("enums.metric_type." + slotProps.data.type.physical_name) }} </span>
       </template>
       <template #filter="{ filterModel, filterCallback }">
-        <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
+        <Dropdown
+          v-model="filterModel.value"
+          style="min-width: 12rem"
+          class="p-column-filter"
+          :options="physicalTypes"
+          option-label="label"
+          option-value="value"
+          :placeholder="$t('view.select_physical_type')"
+          :show-clear="true"
+          @change="filterCallback()"
+        >
+          <!-- <template #option="slotProps">
+            <Tag :value="slotProps.option" :severity="getSeverity(slotProps.option)" />
+          </template> -->
+        </Dropdown>
       </template>
     </Column>
     <Column field="asset" filter-field="asset.name" :header="$t('model.measurement.asset')">
@@ -61,16 +75,43 @@
     </Column>
     <Column field="type" filter-field="type.name" :header="$t('model.measurement.type')" :show-filter-menu="false">
       <template #body="slotProps">
-        <span> ({{ slotProps.data.type.id }}){{ $t("enums.metric_type." + slotProps.data.type.name) }} [{{ slotProps.data.type.unit }}] </span>
+        <span> {{ typeLabel(slotProps.data.type) }} </span>
       </template>
       <template #filter="{ filterModel, filterCallback }">
-        <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
+        <!-- <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" /> -->
+        <Dropdown
+          v-model="filterModel.value"
+          style="min-width: 12rem"
+          class="p-column-filter"
+          :options="measurementTypeList"
+          :option-label="(opt) => typeLabel(opt)"
+          option-value="name"
+          :placeholder="$t('view.select_measurement_type')"
+          :show-clear="true"
+          @change="filterCallback()"
+        >
+        </Dropdown>
       </template>
     </Column>
 
     <Column field="domain" :header="$t('model.measurement.domain')" :show-filter-menu="false">
+      <template #body="slotProps">
+        {{ $t(`enums.domain.${slotProps.data.domain}`) }}
+      </template>
       <template #filter="{ filterModel, filterCallback }">
-        <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
+        <!-- <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" /> -->
+
+        <Dropdown
+          v-model="filterModel.value"
+          style="min-width: 12rem"
+          class="p-column-filter"
+          :options="domains"
+          :option-label="(opt) => $t(`enums.domain.${opt}`)"
+          :placeholder="$t('view.select_measurement_domain')"
+          :show-clear="true"
+          @change="filterCallback()"
+        >
+        </Dropdown>
       </template>
     </Column>
     <Column field="direction" :header="$t('model.measurement.direction')" :show-filter-menu="false">
@@ -134,6 +175,7 @@ import MeasurementForm from "./MeasurementForm.vue";
 // import DeleteMeasurement from "./DeleteMeasurement.vue";
 import MeasurementTypeList from "./MeasurementTypeList.vue";
 import MeasurementExtension from "./MeasurementExtension.vue";
+import { MeasurementDomains, MeasurementDirection } from "@/plugins/model/Enums.js";
 
 export default {
   name: "MeasurementList",
@@ -143,9 +185,16 @@ export default {
   },
   emits: ["reload"],
   data() {
+    let physicalTypes = Object.keys(this.$store.getters["view/measurementTypes"]).map((it) => {
+      return { value: it, label: this.$t("enums.metric_type." + it) };
+    });
+
     return {
       // measurementAdd: false,
-
+      domains: MeasurementDomains.keys(),
+      directions: MeasurementDirection.keys(),
+      physicalTypes: physicalTypes,
+      measurementTypeList: this.$store.getters["view/wrapper"]["measurementTypeList"],
       expanded: [],
       columns: [],
       filters: this.initFilters(),
@@ -215,6 +264,9 @@ export default {
       });
       this.addDialog = false;
       this.reload();
+    },
+    typeLabel(mType) {
+      return `(${mType.id}) ${this.$t("enums.metric_type." + mType.name)} [${mType.unit}] `;
     },
     // edit(o) {
     //   this.selectedMeasurement = o;
