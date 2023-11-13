@@ -53,35 +53,61 @@
   </Card> -->
   <Dialog v-model:visible="importPanelDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <Card>
-      <template #header>
-        {{ $t("view.choose_panel_file") }}
-      </template>
+      <template #header> </template>
       <template #content>
-        <!-- with-credentials="true," -->
-        <!-- :disabled="selectedModel == null" -->
+        <Accordion>
+          <AccordionTab :header="$t('view.fileupload')">
+            <FileUpload
+              ref="FileUpload"
+              name="template[]"
+              :custom-upload="true"
+              :multiple="false"
+              :show-upload-button="false"
+              :cancel-label="$t('view.button.clear')"
+              :choose-label="$t('view.button.choose')"
+              :auto="true"
+              :show-cancel-button="false"
+              accept="text/*, .json"
+              :max-file-size="1000000"
+              @upload="onUpload"
+              @uploader="onFileUpload"
+              @select="onSelect"
+            >
+              <!-- @upload="onFileUpload" -->
+              <template #empty>
+                <!-- <ren-input-text v-if="submittedPanel" v-model="submittedPanel" :text-label="null" :cols="50" :maxlength="10000" /> -->
+                <ren-input-wrapper v-if="submittedPanel" :text-label="null">
+                  <template #content>
+                    <Textarea v-model="submittedPanel" style="width: 100%" :maxlength="20000" rows="15" :cols="80"></Textarea>
+                  </template>
+                </ren-input-wrapper>
+                <p v-if="!submittedPanel">{{ $t("view.file_drag_drop") }}</p>
+              </template>
+            </FileUpload>
+          </AccordionTab>
+          <AccordionTab :header="$t('view.panel_templates')">
+            <ren-input-wrapper>
+              <template #content>
+                <Listbox
+                  id="panelDefaultTemplates"
+                  v-model="submittedPanel"
+                  :option-label="(opt) => $t(`view.panel_templates.${opt.label}`)"
+                  :options="[{ label: kpi, template: {} }]"
+                />
+              </template>
+            </ren-input-wrapper>
+          </AccordionTab>
+        </Accordion>
+
+        <ren-switch
+          v-if="!mModel.is_template"
+          v-model="inferMeasurements"
+          :options="[
+            { label: $t('view.infer_measurements'), value: true },
+            { label: $t('view.no_infer_measurements'), value: false },
+          ]"
+        />
         <ren-submit v-if="submittedPanel != null" :cancel-button="true" @submit="fileSubmit" @cancel="onFileClear" />
-        <FileUpload
-          ref="FileUpload"
-          name="template[]"
-          :custom-upload="true"
-          :multiple="false"
-          :show-upload-button="false"
-          :cancel-label="$t('view.button.clear')"
-          :choose-label="$t('view.button.choose')"
-          :auto="true"
-          :show-cancel-button="false"
-          accept="text/*, .json"
-          :max-file-size="1000000"
-          @upload="onUpload"
-          @uploader="onFileUpload"
-          @select="onSelect"
-        >
-          <!-- @upload="onFileUpload" -->
-          <template #empty>
-            <ren-input-text v-if="submittedPanel" v-model="submittedPanel" :text-label="null" :cols="50" :maxlength="10000" />
-            <p v-else>{{ $t("view.file_drag_drop") }}</p>
-          </template>
-        </FileUpload>
       </template>
     </Card>
   </Dialog>
@@ -144,6 +170,7 @@ export default {
   data() {
     let mModel = this.modelValue ? this.modelValue : { tiles: [] };
     return {
+      inferMeasurements: false,
       mModel: mModel,
       addMode: this.modelValue == null || this.modelValue.name == null,
       // mPanelStructure: null,
@@ -192,8 +219,11 @@ export default {
 
       this.submittedPanel = null;
     },
-    fileSubmit() {
+    async fileSubmit() {
       this.mPanelStructureText = this.submittedPanel;
+      if (this.inferMeasurements) {
+        await this.infer();
+      }
       this.importPanelDialog = false;
     },
     async onFileUpload(evt) {
@@ -214,6 +244,22 @@ export default {
       // await this._submit(event.files);
     },
 
+    async infer() {
+      if (!this.mModel.is_template) {
+        let panel = JSON.parse(this.mPanelStructureText);
+        await this.$ren.dashboardApi.inferMeasurements(panel).then((inferredPanel) => {
+          this.submittedPanel = getStructureText(inferredPanel, this.mModel.is_template);
+          this.mPanelStructureText = this.submittedPanel;
+        });
+      }
+
+      let panel = JSON.parse(this.mPanelStructureText);
+      panel.name = this.mModel.name;
+      panel.id = this.mModel.id;
+      panel.label = this.mModel.label ? this.mModel.label : this.panel.label;
+      this.mModel = panel;
+      this.$emit("update:modelValue", this.mModel);
+    },
     submit() {
       if (this.mModel.label && !this.mModel.label.includes(ASSET_TAG) && this.mModel.is_template) {
         this.mModel.label = `${this.mModel.label} - (${ASSET_TAG})`;

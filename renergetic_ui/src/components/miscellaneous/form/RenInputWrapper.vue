@@ -6,7 +6,10 @@
       </div>
       <div v-else>{{ textLabel }}</div>
     </label>
-    <div class="col-12 md:col-10">
+    <div v-if="!textLabel" class="col-12">
+      <slot id="ren-input" name="content" />
+    </div>
+    <div v-else class="col-12 md:col-10">
       <slot id="ren-input" name="content" />
     </div>
     <span v-if="invalid">
@@ -19,6 +22,7 @@
 
 <script>
 export default {
+  //ren-input-wrapper
   name: "RenInputWrapper",
   props: {
     invalid: { type: Boolean, default: false },

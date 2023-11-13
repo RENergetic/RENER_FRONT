@@ -76,6 +76,9 @@ export default class DashboardApi extends RestComponent {
       }
     });
   }
+  async inferMeasurements(panel) {
+    return this.post(`/api/informationPanel/infermeasurements`, panel);
+  }
 
   async updateInformationPanel(panel) {
     return this.put(`/api/informationPanel`, panel, null, null, (e) => {
@@ -97,10 +100,10 @@ export default class DashboardApi extends RestComponent {
   }
 
   async getInformationPanel(panelId) {
-    return this.get(`/api/informationPanel/${panelId}`);
+    return this.get(`/api/informationPanel/id/${panelId}`);
   }
   async deleteInformationPanel(panelId) {
-    return this.delete(`/api/informationPanel/${panelId}`);
+    return this.delete(`/api/informationPanel/id/${panelId}`);
   }
 
   async setFeatured(panelId, featured) {
