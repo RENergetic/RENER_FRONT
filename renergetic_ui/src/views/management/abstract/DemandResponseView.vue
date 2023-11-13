@@ -64,14 +64,20 @@ export default {
     },
     async saveDemands() {
       this.jsonMeasurementData = [];
+      let msgType = "information";
       if (this.demandResponseList.length != 0) {
+        msgType = "information";
         for (let i = 0; i < this.demandResponseList.length; i++) {
           this.questionnaire = this.$refs.demandResponseParameters[i];
           this.returnedInfo = await this.questionnaire.returnInfo();
           await this.jsonCreation();
         }
         this.saveData();
+        this.$emitter.emit(msgType, { message: this.$t("view.correctly_added") });
       } else {
+        msgType = "error";
+        this.saveData();
+        this.$emitter.emit(msgType, { message: this.$t("view.no_values_added") });
         console.log("No value to add");
       }
     },
@@ -127,9 +133,9 @@ export default {
       return await this.$ren.managementApi.getAssetDetails(id);
     },
     async saveData() {
-      //console.log("Save data for asset: " + this.assetId);
-      //console.log(this.jsonMeasurementData);
-      await this.$ren.managementApi.updateCreateDelete(this.jsonMeasurementData, this.jsonMeasurementData[0].assetId);
+      console.log("Save data for asset: " + this.assetId);
+      console.log(this.jsonMeasurementData);
+      await this.$ren.managementApi.updateCreateDelete(this.jsonMeasurementData, this.assetId);
       console.log("Data saved");
     },
   },
