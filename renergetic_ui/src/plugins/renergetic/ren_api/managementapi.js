@@ -238,6 +238,9 @@ export default class ManagementApi extends RestComponent {
   async getMeasurementTags(id) {
     return this.get(`/api/measurements/${id}/tags`);
   }
+  async duplicateMeasurement(id) {
+    return this.post(`/api/measurements/id/${id}/copy`);
+  }
   async listTags() {
     return this.get(`/api/measurements/tags`);
   }

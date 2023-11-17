@@ -18,6 +18,8 @@
       <Button v-tooltip="$t('view.view_data')" icon="pi pi-chart-line" class="p-button-rounded" @click="showData()" />
 
       <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="edit()" />
+      <Button v-tooltip="$t('view.copy')" icon="pi pi-copy" class="p-button-rounded" @click="copy()" />
+
       <Button v-tooltip="$t('view.delete')" icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteConfirm()" />
     </div>
     <div class="col-12 md:col-10 xl:col-6">
@@ -149,6 +151,14 @@ export default {
       });
 
       this.measurementDetailsDialog = true;
+    },
+
+    async copy() {
+      //todo: confirm?
+      await this.$ren.managementApi.duplicateMeasurement(this.mMeasurement.id).then((newM) => {
+        console.info(newM);
+        this.reload();
+      });
     },
 
     edit() {

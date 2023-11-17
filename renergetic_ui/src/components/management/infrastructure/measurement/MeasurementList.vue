@@ -5,9 +5,11 @@
     </template>
   </InfoIcon>
   <!-- @row-expand="onexpand" -->
+  <!-- {{ mFilters }} -->
   <DataTable
     v-model:expandedRows="expanded"
-    v-model:filters="filters"
+    :filters="mFilters"
+    :lazy="true"
     data-key="id"
     :rows="50"
     :paginator="true"
@@ -16,11 +18,12 @@
     :value="measurementList"
     filter-display="row"
     :global-filter-fields="['name', 'label', 'type.name', 'type.physical_name', 'domain', 'direction', 'asset.name']"
+    @filter="onFilter"
   >
     <template #header>
       <span class="p-input-icon-left">
         <i class="pi pi-search" />
-        <InputText v-model="filters['global'].value" :placeholder="$t('view.search')" />
+        <InputText v-model="mFilters['global'].value" :placeholder="$t('view.search')" />
       </span>
     </template>
     <Column :expander="true" header-style="width: 3rem" />
@@ -73,19 +76,20 @@
         <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
       </template>
     </Column>
-    <Column field="type" filter-field="type.name" :header="$t('model.measurement.type')" :show-filter-menu="false">
+    <Column field="type" filter-field="type.id" :header="$t('model.measurement.type')" :show-filter-menu="false">
       <template #body="slotProps">
         <span> {{ typeLabel(slotProps.data.type) }} </span>
       </template>
       <template #filter="{ filterModel, filterCallback }">
         <!-- <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" /> -->
+
         <Dropdown
           v-model="filterModel.value"
           style="min-width: 12rem"
           class="p-column-filter"
           :options="measurementTypeList"
           :option-label="(opt) => typeLabel(opt)"
-          option-value="name"
+          option-value="id"
           :placeholder="$t('view.select_measurement_type')"
           :show-clear="true"
           @change="filterCallback()"
@@ -176,6 +180,7 @@ import MeasurementForm from "./MeasurementForm.vue";
 import MeasurementTypeList from "./MeasurementTypeList.vue";
 import MeasurementExtension from "./MeasurementExtension.vue";
 import { MeasurementDomains, MeasurementDirection } from "@/plugins/model/Enums.js";
+import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 
 export default {
   name: "MeasurementList",
@@ -183,7 +188,7 @@ export default {
   props: {
     measurementList: { type: Array, default: () => [] },
   },
-  emits: ["reload"],
+  emits: ["reload", "update:filters"],
   data() {
     let physicalTypes = Object.keys(this.$store.getters["view/measurementTypes"]).map((it) => {
       return { value: it, label: this.$t("enums.metric_type." + it) };
@@ -197,12 +202,13 @@ export default {
       measurementTypeList: this.$store.getters["view/wrapper"]["measurementTypeList"],
       expanded: [],
       columns: [],
-      filters: this.initFilters(),
+      mFilters: this.initFilters(),
       selectedMeasurement: null,
       editDialog: false,
       addDialog: false,
       typeDialog: false,
       measurementDetailsDialog: false,
+      deferredEmitFilter: null,
     };
   },
   computed: {},
@@ -212,12 +218,23 @@ export default {
     //   // alert(value);
     // },
   },
+  created() {
+    this.deferredEmitFilter = new DeferredFunction(this._emitFilter);
+  },
   mounted() {
     if (this.measurementList != null && this.measurementList.length > 0) {
       this.columns = Object.keys(this.measurementList[0]);
     }
   },
   methods: {
+    _emitFilter() {
+      // console.info("emitFilter: " + new Date());
+      this.$emit("update:filters", this.mFilters);
+    },
+    onFilter(ev) {
+      this.mFilters = ev.filters;
+      this.deferredEmitFilter.run();
+    },
     rowClass(data) {
       if (data.panel_count === 0) {
         return "disabled";
@@ -229,7 +246,8 @@ export default {
         global: { value: null },
         name: { value: null },
         label: { value: null },
-        "type.name": { value: null },
+        // "type.name": { value: null },
+        "type.id": { value: null },
         "type.physical_name": { value: null },
         "asset.name": { value: null },
         domain: { value: null },
@@ -239,7 +257,7 @@ export default {
       };
     },
     filterNameCallback(f) {
-      this.filters.label = f;
+      this.mFilters.label = f;
     },
     // async onDetailsUpdate(details) {
     //   this.selectedMeasurement.measurement_details = details;
