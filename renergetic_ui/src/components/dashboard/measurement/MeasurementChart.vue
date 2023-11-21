@@ -2,7 +2,8 @@
   <RenSpinner ref="spinner" :lock="true">
     <template #content>
       <!-- {{ measurements }} -->
-
+      <!-- {{ pdata }} -->
+      <!-- {{ mMeasurements.length }} -->
       <Chart
         v-if="!titleVisible && height && width"
         :style="mStyle"
@@ -75,7 +76,7 @@ export default {
     title: function () {
       if (this.titleVisible) {
         // let label = " ";
-        var _l = this.measurements.map((m) => {
+        var _l = this.mMeasurements.map((m) => {
           let measurementName = m.label ? m.label : m.name;
           if (m.asset) {
             let assetName = m.asset.label ? m.asset.label : m.asset.name;
@@ -156,11 +157,15 @@ export default {
       let hasAllData = false;
       if (this.pdata["timeseries"] && this.pdata["timeseries"]["current"]) {
         hasAllData = true;
-        this.tile.measurements.forEach((m) => {
-          hasAllData &= this.pdata["timeseries"]["current"][m.id];
+        this.mMeasurements.forEach((m) => {
+          hasAllData &=
+            this.pdata["timeseries"]["current"][m.id] &&
+            this.pdata["timeseries"]["current"][m.id].length == this.pdata["timeseries"]["timestamps"].length;
         });
       }
+      console.info(hasAllData);
       if (hasAllData) {
+        this.labels = this.pdata["timeseries"]["timestamps"];
         return this.pdata["timeseries"]["current"];
       }
       return null;
@@ -174,8 +179,8 @@ export default {
       if (data == null) {
         let timeseriesData;
         if (this.tile) timeseriesData = await this.$ren.dataApi.getTimeseries(null, this.tile.id, this.assetId, this.filter);
-        if (this.measurements) {
-          timeseriesData = await this.$ren.dataApi.getMeasurementTimeseries(this.measurements, this.filter);
+        if (this.mMeasurements) {
+          timeseriesData = await this.$ren.dataApi.getMeasurementTimeseries(this.mMeasurements, this.filter);
         }
         this.labels = timeseriesData["timestamps"];
         data = timeseriesData["current"];
@@ -202,7 +207,7 @@ export default {
           backgroundColor: color + "30",
           borderColor: color + "FF",
           showLine: true,
-          fill: true,
+          fill: m.measurement_details && m.measurement_details["fill_chart"] != null ? m.measurement_details["fill_chart"] : true,
         });
       }
       // console.error(datasets);

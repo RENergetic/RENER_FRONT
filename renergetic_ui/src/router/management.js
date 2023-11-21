@@ -13,6 +13,17 @@ var management = [
     component: () => import("../views/management/infrastructure/AssetListView.vue"),
   },
   {
+    path: "/management/hdr",
+    name: "HDRView",
+    props: {},
+    meta: {
+      isAuthenticated: true,
+      roles: ["ren-admin", "ren-technical-manager"],
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
+    },
+    component: () => import("../views/management/demand/HDRView.vue"),
+  },
+  {
     path: "/management/measurement",
     name: "MeasurementList",
     props: {},

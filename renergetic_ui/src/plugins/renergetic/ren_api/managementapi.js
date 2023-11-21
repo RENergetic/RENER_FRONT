@@ -244,6 +244,13 @@ export default class ManagementApi extends RestComponent {
   async listTags() {
     return this.get(`/api/measurements/tags`);
   }
+  async listTagKeys() {
+    return this.get(`/api/measurements/tags/keys`);
+  }
+  async listTagValues(tagKey) {
+    return this.get(`/tags/key/${tagKey}/values`);
+  }
+
   async createNewTag(tag) {
     // return this.put(`/api/measurements/tags/key/${tag.key}/value/${tag.value}`);
     return this.post(`/api/measurements/tags`, tag);

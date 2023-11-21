@@ -209,6 +209,7 @@ export default {
         ...this._panelManagementItems(),
         ...this._measurementItems(),
         ...this._notificationItems(),
+        ...this._hdrItems(),
         ...this._abstractMeters(),
       ];
       return [
@@ -316,6 +317,18 @@ export default {
           to: "/management/notification",
           command: () => {
             this.$router.push({ name: "NotificationList" });
+          },
+        },
+      ];
+    },
+    _hdrItems() {
+      return [
+        {
+          label: this.$t("menu.hdr_view"),
+          icon: "pi pi-fw pi-list",
+          to: "/management/demand/hdr",
+          command: () => {
+            this.$router.push({ name: "HDRView" });
           },
         },
       ];

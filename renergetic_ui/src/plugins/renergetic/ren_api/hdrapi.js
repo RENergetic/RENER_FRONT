@@ -1,11 +1,24 @@
 import RestComponent from "./restcomponent";
-// import storage from "../../../assets/dummy/storage.js";
-// import informationPanelList from "../../../assets/dummy/samples/informationpanels.js";
-// import heatmapList from "../../../assets/dummy/samples/heatmap.js";
-// import demandList from "../../../assets/dummy/samples/demand.js";
 export default class HDRAPI extends RestComponent {
   constructor(axiosInstance, vueInstance) {
     super(axiosInstance, vueInstance);
   }
-  //TODO:
+  getCurrentRecommendations() {
+    return this.get(`/api/hdr/recommendations/current`);
+  }
+  getRecommendationsMeasurements(id) {
+    return this.get(`/api/hdr/recommendations/id/${id}/measurements`);
+  }
+
+  getCurrentRequest() {
+    return this.get(`/api/hdr/requests/current`);
+  }
+
+  setCurrentRequest(request) {
+    return this.post(`/api/hdr/requests`, request);
+  }
+
+  deleteRequest(requestTimestamp) {
+    return this.delete(`/api/hdr/requests?t=${requestTimestamp}`);
+  }
 }

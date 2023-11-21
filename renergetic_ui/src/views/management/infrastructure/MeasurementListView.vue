@@ -5,6 +5,7 @@
         <!--  max-width: 80vw -->
         <template #content>
           <!-- {{ filters }} -->
+          <!-- {{ filters }} -->
           <measurement-list v-model:filters="filters" :measurement-list="measurementList" @reload="loadMeasurements" />
         </template>
       </RenSpinner>
@@ -26,8 +27,11 @@ export default {
   },
 
   watch: {
-    filters: function () {
-      this.loadMeasurements();
+    filters: {
+      handler: function () {
+        this.loadMeasurements();
+      },
+      deep: true,
     },
   },
   mounted() {
@@ -46,6 +50,7 @@ export default {
           domain: this.filters.domain.value,
           direction: this.filters.direction.value,
           sensor_name: this.filters.sensor_name.value,
+          tag_key: this.filters.tag_key.value,
         };
       await this.$refs.spinner.run(async () => {
         await this.$ren.managementApi.listMeasurement({ ...params, limit: 2000 }).then((data) => {

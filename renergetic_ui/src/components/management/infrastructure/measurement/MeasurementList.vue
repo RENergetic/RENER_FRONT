@@ -6,6 +6,8 @@
   </InfoIcon>
   <!-- @row-expand="onexpand" -->
   <!-- {{ mFilters }} -->
+  <!-- {{ mFilters }} -->
+  <!-- :global-filter-fields="['name', 'label', 'type.name', 'type.physical_name', 'domain', 'direction', 'asset.name']" -->
   <DataTable
     v-model:expandedRows="expanded"
     :filters="mFilters"
@@ -17,13 +19,17 @@
     :rows-per-page-options="[10, 20, 50, 100]"
     :value="measurementList"
     filter-display="row"
-    :global-filter-fields="['name', 'label', 'type.name', 'type.physical_name', 'domain', 'direction', 'asset.name']"
     @filter="onFilter"
   >
     <template #header>
-      <span class="p-input-icon-left">
+      <!-- <span class="p-input-icon-left">
         <i class="pi pi-search" />
         <InputText v-model="mFilters['global'].value" :placeholder="$t('view.search')" />
+      </span> -->
+
+      <span class="p-input-icon-left" style="margin-left: 1rem">
+        <i class="pi pi-search" />
+        <Dropdown v-model="mFilters.tag_key.value" show-clear :options="tagsKeys" :placeholder="$t('view.tag_filter')" />
       </span>
     </template>
     <Column :expander="true" header-style="width: 3rem" />
@@ -209,31 +215,33 @@ export default {
       typeDialog: false,
       measurementDetailsDialog: false,
       deferredEmitFilter: null,
+      tagsKeys: [],
     };
   },
   computed: {},
   watch: {
-    // "filters.name": function (f1 ) {
-    //   this.filters.label.value = f1.value;
-    //   // alert(value);
-    // },
+    "mFilters.tag_key.value": async function () {
+      await this.onFilter({ filters: this.mFilters });
+    },
   },
   created() {
     this.deferredEmitFilter = new DeferredFunction(this._emitFilter);
   },
-  mounted() {
+  async mounted() {
     if (this.measurementList != null && this.measurementList.length > 0) {
       this.columns = Object.keys(this.measurementList[0]);
     }
+
+    this.tagsKeys = await this.$ren.managementApi.listTagKeys();
   },
   methods: {
     _emitFilter() {
       // console.info("emitFilter: " + new Date());
       this.$emit("update:filters", this.mFilters);
     },
-    onFilter(ev) {
+    async onFilter(ev) {
       this.mFilters = ev.filters;
-      this.deferredEmitFilter.run();
+      await this.deferredEmitFilter.run();
     },
     rowClass(data) {
       if (data.panel_count === 0) {
@@ -243,7 +251,7 @@ export default {
     },
     initFilters() {
       return {
-        global: { value: null },
+        global: { value: null, tagKey: null },
         name: { value: null },
         label: { value: null },
         // "type.name": { value: null },
@@ -253,6 +261,7 @@ export default {
         domain: { value: null },
         direction: { value: null },
         sensor_name: { value: null },
+        tag_key: { value: null },
         // "asset.name": { value: null },
       };
     },

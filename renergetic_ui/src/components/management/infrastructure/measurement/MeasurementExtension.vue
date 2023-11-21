@@ -32,6 +32,12 @@
       <div class="col-12">
         <ren-input v-model="mMeasurement.panel_count" :text-label="'model.measurement.panel_count'" :disabled="true" />
       </div>
+      <div class="col-12">
+        <h2>{{ $t("view.tags") }}:</h2>
+      </div>
+      <div v-for="tag in measurementTags" :key="tag.id" class="col-12">
+        <ren-input v-model="tag.value" :text-label="tag.key" :disabled="true" />
+      </div>
     </div>
   </div>
 
@@ -112,6 +118,7 @@ export default {
       dataDialog: false,
       measurementDetailsDialog: false,
       filter: this.$store.getters["settings/parsedFilter"]("measurement"),
+      measurementTags: [],
     };
   },
   computed: {},
@@ -121,7 +128,9 @@ export default {
     //   // alert(value);
     // },
   },
-  mounted() {},
+  async mounted() {
+    this.measurementTags = await this.$ren.managementApi.getMeasurementTags(this.measurement.id);
+  },
   methods: {
     reloadSettings() {
       this.filter = this.$store.getters["settings/parsedFilter"]("measurement");
