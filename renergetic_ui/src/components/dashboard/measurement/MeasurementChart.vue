@@ -4,6 +4,7 @@
       <!-- {{ measurements }} -->
       <!-- {{ pdata }} -->
       <!-- {{ mMeasurements.length }} -->
+      <!-- {{ annotations }} -->
       <Chart
         v-if="!titleVisible && height && width"
         :style="mStyle"
@@ -13,7 +14,7 @@
         :height="height"
         :width="width"
       />
-      <div v-if="titleVisible" class="flex flex-none flex-column justify-content-center">
+      <div v-if="titleVisible" class="flex flex-none flex-column justify-content-center" style="max-width: 75%">
         <h2>{{ title }}</h2>
         <!-- v-if="legend"-->
       </div>
@@ -33,6 +34,7 @@
 <script>
 import Chart from "primevue/chart";
 import chartjsMoment from "chartjs-adapter-moment";
+import chartjsPluginAnnotation from "chartjs-plugin-annotation";
 export default {
   name: "MeasurementChart",
   components: { Chart },
@@ -47,6 +49,12 @@ export default {
     assetId: { type: String, default: null },
     immediate: { type: Boolean, default: true },
     titleVisible: { type: Boolean, default: false },
+    annotations: {
+      type: [Object, Array],
+      default: () => {
+        return {};
+      },
+    },
     filter: {
       type: Object,
       default: () => {
@@ -66,7 +74,7 @@ export default {
     return {
       labels: this.pdata["timeseries_labels"] ? this.pdata["timeseries_labels"] : [],
       datasets: [],
-      plugins: [chartjsMoment],
+      plugins: [chartjsMoment, chartjsPluginAnnotation],
       mStyle: "max-width: 100rem;max-height:60rem; margin: auto;height:100%;width:100%",
       mMeasurements: mMeasurements,
       yAxisTitle: yAxisTitle,
@@ -96,12 +104,21 @@ export default {
       return "";
     },
     options: function () {
+      let annotations = this.annotations;
+      console.info(annotations);
       return {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
+          annotation: {
+            annotations: annotations,
+          },
           legend: {
+            position: "chartArea",
+            align: "start",
             display: this.legend,
+            maxWidth: 200,
+            fullSize: false,
             labels: {
               color: "#495057",
             },

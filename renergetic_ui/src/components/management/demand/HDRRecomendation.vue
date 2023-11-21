@@ -10,13 +10,14 @@
             :ref="`mChart_${index}`"
             :pdata="{ timeseries: pdata }"
             :filter="filter"
-            :style="mStyle"
-            width="1200"
-            height="500"
+            style="width: 100%"
+            :width="1200"
+            :height="500"
             :chart-type="chartType"
             :title-visible="true"
             :legend="true"
             :measurements="measurements"
+            :annotations="annotations"
           />
         </div>
       </div>
@@ -41,6 +42,10 @@ export default {
       type: Object,
       default: null,
     },
+    request: {
+      type: Object,
+      default: null,
+    },
   },
   emits: ["reload"],
   data() {
@@ -52,6 +57,9 @@ export default {
       mDict: {},
       mGroups: [],
       reloadChart: false,
+      annotations: null,
+      currentMeasurements: [],
+      tagKey: null,
     };
   },
   computed: {
@@ -88,17 +96,32 @@ export default {
       let assetId = m.asset ? m.asset.id : "";
       return `${m.name}_${m.sensor_name}_${m.type.id}_${assetId}_${m.direction}_${m.domain}`;
     },
+    async loadCurrentMeasurements() {
+      let r = this.recommendation;
+      if (this.tagKey != r.tag.key) this.currentMeasurements = await this.$ren.managementApi.listTagMeasurements(r.tag.key, "no_tag");
+      for (let m of this.currentMeasurements) {
+        m.recommendation = null; //this.recommendation.tag.value;
+        // m.label = `${m.recommendation}:${m.label ? m.label : m.name}`;
+        if (m.measurement_details) {
+          m.measurement_details.color = "#90A4AE";
+          m.measurement_details["fill_chart"] = false;
+        } else {
+          m.measurement_details = { fill_chart: false, color: "#90A4AE" };
+        }
+      }
+    },
     async loadMeasurements() {
       if (this.recommendation) {
+        await this.loadCurrentMeasurements();
         this.recommendationMeasurements = await this.$ren.hdrApi.getRecommendationsMeasurements(this.recommendation.id);
         for (let m of this.recommendationMeasurements) {
           m.recommendation = this.recommendation.tag.value;
           m.label = `${m.recommendation}:${m.label ? m.label : m.name}`;
           if (m.measurement_details) {
-            m.measurement_details.color = "#0044ff";
+            m.measurement_details.color = "#03fc90";
             m.measurement_details["fill_chart"] = false;
           } else {
-            m.measurement_details = { fill_chart: false, color: "#0044ff" };
+            m.measurement_details = { fill_chart: false, color: "#03fc90" };
           }
         }
       }
@@ -110,10 +133,10 @@ export default {
           m.recommendation = this.comparewith.tag.value;
           m.label = `${m.recommendation}:${m.label ? m.label : m.name}`;
           if (m.measurement_details) {
-            m.measurement_details.color = "#90A4AE";
+            m.measurement_details.color = "#0044ff";
             m.measurement_details["fill_chart"] = false;
           } else {
-            m.measurement_details = { fill_chart: false, color: "#90A4AE" };
+            m.measurement_details = { fill_chart: false, color: "#0044ff" };
           }
         }
       }
@@ -121,12 +144,16 @@ export default {
     async loadData() {
       let mDict = {};
       let mGroups = {};
-      if (this.recommendationMeasurements)
-        for (let m of this.recommendationMeasurements) {
-          mDict[m.id] = m;
-        }
       if (this.recommendationCompareMeasurements)
         for (let m of this.recommendationCompareMeasurements) {
+          mDict[m.id] = m;
+        }
+      if (this.currentMeasurements)
+        for (let m of this.currentMeasurements) {
+          mDict[m.id] = m;
+        }
+      if (this.recommendationMeasurements)
+        for (let m of this.recommendationMeasurements) {
           mDict[m.id] = m;
         }
       this.mDict = mDict;
@@ -143,6 +170,8 @@ export default {
       if (measurements.length > 0) {
         this.$refs.spinner.run(async () => {
           this.pdata = await this.$ren.dataApi.getMeasurementTimeseries(measurements, filter);
+          this.annotations = this.getAnnotations();
+          console.info(this.annotations);
           this.reloadChart = !this.reloadChart;
         });
       }
@@ -150,6 +179,48 @@ export default {
 
     reload() {
       this.$emit("reload");
+    },
+    getAnnotations() {
+      console.error("use request object: TODO");
+      let minIdx = Math.round(this.pdata["timestamps"].length * 0.7);
+      let maxIdx = Math.round(this.pdata["timestamps"].length * 0.9);
+      // let annotationMin = this._getAnnotation(this.pdata["timestamps"][minIdx]);
+      // let annotationMax = this._getAnnotation(this.pdata["timestamps"][maxIdx]);
+      let annotationBox = this._getBoxAnnotation(this.pdata["timestamps"][minIdx], this.pdata["timestamps"][maxIdx]);
+
+      return [annotationBox];
+      // return [annotationMin, annotationMax, annotationBox];
+    },
+    _getAnnotation(x) {
+      return {
+        type: "line",
+        drawTime: "afterDatasetsDraw",
+        borderColor: "black",
+        borderDash: [6, 6],
+        borderWidth: 3,
+        xMax: x,
+        xMin: x,
+        xScaleID: "x",
+        // yMax: 0,
+        // yMin: 150110,
+        // yScaleID: "y",
+      };
+    },
+    _getBoxAnnotation(minX, maxX) {
+      return {
+        type: "box",
+        backgroundColor: "#0071ff20",
+        drawTime: "afterDatasetsDraw",
+        borderColor: "#0071ffFF",
+        borderDash: [6, 6],
+        borderWidth: 4,
+        xMax: maxX,
+        xMin: minX,
+        xScaleID: "x",
+        // yMax: 0,
+        // yMin: 150110,
+        // yScaleID: "y",
+      };
     },
   },
 };

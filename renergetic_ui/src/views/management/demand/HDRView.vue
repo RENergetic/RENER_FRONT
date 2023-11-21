@@ -6,7 +6,7 @@
         <!-- :key="selectedRecommendation.id + (compareWith ? compareWith.id : '')" -->
         <div class="col-8">
           <HDRRecomendation v-if="selectedRecommendation" :recommendation="selectedRecommendation" :comparewith="compareWith" />
-          <h3 v-else></h3>
+          <h2 v-else>{{ $t("view.select_recommendation") }}</h2>
         </div>
         <div class="col-4">
           <RenSpinner ref="spinner" :lock="true">
@@ -39,9 +39,13 @@ export default {
     };
   },
   watch: {
-    // page: function () {
-    //   //TODO pass newval ?
-    //   this.loadAssets();
+    // selectedRecommendation: {
+    //   handler: async function (r) {
+    //     if (r != null) {
+    //       if (this.tagKey != r.tag.key) this.currentMeasurements = await this.$ren.managementApi.listTagMeasurements(r.tag.key, "no_tag");
+    //     }
+    //   },
+    //   deep: true,
     // },
   },
 

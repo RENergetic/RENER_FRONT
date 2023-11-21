@@ -201,6 +201,9 @@ export default class ManagementApi extends RestComponent {
     }
     return this.get(`/api/measurements/report`, { ...params, offset: offset, limit: limit });
   }
+  async listTagMeasurements(tagKey, tagValue) {
+    return this.get(`/api/measurements/key/${tagKey}/value/${tagValue}`);
+  }
 
   async searchMeasurement(q, assetId, offset = 0, limit = 20) {
     console.warn("filter assigned measurements: " + assetId);
@@ -245,7 +248,7 @@ export default class ManagementApi extends RestComponent {
     return this.get(`/api/measurements/tags`);
   }
   async listTagKeys() {
-    return this.get(`/api/measurements/tags/keys`);
+    return this.get(`/api/measurements/tags/key`);
   }
   async listTagValues(tagKey) {
     return this.get(`/tags/key/${tagKey}/values`);

@@ -63,8 +63,8 @@
         ref="chart"
         :filter="filter"
         :style="'margin:auto;max-width: 90%;'"
-        width="1200"
-        height="500"
+        :width="1200"
+        :height="500"
         :measurements="[mMeasurement]"
       />
       <BasicFilterSettings
