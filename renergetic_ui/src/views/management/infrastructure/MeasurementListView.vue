@@ -28,7 +28,7 @@ export default {
   methods: {
     async loadMeasurements() {
       await this.$refs.spinner.run(async () => {
-        await this.$ren.managementApi.listMeasurement().then((data) => {
+        await this.$ren.managementApi.listMeasurement({ limit: 2000 }).then((data) => {
           for (let m of data) {
             this.$ren.utils.setMeasurementLabel(m);
           }

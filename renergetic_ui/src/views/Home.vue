@@ -27,7 +27,7 @@
   <div v-if="settings.demandVisibility && loggedIn" style="position: relative">
     <DemandList id="demand-list" />
   </div>
-  <div v-if="settings.notificationVisibility" style="position: relative">
+  <div v-if="settings.notificationVisibility && loggedIn" style="position: relative">
     <NotificationList id="notification-list" />
   </div>
   <RoleMatrix v-if="false" />

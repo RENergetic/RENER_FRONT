@@ -1,6 +1,6 @@
 <template>
   <!-- {{ demands }} -->
-  <div v-if="mDemands" style="height: 100%" class="flex flex-column align-items-start align-content-start">
+  <div v-if="mDemands && mDemands.length > 0" style="height: 100%" class="flex flex-column align-items-start align-content-start">
     <h3 v-if="title">{{ $t("view.demand_list") }}:</h3>
 
     <template v-for="d in mDemands" :key="d">

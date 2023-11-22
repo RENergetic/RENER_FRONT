@@ -79,11 +79,12 @@ export default class ManagementApi extends RestComponent {
       }
     });
   }
-  async submitAssetConnection(assetId, connectedAssetId, type) {
+  async submitAssetConnection(assetId, connectedAssetId, type, biDirectional) {
     console.log("assetId", assetId);
     console.log("connectedAssetId", connectedAssetId);
     console.log("type", type);
-    await this.put(`/api/assets/connect/${assetId}?connect_to=${connectedAssetId}&type=${type}`, null, null, null, (e) => {
+    let uri = `/api/assets/connect/${assetId}?connect_to=${connectedAssetId}&type=${type}&bi_directional=${biDirectional}`;
+    await this.put(uri, null, null, null, (e) => {
       if (e.response.status === 404) {
         //TODO: handle connectedAssetId not found
         this.emitError(`${assetId} not found: ${e.message}`, { code: "asset_not_found", args: [assetId] });
@@ -112,28 +113,45 @@ export default class ManagementApi extends RestComponent {
     });
   }
 
-  async setParent(asset, parentId) {
-    const assetCopy = {
-      id: asset.id,
-      name: asset.name,
-      type: asset.type.id,
-      label: asset.label,
-      description: asset.description,
-      geo_location: asset.geo_location,
-      parent: parentId,
-      user: asset.user,
-      asset_category: asset.category,
-      dashboards: asset.dashboards,
-    };
-    return this.put(`/api/assets/${asset.id}`, assetCopy, null, null, (e) => {
+  // async setParent(asset, parentId) {
+  //   const assetCopy = {
+  //     id: asset.id,
+  //     name: asset.name,
+  //     type: asset.type.id,
+  //     label: asset.label,
+  //     description: asset.description,
+  //     geo_location: asset.geo_location,
+  //     parent: parentId,
+  //     user: asset.user,
+  //     asset_category: asset.category,
+  //     dashboards: asset.dashboards,
+  //   };
+  //   return this.put(`/api/assets/${asset.id}`, assetCopy, null, null, (e) => {
+  //     if (e.response.status === 404) {
+  //       this.emitError(`${asset.id} not found: ${e.message}`, { code: "asset_not_found", args: [asset.id] });
+  //     } else {
+  //       this.emitError(`PUT /api/assets/${asset.id} -${e.message}`);
+  //     }
+  //   });
+  // }
+  async assignParent(asset, parentId) {
+    return this.put(`/api/assets/${asset.id}/parent/${parentId}`, null, null, null, (e) => {
       if (e.response.status === 404) {
         this.emitError(`${asset.id} not found: ${e.message}`, { code: "asset_not_found", args: [asset.id] });
       } else {
-        this.emitError(`PUT /api/assets/${asset.id} -${e.message}`);
+        this.emitError(`PUT /api/assets/${asset.id}/parent/${parentId} -${e.message}`);
       }
     });
   }
-
+  async revokeParent(asset) {
+    return this.delete(`/api/assets/${asset.id}/parent`, null, null, null, (e) => {
+      if (e.response.status === 404) {
+        this.emitError(`${asset.id} not found: ${e.message}`, { code: "asset_not_found", args: [asset.id] });
+      } else {
+        this.emitError(`PUT /api/assets/${asset.id}/parent -${e.message}`);
+      }
+    });
+  }
   async getAsset(id) {
     return this.get(`/api/assets/${id}`, null, null, (e) => {
       if (e.response.status == 404) {
@@ -151,7 +169,18 @@ export default class ManagementApi extends RestComponent {
       }
     });
   }
+  async assignAssetMeasurement(id, measurementId) {
+    return this.put(`/api/assets/${id}/measurement/${measurementId}`, null, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`Asset: ${id} or measurement ${measurementId} not found: ${e.message}`, { code: "asset_not_found", args: [id] });
+        return false;
+      }
+    });
+  }
 
+  async revokeAssetMeasurement(id, measurementId) {
+    return this.delete(`/api/assets/${id}/measurement/${measurementId}`);
+  }
   async getDemand(assetId) {
     return this.get(`/api/demandRequests/assetId/${assetId}`, null, null, (e) => {
       if (e.response.status == 404) {
@@ -171,6 +200,14 @@ export default class ManagementApi extends RestComponent {
       params = {};
     }
     return this.get(`/api/measurements/report`, { ...params, offset: offset, limit: limit });
+  }
+
+  async searchMeasurement(q, assetId, offset = 0, limit = 20) {
+    console.warn("filter assigned measurements: " + assetId);
+    if (q === "") {
+      return [];
+    }
+    return await this.get(`/api/measurements`, { name: q, offset: offset, limit: limit }, null, null);
   }
   async listMeasurementType() {
     return this.get(`/api/measurements/type`);
@@ -307,12 +344,6 @@ export default class ManagementApi extends RestComponent {
     // .catch(function (error) {
     //   console.error("add measurement error" + error.message);
     // });
-  }
-  async searchMeasurement(q) {
-    if (q === "") {
-      return [];
-    }
-    return await this.get(`/api/measurements`, { name: q }, null, null);
   }
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   async getCategoryFromAsset(id) {

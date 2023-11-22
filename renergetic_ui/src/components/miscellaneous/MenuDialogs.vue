@@ -9,9 +9,9 @@
   <Dialog v-model:visible="mAddDashboard" :style="{ width: '50vw' }" :modal="true" :dismissable-mask="true">
     <DashboardForm @save="onSave" @cancel="mAddDashboard = false"></DashboardForm>
   </Dialog>
-  <Dialog v-model:visible="mAddUser" :style="{ width: '50vw' }" :modal="true" :dismissable-mask="true">
+  <!-- <Dialog v-model:visible="mAddUser" :style="{ width: '50vw' }" :modal="true" :dismissable-mask="true">
     <UserForm @save="onUserSave" @cancel="mAddUser = false" />
-  </Dialog>
+  </Dialog> -->
   <Dialog v-model:visible="mLocales" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <LocaleSettings></LocaleSettings>
   </Dialog>
@@ -22,8 +22,10 @@ import NotificationList from "../management/notification/NotificationList.vue";
 import DemandList from "@/components/user/demand/DemandList.vue";
 import DashboardForm from "../dashboard/grafana/DashboardForm.vue";
 import LocaleSettings from "@/components/miscellaneous/settings/LocaleSettings.vue";
-import UserForm from "@/components/admin/UserForm.vue";
+import { RenRoles } from "@/plugins/model/Enums";
+// import UserForm from "@/components/admin/UserForm.vue";
 //TODO: add some spinner?
+
 export default {
   name: "MenuDialogs",
   components: {
@@ -31,7 +33,7 @@ export default {
     NotificationList,
     DashboardForm,
     LocaleSettings,
-    UserForm,
+    // UserForm,
   },
   props: {
     notificationDialog: {
@@ -157,7 +159,13 @@ export default {
     },
   },
   async created() {
-    this.onNotificationUpdate(await this.$ren.userApi.getNotifications());
+    if (
+      (RenRoles.REN_ADMIN | RenRoles.REN_USER | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_STAFF) &
+      this.$store.getters["auth/renRole"]
+    ) {
+      let notifications = await this.$ren.userApi.getNotifications();
+      this.onNotificationUpdate(notifications);
+    }
   },
   methods: {
     async onSave(dashboard) {

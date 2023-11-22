@@ -17,16 +17,16 @@
     </Column>
     <Column field="featured" :header="$t('model.panel.featured')" :show-filter-menu="false">
       <template #body="item">
-        <i v-if="item.data.featured" class="pi pi-eye" style="fontsize: 2rem" @click="setFeatured(item.data, false)" />
-        <i v-else class="pi pi-eye-slash" style="fontsize: 2rem" @click="setFeatured(item.data, true)" />
+        <i v-if="item.data.featured" class="pi pi-eye" style="font-size: 1.5rem" @click="setFeatured(item.data, false)" />
+        <i v-else class="pi pi-eye-slash" style="font-size: 1.5rem" @click="setFeatured(item.data, true)" />
       </template>
     </Column>
 
     <Column field="is_template" :header="$t('model.panel.is_template')" :show-filter-menu="false">
       <template #body="item">
         <div style="height: 100%; width: 100%">
-          <i v-if="item.data.is_template" class="pi pi-bookmark-fill" style="fontsize: 2rem" />
-          <i v-else class="pi pi-bookmark" style="fontsize: 2rem" />
+          <i v-if="item.data.is_template" class="pi pi-bookmark-fill" style="font-size: 1.5rem" />
+          <i v-else class="pi pi-bookmark" style="font-size: 1.5rem" />
         </div>
       </template>
     </Column>
