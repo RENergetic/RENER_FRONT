@@ -1,5 +1,4 @@
 {
-  
   "dashboard_measurement_types": {
     "energy": "Energia",
     "power": "Moc"
@@ -10,14 +9,13 @@
     "energy": "Energia",
     "temperature": "Temperatura",
     "energy_kwh": "Energia",
-    "energy_wh":"Energia",
+    "energy_wh": "Energia",
     "power_w": "Moc",
     "heat_energy_gj": "Energia Cieplna",
     "energy_gj": "Energia Cieplna",
     "percentage": "Procent",
     "power": "Moc"
-  }, 
-  
+  },
   "measurement_aggregation": {
     "sum": "Suma",
     "mean": "Średnia",
@@ -27,9 +25,9 @@
   },
   "measurement_name": {
     "heat": "Ciepło",
-    "heat_energy":"Ciepło",
+    "heat_energy": "Ciepło",
     "electricity": "Elektryczność",
-    "electricity_energy":"Elektryczność",
+    "electricity_energy": "Elektryczność",
     "renewability": "Energia  z odnawialnych źródeł",
     "renewables": "Odnawialne źródło energia",
     "external": "Zewnętrzny",
@@ -45,7 +43,7 @@
     "electricity_renewability": "Energia elektryczna z odnawialnych źródeł",
     "heat_renewability": "Ciepło z odnawialnych źródeł",
     "co2_reduction": "Redukcja emisji CO₂",
-    "current_power":"Actualna moc"  
+    "current_power": "Actualna moc"
   },
   "domain": {
     "electricity": "Elektryczność",
@@ -76,7 +74,7 @@
     "knob": "Wykres zegarowy",
     "doughnut": "Wykres pierścieniowy",
     "list": "Lista",
-    "single":"Pojedyncza wartość"
+    "single": "Pojedyncza wartość"
   },
   "heatmap_type": {
     "default": "Normal",
@@ -114,6 +112,11 @@
     "owner": "Może być włascicelem obiektu",
     "notification": "Dostęp do powiadomień",
     "read": "Może posiadać uprawnienia do Grafany oraz Can receive read privilages to asset or dashboard"
+  },
+  "asset_connection": {
+    "owner": "Właściciel",
+    "resident": "Mieszkaniec",
+    "visitor": "Gość"
   },
   "role": {
     "ren-staff": "Obsługa",

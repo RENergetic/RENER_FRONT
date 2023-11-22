@@ -65,21 +65,16 @@
       </div>
     </template>
   </Card>
-  <AbstractMetersCalculation
-    ref="abstractMetersCalculation"
-    @selected-measurement-formula="handleMeasurementReturnFormula"
-    @selected-measurement-condition="handleMeasurementReturnCondition"
-  />
+  <MeasurementSelectionList ref="measurementsListFormula" @selected-measurement="handleMeasurementReturnFormula" />
+  <MeasurementSelectionList ref="measurementsListCondition" @selected-measurement="handleMeasurementReturnCondition" />
 </template>
 <script>
-//import AbstractMetersCalculation from "@/views/management/abstract/AbstractMetersCalculation.vue";
-import AbstractMetersCalculation from "@/components/management/infrastructure/AbstractMetersCalculation.vue";
-//import AbstractMetersCalculation from "./AbstractMetersCalculation.vue";
+import MeasurementSelectionList from "@/components/management/infrastructure/MeasurementSelectionList.vue";
 import Checkbox from "primevue/checkbox";
 export default {
   name: "AbstracMetersView",
   components: {
-    AbstractMetersCalculation,
+    MeasurementSelectionList,
     Checkbox,
   },
   data() {
@@ -95,7 +90,7 @@ export default {
       originalAbstractDomain: [],
       dropdownAbstractMeter: [],
       dropdownDomain: ["heat", "electricity"],
-      AbstractMetersCalculation,
+      MeasurementSelectionList,
       isValidInputFormula: false,
       isValidInputCondition: false,
       saveButtonDisabled: true,
@@ -107,21 +102,15 @@ export default {
     };
   },
   async created() {
-    console.log("Created");
-    //console.error("I arrived here");
     let abstractMeterList = await this.$ren.managementApi.getAbstracMeterList();
-    //console.log(this.dropdownMeasurementNames);
-    //let myMap = new Map().set("a", 1).set("b", 2);
     let claves = Object.keys(abstractMeterList);
     for (let i = 0; i < claves.length; i++) {
       let clave = claves[i];
-      //console.log(clave + " : " + abstractMeterList[clave]);
       this.dropdownAbstractMeter[i] = clave + " : " + abstractMeterList[clave];
     }
     this.abstractMeterGlobal = this.dropdownAbstractMeter[0];
     this.domainGlobal = this.dropdownDomain[0];
     this.variableExistanceChecker();
-    //console.log(this.dropdownAbstractMeter);
   },
   methods: {
     showToast(option) {
@@ -143,16 +132,13 @@ export default {
         console.error("No correct option");
       }
       this.$emitter.emit(msgType, { message: this.toastMessage });
-      // setTimeout(() => {
-      //   this.showingToast = false;
-      // }, 1000); // Cierra el toast después de 3 segundos (ajusta el tiempo según tus necesidades).
     },
     validateFormula() {
       this.isValidInputFormula = this.validateText(this.formulaMeter);
       this.validateSave();
     },
     validateCondition() {
-      const operadores = />=|<=|<|>|=|!=/g; // Esta expresión regular busca los operadores "<", ">", "<=", ">=", o "="
+      const operadores = />=|<=|<|>|=|!=/g;
       let matches = this.conditionMeter.match(operadores);
       if (matches && matches.length == 1) {
         const conditions = this.conditionMeter.split(matches);
@@ -204,7 +190,6 @@ export default {
           condition: this.conditionMeter,
           domain: this.domainGlobal,
         };
-        console.log("Update abstract meter -> ");
         returnValue = await this.$ren.managementApi.updateAbstractMeter(jsonAbstractMeter);
         if (typeof returnValue == "object") {
           this.showToast(2);
@@ -229,8 +214,6 @@ export default {
       this.variableExistanceChecker();
     },
     async variableExistanceChecker() {
-      //let aux0 = this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0];
-      console.log(this.splitAbstractMeters(this.abstractMeterGlobal) + ":" + this.domainGlobal);
       let abstractValue = await this.$ren.managementApi.getAnAbstracMeterConfiguration(
         this.splitAbstractMeters(this.abstractMeterGlobal),
         this.domainGlobal,
@@ -268,19 +251,16 @@ export default {
       this.resetData();
     },
     openCalculationsFormula() {
-      this.conditionType = "formula";
-      let valueToAdd = this.openNewPage();
-      console.log(valueToAdd);
+      this.$refs.measurementsListFormula.open();
     },
     openCalculationsCondition() {
-      this.conditionType = "condition";
-      let valueToAdd = this.openNewPage();
-      console.log(valueToAdd);
+      this.$refs.measurementsListCondition.open();
     },
     openNewPage() {
-      this.$refs.abstractMetersCalculation.open(this.conditionType);
+      this.$refs.measurementSelectionList.open(this.conditionType);
     },
     handleMeasurementReturnFormula(value) {
+      console.log("vaulue " + value);
       if (this.formulaMeter == null) {
         this.formulaMeter = this.concatenateStrings("[" + value + "]", "");
       } else {

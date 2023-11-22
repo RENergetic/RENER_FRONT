@@ -79,11 +79,12 @@ export default class ManagementApi extends RestComponent {
       }
     });
   }
-  async submitAssetConnection(assetId, connectedAssetId, type) {
+  async submitAssetConnection(assetId, connectedAssetId, type, biDirectional) {
     console.log("assetId", assetId);
     console.log("connectedAssetId", connectedAssetId);
     console.log("type", type);
-    await this.put(`/api/assets/connect/${assetId}?connect_to=${connectedAssetId}&type=${type}`, null, null, null, (e) => {
+    let uri = `/api/assets/connect/${assetId}?connect_to=${connectedAssetId}&type=${type}&bi_directional=${biDirectional}`;
+    await this.put(uri, null, null, null, (e) => {
       if (e.response.status === 404) {
         //TODO: handle connectedAssetId not found
         this.emitError(`${assetId} not found: ${e.message}`, { code: "asset_not_found", args: [assetId] });
