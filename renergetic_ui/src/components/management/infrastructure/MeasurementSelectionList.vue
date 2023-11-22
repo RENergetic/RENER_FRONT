@@ -1,7 +1,6 @@
 <template>
   <Dialog v-model:visible="dialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <Card>
-      <p></p>
       <template #content>
         <DataTable
           v-model:selection="selectedMeasurement"
@@ -33,17 +32,16 @@
 <script>
 import MeasurementForm from "@/components/management/infrastructure/measurement/MeasurementForm.vue";
 export default {
-  name: "AbstractMetersCalculation",
+  name: "MeasurementSelectionList",
   components: {
     MeasurementForm,
   },
-  emits: ["selected-measurement-formula", "selected-measurement-condition"],
+  emits: ["selected-measurement"],
   data() {
     return {
       dialog: false,
       selectedMeasurement: null,
       measurementListAbstracMeter: [],
-      calculationType: null,
       addDialog: false,
     };
   },
@@ -52,24 +50,14 @@ export default {
     //console.log(this.measurementListAbstracMeter);
   },
   methods: {
-    async open(calculationType) {
+    async open() {
       this.dialog = true;
-      this.calculationType = calculationType;
     },
     selectCurrentMeasurement() {
-      if (this.calculationType == "formula") {
-        //console.log("The calculationType is formula");
-        this.dialog = false;
-        this.$emit("selected-measurement-formula", this.selectedMeasurement.id);
-        this.selectedMeasurement = null;
-      } else if (this.calculationType == "condition") {
-        //console.log("The calculationType is condition");
-        this.dialog = false;
-        this.$emit("selected-measurement-condition", this.selectedMeasurement.id);
-        this.selectedMeasurement = null;
-      } else {
-        console.error("The calculationType is not correctly received");
-      }
+      //console.log("The calculationType is formula");
+      this.dialog = false;
+      this.$emit("selected-measurement", this.selectedMeasurement.id);
+      this.selectedMeasurement = null;
     },
     cancelMeasurementAddition() {
       this.dialog = false;

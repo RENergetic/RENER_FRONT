@@ -2,7 +2,8 @@
   <div class="gap-3 field grid container">
     <!-- obtained from the backend -->
     <Checkbox v-model="rowActiveCheckBox" :binary="true" />
-    <Dropdown v-model="measurementList" :options="formattedOptions" :placeholder="'Measurements'" optionLabel="label" optionValue="value" />
+    <!-- <Dropdown v-model="measurementList" :options="formattedOptions" :placeholder="'Measurements'" optionLabel="label" optionValue="value" /> -->
+    <Button :label="formattedMeasurementValue" @click="measurementSelectionDialog(0)"></Button>
     <Dropdown
       v-model="measurement1Function"
       :placeholder="dropdownMeasurementFunction[0]"
@@ -31,7 +32,7 @@
       />
     </div>
     <div v-else-if="thresholdMeasurement == 'Measurement'" class="gap-3 container">
-      <Dropdown v-model="measurementList2" :options="formattedOptions" :placeholder="'Measurements'" optionLabel="label" optionValue="value" />
+      <Button :label="formattedMeasurementValue2" @click="measurementSelectionDialog(1)"></Button>
       <Dropdown
         v-model="measurement2Function"
         :placeholder="dropdownMeasurementFunction[0]"
@@ -46,14 +47,17 @@
       <label>{{ $t("view.asset_details_dont_exist") }}</label>
     </div>
     <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteDemandResponseUI()" />
+    <MeasurementSelectionList ref="measurementSelectionList" @selected-measurement="handleMeasurementSelection"></MeasurementSelectionList>
   </div>
 </template>
 <script>
 import Checkbox from "primevue/checkbox";
+import MeasurementSelectionList from "@/components/management/infrastructure/MeasurementSelectionList.vue";
 export default {
   name: "DemandResponseParameters",
   components: {
     Checkbox,
+    MeasurementSelectionList,
   },
   data() {
     return {
@@ -75,7 +79,7 @@ export default {
       valueMeasurement: null,
       rowActiveCheckBox: null,
       measurement1function: null,
-      dropdownMeasurementFunction: ["COUNT", "DISTINCT", "MEAN", "MEDIAN", "SUM", "MAX", "MIN", "FIRST", "LAST"],
+      dropdownMeasurementFunction: ["count", "distinct", "mean", "median", "sum", "max", "min", "first", "last"],
       dropdownDurationSyntax: ["ns", "us", "ms", "s", "m", "h", "d", "w", "mo", "y"],
       validInput0: true,
       validInput1: true,
@@ -84,14 +88,25 @@ export default {
       borderColor1: "",
       borderColor2: "",
       detailsError: false,
+      measurementModified: null,
     };
   },
   computed: {
+    /*
     formattedOptions() {
       let formattedMeasurement = this.dropdownMeasurementList.map((drop) => ({
         value: drop.id,
         label: drop.name + " : " + (drop.label || "No label"), // Example: Convert label to uppercase
       }));
+      return formattedMeasurement;
+    },
+    */
+    formattedMeasurementValue() {
+      let formattedMeasurement = this.formatMeasurements(0);
+      return formattedMeasurement;
+    },
+    formattedMeasurementValue2() {
+      let formattedMeasurement = this.formatMeasurements(1);
       return formattedMeasurement;
     },
   },
@@ -108,16 +123,33 @@ export default {
     this.measurementsGetter();
   },
   methods: {
+    formatMeasurements(measureNumber) {
+      /*let formatMeasurement = name + " : " + (label || "No label");
+      return formatMeasurement;*/
+      let formattedMeasurement;
+      if (measureNumber == 0) {
+        formattedMeasurement = this.dropdownMeasurementList.find((m) => m.id === this.measurementList);
+      } else {
+        formattedMeasurement = this.dropdownMeasurementList2.find((m) => m.id === this.measurementList2);
+      }
+      if (formattedMeasurement) {
+        console.log(formattedMeasurement.name, formattedMeasurement.label);
+        formattedMeasurement = formattedMeasurement.name + " : " + (formattedMeasurement.label || "No label");
+      } else {
+        formattedMeasurement = "Measurements";
+      }
+      console.log(formattedMeasurement);
+      return formattedMeasurement;
+    },
     //Process to obtain the asset rules from the DDBB
     addPrecreatedAssetRule(assetRule) {
-      [this.timeRange1, this.durationSyntax1] = assetRule.timeRangeMeasurement1.split(" ");
-      //threshold
+      this.rowActiveCheckBox = assetRule.active;
+      this.measurementList = assetRule.measurement1Id;
+      this.measurement1Function = assetRule.functionMeasurement1;
+      [, this.timeRange, this.durationSyntax] = assetRule.timeRangeMeasurement1.match(/(\d+(?:\.\d+)?)([a-zA-Z]+)/);
+      this.operationData = assetRule.comparator;
       if (assetRule.timeRangeMeasurement2 == null) {
-        this.rowActiveCheckBox = assetRule.active;
-        this.measurementList = assetRule.measurement1Id;
-        this.measurement1Function = assetRule.functionMeasurement1;
-        [this.timeRange, this.durationSyntax] = assetRule.timeRangeMeasurement1.split(" ");
-        this.operationData = assetRule.comparator;
+        //threshold
         this.thresholdMeasurement = this.dropdownThresholdMeasurement[0];
         this.checkBoxBool = assetRule.compareToConfigThreshold;
         this.valueMeasurement = assetRule.manualThreshold;
@@ -127,17 +159,12 @@ export default {
         this.durationSyntax2 = this.dropdownDurationSyntax[0];
       } else if (assetRule.timeRangeMeasurement2 != null) {
         //measurement
-        this.rowActiveCheckBox = assetRule.active;
-        this.measurementList = assetRule.measurement1Id;
-        this.measurement1Function = assetRule.functionMeasurement1;
-        [this.timeRange, this.durationSyntax] = assetRule.timeRangeMeasurement1.split(" ");
-        this.operationData = assetRule.comparator;
         this.thresholdMeasurement = this.dropdownThresholdMeasurement[1];
         this.checkBoxBool = null;
         this.valueMeasurement = null;
         this.measurementList2 = assetRule.measurement2Id;
         this.measurement2Function = assetRule.functionMeasurement2;
-        [this.timeRange2, this.durationSyntax2] = assetRule.timeRangeMeasurement2.split(" ");
+        [, this.timeRange2, this.durationSyntax2] = assetRule.timeRangeMeasurement2.match(/(\d+(?:\.\d+)?)([a-zA-Z]+)/);
       } else {
         console.error("MESSAGE ERROR");
       }
@@ -211,6 +238,19 @@ export default {
     },
     async assetInvalid() {
       this.detailsError = true;
+    },
+    measurementSelectionDialog(id) {
+      this.measurementModified = id;
+      this.$refs.measurementSelectionList.open();
+    },
+    handleMeasurementSelection(selectedId) {
+      if (this.measurementModified == 0) {
+        this.measurementList = selectedId;
+        console.log(selectedId + " . " + this.measurementList);
+      } else {
+        this.measurementList2 = selectedId;
+        console.log(selectedId + " . " + this.measurementList2);
+      }
     },
   },
 };
