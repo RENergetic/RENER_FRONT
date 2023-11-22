@@ -1,54 +1,59 @@
 <template>
-  <div class="gap-3 field grid container">
-    <!-- obtained from the backend -->
-    <Checkbox v-model="rowActiveCheckBox" :binary="true" />
-    <!-- <Dropdown v-model="measurementList" :options="formattedOptions" :placeholder="'Measurements'" optionLabel="label" optionValue="value" /> -->
-    <Button :label="formattedMeasurementValue" @click="measurementSelectionDialog(0)"></Button>
-    <Dropdown
-      v-model="measurement1Function"
-      :placeholder="dropdownMeasurementFunction[0]"
-      :options="dropdownMeasurementFunction"
-      class="w-full md:w-8rem"
-    />
-    <InputText v-model="timeRange" class="md:w-4rem" :class="[borderColor0]" type="text" @input="validateInput(0)" />
-    <Dropdown v-model="durationSyntax" :placeholder="dropdownDurationSyntax[0]" :options="dropdownDurationSyntax" class="w-full md:w-6rem" />
-    <Dropdown v-model="operationData" :placeholder="dropdownOperation[0]" :options="dropdownOperation" class="w-full md:w-5rem" />
-    <Dropdown
-      v-model="thresholdMeasurement"
-      :placeholder="dropdownThresholdMeasurement[0]"
-      :options="dropdownThresholdMeasurement"
-      class="w-full md:w-11rem"
-    />
-    <div v-if="thresholdMeasurement == 'Threshold'" class="gap-3 container">
-      <Checkbox v-model="checkBoxBool" :binary="true" />
-      <label> {{ $t("view.from_config") }} </label>
-      <InputText
-        v-model="valueMeasurement"
-        class="inputTextCondition"
-        :class="[borderColor2]"
-        type="text"
-        :placeholder="'0'"
-        @input="validateInput(2)"
-      />
-    </div>
-    <div v-else-if="thresholdMeasurement == 'Measurement'" class="gap-3 container">
-      <Button :label="formattedMeasurementValue2" @click="measurementSelectionDialog(1)"></Button>
-      <Dropdown
-        v-model="measurement2Function"
-        :placeholder="dropdownMeasurementFunction[0]"
-        :options="dropdownMeasurementFunction"
-        class="w-full md:w-8rem"
-      />
-      <InputText v-model="timeRange2" class="inputTextCondition md:w-4rem" :class="[borderColor1]" type="text" @input="validateInput(1)" />
-      <Dropdown v-model="durationSyntax2" :placeholder="dropdownDurationSyntax[0]" :options="dropdownDurationSyntax" class="w-full md:w-6rem" />
-    </div>
-    <div v-else>ERROR</div>
-    <div v-if="detailsError">
-      <label>{{ $t("view.asset_details_dont_exist") }}</label>
-    </div>
-    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteDemandResponseUI()" />
-    <MeasurementSelectionList ref="measurementSelectionList" @selected-measurement="handleMeasurementSelection"></MeasurementSelectionList>
-  </div>
+  <Card style="width: 99%; margin: auto; margin-bottom: 1%">
+    <template #content>
+      <div class="gap-3 field grid container">
+        <!-- obtained from the backend -->
+        <Checkbox v-model="rowActiveCheckBox" :binary="true" />
+        <label> Save rule </label>
+        <!-- <Dropdown v-model="measurementList" :options="formattedOptions" :placeholder="'Measurements'" optionLabel="label" optionValue="value" /> -->
+        <Button :label="formattedMeasurementValue" @click="measurementSelectionDialog(0)"></Button>
+        <Dropdown
+          v-model="measurement1Function"
+          :placeholder="dropdownMeasurementFunction[0]"
+          :options="dropdownMeasurementFunction"
+          class="w-full md:w-8rem"
+        />
+        <InputText v-model="timeRange" class="md:w-4rem" :class="[borderColor0]" type="text" @input="validateInput(0)" />
+        <Dropdown v-model="durationSyntax" :placeholder="dropdownDurationSyntax[0]" :options="dropdownDurationSyntax" class="w-full md:w-6rem" />
+        <Dropdown v-model="operationData" :placeholder="dropdownOperation[0]" :options="dropdownOperation" class="w-full md:w-5rem" />
+        <Dropdown
+          v-model="thresholdMeasurement"
+          :placeholder="dropdownThresholdMeasurement[0]"
+          :options="dropdownThresholdMeasurement"
+          class="w-full md:w-11rem"
+        />
+        <div v-if="thresholdMeasurement == 'Threshold'" class="gap-3 container">
+          <Checkbox v-model="checkBoxBool" :binary="true" />
+          <label> {{ $t("view.from_config") }} </label>
+          <InputText
+            v-model="valueMeasurement"
+            class="inputTextCondition"
+            :class="[borderColor2]"
+            type="text"
+            :placeholder="'0'"
+            @input="validateInput(2)"
+          />
+        </div>
+        <div v-else-if="thresholdMeasurement == 'Measurement'" class="gap-3 container">
+          <Button :label="formattedMeasurementValue2" @click="measurementSelectionDialog(1)"></Button>
+          <Dropdown
+            v-model="measurement2Function"
+            :placeholder="dropdownMeasurementFunction[0]"
+            :options="dropdownMeasurementFunction"
+            class="w-full md:w-8rem"
+          />
+          <InputText v-model="timeRange2" class="inputTextCondition md:w-4rem" :class="[borderColor1]" type="text" @input="validateInput(1)" />
+          <Dropdown v-model="durationSyntax2" :placeholder="dropdownDurationSyntax[0]" :options="dropdownDurationSyntax" class="w-full md:w-6rem" />
+        </div>
+        <div v-else>ERROR</div>
+        <div v-if="detailsError">
+          <label>{{ $t("view.asset_details_dont_exist") }}</label>
+        </div>
+        <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteDemandResponseUI()" />
+        <MeasurementSelectionList ref="measurementSelectionList" @selected-measurement="handleMeasurementSelection"></MeasurementSelectionList>
+      </div>
+    </template>
+  </Card>
 </template>
 <script>
 import Checkbox from "primevue/checkbox";
