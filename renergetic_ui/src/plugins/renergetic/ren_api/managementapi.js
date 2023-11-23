@@ -358,6 +358,13 @@ export default class ManagementApi extends RestComponent {
     //   console.error("add measurement error" + error.message);
     // });
   }
+  async addMeasurements(measurements) {
+    // if (measurement.type != undefined) measurement.type = measurement.type.id;
+    return await this.post(`/api/measurements/batch`, measurements);
+    // .catch(function (error) {
+    //   console.error("add measurement error" + error.message);
+    // });
+  }
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   async getCategoryFromAsset(id) {
     return this.get(`/api/assets/category/${id}`, null, null, (e) => {

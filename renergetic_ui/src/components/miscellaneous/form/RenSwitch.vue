@@ -24,17 +24,21 @@ export default {
     textLabel: { type: String, default: null },
     options: {
       type: Array,
-      default: () => [
-        { label: this.$t("view.button.yes"), value: true },
-        { label: this.$t("view.button.no"), value: false },
-      ],
+      default: null,
     },
     modelValue: { type: Object, default: null },
     disabled: { type: Boolean, default: false },
   },
   emits: ["update:modelValue"],
   data() {
-    return { mValue: this.modelValue, mOptions: this.options };
+    let mOptions = this.options;
+    if (mOptions == null) {
+      mOptions = [
+        { label: this.$t("view.button.yes"), value: true },
+        { label: this.$t("view.button.no"), value: false },
+      ];
+    }
+    return { mValue: this.modelValue, mOptions: mOptions };
   },
   watch: {
     mValue: {

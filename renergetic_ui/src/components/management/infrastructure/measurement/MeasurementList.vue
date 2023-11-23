@@ -8,8 +8,10 @@
   <!-- {{ mFilters }} -->
   <!-- {{ mFilters }} -->
   <!-- :global-filter-fields="['name', 'label', 'type.name', 'type.physical_name', 'domain', 'direction', 'asset.name']" -->
+
   <DataTable
     v-model:expandedRows="expanded"
+    v-model:selection="selectedMeasurements"
     :filters="mFilters"
     :lazy="true"
     data-key="id"
@@ -26,12 +28,19 @@
         <i class="pi pi-search" />
         <InputText v-model="mFilters['global'].value" :placeholder="$t('view.search')" />
       </span> -->
-
+      <Button
+        v-if="selectedMeasurements.length > 0"
+        :label="$t('view.export_json')"
+        icon="pi pi-list"
+        style="position: sticky; left: 2rem; top: 1rem; z-index: 3333"
+        @click="exportJSON"
+      />
       <span class="p-input-icon-left" style="margin-left: 1rem">
         <i class="pi pi-search" />
         <Dropdown v-model="mFilters.tag_key.value" show-clear :options="tagsKeys" :placeholder="$t('view.tag_filter')" />
       </span>
     </template>
+
     <Column :expander="true" header-style="width: 3rem" />
     <template #expansion="slotProps">
       <!-- refresh button: TODO: :ref="'roles_' + user.data.id" :user="user.data.id"-->
@@ -157,10 +166,16 @@
         <Button v-tooltip="$t('view.delete')" icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteConfirm(slotProps.data)" />
       </template>
     </Column> -->
+    <Column selection-mode="multiple" header-style="width: 3rem"></Column>
   </DataTable>
   <Toolbar>
-    <template #end><Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="addDialog = true" /> </template>
-    <template #start><Button :label="$t('view.button.measurement_types')" icon="pi pi-list" @click="typeDialog = true" /> </template>
+    <template #end>
+      <Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="addDialog = true" />
+      <Button style="margin-left: 0.5rem" @click="importMeasurementsDialog = true">{{ $t("view.upload_measurements") }}</Button>
+    </template>
+    <template #start>
+      <Button :label="$t('view.button.measurement_types')" icon="pi pi-list" @click="typeDialog = true" />
+    </template>
   </Toolbar>
 
   <!-- <Dialog v-model:visible="measurementDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
@@ -176,9 +191,71 @@
   <Dialog v-model:visible="typeDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
     <MeasurementTypeList />
   </Dialog>
+  <Dialog v-model:visible="importMeasurementsDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <Card>
+      <template #header> </template>
+      <template #content>
+        <FileUpload
+          ref="FileUpload"
+          name="template[]"
+          :custom-upload="true"
+          :multiple="false"
+          :show-upload-button="false"
+          :cancel-label="$t('view.button.clear')"
+          :choose-label="$t('view.button.choose')"
+          :auto="true"
+          :show-cancel-button="false"
+          accept="text/*, .json"
+          :max-file-size="1000000"
+          @upload="onUpload"
+          @uploader="onFileUpload"
+          @select="onSelect"
+        >
+          <!-- @upload="onFileUpload" -->
+          <template #empty>
+            <!-- <ren-input-text v-if="submittedPanel" v-model="submittedPanel" :text-label="null" :cols="50" :maxlength="10000" /> -->
+            <ren-input-wrapper v-if="submittedMeasurements" :text-label="null">
+              <template #content>
+                <Textarea v-model="submittedMeasurementsJSON" style="width: 100%" :maxlength="20000" rows="15" :cols="80"></Textarea>
+              </template>
+            </ren-input-wrapper>
+            <p v-if="!submittedMeasurements">{{ $t("view.file_drag_drop") }}</p>
+          </template>
+        </FileUpload>
+
+        <ren-submit v-if="submittedMeasurements != null" :cancel-button="true" @submit="submitMeasurements" @cancel="onFileClear" />
+      </template>
+    </Card>
+  </Dialog>
 </template>
 
 <script>
+// if (mPanel.name !== undefined) delete mPanel.name;
+// if (mPanel.id !== undefined) delete mPanel.id;
+function clearMeasurementInput(measurements) {
+  let mMeasurements = JSON.parse(JSON.stringify(measurements));
+  mMeasurements = mMeasurements
+    .map((m) => {
+      let obj;
+      obj = {
+        name: m.name,
+        domain: m.domain,
+        direction: m.direction,
+        sensor_name: m.sensor_name,
+        aggregation_function: m.aggregation_function,
+      };
+      if (m.type) {
+        obj.type = { id: m.type.id, physical_name: m.type.physical_name, unit: m.type.unit, name: m.type.name };
+      }
+      if (m.asset) {
+        obj.asset = { id: m.asset.id, name: m.asset.name };
+      }
+      return obj;
+    })
+    .filter((m) => m != null);
+
+  return mMeasurements;
+}
 import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import MeasurementForm from "./MeasurementForm.vue";
 // import MeasurementDetails from "./MeasurementDetails.vue";
@@ -207,15 +284,18 @@ export default {
       physicalTypes: physicalTypes,
       measurementTypeList: this.$store.getters["view/wrapper"]["measurementTypeList"],
       expanded: [],
+      selectedMeasurements: [],
+      submittedMeasurements: null,
       columns: [],
       mFilters: this.initFilters(),
       selectedMeasurement: null,
       editDialog: false,
+      importMeasurementsDialog: false,
       addDialog: false,
       typeDialog: false,
       measurementDetailsDialog: false,
       deferredEmitFilter: null,
-      tagsKeys: [],
+      submittedMeasurementsJSON: "",
     };
   },
   computed: {},
@@ -295,6 +375,9 @@ export default {
     typeLabel(mType) {
       return `(${mType.id}) ${this.$t("enums.metric_type." + mType.name)} [${mType.unit}] `;
     },
+    async exportJSON() {
+      this.$ren.utils.downloadJSON(this.selectedMeasurements, `measurements`);
+    },
     // edit(o) {
     //   this.selectedMeasurement = o;
     //   this.editDialog = true;
@@ -322,6 +405,44 @@ export default {
     reload() {
       //TODO: filter
       this.$emit("reload");
+    },
+    onSelect() {
+      if (this.$refs.FileUpload !== undefined) this.hasFiles = this.$refs.FileUpload.files.length > 0;
+      else this.hasFiles = false;
+    },
+    onFileClear() {
+      // this.mPanelStructure = null;
+
+      this.submittedMeasurements = null;
+      this.submittedMeasurementsJSON = "";
+    },
+    async submitMeasurements() {
+      var measurements = JSON.parse(this.submittedMeasurementsJSON);
+      // console.info(measurements);
+      console.warn("TODO: make yesno confirm dialog  ");
+
+      await this.$ren.managementApi.addMeasurements(measurements).then((measurementsResponse) => {
+        for (let m of measurementsResponse) {
+          console.info("add measurement:" + m.name);
+          console.info(m);
+        }
+        this.$emitter.emit("information", { message: this.$t("information.measurements_created") });
+        // this.$emitter.emit("information", { message: this.$t("information.measurement_created") });
+      });
+
+      this.submittedMeasurements = null;
+      this.submittedMeasurementsJSON = "";
+      this.importPanelDialog = false;
+      this.reload();
+    },
+    async onFileUpload(evt) {
+      this.submittedMeasurements = null;
+      // console.info(evt.files);
+      if (evt.files.length == 1) {
+        this.submittedMeasurements = clearMeasurementInput(await this.$ren.utils.readJSONFile(evt.files[0]));
+        this.submittedMeasurementsJSON = JSON.stringify(this.submittedMeasurements, null, "\t");
+      }
+      // await this._submit(event.files);
     },
   },
 };

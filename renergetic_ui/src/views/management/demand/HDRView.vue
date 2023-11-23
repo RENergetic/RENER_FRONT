@@ -1,15 +1,14 @@
 <template>
-  <!-- class="col-12"   max-width: 80vw -->
-  <Card style="margin: auto; margin-top: 0.5rem">
+  <Card style="margin: auto; margin-top: 0.5rem; max-width: 95vw">
     <template #content>
       <div class="grid">
         <!-- :key="selectedRecommendation.id + (compareWith ? compareWith.id : '')" -->
-        <div class="col-8">
+        <div class="col-9">
           <HDRRecomendation v-if="selectedRecommendation" :recommendation="selectedRecommendation" :comparewith="compareWith" />
           <h2 v-else>{{ $t("view.select_recommendation") }}</h2>
         </div>
-        <div class="col-4">
-          <RenSpinner ref="spinner" :lock="true">
+        <div class="col-3">
+          <RenSpinner ref="spinner" :lock="true" style="width: 100%">
             <template #content>
               <HDRRecomendationList v-model="selectedRecommendation" v-model:comparewith="compareWith" :recommendation-list="recommendationList" />
             </template>
