@@ -110,10 +110,10 @@
     </template>
   </RenSpinner>
   <AssetSelectDialog ref="assetSelectDialog" @submit="onAssetSelect" />
-  <Dialog v-model:visible="panelAdd" :style="{ width: '75vw', height: '95vh' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+  <Dialog v-model:visible="panelAdd" :style="{ width: '90vw', height: '100vh' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <InformationPanelForm @update:model-value="onCreate($event, 0)" @cancel="panelAdd = false"> </InformationPanelForm>
   </Dialog>
-  <Dialog v-model:visible="panelEdit" :style="{ width: '75vw', height: '95vh' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+  <Dialog v-model:visible="panelEdit" :style="{ width: '90vw', height: '100vh' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <InformationPanelForm :model-value="editedPanel" @update:model-value="onEdit($event, 0)" @cancel="panelEdit = false" />
   </Dialog>
 </template>

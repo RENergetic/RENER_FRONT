@@ -26,6 +26,7 @@ export default {
     min: { type: Number, default: null },
     max: { type: Number, default: null },
     onlyInteger: { type: Boolean, default: false },
+    defaultValue: { type: Number, default: null },
     // mode="decimal"
   },
   emits: ["update:modelValue"],
@@ -41,6 +42,7 @@ export default {
     //     return "decimal";
     //   }
     // },
+
     showButtons() {
       if (this.min != null && this.max != null) {
         return true;
@@ -55,6 +57,11 @@ export default {
       },
       // immediate: true,
     },
+  },
+  mounted() {
+    if (this.mValue == null && this.defaultValue != null) {
+      this.mValue = this.defaultValue;
+    }
   },
 };
 </script>
