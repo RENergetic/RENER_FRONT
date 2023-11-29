@@ -22,9 +22,10 @@
           :errors="v$.mModel.date_from.$silentErrors"
         >
           <template #content>
-            <Calendar :id="s.key" v-model="mModel.date_from" :show-time="true" hour-format="24" step-minute="60" />
+            <Calendar v-model="mModel.date_from" :show-time="true" hour-format="24" step-minute="60" />
           </template>
         </ren-input-wrapper>
+        {{ mModel.interval_length }}
         <ren-input-wrapper
           :text-label="'model.hdrrequest.interval_length'"
           :invalid="v$.mModel.interval_length.$invalid"
@@ -103,7 +104,7 @@
 
 <script>
 import { useVuelidate } from "@vuelidate/core";
-import InfoIcon from "../../../miscellaneous/InfoIcon.vue";
+import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import AssetSelectDialog from "@/components/management/infrastructure/AssetSelectDialog.vue";
 
 import { required /*minValue, maxValue , minLength, maxLength */ } from "@/plugins/validators.js"; //,requiredTr, maxLengthTr
@@ -131,7 +132,7 @@ export default {
       m.physical_type = m.value_type != null ? m.value_type.physical_name : null;
       m.unit = m.value_type != null ? m.value_type.unit : null;
       if (m.physical_type) mUnits = this.$store.getters["view/measurementTypes"][m.physical_type];
-      m.interval_length = m.date_from - m.date_to;
+      m.interval_length = m.date_from && m.date_to ? m.date_from - m.date_to : 60;
       m.isLimit = m.max_value ? true : false;
       m.requestValue = m.max_value ? m.max_value : m.value_change;
     }

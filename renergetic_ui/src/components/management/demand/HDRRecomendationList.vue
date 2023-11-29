@@ -1,5 +1,8 @@
 <template>
-  <Panel :header="$t('view.current_request')" toggleable> todo: </Panel>
+  <Panel :header="$t('view.current_request')" toggleable>
+    todo:
+    <Button :label="$t('view.button.set_hdr')" @click="hdrRequestDialog = true" />
+  </Panel>
   <Panel :header="$t('view.select_base_recommendation')" toggleable>
     <Dropdown
       v-model="selectedCompareWith"
@@ -19,11 +22,15 @@
       </template>
     </Listbox>
   </Panel>
+  <Dialog v-model:visible="hdrRequestDialog" :style="{ width: '50vw' }" :maximizable="false" :modal="true" :dismissable-mask="true">
+    <HDRRequestForm @update="onHDR" @cancel="hdrRequestDialog = false" />
+  </Dialog>
 </template>
 <script>
+import HDRRequestForm from "@/components/management/demand/HDRRequestForm.vue";
 export default {
   name: "HDRRecomendationList",
-  components: {},
+  components: { HDRRequestForm },
   props: {
     modelValue: {
       type: Object,
@@ -39,6 +46,7 @@ export default {
   emits: ["update:modelValue", "select", "update:comparewith"], //"reload",
   data() {
     return {
+      hdrRequestDialog: false,
       selectedRecommendation: this.modelValue,
       selectedCompareWith: this.comparewith ? this.comparewith : this.recommendationList ? this.recommendationList[0] : null,
     };
@@ -58,6 +66,10 @@ export default {
     onSelect(v) {
       this.$emit("select", v);
       this.$emit("update:modelValue", v);
+    },
+    onHDR(hdr) {
+      //todo:
+      console.error(hdr);
     },
   },
 };
