@@ -110,10 +110,24 @@
     </template>
   </RenSpinner>
   <AssetSelectDialog ref="assetSelectDialog" @submit="onAssetSelect" />
-  <Dialog v-model:visible="panelAdd" :style="{ width: '90vw', height: '100vh' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+  <Dialog
+    v-model:visible="panelAdd"
+    :closable="false"
+    :style="{ width: '90vw', height: '100vh', maxHeight: '100%', paddingTop: '1rem' }"
+    :modal="true"
+    :dismissable-mask="true"
+    :show-header="false"
+  >
     <InformationPanelForm @update:model-value="onCreate($event, 0)" @cancel="panelAdd = false"> </InformationPanelForm>
   </Dialog>
-  <Dialog v-model:visible="panelEdit" :style="{ width: '90vw', height: '100vh' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+  <Dialog
+    v-model:visible="panelEdit"
+    :closable="false"
+    :style="{ width: '90vw', height: '100vh', maxHeight: '100%', paddingTop: '1rem' }"
+    :modal="true"
+    :dismissable-mask="true"
+    :show-header="false"
+  >
     <InformationPanelForm :model-value="editedPanel" @update:model-value="onEdit($event, 0)" @cancel="panelEdit = false" />
   </Dialog>
 </template>
@@ -266,12 +280,14 @@ export default {
       await this.$ren.dashboardApi.saveInformationPanel(o).then((panel) => {
         this.$emitter.emit("information", { message: this.$t("information.panel_update", [panel.id]) });
         this.reload();
+        this.panelAdd = false;
       });
     },
     async onEdit(o) {
       await this.$ren.dashboardApi.updateInformationPanel(o).then((panel) => {
         this.$emitter.emit("information", { message: this.$t("information.panel_update", [panel.id]) });
         this.reload();
+        this.panelEdit = false;
       });
     },
   },

@@ -161,6 +161,13 @@ export default class RenUtils {
     if (informationPanel == null) {
       informationPanel = await this.app.$ren.dashboardApi.getInformationPanel(panelId, assetId);
     }
+    if (assetId == null) {
+      for (let tile of informationPanel.tiles) {
+        if (tile.measurements) {
+          tile.measurements = tile.measurements.filter((measurement) => measurement.id != null);
+        }
+      }
+    }
     return informationPanel;
   }
 
@@ -409,11 +416,12 @@ export default class RenUtils {
         if (tile.props && !tile.props.ignore_grouping) {
           for (let m of tile.measurements) {
             //TODO: ignore percentage type ?
-            if (m.type.base_unit != "%") mDict[`${m.id}_${m.aggregation_function}`] = m;
+            if (m.id != null && m.type.base_unit != "%") mDict[`${m.id}_${m.aggregation_function}`] = m;
           }
         }
       }
     }
+    console.info(mDict);
 
     for (let mId in mDict) {
       let m = mDict[mId];

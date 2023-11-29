@@ -4,7 +4,7 @@ import AutoComplete from "primevue/autocomplete";
 import Button from "primevue/button";
 import CheckBox from "primevue/checkbox";
 import Panel from "primevue/panel";
-import Badge from "primevue/badge";
+import ScrollPanel from "primevue/scrollpanel";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import ColumnGroup from "primevue/columngroup";
@@ -57,7 +57,7 @@ plugin.install = function (Vue /*, options*/) {
   Vue.component("Tree", Tree);
   Vue.component("Accordion", Accordion);
   Vue.component("AccordionTab", AccordionTab);
-  Vue.component("Badge", Badge);
+  Vue.component("ScrollPanel", ScrollPanel);
   // Vue.component("Paginator", Paginator);
 }; // install
 export default plugin;

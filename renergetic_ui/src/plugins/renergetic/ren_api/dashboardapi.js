@@ -54,7 +54,7 @@ export default class DashboardApi extends RestComponent {
   ////                                                   /////
   ////////////////////////////////////////////////////////////
   // TEMPORAL CHANGES TO CONNECT WITH BACKEND
-  listInformationPanel(offset = 0, limit = 20) {
+  listInformationPanel(offset = 0, limit = 50) {
     return this.get(`/api/informationPanel`, { offset: offset, limit: limit });
   }
 

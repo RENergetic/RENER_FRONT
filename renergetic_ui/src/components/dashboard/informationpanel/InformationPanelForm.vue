@@ -1,56 +1,66 @@
 <template>
   <InfoIcon :show-icon="false"> <template #content> </template> </InfoIcon>
-  <div v-if="mModel" id="panelForm" class="ren">
-    <Accordion :active-index="0">
-      <AccordionTab :header="$t('view.panel_form')">
-        <ren-input v-model="mModel.name" :text-label="'model.panel.name'" :invalid="v$.mModel.name.$invalid" :errors="v$.mModel.name.$silentErrors" />
-        <!-- :key="mModel ? mModel.label : ''" -->
-        <ren-input
-          v-model="mModel.label"
-          :text-info="mModel.is_template ? $t('view.panel_label_info', ['{asset}']) : null"
-          :text-label="'model.panel.label'"
-          :invalid="v$.mModel.label.$invalid"
-          :errors="v$.mModel.label.$silentErrors"
-        />
-        {{ labelWarning }}
-        <ren-switch v-if="addMode" v-model="mModel.is_template" :text-label="'model.panel.is_template_new_panel'" />
-        <!-- {{ mModel.priority }} -->
-        <ren-input-number
-          v-model="mModel.priority"
-          :min="0"
-          :max="1024"
-          :only-integer="true"
-          :text-label="'model.panel.priority'"
-          :invalid="v$.mModel.priority.$invalid"
-          :errors="v$.mModel.priority.$silentErrors"
-        />
-      </AccordionTab>
-      <!-- {{ modelValue }} -->
+  <div class="flex flex-column ren" style="height: 100%">
+    <div v-if="mModel" id="panelForm" class="flex-grow-1">
+      <ScrollPanel style="width: 100%; height: 85vh">
+        <Accordion :active-index="0" style="max-height: 85%">
+          <AccordionTab :header="$t('view.panel_form')">
+            <ren-input
+              v-model="mModel.name"
+              :text-label="'model.panel.name'"
+              :invalid="v$.mModel.name.$invalid"
+              :errors="v$.mModel.name.$silentErrors"
+            />
+            <!-- :key="mModel ? mModel.label : ''" -->
+            <ren-input
+              v-model="mModel.label"
+              :text-info="mModel.is_template ? $t('view.panel_label_info', ['{asset}']) : null"
+              :text-label="'model.panel.label'"
+              :invalid="v$.mModel.label.$invalid"
+              :errors="v$.mModel.label.$silentErrors"
+            />
+            {{ labelWarning }}
+            <ren-switch v-if="addMode" v-model="mModel.is_template" :text-label="'model.panel.is_template_new_panel'" />
+            <!-- {{ mModel.priority }} -->
+            <ren-input-number
+              v-model="mModel.priority"
+              :min="0"
+              :max="1024"
+              :only-integer="true"
+              :text-label="'model.panel.priority'"
+              :invalid="v$.mModel.priority.$invalid"
+              :errors="v$.mModel.priority.$silentErrors"
+            />
+          </AccordionTab>
+          <!-- {{ modelValue }} -->
 
-      <AccordionTab v-if="panelStructure && panelStructure.tiles.length > 0" :header="$t('model.panel.tiles')">
-        <InformationPanelTilesWrapper v-if="panelStructure" :key="refreshTiles" v-model="panelStructure" :is-template="mModel.is_template" />
-      </AccordionTab>
-      <AccordionTab :header="$t('model.panel.structure')">
-        <ren-input-wrapper v-if="mPanelStructureJSON" :text-label="null">
-          <template #content>
-            <Textarea v-model="mPanelStructureJSON" style="width: 100%" :maxlength="20000" rows="15" :cols="80"></Textarea>
-          </template>
-        </ren-input-wrapper>
-        <ren-input-wrapper v-if="modelValue" :text-label="null">
-          <template #content>
-            <!-- <span v-if="!selectedAsset">{{ $t("view.asset_not_selected") }}</span> -->
-            <div>
-              <Button style="margin-left: 0.5rem" @click="importPanelDialog = true">{{ $t("view.submit_file_structure") }}</Button>
-              <Button style="margin-left: 0.5rem" @click="submitStructure">{{ $t("view.button.submit_structure") }}</Button>
-            </div>
-            <!-- <span v-if="submittedPanelJSON">{{ $t("view.file_submitted") }}</span> -->
-          </template>
-        </ren-input-wrapper>
-      </AccordionTab>
-    </Accordion>
+          <AccordionTab v-if="panelStructure && panelStructure.tiles != null" :header="$t('model.panel.tiles')">
+            <InformationPanelTilesWrapper v-if="panelStructure" :key="refreshTiles" v-model="panelStructure" :is-template="mModel.is_template" />
+          </AccordionTab>
+          <AccordionTab :header="$t('model.panel.structure')">
+            <ren-input-wrapper v-if="mPanelStructureJSON" :text-label="null">
+              <template #content>
+                <Textarea v-model="mPanelStructureJSON" style="width: 100%" :maxlength="20000" rows="15" :cols="80"></Textarea>
+              </template>
+            </ren-input-wrapper>
+            <ren-input-wrapper v-if="modelValue" :text-label="null">
+              <template #content>
+                <!-- <span v-if="!selectedAsset">{{ $t("view.asset_not_selected") }}</span> -->
+                <div>
+                  <Button style="margin-left: 0.5rem" @click="importPanelDialog = true">{{ $t("view.submit_file_structure") }}</Button>
+                  <Button style="margin-left: 0.5rem" @click="submitStructure">{{ $t("view.button.submit_structure") }}</Button>
+                </div>
+                <!-- <span v-if="submittedPanelJSON">{{ $t("view.file_submitted") }}</span> -->
+              </template>
+            </ren-input-wrapper>
+          </AccordionTab>
+        </Accordion>
+      </ScrollPanel>
+    </div>
+    <div class="flex-grow-0">
+      <ren-submit :cancel-button="true" :disabled="v$.$invalid" @cancel="cancel" @submit="submit" />
+    </div>
   </div>
-  <!-- </template>
-  </Card> -->
   <Dialog v-model:visible="importPanelDialog" :style="{ width: '60vw', height: '80vh' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <ren-input-wrapper :text-label="null">
       <template #content>
@@ -110,9 +120,6 @@
     />
     <ren-submit v-if="submittedPanelJSON != null" :cancel-button="true" @submit="fileSubmit" @cancel="onFileClear" />
   </Dialog>
-  <!-- {{ v$.$invalid }}
-  {{ v$ }} -->
-  <ren-submit :cancel-button="true" :disabled="v$.$invalid" @cancel="cancel" @submit="submit" />
 </template>
 
 <script>
