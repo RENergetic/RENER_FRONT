@@ -94,7 +94,7 @@ export function cleanTileStructure(mTile) {
             aggregation_function: m.aggregation_function === null ? undefined : m.aggregation_function,
           };
           if (m.type) {
-            obj.type = { id: m.type.id, physical_name: m.type.physical_name, unit: m.type.unit };
+            obj.type = { id: m.type.id, physical_name: m.type.physical_name, name: m.type.name, unit: m.type.unit };
           }
           if (m.asset) {
             obj.asset = { id: m.asset.id, name: m.asset.name };

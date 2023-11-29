@@ -5,25 +5,25 @@
   <DataTable :key="headers" :value="panelList">
     <!-- <Column v-for="h of headers" :key="h" :field="h" :header="$t('model.information_panel.' + h)"></Column> -->
 
-    <Column field="id" :header="$t('model.panel.id')" :show-filter-menu="false"> </Column>
-    <Column field="name" :header="$t('model.panel.name')" :show-filter-menu="false">
+    <Column field="id" :header="$t('model.information_panel.id')" :show-filter-menu="false"> </Column>
+    <Column field="name" :header="$t('model.information_panel.name')" :show-filter-menu="false">
       <template #filter="{ filterModel, filterCallback }">
         <InputText v-model="filterModel.value" type="text" class="p-column-filter" :placeholder="$t('view.search')" @input="filterCallback()" />
       </template>
     </Column>
-    <Column field="label" :header="$t('model.panel.label')" :show-filter-menu="false">
+    <Column field="label" :header="$t('model.information_panel.label')" :show-filter-menu="false">
       <template #filter="{ filterModel, filterCallback }">
         <InputText v-model="filterModel.value" type="text" class="p-column-filter" :placeholder="$t('view.search')" @input="filterCallback()" />
       </template>
     </Column>
-    <Column field="featured" :header="$t('model.panel.featured')" :show-filter-menu="false">
+    <Column field="featured" :header="$t('model.information_panel.featured')" :show-filter-menu="false">
       <template #body="item">
         <i v-if="item.data.featured" class="pi pi-eye" style="font-size: 1.5rem" @click="setFeatured(item.data, false)" />
         <i v-else class="pi pi-eye-slash" style="font-size: 1.5rem" @click="setFeatured(item.data, true)" />
       </template>
     </Column>
 
-    <Column field="is_template" :header="$t('model.panel.is_template')" :show-filter-menu="false">
+    <Column field="is_template" :header="$t('model.information_panel.is_template')" :show-filter-menu="false">
       <template #body="item">
         <div style="height: 100%; width: 100%">
           <i v-if="item.data.is_template" class="pi pi-bookmark-fill" style="font-size: 1.5rem" />

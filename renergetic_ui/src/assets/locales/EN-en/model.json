@@ -44,7 +44,7 @@
           "type": {
                "room": "Room",
                "pv": "PV",
-               "pv_plant":"PV",
+               "pv_plant": "PV",
                "bulding": "Bulding",
                "flat": "Flat",
                "heat_exchange": "Heat exchanger",
@@ -71,7 +71,23 @@
      "information_panel": {
           "id": "Id",
           "label": "Label",
-          "name": "Name"
+          "name": "Name",
+          "tiles": "Tiles",
+          "featured": "Visibility",
+          "is_template": "Is template",
+          "is_template_new_panel": "Is panel a template for private dashboards view (Can't be changed later)",
+          "structure": "Structure",
+          "priority": "Priority",
+          "tile": {
+               "name": "Name",
+               "label": "Label",
+               "type": "Type",
+               "props": "Properties",
+               "x": "x",
+               "y": "y",
+               "h": "h",
+               "w": "w"
+          }
      },
      "measurement_type": {
           "id": "ID",
@@ -118,15 +134,6 @@
           "asset_category": "Asset category",
           "physical_name": "Physical name",
           "asset": "Asset"
-     },
-     "panel": {
-          "id": "Id",
-          "name": "Name",
-          "label": "Label",
-          "featured": "Visibility",
-          "is_template": "Is template",
-          "is_template_new_panel": "Is panel a template for private dashboards view (Can't be changed later)",
-          "structure": "Structure"
      },
      "user": {
           "login": "Login",

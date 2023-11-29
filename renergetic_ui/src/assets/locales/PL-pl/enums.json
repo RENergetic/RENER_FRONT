@@ -71,7 +71,9 @@
     "none": "Inne"
   },
   "tile_type": {
+    "chart": "Wykres",
     "knob": "Wykres zegarowy",
+    "multi_knob": "Multi wykres zegarowy",
     "doughnut": "Wykres pierścieniowy",
     "list": "Lista",
     "single": "Pojedyncza wartość"

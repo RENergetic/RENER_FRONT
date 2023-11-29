@@ -9,10 +9,10 @@
               {{ tile.label ? tile.label : tile.name ? tile.name : `Tile ${idx}` }}
             </span>
             <div>
-              {{ $t("view.static_measurements") }}: <span class="badge state ok">{{ tileCountMeasurements(tile) }}</span>
+              {{ $t("view.measurements_static") }}: <span class="badge state ok">{{ tileCountMeasurements(tile) }}</span>
             </div>
             <div>
-              {{ $t("view.dynamic_measurements") }}:
+              {{ $t("view.measurements_dynamic") }}:
               <span v-if="!isTemplate" class="badge state warning">{{ tileCountEmpty(tile) }}</span>
               <span v-else class="badge state ok">{{ tileCountEmpty(tile) }}</span>
             </div>

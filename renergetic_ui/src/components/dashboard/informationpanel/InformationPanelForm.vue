@@ -4,10 +4,10 @@
     <div v-if="mModel" id="panelForm" class="flex-grow-1">
       <ScrollPanel style="width: 100%; height: 85vh">
         <Accordion :active-index="0" style="max-height: 85%">
-          <AccordionTab :header="$t('view.panel_form')">
+          <AccordionTab :header="$t('view.information_panel_form')">
             <ren-input
               v-model="mModel.name"
-              :text-label="'model.panel.name'"
+              :text-label="'model.information_panel.name'"
               :invalid="v$.mModel.name.$invalid"
               :errors="v$.mModel.name.$silentErrors"
             />
@@ -15,29 +15,29 @@
             <ren-input
               v-model="mModel.label"
               :text-info="mModel.is_template ? $t('view.panel_label_info', ['{asset}']) : null"
-              :text-label="'model.panel.label'"
+              :text-label="'model.information_panel.label'"
               :invalid="v$.mModel.label.$invalid"
               :errors="v$.mModel.label.$silentErrors"
             />
             {{ labelWarning }}
-            <ren-switch v-if="addMode" v-model="mModel.is_template" :text-label="'model.panel.is_template_new_panel'" />
+            <ren-switch v-if="addMode" v-model="mModel.is_template" :text-label="'model.information_panel.is_template_new_panel'" />
             <!-- {{ mModel.priority }} -->
             <ren-input-number
               v-model="mModel.priority"
               :min="0"
               :max="1024"
               :only-integer="true"
-              :text-label="'model.panel.priority'"
+              :text-label="'model.information_panel.priority'"
               :invalid="v$.mModel.priority.$invalid"
               :errors="v$.mModel.priority.$silentErrors"
             />
           </AccordionTab>
           <!-- {{ modelValue }} -->
 
-          <AccordionTab v-if="panelStructure && panelStructure.tiles != null" :header="$t('model.panel.tiles')">
+          <AccordionTab v-if="panelStructure && panelStructure.tiles != null" :header="$t('model.information_panel.tiles')">
             <InformationPanelTilesWrapper v-if="panelStructure" :key="refreshTiles" v-model="panelStructure" :is-template="mModel.is_template" />
           </AccordionTab>
-          <AccordionTab :header="$t('model.panel.structure')">
+          <AccordionTab :header="$t('model.information_panel.structure')">
             <ren-input-wrapper v-if="mPanelStructureJSON" :text-label="null">
               <template #content>
                 <Textarea v-model="mPanelStructureJSON" style="width: 100%" :maxlength="20000" rows="15" :cols="80"></Textarea>
@@ -47,8 +47,12 @@
               <template #content>
                 <!-- <span v-if="!selectedAsset">{{ $t("view.asset_not_selected") }}</span> -->
                 <div>
-                  <Button style="margin-left: 0.5rem" @click="importPanelDialog = true">{{ $t("view.submit_file_structure") }}</Button>
-                  <Button style="margin-left: 0.5rem" @click="submitStructure">{{ $t("view.button.submit_structure") }}</Button>
+                  <Button style="margin-left: 0.5rem" @click="importPanelDialog = true">
+                    {{ $t("view.information_panel_submit_file_structure") }}
+                  </Button>
+                  <Button style="margin-left: 0.5rem" @click="submitStructure">
+                    {{ $t("view.information_panel_submit_structure") }}
+                  </Button>
                 </div>
                 <!-- <span v-if="submittedPanelJSON">{{ $t("view.file_submitted") }}</span> -->
               </template>
