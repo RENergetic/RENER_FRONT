@@ -92,7 +92,8 @@ export default {
       return this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings);
     },
     unitTitle: function () {
-      return `[${this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings)}]`;
+      let u = this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings);
+      return u ? `[${u}]` : "";
     },
     color: function () {
       let color = this.$ren.utils.measurementColor(this.measurement, this.value);

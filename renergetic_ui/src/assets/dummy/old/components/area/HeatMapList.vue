@@ -9,7 +9,7 @@
             <Column v-for="h of headers" :key="h" :field="h" :header="$t('model.heatmap.' + h)"></Column>
             <Column field="link">
               <template #body="item">
-                <i class="pi pi-chevron-circle-right" style="fontsize: 2rem" @click="view(item.data)" />
+                <i class="pi pi-chevron-circle-right" style="font-size: 2rem" @click="view(item.data)" />
               </template>
             </Column>
           </DataTable>

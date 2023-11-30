@@ -113,6 +113,11 @@
     "notification": "Access Notification",
     "read": "Can receive read privilages to asset or dashboard"
   },
+  "asset_connection": {
+    "owner": "Owner",
+    "resident": "Resident",
+    "visitor": "Visitor"
+  },
   "role": {
     "ren-staff": "Staff",
     "ren-guest": "Guest",

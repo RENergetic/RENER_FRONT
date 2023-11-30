@@ -16,9 +16,9 @@
     </div>
     <div v-else class="flex flex-none flex-column align-items-center justify-content-center">
       <span id="label" :style="color"> {{ mSettings.tile.label }} </span>
-      <span id="value" :style="color"
-        ><h2>{{ $ren.utils.roundValue(value) }} {{ unit }}</h2></span
-      >
+      <span id="value" :style="color">
+        <h2>{{ $ren.utils.roundValue(value) }} {{ unit }}</h2>
+      </span>
     </div>
   </div>
   <!-- {{ tile.props }} -->
