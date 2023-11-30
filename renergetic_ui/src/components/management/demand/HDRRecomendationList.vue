@@ -1,6 +1,7 @@
 <template>
   <Panel :header="$t('view.current_request')" toggleable>
-    todo:
+    <HDRRequestForm v-if="currentRequest" v-model="currentRequest" :disabled="true" />
+    <!-- {{ currentRequest }} -->
     <Button :label="$t('view.button.set_hdr')" @click="hdrRequestDialog = true" />
   </Panel>
   <Panel :header="$t('view.select_base_recommendation')" toggleable>
@@ -46,6 +47,7 @@ export default {
   emits: ["update:modelValue", "select", "update:comparewith"], //"reload",
   data() {
     return {
+      currentRequest: null,
       hdrRequestDialog: false,
       selectedRecommendation: this.modelValue,
       selectedCompareWith: this.comparewith ? this.comparewith : this.recommendationList ? this.recommendationList[0] : null,
@@ -59,6 +61,9 @@ export default {
       this.$emit("update:comparewith", value);
     },
   },
+  async mounted() {
+    this.currentRequest = await this.$ren.hdrApi.getCurrentRequest();
+  },
   methods: {
     // reload() {
     //   this.$emit("reload");
@@ -67,9 +72,15 @@ export default {
       this.$emit("select", v);
       this.$emit("update:modelValue", v);
     },
-    onHDR(hdr) {
+    async onHDR(hdr) {
       //todo:
-      console.error(hdr);
+      // await this.$refs.spinner.run(async () => {
+      await this.$ren.hdrApi.setCurrentRequest(hdr).then(async () => {
+        this.hdrRequestDialog = false;
+        this.currentRequest = await this.$ren.hdrApi.getCurrentRequest();
+      });
+      // });
+      // console.error(hdr);
     },
   },
 };

@@ -1,6 +1,6 @@
 <template>
   <div class="field grid">
-    <label v-if="textLabel" for="ren-input" class="col-12 mb-2 md:col-2 md:mb-0">
+    <label v-if="textLabel" for="ren-input" class="col-12 mb-2 md:col-2 md:mb-0 ren-label">
       <div v-if="$te(textLabel)">
         {{ $t(textLabel) }}
       </div>

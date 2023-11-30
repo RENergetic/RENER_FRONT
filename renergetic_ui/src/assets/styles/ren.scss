@@ -75,6 +75,9 @@ body {
     opacity: 0.6;
 }
 .ren {
+    .ren-label {
+        min-width: 10rem;
+    }
     .tile {
         margin: 0.15rem;
     }
