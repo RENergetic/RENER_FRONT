@@ -4,7 +4,7 @@
       <div class="gap-3 field grid container">
         <!-- obtained from the backend -->
         <Checkbox v-model="rowActiveCheckBox" :binary="true" />
-        <label> Save rule </label>
+        <label> {{ $t("view.enable_asset") }} </label>
         <!-- <Dropdown v-model="measurementList" :options="formattedOptions" :placeholder="'Measurements'" optionLabel="label" optionValue="value" /> -->
         <Button :label="formattedMeasurementValue" @click="measurementSelectionDialog(0)"></Button>
         <Dropdown
