@@ -8,7 +8,7 @@
   <Card v-if="mModel">
     <!-- <template #title> </template> -->
     <template #content>
-      <!-- {{ mModel }}  -->
+      {{ mModel }}
       <div class="ren">
         <!-- <ren-input
           v-model="mModel.label"
@@ -25,14 +25,13 @@
             <Calendar v-model="mModel.date_from" :show-time="true" hour-format="24" step-minute="60" />
           </template>
         </ren-input-wrapper>
-        {{ mModel.interval_length }}
         <ren-input-wrapper
           :text-label="'model.hdrrequest.interval_length'"
           :invalid="v$.mModel.interval_length.$invalid"
           :errors="v$.mModel.interval_length.$silentErrors"
         >
           <template #content>
-            <Slider v-model="mModel.interval_length" class="settings-slider" :max="60 * 12" :step="30" />
+            <Slider v-model="mModel.interval_length" class="settings-slider" :max="60 * 12" :step="30" :min="60" />
             <span>{{ mModel.interval_length }}</span>
           </template>
         </ren-input-wrapper>
@@ -67,7 +66,7 @@
               :options="mUnits"
               option-label="unit"
               option-value="unit"
-              :placeholder="$t('view.select_hdrrequest_unit')"
+              :placeholder="$t('model.hdrrequest.unit')"
             />
           </template>
         </ren-input-wrapper>
@@ -76,8 +75,8 @@
           v-model="mModel.isLimit"
           :text-label="'model.hdrrequest.change_or_limit'"
           :options="[
-            { label: $t('view.button.max_value'), value: true },
-            { label: $t('view.button.change_by'), value: false },
+            { label: $t('model.hdrrequest.max_value'), value: true },
+            { label: $t('model.hdrrequest.delta_value'), value: false },
           ]"
         />
         <ren-input-wrapper

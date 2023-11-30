@@ -78,6 +78,7 @@ body {
     .tile {
         margin: 0.15rem;
     }
+
     .p-inputtext {
         width: $inputwidth;
         max-width: $maxInputwidth;
@@ -85,6 +86,14 @@ body {
     input {
         width: $inputwidth;
         max-width: $maxInputwidth;
+    }
+    .ren-inputwrapper {
+        width: $inputwidth;
+        max-width: $maxInputwidth;
+        .p-slider-horizontal {
+            width: $inputwidth;
+            max-width: $maxInputwidth;
+        }
     }
 
     .p-inputwrapper {

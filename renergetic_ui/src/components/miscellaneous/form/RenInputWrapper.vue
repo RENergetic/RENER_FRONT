@@ -6,10 +6,10 @@
       </div>
       <div v-else>{{ textLabel }}</div>
     </label>
-    <div v-if="!textLabel" class="col-12">
+    <div v-if="!textLabel" class="col-12 ren-inputwrapper">
       <slot id="ren-input" name="content" />
     </div>
-    <div v-else class="col-12 md:col-10">
+    <div v-else class="col-12 md:col-10 ren-inputwrapper">
       <slot id="ren-input" name="content" />
     </div>
     <span v-if="invalid">

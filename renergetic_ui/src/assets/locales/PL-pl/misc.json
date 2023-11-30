@@ -13,11 +13,11 @@
                     "type": "asset type"
                 }
             },
-            "key":"key",
-            "value":"value",
-            "domain":"domain",
-            "physical_type":"physical type",
-            "sensor_name":"sensor name",
+            "key": "key",
+            "value": "value",
+            "domain": "domain",
+            "physical_type": "physical type",
+            "sensor_name": "sensor name",
             "username": "username",
             "email": "email",
             "name": "name",
@@ -27,7 +27,9 @@
             "passwordRepeat": "repeat password",
             "selectedAsset": "Selected asset",
             "connectedAsset": "Connected asset",
-            "connectionType": "Connection type"
+            "connectionType": "Connection type",
+            "date_from": "Data od",
+            "requestValue": "Request's value"
         },
         "sameAs": "The '{property}' is not same as {same_as_property}."
     },
@@ -35,20 +37,20 @@
         "information": "Information",
         "dashboard_created": "Dashboard has been created",
         "dashboard_updated": "Dashboard has been updated",
-        "dashboard_delete_success":"Dashboard has been deleted.",
+        "dashboard_delete_success": "Dashboard has been deleted.",
         "dashboard_not_updated": "Dashboard has not been updated",
         "measurement_created": "Measurement has been created",
         "measurement_updated": "Measurement has been updated",
-        "measurement_delete_success":"Measurement has been deleted.",
+        "measurement_delete_success": "Measurement has been deleted.",
         "measurement_not_updated": "Measurement has not been updated",
         "user_updated": "User has been updated",
         "user_created": "User has been created",
         "asset_panel_revoked": "Asset revoked from the dashboard",
         "asset_panel_assigned": "Asset assigned to the panel",
         "panel_update": "Panel {0} update success.",
-        "settings_saved":"Settings saved",
+        "settings_saved": "Settings saved",
         "visibility_changed": "Visibility changed",
-        "tag_deleted":"Tag deleted"
+        "tag_deleted": "Tag deleted"
     },
     "error": {
         "error": "Error",
