@@ -106,6 +106,7 @@ export default {
 
     featuredPanels() {
       var featuredPanels = this.$store.getters["view/featuredPanels"];
+      if (featuredPanels == null && featuredPanels.length == 0) return [];
       var items = featuredPanels.map((panel) => {
         // let to = `/panel/view/${panel.id}`;
         return {
@@ -133,7 +134,7 @@ export default {
       let flags = RenRoles.REN_VISITOR | RenRoles.REN_USER;
       if ((flags & this.role) == 0) return [];
       let assetPanels = this.$store.getters["view/assetPanels"];
-      if (assetPanels.length == 0) return [];
+      if (assetPanels == null && assetPanels.length == 0) return [];
       let items = assetPanels.map((assetPanel) => {
         // let to = `/asset/${assetPanel.asset.id}/panel/${assetPanel.panel.id}`;
         return {
