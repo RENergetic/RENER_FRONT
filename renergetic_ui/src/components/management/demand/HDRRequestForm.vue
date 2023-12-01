@@ -8,7 +8,7 @@
   <Card v-if="mModel">
     <!-- <template #title> </template> -->
     <template #content>
-      {{ mModel }}
+      <!-- {{ mModel }} -->
       <div class="ren">
         <!-- <ren-input
           v-model="mModel.label"
@@ -22,7 +22,15 @@
           :errors="v$.mModel.date_from.$silentErrors"
         >
           <template #content>
-            <Calendar v-model="mModel.date_from" :disabled="disabled" :min-date="minDate" :show-time="true" hour-format="24" step-minute="60" />
+            <Calendar
+              v-model="mModel.date_from"
+              :disabled="disabled"
+              :min-date="minDate"
+              :max-date="maxDate"
+              :show-time="true"
+              hour-format="24"
+              step-minute="60"
+            />
           </template>
         </ren-input-wrapper>
         <ren-input-wrapper
@@ -144,7 +152,7 @@ export default {
       m.physical_type = m.value_type != null ? m.value_type.physical_name : null;
       m.unit = m.value_type != null ? m.value_type.unit : null;
       if (m.physical_type) mUnits = this.$store.getters["view/measurementTypes"][m.physical_type];
-      m.interval_length = m.date_from && m.date_to ? m.date_from - m.date_to : 60;
+      m.interval_length = m.date_from && m.date_to ? (m.date_to - m.date_from) / 60000 : 60;
       m.isLimit = m.max_value ? true : false;
       m.requestValue = m.max_value ? m.max_value : m.value_change;
       m.date_from = m.date_from ? new Date(m.date_from) : null;
@@ -159,7 +167,8 @@ export default {
       editDialog: false,
       addDialog: false,
       measurementTypes: this.$store.getters["view/measurementTypes"],
-      minDate: new Date(this.getRoundHour() + 3600000),
+      minDate: new Date(this.getRoundHour() + 3 * 3600000),
+      maxDate: new Date(this.getRoundHour() + 7 * 24 * 3600000),
     };
   },
   computed: {

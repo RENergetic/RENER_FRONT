@@ -1,6 +1,6 @@
 <template>
   <div class="field grid">
-    <label for="ren-input" class="col-12 mb-2 md:col-2 md:mb-0 ren-label">
+    <label v-if="textLabel != null" for="ren-input" class="col-12 mb-2 md:col-2 md:mb-0 ren-label">
       <div v-if="$te(textLabel)">
         {{ $t(textLabel) }}
       </div>
@@ -15,7 +15,8 @@
       </InfoIcon>
       <!-- {{ $t(textLabel) }}  -->
     </label>
-    <div class="col-12 md:col-10"><InputText id="ren-input" v-model="mValue" :disabled="disabled" /></div>
+    <div v-if="textLabel != null" class="col-12 md:col-10"><InputText id="ren-input" v-model="mValue" :disabled="disabled" /></div>
+    <div v-else class="col-12"><InputText id="ren-input" v-model="mValue" :disabled="disabled" /></div>
     <span v-if="invalid">
       <span v-for="(error, index) of errors" id="name-error" :key="index">
         <small class="p-error">{{ error.$message }}</small>

@@ -24,6 +24,7 @@
      },
      "hdrrequest": {
           "date_from": "Data od",
+          "date_to": "Data do",
           "interval_length": "Request length [min]",
           "physical_type": "Value's physical type",
           "unit": "Jednostka",

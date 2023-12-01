@@ -2,13 +2,15 @@
   <RenSpinner ref="spinner" :key="reloadChart" :lock="true" style="margin: auto; max-width: 95%">
     <template #content>
       <!-- {{ recommendationId }}{{ compareId }} -->
-      <div v-if="pdata" style="width: 100%">
+
+      <div v-if="pData && pData.timestamps && pData.timestamps.length > 0" :key="pData.timestamps.length" style="width: 100%">
         <div v-for="(measurements, index) in mGroups" :key="index">
           <!-- :style="'margin:auto;max-width: 90%;'" -->
           <!-- :immediate="false" -->
+
           <MeasurementChart
             :ref="`mChart_${index}`"
-            :pdata="{ timeseries: pdata }"
+            :p-data="{ timeseries: pData }"
             :filter="filter"
             style="width: 100%"
             :width="1200"
@@ -18,12 +20,13 @@
             :legend="true"
             :measurements="measurements"
             :annotations="annotations"
+            :immediate="false"
           />
         </div>
       </div>
       <!-- {{ recommendationMeasurements }}  {{ recommendationCompareMeasurements }}  -->
       <!-- {{ mGroups }} -->
-      <!-- {{ pdata }} -->
+      <!-- {{ pData }} -->
     </template>
   </RenSpinner>
 </template>
@@ -42,7 +45,7 @@ export default {
       type: Object,
       default: null,
     },
-    request: {
+    hdrRequest: {
       type: Object,
       default: null,
     },
@@ -53,7 +56,7 @@ export default {
       measurementGroups: [],
       recommendationMeasurements: [],
       recommendationCompareMeasurements: [],
-      pdata: {},
+      pData: {},
       mDict: {},
       mGroups: [],
       reloadChart: false,
@@ -166,10 +169,42 @@ export default {
       this.mGroups = Object.values(mGroups);
       console.info(measurements);
       //todo: filter last 24h and 24h ahead
-      let filter = {};
+      let nowTs = new Date().getTime();
+      let from = new Date(nowTs - 24 * 3600 * 1000).getTime();
+      let to = new Date(nowTs + 36 * 3600 * 1000).getTime();
+      let filterCurrent = { from: from, to: to };
+      // let filterRecommendations = { to: to };
       if (measurements.length > 0) {
         this.$refs.spinner.run(async () => {
-          this.pdata = await this.$ren.dataApi.getMeasurementTimeseries(measurements, filter);
+          if (this.currentMeasurements != null) {
+            console.info(this.currentMeasurements);
+            let curIds = this.currentMeasurements.map((it) => it.id);
+            // let pDataCurrent = await this.$ren.dataApi.getMeasurementTimeseries(this.currentMeasurements, filterCurrent);
+            // console.info(pDataCurrent);
+
+            let pData = await this.$ren.dataApi.getMeasurementTimeseries(measurements, filterCurrent);
+            let idx = pData.timestamps.findIndex((ts) => ts >= nowTs);
+
+            // let d = pDataCurrent.timestamps.length - pDataRecommendations.timestamps.length;
+            for (let mId in pData.current) {
+              if (!curIds.includes(Number(mId))) {
+                let timeseries = pData.current[mId];
+                for (let i in timeseries) {
+                  if (i < idx) {
+                    timeseries[i] = null;
+                  } else {
+                    break;
+                  }
+                }
+              }
+            }
+
+            this.pData = pData;
+            console.info(this.pData);
+          } else {
+            this.pData = await this.$ren.dataApi.getMeasurementTimeseries(measurements, filterCurrent);
+          }
+
           this.annotations = this.getAnnotations();
           console.info(this.annotations);
           this.reloadChart = !this.reloadChart;
@@ -181,12 +216,13 @@ export default {
       this.$emit("reload");
     },
     getAnnotations() {
-      console.error("use request object: TODO");
-      let minIdx = Math.round(this.pdata["timestamps"].length * 0.7);
-      let maxIdx = Math.round(this.pdata["timestamps"].length * 0.9);
-      // let annotationMin = this._getAnnotation(this.pdata["timestamps"][minIdx]);
-      // let annotationMax = this._getAnnotation(this.pdata["timestamps"][maxIdx]);
-      let annotationBox = this._getBoxAnnotation(this.pdata["timestamps"][minIdx], this.pdata["timestamps"][maxIdx]);
+      console.info(this.pData);
+      let minIdx = Math.round(this.pData["timestamps"].length * 0.7);
+      let maxIdx = Math.round(this.pData["timestamps"].length * 0.9);
+      // let annotationMin = this._getAnnotation(this.pData["timestamps"][minIdx]);
+      // let annotationMax = this._getAnnotation(this.pData["timestamps"][maxIdx]);
+      let annotationBox = this._getBoxAnnotation(this.pData["timestamps"][minIdx], this.pData["timestamps"][maxIdx]);
+      if (this.hdrRequest != null) annotationBox = this._getBoxAnnotation(this.hdrRequest.date_from, this.hdrRequest.date_to);
 
       return [annotationBox];
       // return [annotationMin, annotationMax, annotationBox];

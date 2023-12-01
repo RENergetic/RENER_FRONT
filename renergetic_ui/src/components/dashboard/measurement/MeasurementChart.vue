@@ -2,7 +2,6 @@
   <RenSpinner ref="spinner" :lock="true">
     <template #content>
       <!-- {{ measurements }} -->
-      <!-- {{ pdata }} -->
       <!-- {{ mMeasurements.length }} -->
       <!-- {{ annotations }} -->
       <Chart
@@ -39,7 +38,7 @@ export default {
   name: "MeasurementChart",
   components: { Chart },
   props: {
-    pdata: { type: Object, default: () => ({}) },
+    pData: { type: Object, default: () => ({}) },
     measurements: { type: Array, default: null },
     tile: { type: Object, default: null },
     width: { type: Number, default: 1600 },
@@ -49,6 +48,7 @@ export default {
     assetId: { type: String, default: null },
     immediate: { type: Boolean, default: true },
     titleVisible: { type: Boolean, default: false },
+    // loadData: { type: Boolean, default: true },
     annotations: {
       type: [Object, Array],
       default: () => {
@@ -72,7 +72,7 @@ export default {
       yAxisTitle = `${this.$t("enums.physical_type." + mMeasurements[0].type.physical_name)}${unit}`;
     }
     return {
-      labels: this.pdata["timeseries_labels"] ? this.pdata["timeseries_labels"] : [],
+      labels: this.pData["timeseries_labels"] ? this.pData["timeseries_labels"] : [],
       datasets: [],
       plugins: [chartjsMoment, chartjsPluginAnnotation],
       mStyle: "max-width: 100rem;max-height:60rem; margin: auto;height:100%;width:100%",
@@ -165,32 +165,44 @@ export default {
       },
       deep: true,
     },
+    pData: {
+      handler: async function (newV) {
+        if (newV != null && !this.immediate) {
+          this.setLocalData();
+        }
+      },
+
+      deep: true,
+    },
   },
   async mounted() {
     if (this.immediate) await this.reload();
+    else {
+      this.setLocalData();
+    }
   },
   methods: {
     localData() {
       let hasAllData = false;
-      if (this.pdata["timeseries"] && this.pdata["timeseries"]["current"]) {
+      if (this.pData["timeseries"] && this.pData["timeseries"]["current"]) {
         hasAllData = true;
         this.mMeasurements.forEach((m) => {
           hasAllData &=
-            this.pdata["timeseries"]["current"][m.id] &&
-            this.pdata["timeseries"]["current"][m.id].length == this.pdata["timeseries"]["timestamps"].length;
+            this.pData["timeseries"]["current"][m.id] &&
+            this.pData["timeseries"]["current"][m.id].length == this.pData["timeseries"]["timestamps"].length;
         });
       }
       console.info(hasAllData);
       if (hasAllData) {
-        this.labels = this.pdata["timeseries"]["timestamps"];
-        return this.pdata["timeseries"]["current"];
+        this.labels = this.pData["timeseries"]["timestamps"];
+        return this.pData["timeseries"]["current"];
       }
       return null;
     },
 
-    async loadData() {
+    async loadTimeseriesData() {
       //TODO: make it comgigurable in tile / args prediction & aggregation func
-      // let data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
+      // let data = this.tile.measurements.map((m) => this.pData.current[m.aggregation_function][m.id]);
       // let measurementIds = this.tile.measurements.map((m) => m.id);
       let data = this.localData();
       if (data == null) {
@@ -235,11 +247,19 @@ export default {
       let run = this.$refs.spinner.run;
       await run(async () => {
         // await new Promise((r) => setTimeout(r, 250));
-        var pData = await this.loadData();
+        var pData = await this.loadTimeseriesData();
         this.setDataset(pData);
         this.loaded = true;
         this.refreshDate = new Date();
       });
+    },
+    setLocalData() {
+      var pData = this.localData();
+      if (pData !== null) {
+        this.setDataset(pData);
+        this.loaded = true;
+        this.refreshDate = null;
+      }
     },
   },
 };

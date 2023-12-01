@@ -1,7 +1,7 @@
 <template>
   <div class="field grid">
     <label v-if="textLabel" for="ren-input" class="col-12 mb-2 md:col-2 md:mb-0 ren-label"> {{ $t(textLabel) }} </label>
-    <div class="col-12 md:col-10">
+    <div class="col-12 md:col-10 ren-inputwrapper">
       <SelectButton id="ren-input" v-model="mValue" :disabled="disabled" option-label="label" option-value="value" :options="mOptions" />
     </div>
     <span v-if="invalid">

@@ -24,6 +24,7 @@
      },
      "hdrrequest": {
           "date_from": "Date from",
+          "date_to": "To",
           "interval_length": "Request length [min]",
           "physical_type": "Value's physical type",
           "unit": "Unit",
