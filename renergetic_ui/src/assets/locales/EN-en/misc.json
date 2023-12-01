@@ -22,6 +22,7 @@
             "email": "email",
             "name": "name",
             "url": "url",
+            "unit": "Unit",
             "label": "label",
             "password": "password",
             "passwordRepeat": "repeat password",

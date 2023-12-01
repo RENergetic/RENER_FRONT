@@ -4,25 +4,27 @@
       <!-- {{ recommendationId }}{{ compareId }} -->
 
       <div v-if="pData && pData.timestamps && pData.timestamps.length > 0" :key="pData.timestamps.length" style="width: 100%">
-        <div v-for="(measurements, index) in mGroups" :key="index">
-          <!-- :style="'margin:auto;max-width: 90%;'" -->
-          <!-- :immediate="false" -->
-
-          <MeasurementChart
-            :ref="`mChart_${index}`"
-            :p-data="{ timeseries: pData }"
-            :filter="filter"
-            style="width: 100%"
-            :width="1200"
-            :height="500"
-            :chart-type="chartType"
-            :title-visible="true"
-            :legend="true"
-            :measurements="measurements"
-            :annotations="annotations"
-            :immediate="false"
-          />
-        </div>
+        <TabView>
+          <TabPanel v-for="(group, index) in mGroups" :key="index" :header="group.header">
+            <!-- :style="'margin:auto;max-width: 90%;'" -->
+            <!-- :immediate="false" -->
+            <!-- {{ group.measurements }} -->
+            <MeasurementChart
+              :ref="`mChart_${index}`"
+              :p-data="{ timeseries: pData }"
+              :filter="filter"
+              style="width: 100%"
+              :width="1200"
+              :height="500"
+              :chart-type="chartType"
+              :title-visible="true"
+              :legend="true"
+              :measurements="group.measurements"
+              :annotations="annotations"
+              :immediate="false"
+            />
+          </TabPanel>
+        </TabView>
       </div>
       <!-- {{ recommendationMeasurements }}  {{ recommendationCompareMeasurements }}  -->
       <!-- {{ mGroups }} -->
@@ -104,6 +106,7 @@ export default {
       if (this.tagKey != r.tag.key) this.currentMeasurements = await this.$ren.managementApi.listTagMeasurements(r.tag.key, "no_tag");
       for (let m of this.currentMeasurements) {
         m.recommendation = null; //this.recommendation.tag.value;
+        m._current = true;
         // m.label = `${m.recommendation}:${m.label ? m.label : m.name}`;
         if (m.measurement_details) {
           m.measurement_details.color = "#90A4AE";
@@ -163,8 +166,11 @@ export default {
       let measurements = Object.values(mDict);
       for (let m of measurements) {
         let k = this.measurementGroupKey(m);
-        if (!mGroups[k]) mGroups[k] = [];
-        mGroups[k].push(m);
+        if (!mGroups[k]) mGroups[k] = { header: k, measurements: [] };
+        mGroups[k].measurements.push(m);
+        if (m._current) {
+          mGroups[k].header = m.label + " " + (m.asset ? (m.asset.label ? m.asset.label : m.asset.name) : "");
+        }
       }
       this.mGroups = Object.values(mGroups);
       console.info(measurements);
@@ -216,27 +222,50 @@ export default {
       this.$emit("reload");
     },
     getAnnotations() {
-      console.info(this.pData);
-      let minIdx = Math.round(this.pData["timestamps"].length * 0.7);
-      let maxIdx = Math.round(this.pData["timestamps"].length * 0.9);
+      // console.info(this.pData);
+      let annotations = [];
+      // let minIdx = Math.round(this.pData["timestamps"].length * 0.7);
+      // let maxIdx = Math.round(this.pData["timestamps"].length * 0.9);
       // let annotationMin = this._getAnnotation(this.pData["timestamps"][minIdx]);
       // let annotationMax = this._getAnnotation(this.pData["timestamps"][maxIdx]);
-      let annotationBox = this._getBoxAnnotation(this.pData["timestamps"][minIdx], this.pData["timestamps"][maxIdx]);
-      if (this.hdrRequest != null) annotationBox = this._getBoxAnnotation(this.hdrRequest.date_from, this.hdrRequest.date_to);
+      // let annotationBox = this._getBoxAnnotation(this.pData["timestamps"][minIdx], this.pData["timestamps"][maxIdx]);
+      let currentLine = this._getAnnotationX(new Date().getTime());
+      // let requestLine = this._getAnnotationY(this.hdrRequest.max_value != null ? this.hdrRequest.max_value : this.hdrRequest.value_change);
+      annotations.push(currentLine);
+      // annotations.push(requestLine);
+      if (this.hdrRequest != null) {
+        let annotationBox = this._getBoxAnnotation(this.hdrRequest.date_from, this.hdrRequest.date_to);
+        annotations.push(annotationBox);
+      }
 
-      return [annotationBox];
+      return annotations;
       // return [annotationMin, annotationMax, annotationBox];
     },
-    _getAnnotation(x) {
+    _getAnnotationX(x) {
       return {
         type: "line",
         drawTime: "afterDatasetsDraw",
         borderColor: "black",
         borderDash: [6, 6],
-        borderWidth: 3,
+        borderWidth: 1.5,
         xMax: x,
         xMin: x,
         xScaleID: "x",
+        // yMax: 0,
+        // yMin: 150110,
+        // yScaleID: "y",
+      };
+    },
+    _getAnnotationY(y) {
+      return {
+        type: "line",
+        drawTime: "afterDatasetsDraw",
+        borderColor: "black",
+        borderDash: [6, 6],
+        borderWidth: 1.5,
+        yMax: y,
+        yMin: y,
+        yScaleID: "y",
         // yMax: 0,
         // yMin: 150110,
         // yScaleID: "y",
