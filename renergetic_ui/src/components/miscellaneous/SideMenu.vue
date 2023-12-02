@@ -1,6 +1,5 @@
 <template>
   <Button id="sideMenuButton" icon="pi pi-arrow-right" @click="visible = true" />
-
   <Sidebar v-model:visible="visible" class="ren-sidebar" :show-close-icon="false">
     <div id="sideMenuLogo"><Logo /></div>
     <PanelMenu class="ren" :model="menuModel" />
@@ -569,7 +568,7 @@ heatMapItems() {
   padding-bottom: 0;
 }
 #sideMenuButton {
-  background: none;
+  // background: none;
   width: $sidemenu-button-width;
   height: $sidemenu-button-width;
   font-size: $sidemenu-button-width;
