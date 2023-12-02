@@ -4,8 +4,7 @@
     <div id="sideMenuLogo"><Logo /></div>
     <PanelMenu class="ren" :model="menuModel" />
   </Sidebar>
-  {{ $route.path }}{{ $route.name }}
-  {{ checkPath({ path: "/" }) }}
+  <!-- {{ $route.path }}{{ $route.name }} -->
   <Dialogs
     :notification-dialog="notificationDialog"
     :demand-dialog="demandDialog"
@@ -354,11 +353,11 @@ export default {
     _grafanaDashboardManagement() {
       let items = [];
       items.push({
-        class: this.checkPath({ name: "GrafanaDashboardList" }) ? "hl-menu" : "",
+        class: this.checkPath({ name: "GrafanaDashboardListView" }) ? "hl-menu" : "",
         label: this.$t("menu.manage_grafana_dashboard"),
         icon: "pi pi-fw pi-th-large",
         command: () => {
-          this.$router.push({ name: "GrafanaDashboardList" });
+          this.$router.push({ name: "GrafanaDashboardListView" });
         },
       });
       return items;

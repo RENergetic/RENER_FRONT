@@ -1,8 +1,8 @@
 <template>
-  <!-- class="col-12"   max-width: 80vw -->
-  <Card style="margin: auto; margin-top: 0.5rem">
+  <Card style="margin: auto; margin-top: 0.5rem; max-width: 95vw">
+    <template #title>{{ $t("menu.manage_assets") }}</template>
     <template #content>
-      <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 95%">
+      <RenSpinner ref="spinner" :lock="true" style="width: 100%">
         <template #content>
           <asset-list v-model:filters="filters" :asset-list="assetList" @reload="loadAssets" />
         </template>

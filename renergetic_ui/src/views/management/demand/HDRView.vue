@@ -1,5 +1,6 @@
 <template>
   <Card style="margin: auto; margin-top: 0.5rem; max-width: 95vw">
+    <template #title>{{ $t("menu.hdr_view") }}</template>
     <template #content>
       <div class="grid">
         <!-- :key="selectedRecommendation.id + (compareWith ? compareWith.id : '')" -->

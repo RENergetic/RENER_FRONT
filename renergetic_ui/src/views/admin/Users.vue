@@ -1,7 +1,8 @@
 <template>
-  <Card class="col-12" style="width: 90%; margin: auto; margin-top: 1rem">
+  <Card style="margin: auto; margin-top: 0.5rem; max-width: 80rem">
+    <template #title>{{ $t("menu.manage_users") }}</template>
     <template #content>
-      <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 80rem">
+      <RenSpinner ref="spinner" :lock="true" style="width: 100%">
         <!--  max-width: 80vw -->
         <template #content>
           <user-list v-model:pagination="pagination" :users="users" @on-delete="confirmDeleteUser" @on-create="loadUsers" @on-update="loadUsers" />

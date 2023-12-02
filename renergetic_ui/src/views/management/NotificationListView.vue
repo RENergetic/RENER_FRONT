@@ -1,8 +1,9 @@
 <template>
-  <Card class="col-12" style="width: 90%; margin: auto; margin-top: 1rem">
+  <Card style="margin: auto; margin-top: 0.5rem; max-width: 90rem">
+    <template #title>{{ $t("menu.manage_notifications") }}</template>
     <template #content>
       <NotificationFilter class="ren-card" :submit-button="false" :columns="3" @update="onSettingsUpdate()" />
-      <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 80rem">
+      <RenSpinner ref="spinner" :lock="true" style="width: 100%">
         <template #content>
           <NotificationList v-model:filters="filters" :notification-list="notificationList" @reload="loadData" />
         </template>
