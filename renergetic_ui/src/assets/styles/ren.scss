@@ -150,6 +150,12 @@ body {
         }
         background-color: rgba(255, 255, 0, 0.318);
     }
+    .hl-menu {
+        .p-panelmenu-header-content {
+            background-color: $primary-color-tr;
+        }
+        background-color: $primary-color-tr;
+    }
     .state.unknown,
     .cell.unknown,
     .cell-state.unknown {

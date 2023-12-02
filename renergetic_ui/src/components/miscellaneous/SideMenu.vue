@@ -4,6 +4,8 @@
     <div id="sideMenuLogo"><Logo /></div>
     <PanelMenu class="ren" :model="menuModel" />
   </Sidebar>
+  {{ $route.path }}{{ $route.name }}
+  {{ checkPath({ path: "/" }) }}
   <Dialogs
     :notification-dialog="notificationDialog"
     :demand-dialog="demandDialog"
@@ -52,7 +54,14 @@ export default {
       return this.$pluginLoaded;
     },
   },
-  watch: {},
+  watch: {
+    "$route.path": {
+      handler: function () {
+        this.menuModel = this.initMenu();
+      },
+      deep: true,
+    },
+  },
   mounted() {
     this.menuModel = this.initMenu();
     this.reload();
@@ -62,9 +71,10 @@ export default {
     initMenu() {
       return [
         {
+          class: this.checkPath({ path: "/" }) ? "hl-menu" : "",
           label: this.$t("menu.home"),
           icon: "pi pi-home",
-          to: "/",
+          command: () => this.$router.push({ path: "/" }),
         },
         ...this.featuredPanels(), //public dashboard
         ...this.assetsItems(), //private dashboard
@@ -109,10 +119,9 @@ export default {
       var items = featuredPanels.map((panel) => {
         // let to = `/panel/view/${panel.id}`;
         return {
-          // label: this.$t("menu.group_list"),
+          class: this.checkPath({ name: "PublicDashboardView", params: { id: panel.id } }) ? "hl-menu" : "",
           label: panel.label ? panel.label : panel.name,
           icon: "pi pi-fw pi-th-large",
-
           command: () => {
             this.$router.push({ name: "PublicDashboardView", params: { id: panel.id } });
           },
@@ -137,10 +146,14 @@ export default {
       let items = assetPanels.map((assetPanel) => {
         // let to = `/asset/${assetPanel.asset.id}/panel/${assetPanel.panel.id}`;
         return {
-          // label: this.$t("menu.group_list"),
+          class: this.checkPath({
+            name: "AssetPanelView",
+            params: { asset_id: assetPanel.asset.id, id: assetPanel.panel.id },
+          })
+            ? "hl-menu"
+            : "",
           label: assetPanel.panel.label.replace("{asset}", assetPanel.asset.label),
           icon: "pi pi-fw pi-th-large",
-          // to: to,
           command: () => {
             this.$router.push({
               name: "AssetPanelView",
@@ -178,7 +191,6 @@ export default {
               // label: this.$t("menu.group_list"),
               label: dashboardItem.label ? dashboardItem.label : dashboardItem.name,
               icon: "pi pi-fw pi-th-large",
-              // to: to,
               command: () => {
                 window.open(dashboardItem.url, "_blank");
                 // this.$router.push(to);
@@ -223,10 +235,9 @@ export default {
     _userItems() {
       let items = [
         {
-          // label: this.$t("menu.manage"),
+          class: this.checkPath({ name: "Users" }) ? "hl-menu" : "",
           label: this.$t("menu.manage_users"),
           icon: "pi pi-fw pi-users",
-          to: "/admin/users",
           command: () => {
             this.$router.push({ name: "Users" });
           },
@@ -235,7 +246,6 @@ export default {
         //   // label: this.$t("menu.group_list"),
         //   label: this.$t("menu.add_user"),
         //   icon: "pi pi-fw pi-user-plus",
-        //   // to: "/admin/users/add",
         //   command: () => {
         //     this.userDialog = !this.userDialog;
         //     // this.$router.push({ name: "AddUser" });
@@ -257,33 +267,14 @@ export default {
       // ];
     },
     _assetItems() {
-      // let items = [
-      //   {
-      //     label: this.$t("menu.manage"),
-      //     icon: "pi pi-fw pi-list",
-      //     to: "/management/asset",
-      //     command: () => {
-      //       this.$router.push({ name: "AssetList" });
-      //     },
-      //   },
-      //   {
-      //     label: this.$t("menu.add_asset"),
-      //     icon: "pi pi-fw pi-plus-circle",
-      //     to: "/management/asset/create",
-      //     command: () => {
-      //       alert("todo:");
-      //       // this.$router.push({ name: "Users" });
-      //     },
-      //   },
-      // ];
       return [
         {
-          // label: this.$t("menu.manage"),
+          class: this.checkPath({ name: "AssetList" }) ? "hl-menu" : "",
           label: this.$t("menu.manage_assets"),
           icon: "pi pi-fw pi-list",
-          to: "/management/asset",
+
           command: () => {
-            this.$router.push({ name: "AssetList" });
+            this.$router.push({ name: "AssetList", path: "/management/asset" });
           },
         },
       ];
@@ -299,11 +290,11 @@ export default {
     _measurementItems() {
       return [
         {
+          class: this.checkPath({ name: "MeasurementList" }) ? "hl-menu" : "",
           label: this.$t("menu.manage_measurements"),
           icon: "pi pi-fw pi-list",
-          to: "/management/measurement",
           command: () => {
-            this.$router.push({ name: "MeasurementList" });
+            this.$router.push({ name: "MeasurementList", path: "/management/measurement" });
           },
         },
       ];
@@ -312,11 +303,11 @@ export default {
     _notificationItems() {
       return [
         {
+          class: this.checkPath({ name: "NotificationList" }) ? "hl-menu" : "",
           label: this.$t("menu.manage_notifications"),
           icon: "pi pi-fw pi-list",
-          to: "/management/notification",
           command: () => {
-            this.$router.push({ name: "NotificationList" });
+            this.$router.push({ name: "NotificationList", path: "/management/notification" });
           },
         },
       ];
@@ -324,11 +315,11 @@ export default {
     _hdrItems() {
       return [
         {
+          class: this.checkPath({ name: "HDRView" }) ? "hl-menu" : "",
           label: this.$t("menu.hdr_view"),
           icon: "pi pi-fw pi-list",
-          to: "/management/demand/hdr",
           command: () => {
-            this.$router.push({ name: "HDRView" });
+            this.$router.push({ name: "HDRView", path: "/management/demand/hdr" });
           },
         },
       ];
@@ -337,11 +328,11 @@ export default {
     _abstractMeters() {
       return [
         {
+          class: this.checkPath({ name: "AbstractMeters" }) ? "hl-menu" : "",
           label: this.$t("menu.abstract_meter"),
           icon: "pi pi-fw pi-list",
-          to: "/management/abstract",
           command: () => {
-            this.$router.push({ name: "AbstractMeters" });
+            this.$router.push({ name: "AbstractMeters", path: "/management/abstract" });
           },
         },
       ];
@@ -349,63 +340,28 @@ export default {
     _panelManagementItems() {
       let items = [
         {
-          // label: this.$t("menu.manage"),
+          class: this.checkPath({ name: "InformationPanelListView" }) ? "hl-menu" : "",
           label: this.$t("menu.manage_information_panels"),
-
           icon: "pi pi-fw  pi-th-large",
-          to: "/panel",
           command: () => {
-            this.$router.push({ name: "InformationPanelListView" });
+            this.$router.push({ name: "InformationPanelListView", path: "/panel" });
           },
         },
-        // {
-        //   label: this.$t("menu.add_information_panel"),
-        //   icon: "pi pi-fw pi-plus-circle",
-        //   to: "/panel/add",
-        //   command: () => {
-        //     this.$router.push({ name: "InformationPanelCreator" });
-        //   },
-        // },
       ];
       return items;
-      // return [
-      //   {
-      //     label: this.$t("menu.manage_information_panels"),
-      //     icon: "pi pi-fw pi-list",
-      //     items: items,
-      //   },
-      // ];
     },
 
     _grafanaDashboardManagement() {
       let items = [];
-      // items.push({
-      //   // label: this.$t("menu.group_list"),
-      //   label: this.$t("menu.add_dashboard"),
-      //   icon: "pi pi-fw pi-plus",
-      //   // to: "/dashboard/add",
-      //   command: () => {
-      //     this.dashboardDialog = !this.dashboardDialog;
-      //     // this.$router.push({ name: "DashboadAdd" });
-      //   },
-      // });
       items.push({
-        // label: this.$t("menu.group_list"),
+        class: this.checkPath({ name: "GrafanaDashboardList" }) ? "hl-menu" : "",
         label: this.$t("menu.manage_grafana_dashboard"),
         icon: "pi pi-fw pi-th-large",
-        to: "/dashboard/grafana/list",
         command: () => {
           this.$router.push({ name: "GrafanaDashboardList" });
         },
       });
       return items;
-      // return [
-      //   {
-      //     label: this.$t("menu.manage_dashboard"),
-      //     // icon: "pi pi-fw pi-chart-line",
-      //     items: items,
-      //   },
-      // ];
     },
 
     notificationsItem() {
@@ -447,9 +403,10 @@ export default {
       if (!this.isLoggedIn) {
         return [
           {
+            class: this.checkPath({ path: "/login" }) ? "hl-menu" : "",
             label: this.$t("menu.login"),
             icon: "pi pi-sign-in",
-            to: "/login",
+            command: () => this.$router.push({ path: "/login" }),
             // visible: () => !this.isLoggedIn,
           },
         ];
@@ -461,9 +418,9 @@ export default {
           icon: "pi pi-fw pi-user",
           items: [
             {
+              class: this.checkPath({ path: "/profile" }) ? "hl-menu" : "",
               label: this.$t("menu.profile_settings"),
               icon: "pi pi-fw pi-user",
-              to: "/profile",
               command: () => {
                 this.$router.push("/profile");
               },
@@ -477,10 +434,10 @@ export default {
               },
             },
             {
+              class: this.checkPath({ survey: "/profile/survey" }) ? "hl-menu" : "",
               label: this.$t("menu.feedback"),
               icon: "pi pi-fw pi-check-square",
               visible: () => (flags & this.role) > 0,
-              to: "/profile/survey",
               command: () => {
                 this.$router.push("/profile/survey");
                 // this.$router.push("/feedback");
@@ -492,7 +449,6 @@ export default {
         // {
         //   label: this.$t("menu.signup"),
         //   icon: "pi pi-sign-in",
-        //   to: "/signup",
         //   visible: () => !this.isLoggedIn,
         //   command: () => {
         //     this.$router.push({ name: "SignUp" });
@@ -501,7 +457,6 @@ export default {
         {
           label: this.$t("menu.logout"),
           icon: "pi pi-sign-out",
-          to: "/",
           visible: () => this.isLoggedIn,
           command: () => {
             this.$keycloak.logout();
@@ -528,31 +483,6 @@ export default {
 //   icon: "pi pi-fw pi-chart-line",
 //   items: this.heatMapItems(),
 // },
-/**
-heatMapItems() {
-      return [
-        {
-          // label: this.$t("menu.group_list"),
-          label: this.$t("menu.list_heatmap"),
-          icon: "pi pi-fw pi-align-left",
-          to: "/dashboard/heatmap/list",
-          command: () => {
-            this.$router.push({ name: "HeatMapListView" });
-          },
-        },
-        {
-          // label: this.$t("menu.group_list"),
-          label: this.$t("menu.add_heatmap"),
-          icon: "pi pi-fw pi-plus",
-          to: "/dashboard/heatmap/add",
-          command: () => {
-            this.$router.push({ name: "DashboadAdd" });
-          },
-        },
-      ];
-    },
-
-**/
 </script>
 <style scoped lang="scss">
 #sideMenuLogo {
