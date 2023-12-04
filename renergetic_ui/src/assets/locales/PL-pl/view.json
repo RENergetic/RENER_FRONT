@@ -40,6 +40,7 @@
   "edit_locked": "Edycja zablokowana",
   "edit_user": "Edycja {username}",
   "export_json": "Eksport JSON",
+  "enable_asset": "Enable asset",
   "empty_home_dashboard": "No defined home dashboard",
   "find_asset": "Find asset",
   "find_measurement": "Find measurement",
