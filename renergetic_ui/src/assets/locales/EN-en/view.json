@@ -56,6 +56,7 @@
   "edit_locked": "Edit options are locked",
   "edit_user": "Edit {username}",
   "export_json": "Export JSON",
+  "enable_asset": "Enable asset",
   "empty_home_dashboard": "No defined home dashboard",
   "find_asset": "Find asset",
   "find_measurement": "Find measurement",
