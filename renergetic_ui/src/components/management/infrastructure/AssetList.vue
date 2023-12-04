@@ -157,7 +157,7 @@
         <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
         <Button v-tooltip="$t('view.rules')" icon="pi pi-code" class="p-button-rounded" @click="editRules(slotProps.data)" />
         <Button
-          v-tooltip="$t('view.delete')"
+          v-tooltip="$t('view.delete') + hasMeasurementsTooltip(slotProps.data)"
           :disabled="slotProps.data.type.name == 'user' || (slotProps.data.measurements && slotProps.data.measurements.length > 0)"
           icon="pi pi-trash"
           class="p-button-rounded p-button-danger"
@@ -233,7 +233,11 @@
     </template>
   </DataTable>
   <Toolbar v-if="!basic">
-    <template #end><Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="assetAdd = true" /> </template>
+    <template #end>
+      <Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="assetAdd = true" />
+
+      <Button style="margin-left: 0.5rem" icon="pi pi-list" :label="$t('view.button.manage_asset_categories')" @click="manageCategories" />
+    </template>
   </Toolbar>
 
   <Dialog v-model:visible="assetAdd" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
@@ -305,6 +309,7 @@
           {{ $t("view.no_asset_measurements") }}
         </span>
         <Button :label="$t('view.button.add_measurement')" @click="addMeasurement" />
+
         <measurement-select ref="measurementSelectDialog" :asset-id="selectedAsset.id" @select="onMeasurementSelect"></measurement-select>
       </template>
     </Card>
@@ -384,6 +389,12 @@ export default {
       this.mFilters = ev.filters;
       this.deferredEmitFilter.run();
     },
+    hasMeasurementsTooltip(asset) {
+      if (asset.measurements && asset.measurements.length > 0) {
+        return ` (${this.$t("view.asset_has_assigned_measurements")})`;
+      }
+      return "";
+    },
     setParent(row) {
       console.info(row);
       this.selectedAsset = row;
@@ -442,6 +453,10 @@ export default {
     addMeasurement() {
       this.$refs.measurementSelectDialog.open();
     },
+    manageCategories() {
+      this.$router.push({ name: "AssetCategoryList" });
+    },
+
     revokeMeasurement(measurement) {
       let asset = this.selectedAsset;
       let label = measurement.label ? measurement.label : measurement.name;

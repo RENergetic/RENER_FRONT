@@ -1,18 +1,8 @@
 <template>
   <div class="field grid">
-    <label v-if="textLabel" for="ren-input" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t(textLabel) }} </label>
-    <div class="col-12 md:col-10">
-      <SelectButton
-        id="ren-input"
-        v-model="mValue"
-        :disabled="disabled"
-        option-label="label"
-        option-value="value"
-        :options="[
-          { label: $t('view.button.yes'), value: true },
-          { label: $t('view.button.no'), value: false },
-        ]"
-      />
+    <label v-if="textLabel" for="ren-input" class="col-12 mb-2 md:col-2 md:mb-0 ren-label"> {{ $t(textLabel) }} </label>
+    <div class="col-12 md:col-10 ren-inputwrapper">
+      <SelectButton id="ren-input" v-model="mValue" :disabled="disabled" option-label="label" option-value="value" :options="mOptions" />
     </div>
     <span v-if="invalid">
       <span v-for="(error, index) of errors" id="name-error" :key="index">
@@ -32,12 +22,23 @@ export default {
     //vuelidate errors
     errors: { type: Object, default: () => {} },
     textLabel: { type: String, default: null },
+    options: {
+      type: Array,
+      default: null,
+    },
     modelValue: { type: Object, default: null },
     disabled: { type: Boolean, default: false },
   },
   emits: ["update:modelValue"],
   data() {
-    return { mValue: this.modelValue };
+    let mOptions = this.options;
+    if (mOptions == null) {
+      mOptions = [
+        { label: this.$t("view.button.yes"), value: true },
+        { label: this.$t("view.button.no"), value: false },
+      ];
+    }
+    return { mValue: this.modelValue, mOptions: mOptions };
   },
   watch: {
     mValue: {

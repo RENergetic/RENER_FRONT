@@ -1,9 +1,12 @@
 <template>
-  <Card style="margin: auto; margin-top: 1rem">
+  <Card style="margin: auto; margin-top: 0.5rem; max-width: 95vw">
+    <template #title>{{ $t("menu.manage_measurements") }}</template>
     <template #content>
-      <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 95%">
+      <RenSpinner ref="spinner" :lock="true" style="width: 100%">
         <!--  max-width: 80vw -->
         <template #content>
+          <!-- {{ filters }} -->
+          <!-- {{ filters }} -->
           <measurement-list v-model:filters="filters" :measurement-list="measurementList" @reload="loadMeasurements" />
         </template>
       </RenSpinner>
@@ -19,16 +22,39 @@ export default {
   },
   data() {
     return {
+      filters: null,
       measurementList: [],
     };
+  },
+
+  watch: {
+    filters: {
+      handler: function () {
+        this.loadMeasurements();
+      },
+      deep: true,
+    },
   },
   mounted() {
     this.loadMeasurements();
   },
   methods: {
     async loadMeasurements() {
+      let params = {};
+      //  { "global": { "value": null },
+      if (this.filters)
+        params = {
+          name: this.filters.name.value,
+          type_id: this.filters["type.id"].value,
+          type_physical_name: this.filters["type.physical_name"].value,
+          asset_name: this.filters["asset.name"].value,
+          domain: this.filters.domain.value,
+          direction: this.filters.direction.value,
+          sensor_name: this.filters.sensor_name.value,
+          tag_key: this.filters.tag_key.value,
+        };
       await this.$refs.spinner.run(async () => {
-        await this.$ren.managementApi.listMeasurement({ limit: 2000 }).then((data) => {
+        await this.$ren.managementApi.listMeasurement({ ...params, limit: 2000 }).then((data) => {
           for (let m of data) {
             this.$ren.utils.setMeasurementLabel(m);
           }

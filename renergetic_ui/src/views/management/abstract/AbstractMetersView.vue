@@ -1,5 +1,5 @@
 <template>
-  <Card style="width: 60%; margin: auto; margin-top: 10%">
+  <Card style="margin: auto; margin-top: 0.5rem; max-width: 95vw">
     <template #title> Abstract meter administration </template>
     <template #content>
       <div class="container">

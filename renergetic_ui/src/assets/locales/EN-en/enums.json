@@ -71,9 +71,12 @@
     "none": "N/A"
   },
   "tile_type": {
-    "knob": "knob",
-    "doughnut": "doughnut",
-    "list": "list"
+    "chart": "Chart",
+    "knob": "Knob chart",
+    "multi_knob": "Multi knob chart",
+    "doughnut": "Doughnut chart",
+    "list": "List",
+    "single": "Single"
   },
   "heatmap_type": {
     "default": "Normal",
@@ -112,6 +115,11 @@
     "owner": "Can be owner of an asset",
     "notification": "Access Notification",
     "read": "Can receive read privilages to asset or dashboard"
+  },
+  "asset_connection": {
+    "owner": "Owner",
+    "resident": "Resident",
+    "visitor": "Visitor"
   },
   "role": {
     "ren-staff": "Staff",

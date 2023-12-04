@@ -19,6 +19,7 @@
   "grid_lock": "Lock grid",
   "grid_unlock": "Unlock grid",
   "heatmaps": "HeatMaps",
+  "hdr_view": "Heat demand-response",
   "home_settings": "Home settings",
   "information_panel": "Information panels",
   "information_panel_list": "Information panel list",
@@ -56,6 +57,6 @@
   "unit_settings": "Unit settings",
   "view": "View",
   "manage_notifications": "Notifications",
-  "tv_view_mode":"TV View",
-  "normal_view_mode":"Normal view"
+  "tv_view_mode": "TV View",
+  "normal_view_mode": "Normal view"
 }

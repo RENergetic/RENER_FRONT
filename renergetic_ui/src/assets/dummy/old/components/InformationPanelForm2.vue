@@ -6,7 +6,7 @@
   </InfoIcon>
   <div class="field grid">
     <label for="panelLabel" class="col-fixed" style="width: 5rem">
-      {{ $t("model.panel.label") }}
+      {{ $t("model.information_panel.label") }}
     </label>
     <div class="col">
       <InputText id="panelLabel" v-model="label" :aria-readonly="!edit" />
@@ -14,7 +14,7 @@
   </div>
   <div class="field grid">
     <label for="panelName" class="col-fixed" style="width: 5rem">
-      {{ $t("model.panel.name") }}
+      {{ $t("model.information_panel.name") }}
     </label>
     <div class="col">
       <InputText id="panelName" v-model="name" :aria-disabled="true" :aria-readonly="!edit" />

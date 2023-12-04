@@ -79,11 +79,12 @@ export default class ManagementApi extends RestComponent {
       }
     });
   }
-  async submitAssetConnection(assetId, connectedAssetId, type) {
+  async submitAssetConnection(assetId, connectedAssetId, type, biDirectional) {
     console.log("assetId", assetId);
     console.log("connectedAssetId", connectedAssetId);
     console.log("type", type);
-    await this.put(`/api/assets/connect/${assetId}?connect_to=${connectedAssetId}&type=${type}`, null, null, null, (e) => {
+    let uri = `/api/assets/connect/${assetId}?connect_to=${connectedAssetId}&type=${type}&bi_directional=${biDirectional}`;
+    await this.put(uri, null, null, null, (e) => {
       if (e.response.status === 404) {
         //TODO: handle connectedAssetId not found
         this.emitError(`${assetId} not found: ${e.message}`, { code: "asset_not_found", args: [assetId] });
@@ -200,6 +201,9 @@ export default class ManagementApi extends RestComponent {
     }
     return this.get(`/api/measurements/report`, { ...params, offset: offset, limit: limit });
   }
+  async listTagMeasurements(tagKey, tagValue) {
+    return this.get(`/api/measurements/key/${tagKey}/value/${tagValue}`);
+  }
 
   async searchMeasurement(q, assetId, offset = 0, limit = 20) {
     console.warn("filter assigned measurements: " + assetId);
@@ -237,9 +241,19 @@ export default class ManagementApi extends RestComponent {
   async getMeasurementTags(id) {
     return this.get(`/api/measurements/${id}/tags`);
   }
+  async duplicateMeasurement(id) {
+    return this.post(`/api/measurements/id/${id}/copy`);
+  }
   async listTags() {
     return this.get(`/api/measurements/tags`);
   }
+  async listTagKeys() {
+    return this.get(`/api/measurements/tags/key`);
+  }
+  async listTagValues(tagKey) {
+    return this.get(`/tags/key/${tagKey}/values`);
+  }
+
   async createNewTag(tag) {
     // return this.put(`/api/measurements/tags/key/${tag.key}/value/${tag.value}`);
     return this.post(`/api/measurements/tags`, tag);
@@ -340,6 +354,13 @@ export default class ManagementApi extends RestComponent {
   async addMeasurement(measurement) {
     // if (measurement.type != undefined) measurement.type = measurement.type.id;
     return await this.post(`/api/measurements`, measurement);
+    // .catch(function (error) {
+    //   console.error("add measurement error" + error.message);
+    // });
+  }
+  async addMeasurements(measurements) {
+    // if (measurement.type != undefined) measurement.type = measurement.type.id;
+    return await this.post(`/api/measurements/batch`, measurements);
     // .catch(function (error) {
     //   console.error("add measurement error" + error.message);
     // });
