@@ -154,6 +154,7 @@
           @click="manageConnections(slotProps.data)"
         />
         <Button v-tooltip="$t('view.properties')" icon="pi  pi-sliders-h" class="p-button-rounded" @click="manageAssetProperties(slotProps.data)" />
+        <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="manageAssetAggregrationProperties(slotProps.data)" />
         <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
         <Button v-tooltip="$t('view.rules')" icon="pi pi-code" class="p-button-rounded" @click="editRules(slotProps.data)" />
         <Button
@@ -247,6 +248,7 @@
   <AssetConnectionManagementDialog ref="assetConnectionManagementDialog" />
   <AssetCategorySelection ref="assetCategorySelection" />
   <AssetProperties ref="assetPropertiesDialog" @submit="updateDetails" />
+  <AssetAggregationProperties ref="assetAggregationPropertiesDialog" />
   <AssetEdit ref="assetEditDialog" @submit="updateAsset" />
   <DemandResponseView ref="demandResponseView" />
 
@@ -323,6 +325,7 @@ import MeasurementSelect from "./MeasurementSelect.vue";
 import AssetConnectionManagementDialog from "./AssetConnectionManagementDialog.vue";
 import AssetCategorySelection from "./AssetCategorySelection.vue";
 import AssetProperties from "@/components/management/infrastructure/AssetProperties.vue";
+import AssetAggregationProperties from "@/components/management/infrastructure/AssetAggregationProperties.vue";
 import AssetEdit from "@/components/management/infrastructure/AssetEdit.vue";
 import DemandResponseView from "@/views/management/abstract/DemandResponseView.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
@@ -339,6 +342,7 @@ export default {
   components: {
     AssetEdit,
     AssetProperties,
+    AssetAggregationProperties,
     AssetForm,
     AssetSelectDialog,
     MeasurementSelect,
@@ -406,6 +410,9 @@ export default {
     manageAssetProperties(row) {
       let detailsKeys = this.$store.getters["view/assetDetailsKeys"];
       this.$refs.assetPropertiesDialog.open(row, detailsKeys);
+    },
+    manageAssetAggregrationProperties(row) {
+      this.$refs.assetAggregationPropertiesDialog.open(row);
     },
     ////
     manageAssetCategories(row) {
