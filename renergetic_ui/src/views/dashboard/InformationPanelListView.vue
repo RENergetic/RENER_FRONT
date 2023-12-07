@@ -1,5 +1,5 @@
 <template>
-  <Card style="margin: auto; margin-top: 0.5rem; max-width: 95vw">
+  <Card class="ren-page-content" style="margin: auto; margin-top: 0.5rem; max-width: 95vw">
     <template #title>{{ $t("menu.manage_information_panels") }}</template>
     <template #content>
       <RenSpinner ref="spinner" :lock="true" style="width: 100%">

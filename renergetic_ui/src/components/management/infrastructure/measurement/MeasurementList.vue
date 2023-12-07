@@ -28,17 +28,18 @@
         <i class="pi pi-search" />
         <InputText v-model="mFilters['global'].value" :placeholder="$t('view.search')" />
       </span> -->
-      <Button
-        v-if="selectedMeasurements.length > 0"
-        :label="$t('view.export_json')"
-        icon="pi pi-list"
-        style="position: sticky; left: 2rem; top: 1rem; z-index: 3333"
-        @click="exportJSON"
-      />
+
       <span class="p-input-icon-left" style="margin-left: 1rem">
         <i class="pi pi-search" />
         <Dropdown v-model="mFilters.tag_key.value" show-clear :options="tagsKeys" :placeholder="$t('view.tag_filter')" />
       </span>
+      <Button
+        v-if="selectedMeasurements.length > 0"
+        :label="$t('view.measurements_export_json')"
+        icon="pi pi-list"
+        style="position: sticky; left: 2rem; top: 1rem; z-index: 3333; margin-left: 1rem"
+        @click="exportJSON"
+      />
     </template>
 
     <Column :expander="true" header-style="width: 3rem" />
@@ -54,6 +55,11 @@
       <template #body="slotProps">
         <span v-if="slotProps.data._label"> {{ slotProps.data.label }} ({{ slotProps.data._label }})</span>
         <span v-else> {{ slotProps.data.label }} </span>
+        <div>
+          <span v-if="slotProps.data.measurementTags">
+            <li v-for="tag in slotProps.data.measurementTags" :key="tag.id">{{ tag.key }}={{ tag.value }}</li>
+          </span>
+        </div>
       </template>
     </Column>
     <!-- <Column field="label" :header="$t('model.measurement.label')" :show-filter-menu="false">
@@ -303,18 +309,26 @@ export default {
     "mFilters.tag_key.value": async function () {
       await this.onFilter({ filters: this.mFilters });
     },
+    measurementList: async function (mList) {
+      await this.loadTags(mList);
+    },
   },
   created() {
     this.deferredEmitFilter = new DeferredFunction(this._emitFilter);
   },
   async mounted() {
     if (this.measurementList != null && this.measurementList.length > 0) {
-      this.columns = Object.keys(this.measurementList[0]);
+      this.columns = await Object.keys(this.measurementList[0]);
     }
-
     this.tagsKeys = await this.$ren.managementApi.listTagKeys();
   },
   methods: {
+    async loadTags(mList) {
+      if (mList != null && mList.length < 30)
+        for (let m of mList) {
+          m.measurementTags = await this.$ren.managementApi.getMeasurementTags(m.id);
+        }
+    },
     _emitFilter() {
       // console.info("emitFilter: " + new Date());
       this.$emit("update:filters", this.mFilters);
@@ -449,4 +463,17 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss"></style>
+<style lang="scss">
+.p-datatable-header {
+  position: sticky;
+  top: 0;
+  padding: 0.5rem 0.5rem;
+  height: 4rem;
+  z-index: 4000;
+}
+.p-datatable-thead {
+  position: sticky;
+  top: 4rem;
+  z-index: 4000;
+}
+</style>

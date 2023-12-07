@@ -6,7 +6,8 @@
     <div v-if="keycloakState == 1" :key="`content_${refresh}`" :class="layout() + ' flex flex-column card-container '">
       <!-- <div style="color: white; margin-top: 10rem">{{ $route.path }}  style="min-height: 95vh"</div>
     <div style="color: white">{{ $keycloak && $keycloak.isInitialized() }}</div> -->
-      <div v-if="hasAccess" class="flex" style="display: initial !important; margin-bottom: 1rem">
+      <!-- display: - initial !important; -->
+      <div v-if="hasAccess" class="flex" style=" margin-bottom: 0rem;flex-grow-1;overflow:auto;flex-direction:column">
         <router-view :key="$route.path" @update-menu="updateMenu()" />
       </div>
       <div v-else :class="layout()">no access TODO:</div>
@@ -129,10 +130,12 @@ export default {
 <style lang="scss">
 .standard {
   margin-top: 3rem;
+  height: 100vh;
 }
 .fullscr {
   margin-top: 0rem;
   position: relative;
+  height: 100vh;
 }
 #app {
   min-height: 95vh;

@@ -79,6 +79,7 @@
   "manage_asset_categories": "Manage asset categories",
   "measurements": "Measurements",
   "measurements_dynamic": "Dynamic measurements",
+  "measurements_export_json": "Export measurements",
   "measurements_static": "Static Measurements",
   "measurement_type_not_defined": "Type not defined",
   "na": "N/A",
