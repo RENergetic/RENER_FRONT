@@ -1,5 +1,5 @@
 <template>
-  <ren-input-wrapper :text-label="null">
+  <ren-input-wrapper :text-label="null" wrapper-style="max-width: inherit">
     <template #content>
       <Accordion v-if="panelStructure" v-model:activeIndex="activeTile" class="ren">
         <AccordionTab v-for="(tile, idx) in panelStructure.tiles" :key="idx">
@@ -26,7 +26,7 @@
     </template>
   </ren-input-wrapper>
 
-  <ren-input-wrapper :text-label="null">
+  <ren-input-wrapper :text-label="null" wrapper-style="max-width: inherit">
     <template #content>
       <Button :label="$t('view.button.add')" style="float: right" icon="pi pi-plus-circle" @click="addTile" />
     </template>
