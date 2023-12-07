@@ -191,6 +191,7 @@ body {
         display: inline-block;
     }
 }
+
 .fullscr,
 .standard {
     max-width: 99.5vw;
@@ -227,6 +228,34 @@ body {
     right: 0;
     .ren-toolbar {
         margin-left: ($sidemenu-button-width + 0.5rem);
+    }
+}
+.ren-page-content {
+    margin: 0.5% auto;
+    max-width: 95vw;
+    max-height: 98%;
+    padding-left: 0.5%;
+    padding-right: 0.5%;
+    overflow: auto;
+    .p-datatable {
+        width: max-content;
+    }
+    .p-datatable-header {
+        position: sticky;
+        top: 0;
+        padding: 0.5rem 0.5rem;
+        height: 4rem;
+        z-index: 4000;
+    }
+    .p-datatable-thead {
+        position: sticky;
+        top: 0;
+        z-index: 4000;
+    }
+    .p-datatable-header ~ .p-datatable-wrapper .p-datatable-thead {
+        position: sticky;
+        top: 4rem;
+        z-index: 4000;
     }
 }
 .ren-sidebar.p-sidebar {

@@ -36,7 +36,7 @@ export default {
       if (!(this.pdata && this.pdata.current)) {
         return {};
       }
-      let labels = this.tile.measurements.map((m) => m.label);
+      let labels = this.tile.measurements.map((m) => (m.label ? m.label : m.name));
 
       // let data = this.tile.measurements.map((m) => this.pdata[m.id]);
       //TODO: make it comgigurable in tile / args prediction & aggregation func

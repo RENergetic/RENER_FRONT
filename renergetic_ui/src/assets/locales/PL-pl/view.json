@@ -80,6 +80,7 @@
   "manage_asset_categories": "Manage asset categories",
   "measurements": "Pomiary",
   "measurements_dynamic": "Dynamic measurements",
+  "measurements_export_json": "Eksport szeregów czasowych",
   "measurements_static": "Static Measurements",
   "measurement_type_not_defined": "Typ pomiarów niezdefiniowany.",
   "na": "N/A",
