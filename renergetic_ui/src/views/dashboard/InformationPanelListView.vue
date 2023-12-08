@@ -2,7 +2,7 @@
   <Card class="ren-page-content" style="margin: auto; margin-top: 0.5rem; max-width: 95vw">
     <template #title>{{ $t("menu.manage_information_panels") }}</template>
     <template #content>
-      <RenSpinner ref="spinner" :lock="true" style="width: 100%">
+      <RenSpinner ref="spinner" :lock="true" style="min-width: 100%">
         <template #content>
           <InformationPanelList v-model:filters="filters" :panel-list="panelList" @reload="loadData" />
         </template>

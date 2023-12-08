@@ -5,11 +5,8 @@
     </template>
   </InfoIcon>
   <!-- @row-expand="onexpand" -->
-  <!-- {{ mFilters }} -->
-  <!-- {{ mFilters }} -->
   <!-- :global-filter-fields="['name', 'label', 'type.name', 'type.physical_name', 'domain', 'direction', 'asset.name']" -->
-  <!-- :paginator="true"
-    :rows-per-page-options="[10, 20, 50, 100]" -->
+
   <DataTable
     v-model:expandedRows="expanded"
     v-model:selection="selectedMeasurements"
@@ -20,6 +17,7 @@
     :row-class="rowClass"
     :value="measurementList"
     filter-display="row"
+    class="sticky-header"
     @filter="onFilter"
   >
     <template #header>
@@ -466,16 +464,16 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-.p-datatable-header {
-  position: sticky;
-  top: 0;
-  padding: 0.5rem 0.5rem;
-  height: 4rem;
-  z-index: 4000;
-}
-.p-datatable-thead {
-  position: sticky;
-  top: 4rem;
-  z-index: 4000;
-}
+// .p-datatable-header {
+//   position: sticky;
+//   top: 0;
+//   padding: 0.5rem 0.5rem;
+//   height: 4rem;
+//   z-index: 4000;
+// }
+// .p-datatable-thead {
+//   position: sticky;
+//   top: 4rem;
+//   z-index: 4000;
+// }
 </style>

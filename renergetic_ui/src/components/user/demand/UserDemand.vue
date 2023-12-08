@@ -26,7 +26,6 @@
         :tile-preview="false"
         @preview-tile="onPreview"
       />
-      <!-- -->
     </div>
 
     <div class="flex-grow-1 flex flex-column justify-content-center flex-wrap">

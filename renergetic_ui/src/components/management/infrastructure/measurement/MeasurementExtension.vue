@@ -203,16 +203,15 @@ export default {
 <style scoped lang="scss">
 button {
   margin: 0.5rem;
-  font-size: 1rem;
-  width: 3rem !important;
-  height: 3rem !important;
+  // width: 2.5rem !important;
+  // height: 2.5rem !important;
 }
-button span {
-  font-size: 1.5rem !important;
-}
+// button span {
+//   font-size: 1.25rem !important;
+// }
 </style>
 <style lang="scss">
-button span.pi {
-  font-size: 1.5rem !important;
-}
+// button span.pi {
+//   font-size: 1.25rem !important;
+// }
 </style>

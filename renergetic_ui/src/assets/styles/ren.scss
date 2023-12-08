@@ -253,15 +253,27 @@ body {
         height: 4rem;
         z-index: 4000;
     }
+    .p-datatable-header {
+        position: initial;
+    }
+    .p-datatable-header ~ .p-datatable-wrapper .p-datatable-thead,
     .p-datatable-thead {
         position: sticky;
-        top: 0;
+        top: 0rem;
         z-index: 4000;
     }
-    .p-datatable-header ~ .p-datatable-wrapper .p-datatable-thead {
-        position: sticky;
-        top: 4rem;
-        z-index: 4000;
+
+    .sticky-header {
+        .p-datatable-header {
+            position: sticky;
+            top: 0;
+            z-index: 4000;
+        }
+        .p-datatable-header ~ .p-datatable-wrapper .p-datatable-thead {
+            position: sticky;
+            top: 4rem;
+            z-index: 4000;
+        }
     }
 }
 .ren-sidebar.p-sidebar {
