@@ -34,6 +34,12 @@ body {
 .p-dialog-content .p-card.p-component {
     //TODO: set some color
     background: #ffffff;
+    h3 {
+        color: $ren-secondary-font-color;
+    }
+}
+.p-dialog h3 {
+    color: $ren-secondary-font-color;
 }
 .p-datatable .p-datatable-footer {
     padding: 0;
@@ -152,9 +158,9 @@ body {
     }
     .hl-menu {
         .p-panelmenu-header-content {
-            background-color: $primary-color-tr;
+            background-color: $ren-primary-color-tr;
         }
-        background-color: $primary-color-tr;
+        background-color: $ren-primary-color-tr;
     }
     .state.unknown,
     .cell.unknown,
@@ -260,7 +266,7 @@ body {
 }
 .ren-sidebar.p-sidebar {
     padding: 0;
-    background-color: $secondary-color//seagreen;
+    background-color: $ren-secondary-color//seagreen;
 }
 .ren-sidebar {
     .p-sidebar {
@@ -356,12 +362,12 @@ body {
 
 .ren.add-button {
     font-size: 2rem;
-    color: $primary-color;
+    color: $ren-primary-color;
     border-radius: 2rem;
 }
 .ren.add-button:hover {
     color: rgba(255, 255, 255, 0.5);
-    background: $primary-color;
+    background: $ren-primary-color;
     cursor: pointer;
 }
 .ren-card {
@@ -371,10 +377,10 @@ body {
 }
 .ren-control-bg {
     background: linear-gradient(to bottom, #190a05, #870000);
-    color: $secondary-color;
+    color: $ren-secondary-color;
 }
 #pagefooter {
-    background-color: $secondary-color;
+    background-color: $ren-secondary-color;
 }
 #panel-box {
     background: #232526; /* fallback for old browsers */
@@ -393,9 +399,15 @@ body {
 .ren-page-content div,
 .standard div {
     // box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    scrollbar-color: $primary-color-tr $ren-primary-border-color-tr;
+    scrollbar-color: $ren-primary-color-tr $ren-primary-border-color-tr;
     scrollbar-width: thin;
 }
+.p-dialog div {
+    // box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    scrollbar-color: $ren-primary-color-tr $ren-secondary-border-color-tr;
+    scrollbar-width: thin;
+}
+
 .ren-sticky {
     left: 1rem;
     position: sticky;

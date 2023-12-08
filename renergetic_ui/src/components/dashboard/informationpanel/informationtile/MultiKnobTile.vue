@@ -57,7 +57,7 @@ export default {
   data() {
     var _this = this;
     return {
-      mStyle: "width: 30rem; margin: auto;max-width: 100%;max-height:100%",
+      mStyle: "width: 25rem; margin: auto;max-width: 100%;max-height:100%",
       iconSize: `height: 10%;  width: 10%;`,
       relativeValues: false,
       mSettings: this.settings,

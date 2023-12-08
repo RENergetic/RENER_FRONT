@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       mSettings: this.settings,
-      mStyle: "max-width: 30rem; margin: auto",
+      mStyle: "max-width: 25rem; margin: auto",
       options: {
         responsive: true,
         plugins: {
@@ -95,7 +95,7 @@ export default {
   },
 
   mounted() {
-    this.mStyle = `max-width: 30rem; margin: auto;width:${this.settings.panel.cellWidth * this.tile.layout.w * 0.7}px`;
+    this.mStyle = `max-width: 25rem; margin: auto;width:${this.settings.panel.cellWidth * this.tile.layout.w * 0.7}px`;
   },
   methods: {},
 };
