@@ -5,7 +5,7 @@
       v-if="tilePreview && tile.measurements.length > 0"
       v-tooltip="$t('view.measurements')"
       class="pi pi-chart-line"
-      style="font-size: 2rem; position: absolute; top: 0.5rem; right: 0.5rem"
+      style="font-size: 1.5rem; position: absolute; top: 0.5rem; right: 0.5rem"
       @click="viewMeasurements()"
     />
     <!-- {{ filter }} -->

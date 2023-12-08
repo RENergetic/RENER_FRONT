@@ -33,7 +33,7 @@
         <ren-input v-model="mMeasurement.panel_count" :text-label="'model.measurement.panel_count'" :disabled="true" />
       </div>
       <div class="col-12">
-        <h2>{{ $t("view.tags") }}:</h2>
+        <h3>{{ $t("view.tags") }}:</h3>
       </div>
       <div v-for="tag in measurementTags" :key="tag.id" class="col-12">
         <ren-input v-model="tag.value" :text-label="tag.key" :disabled="true" />

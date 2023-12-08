@@ -3,7 +3,7 @@
   <div class="flex flex-column justify-content-center" style="height: 100%">
     <!-- <div style="display: flex; flex-direction: column; align-items: flex-end"> -->
     <div class="flex flex-none flex-column justify-content-center">
-      <h2 style="text-align: center">{{ mSettings.tile.label }}</h2>
+      <h3 style="text-align: center">{{ mSettings.tile.label }}</h3>
       <!-- v-if="legend"-->
     </div>
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->

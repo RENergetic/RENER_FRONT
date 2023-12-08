@@ -8,7 +8,8 @@
   <!-- {{ mFilters }} -->
   <!-- {{ mFilters }} -->
   <!-- :global-filter-fields="['name', 'label', 'type.name', 'type.physical_name', 'domain', 'direction', 'asset.name']" -->
-
+  <!-- :paginator="true"
+    :rows-per-page-options="[10, 20, 50, 100]" -->
   <DataTable
     v-model:expandedRows="expanded"
     v-model:selection="selectedMeasurements"
@@ -16,9 +17,7 @@
     :lazy="true"
     data-key="id"
     :rows="50"
-    :paginator="true"
     :row-class="rowClass"
-    :rows-per-page-options="[10, 20, 50, 100]"
     :value="measurementList"
     filter-display="row"
     @filter="onFilter"
@@ -174,7 +173,8 @@
     </Column> -->
     <Column selection-mode="multiple" header-style="width: 3rem"></Column>
   </DataTable>
-  <Toolbar>
+  <ren-paginator v-if="measurementList" v-model:offset="mOffset" style="left: 0" sticky :current-rows="measurementList.length" @update="reload" />
+  <Toolbar class="ren-toolbar ren-sticky">
     <template #end>
       <Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="addDialog = true" />
       <Button style="margin-left: 0.5rem" @click="importMeasurementsDialog = true">{{ $t("view.upload_measurements") }}</Button>
@@ -285,6 +285,7 @@ export default {
 
     return {
       // measurementAdd: false,
+      mOffset: 0,
       domains: MeasurementDomains.keys(),
       directions: MeasurementDirection.keys(),
       physicalTypes: physicalTypes,
@@ -416,9 +417,10 @@ export default {
     //   this.selectedMeasurement = null;
     //   this.reload();
     // },
-    reload() {
+    reload(evt) {
       //TODO: filter
-      this.$emit("reload");
+
+      this.$emit("reload", evt);
     },
     onSelect() {
       if (this.$refs.FileUpload !== undefined) this.hasFiles = this.$refs.FileUpload.files.length > 0;
