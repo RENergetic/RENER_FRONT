@@ -2,11 +2,8 @@
   <Card class="ren-page-content">
     <template #title>{{ $t("menu.manage_measurements") }}</template>
     <template #content>
-      <RenSpinner ref="spinner" :lock="true" style="width: 100%">
-        <!--  max-width: 80vw -->
+      <RenSpinner ref="spinner" :lock="true" style="min-width: 100%">
         <template #content>
-          <!-- {{ filters }} -->
-          <!-- {{ filters }} -->
           <measurement-list v-model:filters="filters" :measurement-list="measurementList" @reload="loadMeasurements" />
         </template>
       </RenSpinner>
@@ -39,7 +36,13 @@ export default {
     this.loadMeasurements();
   },
   methods: {
-    async loadMeasurements() {
+    async loadMeasurements(evt) {
+      let offset = 0;
+      let limit = 25;
+      if (evt) {
+        offset = evt.offset;
+        limit = evt.limit;
+      }
       let params = {};
       //  { "global": { "value": null },
       if (this.filters)
@@ -54,7 +57,7 @@ export default {
           tag_key: this.filters.tag_key.value,
         };
       await this.$refs.spinner.run(async () => {
-        await this.$ren.managementApi.listMeasurement({ ...params, limit: 2000 }).then((data) => {
+        await this.$ren.managementApi.listMeasurement({ params: params, offset: offset, limit: limit }).then((data) => {
           for (let m of data) {
             this.$ren.utils.setMeasurementLabel(m);
           }

@@ -14,7 +14,7 @@
         :width="width"
       />
       <div v-if="titleVisible" class="flex flex-none flex-column justify-content-center" style="max-width: 75%">
-        <h2>{{ title }}</h2>
+        <h3>{{ title }}</h3>
         <!-- v-if="legend"-->
       </div>
       <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->

@@ -33,7 +33,7 @@
         <ren-input v-model="mMeasurement.panel_count" :text-label="'model.measurement.panel_count'" :disabled="true" />
       </div>
       <div class="col-12">
-        <h2>{{ $t("view.tags") }}:</h2>
+        <h3>{{ $t("view.tags") }}:</h3>
       </div>
       <div v-for="tag in measurementTags" :key="tag.id" class="col-12">
         <ren-input v-model="tag.value" :text-label="tag.key" :disabled="true" />
@@ -203,16 +203,15 @@ export default {
 <style scoped lang="scss">
 button {
   margin: 0.5rem;
-  font-size: 1rem;
-  width: 3rem !important;
-  height: 3rem !important;
+  // width: 2.5rem !important;
+  // height: 2.5rem !important;
 }
-button span {
-  font-size: 1.5rem !important;
-}
+// button span {
+//   font-size: 1.25rem !important;
+// }
 </style>
 <style lang="scss">
-button span.pi {
-  font-size: 1.5rem !important;
-}
+// button span.pi {
+//   font-size: 1.25rem !important;
+// }
 </style>

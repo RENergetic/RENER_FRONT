@@ -3,7 +3,7 @@
   <div class="flex flex-column justify-content-center" style="height: 100%">
     <!-- <div style="display: flex; flex-direction: column; align-items: flex-end"> -->
     <div class="flex flex-none flex-column justify-content-center">
-      <h2 style="text-align: center">{{ mSettings.tile.label }}</h2>
+      <h3 style="text-align: center">{{ mSettings.tile.label }}</h3>
       <!-- v-if="legend"-->
     </div>
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       mSettings: this.settings,
-      mStyle: "max-width: 30rem; margin: auto",
+      mStyle: "max-width: 25rem; margin: auto",
       options: {
         responsive: true,
         plugins: {
@@ -95,7 +95,7 @@ export default {
   },
 
   mounted() {
-    this.mStyle = `max-width: 30rem; margin: auto;width:${this.settings.panel.cellWidth * this.tile.layout.w * 0.7}px`;
+    this.mStyle = `max-width: 25rem; margin: auto;width:${this.settings.panel.cellWidth * this.tile.layout.w * 0.7}px`;
   },
   methods: {},
 };

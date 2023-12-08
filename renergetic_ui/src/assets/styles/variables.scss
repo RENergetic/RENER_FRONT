@@ -1,18 +1,23 @@
 // @import url('primevue/resources/themes/nova-vue/theme.css');
 $inputwidth: 100%;
 $maxInputwidth: 30rem;
-$primary-color: #94ba39; //#F1F2F2;//#0D89EC
-$primary-color-tr: #afde41be; //#F1F2F2;//#0D89EC
-$primary-font-color: #f0f0f0;
-$ren-primary-color: $primary-color;
-$ren-primary-color-tr: $primary-color-tr;
-$ren-primary-font-color: $primary-font-color;
+$ren-primary-color: #94ba39; //#F1F2F2;//#0D89EC
+$ren-primary-color-tr: #afde41be; //#F1F2F2;//#0D89EC
+$ren-primary-font-color: #f0f0f0;
+$ren-primary-color: $ren-primary-color;
+$ren-primary-color-tr: $ren-primary-color-tr;
+$ren-primary-font-color: $ren-primary-font-color;
 $ren-primary-border-color: #232526;
+$ren-primary-border-color-tr: #23252650;
 $ren-primary-bg: linear-gradient(to right, #232526, #414345);
 
-$secondary-color: #ffffff; //#F1F2F2;//#0D89EC
-$ren-secondary-font-color: #0f0f0f;
+$ren-secondary-color: #ffffff; //#F1F2F2;//#0D89EC
+$ren-secondary-color-tr: #ffffff90; //#F1F2F2;//#0D89EC
+// $ren-secondary-font-color: #0f0f0f;
+$ren-secondary-font-color: #495057;
+
 $ren-secondary-border-color: #e9e8e8;
+$ren-secondary-border-color-tr: #e9e8e850;
 // $ren-secondary-bg: linear-gradient(to right, #e9e8e8, #f3f7fc);
 $ren-secondary-bg: linear-gradient(to right, #efefef, #f3eeee);
 
