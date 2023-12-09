@@ -425,7 +425,7 @@ export default {
             },
             {
               label: this.$t("menu.locales"),
-              icon: "pi pi-fw pi-language",
+              icon: "pi pi-fw pi-cog", //pi-language
               command: () => {
                 // this.$emit("notification");
                 this.localesDialog = !this.localesDialog;
