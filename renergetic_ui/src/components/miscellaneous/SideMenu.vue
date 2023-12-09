@@ -303,7 +303,7 @@ export default {
         {
           class: this.checkPath({ name: "NotificationList" }) ? "hl-menu" : "",
           label: this.$t("menu.manage_notifications"),
-          icon: "pi pi-fw pi-list",
+          icon: "pi pi-fw pi-bell",
           command: () => {
             this.$router.push({ name: "NotificationList", path: "/management/notification" });
           },
@@ -315,7 +315,7 @@ export default {
         {
           class: this.checkPath({ name: "HDRView" }) ? "hl-menu" : "",
           label: this.$t("menu.hdr_view"),
-          icon: "pi pi-fw pi-list",
+          icon: "pi pi-fw pi-sliders-h",
           command: () => {
             this.$router.push({ name: "HDRView", path: "/management/demand/hdr" });
           },
@@ -425,7 +425,7 @@ export default {
             },
             {
               label: this.$t("menu.locales"),
-              icon: "pi pi-fw  pi-bell",
+              icon: "pi pi-fw pi-language",
               command: () => {
                 // this.$emit("notification");
                 this.localesDialog = !this.localesDialog;

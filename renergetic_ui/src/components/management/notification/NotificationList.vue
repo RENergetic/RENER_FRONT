@@ -1,6 +1,6 @@
 <template>
   <div v-if="notificationList" style="height: 100%" class="flex flex-column align-items-center align-content-start">
-    <h3 v-if="title">{{ $t("view.notification_list") }}:</h3>
+    <!-- <h3 v-if="title">{{ $t("view.notification_list") }}:</h3> -->
 
     <!-- :filters="mFilters"
       :filter-display="hiddenFilters ? null : 'row'"
@@ -70,9 +70,6 @@
     </DataTable>
     <!-- information_tile_id todo: -->
   </div>
-  <!-- <div v-else>
-    <h4 v-if="title">{{ $t("view.no_notification_list") }}</h4>
-  </div> -->
 </template>
 <script>
 // import { NotificationContext } from "@/plugins/model/Enums.js";

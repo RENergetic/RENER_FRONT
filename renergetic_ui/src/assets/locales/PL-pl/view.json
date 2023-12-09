@@ -28,7 +28,7 @@
   "asset_parent_revoked": "Asset parent revoked",
   "asset_parent_revoke_confirm": "Revoke parent from asset {label}",
   "base_recommendation": "Base recommendation",
-  "change_asset": "Change Asset",
+  "change_asset": "Zmień {asset}",
   "measurement_chart_title": "Dane dla: {label}",
   "current_page": "Aktualna strona: {page}",
   "current_request": "Aktualne żądanie",
