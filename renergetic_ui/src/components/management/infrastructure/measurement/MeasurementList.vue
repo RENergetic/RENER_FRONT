@@ -391,30 +391,7 @@ export default {
     async exportJSON() {
       this.$ren.utils.downloadJSON(this.selectedMeasurements, `measurements`);
     },
-    // edit(o) {
-    //   this.selectedMeasurement = o;
-    //   this.editDialog = true;
-    // },
-    // async onEdit(o) {
-    //   await this.$ren.managementApi.updateMeasurement(o).then((res) => {
-    //     if (res) {
-    //       this.$emitter.emit("information", { message: this.$t("information.measurement_updated") });
-    //       this.editDialog = false;
-    //       this.reload();
-    //     } else {
-    //       this.$emitter.emit("error", { message: this.$t("information.measurement_not_updated") });
-    //     }
-    //   });
-    // },
-    // deleteConfirm(o) {
-    //   this.selectedMeasurement = o;
-    //   this.$refs.deleteMeasurement.delete(o);
-    // },
-    // // onDelete(o){
-    // onDelete() {
-    //   this.selectedMeasurement = null;
-    //   this.reload();
-    // },
+
     reload(evt) {
       //TODO: filter
 
@@ -432,7 +409,6 @@ export default {
     },
     async submitMeasurements() {
       var measurements = JSON.parse(this.submittedMeasurementsJSON);
-      // console.info(measurements);
       console.warn("TODO: make yesno confirm dialog  ");
 
       await this.$ren.managementApi.addMeasurements(measurements).then((measurementsResponse) => {
@@ -451,7 +427,6 @@ export default {
     },
     async onFileUpload(evt) {
       this.submittedMeasurements = null;
-      // console.info(evt.files);
       if (evt.files.length == 1) {
         this.submittedMeasurements = clearMeasurementInput(await this.$ren.utils.readJSONFile(evt.files[0]));
         this.submittedMeasurementsJSON = JSON.stringify(this.submittedMeasurements, null, "\t");
@@ -462,18 +437,4 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss">
-// .p-datatable-header {
-//   position: sticky;
-//   top: 0;
-//   padding: 0.5rem 0.5rem;
-//   height: 4rem;
-//   z-index: 4000;
-// }
-// .p-datatable-thead {
-//   position: sticky;
-//   top: 4rem;
-//   z-index: 4000;
-// }
-</style>
+<style lang="scss"></style>

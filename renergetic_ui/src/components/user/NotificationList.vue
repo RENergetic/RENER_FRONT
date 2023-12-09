@@ -1,5 +1,5 @@
 <template>
-  <div v-if="mNotifications" style="height: 100%" class="flex flex-column align-items-center align-content-start">
+  <div v-if="mNotifications && mNotifications.length > 0" style="height: 100%" class="flex flex-column align-items-center align-content-start">
     <h3 v-if="title">{{ $t("view.notification_list") }}:</h3>
     <template v-for="n in mNotifications" :key="n.id">
       <NotificationItem :notification="n"></NotificationItem>
