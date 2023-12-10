@@ -26,7 +26,7 @@
     </template>
   </ren-input-wrapper>
 
-  <ren-input-wrapper :text-label="null" wrapper-style="max-width: inherit">
+  <ren-input-wrapper :text-label="null" wrapper-style="max-width: inherit" style="position: sticky; bottom: 0.25rem; margin-right: 4rem">
     <template #content>
       <Button :label="$t('view.button.add')" style="float: right" icon="pi pi-plus-circle" @click="addTile" />
     </template>
@@ -181,5 +181,11 @@ export default {
 .p-accordion-content {
   padding-bottom: 0 !important;
   padding-top: 0 !important;
+}
+.ren .ren-inputwrapper > .p-accordion {
+  max-width: 100%;
+}
+.p-accordion-tab {
+  max-height: 70vh;
 }
 </style>
