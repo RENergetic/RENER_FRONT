@@ -1,13 +1,10 @@
 <template>
   <div v-if="loaded" class="flex flex-column justify-content-center" style="height: 100%; width: 100%">
-    <!-- <div style="display: flex; flex-direction: column; align-items: flex-end"> -->
     <div class="flex flex-none flex-column justify-content-center">
       <h3 style="text-align: center">{{ mSettings.tile.label }}</h3>
       <!-- v-if="legend"-->
     </div>
-    <!-- {{ pdata }} -->
     <!-- {{ chartData }} -->
-    <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
     <div class="flex flex-grow-0 flex-column align-items-center justify-content-center" style="height: 100%; width: 100%">
       <div class="flex flex-grow-0 flex-column align-items-center justify-content-center">
         <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
@@ -21,7 +18,6 @@
         <font-awesome-icon :icon="mSettings.tile.icon" />
       </span>
     </div>
-    <!-- {{ conversionSettings }} -->
     <div v-if="mSettings.tile.measurement_list" class="flex flex-column flex-grow-1 knob-component" style="position: relative; width: 100%">
       <information-list-tile
         :tile="tile"
@@ -149,8 +145,8 @@ export default {
             : this.pdata.current[m.aggregation_function][m.id];
         return m.type.base_unit != "%" ? this.pdata.current[m.aggregation_function][m.id] / maxV : this.pdata.current[m.aggregation_function][m.id];
       });
-      console.info(this.pdata);
-      console.info(data);
+      // console.info(this.pdata);
+      // console.info(data);
       let labels = []; // this.tile.measurements.map((m) => m.label);
       //todo remove labels ?
       for (let idx in this.tile.measurements) {
@@ -172,8 +168,6 @@ export default {
         labels.push("");
       }
 
-      // console.info(this.tile.measurements);
-
       return {
         labels: labels,
         datasets: datasets,
@@ -181,9 +175,6 @@ export default {
     },
   },
   mounted() {
-    // console.info(this.tile);
-    // console.info(this.tile.layout.w);
-
     var size = this.mSettings.tile.measurement_list ? 0.5 : 0.75;
     this.mStyle = `max-width: 100%;max-height:100%;margin: auto;width:${this.mSettings.panel.cellWidth * this.tile.layout.w * size}px`;
     this.iconSize = this.mSettings.tile.measurement_list ? `height: 10%;  width: 10%;` : `height: 15%;  width: 15%;`;

@@ -8,6 +8,7 @@
       style="font-size: 1.5rem; position: absolute; top: 0.5rem; right: 0.5rem"
       @click="viewMeasurements()"
     />
+    {{ tile.measurements.length }}fff
     <!-- {{ filter }} -->
     <!-- {{ pdata }} -->
     <!-- todo: group by sensor_name -->
@@ -79,13 +80,14 @@
       :conversion-settings="conversionSettings"
     ></InformationTileSingle>
     <InformationListTile
-      v-else
+      v-else-if="tile.measurements && tile.measurements.length > 0"
       :style="'width:100%'"
       :tile="tile"
       :pdata="pdata"
       :settings="mSettings"
       :conversion-settings="conversionSettings"
-    ></InformationListTile>
+    />
+    <div v-else style="width: 100%">{{ $t("view.no_panel_measurements") }}</div>
   </div>
 </template>
 <script>

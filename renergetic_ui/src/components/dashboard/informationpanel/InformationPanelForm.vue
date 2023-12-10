@@ -311,9 +311,9 @@ export default {
     padding-bottom: 0 !important;
     // padding-top: 0 !important;
   }
-  .p-toggleable-content {
-    max-height: 70vh;
-    overflow: auto;
-  }
+}
+#panelForm > .p-accordion > .p-accordion-tab {
+  max-height: 70vh;
+  overflow: auto;
 }
 </style>
