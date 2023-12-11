@@ -8,7 +8,7 @@
       style="font-size: 1.5rem; position: absolute; top: 0.5rem; right: 0.5rem"
       @click="viewMeasurements()"
     />
-    {{ tile.measurements.length }}fff
+
     <!-- {{ filter }} -->
     <!-- {{ pdata }} -->
     <!-- todo: group by sensor_name -->
@@ -120,10 +120,6 @@ function validateTileSettings(tile, settings, ctx) {
     };
   }
   return settings;
-  // tileSettings.legend = settings.legend != null ? settings.legend : true;
-  // settings.title = settings.title != null ? settings.title : true;
-  // settings.color = settings.color != null ? settings.color : "#d6ebff";
-  // console.info(tile);
 }
 
 export default {

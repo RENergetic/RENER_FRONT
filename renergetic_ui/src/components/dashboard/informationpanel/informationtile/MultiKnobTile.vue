@@ -5,20 +5,21 @@
       <!-- v-if="legend"-->
     </div>
     <!-- {{ chartData }} -->
-    <div class="flex flex-grow-0 flex-column align-items-center justify-content-center" style="height: 100%; width: 100%">
-      <div class="flex flex-grow-0 flex-column align-items-center justify-content-center">
-        <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
-      </div>
-      <span
-        v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
-        id="tileicon"
-        :style="iconSize"
-        class="flex flex-none flex-column align-items-center justify-content-center"
-      >
+    <!-- style="height: 100%; width: 100%" -->
+    <div class="flex flex-grow-0 flex-column align-items-center justify-content-center">
+      <!-- <div class="flex flex-grow-0 flex-column align-items-center justify-content-center"> -->
+      <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
+      <!-- </div> -->
+      <!-- class="flex flex-none flex-column align-items-center justify-content-center" -->
+      <span v-if="mSettings.tile.icon_visibility && mSettings.tile.icon" id="tileicon" :style="iconSize">
         <font-awesome-icon :icon="mSettings.tile.icon" />
       </span>
     </div>
-    <div v-if="mSettings.tile.measurement_list" class="flex flex-column flex-grow-1 knob-component" style="position: relative; width: 100%">
+    <div
+      v-if="mSettings.tile.measurement_list"
+      class="flex flex-column flex-grow-1 knob-component"
+      style="position: relative; width: 100%; padding: 0rem 0.5rem"
+    >
       <information-list-tile
         :tile="tile"
         :pdata="pdata"
@@ -175,8 +176,11 @@ export default {
     },
   },
   mounted() {
-    var size = this.mSettings.tile.measurement_list ? 0.5 : 0.75;
-    this.mStyle = `max-width: 100%;max-height:100%;margin: auto;width:${this.mSettings.panel.cellWidth * this.tile.layout.w * size}px`;
+    let w = this.settings.panel.cellWidth ? this.settings.panel.cellWidth * this.tile.layout.w : this.$parent.$el.parentElement.clientWidth * 0.9;
+    let h = this.settings.panel.cellHeight ? this.settings.panel.cellHeight * this.tile.layout.h : this.$parent.$el.parentElement.clientHeight * 0.9;
+    let minD = Math.min(w, h);
+    var size = this.mSettings.tile.measurement_list ? 0.5 : 0.7;
+    this.mStyle = `max-width: 100%;max-height:100%;margin: auto;width:${minD * size}px`;
     this.iconSize = this.mSettings.tile.measurement_list ? `height: 10%;  width: 10%;` : `height: 15%;  width: 15%;`;
     this.loaded = true;
   },
@@ -225,6 +229,7 @@ export default {
   // left: 40%;
   // top: 40%;
   position: absolute;
+  text-align: center;
   svg {
     height: 100%;
   }

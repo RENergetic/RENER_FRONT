@@ -10,17 +10,23 @@
       <div v-if="settings.demandVisibility" :class="'grid-stack-item ren'" v-bind="getLayout('demandTile')">
         <DemandList :class="'grid-stack-item-content'" />
       </div>
-      <div v-if="settings.feedbackVisibility" :class="'grid-stack-item ren'" v-bind="getLayout('feedbackTile')">
+      <!-- <div v-if="settings.feedbackVisibility" :class="'grid-stack-item ren'" v-bind="getLayout('feedbackTile')">
         <Card :class="'grid-stack-item-content'">
           <Feedback></Feedback>
         </Card>
-      </div>
+      </div> -->
       <div v-if="settings.notificationVisibility" :class="'grid-stack-item ren'" v-bind="getLayout('notificationTile')">
         <NotificationList :class="'grid-stack-item-content'"></NotificationList>
       </div>
       <div v-if="settings.selectedPanel" :class="'grid-stack-item ren'" style="background: transparent" v-bind="getLayout('panelTile')">
         <div class="grid-stack-item-content" sty>
-          <InformationPanel v-if="loaded && panel != null" ref="panel" :panel="panel" :edit-mode="false" style="background: transparent"></InformationPanel>
+          <InformationPanel
+            v-if="loaded && panel != null"
+            ref="panel"
+            :panel="panel"
+            :edit-mode="false"
+            style="background: transparent"
+          ></InformationPanel>
         </div>
       </div>
     </div>
@@ -29,7 +35,6 @@
 <script>
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import HomeSettings from "@/components/miscellaneous/settings/HomeSettings.vue";
-import Feedback from "@/components/user/Feedback.vue";
 import NotificationList from "@/components/management/notification/NotificationList.vue";
 import InformationPanel from "@/components/dashboard/informationpanel/InformationPanel.vue";
 import DemandList from "@/components/user/demand/DemandList.vue";
@@ -46,7 +51,6 @@ export default {
     HomeSettings,
     InformationPanel,
     NotificationList,
-    Feedback,
   },
   data() {
     return {
