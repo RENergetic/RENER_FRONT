@@ -11,7 +11,7 @@
     </div>
     <div v-if="mSettings.tile.template" class="flex flex-none flex-column align-items-center justify-content-center">
       <span id="value" :style="color">
-        {{ $t(`tile_templates.${tile.name}`, { value: `${$ren.utils.roundValue(value)} ${unit} ` }) }}
+        <h3>{{ $t(`tile_templates.${tile.name}`, { value: `${$ren.utils.roundValue(value)} ${unit} ` }) }}</h3>
       </span>
     </div>
     <div v-else class="flex flex-none flex-column align-items-center justify-content-center">

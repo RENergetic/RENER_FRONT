@@ -9,12 +9,14 @@
     </div> -->
 
     <div v-if="mSettings.tile.template" class="flex flex-none flex-column align-items-center justify-content-center">
-      <span id="value" :style="color">
+      <h3 id="value" :style="color">
         {{ $t(`tile_templates.${tile.name}`, { value: `${$ren.utils.roundValue(value)} ${unit} ` }) }}
-      </span>
+      </h3>
     </div>
     <div v-else class="flex flex-none flex-column align-items-center justify-content-center">
-      <span id="label" :style="color"> {{ mSettings.tile.label ? mSettings.tile.label : measurementlabel }} {{ unitTitle }} </span>
+      <span
+        ><h3 id="label" :style="color">{{ mSettings.tile.label ? mSettings.tile.label : measurementlabel }} {{ unitTitle }}</h3></span
+      >
     </div>
     <!-- {{ valuetemplate }}{{ value }} -->
     <!-- :value-template="valuetemplate" -->
