@@ -16,7 +16,12 @@
           :invalid="v$.mModel.name.$invalid"
           :errors="v$.mModel.name.$silentErrors"
         />
-        <ren-input v-model="mModel.label" :text-label="'model.measurement.label'" />
+        <ren-input
+          v-model="mModel.label"
+          :text-label="'model.measurement.label'"
+          :invalid="v$.mModel.label.$invalid"
+          :errors="v$.mModel.label.$silentErrors"
+        />
         <!-- {{ mUnits }} -->
         <ren-input-wrapper :text-label="'model.measurement.domain'" :invalid="v$.mModel.domain.$invalid" :errors="v$.mModel.domain.$silentErrors">
           <template #content>

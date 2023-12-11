@@ -97,21 +97,23 @@ body {
         max-width: $maxInputwidth;
     }
     .ren-inputwrapper {
-        width: $inputwidth;
-        max-width: $maxInputwidth;
         .p-slider-horizontal {
             width: $inputwidth;
             max-width: $maxInputwidth;
         }
+    }
+    .ren-inputwrapper > * {
+        width: $inputwidth;
+        max-width: $maxInputwidth;
     }
 
     .p-inputwrapper {
         width: $inputwidth !important;
         max-width: $maxInputwidth;
     }
-    .p-inputtextarea {
-        max-width: initial;
-    }
+    // .p-inputtextarea {
+    //     max-width: initial;
+    // }
     td {
         margin: 0;
         padding: 0 !important;

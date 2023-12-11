@@ -64,15 +64,15 @@ export default {
           type: "Header",
           key: "homePageitems",
         },
-        {
-          label: this.$t("settings.feedback"),
-          ext: {
-            true: this.$t("settings.visible"),
-            false: this.$t("settings.hidden"),
-          },
-          type: Boolean,
-          key: "feedbackVisibility",
-        },
+        // {
+        //   label: this.$t("settings.feedback"),
+        //   ext: {
+        //     true: this.$t("settings.visible"),
+        //     false: this.$t("settings.hidden"),
+        //   },
+        //   type: Boolean,
+        //   key: "feedbackVisibility",
+        // },
         {
           label: this.$t("settings.notification"),
           ext: {

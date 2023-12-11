@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import NotificationList from "../management/notification/NotificationList.vue";
+import NotificationList from "@/components/user/NotificationList.vue";
 import DemandList from "@/components/user/demand/DemandList.vue";
 import DashboardForm from "../dashboard/grafana/DashboardForm.vue";
 import LocaleSettings from "@/components/miscellaneous/settings/LocaleSettings.vue";
@@ -164,6 +164,7 @@ export default {
       this.$store.getters["auth/renRole"]
     ) {
       let notifications = await this.$ren.userApi.getNotifications();
+      console.info();
       this.onNotificationUpdate(notifications);
     }
   },

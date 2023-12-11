@@ -25,7 +25,7 @@
     </template>
   </Card>
 
-  <Dialog v-model:visible="addDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+  <Dialog v-model:visible="addDialog" :style="{ width: '30rem' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <Card>
       <template #title>{{ $t("view.add_asset_connection") }}</template>
       <template #content>
@@ -36,9 +36,19 @@
             :errors="v$.selectedAsset.$silentErrors"
           >
             <template #content>
-              <span v-if="selectedAsset">{{ selectedAsset.label ? selectedAsset.label : selectedAsset.name }}</span>
+              <!-- <ren-input-wrapper>
+                <template #content>
+                  <span v-if="selectedAsset">{{ selectedAsset.label ? selectedAsset.label : selectedAsset.name }}</span>
+                </template>
+              </ren-input-wrapper> -->
+              <!-- <ren-input-wrapper>
+                <template #content> -->
               <Button v-if="!selectedAsset" @click="selectAsset">{{ $t("view.select_asset") }}</Button>
-              <Button v-else style="margin-left: 0.5rem" @click="selectAsset">{{ $t("view.change_asset") }}</Button>
+              <Button v-else @click="selectAsset">{{
+                $t("view.change_asset", { asset: selectedAsset.label ? selectedAsset.label : selectedAsset.name })
+              }}</Button>
+              <!-- </template>
+              </ren-input-wrapper> -->
             </template>
           </ren-input-wrapper>
           <ren-switch v-model="twoDirection" :text-label="'model.asset_connection.bi_directional'" />

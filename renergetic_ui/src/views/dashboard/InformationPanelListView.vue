@@ -32,10 +32,16 @@ export default {
     await this.loadData();
   },
   methods: {
-    async loadData() {
+    async loadData(evt) {
       //todo: add some filters
+      let offset = 0;
+      let limit = 25;
+      if (evt) {
+        offset = evt.offset;
+        limit = evt.limit;
+      }
       this.$refs.spinner.run(async () => {
-        await this.$ren.dashboardApi.listInformationPanel().then((list) => {
+        await this.$ren.dashboardApi.listInformationPanel(offset, limit).then((list) => {
           this.panelList = list;
         });
       });

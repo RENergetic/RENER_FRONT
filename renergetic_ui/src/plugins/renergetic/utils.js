@@ -264,6 +264,9 @@ export default class RenUtils {
   }
 
   measurementBackgroundColor(measurement, tileSettings, value) {
+    if (measurement == null) {
+      return "none";
+    }
     let alpha = value ? 0.75 : 0.75 - value * 0.5;
     let alphaHex = Math.round(alpha * 255).toString(16);
     if (tileSettings && tileSettings.background == "none") {
@@ -284,6 +287,9 @@ export default class RenUtils {
   }
 
   measurementColor(measurement, value) {
+    if (measurement == null) {
+      return { alpha: 1.0, color: "" }; //TODO: default color ?
+    }
     let alpha = value ? 1.0 : 1.0 - value / 2;
     let color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
 
@@ -327,6 +333,9 @@ export default class RenUtils {
     return key;
   }
   getUnit(measurement, panelSettings, conversionSettings) {
+    if (measurement == null) {
+      return "";
+    }
     if (panelSettings && panelSettings.relativeValues) {
       return "%";
     }

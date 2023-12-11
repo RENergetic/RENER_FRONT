@@ -9,8 +9,8 @@
     <div v-if="!textLabel" class="col-12 ren-inputwrapper" :style="wrapperStyle">
       <slot id="ren-input" name="content" />
     </div>
-    <div v-else class="col-12 md:col-10 ren-inputwrapper" :style="wrapperStyle">
-      <slot id="ren-input" name="content" />
+    <div v-else id="ren-input" class="col-12 md:col-10 ren-inputwrapper" :style="wrapperStyle">
+      <slot name="content" />
     </div>
     <span v-if="invalid">
       <span v-for="(error, index) of errors" id="name-error" :key="index">

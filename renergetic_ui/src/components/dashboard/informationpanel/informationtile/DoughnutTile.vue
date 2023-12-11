@@ -42,7 +42,8 @@ export default {
         responsive: true,
         plugins: {
           legend: {
-            display: this.settings.tile.legend ? this.settings.tile.legend : false,
+            // position: "chartArea",
+            display: false, //this.settings.tile.legend ? this.settings.tile.legend : false,
             labels: {
               // color: "#495057",
               color: this.settings.tile.color,
@@ -95,7 +96,8 @@ export default {
   },
 
   mounted() {
-    this.mStyle = `max-width: 25rem; margin: auto;width:${this.settings.panel.cellWidth * this.tile.layout.w * 0.7}px`;
+    let minD = Math.min(this.settings.panel.cellWidth * this.tile.layout.w, this.settings.panel.cellHeight * this.tile.layout.h);
+    this.mStyle = `max-width: 25rem; margin: auto;width:${minD * 0.7}px`;
   },
   methods: {},
 };

@@ -16,7 +16,6 @@
     @update-menu="reload"
     @update:notifications="onNotificationChange($event)"
   ></Dialogs>
-  <!-- @update:demands="onDemandChange($event)" -->
 </template>
 
 <script>
@@ -304,7 +303,7 @@ export default {
         {
           class: this.checkPath({ name: "NotificationList" }) ? "hl-menu" : "",
           label: this.$t("menu.manage_notifications"),
-          icon: "pi pi-fw pi-list",
+          icon: "pi pi-fw pi-bell",
           command: () => {
             this.$router.push({ name: "NotificationList", path: "/management/notification" });
           },
@@ -316,7 +315,7 @@ export default {
         {
           class: this.checkPath({ name: "HDRView" }) ? "hl-menu" : "",
           label: this.$t("menu.hdr_view"),
-          icon: "pi pi-fw pi-list",
+          icon: "pi pi-fw pi-sliders-h",
           command: () => {
             this.$router.push({ name: "HDRView", path: "/management/demand/hdr" });
           },
@@ -368,15 +367,16 @@ export default {
       if ((flags & this.role) == 0) {
         return [];
       }
+
       return [
         {
           label: this.$t("menu.notifications"),
           icon: "pi pi-fw  pi-bell",
           command: () => {
             // this.$emit("notification");
-            this.notificationDialog = !this.notificationDialog;
+            if (this.notificationCount > 0) this.notificationDialog = !this.notificationDialog;
           },
-          class: this.notificationCount == 0 ? "" : "hl-warning",
+          class: this.notificationCount == 0 ? "disabled" : "hl-warning",
         },
       ];
     },
@@ -390,10 +390,9 @@ export default {
           label: this.$t("menu.demands"),
           icon: "pi pi-fw  pi-bell",
           command: () => {
-            // this.$emit("notification");
-            this.demandDialog = !this.demandDialog;
+            if (this.demandCount > 0) this.demandDialog = !this.demandDialog;
           },
-          class: this.demandCount == 0 ? "" : "hl-warning",
+          class: this.demandCount == 0 ? "disabled" : "hl-warning",
         },
       ];
     },
@@ -426,7 +425,7 @@ export default {
             },
             {
               label: this.$t("menu.locales"),
-              icon: "pi pi-fw  pi-bell",
+              icon: "pi pi-fw pi-cog", //pi-language
               command: () => {
                 // this.$emit("notification");
                 this.localesDialog = !this.localesDialog;

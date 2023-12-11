@@ -8,6 +8,7 @@
       style="font-size: 1.5rem; position: absolute; top: 0.5rem; right: 0.5rem"
       @click="viewMeasurements()"
     />
+
     <!-- {{ filter }} -->
     <!-- {{ pdata }} -->
     <!-- todo: group by sensor_name -->
@@ -79,13 +80,14 @@
       :conversion-settings="conversionSettings"
     ></InformationTileSingle>
     <InformationListTile
-      v-else
+      v-else-if="tile.measurements && tile.measurements.length > 0"
       :style="'width:100%'"
       :tile="tile"
       :pdata="pdata"
       :settings="mSettings"
       :conversion-settings="conversionSettings"
-    ></InformationListTile>
+    />
+    <div v-else style="width: 100%">{{ $t("view.no_panel_measurements") }}</div>
   </div>
 </template>
 <script>
@@ -118,10 +120,6 @@ function validateTileSettings(tile, settings, ctx) {
     };
   }
   return settings;
-  // tileSettings.legend = settings.legend != null ? settings.legend : true;
-  // settings.title = settings.title != null ? settings.title : true;
-  // settings.color = settings.color != null ? settings.color : "#d6ebff";
-  // console.info(tile);
 }
 
 export default {
