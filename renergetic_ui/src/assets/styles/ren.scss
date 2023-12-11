@@ -416,11 +416,43 @@ body {
     scrollbar-color: $ren-primary-color-tr $ren-primary-border-color-tr;
     scrollbar-width: thin;
 }
+
+.ren-page-content div::-webkit-scrollbar,
+.standard div::-webkit-scrollbar {
+    width: 8px;
+    background: none;
+}
+.ren-page-content div::-webkit-scrollbar-thumb,
+.standard div::-webkit-scrollbar-thumb {
+    background: $ren-primary-color-tr;
+}
+.ren-page-content div::-webkit-scrollbar-track:hover,
+.standard div::-webkit-scrollbar-track:hover,
+.ren-page-content div::-webkit-scrollbar:hover,
+.standard div::-webkit-scrollbar:hover {
+    background: $ren-primary-border-color-tr;
+}
+
 .p-dialog div,
 .p-sidebar-content {
     // box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     scrollbar-color: $ren-primary-color-tr $ren-secondary-border-color-tr;
     scrollbar-width: thin;
+}
+.p-dialog div::-webkit-scrollbar,
+.p-sidebar-content::-webkit-scrollbar {
+    width: 8px;
+    background: none;
+}
+.p-dialog div::-webkit-scrollbar-thumb,
+.p-sidebar-content::-webkit-scrollbar-thumb {
+    background: $ren-primary-color-tr;
+}
+.p-dialog div::-webkit-scrollbar-track:hover,
+.p-sidebar-content::-webkit-scrollbar-track:hover,
+.p-dialog div::-webkit-scrollbar:hover,
+.p-sidebar-content::-webkit-scrollbar:hover {
+    background: $ren-secondary-border-color-tr;
 }
 
 .ren-sticky {
