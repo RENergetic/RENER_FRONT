@@ -106,6 +106,8 @@ export default {
     options: function () {
       let annotations = this.annotations;
       console.info(annotations);
+
+      let position = this.mMeasurements.length > 4 ? "top" : "chartArea";
       return {
         responsive: true,
         maintainAspectRatio: false,
@@ -114,10 +116,11 @@ export default {
             annotations: annotations,
           },
           legend: {
-            position: "chartArea",
+            maxHeight: 100,
+            // position: "chartArea",
+            position: position,
             align: "start",
             display: this.legend,
-            maxWidth: 200,
             fullSize: false,
             labels: {
               color: "#495057",

@@ -104,8 +104,9 @@
                 <Listbox
                   id="panelDefaultTemplates"
                   v-model="submittedPanelJSON"
-                  :option-label="(opt) => $t(`view.panel_templates.${opt.label}`)"
-                  :options="[{ label: kpi, template: {} }]"
+                  :option-label="(opt) => $t(`model.panel_templates.${opt.name}`)"
+                  :option-value="'template'"
+                  :options="panelTemplates"
                 />
               </template>
             </ren-input-wrapper>
@@ -128,6 +129,7 @@
 
 <script>
 import { cleanTileStructure } from "./InformationPanelTileForm.vue";
+import panelTemplates from "@/plugins/model/information_panel_templates";
 function getCleanPanelStructure(panel /*, isTemplate*/) {
   let mPanel = JSON.parse(JSON.stringify(panel));
   if (mPanel.name !== undefined) delete mPanel.name;
@@ -164,7 +166,7 @@ export default {
       inferMeasurements: false,
       mModel: mModel,
       addMode: this.modelValue == null || this.modelValue.name == null,
-      // mPanelStructure: null,
+      panelTemplates: panelTemplates,
       mPanelStructureJSON: JSON.stringify(panelStructure, null, "\t"),
       panelStructure: panelStructure,
       labelWarning: null,
@@ -231,6 +233,7 @@ export default {
       this.submittedPanelJSON = null;
     },
     async fileSubmit() {
+      console.error(this.submittedPanelJSON);
       let submittedPanel = JSON.parse(this.submittedPanelJSON);
       if (this.inferMeasurements) {
         this.panelStructure = await this.infer(submittedPanel);
