@@ -183,14 +183,15 @@
     "revoke_assignment": "Revoke assignment",
     "revoke_asset_assignment": "Revoke assignment for: {0}",
     "asset_go_to_panel": "Go to panel for asset: {0}",
-    "yes": "Yes",
-    "no": "No"
+    "yes": "Tak",
+    "no": "Nie"
   },
   "home_settings": "Home Settings",
   "panel_settings": "Panel settings",
   "panel_label_info": "Each label requires following tag: '{0}' , if tag is not found, it will be added automatically.",
   "panel_label_warning": "'{0}' tag  will be added automatically to the label.",
   "panel_delete_confirm": "Do you want to delete panel?",
+  "panel_templates": "Szablony widoków",
   "locale_settings": "Language",
   "conversion_settings": "Displayed unit conversion settings",
   "settings": {
