@@ -1,6 +1,6 @@
 <template>
   <!-- {{ mSettings }} -->
-  <div class="flex flex-column justify-content-center" :style="tileStyle">
+  <div v-if="measurement" class="flex flex-column justify-content-center" :style="tileStyle">
     <div
       v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
       id="tileicon"
@@ -11,7 +11,7 @@
     </div>
     <div v-if="mSettings.tile.template" class="flex flex-none flex-column align-items-center justify-content-center">
       <span id="value" :style="color">
-        {{ $t(`tile_templates.${tile.name}`, { value: `${$ren.utils.roundValue(value)} ${unit} ` }) }}
+        <h3>{{ $t(`tile_templates.${tile.name}`, { value: `${$ren.utils.roundValue(value)} ${unit} ` }) }}</h3>
       </span>
     </div>
     <div v-else class="flex flex-none flex-column align-items-center justify-content-center">
@@ -21,6 +21,7 @@
       </span>
     </div>
   </div>
+  <div v-else>{{ $t("view.no_panel_measurements") }}</div>
   <!-- {{ tile.props }} -->
   <!-- <div v-if="measurement.description">description: {{ measurement.description }}</div> -->
 </template>
@@ -83,18 +84,9 @@ export default {
         return null;
       }
     },
-    // label: function () {
-    //   if (this.measurement.label != null) {
-    //     return this.measurement.label;
-    //   } else {
-    //     //TODO: translate it
-    //     return this.measurement.name;
-    //   }
-    // },
   },
 
-  mounted() {},
-  methods: {},
+  // methods: {},
 };
 </script>
 

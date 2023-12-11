@@ -1,11 +1,8 @@
 <template>
   <div ref="spinnerContent" :class="'ren-spinner-wrapper ' + inputClass">
-    <!-- <ProgressSpinner><slot name="content" /></ProgressSpinner> -->
     <slot name="content" />
     <div v-if="!isContent" class="spinner-default-content" />
-    <div v-if="counter && mLock" class="ren-spinner-bg">
-      <!-- {{ size }} -->
-    </div>
+    <div v-if="counter && mLock" class="ren-spinner-bg"></div>
     <ProgressSpinner v-if="counter" class="ren-spinner" :stroke-width="strokeWidth"></ProgressSpinner>
   </div>
 </template>

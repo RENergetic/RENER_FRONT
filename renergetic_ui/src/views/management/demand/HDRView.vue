@@ -1,5 +1,5 @@
 <template>
-  <Card style="margin: auto; margin-top: 0.5rem; max-width: 95vw">
+  <Card class="ren-page-content" style="width: 95vw">
     <template #title>{{ $t("menu.hdr_view") }}</template>
     <template #content>
       <div class="grid">
@@ -14,7 +14,7 @@
           />
           <h2 v-else>{{ $t("view.select_recommendation") }}</h2>
         </div>
-        <div class="col-3">
+        <div class="col-3" style="min-width: 15rem">
           <RenSpinner ref="spinner" :lock="true" style="width: 100%">
             <template #content>
               <HDRRecomendationList

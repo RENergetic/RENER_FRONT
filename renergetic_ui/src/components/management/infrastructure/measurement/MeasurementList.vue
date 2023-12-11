@@ -5,8 +5,6 @@
     </template>
   </InfoIcon>
   <!-- @row-expand="onexpand" -->
-  <!-- {{ mFilters }} -->
-  <!-- {{ mFilters }} -->
   <!-- :global-filter-fields="['name', 'label', 'type.name', 'type.physical_name', 'domain', 'direction', 'asset.name']" -->
 
   <DataTable
@@ -16,11 +14,10 @@
     :lazy="true"
     data-key="id"
     :rows="50"
-    :paginator="true"
     :row-class="rowClass"
-    :rows-per-page-options="[10, 20, 50, 100]"
     :value="measurementList"
     filter-display="row"
+    class="sticky-header"
     @filter="onFilter"
   >
     <template #header>
@@ -28,17 +25,18 @@
         <i class="pi pi-search" />
         <InputText v-model="mFilters['global'].value" :placeholder="$t('view.search')" />
       </span> -->
-      <Button
-        v-if="selectedMeasurements.length > 0"
-        :label="$t('view.export_json')"
-        icon="pi pi-list"
-        style="position: sticky; left: 2rem; top: 1rem; z-index: 3333"
-        @click="exportJSON"
-      />
+
       <span class="p-input-icon-left" style="margin-left: 1rem">
         <i class="pi pi-search" />
         <Dropdown v-model="mFilters.tag_key.value" show-clear :options="tagsKeys" :placeholder="$t('view.tag_filter')" />
       </span>
+      <Button
+        v-if="selectedMeasurements.length > 0"
+        :label="$t('view.measurements_export_json')"
+        icon="pi pi-list"
+        style="position: sticky; left: 2rem; top: 1rem; z-index: 3333; margin-left: 1rem"
+        @click="exportJSON"
+      />
     </template>
 
     <Column :expander="true" header-style="width: 3rem" />
@@ -54,6 +52,11 @@
       <template #body="slotProps">
         <span v-if="slotProps.data._label"> {{ slotProps.data.label }} ({{ slotProps.data._label }})</span>
         <span v-else> {{ slotProps.data.label }} </span>
+        <div>
+          <span v-if="slotProps.data.measurementTags">
+            <li v-for="tag in slotProps.data.measurementTags" :key="tag.id">{{ tag.key }}={{ tag.value }}</li>
+          </span>
+        </div>
       </template>
     </Column>
     <!-- <Column field="label" :header="$t('model.measurement.label')" :show-filter-menu="false">
@@ -168,7 +171,8 @@
     </Column> -->
     <Column selection-mode="multiple" header-style="width: 3rem"></Column>
   </DataTable>
-  <Toolbar>
+  <ren-paginator v-if="measurementList" v-model:offset="mOffset" style="left: 0" sticky :current-rows="measurementList.length" @update="reload" />
+  <Toolbar class="ren-toolbar ren-sticky">
     <template #end>
       <Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="addDialog = true" />
       <Button style="margin-left: 0.5rem" @click="importMeasurementsDialog = true">{{ $t("view.upload_measurements") }}</Button>
@@ -279,6 +283,7 @@ export default {
 
     return {
       // measurementAdd: false,
+      mOffset: 0,
       domains: MeasurementDomains.keys(),
       directions: MeasurementDirection.keys(),
       physicalTypes: physicalTypes,
@@ -303,18 +308,26 @@ export default {
     "mFilters.tag_key.value": async function () {
       await this.onFilter({ filters: this.mFilters });
     },
+    measurementList: async function (mList) {
+      await this.loadTags(mList);
+    },
   },
   created() {
     this.deferredEmitFilter = new DeferredFunction(this._emitFilter);
   },
   async mounted() {
     if (this.measurementList != null && this.measurementList.length > 0) {
-      this.columns = Object.keys(this.measurementList[0]);
+      this.columns = await Object.keys(this.measurementList[0]);
     }
-
     this.tagsKeys = await this.$ren.managementApi.listTagKeys();
   },
   methods: {
+    async loadTags(mList) {
+      if (mList != null && mList.length < 30)
+        for (let m of mList) {
+          m.measurementTags = await this.$ren.managementApi.getMeasurementTags(m.id);
+        }
+    },
     _emitFilter() {
       // console.info("emitFilter: " + new Date());
       this.$emit("update:filters", this.mFilters);
@@ -378,33 +391,11 @@ export default {
     async exportJSON() {
       this.$ren.utils.downloadJSON(this.selectedMeasurements, `measurements`);
     },
-    // edit(o) {
-    //   this.selectedMeasurement = o;
-    //   this.editDialog = true;
-    // },
-    // async onEdit(o) {
-    //   await this.$ren.managementApi.updateMeasurement(o).then((res) => {
-    //     if (res) {
-    //       this.$emitter.emit("information", { message: this.$t("information.measurement_updated") });
-    //       this.editDialog = false;
-    //       this.reload();
-    //     } else {
-    //       this.$emitter.emit("error", { message: this.$t("information.measurement_not_updated") });
-    //     }
-    //   });
-    // },
-    // deleteConfirm(o) {
-    //   this.selectedMeasurement = o;
-    //   this.$refs.deleteMeasurement.delete(o);
-    // },
-    // // onDelete(o){
-    // onDelete() {
-    //   this.selectedMeasurement = null;
-    //   this.reload();
-    // },
-    reload() {
+
+    reload(evt) {
       //TODO: filter
-      this.$emit("reload");
+
+      this.$emit("reload", evt);
     },
     onSelect() {
       if (this.$refs.FileUpload !== undefined) this.hasFiles = this.$refs.FileUpload.files.length > 0;
@@ -418,7 +409,6 @@ export default {
     },
     async submitMeasurements() {
       var measurements = JSON.parse(this.submittedMeasurementsJSON);
-      // console.info(measurements);
       console.warn("TODO: make yesno confirm dialog  ");
 
       await this.$ren.managementApi.addMeasurements(measurements).then((measurementsResponse) => {
@@ -437,7 +427,6 @@ export default {
     },
     async onFileUpload(evt) {
       this.submittedMeasurements = null;
-      // console.info(evt.files);
       if (evt.files.length == 1) {
         this.submittedMeasurements = clearMeasurementInput(await this.$ren.utils.readJSONFile(evt.files[0]));
         this.submittedMeasurementsJSON = JSON.stringify(this.submittedMeasurements, null, "\t");
@@ -448,5 +437,4 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss"></style>
+<style lang="scss"></style>

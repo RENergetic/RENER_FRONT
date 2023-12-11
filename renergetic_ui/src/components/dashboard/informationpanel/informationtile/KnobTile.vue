@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column justify-content-center" :style="tileStyle">
+  <div v-if="measurement" class="flex flex-column justify-content-center" :style="tileStyle">
     <!-- <div
       v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
       id="tileicon"
@@ -9,12 +9,14 @@
     </div> -->
 
     <div v-if="mSettings.tile.template" class="flex flex-none flex-column align-items-center justify-content-center">
-      <span id="value" :style="color">
+      <h3 id="value" :style="color">
         {{ $t(`tile_templates.${tile.name}`, { value: `${$ren.utils.roundValue(value)} ${unit} ` }) }}
-      </span>
+      </h3>
     </div>
     <div v-else class="flex flex-none flex-column align-items-center justify-content-center">
-      <span id="label" :style="color"> {{ mSettings.tile.label ? mSettings.tile.label : measurementlabel }} {{ unitTitle }} </span>
+      <span
+        ><h3 id="label" :style="color">{{ mSettings.tile.label ? mSettings.tile.label : measurementlabel }} {{ unitTitle }}</h3></span
+      >
     </div>
     <!-- {{ valuetemplate }}{{ value }} -->
     <!-- :value-template="valuetemplate" -->
@@ -34,12 +36,7 @@
     />
   </div>
 
-  <!-- <div class="knob-component">
-    <Knob v-model="value" class="flex-grow-1 flex" :style="{ textAlign: 'center', maxHeight: '80%' }" :min="minV" :max="maxV" />
-    <div class="flex-none flex" style="text-align: center">
-      <div v-if="measurement" id="label">{{ mSettings.tile.label }}</div>
-    </div>
-  </div> -->
+  <div v-else>{{ $t("view.no_panel_measurements") }}</div>
 </template>
 <script>
 import Knob from "primevue/knob";

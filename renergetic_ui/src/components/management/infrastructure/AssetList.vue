@@ -1,8 +1,5 @@
 <template>
-  <!-- <Paginator v-model:first="mPage" :rows="1" :total-records="mPage + 2"
-   template="FirstPageLink PrevPageLink PageLinks NextPageLink    " /> -->
-  <!-- TODO: unslect row event -->
-  <!--  -->
+  <!-- TODO: unslect row event responsive-layout="scroll"-->
   <DataTable
     class="asset-list"
     :value="assetList"
@@ -10,7 +7,6 @@
     data-key="id"
     :filters="mFilters"
     :filter-display="hiddenFilters ? null : 'row'"
-    responsive-layout="scroll"
     :global-filter-fields="['name', 'label', 'type.name', 'category.label']"
     selection-mode="single"
     :meta-key-selection="false"
@@ -19,6 +15,41 @@
     @row-unselect="$emit('onSelect', null)"
     @update:selection="onSelect"
   >
+    <Column name="edit" :hidden="basic">
+      <template #body="slotProps">
+        <Button
+          v-if="slotProps.data.measurements && slotProps.data.measurements.length > 0"
+          v-tooltip="$t('view.view_asset_measurements')"
+          icon="pi  pi-chart-line"
+          class="p-button-rounded p-button-info"
+          @click="viewMeasurements(slotProps.data)"
+        />
+        <Button
+          v-else
+          v-tooltip="$t('view.no_asset_measurements')"
+          icon="pi  pi-chart-line"
+          class="p-button-rounded p-button-info disabled"
+          @click="viewMeasurements(slotProps.data)"
+        />
+
+        <Button
+          v-tooltip="$t('view.manage_asset_connections')"
+          icon="pi pi-share-alt"
+          class="p-button-rounded"
+          @click="manageConnections(slotProps.data)"
+        />
+        <Button v-tooltip="$t('view.properties')" icon="pi  pi-sliders-h" class="p-button-rounded" @click="manageAssetProperties(slotProps.data)" />
+        <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
+        <Button v-tooltip="$t('view.rules')" icon="pi pi-code" class="p-button-rounded" @click="editRules(slotProps.data)" />
+        <Button
+          v-tooltip="$t('view.delete') + hasMeasurementsTooltip(slotProps.data)"
+          :disabled="slotProps.data.type.name == 'user' || (slotProps.data.measurements && slotProps.data.measurements.length > 0)"
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-danger"
+          @click="deleteAsset(slotProps.data)"
+        />
+      </template>
+    </Column>
     <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false">
       <template #filter="{ filterModel, filterCallback }">
         <InputText v-model="filterModel.value" type="text" class="p-column-filter" :placeholder="$t('view.search')" @input="filterCallback()" />
@@ -130,109 +161,24 @@
         </span>
       </template>
     </Column> -->
-    <Column name="edit" :hidden="basic">
-      <template #body="slotProps">
-        <Button
-          v-if="slotProps.data.measurements && slotProps.data.measurements.length > 0"
-          v-tooltip="$t('view.view_asset_measurements')"
-          icon="pi  pi-chart-line"
-          class="p-button-rounded p-button-info"
-          @click="viewMeasurements(slotProps.data)"
-        />
-        <Button
-          v-else
-          v-tooltip="$t('view.no_asset_measurements')"
-          icon="pi  pi-chart-line"
-          class="p-button-rounded p-button-info disabled"
-          @click="viewMeasurements(slotProps.data)"
-        />
-
-        <Button
-          v-tooltip="$t('view.manage_asset_connections')"
-          icon="pi pi-share-alt"
-          class="p-button-rounded"
-          @click="manageConnections(slotProps.data)"
-        />
-        <Button v-tooltip="$t('view.properties')" icon="pi  pi-sliders-h" class="p-button-rounded" @click="manageAssetProperties(slotProps.data)" />
-        <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
-        <Button v-tooltip="$t('view.rules')" icon="pi pi-code" class="p-button-rounded" @click="editRules(slotProps.data)" />
-        <Button
-          v-tooltip="$t('view.delete') + hasMeasurementsTooltip(slotProps.data)"
-          :disabled="slotProps.data.type.name == 'user' || (slotProps.data.measurements && slotProps.data.measurements.length > 0)"
-          icon="pi pi-trash"
-          class="p-button-rounded p-button-danger"
-          @click="deleteAsset(slotProps.data)"
-        />
-      </template>
-    </Column>
-
-    <!-- <Column name="asset_connections" :hidden="basic">
-      <template #body="slotProps">
-        <Button
-          v-tooltip="$t('view.manage_asset_connections')"
-          icon="pi pi-share-alt"
-          class="p-button-rounded"
-          @click="manageConnections(slotProps.data)"
-        />
-      </template>
-    </Column>
-    <Column name="edit_properties" :hidden="basic">
-      <template #body="slotProps">
-        <Button
-          v-tooltip="$t('view.properties')"
-          icon="pi  pi-sliders-h"
-          class="p-button-rounded"
-          @click="manageAssetProperties(slotProps.data )"
-        />
-      </template>
-    </Column>
-    <Column name="edit" :hidden="basic">
-      <template #body="slotProps">
-        <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
-        
-      </template>
-    </Column>
-    <Column name="rule" :hidden="basic">
-      <template #body="slotProps">
-        <Button v-tooltip="$t('view.rules')" icon="pi pi-code" class="p-button-rounded" @click="editRules(slotProps.data)" />
-      </template>
-    </Column>
-    <Column name="delete" :hidden="basic">
-      <template #body="slotProps">
-        <Button
-          v-tooltip="$t('view.delete')"
-          :disabled="slotProps.data.type.name == 'user' || (slotProps.data.measurements && slotProps.data.measurements.length > 0)"
-          icon="pi pi-trash"
-          class="p-button-rounded p-button-danger"
-          @click="deleteAsset(slotProps.data)"
-        />
-      </template>
-    </Column> -->
 
     <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
     <template #header>
       <div v-if="!hiddenFilters" class="flex justify-content-between">
-        <Button type="button" icon="pi pi-filter" :label="$t('view.button.filter')" class="p-button-outlined" @click="reload" />
-        <Button type="button" icon="pi pi-filter-slash" :label="$t('view.button.clear_filter')" class="p-button-outlined" @click="clearFilter" />
-      </div>
-    </template>
-    <template #footer>
-      <ren-paginator v-model:offset="mOffset" :current-rows="assetList.length" @update="reloadAssets" />
-      <!-- <div class="flex justify-content-between">
-        <Button type="button" icon="pi pi-chevron-circle-left" :label="$t('view.button.previous')" class="p-button-outlined" @click="previous" />
-        <span>{{ $t("view.current_page", { page: mPage }) }}</span>
         <Button
           type="button"
-          icon="pi pi-chevron-circle-right"
-          :label="$t('view.button.next')"
+          style="position: sticky; left: 0.5rem"
+          icon="pi pi-filter-slash"
+          :label="$t('view.button.clear_filter')"
           class="p-button-outlined"
-          icon-pos="right"
-          @click="next"
+          @click="clearFilter"
         />
-      </div> -->
+      </div>
     </template>
   </DataTable>
-  <Toolbar v-if="!basic">
+  <ren-paginator v-model:offset="mOffset" style="left: 0" sticky :current-rows="assetList.length" @update="reloadAssets" />
+
+  <Toolbar v-if="!basic" class="ren-toolbar ren-sticky">
     <template #end>
       <Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="assetAdd = true" />
 
@@ -350,15 +296,14 @@ export default {
   props: {
     assetList: { type: Array, default: () => [] },
     filters: { type: Array, default: () => initFilter() },
-    page: { type: Number, default: 0 },
+    // page: { type: Number, default: 0 },
     offset: { type: Number, default: 0 },
     hiddenFilters: { type: Boolean, default: false },
     basic: { type: Boolean, default: false },
   },
-  emits: ["update:filters", "reload", "update:page", "onSelect"],
+  emits: ["update:filters", "reload", "onSelect"],
   data() {
     return {
-      mPage: this.page,
       mOffset: this.offset,
       assetAdd: false,
       mFilters: this.filters ? this.filters : initFilter(),
@@ -537,15 +482,7 @@ export default {
     async reload() {
       this.$emit("reload");
     },
-    async next() {
-      if (this.assetList.length === 0) return;
-      this.mPage += 1;
-      this.$emit("update:page", this.mPage);
-    },
-    async previous() {
-      this.mPage = Math.max(0, this.mPage - 1);
-      this.$emit("update:page", this.mPage);
-    },
+
     clearFilter() {
       this.mFilters = initFilter();
       this.$emit("update:filters", this.mFilters);
@@ -580,7 +517,6 @@ export default {
   },
 };
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
 .asset-list .p-datatable-tbody td {
   padding: 0.5rem 0.5rem !important;

@@ -78,9 +78,9 @@ export default {
 }
 
 .top {
-  top: 0.5rem;
+  top: 1rem;
 }
 .right {
-  right: 0.5rem;
+  right: 1rem;
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
-  <Card style="margin: auto; margin-top: 0.5rem; max-width: 95vw">
+  <Card class="ren-page-content">
     <template #title>{{ $t("menu.manage_assets") }}</template>
     <template #content>
-      <RenSpinner ref="spinner" :lock="true" style="width: 100%">
+      <RenSpinner ref="spinner" :lock="true" style="min-width: 100%">
         <template #content>
           <asset-list v-model:filters="filters" :asset-list="assetList" @reload="loadAssets" />
         </template>
@@ -12,7 +12,7 @@
 </template>
 <script>
 import AssetList from "@/components/management/infrastructure/AssetList.vue";
-var PAGE_SIZE = 10;
+// var PAGE_SIZE = 10;
 export default {
   name: "AssetListView",
   components: {
@@ -30,10 +30,6 @@ export default {
     };
   },
   watch: {
-    // page: function () {
-    //   //TODO pass newval ?
-    //   this.loadAssets();
-    // },
     filters: function () {
       //TODO pass newval ?
       this.loadAssets();
@@ -45,7 +41,7 @@ export default {
   methods: {
     async loadAssets(evt) {
       let offset = 0;
-      let limit = PAGE_SIZE;
+      let limit = 25;
       if (evt) {
         offset = evt.offset;
         limit = evt.limit;

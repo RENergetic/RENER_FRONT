@@ -195,7 +195,7 @@ export default class ManagementApi extends RestComponent {
   ////                                                   /////
   ////////////////////////////////////////////////////////////
 
-  async listMeasurement(params = undefined, offset = 0, limit = 200) {
+  async listMeasurement({ params = undefined, offset = 0, limit = 200 }) {
     if (!params) {
       params = {};
     }
