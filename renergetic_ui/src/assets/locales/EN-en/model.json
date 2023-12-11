@@ -172,5 +172,9 @@
           "no_dashboard": "undefined",
           "measurement": "Measurement",
           "message": "Message"
+     },
+     "panel_templates": {
+          "kpi_electricity": "Electricity KPI ",
+          "kpi_heat": "Heat KPI"
      }
 }
