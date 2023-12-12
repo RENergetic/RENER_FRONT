@@ -8,7 +8,9 @@
       style="font-size: 1.5rem; position: absolute; top: 0.5rem; right: 0.5rem"
       @click="viewMeasurements()"
     />
-
+    <!-- {{ tile.props }}
+    {{ tile.measurements.map((it) => it.measurement_details) }}
+    {{ tile.measurements.map((it) => it.type.color) }} -->
     <!-- {{ filter }} -->
     <!-- {{ pdata }} -->
     <!-- todo: group by sensor_name -->
@@ -113,8 +115,10 @@ function validateTileSettings(tile, settings, ctx) {
         !ctx.demand &&
         (tile.props.title_visibility != null ? tile.props.title_visibility : settings.title_visibility != null ? settings.title_visibility : true),
       measurement_list: tile.props.measurement_list != null ? tile.props.measurement_list : true,
+      measurement_background: tile.props.measurement_background != null ? tile.props.measurement_background : false,
       fontSize: settings.fontSize,
-      background: tile.props.mask,
+      background_mask: tile.props.mask,
+      background: tile.props.background,
       template: tile.props.template,
       // asset_id: settings.asset_id,
     };
@@ -167,7 +171,7 @@ export default {
   },
   computed: {
     background: function () {
-      return `background-color:${this.mSettings.tile.background}`;
+      return `background-color:${this.mSettings.tile.background_mask}`;
     },
     tileClass: function () {
       return this.settings != null && !this.settings.center ? "flex tile_wrapper" : " flex tile_wrapper_center";
@@ -224,5 +228,11 @@ export default {
   .tile_wrapper {
     padding: 0.5rem;
   }
+}
+.tile_wrapper #tileicon path,
+.tile_wrapper .tileicon path {
+  stroke: $ren-primary-border-color;
+  stroke-width: 10;
+  stroke-linejoin: round;
 }
 </style>

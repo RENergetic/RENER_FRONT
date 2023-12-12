@@ -176,9 +176,9 @@ export default {
     },
   },
   mounted() {
-    let w = this.settings.panel.cellWidth ? this.settings.panel.cellWidth * this.tile.layout.w : this.$parent.$el.parentElement.clientWidth * 0.9;
-    let h = this.settings.panel.cellHeight ? this.settings.panel.cellHeight * this.tile.layout.h : this.$parent.$el.parentElement.clientHeight * 0.9;
-    let minD = Math.min(w, h);
+    // let w = this.settings.panel.cellWidth ? this.settings.panel.cellWidth * this.tile.layout.w : this.$parent.$el.parentElement.clientWidth * 0.9;
+    // let h = this.settings.panel.cellHeight ? this.settings.panel.cellHeight * this.tile.layout.h : this.$parent.$el.parentElement.clientHeight * 0.9;
+    let minD = this.tileContentSize1D();
     var size = this.mSettings.tile.measurement_list ? 0.5 : 0.7;
     this.mStyle = `max-width: 100%;max-height:100%;margin: auto;width:${minD * size}px`;
     this.iconSize = this.mSettings.tile.measurement_list ? `height: 10%;  width: 10%;` : `height: 15%;  width: 15%;`;

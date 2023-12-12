@@ -226,7 +226,7 @@ export default {
       let datasets = [];
       for (let idx in this.mMeasurements) {
         let m = this.mMeasurements[idx];
-        let color = m.measurement_details.color ? m.measurement_details.color : "#90A4AE";
+        let color = this.$ren.utils.measurementColor(m).color;
         console.error("TODO: convert timeseries unit");
         let aggFunc = this.$t("enums.measurement_aggregation." + m.aggregation_function);
 
