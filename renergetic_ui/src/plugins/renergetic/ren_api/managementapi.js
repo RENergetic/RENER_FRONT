@@ -215,6 +215,9 @@ export default class ManagementApi extends RestComponent {
   async listMeasurementType() {
     return this.get(`/api/measurements/type`);
   }
+  async updateMeasurementType(type) {
+    return this.put(`/api/measurements/type/${type.id}`, type);
+  }
   async setMeasurementTypeVisibility(id, visibility) {
     if (visibility) return this.post(`/api/measurements/type/${id}/dashboard/true`);
     else return this.post(`/api/measurements/type/${id}/dashboard/false`);

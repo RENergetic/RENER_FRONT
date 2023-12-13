@@ -63,7 +63,7 @@ export default {
       // let data = this.tile.measurements.map((m) => this.pdata[m.id]);
       //TODO: make it comfigurable in tile / args prediction & aggregation func
       let data = null;
-      let backgroundColor = this.tile.measurements.map((m) => (m.measurement_details.color ? m.measurement_details.color : "#90A4AE"));
+      let backgroundColor = this.tile.measurements.map((m) => this.$ren.utils.measurementColor(m).color);
       if (!this.mSettings.panel.relativeValues) {
         data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
       } else {
@@ -79,7 +79,7 @@ export default {
         // console.info(1.0 - sum);
         // console.info(sum);
         data.push(1.0 - sum);
-        backgroundColor.push(backgroundColor);
+        backgroundColor.push("#90A4AE");
         labels.push("");
       }
       return {
@@ -96,7 +96,9 @@ export default {
   },
 
   mounted() {
-    let minD = Math.min(this.settings.panel.cellWidth * this.tile.layout.w, this.settings.panel.cellHeight * this.tile.layout.h);
+    let minD = this.tileContentSize1D();
+    // var size = this.mSettings.tile.measurement_list ? 0.5 : 0.7;
+    // let minD = Math.min(this.settings.panel.cellWidth * this.tile.layout.w, this.settings.panel.cellHeight * this.tile.layout.h);
     this.mStyle = `max-width: 25rem; margin: auto;width:${minD * 0.7}px`;
   },
   methods: {},

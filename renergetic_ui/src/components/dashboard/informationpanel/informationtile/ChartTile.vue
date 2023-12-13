@@ -1,6 +1,5 @@
 <template>
   <div class="flex flex-column justify-content-center" style="height: 100%">
-    <!-- <div style="display: flex; flex-direction: column; align-items: flex-end"> -->
     <div class="flex flex-none flex-column justify-content-center">
       <h3 style="text-align: center">{{ settings.tile.label }}</h3>
       <!-- v-if="legend"-->
@@ -38,9 +37,7 @@ export default {
     },
     filter: {
       type: Object,
-      default: () => {
-        return {};
-      },
+      default: () => ({}),
     },
   },
   emits: ["timeseries-update"],
@@ -57,40 +54,6 @@ export default {
     legend: function () {
       return this.settings && this.settings.tile && this.settings.tile.legend != null ? this.settings.tile.legend : this.tile.measurements.length > 1;
     },
-    // options: function () {
-    //   // var _this = this;
-    //   return {
-    //     responsive: true,
-    //     maintainAspectRatio: false,
-    //     plugins: {
-    //       legend: {
-    //         display: this.settings.tile.legend,
-    //         labels: {
-    //           color: "#495057",
-    //         },
-    //       },
-    //     },
-    //     elements: { point: { radius: 1 }, line: { borderWidth: 1 } },
-    //     tooltips: {
-    //       // callbacks: {
-    //       //   label: function (context, data) {
-    //       //     let dataset = data.datasets[context.datasetIndex]; //#['data'][context.index]
-    //       //     let value = dataset.data[context.index];
-    //       //     return "";
-    //       //   },
-    //       // },
-    //     },
-    //     scales: {
-    //       x: {
-    //         // type: "timeseries", //keep Equidistant  between points (labels are squished)
-    //         type: "time",
-    //       },
-    //       // y: {
-    //       //   fill: true,
-    //       // },
-    //     },
-    //   };
-    // },
     chartType: function () {
       return this.settings.tile.chartType ? this.settings.tile.chartType : "scatter";
     },
@@ -121,5 +84,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss"></style>
