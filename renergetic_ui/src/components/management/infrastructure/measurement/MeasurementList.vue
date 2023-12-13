@@ -192,7 +192,7 @@
   <Dialog v-model:visible="addDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
     <MeasurementForm @update="onCreate($event)" @cancel="addDialog = false" />
   </Dialog>
-  <Dialog v-model:visible="typeDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
+  <Dialog v-model:visible="typeDialog" class="ren-page-content" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
     <MeasurementTypeList />
   </Dialog>
   <Dialog v-model:visible="importMeasurementsDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
