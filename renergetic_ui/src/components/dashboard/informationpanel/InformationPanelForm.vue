@@ -107,6 +107,7 @@
                   :option-label="(opt) => $t(`model.panel_templates.${opt.name}`)"
                   :option-value="'template'"
                   :options="panelTemplates"
+                  @change="onTemplateSelect"
                 />
               </template>
             </ren-input-wrapper>
@@ -116,6 +117,7 @@
     </ren-input-wrapper>
     <ren-switch
       v-if="!mModel.is_template"
+      :key="inferMeasurements"
       v-model="inferMeasurements"
       :text-label="'view.infer_measurements'"
       :options="[
@@ -219,6 +221,9 @@ export default {
   },
   async mounted() {},
   methods: {
+    onTemplateSelect() {
+      this.inferMeasurements = true;
+    },
     submitStructure() {
       let submittedPanel = JSON.parse(this.mPanelStructureJSON);
       this.panelStructure = getCleanPanelStructure(submittedPanel);
@@ -233,7 +238,6 @@ export default {
       this.submittedPanelJSON = null;
     },
     async fileSubmit() {
-      console.error(this.submittedPanelJSON);
       let submittedPanel = JSON.parse(this.submittedPanelJSON);
       if (this.inferMeasurements) {
         this.panelStructure = await this.infer(submittedPanel);

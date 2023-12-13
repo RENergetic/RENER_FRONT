@@ -22,7 +22,7 @@ export default {
     return {
       isContent: !!this.$slots.content,
       // size: 0,
-      strokeWidth: 2,
+      strokeWidth: "2",
       counter: 0,
     };
   },
@@ -55,10 +55,10 @@ export default {
         //
         // console.info(this.$refs.spinnerContent.clientHeight);
         // console.info(this.$refs.spinnerContent.clientWidth);
-        this.strokeWidth = Math.min(8, Math.max(2, size / 150));
+        this.strokeWidth = Math.min(8, Math.max(2, size / 150)) + "";
         // console.info(size + " " + this.strokeWidth);
       } catch (Exception) {
-        this.strokeWidth = 2;
+        this.strokeWidth = "2";
       }
     },
     async sleep(timeMillis) {

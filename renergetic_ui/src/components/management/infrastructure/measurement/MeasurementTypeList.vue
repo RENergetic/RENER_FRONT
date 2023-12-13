@@ -5,17 +5,24 @@
       <!-- some info -->
     </template>
   </InfoIcon>
-  <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 100%">
+  <RenSpinner ref="spinner" :lock="true" style="min-width: 100%">
     <!--  max-width: 80vw -->
 
     <template #content>
-      <DataTable :value="typeList" scrollable scroll-height="70vh">
+      <!-- scrollable scroll-height="70vh" -->
+      <DataTable :value="typeList">
         <Column field="id" :header="$t('model.measurement_type.id')">
           <template #body="item">
             <span> ({{ item.data.id }}) {{ item.data.label ? `${item.data.label} (${item.data.name})` : item.data.name }}</span>
           </template>
         </Column>
-        <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.measurement_type.' + col)"></Column>
+        <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.measurement_type.' + col)">
+          <template v-if="col == 'color' || col == 'description'" #body="item">
+            <!-- {{ item }} -->
+            <ren-input v-model="item.data[col]" :inline="true" @submit="(evt) => updateType(item.data, col, evt)" />
+          </template>
+          <template v-else #body="item">{{ item.data[col] }}</template>
+        </Column>
 
         <Column field="dashboard_visibility" :header="$t('model.measurement_type.dashboardVisibility')" :show-filter-menu="false">
           <template #body="item">
@@ -63,6 +70,15 @@ export default {
       });
       // console.info(selectedPanel);
       // console.info(state);
+    },
+    async updateType(type, key, value) {
+      //updateMeasurementType
+      if (type[key] + "" != value + "") {
+        type[key] = value;
+        await this.$ren.managementApi.updateMeasurementType(type).then((resp) => {
+          type[key] = resp[key];
+        });
+      }
     },
     async loadData() {
       await this.$refs.spinner.run(async () => {
