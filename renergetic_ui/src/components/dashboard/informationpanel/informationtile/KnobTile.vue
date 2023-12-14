@@ -119,11 +119,10 @@ export default {
         }
         if (v > this.maxV) {
           console.warn(`knob: value overflow ${v}, max: ${this.maxV}`);
-          return this.maxV;
-        }
-        if (v < this.minV) {
+          v = this.maxV;
+        } else if (v < this.minV) {
           console.warn(`knob: wrong value  ${v}, min: ${this.minV}`);
-          return this.maxV;
+          v = this.maxV;
         }
         return this.$ren.utils.roundValue(v); // Math.round(v * 10) / 10.0;
       } catch (e) {

@@ -213,7 +213,7 @@ export default class ManagementApi extends RestComponent {
     return await this.get(`/api/measurements`, { name: q, offset: offset, limit: limit }, null, null);
   }
   async listMeasurementType() {
-    return this.get(`/api/measurements/type`);
+    return this.get(`/api/measurements/type`, { limit: 1000 });
   }
   async updateMeasurementType(type) {
     return this.put(`/api/measurements/type/${type.id}`, type);
