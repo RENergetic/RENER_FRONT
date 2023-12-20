@@ -134,7 +134,6 @@ export default {
   methods: {
     reloadSettings() {
       this.filter = this.$store.getters["settings/parsedFilter"]("measurement");
-      // this.settings = this.$store.getters["settings/panel"];
       // this.conversionSettings = this.$store.getters["settings/conversion"];
     },
     async manageTags() {

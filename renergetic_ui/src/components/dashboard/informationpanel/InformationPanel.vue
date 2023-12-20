@@ -10,7 +10,7 @@
       :slot-props="{ tile: tile, index: index }"
       :edit="edit"
       :pdata="mPData"
-      :settings="mSettings"
+      :panel-settings="mSettings"
       :filter="filter"
       @edit="$emit('editTile', { tile: tile, index: index })"
       @preview-tile="onPreview"

@@ -1,5 +1,8 @@
 export default {
   computed: {
+    unitLabel: function () {
+      return this.$ren.utils.unitLabel(this.measurement, this.settings.panel, this.conversionSettings);
+    },
     tvMode: function () {
       return this.$route.meta.tvMode ? true : false;
     },

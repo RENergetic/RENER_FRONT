@@ -7,9 +7,10 @@
     </div>
     <div v-else class="flex flex-none flex-column align-items-center justify-content-center">
       <span
-        ><h3 id="label" :style="color">{{ mSettings.tile.label ? mSettings.tile.label : measurementlabel }} {{ unitTitle }}</h3></span
+        ><h3 id="label" :style="color">{{ mSettings.tile.label ? mSettings.tile.label : measurementlabel }} {{ unitLabel }}</h3></span
       >
     </div>
+
     <Knob
       v-if="valuetemplate"
       id="knob_component"
@@ -52,7 +53,7 @@ export default {
       measurement = this.tile.measurements[0];
     }
     let maxV =
-      this.settings.panel.relativeValues &&
+      !this.settings.panel.relativeValues &&
       this.pdata.max &&
       this.pdata.max[measurement.aggregation_function] &&
       this.pdata.max[measurement.aggregation_function][measurement.id]
@@ -60,29 +61,28 @@ export default {
         : this.defaultMax(measurement);
 
     let minV =
-      this.settings.panel.relativeValues &&
+      !this.settings.panel.relativeValues &&
       this.pdata.min &&
       this.pdata.min[measurement.aggregation_function] &&
       this.pdata.min[measurement.aggregation_function][measurement.id]
         ? this.pdata.min[measurement.aggregation_function][measurement.id]
         : 0.0;
     let unit = this.$ren.utils.getUnit(measurement, this.settings.panel, this.conversionSettings);
+
+    // alert(unit);
     return {
+      unit: unit,
       mSettings: this.settings,
       measurement: measurement,
       maxV: maxV,
       minV: minV,
-      valuetemplate: unit && unit != "any" ? "{value}[" + unit + "]" : "{value}",
+      valuetemplate: unit != null ? "{value}" + unit : "{value}",
     };
   },
   computed: {
-    unit: function () {
-      return this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings);
-    },
-    unitTitle: function () {
-      let u = this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings);
-      return u ? `[${u}]` : "";
-    },
+    // unit: function () {
+    //   return this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings);
+    // },
     color: function () {
       let color = this.$ren.utils.measurementColor(this.measurement, this.value);
       return color.color;

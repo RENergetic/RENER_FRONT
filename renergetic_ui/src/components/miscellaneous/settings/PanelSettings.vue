@@ -73,8 +73,8 @@ export default {
           key: "relativeValues",
         },
         {
-          label: this.$t("settings.group_by_domain"),
-          description: this.$t("settings.group_by_domain_description"),
+          label: this.$t("settings.agg_by_domain"),
+          description: this.$t("settings.agg_by_domain_description"),
           ext: {
             true: this.$t("settings.enabled"),
             false: this.$t("settings.disabled"),
@@ -83,8 +83,8 @@ export default {
           key: "groupByDomain",
         },
         {
-          label: this.$t("settings.group_by_measurement"),
-          description: this.$t("settings.group_by_measurement_description"),
+          label: this.$t("settings.agg_by_measurement"),
+          description: this.$t("settings.agg_by_measurement_description"),
           ext: {
             true: this.$t("settings.enabled"),
             false: this.$t("settings.disabled"),
@@ -93,8 +93,8 @@ export default {
           key: "groupByMeasurement",
         },
         {
-          label: this.$t("settings.group_by_direction"),
-          description: this.$t("settings.group_by_direction_description"),
+          label: this.$t("settings.agg_by_direction"),
+          description: this.$t("settings.agg_by_direction_description"),
           ext: {
             true: this.$t("settings.enabled"),
             false: this.$t("settings.disabled"),

@@ -85,21 +85,19 @@ export default {
     },
 
     value: function () {
-      //todo support other aggregation functions
-      try {
-        if (this.mSettings.panel.relativeValues && this.measurement.type.base_unit != "%") {
-          return (
-            (this.pdata.current[this.measurement.aggregation_function][this.measurement.id] /
-              this.pdata.max[this.measurement.aggregation_function][this.measurement.id]) *
-            100.0
-          );
-        }
-        return this.pdata.current[this.measurement.aggregation_function][this.measurement.id];
-      } catch (e) {
-        return null;
-      }
-      // this.pdata.current.last[m.id];
-      // return this.pdata ? this.pdata[this.tileItem.id] : null;
+      return this.$ren.utils.getConvertedValue(this.measurement, this.pdata, this.mSettings);
+      // try {
+      //   if (this.mSettings.panel.relativeValues && this.measurement.type.base_unit != "%") {
+      //     return (
+      //       (.current[this.measurement.aggregation_function][this.measurement.id] /
+      //         this.pdata.max[this.measurement.aggregation_function][this.measurement.id]) *
+      //       100.0
+      //     );
+      //   }
+      //   return this.pdata.current[this.measurement.aggregation_function][this.measurement.id];
+      // } catch (e) {
+      //   return null;
+      // }
     },
     assetStr: function () {
       let m = this.measurement;
