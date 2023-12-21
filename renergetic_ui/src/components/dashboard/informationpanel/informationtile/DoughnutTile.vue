@@ -3,7 +3,7 @@
   <div class="flex flex-column justify-content-center" style="height: 100%">
     <!-- <div style="display: flex; flex-direction: column; align-items: flex-end"> -->
     <div class="flex flex-none flex-column justify-content-center">
-      <h2 style="text-align: center">{{ mSettings.tile.label }}</h2>
+      <h3 style="text-align: center">{{ mSettings.tile.label }}</h3>
       <!-- v-if="legend"-->
     </div>
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
@@ -37,12 +37,13 @@ export default {
   data() {
     return {
       mSettings: this.settings,
-      mStyle: "max-width: 30rem; margin: auto",
+      mStyle: "max-width: 25rem; margin: auto",
       options: {
         responsive: true,
         plugins: {
           legend: {
-            display: this.settings.tile.legend ? this.settings.tile.legend : false,
+            // position: "chartArea",
+            display: false, //this.settings.tile.legend ? this.settings.tile.legend : false,
             labels: {
               // color: "#495057",
               color: this.settings.tile.color,
@@ -57,12 +58,12 @@ export default {
       if (!(this.pdata && this.pdata.current)) {
         return {};
       }
-      let labels = this.tile.measurements.map((m) => m.label);
+      let labels = this.tile.measurements.map((m) => (m.label ? m.label : m.name));
 
       // let data = this.tile.measurements.map((m) => this.pdata[m.id]);
       //TODO: make it comfigurable in tile / args prediction & aggregation func
       let data = null;
-      let backgroundColor = this.tile.measurements.map((m) => (m.measurement_details.color ? m.measurement_details.color : "#90A4AE"));
+      let backgroundColor = this.tile.measurements.map((m) => this.$ren.utils.measurementColor(m).color);
       if (!this.mSettings.panel.relativeValues) {
         data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
       } else {
@@ -78,7 +79,7 @@ export default {
         // console.info(1.0 - sum);
         // console.info(sum);
         data.push(1.0 - sum);
-        backgroundColor.push(backgroundColor);
+        backgroundColor.push("#90A4AE");
         labels.push("");
       }
       return {
@@ -95,7 +96,10 @@ export default {
   },
 
   mounted() {
-    this.mStyle = `max-width: 30rem; margin: auto;width:${this.settings.panel.cellWidth * this.tile.layout.w * 0.7}px`;
+    let minD = this.tileContentSize1D();
+    // var size = this.mSettings.tile.measurement_list ? 0.5 : 0.7;
+    // let minD = Math.min(this.settings.panel.cellWidth * this.tile.layout.w, this.settings.panel.cellHeight * this.tile.layout.h);
+    this.mStyle = `max-width: 25rem; margin: auto;width:${minD * 0.7}px`;
   },
   methods: {},
 };

@@ -67,7 +67,7 @@ export default {
   validations() {
     return {
       mModel: {
-        key: { maxLength: maxLength(30), required: required, minLength: minLength(3) },
+        key: { maxLength: maxLength(30), required: required, minLength: minLength(2) },
         value: { maxLength: maxLength(30), required: required, minLength: minLength(2) },
       },
     };

@@ -1,28 +1,28 @@
 <template>
   <!-- todo:  confirm buttons -->
-  <!-- {{ panelList }} -->
 
   <DataTable :key="headers" :value="panelList">
     <!-- <Column v-for="h of headers" :key="h" :field="h" :header="$t('model.information_panel.' + h)"></Column> -->
-    <Column field="id" :header="$t('model.panel.id')" :show-filter-menu="false"> </Column>
-    <Column field="name" :header="$t('model.panel.name')" :show-filter-menu="false">
+
+    <Column field="id" :header="$t('model.information_panel.id')" :show-filter-menu="false"> </Column>
+    <Column field="name" :header="$t('model.information_panel.name')" :show-filter-menu="false">
       <template #filter="{ filterModel, filterCallback }">
         <InputText v-model="filterModel.value" type="text" class="p-column-filter" :placeholder="$t('view.search')" @input="filterCallback()" />
       </template>
     </Column>
-    <Column field="label" :header="$t('model.panel.label')" :show-filter-menu="false">
+    <Column field="label" :header="$t('model.information_panel.label')" :show-filter-menu="false">
       <template #filter="{ filterModel, filterCallback }">
         <InputText v-model="filterModel.value" type="text" class="p-column-filter" :placeholder="$t('view.search')" @input="filterCallback()" />
       </template>
     </Column>
-    <Column field="featured" :header="$t('model.panel.featured')" :show-filter-menu="false">
+    <Column field="featured" :header="$t('model.information_panel.featured')" :show-filter-menu="false">
       <template #body="item">
         <i v-if="item.data.featured" class="pi pi-eye" style="font-size: 1.5rem" @click="setFeatured(item.data, false)" />
         <i v-else class="pi pi-eye-slash" style="font-size: 1.5rem" @click="setFeatured(item.data, true)" />
       </template>
     </Column>
 
-    <Column field="is_template" :header="$t('model.panel.is_template')" :show-filter-menu="false">
+    <Column field="is_template" :header="$t('model.information_panel.is_template')" :show-filter-menu="false">
       <template #body="item">
         <div style="height: 100%; width: 100%">
           <i v-if="item.data.is_template" class="pi pi-bookmark-fill" style="font-size: 1.5rem" />
@@ -65,16 +65,15 @@
       </template>
     </Column>
   </DataTable>
-  <Toolbar>
+  <ren-paginator v-model:offset="mOffset" style="left: 0" sticky :limit="limit" :current-rows="panelList.length" @update="onPagination" />
+  <Toolbar class="ren-toolbar ren-sticky">
     <template #end><Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="panelAdd = true" /> </template>
   </Toolbar>
-
-  <RenSpinner ref="spinner"> </RenSpinner>
+  <RenSpinner ref="spinner" />
   <RenSpinner ref="assetSpinner" :lock="true" style="margin: auto; max-width: 95%">
     <template #content>
       <Dialog v-model:visible="assetManagementDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
         <div v-if="selectedAsset">
-          <!-- <ren-input-wrapper :text-label="`${selectedAsset.label}(${selectedAsset.name})`"> -->
           <div class="ren">
             <ren-input-wrapper :text-label="null">
               <template #content>
@@ -93,7 +92,6 @@
               </template>
             </ren-input-wrapper>
           </div>
-          <!-- {{ selectedAsset }} -->
         </div>
         <asset-list :basic="true" :asset-list="assetList" hidden-filters="true" @on-select="(evt) => (selectedAsset = evt)" />
         <div>
@@ -103,16 +101,29 @@
               <Button :label="$t('view.select_asset')" @click="$refs.assetSelectDialog.open()" />
             </template>
           </ren-input-wrapper>
-          <!-- {{ selectedAsset }} -->
         </div>
       </Dialog>
     </template>
   </RenSpinner>
   <AssetSelectDialog ref="assetSelectDialog" @submit="onAssetSelect" />
-  <Dialog v-model:visible="panelAdd" :style="{ width: '75vw', height: '95vh' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+  <Dialog
+    v-model:visible="panelAdd"
+    :closable="false"
+    :style="{ width: '90vw', height: '100vh', maxHeight: '100%', paddingTop: '1rem' }"
+    :modal="true"
+    :dismissable-mask="true"
+    :show-header="false"
+  >
     <InformationPanelForm @update:model-value="onCreate($event, 0)" @cancel="panelAdd = false"> </InformationPanelForm>
   </Dialog>
-  <Dialog v-model:visible="panelEdit" :style="{ width: '75vw', height: '95vh' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+  <Dialog
+    v-model:visible="panelEdit"
+    :closable="false"
+    :style="{ width: '90vw', height: '100vh', maxHeight: '100%', paddingTop: '1rem' }"
+    :modal="true"
+    :dismissable-mask="true"
+    :show-header="false"
+  >
     <InformationPanelForm :model-value="editedPanel" @update:model-value="onEdit($event, 0)" @cancel="panelEdit = false" />
   </Dialog>
 </template>
@@ -136,12 +147,12 @@ export default {
     page: { type: Number, default: 0 },
     offset: { type: Number, default: 0 },
   },
-  emits: ["update:filters", "reload", "update:page"],
+  emits: ["update:filters", "reload"],
   data() {
     return {
       headers: [],
       panelEdit: false,
-      mPage: this.page,
+      limit: 15,
       mOffset: this.offset,
       mFilters: this.filters ? this.filters : initFilter(),
       selectedRow: null,
@@ -235,6 +246,9 @@ export default {
     reload() {
       this.$emit("reload");
     },
+    onPagination(ev) {
+      this.$emit("reload", ev);
+    },
     async deletePanel(panel) {
       await this.exportJSON(panel);
       await this.$refs.spinner.run(async () => {
@@ -265,12 +279,14 @@ export default {
       await this.$ren.dashboardApi.saveInformationPanel(o).then((panel) => {
         this.$emitter.emit("information", { message: this.$t("information.panel_update", [panel.id]) });
         this.reload();
+        this.panelAdd = false;
       });
     },
     async onEdit(o) {
       await this.$ren.dashboardApi.updateInformationPanel(o).then((panel) => {
         this.$emitter.emit("information", { message: this.$t("information.panel_update", [panel.id]) });
         this.reload();
+        this.panelEdit = false;
       });
     },
   },

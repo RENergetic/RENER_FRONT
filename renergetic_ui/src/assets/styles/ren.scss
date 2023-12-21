@@ -19,41 +19,50 @@ body {
     // background-color: lightgrey;
     // background: linear-gradient(to right, #232526, #414345);
     background: $ren-primary-bg;
-    border-color:$ren-primary-border-color;
-    color: $ren-primary-font-color ;
+    border-color: $ren-primary-border-color;
+    color: $ren-primary-font-color;
     margin: 0;
 }
-.p-component{
+.p-component {
     background: $ren-secondary-bg;
-    border-color:$ren-secondary-border-color;
-    color: $ren-secondary-font-color 
+    border-color: $ren-secondary-border-color;
+    color: $ren-secondary-font-color;
 }
-.p-card.p-component{    
+.p-card.p-component {
     background: $ren-secondary-bg;
 }
-.p-dialog-content .p-card.p-component{
+.p-dialog-content .p-card.p-component {
     //TODO: set some color
     background: #ffffff;
+    h3 {
+        color: $ren-secondary-font-color;
+    }
 }
-.p-datatable .p-datatable-footer{ padding: 0;} 
-.p-button,.p-selectbutton .p-button.p-highlight {
+.p-dialog h3 {
+    color: $ren-secondary-font-color;
+}
+.p-datatable .p-datatable-footer {
+    padding: 0;
+}
+.p-button,
+.p-selectbutton .p-button.p-highlight {
     background-color: $ren-primary-color;
-    background: $ren-primary-color; 
+    background: $ren-primary-color;
     border-color: $ren-primary-color;
-    color: $ren-primary-font-color ;
+    color: $ren-primary-font-color;
     min-height: 2.5rem;
-} 
+}
 
 .p-inputnumber-button {
     background-color: $ren-primary-color;
-    background: $ren-primary-color; 
+    background: $ren-primary-color;
     border-color: $ren-primary-color;
-    color: $ren-primary-font-color ;
+    color: $ren-primary-font-color;
     min-height: 1.1rem;
-} 
+}
 
-.p-selectbutton.p-buttonset.p-component{
-background: none; /*remove background for empty space*/
+.p-selectbutton.p-buttonset.p-component {
+    background: none; /*remove background for empty space*/
 }
 .p-button:hover {
     background-color: $ren-primary-color-tr !important;
@@ -61,7 +70,6 @@ background: none; /*remove background for empty space*/
 .p-button.p-button-text {
     color: $ren-primary-color;
 }
-
 
 .ren-pointer {
     cursor: pointer;
@@ -73,9 +81,13 @@ background: none; /*remove background for empty space*/
     opacity: 0.6;
 }
 .ren {
+    .ren-label {
+        min-width: 15rem;
+    }
     .tile {
         margin: 0.15rem;
     }
+
     .p-inputtext {
         width: $inputwidth;
         max-width: $maxInputwidth;
@@ -84,15 +96,24 @@ background: none; /*remove background for empty space*/
         width: $inputwidth;
         max-width: $maxInputwidth;
     }
+    .ren-inputwrapper {
+        .p-slider-horizontal {
+            width: $inputwidth;
+            max-width: $maxInputwidth;
+        }
+    }
+    .ren-inputwrapper > * {
+        width: $inputwidth;
+        max-width: $maxInputwidth;
+    }
 
     .p-inputwrapper {
         width: $inputwidth !important;
         max-width: $maxInputwidth;
     }
-    .p-inputtextarea {
-        max-width: initial;
-
-    }
+    // .p-inputtextarea {
+    //     max-width: initial;
+    // }
     td {
         margin: 0;
         padding: 0 !important;
@@ -137,6 +158,12 @@ background: none; /*remove background for empty space*/
         }
         background-color: rgba(255, 255, 0, 0.318);
     }
+    .hl-menu {
+        .p-panelmenu-header-content {
+            background-color: $ren-primary-color-tr;
+        }
+        background-color: $ren-primary-color-tr;
+    }
     .state.unknown,
     .cell.unknown,
     .cell-state.unknown {
@@ -162,7 +189,17 @@ background: none; /*remove background for empty space*/
         //     background-color: lightgray;
         // }
     }
+    .badge {
+        text-align: center;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 1.5rem;
+        margin-left: 0.25rem;
+        margin-right: 0.25rem;
+        display: inline-block;
+    }
 }
+
 .fullscr,
 .standard {
     max-width: 99.5vw;
@@ -177,9 +214,9 @@ background: none; /*remove background for empty space*/
     margin: 0;
     padding: 0;
     right: 0;
-    .ren-toolbar {
-        margin-left: ($sidemenu-button-width + 0.5rem);
-    }
+    // .ren-toolbar {
+    //     margin-left: ($sidemenu-button-width + 0.5rem);
+    // }
 }
 
 .fullscr-margin {
@@ -197,13 +234,53 @@ background: none; /*remove background for empty space*/
     margin: 0;
     padding: 0;
     right: 0;
-    .ren-toolbar {
-        margin-left: ($sidemenu-button-width + 0.5rem);
+    // .ren-toolbar {
+    //     margin-left: ($sidemenu-button-width + 0.5rem);
+    // }
+}
+.ren-page-content {
+    margin: 0.5% auto;
+    max-width: 95vw;
+    max-height: 98%;
+    padding-left: 0.5%;
+    padding-right: 0.5%;
+    overflow: auto;
+    .p-datatable {
+        width: max-content;
+    }
+    .p-datatable-header {
+        position: sticky;
+        top: 0;
+        padding: 0.5rem 0.5rem;
+        height: 4rem;
+        z-index: 4000;
+    }
+    .p-datatable-header {
+        position: initial;
+    }
+    .p-datatable-header ~ .p-datatable-wrapper .p-datatable-thead,
+    .p-datatable-thead {
+        position: sticky;
+        top: 0rem;
+        z-index: 4000;
+    }
+
+    .sticky-header {
+        .p-datatable-header {
+            position: sticky;
+            top: 0;
+            z-index: 4000;
+        }
+        .p-datatable-header ~ .p-datatable-wrapper .p-datatable-thead {
+            position: sticky;
+            top: 4rem;
+            z-index: 4000;
+        }
     }
 }
 .ren-sidebar.p-sidebar {
     padding: 0;
-    background-color: $secondary-color//seagreen;
+    background-color: $ren-secondary-color//seagreen;
 }
 .ren-sidebar {
     .p-sidebar {
@@ -268,7 +345,7 @@ background: none; /*remove background for empty space*/
         flex: 1;
         position: relative;
         display: block;
-        
+
         height: 80vh;
         width: 90vw;
         margin: auto;
@@ -299,31 +376,101 @@ background: none; /*remove background for empty space*/
 
 .ren.add-button {
     font-size: 2rem;
-    color: $primary-color;
+    color: $ren-primary-color;
     border-radius: 2rem;
 }
 .ren.add-button:hover {
     color: rgba(255, 255, 255, 0.5);
-    background: $primary-color;
+    background: $ren-primary-color;
     cursor: pointer;
 }
-.ren-card{
-    width: 90%; margin: auto; margin-top: 1rem
+.ren-card {
+    width: 90%;
+    margin: auto;
+    margin-top: 1rem;
 }
 .ren-control-bg {
     background: linear-gradient(to bottom, #190a05, #870000);
-    color: $secondary-color;
+    color: $ren-secondary-color;
 }
 #pagefooter {
-    background-color: $secondary-color;
+    background-color: $ren-secondary-color;
 }
 #panel-box {
     background: #232526; /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #232526, #414345); /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #232526, #414345); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  }
-  .active {
+    background: linear-gradient(
+        to right,
+        #232526,
+        #414345
+    ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.active {
     background-color: rgba(100, 225, 100, 0.5);
     border-radius: 100%;
     padding: 0.4rem;
-  }
+}
+.ren-page-content div,
+.standard div {
+    // box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    scrollbar-color: $ren-primary-color-tr $ren-primary-border-color-tr;
+    scrollbar-width: thin;
+}
+
+.ren-page-content div::-webkit-scrollbar,
+.standard div::-webkit-scrollbar {
+    width: 8px;
+    background: none;
+}
+.ren-page-content div::-webkit-scrollbar-thumb,
+.standard div::-webkit-scrollbar-thumb {
+    background: $ren-primary-color-tr;
+}
+.ren-page-content div::-webkit-scrollbar-track:hover,
+.standard div::-webkit-scrollbar-track:hover,
+.ren-page-content div::-webkit-scrollbar:hover,
+.standard div::-webkit-scrollbar:hover {
+    background: $ren-primary-border-color-tr;
+}
+
+.p-dialog div,
+.p-sidebar-content {
+    // box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    scrollbar-color: $ren-primary-color-tr $ren-secondary-border-color-tr;
+    scrollbar-width: thin;
+}
+.p-dialog div::-webkit-scrollbar,
+.p-sidebar-content::-webkit-scrollbar {
+    width: 8px;
+    background: none;
+}
+.p-dialog div::-webkit-scrollbar-thumb,
+.p-sidebar-content::-webkit-scrollbar-thumb {
+    background: $ren-primary-color-tr;
+}
+.p-dialog div::-webkit-scrollbar-track:hover,
+.p-sidebar-content::-webkit-scrollbar-track:hover,
+.p-dialog div::-webkit-scrollbar:hover,
+.p-sidebar-content::-webkit-scrollbar:hover {
+    background: $ren-secondary-border-color-tr;
+}
+
+.ren-sticky {
+    left: 1rem;
+    position: sticky;
+    width: max-content;
+    bottom: 0rem;
+    // background: none;
+}
+.ren-sticky.ren-toolbar {
+    position: relative;
+    width: 100%;
+    .p-toolbar-group-left {
+        left: 1rem;
+        position: sticky;
+    }
+    .p-toolbar-group-right {
+        right: 1rem;
+        position: sticky;
+    }
+}

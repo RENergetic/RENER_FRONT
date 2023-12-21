@@ -22,6 +22,16 @@
           "description": "Description",
           "id": "Id"
      },
+     "hdrrequest": {
+          "date_from": "Date from",
+          "date_to": "To",
+          "interval_length": "Request length [min]",
+          "physical_type": "Value's physical type",
+          "unit": "Unit",
+          "change_or_limit": "Request's value relative change/limit",
+          "max_value": "Value's max",
+          "delta_value": "Value's relative change"
+     },
      "asset_connection": {
           "connected_asset": "Connected asset",
           "connection_type": "Connection type",
@@ -44,7 +54,7 @@
           "type": {
                "room": "Room",
                "pv": "PV",
-               "pv_plant":"PV",
+               "pv_plant": "PV",
                "bulding": "Bulding",
                "flat": "Flat",
                "heat_exchange": "Heat exchanger",
@@ -71,7 +81,23 @@
      "information_panel": {
           "id": "Id",
           "label": "Label",
-          "name": "Name"
+          "name": "Name",
+          "tiles": "Tiles",
+          "featured": "Visibility",
+          "is_template": "Is template",
+          "is_template_new_panel": "Is panel a template for private dashboards view (Can't be changed later)",
+          "structure": "Structure",
+          "priority": "Priority",
+          "tile": {
+               "name": "Name",
+               "label": "Label",
+               "type": "Type",
+               "props": "Properties",
+               "x": "x",
+               "y": "y",
+               "h": "h",
+               "w": "w"
+          }
      },
      "measurement_type": {
           "id": "ID",
@@ -119,15 +145,6 @@
           "physical_name": "Physical name",
           "asset": "Asset"
      },
-     "panel": {
-          "id": "Id",
-          "name": "Name",
-          "label": "Label",
-          "featured": "Visibility",
-          "is_template": "Is template",
-          "is_template_new_panel": "Is panel a template for private dashboards view (Can't be changed later)",
-          "structure": "Structure"
-     },
      "user": {
           "login": "Login",
           "password": "Password",
@@ -155,5 +172,9 @@
           "no_dashboard": "undefined",
           "measurement": "Measurement",
           "message": "Message"
+     },
+     "panel_templates": {
+          "kpi_electricity": "Electricity KPI ",
+          "kpi_heat": "Heat KPI"
      }
 }

@@ -233,7 +233,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 #demand-list {
   width: 50rem;
   max-width: 95vw;

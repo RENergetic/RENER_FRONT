@@ -1,45 +1,33 @@
 <template>
-  <div class="flex flex-column justify-content-center" :style="tileStyle">
-    <!-- <div
-      v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
-      id="tileicon"
-      class="flex flex-none flex-column align-items-center justify-content-center"
-    > 
-    <Knob v-model="value" class="flex-grow-1 flex" :style="{ textAlign: 'center', maxHeight: '80%' }" :min="minV" :max="maxV" />  
-    </div> -->
-
+  <div v-if="measurement" class="flex flex-column justify-content-center" :style="tileStyle">
     <div v-if="mSettings.tile.template" class="flex flex-none flex-column align-items-center justify-content-center">
-      <span id="value" :style="color">
+      <h3 id="value" :style="color">
         {{ $t(`tile_templates.${tile.name}`, { value: `${$ren.utils.roundValue(value)} ${unit} ` }) }}
-      </span>
+      </h3>
     </div>
     <div v-else class="flex flex-none flex-column align-items-center justify-content-center">
-      <span id="label" :style="color"> {{ mSettings.tile.label ? mSettings.tile.label : measurementlabel }} {{ unitTitle }} </span>
+      <span
+        ><h3 id="label" :style="color">{{ mSettings.tile.label ? mSettings.tile.label : measurementlabel }} {{ unitTitle }}</h3></span
+      >
     </div>
-    <!-- {{ valuetemplate }}{{ value }} -->
-    <!-- :value-template="valuetemplate" -->
     <Knob
       v-if="valuetemplate"
       id="knob_component"
       v-model="value"
-      :value-color="color"
       range-color="#e9e8e8"
-      :text-color="color"
-      class="flex flex-none flex-column align-items-center justify-content-center"
-      :style="{ textAlign: 'center', maxHeight: '80%', color: 'red' }"
       :min="minV"
+      :text-color="color"
+      :value-color="color"
+      :value-template="valuetemplate"
       :max="maxV"
-      size="1000"
       :stroke-width="strokeWidth"
+      class="flex flex-none flex-column align-items-center justify-content-center"
+      :style="{ textAlign: 'center', maxHeight: '80%' }"
+      :size="1000"
     />
   </div>
 
-  <!-- <div class="knob-component">
-    <Knob v-model="value" class="flex-grow-1 flex" :style="{ textAlign: 'center', maxHeight: '80%' }" :min="minV" :max="maxV" />
-    <div class="flex-none flex" style="text-align: center">
-      <div v-if="measurement" id="label">{{ mSettings.tile.label }}</div>
-    </div>
-  </div> -->
+  <div v-else>{{ $t("view.no_panel_measurements") }}</div>
 </template>
 <script>
 import Knob from "primevue/knob";
@@ -99,8 +87,12 @@ export default {
       let color = this.$ren.utils.measurementColor(this.measurement, this.value);
       return color.color;
     },
+
     tileStyle: function () {
-      let color = this.$ren.utils.measurementBackgroundColor(this.measurement, this.settings.tile, this.value);
+      let color = this.mSettings.tile.measurement_background
+        ? this.$ren.utils.measurementBackgroundColor(this.measurement, this.mSettings.tile, this.value)
+        : "none";
+      // let color = this.$ren.utils.measurementBackgroundColor(this.measurement, this.settings.tile, this.value);
       return `height: 100%;background:${color} `;
     },
     measurementlabel: function () {

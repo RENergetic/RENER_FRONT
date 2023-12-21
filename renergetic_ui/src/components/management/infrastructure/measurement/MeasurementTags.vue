@@ -19,7 +19,7 @@
 
     <div class="flex justify-content-between flex-wrap">
       <div class="flex justify-content-start">
-        <Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="addTagForm()" />
+        <Button :label="$t('view.button.add_new_tag')" icon="pi pi-plus-circle" @click="addTagForm()" />
       </div>
       <div class="flex justify-content-end">
         <Button :label="$t('view.button.manage_tags')" icon="pi pi-list" @click="manageTags()" />
@@ -35,7 +35,7 @@
   <Dialog v-model:visible="tagListDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <!-- {{ availableTags }}
     {{ availableTagsValues }} -->
-    <TagManagement @onDelete="tagOnDelete" />
+    <TagManagement @on-delete="tagOnDelete" />
   </Dialog>
 </template>
 

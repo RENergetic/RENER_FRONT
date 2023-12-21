@@ -195,11 +195,14 @@ export default class ManagementApi extends RestComponent {
   ////                                                   /////
   ////////////////////////////////////////////////////////////
 
-  async listMeasurement(params = undefined, offset = 0, limit = 200) {
+  async listMeasurement({ params = undefined, offset = 0, limit = 200 }) {
     if (!params) {
       params = {};
     }
     return this.get(`/api/measurements/report`, { ...params, offset: offset, limit: limit });
+  }
+  async listTagMeasurements(tagKey, tagValue) {
+    return this.get(`/api/measurements/key/${tagKey}/value/${tagValue}`);
   }
 
   async searchMeasurement(q, assetId, offset = 0, limit = 20) {
@@ -211,6 +214,9 @@ export default class ManagementApi extends RestComponent {
   }
   async listMeasurementType() {
     return this.get(`/api/measurements/type`);
+  }
+  async updateMeasurementType(type) {
+    return this.put(`/api/measurements/type/${type.id}`, type);
   }
   async setMeasurementTypeVisibility(id, visibility) {
     if (visibility) return this.post(`/api/measurements/type/${id}/dashboard/true`);
@@ -238,9 +244,19 @@ export default class ManagementApi extends RestComponent {
   async getMeasurementTags(id) {
     return this.get(`/api/measurements/${id}/tags`);
   }
+  async duplicateMeasurement(id) {
+    return this.post(`/api/measurements/id/${id}/copy`);
+  }
   async listTags() {
     return this.get(`/api/measurements/tags`);
   }
+  async listTagKeys() {
+    return this.get(`/api/measurements/tags/key`);
+  }
+  async listTagValues(tagKey) {
+    return this.get(`/tags/key/${tagKey}/values`);
+  }
+
   async createNewTag(tag) {
     // return this.put(`/api/measurements/tags/key/${tag.key}/value/${tag.value}`);
     return this.post(`/api/measurements/tags`, tag);
@@ -341,6 +357,13 @@ export default class ManagementApi extends RestComponent {
   async addMeasurement(measurement) {
     // if (measurement.type != undefined) measurement.type = measurement.type.id;
     return await this.post(`/api/measurements`, measurement);
+    // .catch(function (error) {
+    //   console.error("add measurement error" + error.message);
+    // });
+  }
+  async addMeasurements(measurements) {
+    // if (measurement.type != undefined) measurement.type = measurement.type.id;
+    return await this.post(`/api/measurements/batch`, measurements);
     // .catch(function (error) {
     //   console.error("add measurement error" + error.message);
     // });

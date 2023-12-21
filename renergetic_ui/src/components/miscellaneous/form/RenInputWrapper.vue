@@ -1,12 +1,15 @@
 <template>
   <div class="field grid">
-    <label v-if="textLabel" for="ren-input" class="col-12 mb-2 md:col-2 md:mb-0">
+    <label v-if="textLabel" for="ren-input" class="col-12 mb-2 md:col-2 md:mb-0 ren-label">
       <div v-if="$te(textLabel)">
         {{ $t(textLabel) }}
       </div>
       <div v-else>{{ textLabel }}</div>
     </label>
-    <div class="col-12 md:col-10">
+    <div v-if="!textLabel" class="col-12 ren-inputwrapper" :style="wrapperStyle">
+      <slot id="ren-input" name="content" />
+    </div>
+    <div v-else class="col-12 md:col-10 ren-inputwrapper" :style="wrapperStyle">
       <slot id="ren-input" name="content" />
     </div>
     <span v-if="invalid">
@@ -19,12 +22,15 @@
 
 <script>
 export default {
+  //ren-input-wrapper
   name: "RenInputWrapper",
   props: {
     invalid: { type: Boolean, default: false },
     // //vuelidate errors
     errors: { type: Object, default: () => {} },
     textLabel: { type: String, default: null },
+    wrapperStyle: { type: String, default: "" },
+
     // modelValue: { type: Object, default: null },
     // disabled: { type: Boolean, default: false },
   },

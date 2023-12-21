@@ -54,8 +54,8 @@ export default {
 }
 
 .cell-state-0 {
-  background-color: $secondary-color;
-  color: $secondary-color;
+  background-color: $ren-secondary-color;
+  color: $ren-secondary-color;
   display: flex;
   height: 100%;
 }

@@ -5,7 +5,7 @@
     </template>
     <template #content>
       <div class="ren">
-        <div class="field grid">
+        <!-- <div class="field grid">
           <label for="firstName" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.firstname") }} </label>
           <div class="col-12 md:col-10"><InputText id="firstName" v-model="mUser.firstName" :disabled="!mEdit" /></div>
           <span v-if="v$.mUser.firstName.$invalid">
@@ -13,9 +13,9 @@
               <small class="p-error">{{ error.$message }}</small>
             </span>
           </span>
-        </div>
+        </div> -->
         <ren-input
-          v-model="mUser.firstname"
+          v-model="mUser.firstName"
           :text-label="'model.user.firstname'"
           :invalid="v$.mUser.firstName.$invalid"
           :errors="v$.mUser.firstName.$silentErrors"
@@ -33,7 +33,7 @@
           :text-label="'model.user.email'"
           :invalid="v$.mUser.email.$invalid"
           :errors="v$.mUser.email.$silentErrors"
-          :disabled="!mEdit"
+          :disabled="true"
         />
         <ren-password
           v-if="mEdit"

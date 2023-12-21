@@ -18,6 +18,8 @@
       <Button v-tooltip="$t('view.view_data')" icon="pi pi-chart-line" class="p-button-rounded" @click="showData()" />
 
       <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="edit()" />
+      <Button v-tooltip="$t('view.copy')" icon="pi pi-copy" class="p-button-rounded" @click="copy()" />
+
       <Button v-tooltip="$t('view.delete')" icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteConfirm()" />
     </div>
     <div class="col-12 md:col-10 xl:col-6">
@@ -29,6 +31,12 @@
       </div>
       <div class="col-12">
         <ren-input v-model="mMeasurement.panel_count" :text-label="'model.measurement.panel_count'" :disabled="true" />
+      </div>
+      <div class="col-12">
+        <h3>{{ $t("view.tags") }}:</h3>
+      </div>
+      <div v-for="tag in measurementTags" :key="tag.id" class="col-12">
+        <ren-input v-model="tag.value" :text-label="tag.key" :disabled="true" />
       </div>
     </div>
   </div>
@@ -55,8 +63,8 @@
         ref="chart"
         :filter="filter"
         :style="'margin:auto;max-width: 90%;'"
-        width="1200"
-        height="500"
+        :width="1200"
+        :height="500"
         :measurements="[mMeasurement]"
       />
       <BasicFilterSettings
@@ -110,6 +118,7 @@ export default {
       dataDialog: false,
       measurementDetailsDialog: false,
       filter: this.$store.getters["settings/parsedFilter"]("measurement"),
+      measurementTags: [],
     };
   },
   computed: {},
@@ -119,7 +128,9 @@ export default {
     //   // alert(value);
     // },
   },
-  mounted() {},
+  async mounted() {
+    this.measurementTags = await this.$ren.managementApi.getMeasurementTags(this.measurement.id);
+  },
   methods: {
     reloadSettings() {
       this.filter = this.$store.getters["settings/parsedFilter"]("measurement");
@@ -149,6 +160,14 @@ export default {
       });
 
       this.measurementDetailsDialog = true;
+    },
+
+    async copy() {
+      //todo: confirm?
+      await this.$ren.managementApi.duplicateMeasurement(this.mMeasurement.id).then((newM) => {
+        console.info(newM);
+        this.reload();
+      });
     },
 
     edit() {
@@ -184,16 +203,15 @@ export default {
 <style scoped lang="scss">
 button {
   margin: 0.5rem;
-  font-size: 1rem;
-  width: 3rem !important;
-  height: 3rem !important;
+  // width: 2.5rem !important;
+  // height: 2.5rem !important;
 }
-button span {
-  font-size: 1.5rem !important;
-}
+// button span {
+//   font-size: 1.25rem !important;
+// }
 </style>
 <style lang="scss">
-button span.pi {
-  font-size: 1.5rem !important;
-}
+// button span.pi {
+//   font-size: 1.25rem !important;
+// }
 </style>

@@ -13,6 +13,17 @@ var management = [
     component: () => import("../views/management/infrastructure/AssetListView.vue"),
   },
   {
+    path: "/management/hdr",
+    name: "HDRView",
+    props: {},
+    meta: {
+      isAuthenticated: true,
+      roles: ["ren-admin", "ren-technical-manager"],
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
+    },
+    component: () => import("../views/management/demand/HDRView.vue"),
+  },
+  {
     path: "/management/measurement",
     name: "MeasurementList",
     props: {},
@@ -24,15 +35,15 @@ var management = [
     component: () => import("../views/management/infrastructure/MeasurementListView.vue"),
   },
   {
-    path: "/management/category",
-    name: "CategoryList",
+    path: "/management/assetcategory",
+    name: "AssetCategoryList",
     props: {},
     meta: {
       isAuthenticated: true,
       roles: ["ren-admin", "ren-technical-manager"],
       roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
     },
-    component: () => import("../views/management/infrastructure/CategoryListView.vue"),
+    component: () => import("../views/management/infrastructure/AssetCategoryListView.vue"),
   },
   {
     path: "/management/notification",

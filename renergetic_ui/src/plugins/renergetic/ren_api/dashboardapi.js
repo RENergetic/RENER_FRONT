@@ -54,7 +54,7 @@ export default class DashboardApi extends RestComponent {
   ////                                                   /////
   ////////////////////////////////////////////////////////////
   // TEMPORAL CHANGES TO CONNECT WITH BACKEND
-  listInformationPanel(offset = 0, limit = 20) {
+  listInformationPanel(offset = 0, limit = 50) {
     return this.get(`/api/informationPanel`, { offset: offset, limit: limit });
   }
 
@@ -75,6 +75,9 @@ export default class DashboardApi extends RestComponent {
         return true;
       }
     });
+  }
+  async inferMeasurements(panel) {
+    return this.post(`/api/informationPanel/infermeasurements`, panel);
   }
 
   async updateInformationPanel(panel) {
@@ -97,10 +100,10 @@ export default class DashboardApi extends RestComponent {
   }
 
   async getInformationPanel(panelId) {
-    return this.get(`/api/informationPanel/${panelId}`);
+    return this.get(`/api/informationPanel/id/${panelId}`);
   }
   async deleteInformationPanel(panelId) {
-    return this.delete(`/api/informationPanel/${panelId}`);
+    return this.delete(`/api/informationPanel/id/${panelId}`);
   }
 
   async setFeatured(panelId, featured) {
