@@ -5,6 +5,8 @@
 
 <script>
 import { RenRoles } from "@/plugins/model/Enums";
+import { panelSchema } from "@/plugins/model/settings.js";
+
 import Settings from "./Settings.vue";
 export default {
   name: "PanelSettings",
@@ -54,106 +56,8 @@ export default {
       };
     },
     getSchema() {
-      var schema = [
-        {
-          label: this.$t("settings.panel_reload_time_ms"),
-          description: this.$t("settings.panel_reload_time_ms_description"),
-          type: Number,
-          defaultValue: 60000,
-          key: "refreshTime",
-        },
-        {
-          label: this.$t("settings.relative_values"),
-          description: this.$t("settings.relative_values_description"),
-          ext: {
-            true: this.$t("settings.enabled"),
-            false: this.$t("settings.disabled"),
-          },
-          type: Boolean,
-          key: "relativeValues",
-        },
-        {
-          label: this.$t("settings.agg_by_domain"),
-          description: this.$t("settings.agg_by_domain_description"),
-          ext: {
-            true: this.$t("settings.enabled"),
-            false: this.$t("settings.disabled"),
-          },
-          type: Boolean,
-          key: "groupByDomain",
-        },
-        {
-          label: this.$t("settings.agg_by_measurement"),
-          description: this.$t("settings.agg_by_measurement_description"),
-          ext: {
-            true: this.$t("settings.enabled"),
-            false: this.$t("settings.disabled"),
-          },
-          type: Boolean,
-          key: "groupByMeasurement",
-        },
-        {
-          label: this.$t("settings.agg_by_direction"),
-          description: this.$t("settings.agg_by_direction_description"),
-          ext: {
-            true: this.$t("settings.enabled"),
-            false: this.$t("settings.disabled"),
-          },
-          type: Boolean,
-          key: "groupByDirection",
-        },
-        {
-          label: this.$t("settings.tile_legend_visibility"),
-          description: this.$t("settings.tile_legend_visibility_description"),
-          ext: {
-            true: this.$t("settings.enabled"),
-            false: this.$t("settings.disabled"),
-          },
-          type: Boolean,
-          key: "legend",
-        },
-        {
-          label: this.$t("settings.request_demand"),
-          description: this.$t("settings.request_demand_description"),
-          ext: {
-            true: this.$t("settings.visible"),
-            false: this.$t("settings.hidden"),
-          },
-          type: Boolean,
-          key: "demandVisibility",
-        },
-        {
-          label: this.$t("settings.notification"),
-          ext: {
-            true: this.$t("settings.visible"),
-            false: this.$t("settings.hidden"),
-          },
-          type: Boolean,
-          key: "notificationVisibility",
-        },
-        // {
-        //   label: this.$t("settings.time_filter"),
-        //   ext: {
-        //     options: [
-        //       { id: "current_day", label: this.$t("settings.time_filters.current_day") },
-        //       { id: "current_month", label: this.$t("settings.time_filters.current_month") },
-        //       { id: "current_year", label: this.$t("settings.time_filters.current_year") },
-        //       { id: "previous_year", label: this.$t("settings.time_filters.previous_year") },
-        //     ],
-        //     optionLabel: "label",
-        //     optionValue: "id",
-        //   },
-        //   type: Array,
-        //   key: "selectedPanel",
-        // },
-        //TODO: font size?
-        // {
-        //   label: this.$t("settings.panel_font_size"),
-        //   type: Number,
-        //   key: "fontSize",
-        //   ext: { mode: "decimal" },
-        // },
-      ];
+      alert(JSON.stringify(panelSchema));
+      var schema = JSON.parse(JSON.stringify(panelSchema));
       let r = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
       if (r & this.$store.getters["auth/renRole"]) {
         schema.push({

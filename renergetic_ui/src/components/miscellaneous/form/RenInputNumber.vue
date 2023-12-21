@@ -2,7 +2,8 @@
   <div class="field grid">
     <label v-if="textLabel != null" for="ren-input-number" class="col-12 mb-2 md:col-2 md:mb-0 ren-label"> {{ $t(textLabel) }} </label>
     <div class="col-12 md:col-10">
-      <InputNumber id="ren-input-number" v-model="mValue" :use-grouping="false" :mode="inputMode" :show-buttons="showButtons" :min="min" :max="max" />
+      <!-- :mode="inputMode" -->
+      <InputNumber id="ren-input-number" v-model="mValue" :use-grouping="false" :show-buttons="showButtons" :min="min" :max="max" />
     </div>
 
     <span v-if="invalid">

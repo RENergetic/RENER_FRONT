@@ -32,6 +32,9 @@
             :errors="v$.mModel.priority.$silentErrors"
           />
         </AccordionTab>
+        <AccordionTab v-if="1 == 2" :header="$t('view.information_panel_props')">
+          <Settings :schema="schema" :settings="mModel.props"></Settings>
+        </AccordionTab>
         <!-- {{ modelValue }} -->
 
         <AccordionTab v-if="panelStructure && panelStructure.tiles != null" :header="$t('model.information_panel.tiles')">
@@ -146,25 +149,29 @@ function getCleanPanelStructure(panel /*, isTemplate*/) {
 import FileUpload from "primevue/fileupload";
 
 import InformationPanelTilesWrapper from "./InformationPanelTilesWrapper.vue";
+import { panelSchema } from "@/plugins/model/settings.js";
 import { useVuelidate } from "@vuelidate/core";
 import { maxLength, required, minLength, minValue, maxValue } from "@/plugins/validators.js";
 import InfoIcon from "../../miscellaneous/InfoIcon.vue";
+import Settings from "@/components/miscellaneous/settings/Settings.vue";
 const ASSET_TAG = "{asset}";
 export default {
   name: "InformationPanelForm",
-  components: { InfoIcon, FileUpload, InformationPanelTilesWrapper },
+  components: { InfoIcon, FileUpload, InformationPanelTilesWrapper, Settings },
   props: {
     modelValue: {
       type: Object,
-      default: () => ({ tiles: [] }),
+      default: () => ({ tiles: [], props: {} }),
     },
   },
   emits: ["update:modelValue", "cancel"],
   setup: () => ({ v$: useVuelidate() }),
   data() {
-    let mModel = this.modelValue ? this.modelValue : { tiles: [] };
+    let mModel = this.modelValue ? this.modelValue : { tiles: [], props: {} };
+    mModel.props = mModel.props ? mModel.props : {};
     let panelStructure = getCleanPanelStructure(mModel);
     return {
+      schema: panelSchema,
       inferMeasurements: false,
       mModel: mModel,
       addMode: this.modelValue == null || this.modelValue.name == null,
@@ -218,6 +225,12 @@ export default {
         this.labelWarning = null;
       }
     },
+    // mModel: {
+    //   handler: function () {
+    //     this;
+    //   },
+    //   deep: true,
+    // },
   },
   async mounted() {},
   methods: {
@@ -260,6 +273,7 @@ export default {
         }
         console.error(submittedPanel);
         submittedPanel = getCleanPanelStructure(submittedPanel);
+        this.mModel.props = submittedPanel.props ? submittedPanel.props : {};
         this.submittedPanelJSON = JSON.stringify(submittedPanel, null, "\t");
       }
       // await this._submit(event.files);
@@ -288,6 +302,7 @@ export default {
       // let panel = JSON.parse(this.mPanelStructureText);
 
       this.panelStructure.name = this.mModel.name;
+      this.panelStructure.props = { ...this.panelStructure.props, ...this.mModel.props };
       this.panelStructure.id = this.mModel.id;
       this.panelStructure.label = this.mModel.label ? this.mModel.label : this.panelStructure.label;
       this.mModel = this.panelStructure;

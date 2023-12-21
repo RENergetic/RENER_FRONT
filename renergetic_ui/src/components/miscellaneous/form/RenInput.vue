@@ -69,7 +69,7 @@ export default {
     errors: { type: Object, default: () => {} },
     textLabel: { type: String, default: null },
     textInfo: { type: String, default: null },
-    modelValue: { type: Object, default: null },
+    modelValue: { type: [String, Number], default: null }, //Object,
     disabled: { type: Boolean, default: false },
   },
   emits: ["update:modelValue", "submit"],

@@ -55,11 +55,19 @@ function validateSettings(settings, panel, ctx) {
           mSettings = panel.props;
           break;
         case "override":
-          mSettings = { ...mSettings, ...panel.props };
+          mSettings = { ...panel.props, ...mSettings };
           break;
         case "default":
+          mSettings = settings;
+          break;
         default:
-          mSettings = { ...panel.props, ...mSettings };
+          mSettings = { ...panel.props };
+
+          for (let k in settings) {
+            if (!(k in mSettings) || mSettings[k] == null) {
+              mSettings[k] = settings[k];
+            }
+          }
           break;
       }
   }
