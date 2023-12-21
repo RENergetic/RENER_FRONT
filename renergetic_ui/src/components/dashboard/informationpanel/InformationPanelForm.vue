@@ -13,6 +13,7 @@
           />
           <!-- :key="mModel ? mModel.label : ''" -->
           <ren-input
+            :key="mModel.label"
             v-model="mModel.label"
             :text-info="mModel.is_template ? $t('view.panel_label_info', ['{asset}']) : null"
             :text-label="'model.information_panel.label'"
@@ -32,7 +33,7 @@
             :errors="v$.mModel.priority.$silentErrors"
           />
         </AccordionTab>
-        <AccordionTab v-if="1 == 2" :header="$t('view.information_panel_props')">
+        <AccordionTab :key="mModel.props" :header="$t('view.information_panel_props')">
           <Settings :schema="schema" :settings="mModel.props"></Settings>
         </AccordionTab>
         <!-- {{ modelValue }} -->
@@ -237,12 +238,18 @@ export default {
     onTemplateSelect() {
       this.inferMeasurements = true;
     },
+    updateModel(submittedPanel) {
+      if (submittedPanel.label) this.mModel.label = submittedPanel.label;
+      if (submittedPanel.props) this.mModel.props = { ...this.mModel.props, ...submittedPanel.props };
+    },
     submitStructure() {
       let submittedPanel = JSON.parse(this.mPanelStructureJSON);
       this.panelStructure = getCleanPanelStructure(submittedPanel);
+      this.updateModel(this.panelStructure);
       this.refreshTiles = !this.refreshTiles;
     },
     onSelect() {
+      //on file select
       if (this.$refs.FileUpload !== undefined) this.hasFiles = this.$refs.FileUpload.files.length > 0;
       else this.hasFiles = false;
     },
@@ -257,12 +264,11 @@ export default {
       } else {
         this.panelStructure = getCleanPanelStructure(submittedPanel);
       }
+      this.updateModel(this.panelStructure);
       this.refreshTiles = !this.refreshTiles;
       this.importPanelDialog = false;
     },
     async onFileUpload(evt) {
-      // this.submittedPanel = null;
-      // console.info(evt.files);
       if (evt.files.length == 1) {
         let submittedPanel = await this.$ren.utils.readJSONFile(evt.files[0]);
         if (submittedPanel.name !== undefined) {
@@ -271,9 +277,10 @@ export default {
         if (submittedPanel.id !== undefined) {
           delete submittedPanel.id;
         }
-        console.error(submittedPanel);
+        // console.error(submittedPanel);
         submittedPanel = getCleanPanelStructure(submittedPanel);
-        this.mModel.props = submittedPanel.props ? submittedPanel.props : {};
+        this.updateModel(submittedPanel);
+
         this.submittedPanelJSON = JSON.stringify(submittedPanel, null, "\t");
       }
       // await this._submit(event.files);
@@ -286,25 +293,15 @@ export default {
         });
       }
       return getCleanPanelStructure(panel);
-
-      // let panel = JSON.parse(this.mPanelStructureText);
-      // panel.name = this.mModel.name;
-      // panel.id = this.mModel.id;
-      // panel.label = this.mModel.label ? this.mModel.label : this.panel.label;
-      // this.mModel = panel;
-      // this.$emit("update:modelValue", this.mModel);
     },
     submit() {
       if (this.mModel.label && !this.mModel.label.includes(ASSET_TAG) && this.mModel.is_template) {
         this.mModel.label = `${this.mModel.label} - (${ASSET_TAG})`;
       }
-
-      // let panel = JSON.parse(this.mPanelStructureText);
-
       this.panelStructure.name = this.mModel.name;
-      this.panelStructure.props = { ...this.panelStructure.props, ...this.mModel.props };
+      // this.panelStructure.props = { ...this.panelStructure.props, ...this.mModel.props };
       this.panelStructure.id = this.mModel.id;
-      this.panelStructure.label = this.mModel.label ? this.mModel.label : this.panelStructure.label;
+      // this.panelStructure.label = this.mModel.label ? this.mModel.label : this.panelStructure.label;
       this.mModel = this.panelStructure;
       this.$emit("update:modelValue", this.mModel);
     },

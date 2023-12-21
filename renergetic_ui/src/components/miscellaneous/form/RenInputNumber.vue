@@ -22,7 +22,7 @@ export default {
     //vuelidate errors
     errors: { type: Object, default: () => {} },
     textLabel: { type: String, default: null },
-    modelValue: { type: Object, default: null },
+    modelValue: { type: [Number, String], default: null },
     disabled: { type: Boolean, default: false },
     min: { type: Number, default: null },
     max: { type: Number, default: null },

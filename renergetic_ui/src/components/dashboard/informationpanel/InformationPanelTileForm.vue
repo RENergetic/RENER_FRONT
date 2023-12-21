@@ -155,7 +155,7 @@ export default {
     },
     mModel: {
       handler: function (mModel) {
-        console.info(mModel);
+        // console.info(mModel);
         this.$emit("update:modelValue", mModel);
       },
       deep: true,
