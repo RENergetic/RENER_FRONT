@@ -1,19 +1,10 @@
 <template>
-  <InfoIcon :show-icon="false">
-    <template #content>
-      <!-- some info -->
-    </template>
-  </InfoIcon>
-  <!-- @row-expand="onexpand" -->
-  <!-- :global-filter-fields="['name', 'label', 'type.name', 'type.physical_name', 'domain', 'direction', 'asset.name']" -->
-
   <DataTable
     v-model:expandedRows="expanded"
     v-model:selection="selectedMeasurements"
     :filters="mFilters"
     :lazy="true"
     data-key="id"
-    :rows="50"
     :row-class="rowClass"
     :value="measurementList"
     filter-display="row"
@@ -21,11 +12,6 @@
     @filter="onFilter"
   >
     <template #header>
-      <!-- <span class="p-input-icon-left">
-        <i class="pi pi-search" />
-        <InputText v-model="mFilters['global'].value" :placeholder="$t('view.search')" />
-      </span> -->
-
       <span class="p-input-icon-left" style="margin-left: 1rem">
         <i class="pi pi-search" />
         <Dropdown v-model="mFilters.tag_key.value" show-clear :options="tagsKeys" :placeholder="$t('view.tag_filter')" />
@@ -39,16 +25,12 @@
       />
     </template>
 
-    <Column :expander="true" header-style="width: 3rem" />
+    <Column v-if="!basic" :expander="true" header-style="width: 3rem" />
     <template #expansion="slotProps">
-      <!-- refresh button: TODO: :ref="'roles_' + user.data.id" :user="user.data.id"-->
       <measurement-extension :measurement="slotProps.data" @reload="reload()" />
     </template>
     <!-- <Column field="id" :header="$t('model.measurement.id')"></Column> -->
     <Column field="name" :header="$t('model.measurement.name')" :show-filter-menu="false">
-      <!-- <template #filter="{ filterModel, filterCallback }">
-        <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
-      </template> -->
       <template #body="slotProps">
         <span v-if="slotProps.data._label"> {{ slotProps.data.label }} ({{ slotProps.data._label }})</span>
         <span v-else> {{ slotProps.data.label }} </span>
@@ -59,11 +41,6 @@
         </div>
       </template>
     </Column>
-    <!-- <Column field="label" :header="$t('model.measurement.label')" :show-filter-menu="false">
-      <template #filter="{ filterModel, filterCallback }">
-        <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
-      </template>
-    </Column> -->
     <Column field="physical_name" filter-field="type.physical_name" :header="$t('model.measurement.physical_name')" :show-filter-menu="false">
       <template #body="slotProps">
         <span> {{ $t("enums.metric_type." + slotProps.data.type.physical_name) }} </span>
@@ -121,8 +98,6 @@
         {{ $t(`enums.domain.${slotProps.data.domain}`) }}
       </template>
       <template #filter="{ filterModel, filterCallback }">
-        <!-- <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" /> -->
-
         <Dropdown
           v-model="filterModel.value"
           style="min-width: 12rem"
@@ -139,7 +114,6 @@
     <Column field="direction" :header="$t('model.measurement.direction')" :show-filter-menu="false">
       <template #body="slotProps">
         <span v-if="slotProps.data.direction"> {{ $t(`enums.measurement_direction.${slotProps.data.direction}`) }}</span>
-
         <span v-else> {{ $t("enums.measurement_direction.none") }}</span>
       </template>
       <!-- <template #filter="{ filterModel, filterCallback }">
@@ -152,27 +126,10 @@
       </template>
     </Column>
 
-    <!-- <Column field="measurement_details" :header="$t('model.measurement.details')">
-      <template #body="slotProps">
-        <span @click="showDetails(slotProps.data)">
-          {{ $t("view.show_details") }}
-        </span>
-      </template>
-    </Column> -->
-    <!-- <Column field="edit" :header="$t('view.edit')">
-      <template #body="slotProps">
-        <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="edit(slotProps.data)" />
-      </template>
-    </Column>
-    <Column field="delete" :header="$t('view.delete')">
-      <template #body="slotProps">
-        <Button v-tooltip="$t('view.delete')" icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteConfirm(slotProps.data)" />
-      </template>
-    </Column> -->
-    <Column selection-mode="multiple" header-style="width: 3rem"></Column>
+    <Column v-if="!basic" selection-mode="multiple" header-style="width: 3rem"></Column>
   </DataTable>
   <ren-paginator v-if="measurementList" v-model:offset="mOffset" style="left: 0" sticky :current-rows="measurementList.length" @update="reload" />
-  <Toolbar class="ren-toolbar ren-sticky">
+  <Toolbar v-if="!basic" class="ren-toolbar ren-sticky">
     <template #end>
       <Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="addDialog = true" />
       <Button style="margin-left: 0.5rem" @click="importMeasurementsDialog = true">{{ $t("view.upload_measurements") }}</Button>
@@ -182,13 +139,6 @@
     </template>
   </Toolbar>
 
-  <!-- <Dialog v-model:visible="measurementDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <MeasurementDetails :model="selectedMeasurement.measurement_details" @update="onDetailsUpdate"></MeasurementDetails>
-  </Dialog> -->
-  <!-- <DeleteMeasurement ref="deleteMeasurement" :measurement="selectedMeasurement" @delete="onDelete" />
-  <Dialog v-model:visible="editDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <MeasurementForm v-if="selectedMeasurement" v-model="selectedMeasurement" @update="onEdit($event)" @cancel="editDialog = false" />
-  </Dialog> -->
   <Dialog v-model:visible="addDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
     <MeasurementForm @update="onCreate($event)" @cancel="addDialog = false" />
   </Dialog>
@@ -234,8 +184,6 @@
 </template>
 
 <script>
-// if (mPanel.name !== undefined) delete mPanel.name;
-// if (mPanel.id !== undefined) delete mPanel.id;
 function clearMeasurementInput(measurements) {
   let mMeasurements = JSON.parse(JSON.stringify(measurements));
   mMeasurements = mMeasurements
@@ -260,10 +208,9 @@ function clearMeasurementInput(measurements) {
 
   return mMeasurements;
 }
-import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
+// import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import MeasurementForm from "./MeasurementForm.vue";
 // import MeasurementDetails from "./MeasurementDetails.vue";
-// import DeleteMeasurement from "./DeleteMeasurement.vue";
 import MeasurementTypeList from "./MeasurementTypeList.vue";
 import MeasurementExtension from "./MeasurementExtension.vue";
 import { MeasurementDomains, MeasurementDirection } from "@/plugins/model/Enums.js";
@@ -271,9 +218,10 @@ import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 
 export default {
   name: "MeasurementList",
-  components: { InfoIcon, MeasurementForm, MeasurementTypeList, MeasurementExtension },
+  components: { MeasurementForm, MeasurementTypeList, MeasurementExtension },
   props: {
     measurementList: { type: Array, default: () => [] },
+    basic: { type: Boolean, default: false },
   },
   emits: ["reload", "update:filters"],
   data() {
@@ -361,23 +309,7 @@ export default {
     filterNameCallback(f) {
       this.mFilters.label = f;
     },
-    // async onDetailsUpdate(details) {
-    //   this.selectedMeasurement.measurement_details = details;
-    //   await this.$ren.managementApi.updateMeasurementProperties(this.selectedMeasurement, details).then(() => {
-    //     this.reload();
-    //   });
-    //   //todo: store to db save
-    // },
-    // async showDetails(row) {
-    //   await this.$ren.managementApi.getMeasurementProperties(row.id).then((details) => {
-    //     row.measurement_details = details;
-    //   });
-    //   this.selectedMeasurement = row;
-    //   this.measurementDetailsDialog = true;
-    // },
-
     async onCreate(o) {
-      // console.info(o);
       await this.$ren.managementApi.addMeasurement(o).then((measurement) => {
         console.info("add measurement:" + measurement.name);
         this.$emitter.emit("information", { message: this.$t("information.measurement_created") });
@@ -402,8 +334,6 @@ export default {
       else this.hasFiles = false;
     },
     onFileClear() {
-      // this.mPanelStructure = null;
-
       this.submittedMeasurements = null;
       this.submittedMeasurementsJSON = "";
     },
@@ -431,7 +361,6 @@ export default {
         this.submittedMeasurements = clearMeasurementInput(await this.$ren.utils.readJSONFile(evt.files[0]));
         this.submittedMeasurementsJSON = JSON.stringify(this.submittedMeasurements, null, "\t");
       }
-      // await this._submit(event.files);
     },
   },
 };

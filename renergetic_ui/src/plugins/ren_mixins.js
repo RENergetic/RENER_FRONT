@@ -7,15 +7,23 @@ export default {
       return this.$route.meta.tvMode ? true : false;
     },
     isTileHorizontal: function () {
-      let w =
-        this.settings.panel && this.settings.panel.cellWidth
-          ? this.settings.panel.cellWidth * this.tile.layout.w
-          : this.$parent.$el.parentElement.clientWidth * 0.9;
-      let h =
-        this.settings.panel && this.settings.panel.cellHeight
-          ? this.settings.panel.cellHeight * this.tile.layout.h
-          : this.$parent.$el.parentElement.clientHeight * 0.9;
-      return w > h;
+      try {
+        let w =
+          this.settings.panel && this.settings.panel.cellWidth
+            ? this.settings.panel.cellWidth * this.tile.layout.w
+            : (this.$parent.$el.parentElement.clientWidth * 0.9);
+        let h =
+          this.settings.panel && this.settings.panel.cellHeight
+            ? this.settings.panel.cellHeight * this.tile.layout.h
+            : this.$parent.$el.parentElement.clientHeight * 0.9;
+        return w > h;
+      } catch (ex) {
+        if (this.$parent.$el == null) {
+          return false
+        }
+        console.error(ex)
+        return true;
+      }
     },
     tileOrientationClass: function () {
       return this.isTileHorizontal ? 'horizontal-tile' : 'vertical-tile'
@@ -34,6 +42,9 @@ export default {
           ? this.settings.panel.cellHeight * this.tile.layout.h
           : this.$parent.$el.parentElement.clientHeight * 0.9;
       let minD = Math.min(w, h);
+      console.error(this.settings.panel.cellHeight)
+      console.info(this.settings.panel)
+      console.error(this.$parent.$el)
       return minD
     },
     /**

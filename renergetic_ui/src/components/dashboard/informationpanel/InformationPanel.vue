@@ -1,8 +1,5 @@
 <template>
-  <div v-if="mPanel && mPData" id="panel-grid-stack" style="" class="grid-stack">
-    <!-- {{ mSettings }}
-    {{ settings }} -->
-    <!-- {{ mPData }} -->
+  <div v-if="mPanel && mPData && loaded" id="panel-grid-stack" style="" class="grid-stack">
     <InformationTileGridWrapper
       v-for="(tile, index) in tiles"
       :key="tile.id"
@@ -10,7 +7,7 @@
       :slot-props="{ tile: tile, index: index }"
       :edit="edit"
       :pdata="mPData"
-      :panel-settings="mSettings"
+      :settings="mSettings"
       :filter="filter"
       @edit="$emit('editTile', { tile: tile, index: index })"
       @preview-tile="onPreview"
@@ -131,9 +128,10 @@ export default {
   emits: ["editTile", "update", "timeseries-update"],
   data() {
     return {
+      loaded: false,
       grid: null,
       mSettings: validateSettings(this.settings, this.panel, this),
-      // loaded: false,
+      reload: false,
       notificationDialog: false,
       selectedItem: null,
       mPanel: this.panel,
@@ -163,18 +161,6 @@ export default {
     },
     pdata: {
       handler: function (newValue) {
-        // if (this.mSettings.relativeValues && newValue) {
-        //   this.mPData = this.$ren.utils.convertPanelData(this.mPanel, newValue, this.$store.getters["settings/conversion"]);
-        //   this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, this.mSettings);
-        // } else if (newValue) {
-        //   console.info("watch pdata");
-        //   this.mPData = this.$ren.utils.convertPanelData(this.mPanel, newValue, this.$store.getters["settings/conversion"]);
-        //   console.error(this.mPData);
-        //   //TODO: check this
-        //   this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, this.mSettings);
-        //   console.error(this.mPData);
-        // }
-
         this.recalculateData(newValue);
       },
       deep: true,
@@ -185,6 +171,7 @@ export default {
       handler() {
         console.info("watch mSettings");
         this.recalculateData(this.pdata);
+        this.reloadGrid();
       },
       deep: true,
     },
@@ -199,6 +186,7 @@ export default {
       this.recalculateData(this.pdata);
 
       this.reloadGrid();
+      this.loaded = true;
     }
   },
   methods: {
@@ -242,7 +230,7 @@ export default {
 
       this.mSettings.cellWidth = grid.el.clientWidth / grid.getColumn();
       this.mSettings.cellHeight = grid.el.clientHeight / grid.getRow();
-
+      // console.warn(this.mSettings.cellHeight);
       this.grid = grid;
     },
 

@@ -7,7 +7,7 @@
       <!-- <div style="color: white; margin-top: 10rem">{{ $route.path }}  style="min-height: 95vh"</div>
     <div style="color: white">{{ $keycloak && $keycloak.isInitialized() }}</div> -->
       <!-- display: - initial !important; -->
-      <div v-if="hasAccess" class="flex" style="margin-bottom: 0rem;flex-grow-1;overflow:auto;flex-direction:column">
+      <div v-if="hasAccess" class="flex" style="margin-bottom: 0rem; flex-grow: 1; overflow: auto; flex-direction: column">
         <router-view :key="$route.path" />
         <!-- @update-menu="updateMenu()" -->
       </div>
