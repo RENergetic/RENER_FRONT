@@ -26,7 +26,7 @@ Meta parameter description:
 * isAuthenticated: **bool** - true=enable authentication
 * layout: **enum** - *standard*, *fullscr*
 * roles: **array** - available roles ["ren-manager","ren-technical-manager", "ren-admin", "ren-guest","ren-user","ren-dev","ren-staff","ren-visitor"]. 
-* ```$emit("UpdateMenu", args)``` - request menu update, emit event from router View to sidemenu  
+
 
 ### Validators
 Validators are defined in `/plugins/validators.js` based on vuelidate
@@ -59,6 +59,7 @@ Global events (```$emitter.on``` -> App.vue):
 * ```information``` - emit information 
 * ```warning``` - not implemented, TODO?
 * ```success``` - not implemented, TODO?
+* ```$emitter.$emit("update-menu")``` - request menu update 
 
 
 

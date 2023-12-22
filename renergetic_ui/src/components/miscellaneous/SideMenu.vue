@@ -13,7 +13,6 @@
     :add-user="userDialog"
     @update:notification-dialog="notificationDialog = $event"
     @update:demand-dialog="demandDialog = $event"
-    @update-menu="reload"
     @update:notifications="onNotificationChange($event)"
   ></Dialogs>
 </template>

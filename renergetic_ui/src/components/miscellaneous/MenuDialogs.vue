@@ -62,7 +62,6 @@ export default {
     "update:dashboard",
     "update:notificationDialog",
     "update:demandDialog",
-    "UpdateMenu",
     "update:locales",
     "update:notifications",
     "update:user",
@@ -173,7 +172,7 @@ export default {
       await this.$ren.dashboardApi.add(dashboard).then((dashboardReq) => {
         this.mAddDashboard = false;
         this.$store.commit("view/dashboardsAdd", dashboardReq);
-        this.$emit("UpdateMenu", null);
+        this.$emitter.$emit("update-menu");
       });
     },
     async onUserSave(o) {
@@ -181,7 +180,7 @@ export default {
         console.info("add user:" + user.username);
         this.$emitter.emit("information", { message: this.$t("information.user_created") });
         this.mAddUser = false;
-        // this.$emit("UpdateMenu", null);
+        // this.$emitter.$emit("update-menu")
       });
     },
     onNotificationUpdate(notifications) {
