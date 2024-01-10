@@ -54,7 +54,7 @@ body {
 }
 .grid {
   margin-left: 0.25rem;
-  margin-right: 0.25;
+  margin-right: 0.25rem;
 }
 .p-inputnumber-button {
   background-color: $ren-primary-color;
@@ -114,6 +114,9 @@ body {
   .ren-inputwrapper > * {
     width: $inputwidth;
     max-width: $maxInputwidth;
+  }
+  .col-12.ren-inputwrapper > * {
+    max-width: 80vw;
   }
 
   .p-inputwrapper {

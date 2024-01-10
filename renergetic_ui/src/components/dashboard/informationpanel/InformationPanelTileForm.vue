@@ -73,24 +73,28 @@
               <!-- <span v-if="m.aggregation_function">{{ m.id }} ({{ $t("enums.measurement_aggregation." + m.aggregation_function) }})</span>
               <span v-else>{{ m.id }} </span> -->
               <!-- <span>{{ m.id }} </span> -->
-              <ren-input-wrapper
-                :text-label="null"
-                :inline="true"
-                :model-value="$t('model.measurement.measurement_aggregation') + ': ' + $t('enums.measurement_aggregation.' + m.aggregation_function)"
-              >
-                <template #content>
-                  <Dropdown
-                    v-model="m.aggregation_function"
-                    style="min-width: 12rem"
-                    :options="aggregations"
-                    :option-label="(opt) => $t(`enums.measurement_aggregation.${opt}`)"
-                    :placeholder="$t('view.select_measurement_aggregation')"
-                    @change="functionChange"
-                  />
-                </template>
-              </ren-input-wrapper>
-              <ren-input :model-value="$t('model.measurement.id') + ': ' + m.id" disabled :read-only="true" />
 
+              <ren-input :model-value="$t('model.measurement.id') + ': ' + m.id" disabled :read-only="true" />
+              <span style="width: 15rem">
+                <ren-input-wrapper
+                  :text-label="null"
+                  :inline="true"
+                  :model-value="
+                    $t('model.measurement.measurement_aggregation') + ': ' + $t('enums.measurement_aggregation.' + m.aggregation_function)
+                  "
+                >
+                  <template #content>
+                    <Dropdown
+                      v-model="m.aggregation_function"
+                      style="min-width: 12rem"
+                      :options="aggregations"
+                      :option-label="(opt) => $t(`enums.measurement_aggregation.${opt}`)"
+                      :placeholder="$t('view.select_measurement_aggregation')"
+                      @change="functionChange"
+                    />
+                  </template>
+                </ren-input-wrapper>
+              </span>
               <!-- @change="filterCallback()" -->
               <Button
                 :key="m.tooltip"

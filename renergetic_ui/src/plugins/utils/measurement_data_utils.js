@@ -116,13 +116,13 @@ export default {
         }
       }
     }
-    console.info(mDict);
+    console.debug(mDict);
 
     for (let mId in mDict) {
       let m = mDict[mId];
       let key = this.aggKey(m, settings);
       // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
-      console.error(key);
+      // console.error(key);
       let factor = m.type.factor;
       let value = pData.current[m.aggregation_function][m.id] * factor; //todo: raise exception if value not found
       accuDict = this.valueAccu(key, value, m.type.base_unit, accuDict);

@@ -55,9 +55,9 @@ export default {
           ? this.settings.panel.cellHeight * this.tile.layout.h
           : this.$parent.$el.parentElement.clientHeight * 0.9;
       let minD = Math.min(w, h);
-      console.error(this.settings.panel.cellHeight)
-      console.info(this.settings.panel)
-      console.error(this.$parent.$el)
+      console.debug("cell height: " + this.settings.panel.cellHeight)
+      console.debug(this.settings.panel)
+      // console.error(this.$parent.$el)
       return minD
     },
     /**

@@ -1,180 +1,181 @@
 {
-     "dashboard": {
-          "name": "Name",
-          "url": "URL",
-          "label": "Label",
-          "model": "Model",
-          "measurement_type": "Measurement type",
-          "unit": "Unit",
-          "user": "User",
-          "grafana_id": "Grafana id"
-     },
-     "heatmap": {
-          "name": "Name",
-          "label": "Label",
-          "areas": "Areas",
-          "attributes": "Attributes",
-          "recommendations": "Recommendations",
-          "notifications": "Notifications",
-          "dashboard": "Dashboard",
-          "heatmap": "Heatmap",
-          "imgUrl": "Image URL",
-          "description": "Description",
-          "id": "Id"
-     },
-     "hdrrequest": {
-          "date_from": "Date from",
-          "date_to": "To",
-          "interval_length": "Request length [min]",
-          "physical_type": "Value's physical type",
-          "unit": "Unit",
-          "change_or_limit": "Request's value relative change/limit",
-          "max_value": "Value's max",
-          "delta_value": "Value's relative change"
-     },
-     "asset_connection": {
-          "connected_asset": "Connected asset",
-          "connection_type": "Connection type",
-          "bi_directional": "Bi directional"
-     },
-     "asset": {
-          "asset_connections": "Asset connections",
-          "connection_type": "Connection type",
-          "name": "Name",
-          "id": "Id",
-          "child": "Sub assets",
-          "asset_type": "Asset type",
-          "asset_category": "Asset category",
-          "label": "Label",
-          "measurements": "Measurements",
-          "description": "Description",
-          "geo_location": "Geo location",
-          "owner": "Owner",
-          "parent": "Parent",
-          "type": {
-               "room": "Room",
-               "pv": "PV",
-               "pv_plant": "PV",
-               "bulding": "Bulding",
-               "flat": "Flat",
-               "heat_exchange": "Heat exchanger",
-               "heat_exchanger": "Heat exchanger",
-               "heat_source": "Heat Source",
-               "island": "Island",
-               "dormitory": "Dormitory"
-          },
-          "category": {
-               "name": "Name",
-               "label": "Label",
-               "description": "Description",
-               "id": "ID",
-               "delete_prompt": "Do you really want to delete the category?",
-               "affected_assets": "These Assets are affected",
-               "no_assets_found": "No assets found for this category.",
-               "delete": "Delete",
-               "cancel": "Cancel"
-          }
-     },
-     "information_tile": {
-          "type": "type"
-     },
-     "information_panel": {
-          "id": "Id",
-          "label": "Label",
-          "name": "Name",
-          "tiles": "Tiles",
-          "featured": "Visibility",
-          "is_template": "Is template",
-          "is_template_new_panel": "Is panel a template for private dashboards view (Can't be changed later)",
-          "structure": "Structure",
-          "priority": "Priority",
-          "tile": {
-               "name": "Name",
-               "label": "Label",
-               "type": "Type",
-               "props": "Properties",
-               "x": "x",
-               "y": "y",
-               "h": "h",
-               "w": "w"
-          }
-     },
-     "measurement_type": {
-          "id": "ID",
-          "name": "Name",
-          "label": "Label",
-          "unit": "Unit",
-          "factor": "Base multiplier factor",
-          "color": "Measurement default color",
-          "dashboardVisibility": "Grafana support.",
-          "dashboard_visibility": "Grafana support.",
-          "physical_name": "Physical name",
-          "base_unit": "Base unit",
-          "description": "Description"
-     },
-     "tag": {
-          "key": "Tag's name (key)",
-          "value": "Tag's value"
-     },
-     "measurement": {
-          "name": "Name",
-          "label": "Label",
-          "labels": {
-               "kpi_peak": "Peak Value",
-               "kpi_sres": "Share of RES",
-               "kpi_snes": "Share of Non-RES",
-               "kpi_ess": "Energy Self-Sufficiency",
-               "kpi_ep": "Energy potency",
-               "kpi_co2": "CO₂ intensity",
-               "kpi_ee": "Energy efficency",
-               "kpi_es": "Energy savings"
-          },
-          "panel_count": "Linked panels count",
-          "measurement_type": "Measurement type",
-          "location_name": "Location",
-          "type": "Measurement type",
-          "id": "Id",
-          "details": "Details",
-          "direction": "Direction",
-          "direction_out": "Out",
-          "direction_in": "In",
-          "direction_null": "N/A",
-          "domain": "Domain",
-          "sensor_name": "Sensor name",
-          "asset_category": "Asset category",
-          "physical_name": "Physical name",
-          "asset": "Asset"
-     },
-     "user": {
-          "login": "Login",
-          "password": "Password",
-          "email": "Email",
-          "firstname": "First name",
-          "lastname": "Last name",
-          "username": "Username",
-          "password_repeat": "Repeat password",
-          "temp_password": "Temporary password",
-          "roles": "Roles"
-     },
-     "role": {
-          "name": "Name"
-     },
-     "notification": {
-          "id": "Id",
-          "type": "Type",
-          "notification_code": "Code",
-          "asset": "Asset",
-          "dashboard": "Dashboard",
-          "date_from": "From",
-          "date_to": "To",
-          "notification_timestamp": "Generation time",
-          "value": "Value",
-          "no_dashboard": "undefined",
-          "measurement": "Measurement",
-          "message": "Message"
-     },
-     "panel_templates": {
-          "kpi_electricity": "Electricity KPI ",
-          "kpi_heat": "Heat KPI"
-     }
+  "dashboard": {
+    "name": "Name",
+    "url": "URL",
+    "label": "Label",
+    "model": "Model",
+    "measurement_type": "Measurement type",
+    "unit": "Unit",
+    "user": "User",
+    "grafana_id": "Grafana id"
+  },
+  "heatmap": {
+    "name": "Name",
+    "label": "Label",
+    "areas": "Areas",
+    "attributes": "Attributes",
+    "recommendations": "Recommendations",
+    "notifications": "Notifications",
+    "dashboard": "Dashboard",
+    "heatmap": "Heatmap",
+    "imgUrl": "Image URL",
+    "description": "Description",
+    "id": "Id"
+  },
+  "hdrrequest": {
+    "date_from": "Date from",
+    "date_to": "To",
+    "interval_length": "Request length [min]",
+    "physical_type": "Value's physical type",
+    "unit": "Unit",
+    "change_or_limit": "Request's value relative change/limit",
+    "max_value": "Value's max",
+    "delta_value": "Value's relative change"
+  },
+  "asset_connection": {
+    "connected_asset": "Connected asset",
+    "connection_type": "Connection type",
+    "bi_directional": "Bi directional"
+  },
+  "asset": {
+    "asset_connections": "Asset connections",
+    "connection_type": "Connection type",
+    "name": "Name",
+    "id": "Id",
+    "child": "Sub assets",
+    "asset_type": "Asset type",
+    "asset_category": "Asset category",
+    "label": "Label",
+    "measurements": "Measurements",
+    "description": "Description",
+    "geo_location": "Geo location",
+    "owner": "Owner",
+    "parent": "Parent",
+    "type": {
+      "room": "Room",
+      "pv": "PV",
+      "pv_plant": "PV",
+      "bulding": "Bulding",
+      "flat": "Flat",
+      "heat_exchange": "Heat exchanger",
+      "heat_exchanger": "Heat exchanger",
+      "heat_source": "Heat Source",
+      "island": "Island",
+      "dormitory": "Dormitory"
+    },
+    "category": {
+      "name": "Name",
+      "label": "Label",
+      "description": "Description",
+      "id": "ID",
+      "delete_prompt": "Do you really want to delete the category?",
+      "affected_assets": "These Assets are affected",
+      "no_assets_found": "No assets found for this category.",
+      "delete": "Delete",
+      "cancel": "Cancel"
+    }
+  },
+  "information_tile": {
+    "type": "type"
+  },
+  "information_panel": {
+    "id": "Id",
+    "label": "Label",
+    "name": "Name",
+    "tiles": "Tiles",
+    "featured": "Visibility",
+    "is_template": "Is template",
+    "is_template_new_panel": "Is panel a template for private dashboards view (Can't be changed later)",
+    "structure": "Structure",
+    "priority": "Priority",
+    "tile": {
+      "name": "Name",
+      "label": "Label",
+      "type": "Type",
+      "props": "Properties",
+      "x": "x",
+      "y": "y",
+      "h": "h",
+      "w": "w"
+    }
+  },
+  "measurement_type": {
+    "id": "ID",
+    "name": "Name",
+    "label": "Label",
+    "unit": "Unit",
+    "factor": "Base multiplier factor",
+    "color": "Measurement default color",
+    "dashboardVisibility": "Grafana support.",
+    "dashboard_visibility": "Grafana support.",
+    "physical_name": "Physical name",
+    "base_unit": "Base unit",
+    "description": "Description"
+  },
+  "tag": {
+    "key": "Tag's name (key)",
+    "value": "Tag's value"
+  },
+  "measurement": {
+    "measurement_aggregation": "Aggregation function",
+    "name": "Name",
+    "label": "Label",
+    "labels": {
+      "kpi_peak": "Peak Value",
+      "kpi_sres": "Share of RES",
+      "kpi_snes": "Share of Non-RES",
+      "kpi_ess": "Energy Self-Sufficiency",
+      "kpi_ep": "Energy potency",
+      "kpi_co2": "CO₂ intensity",
+      "kpi_ee": "Energy efficency",
+      "kpi_es": "Energy savings"
+    },
+    "panel_count": "Linked panels count",
+    "measurement_type": "Measurement type",
+    "location_name": "Location",
+    "type": "Measurement type",
+    "id": "Id",
+    "details": "Details",
+    "direction": "Direction",
+    "direction_out": "Out",
+    "direction_in": "In",
+    "direction_null": "N/A",
+    "domain": "Domain",
+    "sensor_name": "Sensor name",
+    "asset_category": "Asset category",
+    "physical_name": "Physical name",
+    "asset": "Asset"
+  },
+  "user": {
+    "login": "Login",
+    "password": "Password",
+    "email": "Email",
+    "firstname": "First name",
+    "lastname": "Last name",
+    "username": "Username",
+    "password_repeat": "Repeat password",
+    "temp_password": "Temporary password",
+    "roles": "Roles"
+  },
+  "role": {
+    "name": "Name"
+  },
+  "notification": {
+    "id": "Id",
+    "type": "Type",
+    "notification_code": "Code",
+    "asset": "Asset",
+    "dashboard": "Dashboard",
+    "date_from": "From",
+    "date_to": "To",
+    "notification_timestamp": "Generation time",
+    "value": "Value",
+    "no_dashboard": "undefined",
+    "measurement": "Measurement",
+    "message": "Message"
+  },
+  "panel_templates": {
+    "kpi_electricity": "Electricity KPI ",
+    "kpi_heat": "Heat KPI"
+  }
 }

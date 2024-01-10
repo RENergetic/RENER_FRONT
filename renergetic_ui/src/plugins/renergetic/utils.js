@@ -173,7 +173,7 @@ class RenUtils {
    * reload basic app data
    */
   async reloadStore() {
-    console.info("reload user data");
+    console.debug("reload user data");
     let isAuthenticated = this.app.$store.getters["auth/isAuthenticated"];
     if (!isAuthenticated) {
       // console.error("TODO: handle not logged in user");

@@ -1,5 +1,6 @@
 <template>
-  <Dialog v-model:visible="assetDialog" :style="{ minWidth: '25rem' }" :maximizable="true" :modal="true" :dismissable-mask="true" @filter="onFilter">
+  <!-- @filter="onFilter" -->
+  <Dialog v-model:visible="assetDialog" :style="{ minWidth: '25rem' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <asset-select v-show="assetDialog" :current="current" :header="false" @cancel="cancel" @submit="submit" />
   </Dialog>
 </template>
