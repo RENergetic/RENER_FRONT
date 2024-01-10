@@ -1,77 +1,109 @@
 <template>
   <Dialog v-model:visible="dialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <h3>Measurements Aggregation</h3>
-    <div class="measurement-aggregation-list">
-      <div class="" v-for="(aggr, iMA) in configuration.measurementAggregation" :key="aggr">
-        <button @click="deleteMAC(iMA)">Delete</button>
-        <h4>Measurements</h4>
-        <div class="" v-for="(measurement, i) in aggr.measurements" :key="measurement">
-          <Dropdown
-            v-model="aggr.measurements[i]"
-            :options="measurementsData"
-            optionValue="id"
-            optionLabel="label"
-            placeholder="Select a Measurement"
-            class="w-full md:w-14rem"
-            @change="selectedMeasurement(aggr.measurements[i], aggr.measurements)"
-          />
-          <button @click="deleteMeasurement(iMA, i)">Delete</button>
-        </div>
-        <button @click="addMeasurement(aggr.measurements)">Add Measurement</button>
-        <h4>Outputs</h4>
-        <div class="" v-for="(output, i) in aggr.outputs" :key="output">
-          <Dropdown
-            v-model="aggr.outputs[i].aggregationType"
-            :options="outputFunctionsParams"
-            placeholder="Select a Output"
-            class="w-full md:w-14rem"
-          />
-          <ren-input v-model="aggr.outputs[i].timeMin" :text-label="'Time min'" />
-          <ren-input v-model="aggr.outputs[i].timeMax" :text-label="'Time max'" />
-          <ren-input v-model="aggr.outputs[i].timeRange" :text-label="'Time range'" />
-          <button @click="deleteOutput(iMA, i)">Delete</button>
-        </div>
-        <button @click="addOutput(aggr.outputs)">Add Output</button>
+    <div class="flex flex-column gap-4">
+      <h3>Measurements Aggregation</h3>
+      <Accordion>
+        <AccordionTab v-for="(aggr, iMA) in configuration.measurementAggregation" :key="aggr">
+          <template #header>
+            <span class="flex align-items-center gap-2 w-full gap-3">
+              <h4 class="m-0">Configuration {{ iMA + 1 }}</h4>
+              <Button v-tooltip="'Delete'" icon="pi pi-trash" class="p-button-rounded p-button-danger flex-shrink-0" @click="deleteMAC(iMA)" />
+            </span>
+          </template>
+          <div class="flex flex-column gap-3">
+            <h4>Measurements</h4>
+            <div class="flex flex-row gap-3" v-for="(measurement, i) in aggr.measurements" :key="measurement">
+              <Dropdown
+                v-model="aggr.measurements[i]"
+                :options="measurementsData"
+                optionValue="id"
+                optionLabel="label"
+                placeholder="Select a Measurement"
+                class="w-full md:w-14rem flex-1"
+                @change="selectedMeasurement(aggr.measurements[i], aggr.measurements)"
+              />
+              <Button
+                v-tooltip="'Delete Measurement'"
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-danger"
+                @click="deleteMeasurement(iMA, i)"
+              />
+            </div>
+            <Button class="col-12 md:col-4 mx-auto" :label="'Add Measurement'" @click="addMeasurement(aggr.measurements)" />
+            <h4>Outputs</h4>
+            <div class="flex flex-row gap-1" v-for="(output, i) in aggr.outputs" :key="output">
+              <Dropdown
+                v-model="aggr.outputs[i].aggregationType"
+                :options="outputFunctionsParams"
+                placeholder="Select a Output"
+                class="w-full md:w-14rem"
+              />
+              <ren-input v-model="aggr.outputs[i].timeMin" :text-label="'Time min'" class="m-0" />
+              <ren-input v-model="aggr.outputs[i].timeMax" :text-label="'Time max'" class="m-0" />
+              <ren-input v-model="aggr.outputs[i].timeRange" :text-label="'Time range'" class="m-0" />
+              <Button
+                v-tooltip="'Delete output'"
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-danger flex-shrink-0"
+                @click="deleteOutput(iMA, i)"
+              />
+            </div>
+            <Button class="col-12 md:col-4 mx-auto" :label="'Add Output'" @click="addOutput(aggr.outputs)" />
+          </div>
+        </AccordionTab>
+      </Accordion>
+      <Button class="col-12 md:col-4 mx-auto" :label="'Add Configuration'" @click="addMAC" />
+      <h3>Multi-Vector Component Type</h3>
+      <div class="flex flex-row gap-3">
+        <Dropdown
+          v-model="configuration.mvoComponentType.type"
+          :options="optimizerTypes"
+          optionValue="name"
+          optionLabel="name"
+          placeholder="Select a type"
+          class="w-full md:w-14rem"
+          @change="fetchOptimizerParameters"
+        />
+        <Dropdown v-model="configuration.mvoComponentType.domainA" :options="domains" placeholder="Select domain A" class="w-full md:w-14rem" />
+        <Dropdown v-model="configuration.mvoComponentType.domainB" :options="domains" placeholder="Select domain B" class="w-full md:w-14rem" />
       </div>
-      <button @click="addMAC">Add Configuration</button>
-    </div>
-    <h3>Multi-Vector Component Type</h3>
-    <div class="mvct-holder">
-      <Dropdown
-        v-model="configuration.mvoComponentType.type"
-        :options="optimizerTypes"
-        optionValue="name"
-        optionLabel="name"
-        placeholder="Select a type"
-        class="w-full md:w-14rem"
-        @change="fetchOptimizerParameters"
-      />
-      <Dropdown v-model="configuration.mvoComponentType.domainA" :options="domains" placeholder="Select domain A" class="w-full md:w-14rem" />
-      <Dropdown v-model="configuration.mvoComponentType.domainB" :options="domains" placeholder="Select domain B" class="w-full md:w-14rem" />
-    </div>
-    <h3>Parameters Aggregation Configuration</h3>
-    <div v-if="configuration.parametersAggregationConfiguration !== null && Object.keys(configuration.parametersAggregationConfiguration).length > 0">
-      <DataTable :value="configuration.parametersAggregationConfiguration" tableStyle="min-width: 50rem">
-        <Column header="Aggregation">
-          <template #body="slotProps">
-            <Dropdown
-              v-model="slotProps.data.aggregation"
-              :options="aggregationFunctionsParams"
-              placeholder="Aggregation"
-              class="w-full md:w-14rem"
-            />
-          </template>
-        </Column>
-        <Column header="Parameter">
-          <template #body="slotProps">
-            {{ slotProps.index }}
-          </template>
-        </Column>
-        <Column v-for="column of columns" :key="column" :field="(data) => getTableData(data, column)" :header="'Asset ' + column"></Column>
-      </DataTable>
+      <h3>Parameters Aggregation Configuration</h3>
+      <div
+        v-if="configuration.parametersAggregationConfiguration !== null && Object.keys(configuration.parametersAggregationConfiguration).length > 0"
+      >
+        <DataTable :value="configuration.parametersAggregationConfiguration">
+          <Column header="Aggregation">
+            <template #body="slotProps">
+              <Dropdown
+                v-model="slotProps.data.aggregation"
+                :options="aggregationFunctionsParams"
+                placeholder="Aggregation"
+                class="w-full md:w-14rem"
+              />
+            </template>
+          </Column>
+          <Column header="Parameter">
+            <template #body="slotProps">
+              <div v-bind:class="{ 'font-bold': slotProps.data.required }">
+                {{ slotProps.index }}
+              </div>
+            </template>
+          </Column>
+          <Column v-for="column of columns" :key="column" :header="'Asset ' + column" class="">
+            <template #body="slotProps">
+              <div class="text-red-500" v-if="getTableData(slotProps.data, column) === null">
+                <span v-if="slotProps.data.required">Required</span>
+              </div>
+              <div v-else>
+                {{ getTableData(slotProps.data, column) }}
+              </div>
+            </template>
+          </Column>
+        </DataTable>
+      </div>
+      <!-- <Button @click="submit">Submit</Button> -->
     </div>
     <ren-submit @submit="submit" />
-    <!-- <Button @click="submit">Submit</Button> -->
   </Dialog>
 </template>
 <script>
@@ -141,7 +173,6 @@ export default {
     },
     getTableData(in1, in2) {
       console.log(in1);
-      console.log(in1 + " " + in2);
       return in1.assetValues[in2];
     },
     transformAssetValues() {
@@ -158,10 +189,8 @@ export default {
         measurements: [],
         outputs: [],
       });
-      console.log(this.configuration);
     },
     deleteMAC(index) {
-      console.log(this.configuration);
       this.configuration.measurementAggregation.splice(this.configuration.measurementAggregation[index], 1);
     },
     async addMeasurement(item) {
@@ -194,7 +223,6 @@ export default {
       this.configuration.measurementAggregation[indexMA].outputs.splice(this.configuration.measurementAggregation[indexMA].outputs[index], 1);
     },
     async submit() {
-      console.log(this.configuration);
       await this.$ren.managementApi.saveMeasurementAggregation(this.assetId, this.configuration).then((config) => {
         this.configuration = config;
         this.transformAssetValues();

@@ -154,7 +154,7 @@
           @click="manageConnections(slotProps.data)"
         />
         <Button v-tooltip="$t('view.properties')" icon="pi  pi-sliders-h" class="p-button-rounded" @click="manageAssetProperties(slotProps.data)" />
-        <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="manageAssetAggregrationProperties(slotProps.data)" />
+        <Button v-tooltip="$t('view.edit')" icon="pi pi-copy" class="p-button-rounded" @click="manageAssetAggregrationProperties(slotProps.data)" />
         <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
         <Button v-tooltip="$t('view.rules')" icon="pi pi-code" class="p-button-rounded" @click="editRules(slotProps.data)" />
         <Button
