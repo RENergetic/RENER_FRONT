@@ -247,6 +247,7 @@ export default class ManagementApi extends RestComponent {
   async duplicateMeasurement(id) {
     return this.post(`/api/measurements/id/${id}/copy`);
   }
+
   async listTags() {
     return this.get(`/api/measurements/tags`);
   }
@@ -314,7 +315,7 @@ export default class ManagementApi extends RestComponent {
   }
 
   async getMeasurement(id) {
-    return this.get(`/api/measurements/${id}`, null, null, (e) => {
+    return this.get(`/api/measurements/id/${id}`, null, null, (e) => {
       if (e.response.status == 404) {
         this.emitError(`Measurement ${id} not found: ${e.message}`, {
           code: "measurement_not_found",

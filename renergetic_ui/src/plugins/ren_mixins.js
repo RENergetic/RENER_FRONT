@@ -31,6 +31,19 @@ export default {
   },
 
   methods: {
+    async deleteConfirm({ message, header = null, action }) {
+      await this.$confirm.require({
+        message: message,
+        header: header ? header : this.$t("view.confirm_delete"),
+        icon: "pi pi-exclamation-triangle",
+        accept: async () => {
+          await action()
+        },
+        reject: () => {
+          this.$confirm.close();
+        },
+      });
+    },
 
     tileContentSize1D() {
       let w =

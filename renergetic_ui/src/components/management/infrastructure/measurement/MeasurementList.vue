@@ -1,7 +1,9 @@
 <template>
+  <!-- aaa {{ selectedMeasurements }}aaa -->
   <DataTable
     v-model:expandedRows="expanded"
     v-model:selection="selectedMeasurements"
+    :selection-mode="basic ? 'single' : null"
     :filters="mFilters"
     :lazy="true"
     data-key="id"
@@ -208,6 +210,26 @@ function clearMeasurementInput(measurements) {
 
   return mMeasurements;
 }
+function initFilters(filters) {
+  var f = {
+    global: { value: null, tagKey: null },
+    name: { value: null },
+    label: { value: null },
+    // "type.name": { value: null },
+    "type.id": { value: null },
+    "type.physical_name": { value: null },
+    "asset.name": { value: null },
+    domain: { value: null },
+    direction: { value: null },
+    sensor_name: { value: null },
+    tag_key: { value: null },
+    // "asset.name": { value: null },
+  };
+  if (filters != null) {
+    return { ...f, ...filters };
+  }
+  return f;
+}
 // import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import MeasurementForm from "./MeasurementForm.vue";
 // import MeasurementDetails from "./MeasurementDetails.vue";
@@ -222,8 +244,9 @@ export default {
   props: {
     measurementList: { type: Array, default: () => [] },
     basic: { type: Boolean, default: false },
+    filters: { type: Object, default: null },
   },
-  emits: ["reload", "update:filters"],
+  emits: ["reload", "update:filters", "select"],
   data() {
     let physicalTypes = Object.keys(this.$store.getters["view/measurementTypes"]).map((it) => {
       return { value: it, label: this.$t("enums.metric_type." + it) };
@@ -240,7 +263,7 @@ export default {
       selectedMeasurements: [],
       submittedMeasurements: null,
       columns: [],
-      mFilters: this.initFilters(),
+      mFilters: initFilters(this.filters),
       selectedMeasurement: null,
       editDialog: false,
       importMeasurementsDialog: false,
@@ -253,6 +276,9 @@ export default {
   },
   computed: {},
   watch: {
+    selectedMeasurements: function (v) {
+      this.$emit("select", v);
+    },
     "mFilters.tag_key.value": async function () {
       await this.onFilter({ filters: this.mFilters });
     },
@@ -277,7 +303,6 @@ export default {
         }
     },
     _emitFilter() {
-      // console.info("emitFilter: " + new Date());
       this.$emit("update:filters", this.mFilters);
     },
     async onFilter(ev) {
@@ -290,22 +315,7 @@ export default {
       }
       return "";
     },
-    initFilters() {
-      return {
-        global: { value: null, tagKey: null },
-        name: { value: null },
-        label: { value: null },
-        // "type.name": { value: null },
-        "type.id": { value: null },
-        "type.physical_name": { value: null },
-        "asset.name": { value: null },
-        domain: { value: null },
-        direction: { value: null },
-        sensor_name: { value: null },
-        tag_key: { value: null },
-        // "asset.name": { value: null },
-      };
-    },
+
     filterNameCallback(f) {
       this.mFilters.label = f;
     },
@@ -325,8 +335,6 @@ export default {
     },
 
     reload(evt) {
-      //TODO: filter
-
       this.$emit("reload", evt);
     },
     onSelect() {

@@ -52,7 +52,10 @@ body {
   color: $ren-primary-font-color;
   min-height: 2.5rem;
 }
-
+.grid {
+  margin-left: 0.25rem;
+  margin-right: 0.25;
+}
 .p-inputnumber-button {
   background-color: $ren-primary-color;
   background: $ren-primary-color;
@@ -74,13 +77,19 @@ body {
 .ren-pointer {
   cursor: pointer;
 }
-
+.p-button-rounded {
+  margin: 0.25rem 0.25rem;
+}
 .disabled {
   color: rgba(144, 144, 144, 0.75);
   font-style: italic;
   opacity: 0.6;
 }
 .ren {
+  li div {
+    display: flex;
+    align-items: center;
+  }
   .ren-label {
     min-width: 15rem;
   }
@@ -461,6 +470,7 @@ body {
   position: sticky;
   width: max-content;
   bottom: 0rem;
+  z-index: inherit;
   // background: none;
 }
 .ren-sticky.ren-toolbar {

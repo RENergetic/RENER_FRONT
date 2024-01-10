@@ -47,8 +47,15 @@
       </InfoIcon>
       <!-- {{ $t(textLabel) }}  -->
     </label>
-    <div v-if="textLabel != null" class="col-12 md:col-10"><InputText id="ren-input" v-model="mValue" :disabled="disabled" /></div>
-    <div v-else class="col-12"><InputText id="ren-input" v-model="mValue" :disabled="disabled" /></div>
+
+    <div v-if="textLabel != null && !readOnly" class="col-12 md:col-10"><InputText id="ren-input" v-model="mValue" :disabled="disabled" /></div>
+    <div v-else-if="!readOnly" class="col-12"><InputText id="ren-input" v-model="mValue" :disabled="disabled" /></div>
+    <div v-else-if="textLabel != null && readOnly" class="col-12 md:col-10">
+      <InputText id="ren-input" v-model="mValue" :disabled="disabled" />
+    </div>
+    <div v-else class="col-12">
+      <InputText id="ren-input" v-model="mValue" :disabled="disabled" />
+    </div>
     <span v-if="invalid">
       <span v-for="(error, index) of errors" id="name-error" :key="index">
         <small class="p-error">{{ error.$message }}</small>
@@ -71,6 +78,7 @@ export default {
     textInfo: { type: String, default: null },
     modelValue: { type: [String, Number], default: null }, //Object,
     disabled: { type: Boolean, default: false },
+    readOnly: { type: Boolean, default: false },
   },
   emits: ["update:modelValue", "submit"],
   data() {

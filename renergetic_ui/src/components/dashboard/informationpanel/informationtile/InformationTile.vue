@@ -2,7 +2,7 @@
   <div :class="tileClass" :style="background">
     <i v-if="tileDataPreview" v-tooltip="$t('view.measurements')" class="pi pi-chart-line data-preview" @click="viewMeasurements()" />
 
-    {{ tile.measurements.map((it) => it.measurement_details) }}
+    <!-- {{ tile.measurements.map((it) => it.measurement_details) }}
     {{ tile.measurements.map((it) => it.type.color) }} -->
     <!-- {{ filter }} -->
     <div

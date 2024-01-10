@@ -28,7 +28,7 @@
 
   <ren-input-wrapper :text-label="null" wrapper-style="max-width: inherit" style="position: sticky; bottom: 0.25rem; margin-right: 4rem">
     <template #content>
-      <Button :label="$t('view.button.add_tile')" style="float: right" icon="pi pi-plus-circle" @click="addTile" />
+      <Button :label="$t('view.button.add_tile')" style="float: left" icon="pi pi-plus-circle" @click="addTile" />
     </template>
   </ren-input-wrapper>
 </template>
