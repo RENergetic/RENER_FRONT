@@ -3,7 +3,7 @@
     <div class="flex flex-column gap-4">
       <h3>Measurements Aggregation</h3>
       <Accordion>
-        <AccordionTab v-for="(aggr, iMA) in configuration.measurementAggregation" :key="aggr">
+        <AccordionTab v-for="(aggr, iMA) in configuration.measurementAggregation" :key="aggr.id">
           <template #header>
             <span class="flex align-items-center gap-2 w-full gap-3">
               <h4 class="m-0">Configuration {{ iMA + 1 }}</h4>
@@ -15,12 +15,12 @@
             <div class="flex flex-row gap-3" v-for="(measurement, i) in aggr.measurements" :key="measurement">
               <Dropdown
                 v-model="aggr.measurements[i]"
-                :options="measurementsData"
+                :options="measurementsData[iMA]"
                 optionValue="id"
                 optionLabel="label"
                 placeholder="Select a Measurement"
                 class="w-full md:w-14rem flex-1"
-                @change="selectedMeasurement(aggr.measurements[i], aggr.measurements)"
+                @change="selectedMeasurement(aggr.measurements[i], aggr.measurements, iMA)"
               />
               <Button
                 v-tooltip="'Delete Measurement'"
@@ -29,9 +29,9 @@
                 @click="deleteMeasurement(iMA, i)"
               />
             </div>
-            <Button class="col-12 md:col-4 mx-auto" :label="'Add Measurement'" @click="addMeasurement(aggr.measurements)" />
+            <Button class="col-12 md:col-4 mx-auto" :label="'Add Measurement'" @click="addMeasurement(aggr.measurements, iMA)" />
             <h4>Outputs</h4>
-            <div class="flex flex-row gap-1" v-for="(output, i) in aggr.outputs" :key="output">
+            <div class="flex flex-row gap-1" v-for="(output, i) in aggr.outputs" :key="output.id">
               <Dropdown
                 v-model="aggr.outputs[i].aggregationType"
                 :options="outputFunctionsParams"
@@ -89,13 +89,13 @@
               </div>
             </template>
           </Column>
-          <Column v-for="column of columns" :key="column" :header="'Asset ' + column" class="">
+          <Column v-for="column of columns" :key="column.id" :header="'Asset ' + column.value" class="">
             <template #body="slotProps">
-              <div class="text-red-500" v-if="getTableData(slotProps.data, column) === null">
+              <div class="text-red-500" v-if="getTableData(slotProps.data, column.value) === null">
                 <span v-if="slotProps.data.required">Required</span>
               </div>
               <div v-else>
-                {{ getTableData(slotProps.data, column) }}
+                {{ getTableData(slotProps.data, column.value) }}
               </div>
             </template>
           </Column>
@@ -118,6 +118,7 @@ export default {
     return {
       mValue: this.modelValue,
       dialog: false,
+      viewKeysGeneration: 1,
       aggregationFunctionsParams: ["sum", "min", "max", "mean"],
       outputFunctionsParams: ["sum", "min", "max", "mean", "last"],
       measurementsData: [],
@@ -142,12 +143,34 @@ export default {
     async open(row) {
       this.assetId = row.id;
 
-      await this.$ren.managementApi.getMeasurementsFromConnectedAssets(this.assetId).then((measurements) => {
-        this.measurementsData = measurements;
-      });
-
-      await this.$ren.managementApi.getMeasurementAggregation(row.id).then((config) => {
+      await this.$ren.managementApi.getMeasurementAggregation(row.id).then(async (config) => {
         console.info(config);
+        if (config.measurementAggregation !== null) {
+          for (const [i, ma] of config.measurementAggregation.entries()) {
+            ma.id = this.viewKeysGeneration;
+            this.viewKeysGeneration += 1;
+            if (ma.outputs !== null) {
+              for (let o of ma.outputs) {
+                o.id = this.viewKeysGeneration;
+                this.viewKeysGeneration += 1;
+              }
+            }
+
+            if (ma.measurements != null) {
+              if (ma.measurements.length === 0) {
+                await this.$ren.managementApi.getMeasurementsFromConnectedAssets(this.assetId).then((measurements) => {
+                  this.measurementsData[i] = measurements;
+                });
+              } else {
+                await this.$ren.managementApi
+                  .getMeasurementsFromConnectedAssetsAndCompatibleWithSelectedMeasurement(this.assetId, ma.measurements[0])
+                  .then((measurements) => {
+                    this.measurementsData[i] = measurements;
+                  });
+              }
+            }
+          }
+        }
         this.configuration = config;
         this.transformAssetValues();
       });
@@ -172,7 +195,6 @@ export default {
       });
     },
     getTableData(in1, in2) {
-      console.log(in1);
       return in1.assetValues[in2];
     },
     transformAssetValues() {
@@ -180,47 +202,60 @@ export default {
       let keys = Object.keys(this.configuration.parametersAggregationConfiguration);
       if (keys.length > 0) {
         for (const [index] of Object.entries(this.configuration.parametersAggregationConfiguration[keys[0]].assetValues)) {
-          this.columns.push(index);
+          this.columns.push({ id: this.viewKeysGeneration, value: index });
+          this.viewKeysGeneration += 1;
         }
       }
     },
     addMAC() {
       this.configuration.measurementAggregation.push({
+        id: this.viewKeysGeneration,
         measurements: [],
         outputs: [],
       });
+      this.viewKeysGeneration += 1;
     },
     deleteMAC(index) {
-      this.configuration.measurementAggregation.splice(this.configuration.measurementAggregation[index], 1);
+      this.configuration.measurementAggregation.splice(index, 1);
     },
-    async addMeasurement(item) {
+    async addMeasurement(item, i) {
       if (item.length === 0) {
         await this.$ren.managementApi.getMeasurementsFromConnectedAssets(this.assetId).then((measurements) => {
-          this.measurementsData = measurements;
+          this.measurementsData[i] = measurements;
         });
       }
       item.push(null);
     },
-    async selectedMeasurement(measurementId, measurements) {
-      if (measurements.length === 1) {
+    async selectedMeasurement(measurementId, measurements, i) {
+      if (measurements.length > 0 && this.measurementsOnlyContainsOneNonNull(measurements)) {
         await this.$ren.managementApi
           .getMeasurementsFromConnectedAssetsAndCompatibleWithSelectedMeasurement(this.assetId, measurementId)
           .then((measurements) => {
-            this.measurementsData = measurements;
+            this.measurementsData[i] = measurements;
           });
       }
     },
+    measurementsOnlyContainsOneNonNull(measurements) {
+      let notNullOne = false;
+      for (const val of measurements) {
+        if (val !== null) {
+          if (notNullOne) {
+            return false;
+          }
+          notNullOne = true;
+        }
+      }
+      return notNullOne;
+    },
     deleteMeasurement(indexMA, index) {
-      this.configuration.measurementAggregation[indexMA].measurements.splice(
-        this.configuration.measurementAggregation[indexMA].measurements[index],
-        1,
-      );
+      this.configuration.measurementAggregation[indexMA].measurements.splice(index, 1);
     },
     addOutput(item) {
-      item.push({ aggregationType: null, timeMin: "", timeMax: "", timeRange: "" });
+      item.push({ aggregationType: null, timeMin: "", timeMax: "", timeRange: "", id: this.viewKeysGeneration });
+      this.viewKeysGeneration += 1;
     },
     deleteOutput(indexMA, index) {
-      this.configuration.measurementAggregation[indexMA].outputs.splice(this.configuration.measurementAggregation[indexMA].outputs[index], 1);
+      this.configuration.measurementAggregation[indexMA].outputs.splice(index, 1);
     },
     async submit() {
       await this.$ren.managementApi.saveMeasurementAggregation(this.assetId, this.configuration).then((config) => {
