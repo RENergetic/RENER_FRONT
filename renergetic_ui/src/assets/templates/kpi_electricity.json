@@ -3,7 +3,7 @@
     "name": "kpi_test_heat",
     "label": "KPI 2",
     "tiles": [
-        { 
+        {
             "name": "kpi_overview",
             "label": "KPI - PCSS & PUT",
             "type": "single",
@@ -20,7 +20,7 @@
                 "y": 0
             }
         },
-        { 
+        {
             "name": "Historical KPI",
             "label": "Historical KPI",
             "type": "single",
@@ -37,7 +37,7 @@
                 "y": 1
             }
         },
-        { 
+        {
             "name": "Real time KPIs",
             "label": "Real time KPIs",
             "type": "single",
@@ -54,13 +54,13 @@
                 "y": 1
             }
         },
-        { 
+        {
             "name": "History chart",
             "label": null,
             "type": "chart",
             "featured": null,
             "measurements": [
-                { 
+                {
                     "name": "ee",
                     "label": "Energy Efficiency(ee)",
                     "type": {
@@ -83,7 +83,7 @@
                     "measurement_details": {},
                     "aggregation_function": "last"
                 },
-                { 
+                {
                     "name": "sres",
                     "label": null,
                     "type": {
@@ -106,7 +106,7 @@
                     "measurement_details": {},
                     "aggregation_function": "last"
                 },
-                { 
+                {
                     "name": "snes",
                     "label": null,
                     "type": {
@@ -129,7 +129,7 @@
                     "measurement_details": {},
                     "aggregation_function": "last"
                 },
-                { 
+                {
                     "name": "ess",
                     "label": null,
                     "type": {
@@ -152,7 +152,7 @@
                     "measurement_details": {},
                     "aggregation_function": "last"
                 },
-                { 
+                {
                     "name": "es",
                     "label": null,
                     "type": {
@@ -175,7 +175,7 @@
                     "measurement_details": {},
                     "aggregation_function": "last"
                 },
-                { 
+                {
                     "name": "ep",
                     "label": null,
                     "type": {
@@ -198,7 +198,7 @@
                     "measurement_details": {},
                     "aggregation_function": "last"
                 },
-                { 
+                {
                     "name": "ep",
                     "label": null,
                     "type": {
@@ -221,7 +221,7 @@
                     "measurement_details": {},
                     "aggregation_function": "last"
                 },
-                { 
+                {
                     "name": "co2",
                     "label": null,
                     "type": {
@@ -253,14 +253,13 @@
                 "y": 2
             }
         },
-        { 
+        {
             "name": "CO₂ Intensivity",
             "label": "CO₂ Intensivity",
             "type": "doughnut",
             "featured": null,
             "measurements": [
                 {
-                   
                     "name": "lrs",
                     "label": "lrs",
                     "type": {
@@ -283,7 +282,7 @@
                     "measurement_details": {},
                     "aggregation_function": "last"
                 },
-                { 
+                {
                     "name": "lns",
                     "label": "lns",
                     "type": {
@@ -306,7 +305,7 @@
                     "measurement_details": {},
                     "aggregation_function": "last"
                 },
-                { 
+                {
                     "name": "co2",
                     "label": null,
                     "type": {
@@ -340,14 +339,14 @@
                 "y": 2
             }
         },
-        { 
+        {
             "name": "Self Sufficiency ",
             "label": "Self Sufficiency ",
             "type": "knob",
             "featured": null,
             "measurements": [
-                { 
-                    "name": "ep",
+                {
+                    "name": "ess",
                     "label": null,
                     "type": {
                         "id": 17,
@@ -378,13 +377,13 @@
                 "y": 2
             }
         },
-        { 
+        {
             "name": "RES vs Non-RES",
             "label": "RES vs Non-RES",
             "type": "doughnut",
             "featured": null,
             "measurements": [
-                { 
+                {
                     "name": "sres",
                     "label": null,
                     "type": {
@@ -407,7 +406,7 @@
                     "measurement_details": {},
                     "aggregation_function": "last"
                 },
-                { 
+                {
                     "name": "snes",
                     "label": null,
                     "type": {
@@ -439,13 +438,13 @@
                 "y": 6
             }
         },
-        { 
+        {
             "name": "Potency",
             "label": "Potency",
             "type": "knob",
             "featured": null,
             "measurements": [
-                { 
+                {
                     "name": "ep",
                     "label": null,
                     "type": {
@@ -477,13 +476,13 @@
                 "y": 6
             }
         },
-        { 
+        {
             "name": "Peak",
             "label": "Peak Value",
             "type": "single",
             "featured": null,
             "measurements": [
-                { 
+                {
                     "name": "peak",
                     "label": null,
                     "type": {

@@ -1,14 +1,16 @@
 <template>
-  <InformationTileItem
-    v-for="(m, idx) in mTile.measurements"
-    :key="m.id"
-    :measurement="m"
-    :idx="idx"
-    :settings="mSettings"
-    :conversion-settings="conversionSettings"
-    :pdata="pdata"
-    @click="onItemClick({ index: idx, item: m })"
-  ></InformationTileItem>
+  <div>
+    <InformationTileItem
+      v-for="(m, idx) in mTile.measurements"
+      :key="m.id"
+      :measurement="m"
+      :idx="idx"
+      :settings="mSettings"
+      :conversion-settings="conversionSettings"
+      :pdata="pdata"
+      @click="onItemClick({ index: idx, item: m })"
+    ></InformationTileItem>
+  </div>
 </template>
 <script>
 import InformationTileItem from "./InformationTileItem.vue";

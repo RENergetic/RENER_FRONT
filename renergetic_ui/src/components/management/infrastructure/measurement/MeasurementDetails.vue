@@ -54,6 +54,7 @@ export default {
     },
     getSetting(key) {
       let mt = this.getType(key);
+      console.error(this.mModel);
       if (!this.mModel[key]) {
         this.mModel[key] = null;
       }

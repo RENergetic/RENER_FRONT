@@ -65,19 +65,68 @@
         />
       </TabPanel>
       <TabPanel :header="$t('view.measurements')">
-        <ren-input-wrapper :text-label="null">
-          <template #content>
-            <Textarea v-model="measurementsJSON" style="width: 100%" :maxlength="10000" rows="15" :cols="80"></Textarea>
-          </template>
-        </ren-input-wrapper>
+        <Button :label="$t('view.button.add_measurement')" icon="pi pi-plus-circle" @click="addMeasurementDialog = true" />
+
+        <ul>
+          <li v-for="m in mModel.measurements" :key="m.id">
+            <div>
+              <!-- <span v-if="m.aggregation_function">{{ m.id }} ({{ $t("enums.measurement_aggregation." + m.aggregation_function) }})</span>
+              <span v-else>{{ m.id }} </span> -->
+              <!-- <span>{{ m.id }} </span> -->
+
+              <ren-input :model-value="$t('model.measurement.id') + ': ' + m.id" disabled :read-only="true" />
+              <span style="width: 15rem">
+                <ren-input-wrapper
+                  :text-label="null"
+                  :inline="true"
+                  :model-value="
+                    $t('model.measurement.measurement_aggregation') + ': ' + $t('enums.measurement_aggregation.' + m.aggregation_function)
+                  "
+                >
+                  <template #content>
+                    <Dropdown
+                      v-model="m.aggregation_function"
+                      style="min-width: 12rem"
+                      :options="aggregations"
+                      :option-label="(opt) => $t(`enums.measurement_aggregation.${opt}`)"
+                      :placeholder="$t('view.select_measurement_aggregation')"
+                      @change="functionChange"
+                    />
+                  </template>
+                </ren-input-wrapper>
+              </span>
+              <!-- @change="filterCallback()" -->
+              <Button
+                :key="m.tooltip"
+                v-tooltip="m.tooltip"
+                icon="pi pi-question-circle"
+                class="p-button-rounded"
+                @mouseover="downloadMeasurementDetails(m)"
+                @click="showMeasurement(m)"
+              />
+              <Button v-tooltip="$t('view.delete')" icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteMeasurement(m)" />
+
+              <!-- $t('view.view_json') click more details -->
+            </div>
+          </li>
+        </ul>
       </TabPanel>
     </TabView>
   </div>
+  <!-- v-model:visible="jsonMesurementDialog" v-model="selectedMesurement" -->
+  <MeasurementDialog ref="mesurementDialog" :reload="true" />
+  <Dialog v-model:visible="addMeasurementDialog" :style="{ width: '100vw', height: '100vh', maxHeight: '100%' }" :modal="true" :maximized="true">
+    <Card class="ren-page-content">
+      <template #content>
+        <MeasurementSelect @select="addMeasurement" />
+      </template>
+    </Card>
+  </Dialog>
 </template>
 
 <script>
+import { MeasurementAggregation } from "@/plugins/model/Enums.js";
 export function cleanTileStructure(mTile) {
-  // let mTile = JSON.parse(JSON.stringify(tile));
   if (mTile.measurements) {
     mTile.measurements = mTile.measurements
       .map((m) => {
@@ -108,8 +157,11 @@ export function cleanTileStructure(mTile) {
 }
 import { useVuelidate } from "@vuelidate/core";
 import { maxLength, required, minLength } from "@/plugins/validators.js";
+import MeasurementDialog from "@/components/management/infrastructure/measurement/MeasurementDialog.vue";
+import MeasurementSelect from "@/components/management/infrastructure/measurement/MeasurementSelect.vue";
 export default {
   name: "InformationPanelTileForm",
+  components: { MeasurementDialog, MeasurementSelect },
   props: {
     modelValue: {
       type: Object,
@@ -122,6 +174,10 @@ export default {
     let tileStructure = this.modelValue;
     cleanTileStructure(tileStructure);
     return {
+      // jsonMesurementDialog: false,
+      // selectedMesurement: null,
+      aggregations: MeasurementAggregation.keys(),
+      addMeasurementDialog: false,
       mModel: tileStructure,
       // mPanelStructure: null,
       measurementsJSON: JSON.stringify(tileStructure.measurements, null, "\t"),
@@ -155,7 +211,7 @@ export default {
     },
     mModel: {
       handler: function (mModel) {
-        console.info(mModel);
+        // console.info(mModel);
         this.$emit("update:modelValue", mModel);
       },
       deep: true,
@@ -164,13 +220,44 @@ export default {
   },
   async mounted() {},
   methods: {
-    // async infer( ) {
-    //     return await this.$ren.dashboardApi.inferTileMeasurements(this.mModel).then((inferredTile) => {
-    //       return cleanTileStructure(inferredPanel);
-    //     });
-    //   }
-    //   return getCleanPanelStructure(panel);
-    // },
+    async downloadMeasurementDetails(m) {
+      if (!m.name)
+        await this.$ren.managementApi.getMeasurement(m.id).then((mm) => {
+          m.name = mm.name;
+          m.label = mm.label;
+          m.tooltip = mm.label ? `${mm.label} (${mm.name})` : mm.name;
+        });
+      else {
+        m.tooltip = m.label ? `${m.label} (${m.name})` : m.name;
+      }
+      // this.tooltip = m.name;
+    },
+    showMeasurement(m) {
+      this.$refs.mesurementDialog.show(m);
+      // this.jsonMesurementDialog = true;
+    },
+    async deleteMeasurement(m) {
+      await this.downloadMeasurementDetails(m);
+      await this.deleteConfirm({
+        message: this.$t("view.delete_tile_measurement", { label: m.label ? m.label : m.name }),
+        action: async () => {
+          this.mModel.measurements = this.mModel.measurements.filter((it) => it.id != m.id);
+          this.$emit("update:modelValue", this.mModel);
+        },
+      });
+    },
+    functionChange() {
+      this.$emit("update:modelValue", this.mModel);
+    },
+    async addMeasurement(m) {
+      var exists = this.mModel.measurements.filter((it) => it.id == m.id).length > 0;
+      if (!exists) {
+        m.aggregation_function = MeasurementAggregation.last;
+        this.mModel.measurements.push(m);
+        this.$emit("update:modelValue", this.mModel);
+      }
+      this.addMeasurementDialog = false;
+    },
   },
 };
 </script>

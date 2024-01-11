@@ -2,13 +2,12 @@
   <!-- {{ $store.getters["view/measurementTypes"] }}  -->
   <!-- {{ $store.getters["settings/filter"] }} -->
   <!-- {{ pdata }} -->
-  <!-- refreshTime: {{ $store.getters["settings/panel"].refreshTime }} -->
-  <!-- {{ $store.getters["settings/panel"] }} -->
   <!-- panel: {{ panel.name }}{{ panel.id }} {{ assetId }} -->
   <!-- {{ $store.getters["view/panelAsset"](panel.id, assetId) }} -->
   <RenSpinner ref="spinner" :lock="true" style="width: 100%; min-height: 15rem">
     <template #content>
       <!-- {{ mPanel }} -->
+      <!-- @edit="onEdit" -->
       <InformationPanel
         v-if="mPanel"
         :edit="editMode"
@@ -18,12 +17,11 @@
         :settings="panelSettings"
         :asset-id="assetId"
         :filter="mFilter"
-        @edit="onEdit"
         @timeseries-update="onTimeseriesUpdate"
       />
     </template>
   </RenSpinner>
-  <Dialog v-model:visible="editDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+  <!-- <Dialog v-model:visible="editDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <div class="field grid">
       <label for="assetType" class="col-fixed" style="width: 5rem">
         {{ $t("model.information_tile.type") }}
@@ -46,11 +44,11 @@
       <Button :label="$t('view.button.submit')" icon="pi pi-plus" @click="saveGrid" />
     </div>
     <Dialog v-model:visible="manageSensorsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-      <!-- {{ selectedTile.tile.measurements }} -->
+
       component to add measurements to the tile
-      <!-- <ManageSensors v-model="selectedItem.tile.measurements"></ManageSensors> -->
+
     </Dialog>
-  </Dialog>
+  </Dialog> -->
 </template>
 <script>
 // import NotificationList from "@/components/management/notification/NotificationList.vue";
@@ -120,7 +118,7 @@ export default {
       mFilter: this.filter ? this.filter : this.$store.getters["settings/parsedFilter"](this.filterKey),
       grid: null,
       notificationDialog: false,
-      editDialog: false,
+      // editDialog: false,
       selectedItem: null,
       mPanel: null,
       manageSensorsDialog: false,
@@ -153,8 +151,8 @@ export default {
 
         if (this.autoReload) {
           if (this.loopRunner != null) this.loopRunner.stop();
-          let refreshTime = this.$store.getters["settings/panel"].refreshTime ? this.$store.getters["settings/panel"].refreshTime : 60000;
-
+          // this.$store.getters["settings/panel"].refreshTime ? this.$store.getters["settings/panel"].refreshTime : 60000;
+          let refreshTime = this.panelSettings.refreshTime;
           this.loopRunner = LoopRunner.init(this.loadData, refreshTime);
           this.loopRunner.start();
         } else {
@@ -193,7 +191,8 @@ export default {
       await _this.loadData();
     };
     this.deferredFilter = new DeferredFunction(f, 1000);
-    let refreshTime = this.$store.getters["settings/panel"].refreshTime ? this.$store.getters["settings/panel"].refreshTime : 60000;
+    // this.$store.getters["settings/panel"].refreshTime ? this.$store.getters["settings/panel"].refreshTime : 60000;
+    let refreshTime = this.panelSettings.refreshTime;
 
     if (refreshTime > 0 && this.autoReload) {
       this.loopRunner = LoopRunner.init(this.loadData, refreshTime);

@@ -46,7 +46,7 @@ export default {
     };
   },
   async created() {
-    this.measurementListAbstracMeter = await this.$ren.managementApi.listMeasurement();
+    this.measurementListAbstracMeter = await this.$ren.managementApi.getAllMeasurements();
     //console.log(this.measurementListAbstracMeter);
   },
   methods: {
@@ -69,7 +69,7 @@ export default {
         this.$emitter.emit("information", { message: this.$t("information.measurement_created") });
       });
       this.addDialog = false;
-      this.measurementListAbstracMeter = await this.$ren.managementApi.listMeasurement();
+      this.measurementListAbstracMeter = await this.$ren.managementApi.getAllMeasurements();
     },
   },
   /*

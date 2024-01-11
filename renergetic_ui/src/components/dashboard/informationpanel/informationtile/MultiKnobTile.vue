@@ -113,7 +113,7 @@ export default {
       if (!(this.pdata && this.pdata.current)) {
         return {};
       }
-
+      console.info(this.pdata);
       let data = null;
       // console.info(this.pdata);
       // if (!this.mSettings.panel.relativeValues) {

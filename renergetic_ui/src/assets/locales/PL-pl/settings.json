@@ -18,12 +18,12 @@
   "hidden": "Hidden",
   "visible": "Visible",
   "feedback": "Feedback",
-  "group_by_direction": "Group by measurement's direction",
-  "group_by_direction_description": "Group by flow direction: In or Out ",
-  "group_by_domain": "Group by measurement's domain",
-  "group_by_domain_description": "Group by measurement's domain, for instance: heat, electricity",
-  "group_by_measurement": "Group by measurement name",
-  "group_by_measurement_description": "Group by measurement name, for instance: current_power, energy, inlet_temperature, air_temperature",
+  "agg_by_direction": "Agreguj po kierunku przepływu",
+  "agg_by_direction_description": "Agreguj po kierunku przepływu - wejście/wyjście",
+  "agg_by_domain": "Agreguj po domenie",
+  "agg_by_domain_description": "Agreguj po domenie: ciepło, prąd",
+  "agg_by_measurement": "Agreguj po nazwie parametru",
+  "agg_by_measurement_description": "Agreguj po nazwie parametru, np: current_power, energy, inlet_temperature, air_temperature",
   "ignore_override_mode": "Ignore panel's override settings",
   "ignore_override_mode_description": "Ignore panel's predefined settings policy.",
   "tile_legend_visibility": "Tile's legend",
@@ -50,7 +50,7 @@
   "measurement_details": {
     "color": "Color",
     "cumulative": "Is timeseries cumulative",
-    "background":"Background color"
+    "background": "Background color"
   },
   "time_filters": {
     "current_day": "Current day",
@@ -59,7 +59,7 @@
     "last_week": "Last week",
     "current_year": "Current year",
     "previous_year": "Previous year",
-    "custom_interval":"Custom interval"
+    "custom_interval": "Custom interval"
   },
   "measurement_type": {
     "power": "Power",

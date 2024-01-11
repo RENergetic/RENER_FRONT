@@ -1,7 +1,5 @@
 <template>
-  <!-- {{ tile }} -->
   <div class="flex flex-column justify-content-center" style="height: 100%">
-    <!-- <div style="display: flex; flex-direction: column; align-items: flex-end"> -->
     <div class="flex flex-none flex-column justify-content-center">
       <h3 style="text-align: center">{{ mSettings.tile.label }}</h3>
       <!-- v-if="legend"-->
@@ -78,9 +76,11 @@ export default {
         let sum = data.reduce((partialSum, a) => partialSum + a, 0);
         // console.info(1.0 - sum);
         // console.info(sum);
-        data.push(1.0 - sum);
-        backgroundColor.push("#90A4AE");
-        labels.push("");
+        if (sum < 0.99999) {
+          data.push(1.0 - sum);
+          backgroundColor.push("#90A4AE");
+          labels.push("");
+        }
       }
       return {
         labels: labels,

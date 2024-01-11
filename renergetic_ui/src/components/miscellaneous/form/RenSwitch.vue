@@ -26,7 +26,7 @@ export default {
       type: Array,
       default: null,
     },
-    modelValue: { type: Object, default: null },
+    modelValue: { type: [String, Object, Number], default: null },
     disabled: { type: Boolean, default: false },
   },
   emits: ["update:modelValue"],
