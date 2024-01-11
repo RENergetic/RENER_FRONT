@@ -89,6 +89,7 @@
     "structure": "Structure",
     "priority": "Priority",
     "tile": {
+      "id": "Id",
       "name": "Name",
       "label": "Label",
       "type": "Type",

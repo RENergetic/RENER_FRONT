@@ -157,7 +157,7 @@ export default {
         this.setMeasurementLabels(this.mPanel);
         this.reloadGrid();
       },
-      deep: true,
+      deep: false,
     },
     pdata: {
       handler: function (newValue) {

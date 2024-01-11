@@ -15,7 +15,7 @@
         <font-awesome-icon :icon="icon" />
       </span>
     </div>
-    <div class="flex flex-grow-1 flex-column align-items-start justify-content-center message" style="font-size: 0.85rem">
+    <div class="flex flex-grow-1 flex-column align-items-start justify-content-center message" style="font-size: 0.85rem; padding: 0.33rem">
       <div class="flex flex-grow-1 align-items-center justify-content-center" style="width: 100%">
         <div v-tooltip="labelTooltip" class="flex flex-grow-1 message align-items-start">{{ label }}</div>
         <div class="flex flex-none message align-items-end">{{ $ren.utils.roundValue(value) }} {{ unit }}</div>

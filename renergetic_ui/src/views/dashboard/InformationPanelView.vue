@@ -56,15 +56,10 @@ import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue
 import BasicFilterSettings from "@/components/miscellaneous/settings/BasicFilterSettings.vue";
 import ParsedDateFilter from "@/components/miscellaneous/settings/ParsedDateFilter.vue";
 
+import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
 export default {
   name: "InformationPanelView",
-  components: {
-    InformationPanelWrapper,
-    DotMenu,
-    PanelSettings,
-    ParsedDateFilter,
-    BasicFilterSettings,
-  },
+  components: { ConversionSettings, InformationPanelWrapper, DotMenu, PanelSettings, ParsedDateFilter, BasicFilterSettings },
   data() {
     return {
       panel: null,

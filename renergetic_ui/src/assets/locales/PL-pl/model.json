@@ -89,6 +89,7 @@
     "structure": "Structure",
     "priority": "Priorytet",
     "tile": {
+      "id": "Id",
       "name": "Nazwa",
       "label": "Etykieta",
       "type": "Type",
