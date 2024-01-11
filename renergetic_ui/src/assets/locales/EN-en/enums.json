@@ -76,7 +76,9 @@
     "multi_knob": "Multi knob chart",
     "doughnut": "Doughnut chart",
     "list": "List",
-    "single": "Single"
+    "single": "Single",
+    "panel": "Panel",
+    "multi_doughnut": "Multi doughnut chart"
   },
   "heatmap_type": {
     "default": "Normal",

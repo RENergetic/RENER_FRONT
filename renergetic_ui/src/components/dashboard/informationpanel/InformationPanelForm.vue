@@ -13,6 +13,7 @@
           />
           <!-- :key="mModel ? mModel.label : ''" -->
           <ren-input
+            :key="mModel.label"
             v-model="mModel.label"
             :text-info="mModel.is_template ? $t('view.panel_label_info', ['{asset}']) : null"
             :text-label="'model.information_panel.label'"
@@ -31,6 +32,9 @@
             :invalid="v$.mModel.priority.$invalid"
             :errors="v$.mModel.priority.$silentErrors"
           />
+        </AccordionTab>
+        <AccordionTab :key="mModel.props" :header="$t('view.information_panel_props')">
+          <Settings :schema="schema" :settings="mModel.props"></Settings>
         </AccordionTab>
         <!-- {{ modelValue }} -->
 
@@ -146,25 +150,29 @@ function getCleanPanelStructure(panel /*, isTemplate*/) {
 import FileUpload from "primevue/fileupload";
 
 import InformationPanelTilesWrapper from "./InformationPanelTilesWrapper.vue";
+import { panelSchema } from "@/plugins/model/settings.js";
 import { useVuelidate } from "@vuelidate/core";
 import { maxLength, required, minLength, minValue, maxValue } from "@/plugins/validators.js";
 import InfoIcon from "../../miscellaneous/InfoIcon.vue";
+import Settings from "@/components/miscellaneous/settings/Settings.vue";
 const ASSET_TAG = "{asset}";
 export default {
   name: "InformationPanelForm",
-  components: { InfoIcon, FileUpload, InformationPanelTilesWrapper },
+  components: { InfoIcon, FileUpload, InformationPanelTilesWrapper, Settings },
   props: {
     modelValue: {
       type: Object,
-      default: () => ({ tiles: [] }),
+      default: () => ({ tiles: [], props: {} }),
     },
   },
   emits: ["update:modelValue", "cancel"],
   setup: () => ({ v$: useVuelidate() }),
   data() {
-    let mModel = this.modelValue ? this.modelValue : { tiles: [] };
+    let mModel = this.modelValue ? this.modelValue : { tiles: [], props: {} };
+    mModel.props = mModel.props ? mModel.props : {};
     let panelStructure = getCleanPanelStructure(mModel);
     return {
+      schema: panelSchema,
       inferMeasurements: false,
       mModel: mModel,
       addMode: this.modelValue == null || this.modelValue.name == null,
@@ -218,18 +226,30 @@ export default {
         this.labelWarning = null;
       }
     },
+    // mModel: {
+    //   handler: function () {
+    //     this;
+    //   },
+    //   deep: true,
+    // },
   },
   async mounted() {},
   methods: {
     onTemplateSelect() {
       this.inferMeasurements = true;
     },
+    updateModel(submittedPanel) {
+      if (submittedPanel.label) this.mModel.label = submittedPanel.label;
+      if (submittedPanel.props) this.mModel.props = { ...this.mModel.props, ...submittedPanel.props };
+    },
     submitStructure() {
       let submittedPanel = JSON.parse(this.mPanelStructureJSON);
       this.panelStructure = getCleanPanelStructure(submittedPanel);
+      this.updateModel(this.panelStructure);
       this.refreshTiles = !this.refreshTiles;
     },
     onSelect() {
+      //on file select
       if (this.$refs.FileUpload !== undefined) this.hasFiles = this.$refs.FileUpload.files.length > 0;
       else this.hasFiles = false;
     },
@@ -244,12 +264,11 @@ export default {
       } else {
         this.panelStructure = getCleanPanelStructure(submittedPanel);
       }
+      this.updateModel(this.panelStructure);
       this.refreshTiles = !this.refreshTiles;
       this.importPanelDialog = false;
     },
     async onFileUpload(evt) {
-      // this.submittedPanel = null;
-      // console.info(evt.files);
       if (evt.files.length == 1) {
         let submittedPanel = await this.$ren.utils.readJSONFile(evt.files[0]);
         if (submittedPanel.name !== undefined) {
@@ -258,8 +277,10 @@ export default {
         if (submittedPanel.id !== undefined) {
           delete submittedPanel.id;
         }
-        console.error(submittedPanel);
+        // console.error(submittedPanel);
         submittedPanel = getCleanPanelStructure(submittedPanel);
+        this.updateModel(submittedPanel);
+
         this.submittedPanelJSON = JSON.stringify(submittedPanel, null, "\t");
       }
       // await this._submit(event.files);
@@ -272,24 +293,15 @@ export default {
         });
       }
       return getCleanPanelStructure(panel);
-
-      // let panel = JSON.parse(this.mPanelStructureText);
-      // panel.name = this.mModel.name;
-      // panel.id = this.mModel.id;
-      // panel.label = this.mModel.label ? this.mModel.label : this.panel.label;
-      // this.mModel = panel;
-      // this.$emit("update:modelValue", this.mModel);
     },
     submit() {
       if (this.mModel.label && !this.mModel.label.includes(ASSET_TAG) && this.mModel.is_template) {
         this.mModel.label = `${this.mModel.label} - (${ASSET_TAG})`;
       }
-
-      // let panel = JSON.parse(this.mPanelStructureText);
-
       this.panelStructure.name = this.mModel.name;
+      // this.panelStructure.props = { ...this.panelStructure.props, ...this.mModel.props };
       this.panelStructure.id = this.mModel.id;
-      this.panelStructure.label = this.mModel.label ? this.mModel.label : this.panelStructure.label;
+      // this.panelStructure.label = this.mModel.label ? this.mModel.label : this.panelStructure.label;
       this.mModel = this.panelStructure;
       this.$emit("update:modelValue", this.mModel);
     },

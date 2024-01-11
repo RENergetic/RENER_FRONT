@@ -15,7 +15,7 @@
         <font-awesome-icon :icon="icon" />
       </span>
     </div>
-    <div class="flex flex-grow-1 flex-column align-items-start justify-content-center message" style="font-size: 0.85rem">
+    <div class="flex flex-grow-1 flex-column align-items-start justify-content-center message" style="font-size: 0.85rem; padding: 0.33rem">
       <div class="flex flex-grow-1 align-items-center justify-content-center" style="width: 100%">
         <div v-tooltip="labelTooltip" class="flex flex-grow-1 message align-items-start">{{ label }}</div>
         <div class="flex flex-none message align-items-end">{{ $ren.utils.roundValue(value) }} {{ unit }}</div>
@@ -85,21 +85,19 @@ export default {
     },
 
     value: function () {
-      //todo support other aggregation functions
-      try {
-        if (this.mSettings.panel.relativeValues && this.measurement.type.base_unit != "%") {
-          return (
-            (this.pdata.current[this.measurement.aggregation_function][this.measurement.id] /
-              this.pdata.max[this.measurement.aggregation_function][this.measurement.id]) *
-            100.0
-          );
-        }
-        return this.pdata.current[this.measurement.aggregation_function][this.measurement.id];
-      } catch (e) {
-        return null;
-      }
-      // this.pdata.current.last[m.id];
-      // return this.pdata ? this.pdata[this.tileItem.id] : null;
+      return this.$ren.utils.getConvertedValue(this.measurement, this.pdata, this.mSettings);
+      // try {
+      //   if (this.mSettings.panel.relativeValues && this.measurement.type.base_unit != "%") {
+      //     return (
+      //       (.current[this.measurement.aggregation_function][this.measurement.id] /
+      //         this.pdata.max[this.measurement.aggregation_function][this.measurement.id]) *
+      //       100.0
+      //     );
+      //   }
+      //   return this.pdata.current[this.measurement.aggregation_function][this.measurement.id];
+      // } catch (e) {
+      //   return null;
+      // }
     },
     assetStr: function () {
       let m = this.measurement;

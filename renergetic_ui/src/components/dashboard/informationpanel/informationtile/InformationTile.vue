@@ -1,19 +1,10 @@
 <template>
-  <!-- {{ mSettings }} -->
   <div :class="tileClass" :style="background">
-    <i
-      v-if="tilePreview && tile.measurements.length > 0"
-      v-tooltip="$t('view.measurements')"
-      class="pi pi-chart-line"
-      style="font-size: 1.5rem; position: absolute; top: 0.5rem; right: 0.5rem"
-      @click="viewMeasurements()"
-    />
-    <!-- {{ tile.props }}
-    {{ tile.measurements.map((it) => it.measurement_details) }}
+    <i v-if="tileDataPreview" v-tooltip="$t('view.measurements')" class="pi pi-chart-line data-preview" @click="viewMeasurements()" />
+
+    <!-- {{ tile.measurements.map((it) => it.measurement_details) }}
     {{ tile.measurements.map((it) => it.type.color) }} -->
     <!-- {{ filter }} -->
-    <!-- {{ pdata }} -->
-    <!-- todo: group by sensor_name -->
     <div
       v-if="(titleVisible || tile.measurements.length == 0) && tile.label"
       class="flex flex-column justify-content-center"
@@ -164,12 +155,20 @@ export default {
   },
   emits: ["edit", "notification", "timeseries-update", "preview-tile"],
   data() {
+    console.info(this.settings);
     return {
       conversionSettings: this.$store.getters["settings/conversion"],
       mSettings: { tile: validateTileSettings(this.tile, this.settings, this), panel: this.settings },
     };
   },
   computed: {
+    tileDataPreview: function () {
+      try {
+        return this.tilePreview && this.tile.measurements.length > 0;
+      } catch {
+        return false;
+      }
+    },
     background: function () {
       return `background-color:${this.mSettings.tile.background_mask}`;
     },
@@ -234,5 +233,11 @@ export default {
   stroke: $ren-primary-border-color;
   stroke-width: 10;
   stroke-linejoin: round;
+}
+.data-preview {
+  font-size: 1.5rem;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
 }
 </style>
