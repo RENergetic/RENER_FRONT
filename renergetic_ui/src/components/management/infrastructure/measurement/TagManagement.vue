@@ -1,22 +1,20 @@
 <template>
-  <!--  TODO: edit measuremet tpes -->
   <InfoIcon :show-icon="false">
     <template #content>
       <!-- some info -->
     </template>
   </InfoIcon>
   <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 100%; width: 100%">
-    <!--  max-width: 80vw -->
-
     <template #content>
       <Card>
         <template #content>
+          <Button :label="$t('view.button.add_new_tag')" icon="pi pi-plus-circle" @click="newTagDialog = true" />
           <DataTable :value="tagList" paginator :rows="15">
-            <!-- <Column field="id" :header="$t('model.measurement_type.id')">
-          <template #body="item">
-            <span> ({{ item.data.id }}) {{ item.data.label ? `${item.data.label} (${item.data.name})` : item.data.name }}</span>
-          </template>
-        </Column> -->
+            <Column field="id" :header="$t('model.measurement_type.id')">
+              <template #body="item">
+                <span> ({{ item.data.id }}) {{ item.data.label ? `${item.data.label} (${item.data.name})` : item.data.name }}</span>
+              </template>
+            </Column>
             <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.tag.' + col)"></Column>
 
             <Column field="delete" :show-filter-menu="false">
@@ -31,21 +29,29 @@
       </Card>
     </template>
   </RenSpinner>
+  <Dialog v-model:visible="newTagDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <!-- {{ availableTags }}
+    {{ availableTagsValues }} -->
+    <tag-form :tags="availableTags" @update:model-value="onNewTag" @cancel="tagCancel" />
+  </Dialog>
 </template>
 
 <script>
 import InfoIcon from "../../../miscellaneous/InfoIcon.vue";
+import TagForm from "./TagForm.vue";
 export default {
   name: "TagManagement",
-  components: { InfoIcon },
+  components: { InfoIcon, TagForm },
   props: {},
-  emits: ["onDelete"],
+  emits: ["onDelete", "onCreate"],
   data() {
     return {
-      // measurementAdd: false,
+      newTagDialog: false,
       tagList: [],
       columns: ["key", "value"],
       selectedRow: null,
+      availableTags: null,
+      availableTagsValues: null,
       // measurementEditDialog: false,
       // measurementDetailsDialog: false,
     };
@@ -76,6 +82,25 @@ export default {
     },
     async loadData() {
       this.tagList = await this.$ren.managementApi.listTags();
+      var availableTagsValues = {};
+      var availableTags = [];
+      for (let t of this.tagList) {
+        if (availableTagsValues[t.key]) {
+          availableTagsValues[t.key].push(t.value);
+        } else {
+          availableTagsValues[t.key] = [];
+          availableTags.push(t.key);
+          availableTagsValues[t.key].push(t.value);
+        }
+      }
+      this.availableTags = availableTags;
+      this.availableTagsValues = availableTagsValues;
+    },
+    async onNewTag(evt) {
+      let newTag = await this.$ren.managementApi.createNewTag(evt);
+      this.$emit("onCreate", newTag);
+      this.newTagDialog = false;
+      await this.loadData();
     },
   },
 };
