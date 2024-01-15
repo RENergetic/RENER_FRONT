@@ -89,6 +89,14 @@ const AssetConnectionType = Object.freeze({
   OWNER: "owner",
   RESIDENT: "resident",
   VISITOR: "visitor",
+  VIRTUAL_ASSET_GROUPING: "va_grouping",
+  FIXED_GENERATION_IN: "fixed_generation_in",
+  FIXED_LOAD_IN: "fixed_load_in",
+  FLEXIBLE_GENERATION_IN: "flexible_generation_in",
+  FLEXIBLE_LOAD_IN: "flexible_load_in",
+  STORAGE_IN: "storage_in",
+  HEATPUMP_FROM: "heat_pump_from",
+  HEATPUMP_TO: "heat_pump_to"
 });
 
 const RenRoles = init({

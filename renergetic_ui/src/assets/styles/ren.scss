@@ -118,7 +118,11 @@ body {
   .col-12.ren-inputwrapper > * {
     max-width: 80vw;
   }
-
+  .p-inputwrapper.p-dropdown,
+  .p-inputwrapper.p-autocomplete {
+    width: $inputwidth !important;
+    max-width: $maxInputwidth;
+  }
   .p-inputwrapper {
     width: $inputwidth !important;
     max-width: $maxInputwidth;
