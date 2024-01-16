@@ -35,6 +35,7 @@
   "measurement_chart_title": "Data for: {label}",
   "current_page": "Current Page {page}",
   "current_request": "Current request",
+  "current_request_null": "There is no heat demand request",
   "condition_meter_placeholder": "Condition to calculate the meter",
   "connected_assets": "Connected Assets",
   "connection_type": "Connection Type",

@@ -3,6 +3,7 @@
     <InfoIcon :show-icon="true">
       <template #content>
         <HDRRequestForm v-if="currentRequest" v-model="currentRequest" :disabled="true" />
+        <span v-else> {{ $t("view.current_request_null") }}</span>
       </template>
     </InfoIcon>
     <Card v-if="currentRequest" :key="currentRequest" class="ren">
@@ -16,6 +17,7 @@
         <ren-input v-model="currentRequest.msg" :disabled="true" />
       </template>
     </Card>
+    <span v-else> {{ $t("view.current_request_null") }}</span>
 
     <!-- {{ currentRequest }} -->
     <Button :label="$t('view.button.set_hdr')" @click="hdrRequestDialog = true" />

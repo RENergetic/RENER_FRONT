@@ -35,6 +35,7 @@
   "measurement_chart_title": "Dane dla: {label}",
   "current_page": "Aktualna strona: {page}",
   "current_request": "Aktualne żądanie",
+  "current_request_null": "Brak żądań",
   "condition_meter_placeholder": "Condition to calculate the meter",
   "connected_assets": "Connected Assets",
   "connection_type": "Connection Type",
