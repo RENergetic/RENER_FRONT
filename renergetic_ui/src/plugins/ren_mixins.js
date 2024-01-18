@@ -1,3 +1,4 @@
+import { RenRoles } from "@/plugins/model/Enums.js";
 export default {
   computed: {
     unitLabel: function () {
@@ -93,6 +94,58 @@ export default {
         }
       }
       return false;
+    },
+
+    /**
+     * 
+     * @param {*} settings - user settings 
+     * @param {*} panel - panel model
+     * @returns  final settings for the panel 
+     */
+    computePanelSettings(settings, panel) {
+      let mSettings = {};
+      if (settings == null) {
+        mSettings = {};
+      } else {
+        mSettings = settings;
+      }
+      if (panel.props) {
+        let props = panel.props;
+        let overrideMode = props.overrideMode;
+        let role = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
+        if (role & this.$store.getters["auth/renRole"] && mSettings.ignoreOverrideMode) {
+          // alert("");
+          mSettings = { ...panel.props, ...mSettings };
+        } else
+          switch (overrideMode) {
+            case "fixed":
+              mSettings = panel.props;
+              break;
+            case "override":
+              mSettings = { ...panel.props, ...mSettings };
+              break;
+            case "default":
+              mSettings = settings;
+              break;
+            default:
+              mSettings = { ...panel.props };
+
+              for (let k in settings) {
+                if (!(k in mSettings) || mSettings[k] == null) {
+                  mSettings[k] = settings[k];
+                }
+              }
+              break;
+          }
+      }
+      // mSettings.legend = mSettings.legend != null ? mSettings.legend : true;
+      // mSettings.legend = mSettings.legend != null ? mSettings.legend : null;
+      mSettings.asset_id = this.assetId;
+      // settings.title = settings.title != null ? settings.title : true;
+      // settings.color = settings.color != null ? settings.color : "#d6ebff";
+      let size = mSettings != null && mSettings.fontSize != null ? mSettings.fontSize : `${2.0}rem`;
+      mSettings.fontSize = size;
+      return mSettings;
     }
   }
 };

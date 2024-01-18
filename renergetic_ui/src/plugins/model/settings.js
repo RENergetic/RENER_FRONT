@@ -5,7 +5,7 @@ var panelSchema = [
   {
     label: $t("settings.panel_reload_time_ms"),
     description: $t("settings.panel_reload_time_ms_description"),
-    type: Number,
+    type: "Number",
     defaultValue: 60000,
     key: "refreshTime",
   },
@@ -16,7 +16,7 @@ var panelSchema = [
       true: $t("settings.enabled"),
       false: $t("settings.disabled"),
     },
-    type: Boolean,
+    type: "Boolean",
     key: "relativeValues",
   },
   {
@@ -26,7 +26,7 @@ var panelSchema = [
       true: $t("settings.enabled"),
       false: $t("settings.disabled"),
     },
-    type: Boolean,
+    type: "Boolean",
     key: "groupByDomain",
   },
   {
@@ -36,7 +36,7 @@ var panelSchema = [
       true: $t("settings.enabled"),
       false: $t("settings.disabled"),
     },
-    type: Boolean,
+    type: "Boolean",
     key: "groupByMeasurement",
   },
   {
@@ -46,7 +46,7 @@ var panelSchema = [
       true: $t("settings.enabled"),
       false: $t("settings.disabled"),
     },
-    type: Boolean,
+    type: "Boolean",
     key: "groupByDirection",
   },
   {
@@ -56,7 +56,7 @@ var panelSchema = [
       true: $t("settings.enabled"),
       false: $t("settings.disabled"),
     },
-    type: Boolean,
+    type: "Boolean",
     key: "legend",
   },
   {
@@ -66,7 +66,7 @@ var panelSchema = [
       true: $t("settings.visible"),
       false: $t("settings.hidden"),
     },
-    type: Boolean,
+    type: "Boolean",
     key: "demandVisibility",
   },
   {
@@ -75,7 +75,7 @@ var panelSchema = [
       true: $t("settings.visible"),
       false: $t("settings.hidden"),
     },
-    type: Boolean,
+    type: "Boolean",
     key: "notificationVisibility",
   },
   // {

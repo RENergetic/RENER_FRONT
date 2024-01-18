@@ -15,7 +15,32 @@
     </div>
   </div>
   <RenSettingsDialog ref="settingsDialog">
-    <template #settings><PanelSettings @update="reloadSettings()"></PanelSettings></template>
+    <template #settings>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_effective_settings") }}:</span>
+        </template>
+        <template #content>
+          <Settings :schema="schema" :settings="computePanelSettings(settings, panel)" :disabled="true" />
+        </template>
+      </Card>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_settings") }}:</span>
+        </template>
+        <template #content>
+          <Settings :schema="schema" :settings="panel.props" :disabled="true" />
+        </template>
+      </Card>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_user_settings") }}:</span>
+        </template>
+        <template #content>
+          <PanelSettings @update="reloadSettings()"> </PanelSettings>
+        </template>
+      </Card>
+    </template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="conversionSettingsDialog">
     <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
@@ -30,7 +55,9 @@ import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
 import FilterSettings from "@/components/miscellaneous/settings/FilterSettings.vue";
+import Settings from "@/components/miscellaneous/settings/Settings.vue";
 import ParsedDateFilter from "@/components/miscellaneous/settings/ParsedDateFilter.vue";
+import { panelSchema } from "@/plugins/model/settings.js";
 export default {
   name: "PublicDashboardView",
   components: {
@@ -39,11 +66,13 @@ export default {
     ParsedDateFilter,
     DotMenu,
     PanelSettings,
+    Settings,
     // NotificationList,
     ConversionSettings,
   },
   data() {
     return {
+      schema: panelSchema,
       panel: null,
       // locked: false,
       notifications: [],

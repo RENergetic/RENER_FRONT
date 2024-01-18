@@ -35,8 +35,36 @@
     <template #settings><HomeSettings @update="reloadSettings()"></HomeSettings></template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="panelSettingsDialog">
-    <template #settings><PanelSettings @update="reloadPanelSettings()"></PanelSettings></template>
+    <template #settings>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_effective_settings") }}:</span>
+        </template>
+        <template #content>
+          <Settings :schema="schema" :settings="computePanelSettings(settings, panel)" :disabled="true" />
+        </template>
+      </Card>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_settings") }}:</span>
+        </template>
+        <template #content>
+          <Settings :schema="schema" :settings="panel.props" :disabled="true" />
+        </template>
+      </Card>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_user_settings") }}:</span>
+        </template>
+        <template #content>
+          <PanelSettings @update="reloadPanelSettings()"> </PanelSettings>
+        </template>
+      </Card>
+    </template>
   </RenSettingsDialog>
+  <!-- <RenSettingsDialog ref="panelSettingsDialog">
+    <template #settings><PanelSettings @update="reloadPanelSettings()"></PanelSettings></template>
+  </RenSettingsDialog> -->
   <RenSettingsDialog ref="conversionSettingsDialog">
     <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
   </RenSettingsDialog>
@@ -245,16 +273,4 @@ export default {
   max-width: 95vw;
   margin: auto;
 }
-// .grid-stack-item {
-//   margin: 0;
-// }
-// .grid-stack-item-content {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   color: #3182ce;
-//   background-color: #bee3f8;
-//   font-weight: 600;
-//   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-// }
 </style>

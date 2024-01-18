@@ -129,7 +129,7 @@
   "search": "Search",
   "selected_area": "Selected area",
   "select_asset_category": "Select asset category",
-  "select_base_recommendation": "Select base_ recommendation",
+  "select_base_recommendation": "Select comparison recommendation",
   "select_dashboard": "Select dashboard",
   "select_dashboard_measurement_type": "Select measurement type",
   "select_dashboard_unit": "Select unit",
@@ -201,6 +201,8 @@
     "no": "No"
   },
   "home_settings": "Home Settings",
+  "panel_effective_settings": "Effective panel settings",
+  "panel_user_settings": "User's panel settings",
   "panel_settings": "Panel settings",
   "panel_label_info": "Each label requires following tag: '{0}' , if tag is not found, it will be added automatically.",
   "panel_label_warning": "'{0}' tag  will be added automatically to the label.",
