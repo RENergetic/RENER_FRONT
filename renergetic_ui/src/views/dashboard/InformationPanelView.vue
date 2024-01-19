@@ -83,13 +83,15 @@ import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 import BasicFilterSettings from "@/components/miscellaneous/settings/BasicFilterSettings.vue";
 import ParsedDateFilter from "@/components/miscellaneous/settings/ParsedDateFilter.vue";
-
+import { panelSchema } from "@/plugins/model/settings.js";
+import Settings from "@/components/miscellaneous/settings/Settings.vue";
 import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
 export default {
   name: "InformationPanelView",
-  components: { ConversionSettings, InformationPanelWrapper, DotMenu, PanelSettings, ParsedDateFilter, BasicFilterSettings },
+  components: { ConversionSettings, Settings, InformationPanelWrapper, DotMenu, PanelSettings, ParsedDateFilter, BasicFilterSettings },
   data() {
     return {
+      schema: panelSchema,
       panel: null,
       locked: false,
       editMode: false,

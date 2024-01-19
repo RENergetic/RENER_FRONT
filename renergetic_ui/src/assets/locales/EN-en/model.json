@@ -145,6 +145,7 @@
     "sensor_name": "Sensor name",
     "asset_category": "Asset category",
     "physical_name": "Physical name",
+    "physical_type": "Physical unit type",
     "asset": "Asset"
   },
   "user": {

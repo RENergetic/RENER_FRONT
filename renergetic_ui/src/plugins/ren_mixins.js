@@ -1,5 +1,10 @@
 import { RenRoles } from "@/plugins/model/Enums.js";
 export default {
+  data() {
+    return {
+      RenRoles: RenRoles,
+    }
+  },
   computed: {
     unitLabel: function () {
       return this.$ren.utils.unitLabel(this.measurement, this.settings.panel, this.conversionSettings);
@@ -113,6 +118,7 @@ export default {
         let props = panel.props;
         let overrideMode = props.overrideMode;
         let role = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
+        alert(mSettings.ignoreOverrideMode)
         if (role & this.$store.getters["auth/renRole"] && mSettings.ignoreOverrideMode) {
           // alert("");
           mSettings = { ...panel.props, ...mSettings };

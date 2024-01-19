@@ -154,12 +154,12 @@ export default {
         for (let m of this.recommendationCompareMeasurements) {
           mDict[m.id] = m;
         }
-      if (this.currentMeasurements)
-        for (let m of this.currentMeasurements) {
-          mDict[m.id] = m;
-        }
       if (this.recommendationMeasurements)
         for (let m of this.recommendationMeasurements) {
+          mDict[m.id] = m;
+        }
+      if (this.currentMeasurements)
+        for (let m of this.currentMeasurements) {
           mDict[m.id] = m;
         }
       this.mDict = mDict;
@@ -169,7 +169,8 @@ export default {
         if (!mGroups[k]) mGroups[k] = { header: k, measurements: [] };
         mGroups[k].measurements.push(m);
         if (m._current) {
-          mGroups[k].header = m.label + " " + (m.asset ? (m.asset.label ? m.asset.label : m.asset.name) : "");
+          let mLabel = m.label ? m.label : m.name;
+          mGroups[k].header = mLabel + " " + (m.asset ? (m.asset.label ? m.asset.label : m.asset.name) : "");
         }
       }
       this.mGroups = Object.values(mGroups);
