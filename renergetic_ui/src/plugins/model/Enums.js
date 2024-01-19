@@ -96,7 +96,7 @@ const AssetConnectionType = Object.freeze({
   FLEXIBLE_LOAD_IN: "flexible_load_in",
   STORAGE_IN: "storage_in",
   HEATPUMP_FROM: "heat_pump_from",
-  HEATPUMP_TO: "heat_pump_to"
+  HEATPUMP_TO: "heat_pump_to",
 });
 
 const RenRoles = init({
