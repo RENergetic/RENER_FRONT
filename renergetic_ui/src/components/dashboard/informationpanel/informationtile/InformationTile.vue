@@ -101,6 +101,7 @@ function validateTileSettings(tile, settings, ctx) {
       icon: icons[tile.props.icon],
       icon_visibility: tile.props.icon_visibility != null ? tile.props.icon_visibility : true,
       legend: tile.props.legend != null ? tile.props.legend : settings.legend,
+      legend_label_color: tile.props.legend_label_color != null ? tile.props.legend_label_color : "#495057",
       chart_type: tile.props.chart_type != null ? tile.props.chart_type : settings.chart_type,
       title_visibility:
         !ctx.demand &&

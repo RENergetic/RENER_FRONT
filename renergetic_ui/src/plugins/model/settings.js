@@ -6,7 +6,7 @@ var panelSchema = [
     label: $t("settings.panel_reload_time_ms"),
     description: $t("settings.panel_reload_time_ms_description"),
     type: "Number",
-    defaultValue: 60000,
+    placeholder: 60000,
     key: "refreshTime",
   },
   {

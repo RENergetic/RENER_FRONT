@@ -59,11 +59,7 @@ export default {
         this.mModel[key] = null;
       }
       if (mt == Boolean) {
-        // alert(this.mModel[key]);
         this.mModel[key] = this.mModel[key] || this.mModel[key] === "true" ? true : false;
-
-        // this.mModel[key] = true;
-        // alert(this.mModel[key]);
       }
       var ext = {};
       if (mt == Boolean) {
@@ -74,6 +70,7 @@ export default {
       }
       return {
         label: this.$t("settings.measurement_details." + key),
+        description: this.$te("settings.measurement_details.description." + key) ? this.$t("settings.measurement_details.description." + key) : null,
         ext: ext,
         type: this.getType(key),
         key: key,

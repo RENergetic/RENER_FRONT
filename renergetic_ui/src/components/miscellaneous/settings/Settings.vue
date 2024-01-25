@@ -49,6 +49,7 @@
           :id="s.key"
           v-model="mModel[s.key]"
           v-tooltip="s.description"
+          :placeholder="s.placeholder"
           :disabled="disabled"
           :min-fraction-digits="0"
           :max-fraction-digits="5"
@@ -62,6 +63,7 @@
             v-model="mModel[s.key]"
             v-tooltip="s.description"
             :disabled="disabled"
+            :placeholder="s.placeholder"
             :options="s.ext.options"
             :option-value="s.ext.optionValue"
             :option-label="s.ext.optionLabel"
@@ -84,7 +86,14 @@
             <ColorPicker :id="s.key + '_color'" v-model="mModel[s.key]" v-tooltip="s.description" :disabled="disabled" @change="colorChange(s.key)" />
           </div>
           <div class="col-12 xl:col-6">
-            <InputText :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" :disabled="disabled" @change="colorChange(s.key)" />
+            <InputText
+              :id="s.key"
+              v-model="mModel[s.key]"
+              v-tooltip="s.description"
+              :placeholder="s.placeholder"
+              :disabled="disabled"
+              @change="colorChange(s.key)"
+            />
           </div>
         </div>
         <div v-else-if="s.type == 'Datetime'">
@@ -97,7 +106,7 @@
         <div v-else-if="s.type == 'Header'">
           <h2 :id="s.key" v-tooltip="s.description">{{ s.label }}</h2>
         </div>
-        <InputText v-else :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" :disabled="disabled" />
+        <InputText v-else :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" :placeholder="s.placeholder" :disabled="disabled" />
       </div>
     </div>
   </div>

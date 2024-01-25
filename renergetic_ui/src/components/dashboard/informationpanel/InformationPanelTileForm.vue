@@ -5,12 +5,14 @@
         <ren-input v-if="mModel.id" v-model="mModel.id" :disabled="true" :text-label="'model.information_panel.tile.id'" />
         <ren-input
           v-model="mModel.name"
+          :text-info="'model.name_description'"
           :text-label="'model.information_panel.tile.name'"
           :invalid="v$.mModel.name.$invalid"
           :errors="v$.mModel.name.$silentErrors"
         />
         <ren-input
           v-model="mModel.label"
+          :text-info="'model.label_description'"
           :text-label="'model.information_panel.tile.label'"
           :invalid="v$.mModel.label.$invalid"
           :errors="v$.mModel.label.$silentErrors"

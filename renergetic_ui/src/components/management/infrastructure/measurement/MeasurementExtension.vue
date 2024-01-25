@@ -129,7 +129,6 @@ export default {
   watch: {
     // "filters.name": function (f1 ) {
     //   this.filters.label.value = f1.value;
-    //   // alert(value);
     // },
   },
   async mounted() {

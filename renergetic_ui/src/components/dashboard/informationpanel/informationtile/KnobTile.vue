@@ -68,8 +68,6 @@ export default {
         ? this.pdata.min[measurement.aggregation_function][measurement.id]
         : 0.0;
     let unit = this.$ren.utils.getUnit(measurement, this.settings.panel, this.conversionSettings);
-
-    // alert(unit);
     return {
       unit: unit,
       mSettings: this.settings,

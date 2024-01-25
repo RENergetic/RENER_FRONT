@@ -48,9 +48,14 @@
     "prediction_interval": "Predict by: {0}"
   },
   "measurement_details": {
-    "color": "Color",
+    "color": "Kolor",
     "cumulative": "Is timeseries cumulative",
-    "background": "Background color"
+    "background": "Background color",
+    "description": {
+      "color": "Main color of the measurement (e.g. value's font or chart's line) ",
+      "cumulative": "Is timeseries cumulative",
+      "background": "Default background color of the measurement"
+    }
   },
   "time_filters": {
     "current_day": "Current day",

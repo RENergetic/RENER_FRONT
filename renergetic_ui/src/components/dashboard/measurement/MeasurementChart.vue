@@ -4,8 +4,10 @@
       <!-- {{ measurements }} -->
       <!-- {{ mMeasurements.length }} -->
       <!-- {{ annotations }} -->
+      <!-- <div style="max-width: 20rem; overflow: hidden; max-height: 15rem">{{ chartData }}</div> -->
       <Chart
         v-if="!titleVisible && height && width"
+        :key="chartData"
         :style="mStyle"
         :type="chartType"
         :data="chartData"
@@ -44,6 +46,7 @@ export default {
     width: { type: Number, default: 1600 },
     height: { type: Number, default: 900 },
     chartType: { type: String, default: "scatter" },
+    legendLabelColor: { type: String, default: "#495057" },
     legend: { type: Boolean, default: false },
     assetId: { type: String, default: null },
     immediate: { type: Boolean, default: true },
@@ -123,7 +126,7 @@ export default {
             display: this.legend,
             fullSize: false,
             labels: {
-              color: "#495057",
+              color: this.legendLabelColor,
             },
           },
         },

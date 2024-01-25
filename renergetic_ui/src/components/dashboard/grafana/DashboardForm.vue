@@ -30,6 +30,7 @@
 
         <ren-input
           v-model="mDashboard.label"
+          :text-info="'model.label_description'"
           :text-label="'model.dashboard.label'"
           :invalid="v$.mDashboard.label.$invalid"
           :errors="v$.mDashboard.label.$silentErrors"

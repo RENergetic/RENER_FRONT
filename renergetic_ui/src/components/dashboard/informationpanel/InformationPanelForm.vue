@@ -7,6 +7,7 @@
         <AccordionTab :header="$t('view.information_panel_form')">
           <ren-input
             v-model="mModel.name"
+            :text-info="'model.name_description'"
             :text-label="'model.information_panel.name'"
             :invalid="v$.mModel.name.$invalid"
             :errors="v$.mModel.name.$silentErrors"

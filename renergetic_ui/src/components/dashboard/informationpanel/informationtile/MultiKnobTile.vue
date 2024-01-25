@@ -8,7 +8,7 @@
     <!-- style="height: 100%; width: 100%" -->
     <div class="flex flex-grow-0 flex-column align-items-center justify-content-center">
       <!-- <div class="flex flex-grow-0 flex-column align-items-center justify-content-center"> -->
-      <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
+      <Chart :key="refreshChart" :style="mStyle" type="doughnut" :data="chartData" :options="options" />
       <!-- </div> -->
       <!-- class="flex flex-none flex-column align-items-center justify-content-center" -->
       <span v-if="mSettings.tile.icon_visibility && mSettings.tile.icon" id="tileicon" :style="iconSize">
@@ -59,6 +59,7 @@ export default {
       relativeValues: false,
       mSettings: this.settings,
       tmpIndex: 0,
+      refreshChart: false,
       loaded: false,
       options: {
         display: false,
@@ -113,32 +114,8 @@ export default {
       if (!(this.pdata && this.pdata.current)) {
         return {};
       }
-      console.info(this.pdata);
-      let data = null;
       // console.info(this.pdata);
-      // if (!this.mSettings.panel.relativeValues) {
-      //   // console.info("use relative values");
-      //   // let data = this.tile.measurements.map((m) => this.pdata[m.id]);
-      //   //TODO: make it comgigurable in tile / args prediction & aggregation func
-      //   // data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
-      //   // let total = data.reduce((partialSum, a) => partialSum + a, 0);
-      //   // data = data.map((v) => v / total);
-      //   console.info(this.pdata);
-      //   data = this.tile.measurements.map((m) =>
-      //     m.type.base_unit != "%"
-      //       ? this.pdata.current[m.aggregation_function][m.id] / this.pdata.max[m.aggregation_function][m.id]
-      //       : this.pdata.current[m.aggregation_function][m.id],
-      //   );
-      // } else {
-      //   // console.info("use no relative values");
-      //   //todo include min offset
-      //   // console.info(this.pdata.current);
-      //   data = this.tile.measurements.map((m) =>
-      //     m.type.base_unit != "%"
-      //       ? this.pdata.current[m.aggregation_function][m.id] / this.pdata.max[m.aggregation_function][m.id]
-      //       : this.pdata.current[m.aggregation_function][m.id],
-      //   );
-      // }
+      let data = null;
       data = this.tile.measurements.map((m) => {
         let maxV =
           this.pdata.max && this.pdata.max[m.aggregation_function][m.id]
@@ -175,23 +152,33 @@ export default {
       };
     },
   },
+  watch: {
+    chartData: {
+      deep: true,
+      handler: function () {
+        if (this.loaded) {
+          this.setChartBox();
+          this.refreshChart = !this.refreshChart;
+        }
+      },
+    },
+  },
   mounted() {
-    // let w = this.settings.panel.cellWidth ? this.settings.panel.cellWidth * this.tile.layout.w : this.$parent.$el.parentElement.clientWidth * 0.9;
-    // let h = this.settings.panel.cellHeight ? this.settings.panel.cellHeight * this.tile.layout.h : this.$parent.$el.parentElement.clientHeight * 0.9;
-    let minD = this.tileContentSize1D();
-    var size = this.mSettings.tile.measurement_list ? 0.5 : 0.7;
-    this.mStyle = `max-width: 100%;max-height:100%;margin: auto;width:${minD * size}px`;
-    this.iconSize = this.mSettings.tile.measurement_list ? `height: 10%;  width: 10%;` : `height: 15%;  width: 15%;`;
+    this.setChartBox();
     this.loaded = true;
   },
   methods: {
+    setChartBox() {
+      let minD = this.tileContentSize1D();
+      var size = this.mSettings.tile.measurement_list ? 0.5 : 0.7;
+      this.mStyle = `max-width: 100%;max-height:100%;margin: auto;width:${minD * size}px`;
+      this.iconSize = this.mSettings.tile.measurement_list ? `height: 10%;  width: 10%;` : `height: 15%;  width: 15%;`;
+    },
     onMeasurementSelect(ctx) {
       console.info(ctx);
     },
     getDataset(value, index) {
       let state = this.tile.measurements[index].visible == null ? true : this.tile.measurements[index].visible;
-
-      // console.error(this.getColor(index));
       return {
         data: [value, 1.0 - value],
         backgroundColor: this.getColor(index),
@@ -200,22 +187,14 @@ export default {
     },
 
     getColor(index) {
-      try {
-        return this.$ren.utils.knobColors(this.tile.measurements[index]);
-        // if (this.tile.measurements[index].type.color) {
-        //   let color = this.tile.measurements[index].type.color;
-        //   if (color.length == 7) {
-        //     return [`#FF${color.slice(1)}`, `#40${color.slice(1)}`];
-        //   }
-        //   return [`#FF${color.slice(3)}`, `#40${color.slice(3)}`];
-        // }
-        // throw new Error();
-      } catch (error) {
-        console.error(error);
-        let c = ["rgba(255,0,0,1.0)", "rgba(255,0,0,0.25)", "rgba(0, 255,0,1.0)", "rgba(0, 255,0,0.25)", "rgba(0,0,255,1.0)", "rgba(0, 0,255,0.25)"];
-        let idx = this.tmpIndex++ % 3;
-        return [c[2 * idx], c[2 * idx + 1]];
-      }
+      // try {
+      return this.$ren.utils.knobColors(this.tile.measurements[index]);
+      // } catch (error) {
+      //   console.error(error);
+      //   let c = ["rgba(255,0,0,1.0)", "rgba(255,0,0,0.25)", "rgba(0, 255,0,1.0)", "rgba(0, 255,0,0.25)", "rgba(0,0,255,1.0)", "rgba(0, 0,255,0.25)"];
+      //   let idx = this.tmpIndex++ % 3;
+      //   return [c[2 * idx], c[2 * idx + 1]];
+      // }
     },
   },
 };

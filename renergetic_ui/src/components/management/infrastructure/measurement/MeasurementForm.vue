@@ -12,12 +12,14 @@
       <div class="ren">
         <ren-input
           v-model="mModel.name"
+          :text-info="'model.name_description'"
           :text-label="'model.measurement.name'"
           :invalid="v$.mModel.name.$invalid"
           :errors="v$.mModel.name.$silentErrors"
         />
         <ren-input
           v-model="mModel.label"
+          :text-info="'model.label_description'"
           :text-label="'model.measurement.label'"
           :invalid="v$.mModel.label.$invalid"
           :errors="v$.mModel.label.$silentErrors"

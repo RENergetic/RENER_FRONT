@@ -118,9 +118,7 @@ export default {
         let props = panel.props;
         let overrideMode = props.overrideMode;
         let role = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
-        alert(mSettings.ignoreOverrideMode)
         if (role & this.$store.getters["auth/renRole"] && mSettings.ignoreOverrideMode) {
-          // alert("");
           mSettings = { ...panel.props, ...mSettings };
         } else
           switch (overrideMode) {
