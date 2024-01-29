@@ -174,7 +174,7 @@ export default {
   methods: {
     colorChange(k) {
       // console.info(this.mModel[k]);
-      this.mModel[k] = "#" + this.mModel[k];
+      if (this.mModel[k] && this.mModel[k].length == 6) this.mModel[k] = "#" + this.mModel[k];
     },
     getClass(setting) {
       let columns; //= setting.col ? setting.col : this.col;

@@ -1,7 +1,7 @@
 <template>
   <div v-if="loaded" class="flex flex-column justify-content-center" style="height: 100%; width: 100%">
     <div class="flex flex-none flex-column justify-content-center">
-      <h3 style="text-align: center">{{ mSettings.tile.label }}</h3>
+      <h3 :style="`text-align: center;color:${tileTitleColor}`">{{ mSettings.tile.label }}</h3>
       <!-- v-if="legend"-->
     </div>
     <!-- {{ chartData }} -->

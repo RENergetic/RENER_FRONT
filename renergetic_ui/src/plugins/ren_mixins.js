@@ -33,10 +33,31 @@ export default {
     },
     tileOrientationClass: function () {
       return this.isTileHorizontal ? 'horizontal-tile' : 'vertical-tile'
-    }
+    },
+
+    tileTitleColor: function () {
+      let color = this.mSettings.tile.title_color;
+      if (this.measurement != null && color == null) {
+        color = this.$ren.utils.measurementColor(this.measurement, this.value).color;
+      }
+      return color;
+    },
+    tileBackgroundColor: function () {
+      let bgcolor = this.mSettings.tile.measurement_background
+        ? this.$ren.utils.measurementBackgroundColor(this.measurement, this.mSettings.tile, this.value)
+        : "none";
+      return bgcolor
+    },
   },
 
   methods: {
+    getTileMeasurement: function () {
+      console.error(this.tile)
+      if (this.tile == null) return null;
+      if (this.tile.measurements && this.tile.measurements.length > 1)
+        console.warn("Length of measurement list is greater than one. ")
+      return this.tile.measurements && this.tile.measurements.length > 0 ? this.tile.measurements[0] : null;
+    },
     async deleteConfirm({ message, header = null, action }) {
       await this.$confirm.require({
         message: message,

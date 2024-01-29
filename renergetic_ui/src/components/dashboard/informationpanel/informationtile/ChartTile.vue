@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-column justify-content-center" style="height: 100%">
     <div class="flex flex-none flex-column justify-content-center">
-      <h3 style="text-align: center">{{ settings.tile.label }}</h3>
+      <h3 :style="`text-align: center;color:${tileTitleColor}`">{{ settings.tile.label }}</h3>
       <!-- v-if="legend"-->
     </div>
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
@@ -43,6 +43,7 @@ export default {
   emits: ["timeseries-update"],
   data() {
     return {
+      mSettings: this.settings,
       labels: this.pdata["timeseries_labels"] ? this.pdata["timeseries_labels"] : [],
       datasets: [],
       mStyle: "max-width: 100rem;max-height:60rem; margin: auto;height:100%;width:100%",
