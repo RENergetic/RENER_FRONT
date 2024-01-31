@@ -68,8 +68,9 @@ class RenUtils {
     return uuidv4();
   }
 
-  downloadJSON(obj, filename) {
-    var file = new Blob([JSON.stringify(obj)], { type: "application/json" });
+  downloadJSON(obj, filename, pretty = false) {
+    var json = pretty ? JSON.stringify(obj, null, "\t") : JSON.stringify(obj);
+    var file = new Blob([json], { type: "application/json" });
     var downloadLink = document.createElement("a");
     downloadLink.download = filename + ".json";
     downloadLink.href = window.URL.createObjectURL(file);

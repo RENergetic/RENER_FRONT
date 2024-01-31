@@ -79,6 +79,7 @@
 </template>
 <script>
 import InformationPanelWrapper from "@/components/dashboard/informationpanel/InformationPanelWrapper.vue";
+import { getCleanPanelStructure } from "@/components/dashboard/informationpanel/InformationPanelForm.vue";
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 import BasicFilterSettings from "@/components/miscellaneous/settings/BasicFilterSettings.vue";
@@ -118,6 +119,13 @@ export default {
     filterSettingsButton: function () {
       return { label: this.$t("menu.filter_settings"), icon: "pi pi-fw pi-filter", command: () => this.$refs.filterSettingsDialog.open() };
     },
+
+    exportStructureButton: function () {
+      return { label: this.$t("menu.export"), icon: "pi pi-file", command: () => this.exportPanel(false) };
+    },
+    exportTemplateButton: function () {
+      return { label: this.$t("menu.export_template"), icon: "pi pi-file", command: () => this.exportPanel(true) };
+    },
     // toggleButton: function () {
     //   let label = this.locked ? this.$t("menu.panel_grid_unlock") : this.$t("menu.panel_grid_lock");
     //   return { label: label, icon: "pi pi-fw pi-lock", command: () => this.toggleLock() };
@@ -127,7 +135,13 @@ export default {
     // },
 
     menuModel() {
-      return [/*this.toggleButton*/ this.settingsButton, this.conversionSettingsButton, this.filterSettingsButton];
+      return [
+        /*this.toggleButton*/ this.settingsButton,
+        this.conversionSettingsButton,
+        this.filterSettingsButton,
+        this.exportTemplateButton,
+        this.exportStructureButton,
+      ];
     },
     // editModelButton: function () {
     //   let label = this.editMode ? this.$t("menu.panel_grid_edit_on") : this.$t("menu.panel_grid_edit_off");
@@ -162,6 +176,11 @@ export default {
   // },
 
   methods: {
+    exportPanel(template) {
+      let panelStructure = getCleanPanelStructure(this.panel, template);
+      let filename = template ? `template_${this.panel.name}` : `${this.panel.id}_${this.panel.name}`;
+      this.$ren.utils.downloadJSON(panelStructure, filename, true);
+    },
     async loadStructure() {
       this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id);
       // if (informationPanel == null) {

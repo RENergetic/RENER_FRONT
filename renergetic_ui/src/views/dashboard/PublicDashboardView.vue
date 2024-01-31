@@ -50,6 +50,7 @@
   </RenSettingsDialog>
 </template>
 <script>
+import { getCleanPanelStructure } from "@/components/dashboard/informationpanel/InformationPanelForm.vue";
 import InformationPanelWrapper from "@/components/dashboard/informationpanel/InformationPanelWrapper.vue";
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
@@ -93,6 +94,12 @@ export default {
     filterSettingsButton: function () {
       return { label: this.$t("menu.filter_settings"), icon: "pi pi-fw pi-filter", command: () => this.$refs.filterSettingsDialog.open() };
     },
+    exportStructureButton: function () {
+      return { label: this.$t("menu.export"), icon: "pi pi-file", command: () => this.exportPanel(false) };
+    },
+    exportTemplateButton: function () {
+      return { label: this.$t("menu.export_template"), icon: "pi pi-file", command: () => this.exportPanel(true) };
+    },
     fullScreenButton: function () {
       return {
         label: this.$t("menu.tv_view_mode"),
@@ -115,6 +122,8 @@ export default {
       menu.push(this.conversionSettingsButton);
       menu.push(this.filterSettingsButton);
       menu.push(this.fullScreenButton);
+      menu.push(this.exportTemplateButton);
+      menu.push(this.exportStructureButton);
       return menu;
     },
   },
@@ -122,6 +131,11 @@ export default {
     await this.loadStructure();
   },
   methods: {
+    exportPanel(template) {
+      let panelStructure = getCleanPanelStructure(this.panel, template);
+      let filename = template ? `template_${this.panel.name}` : `${this.panel.id}_${this.panel.name}`;
+      this.$ren.utils.downloadJSON(panelStructure, filename, true);
+    },
     async loadStructure() {
       this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id);
     },

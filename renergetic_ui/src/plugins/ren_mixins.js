@@ -6,6 +6,7 @@ export default {
     }
   },
   computed: {
+
     unitLabel: function () {
       return this.$ren.utils.unitLabel(this.measurement, this.settings.panel, this.conversionSettings);
     },
@@ -51,6 +52,24 @@ export default {
   },
 
   methods: {
+    measurementLabel: function (measurement) {
+      if (measurement == null) return null
+      let localKey;
+      let label;
+      if (measurement.label) {
+        localKey = `model.measurement.labels.${measurement.label}`;
+        label = measurement.label
+      }
+      else {
+        localKey = `enums.measurement_name.${measurement.name}`;
+        label = measurement.name
+      }
+      if (this.$te(localKey)) {
+        return this.$t(localKey);
+      }
+      return label;
+
+    },
     getTileMeasurement: function () {
       console.error(this.tile)
       if (this.tile == null) return null;
