@@ -8,7 +8,8 @@ export default {
   computed: {
 
     unitLabel: function () {
-      return this.$ren.utils.unitLabel(this.measurement, this.settings.panel, this.conversionSettings);
+      let measurement = 'measurement' in this ? this.measurement : null;
+      return this.$ren.utils.unitLabel(measurement, this.settings.panel, this.conversionSettings);
     },
     tvMode: function () {
       return this.$route.meta.tvMode ? true : false;
@@ -38,14 +39,15 @@ export default {
 
     tileTitleColor: function () {
       let color = this.mSettings.tile.title_color;
-      if (this.measurement != null && color == null) {
+      if (color == null && ('measurement' in this && this.measurement != null)) {
         color = this.$ren.utils.measurementColor(this.measurement, this.value).color;
       }
       return color;
     },
     tileBackgroundColor: function () {
+      let measurement = 'measurement' in this ? this.measurement : null;
       let bgcolor = this.mSettings.tile.measurement_background
-        ? this.$ren.utils.measurementBackgroundColor(this.measurement, this.mSettings.tile, this.value)
+        ? this.$ren.utils.measurementBackgroundColor(measurement, this.mSettings.tile, this.value)
         : "none";
       return bgcolor
     },
