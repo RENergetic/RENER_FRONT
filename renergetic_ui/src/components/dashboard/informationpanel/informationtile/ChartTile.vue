@@ -2,7 +2,6 @@
   <div class="flex flex-column justify-content-center" style="height: 100%">
     <div class="flex flex-none flex-column justify-content-center">
       <h3 :style="`text-align: center;color:${tileTitleColor}`">{{ settings.tile.label }}</h3>
-      <!-- v-if="legend"-->
     </div>
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
     <div class="flex flex-grow-1 flex-column align-items-center justify-content-center" style="position: relative; height: 100%">
@@ -44,7 +43,6 @@ export default {
   data() {
     return {
       mSettings: this.settings,
-      labels: this.pdata["timeseries_labels"] ? this.pdata["timeseries_labels"] : [],
       datasets: [],
       mStyle: "max-width: 100rem;max-height:60rem; margin: auto;height:100%;width:100%",
       width: this.settings.panel.cellWidth * this.tile.layout.w * 0.95,
@@ -76,7 +74,6 @@ export default {
   },
   async mounted() {
     await this.reload();
-    // this.mStyle = `max-width: 100rem; margin: auto;width:${this.width}px;` + `max-height: 60rem; margin: auto;height:${this.height}px`;
   },
   methods: {
     async reload() {

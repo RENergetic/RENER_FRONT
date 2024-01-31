@@ -7,9 +7,7 @@
     </div>
     <div v-else class="flex flex-none flex-column align-items-center justify-content-center">
       <span
-        ><h3 id="label" :style="`color:${tileTitleColor}`">
-          {{ mSettings.tile.label ? mSettings.tile.label : measurementlabel }} {{ unitLabel }}
-        </h3></span
+        ><h3 id="label" :style="`color:${tileTitleColor}`">{{ mSettings.tile.label ? mSettings.tile.label : mlabel }} {{ unitLabel }}</h3></span
       >
     </div>
     <Knob
@@ -94,14 +92,15 @@ export default {
       return `height: 100%;background:${this.tileBackgroundColor} `;
     },
 
-    measurementlabel: function () {
-      if (this.measurement.label != null) {
-        let k = `model.measurement.labels.${this.measurement.label}`;
-        return this.$te(k) ? this.$t(k) : this.measurement.label;
-      } else {
-        //TODO: translate it
-        return this.measurement.name;
-      }
+    mlabel: function () {
+      return this.measurementLabel(this.measurement);
+      // if (this.measurement.label != null) {
+      //   let k = `model.measurement.labels.${this.measurement.label}`;
+      //   return this.$te(k) ? this.$t(k) : this.measurement.label;
+      // } else {
+      //   //TODO: translate it
+      //   return this.measurement.name;
+      // }
     },
 
     strokeWidth: function () {
