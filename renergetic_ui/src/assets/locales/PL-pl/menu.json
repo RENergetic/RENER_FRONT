@@ -13,6 +13,8 @@
   "delete_dashboard": "Usuń panel",
   "demands": "Zalecenia",
   "edit_dashboard": "Edytuj panel",
+  "export": "Eksport",
+  "export_template": "Eksport szablonu",
   "feedback": "Feedback",
   "filter_settings": "Ustawienia filtrów",
   "grafana_dashboards": "Grafana",

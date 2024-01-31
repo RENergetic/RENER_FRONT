@@ -131,7 +131,13 @@
       "kpi_ep": "Potencjał",
       "kpi_co2": "CO₂",
       "kpi_ee": "Efektywność",
-      "kpi_es": "Oszczędność energii"
+      "kpi_es": "Oszczędność energii",
+      "abstract_ens": "Zewnętrzny udział źródeł nieodnawialnych",
+      "abstract_ers": "Zewnętrzny udział źródeł odnawialnych",
+      "abstract_lrs": "Lokalny udział żródeł odnawialnych",
+      "abstract_lns": "Lokalny udział źródeł nieodnawialnych",
+      "abstract_losses": "Straty energii",
+      "abstract_load": "Zapotrzebowanie"
     },
     "panel_count": "Linked panels count",
     "measurement_type": "Measurement type",
