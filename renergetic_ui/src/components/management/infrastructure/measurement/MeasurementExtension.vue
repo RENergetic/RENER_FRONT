@@ -49,12 +49,16 @@
   <!-- <Dialog v-model:visible="measurementEditDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <MeasurementForm @update:model-value="onCreate($event, 0)"></MeasurementForm>
   </Dialog> -->
-  <DeleteMeasurement ref="deleteMeasurement" :measurement="mMeasurement" @delete="onDelete" />
+  <DeleteMeasurement ref="deleteMeasurement" :measurements="[mMeasurement]" @delete="onDelete" />
   <Dialog v-model:visible="editDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <MeasurementForm v-if="mMeasurement" v-model="mMeasurement" @update="onEdit($event)" @cancel="editDialog = false" />
   </Dialog>
   <Dialog v-model:visible="typeDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
     <MeasurementTypeList />
+  </Dialog>
+  <Dialog v-model:visible="panelListDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
+    measurement {{ mMeasurement.name }}({{ mMeasurement.id }}) :{{ mMeasurement.panel_count }}
+    TODO: list panels
   </Dialog>
   <Dialog v-model:visible="dataDialog" :style="{ width: '90vw' }" :modal="true" :dismissable-mask="true">
     <div>
@@ -114,7 +118,7 @@ export default {
     return {
       mMeasurement: this.measurement,
       mName: this.measurement.label ? `${this.measurement.label} (${this.measurement.name})` : this.measurement.name,
-      hasPanels: false, //TODO:
+      panelListDialog: false,
       editDialog: false,
       addDialog: false,
       jsonDialog: false,
@@ -141,6 +145,10 @@ export default {
     },
     async manageTags() {
       await this.$refs.tagDialog.open();
+    },
+    listPanels() {
+      alert("todo:");
+      this.panelListDialog = true;
     },
     async onDetailsUpdate(details) {
       this.mMeasurement.measurement_details = details;
@@ -187,7 +195,7 @@ export default {
       });
     },
     deleteConfirm() {
-      this.$refs.deleteMeasurement.delete(this.mMeasurement);
+      this.$refs.deleteMeasurement.delete([this.mMeasurement]);
     },
     // onDelete(o){
     onDelete() {

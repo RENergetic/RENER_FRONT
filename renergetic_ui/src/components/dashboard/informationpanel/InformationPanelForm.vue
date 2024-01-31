@@ -126,8 +126,9 @@
       v-model="inferMeasurements"
       :text-label="'view.infer_measurements'"
       :options="[
-        { label: $t('view.infer_measurements'), value: true },
-        { label: $t('view.no_infer_measurements'), value: false },
+        { label: $t('view.infer_measurements'), value: 'refill' },
+        { label: $t('view.no_infer_measurements'), value: 'default' },
+        { label: $t('view.ignore_measurements_ids'), value: 'override' },
       ]"
     />
     <ren-submit v-if="submittedPanelJSON != null" :cancel-button="true" @submit="fileSubmit" @cancel="onFileClear" />
@@ -137,13 +138,13 @@
 <script>
 import { cleanTileStructure } from "./InformationPanelTileForm.vue";
 import panelTemplates from "@/plugins/model/information_panel_templates";
-function getCleanPanelStructure(panel /*, isTemplate*/) {
+export function getCleanPanelStructure(panel, clearIDs = false /*, isTemplate*/) {
   let mPanel = JSON.parse(JSON.stringify(panel));
   if (mPanel.name !== undefined) delete mPanel.name;
   if (mPanel.id !== undefined) delete mPanel.id;
   // console.info(mPanel);
   for (let tile of mPanel.tiles) {
-    cleanTileStructure(tile);
+    cleanTileStructure(tile, clearIDs);
   }
   return mPanel;
   // return JSON.stringify(mPanel, null, "\t");
@@ -171,10 +172,10 @@ export default {
   data() {
     let mModel = this.modelValue ? this.modelValue : { tiles: [], props: {} };
     mModel.props = mModel.props ? mModel.props : {};
-    let panelStructure = getCleanPanelStructure(mModel);
+    let panelStructure = getCleanPanelStructure(mModel, false);
     return {
       schema: panelSchema,
-      inferMeasurements: false,
+      inferMeasurements: "default",
       mModel: mModel,
       addMode: this.modelValue == null || this.modelValue.name == null,
       panelTemplates: panelTemplates,
@@ -237,7 +238,7 @@ export default {
   async mounted() {},
   methods: {
     onTemplateSelect() {
-      this.inferMeasurements = true;
+      this.inferMeasurements = "refill";
     },
     updateModel(submittedPanel) {
       if (submittedPanel.label) this.mModel.label = submittedPanel.label;
@@ -245,7 +246,7 @@ export default {
     },
     submitStructure() {
       let submittedPanel = JSON.parse(this.mPanelStructureJSON);
-      this.panelStructure = getCleanPanelStructure(submittedPanel);
+      this.panelStructure = getCleanPanelStructure(submittedPanel, this.inferMeasurements == "override");
       this.updateModel(this.panelStructure);
       this.refreshTiles = !this.refreshTiles;
     },
@@ -255,16 +256,26 @@ export default {
       else this.hasFiles = false;
     },
     onFileClear() {
-      this.panelStructure = getCleanPanelStructure(this.mModel);
+      this.panelStructure = getCleanPanelStructure(this.mModel, false);
       this.submittedPanelJSON = null;
     },
     async fileSubmit() {
       let submittedPanel = JSON.parse(this.submittedPanelJSON);
-      if (this.inferMeasurements) {
-        this.panelStructure = await this.infer(submittedPanel);
-      } else {
-        this.panelStructure = getCleanPanelStructure(submittedPanel);
+      switch (this.inferMeasurements) {
+        case "override":
+          this.panelStructure = await this.infer(submittedPanel, true);
+          break;
+        case "refill":
+          this.panelStructure = await this.infer(submittedPanel, false);
+          break;
+        default:
+          this.panelStructure = getCleanPanelStructure(submittedPanel);
       }
+      // if (this.inferMeasurements=='refill' ) {
+      //   this.panelStructure = await this.infer(submittedPanel);
+      // } else {
+      //   this.panelStructure = getCleanPanelStructure(submittedPanel);
+      // }
       this.updateModel(this.panelStructure);
       this.refreshTiles = !this.refreshTiles;
       this.importPanelDialog = false;
@@ -279,7 +290,7 @@ export default {
           delete submittedPanel.id;
         }
         // console.error(submittedPanel);
-        submittedPanel = getCleanPanelStructure(submittedPanel);
+        submittedPanel = getCleanPanelStructure(submittedPanel, false);
         this.updateModel(submittedPanel);
 
         this.submittedPanelJSON = JSON.stringify(submittedPanel, null, "\t");
@@ -287,13 +298,14 @@ export default {
       // await this._submit(event.files);
     },
 
-    async infer(panel) {
+    async infer(panel, overrideMeasurements) {
       if (!this.mModel.is_template) {
-        return await this.$ren.dashboardApi.inferMeasurements(panel).then((inferredPanel) => {
-          return getCleanPanelStructure(inferredPanel);
+        let mPanel = getCleanPanelStructure(panel, overrideMeasurements);
+        return await this.$ren.dashboardApi.inferMeasurements(mPanel).then((inferredPanel) => {
+          return getCleanPanelStructure(inferredPanel, false);
         });
       }
-      return getCleanPanelStructure(panel);
+      return getCleanPanelStructure(panel, false);
     },
     submit() {
       if (this.mModel.label && !this.mModel.label.includes(ASSET_TAG) && this.mModel.is_template) {
@@ -332,7 +344,7 @@ export default {
     // padding-top: 0 !important;
   }
 }
-#panelForm > .p-accordion > .p-accordion-tab {
+#panelForm > .p-accordion .p-accordion-content {
   max-height: 70vh;
   overflow: auto;
 }

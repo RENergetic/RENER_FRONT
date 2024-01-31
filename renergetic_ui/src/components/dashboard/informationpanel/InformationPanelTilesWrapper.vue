@@ -185,7 +185,7 @@ export default {
 .ren .ren-inputwrapper > .p-accordion {
   max-width: 100%;
 }
-.p-accordion-tab {
+.p-accordion-content {
   max-height: 70vh;
 }
 </style>

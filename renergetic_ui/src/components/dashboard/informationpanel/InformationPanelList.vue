@@ -129,6 +129,7 @@
 </template>
 <script>
 import InformationPanelForm from "./InformationPanelForm.vue";
+import { getCleanPanelStructure } from "./InformationPanelForm.vue";
 import AssetSelectDialog from "@/components/management/infrastructure/AssetSelectDialog.vue";
 import AssetList from "@/components/management/infrastructure/AssetList.vue";
 function initFilter() {
@@ -238,8 +239,9 @@ export default {
     },
     async exportJSON(o) {
       await this.$refs.spinner.run(async () => {
-        await this.$ren.dashboardApi.getInformationPanel(o.id).then(async (res) => {
-          this.$ren.utils.downloadJSON(res, `${res.name}_${res.id}`);
+        await this.$ren.dashboardApi.getInformationPanel(o.id).then(async (panel) => {
+          let panelTemplate = getCleanPanelStructure(panel, true);
+          this.$ren.utils.downloadJSON(panelTemplate, `template_${panel.name}`, true);
         });
       });
     },

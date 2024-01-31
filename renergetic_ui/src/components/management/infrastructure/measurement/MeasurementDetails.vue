@@ -11,6 +11,7 @@ var detailTypes = {
   color: "Color",
   cumulative: Boolean,
   background: "Color",
+  fill_chart: Boolean,
 };
 export default {
   name: "MeasurementDetails",

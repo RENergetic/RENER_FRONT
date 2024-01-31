@@ -167,6 +167,7 @@
   "properties": "Własciwości",
   "view_asset_children": "Show sub assets",
   "view_asset_measurements": "Pokaż dostępne dane",
+  "view_json": "Podejrzyj strukturę JSON",
   "unauthorized": "Nieautoryzowany dostęp",
   "button": {
     "add": "Dodaj",

@@ -90,7 +90,10 @@
         />
         <ren-input-wrapper :text-label="'model.measurement.asset'">
           <template #content>
-            <span v-if="assetLabel" @click="selectAsset">{{ assetLabel }}</span>
+            <span v-if="assetLabel">
+              <span @click="selectAsset">{{ assetLabel }}</span>
+              <i class="pi pi-times" style="font-size: 1rem; color: rgba(250, 30, 30, 0.9)" @click="revokeAsset" />
+            </span>
             <span v-else @click="selectAsset">{{ $t("view.select_asset") }}</span>
           </template>
         </ren-input-wrapper>
@@ -200,6 +203,10 @@ export default {
     onAssetSelect(selectedAsset) {
       this.mModel.asset = selectedAsset;
     },
+    revokeAsset() {
+      this.mModel.asset = null;
+    },
+
     submit() {
       this.mModel.type = {
         id: this.mUnits.find((it) => it.unit == this.mModel.unit).id,

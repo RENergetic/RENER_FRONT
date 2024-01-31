@@ -128,30 +128,34 @@
 
 <script>
 import { MeasurementAggregation } from "@/plugins/model/Enums.js";
-export function cleanTileStructure(mTile) {
+export function cleanTileStructure(mTile, clearIDs = false) {
+  if (clearIDs) delete mTile.id;
   if (mTile.measurements) {
     mTile.measurements = mTile.measurements
       .map((m) => {
         let obj;
-        if (m.id !== undefined && m.id != null) {
-          return { id: m.id, aggregation_function: m.aggregation_function };
-        } else {
-          //if (isTemplate) {
-          obj = {
-            name: m.name === null ? undefined : m.name,
-            domain: m.domain === null ? undefined : m.domain,
-            direction: m.direction === null ? undefined : m.direction,
-            sensor_name: m.sensor_name === null ? undefined : m.sensor_name,
-            aggregation_function: m.aggregation_function === null ? undefined : m.aggregation_function,
-          };
-          if (m.type) {
-            obj.type = { id: m.type.id, physical_name: m.type.physical_name, name: m.type.name, unit: m.type.unit };
-          }
-          if (m.asset) {
-            obj.asset = { id: m.asset.id, name: m.asset.name };
-          }
-          return obj;
+        // if (m.id !== undefined && m.id != null && !clearIDs) {
+        //   return { id: m.id, aggregation_function: m.aggregation_function };
+        // } else {
+        //if (isTemplate) {
+        obj = {
+          name: m.name === null ? undefined : m.name,
+          domain: m.domain === null ? undefined : m.domain,
+          direction: m.direction === null ? undefined : m.direction,
+          sensor_name: m.sensor_name === null ? undefined : m.sensor_name,
+          aggregation_function: m.aggregation_function === null ? undefined : m.aggregation_function,
+        };
+        if (!clearIDs) obj.id = m.id;
+        if (m.type) {
+          obj.type = { physical_name: m.type.physical_name, name: m.type.name, unit: m.type.unit };
+          if (!clearIDs) obj.type.id = m.type.id;
         }
+        if (m.asset) {
+          obj.asset = { name: m.asset.name };
+          if (!clearIDs) obj.asset.id = m.asset.id;
+        }
+        return obj;
+        // }
         //return null;
       })
       .filter((m) => m != null);
