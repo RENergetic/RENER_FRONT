@@ -71,7 +71,7 @@ export default {
 
     },
     getTileMeasurement: function () {
-      console.error(this.tile)
+      // console.error(this.tile)
       if (this.tile == null) return null;
       if (this.tile.measurements && this.tile.measurements.length > 1)
         console.warn("Length of measurement list is greater than one. ")
