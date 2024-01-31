@@ -161,6 +161,7 @@
   "user_role_add_confirm": "Do you want do add role {role} to {username}?",
   "user_role_revoke": "Revoke role",
   "user_role_revoke_confirm": "Do you want do revoke role {role} from {username}?",
+  "upload_measurements": "Upload measurements",
   "upload_structure": "Upload panel structure",
   "edit_area": "Edit area",
   "edit": "Edit",
