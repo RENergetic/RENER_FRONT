@@ -331,7 +331,15 @@ export default {
       return `(${mType.id}) ${this.$t("enums.metric_type." + mType.name)} [${mType.unit}] `;
     },
     async exportJSON() {
-      this.$ren.utils.downloadJSON(this.selectedMeasurements, `measurements`);
+      var sm = this.selectedMeasurements.map((it) => {
+        if (it._label) {
+          let label = it.label;
+          it.label = it._label; //label code
+          it._label = label; //translated code
+        }
+        return it;
+      });
+      this.$ren.utils.downloadJSON(sm, `measurements`);
     },
     onDelete() {
       this.reload();

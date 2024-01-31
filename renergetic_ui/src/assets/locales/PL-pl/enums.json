@@ -14,7 +14,8 @@
     "heat_energy_gj": "Energia Cieplna",
     "energy_gj": "Energia Cieplna",
     "percentage": "Procent",
-    "power": "Moc"
+    "power": "Moc",
+    "value": "Wartość"
   },
   "measurement_aggregation": {
     "sum": "Suma",
