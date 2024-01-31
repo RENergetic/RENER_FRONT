@@ -14,7 +14,8 @@
     "heat_energy_gj": "Heat energy",
     "energy_gj": "Heat energy",
     "percentage": "Percentage",
-    "power": "Power"
+    "power": "Power",
+    "value": "Value"
   },
   "measurement_aggregation": {
     "sum": "Sum",

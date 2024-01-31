@@ -18,13 +18,10 @@
         <i class="pi pi-search" />
         <Dropdown v-model="mFilters.tag_key.value" show-clear :options="tagsKeys" :placeholder="$t('view.tag_filter')" />
       </span>
-      <Button
-        v-if="selectedMeasurements.length > 0"
-        :label="$t('view.measurements_export_json')"
-        icon="pi pi-list"
-        style="position: sticky; left: 2rem; top: 1rem; z-index: 3333; margin-left: 1rem"
-        @click="exportJSON"
-      />
+      <div v-if="selectedMeasurements.length > 0" style="display: inline; position: sticky; left: 2rem; top: 1rem; z-index: 3333; margin-left: 1rem">
+        <Button :label="$t('view.measurements_export_json')" icon="pi pi-list" style="margin-right: 1rem" @click="exportJSON" />
+        <Button v-tooltip="$t('view.delete_measurements')" :label="$t('view.delete_measurements')" icon="pi pi-trash" @click="deleteMeasurements" />
+      </div>
     </template>
 
     <Column v-if="!basic" :expander="true" header-style="width: 3rem" />
@@ -183,6 +180,7 @@
       </template>
     </Card>
   </Dialog>
+  <DeleteMeasurement ref="deleteMeasurement" @delete="onDelete" />
 </template>
 
 <script>
@@ -193,10 +191,12 @@ function clearMeasurementInput(measurements) {
       let obj;
       obj = {
         name: m.name,
+        label: m.label,
         domain: m.domain,
         direction: m.direction,
         sensor_name: m.sensor_name,
         aggregation_function: m.aggregation_function,
+        measurement_details: m.measurement_details,
       };
       if (m.type) {
         obj.type = { id: m.type.id, physical_name: m.type.physical_name, unit: m.type.unit, name: m.type.name };
@@ -207,7 +207,6 @@ function clearMeasurementInput(measurements) {
       return obj;
     })
     .filter((m) => m != null);
-
   return mMeasurements;
 }
 function initFilters(filters) {
@@ -235,12 +234,13 @@ import MeasurementForm from "./MeasurementForm.vue";
 // import MeasurementDetails from "./MeasurementDetails.vue";
 import MeasurementTypeList from "./MeasurementTypeList.vue";
 import MeasurementExtension from "./MeasurementExtension.vue";
+import DeleteMeasurement from "./DeleteMeasurement.vue";
 import { MeasurementDomains, MeasurementDirection } from "@/plugins/model/Enums.js";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 
 export default {
   name: "MeasurementList",
-  components: { MeasurementForm, MeasurementTypeList, MeasurementExtension },
+  components: { MeasurementForm, MeasurementTypeList, MeasurementExtension, DeleteMeasurement },
   props: {
     measurementList: { type: Array, default: () => [] },
     basic: { type: Boolean, default: false },
@@ -331,7 +331,21 @@ export default {
       return `(${mType.id}) ${this.$t("enums.metric_type." + mType.name)} [${mType.unit}] `;
     },
     async exportJSON() {
-      this.$ren.utils.downloadJSON(this.selectedMeasurements, `measurements`);
+      var sm = this.selectedMeasurements.map((it) => {
+        if (it._label) {
+          let label = it.label;
+          it.label = it._label; //label code
+          it._label = label; //translated code
+        }
+        return it;
+      });
+      this.$ren.utils.downloadJSON(sm, `measurements`);
+    },
+    onDelete() {
+      this.reload();
+    },
+    async deleteMeasurements() {
+      this.$refs.deleteMeasurement.delete(this.selectedMeasurements);
     },
 
     reload(evt) {

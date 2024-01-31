@@ -40,8 +40,36 @@
     </Card> -->
   </div>
   <RenSettingsDialog ref="settingsDialog">
-    <template #settings><PanelSettings @update="reloadSettings()"></PanelSettings></template>
+    <template #settings>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_effective_settings") }}:</span>
+        </template>
+        <template #content>
+          <Settings :schema="schema" :settings="computePanelSettings(settings, panel)" :disabled="true" />
+        </template>
+      </Card>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_settings") }}:</span>
+        </template>
+        <template #content>
+          <Settings :schema="schema" :settings="panel.props" :disabled="true" />
+        </template>
+      </Card>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_user_settings") }}:</span>
+        </template>
+        <template #content>
+          <PanelSettings @update="reloadSettings()"> </PanelSettings>
+        </template>
+      </Card>
+    </template>
   </RenSettingsDialog>
+  <!-- <RenSettingsDialog ref="settingsDialog">
+    <template #settings><PanelSettings @update="reloadSettings()"></PanelSettings></template>
+  </RenSettingsDialog> -->
   <RenSettingsDialog ref="conversionSettingsDialog">
     <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
   </RenSettingsDialog>
@@ -51,17 +79,20 @@
 </template>
 <script>
 import InformationPanelWrapper from "@/components/dashboard/informationpanel/InformationPanelWrapper.vue";
+import { getCleanPanelStructure } from "@/components/dashboard/informationpanel/InformationPanelForm.vue";
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 import BasicFilterSettings from "@/components/miscellaneous/settings/BasicFilterSettings.vue";
 import ParsedDateFilter from "@/components/miscellaneous/settings/ParsedDateFilter.vue";
-
+import { panelSchema } from "@/plugins/model/settings.js";
+import Settings from "@/components/miscellaneous/settings/Settings.vue";
 import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
 export default {
   name: "InformationPanelView",
-  components: { ConversionSettings, InformationPanelWrapper, DotMenu, PanelSettings, ParsedDateFilter, BasicFilterSettings },
+  components: { ConversionSettings, Settings, InformationPanelWrapper, DotMenu, PanelSettings, ParsedDateFilter, BasicFilterSettings },
   data() {
     return {
+      schema: panelSchema,
       panel: null,
       locked: false,
       editMode: false,
@@ -88,6 +119,13 @@ export default {
     filterSettingsButton: function () {
       return { label: this.$t("menu.filter_settings"), icon: "pi pi-fw pi-filter", command: () => this.$refs.filterSettingsDialog.open() };
     },
+
+    exportStructureButton: function () {
+      return { label: this.$t("menu.export"), icon: "pi pi-file", command: () => this.exportPanel(false) };
+    },
+    exportTemplateButton: function () {
+      return { label: this.$t("menu.export_template"), icon: "pi pi-file", command: () => this.exportPanel(true) };
+    },
     // toggleButton: function () {
     //   let label = this.locked ? this.$t("menu.panel_grid_unlock") : this.$t("menu.panel_grid_lock");
     //   return { label: label, icon: "pi pi-fw pi-lock", command: () => this.toggleLock() };
@@ -97,7 +135,13 @@ export default {
     // },
 
     menuModel() {
-      return [/*this.toggleButton*/ this.settingsButton, this.conversionSettingsButton, this.filterSettingsButton];
+      return [
+        /*this.toggleButton*/ this.settingsButton,
+        this.conversionSettingsButton,
+        this.filterSettingsButton,
+        this.exportTemplateButton,
+        this.exportStructureButton,
+      ];
     },
     // editModelButton: function () {
     //   let label = this.editMode ? this.$t("menu.panel_grid_edit_on") : this.$t("menu.panel_grid_edit_off");
@@ -132,6 +176,11 @@ export default {
   // },
 
   methods: {
+    exportPanel(template) {
+      let panelStructure = getCleanPanelStructure(this.panel, template);
+      let filename = template ? `template_${this.panel.name}` : `${this.panel.id}_${this.panel.name}`;
+      this.$ren.utils.downloadJSON(panelStructure, filename, true);
+    },
     async loadStructure() {
       this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id);
       // if (informationPanel == null) {

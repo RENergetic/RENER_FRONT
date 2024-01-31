@@ -1,5 +1,4 @@
 <template>
-  <!-- {{ mDashboards }} -->
   <!-- :filters="filters"
     filter-display="row"
     :global-filter-fields="['name', 'label','url']" 
@@ -191,6 +190,7 @@ export default {
     },
     filter() {
       if (!this.filters.state) {
+        this.onPagination();
         return;
       }
       let q = this.filters.global.value;

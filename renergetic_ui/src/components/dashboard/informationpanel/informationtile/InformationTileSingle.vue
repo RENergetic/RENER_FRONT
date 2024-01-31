@@ -43,10 +43,9 @@ export default {
   },
 
   data() {
-    let measurement = this.tile.measurements.length > 0 ? this.tile.measurements[0] : null;
     return {
-      measurement: measurement,
       mSettings: this.settings,
+      measurement: this.getTileMeasurement(),
     };
   },
   computed: {

@@ -56,7 +56,8 @@ export default {
       };
     },
     getSchema() {
-      alert(JSON.stringify(panelSchema));
+      // console.error(panelSchema);
+      // alert(JSON.stringify(panelSchema));
       var schema = JSON.parse(JSON.stringify(panelSchema));
       let r = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
       if (r & this.$store.getters["auth/renRole"]) {

@@ -1,10 +1,11 @@
 <template>
   <div class="flex flex-column justify-content-center" style="height: 100%">
-    <div class="flex flex-none flex-column justify-content-center">
-      <h3 style="text-align: center">{{ mSettings.tile.label }}</h3>
+    <div class="flex flex-none flex-column align-items-center justify-content-center">
+      <h3 :style="`text-align: center;color:${tileTitleColor}`">{{ mSettings.tile.label }}</h3>
       <!-- v-if="legend"-->
     </div>
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
+
     <div class="flex flex-grow-1 flex-column align-items-center justify-content-center" style="position: relative">
       <div class="flex flex-none flex-column align-items-center justify-content-center">
         <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
@@ -56,7 +57,7 @@ export default {
       if (!(this.pdata && this.pdata.current)) {
         return {};
       }
-      let labels = this.tile.measurements.map((m) => (m.label ? m.label : m.name));
+      let labels = this.tile.measurements.map((m) => this.measurementLabel(m));
 
       // let data = this.tile.measurements.map((m) => this.pdata[m.id]);
       //TODO: make it comfigurable in tile / args prediction & aggregation func
@@ -99,7 +100,7 @@ export default {
     let minD = this.tileContentSize1D();
     // var size = this.mSettings.tile.measurement_list ? 0.5 : 0.7;
     // let minD = Math.min(this.settings.panel.cellWidth * this.tile.layout.w, this.settings.panel.cellHeight * this.tile.layout.h);
-    this.mStyle = `max-width: 25rem; margin: auto;width:${minD * 0.7}px`;
+    this.mStyle = `max-width: 25rem; margin: auto;width:${minD * 0.65}px`;
   },
   methods: {},
 };

@@ -3,7 +3,6 @@
   <div v-if="settings.panelVisibility" style="position: relative">
     <!-- {{ $store.getters["view/featuredPanels"] }}  -->
     <!-- {{ $store.getters["view/assetPanels"] }}d -->
-    <!-- panel: {{ panel.name }}, {{ panel.id }}, {{ assetId }} -->
     <InformationPanelWrapper
       v-if="panel"
       ref="panel"
@@ -35,8 +34,36 @@
     <template #settings><HomeSettings @update="reloadSettings()"></HomeSettings></template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="panelSettingsDialog">
-    <template #settings><PanelSettings @update="reloadPanelSettings()"></PanelSettings></template>
+    <template #settings>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_effective_settings") }}:</span>
+        </template>
+        <template #content>
+          <Settings :schema="schema" :settings="effectivePanelSettings" :disabled="true" />
+        </template>
+      </Card>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_settings") }}:</span>
+        </template>
+        <template #content>
+          <Settings :schema="schema" :settings="panel.props" :disabled="true" />
+        </template>
+      </Card>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_user_settings") }}:</span>
+        </template>
+        <template #content>
+          <PanelSettings @update="reloadPanelSettings()"> </PanelSettings>
+        </template>
+      </Card>
+    </template>
   </RenSettingsDialog>
+  <!-- <RenSettingsDialog ref="panelSettingsDialog">
+    <template #settings><PanelSettings @update="reloadPanelSettings()"></PanelSettings></template>
+  </RenSettingsDialog> -->
   <RenSettingsDialog ref="conversionSettingsDialog">
     <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
   </RenSettingsDialog>
@@ -58,13 +85,15 @@ import FilterSettings from "@/components/miscellaneous/settings/FilterSettings.v
 import ParsedDateFilter from "@/components/miscellaneous/settings/ParsedDateFilter.vue";
 import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
 
-import { RenRoles } from "../plugins/model/Enums.js";
+import { panelSchema } from "@/plugins/model/settings.js";
+import Settings from "@/components/miscellaneous/settings/Settings.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 import LoopRunner from "@/plugins/utils/loop_runner.js";
 
 export default {
   name: "Home",
   components: {
+    Settings,
     DotMenu,
     RoleMatrix,
     FilterSettings,
@@ -78,6 +107,7 @@ export default {
   },
   data() {
     return {
+      schema: panelSchema,
       loaded: false,
       grid: null,
       locked: true,
@@ -91,11 +121,14 @@ export default {
     };
   },
   computed: {
+    effectivePanelSettings: function () {
+      return this.computePanelSettings(this.panelSettings, this.panel);
+    },
     loggedIn: function () {
       return this.$store.getters["auth/isAuthenticated"];
     },
     hasAccess: function () {
-      return (this.$store.getters["auth/renRole"] | RenRoles.REN_ADMIN) > 0;
+      return (this.$store.getters["auth/renRole"] | this.RenRoles.REN_ADMIN) > 0;
     },
     toggleButton: function () {
       //TODO: if permission
@@ -164,7 +197,7 @@ export default {
 
       // model.push(this.toggleButton);
       model.push(this.settingsButton);
-      if ((role & (RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_MANAGER | RenRoles.REN_ADMIN)) > 0) {
+      if ((role & (this.RenRoles.REN_TECHNICAL_MANAGER | this.RenRoles.REN_MANAGER | this.RenRoles.REN_ADMIN)) > 0) {
         model.push(this.panelSettingsButton);
         model.push(this.conversionSettingsButton);
         model.push(this.filterSettingsButton);
@@ -187,7 +220,6 @@ export default {
       this.slideshow.stop();
     }
   },
-  updated() {},
   methods: {
     async slideshowLoop() {
       let _this = this;
@@ -245,16 +277,4 @@ export default {
   max-width: 95vw;
   margin: auto;
 }
-// .grid-stack-item {
-//   margin: 0;
-// }
-// .grid-stack-item-content {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   color: #3182ce;
-//   background-color: #bee3f8;
-//   font-weight: 600;
-//   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-// }
 </style>

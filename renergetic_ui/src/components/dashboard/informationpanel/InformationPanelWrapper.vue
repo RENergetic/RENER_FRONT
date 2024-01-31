@@ -152,7 +152,7 @@ export default {
         if (this.autoReload) {
           if (this.loopRunner != null) this.loopRunner.stop();
           // this.$store.getters["settings/panel"].refreshTime ? this.$store.getters["settings/panel"].refreshTime : 60000;
-          let refreshTime = this.panelSettings.refreshTime;
+          let refreshTime = Math.max(this.panelSettings.refreshTime ? this.panelSettings.refreshTime : 60000, 60000);
           this.loopRunner = LoopRunner.init(this.loadData, refreshTime);
           this.loopRunner.start();
         } else {

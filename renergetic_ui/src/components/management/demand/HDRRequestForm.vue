@@ -90,14 +90,23 @@
             { label: $t('model.hdrrequest.delta_value'), value: false },
           ]"
         />
-        <ren-input-wrapper
+        <!-- {{ mModel.priority }} -->
+        <ren-input-number
+          v-if="mModel.physical_type"
+          v-model="mModel.requestValue"
+          :invalid="v$.mModel.requestValue.$invalid"
+          :errors="v$.mModel.requestValue.$silentErrors"
+          :disabled="disabled"
+          :text-label="mModel.isLimit ? 'model.hdrrequest.max_value' : 'model.hdrrequest.delta_value'"
+          :placeholder="mModel.isLimit ? $t('model.hdrrequest.max_value') : $t('model.hdrrequest.delta_value')"
+        />
+        <!-- <ren-input-wrapper
           v-if="mModel.physical_type"
           :text-label="mModel.isLimit ? 'model.hdrrequest.max_value' : 'model.hdrrequest.delta_value'"
           :invalid="v$.mModel.requestValue.$invalid"
           :errors="v$.mModel.requestValue.$silentErrors"
         >
-          <template #content>
-            <!-- {{ mModel.unit }} -->
+          <template #content> 
             <InputNumber v-if="mModel.isLimit" v-model="mModel.requestValue" :disabled="disabled" :placeholder="$t('model.hdrrequest.max_value')" />
             <InputNumber
               v-else
@@ -105,9 +114,9 @@
               :disabled="disabled"
               :use-grouping="false"
               :placeholder="$t('model.hdrrequest.delta_value')"
-            />
+            /> 
           </template>
-        </ren-input-wrapper>
+        </ren-input-wrapper> -->
       </div>
     </template>
   </Card>

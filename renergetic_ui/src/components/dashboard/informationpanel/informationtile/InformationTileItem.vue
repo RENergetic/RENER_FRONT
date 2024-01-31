@@ -3,7 +3,6 @@
     <div class="flex flex-none flex-row align-items-center justify-content-center">
       <!-- <span v-if="icon != null" id="tileicon" :style="'background-image: url(' + icon + ')'"></span> -->
       <!-- {{ settings }}fff -->
-      <!-- {{ measurement }} -->
 
       <span
         v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
@@ -50,6 +49,7 @@ export default {
   data() {
     return {
       mSettings: this.settings,
+      // measurement: this.getTileMeasurement(),
     };
   },
   computed: {

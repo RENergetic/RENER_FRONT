@@ -1,11 +1,13 @@
 <template>
   <RenSpinner ref="spinner" :lock="true">
     <template #content>
-      <!-- {{ measurements }} -->
       <!-- {{ mMeasurements.length }} -->
       <!-- {{ annotations }} -->
+      <!-- <div style="max-width: 20rem; overflow: hidden; max-height: 15rem">{{ chartData }}</div> -->
+      <!-- {{ pData["timeseries_labels"] }} -->
       <Chart
         v-if="!titleVisible && height && width"
+        :key="chartData"
         :style="mStyle"
         :type="chartType"
         :data="chartData"
@@ -15,9 +17,7 @@
       />
       <div v-if="titleVisible" class="flex flex-none flex-column justify-content-center" style="max-width: 75%">
         <h3>{{ title }}</h3>
-        <!-- v-if="legend"-->
       </div>
-      <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
       <div
         v-if="titleVisible"
         class="flex flex-grow-1 flex-column align-items-center justify-content-center"
@@ -44,9 +44,10 @@ export default {
     width: { type: Number, default: 1600 },
     height: { type: Number, default: 900 },
     chartType: { type: String, default: "scatter" },
+    legendLabelColor: { type: String, default: "#495057" },
     legend: { type: Boolean, default: false },
     assetId: { type: String, default: null },
-    immediate: { type: Boolean, default: true },
+    immediate: { type: Boolean, default: true }, //immediately reload data if not present locally
     titleVisible: { type: Boolean, default: false },
     // loadData: { type: Boolean, default: true },
     annotations: {
@@ -123,7 +124,7 @@ export default {
             display: this.legend,
             fullSize: false,
             labels: {
-              color: "#495057",
+              color: this.legendLabelColor,
             },
           },
         },
@@ -195,7 +196,8 @@ export default {
             this.pData["timeseries"]["current"][m.id].length == this.pData["timeseries"]["timestamps"].length;
         });
       }
-      console.info(hasAllData);
+
+      console.debug(`has all data ${hasAllData}`);
       if (hasAllData) {
         this.labels = this.pData["timeseries"]["timestamps"];
         return this.pData["timeseries"]["current"];
@@ -214,6 +216,7 @@ export default {
         if (this.mMeasurements) {
           timeseriesData = await this.$ren.dataApi.getMeasurementTimeseries(this.mMeasurements, this.filter);
         }
+
         this.labels = timeseriesData["timestamps"];
         data = timeseriesData["current"];
         if (timeseriesData) {
@@ -231,7 +234,7 @@ export default {
         let aggFunc = this.$t("enums.measurement_aggregation." + m.aggregation_function);
 
         let unitLabel = m.type.unit != "any" ? `: ${this.$t("enums.physical_type." + m.type.physical_name)} [${m.type.unit}]` : "";
-        let label = m.label ? m.label : m.name;
+        let label = this.measurementLabel(m);
         datasets.push({
           data: data[m.id],
           label: `${label}(${aggFunc})${unitLabel}`,

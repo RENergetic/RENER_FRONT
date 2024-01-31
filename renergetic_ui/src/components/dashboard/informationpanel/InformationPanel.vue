@@ -28,55 +28,9 @@ import NotificationList from "../../management/notification/NotificationList.vue
 import TileMeasurementPreview from "./informationtile/TileMeasurementPreview.vue";
 import { GridStack } from "gridstack";
 // import { TileTypes, NotificationContext } from "@/plugins/model/Enums.js";
-import { NotificationContext, RenRoles } from "@/plugins/model/Enums.js";
+import { NotificationContext } from "@/plugins/model/Enums.js";
 // import "gridstack/dist/h5/gridstack-dd-native";
 import "gridstack/dist/gridstack.min.css";
-let role = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
-
-function validateSettings(settings, panel, ctx) {
-  let mSettings = {};
-  if (settings == null) {
-    mSettings = {};
-  } else {
-    mSettings = settings;
-  }
-  if (panel.props) {
-    let props = panel.props;
-    let overrideMode = props.overrideMode;
-    if (role & ctx.$store.getters["auth/renRole"] && mSettings.ignoreOverrideMode) {
-      // alert("");
-      mSettings = { ...panel.props, ...mSettings };
-    } else
-      switch (overrideMode) {
-        case "fixed":
-          mSettings = panel.props;
-          break;
-        case "override":
-          mSettings = { ...panel.props, ...mSettings };
-          break;
-        case "default":
-          mSettings = settings;
-          break;
-        default:
-          mSettings = { ...panel.props };
-
-          for (let k in settings) {
-            if (!(k in mSettings) || mSettings[k] == null) {
-              mSettings[k] = settings[k];
-            }
-          }
-          break;
-      }
-  }
-  // mSettings.legend = mSettings.legend != null ? mSettings.legend : true;
-  // mSettings.legend = mSettings.legend != null ? mSettings.legend : null;
-  mSettings.asset_id = ctx.assetId;
-  // settings.title = settings.title != null ? settings.title : true;
-  // settings.color = settings.color != null ? settings.color : "#d6ebff";
-  let size = mSettings != null && mSettings.fontSize != null ? mSettings.fontSize : `${2.0}rem`;
-  mSettings.fontSize = size;
-  return mSettings;
-}
 
 export default {
   name: "InformationPanel",
@@ -130,7 +84,7 @@ export default {
     return {
       loaded: false,
       grid: null,
-      mSettings: validateSettings(this.settings, this.panel, this),
+      mSettings: this.computePanelSettings(this.settings, this.panel),
       reload: false,
       notificationDialog: false,
       selectedItem: null,
@@ -205,9 +159,9 @@ export default {
         console.debug(panelData);
         let mPData = JSON.parse(JSON.stringify(panelData));
         mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, mPData, this.settings);
-        console.error(mPData);
+        // console.error(mPData);
         mPData = this.$ren.utils.convertPanelData(this.mPanel, mPData, this.$store.getters["settings/conversion"]);
-        console.error(mPData);
+        // console.error(mPData);
         this.mPData = mPData;
       }
     },

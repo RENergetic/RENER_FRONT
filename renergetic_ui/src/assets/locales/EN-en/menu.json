@@ -13,6 +13,8 @@
   "delete_dashboard": "Delete dashboard",
   "demands": "Recommendations",
   "edit_dashboard": "Edit dashboard",
+  "export": "Export",
+  "export_template": "Export template",
   "feedback": "Feedback",
   "filter_settings": "Filter settings",
   "grafana_dashboards": "Grafana dashboards",

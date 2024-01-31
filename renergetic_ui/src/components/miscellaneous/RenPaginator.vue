@@ -12,7 +12,7 @@
     v-model:first="mOffset"
     :class="mClass"
     :rows="limit"
-    :total-records="mOffset + 1 + (currentRows ? currentRows : limit)"
+    :total-records="mOffset + (currentRows ? 1 + currentRows : 0)"
     template="FirstPageLink PrevPageLink PageLinks NextPageLink    "
   />
   <!-- {{ mOffset }};{{ mOffset + 1 + (currentRows ? currentRows : limit) }};{{ currentRows }} -->

@@ -3,7 +3,18 @@
     <label v-if="textLabel != null" for="ren-input-number" class="col-12 mb-2 md:col-2 md:mb-0 ren-label"> {{ $t(textLabel) }} </label>
     <div class="col-12 md:col-10">
       <!-- :mode="inputMode" -->
-      <InputNumber id="ren-input-number" v-model="mValue" :use-grouping="false" :show-buttons="showButtons" :min="min" :max="max" />
+      <!-- {{ onlyInteger }} -->
+      <InputNumber
+        id="ren-input-number"
+        v-model="mValue"
+        :placeholder="placeholder"
+        :use-grouping="false"
+        :show-buttons="showButtons"
+        :min="min"
+        :max="max"
+        :min-fraction-digits="minDigits"
+        :max-fraction-digits="maxDigits"
+      />
     </div>
 
     <span v-if="invalid">
@@ -28,6 +39,7 @@ export default {
     max: { type: Number, default: null },
     onlyInteger: { type: Boolean, default: false },
     defaultValue: { type: Number, default: null },
+    placeholder: { type: String, default: null },
     // mode="decimal"
   },
   emits: ["update:modelValue"],
@@ -35,14 +47,20 @@ export default {
     return { mValue: this.modelValue };
   },
   computed: {
-    // inputMode() {
-    //   if (this.onlyInteger) {
-    //     return "decimal";
-    //   }
-    //   else{
-    //     return "decimal";
-    //   }
-    // },
+    minDigits() {
+      if (this.onlyInteger) {
+        return 0;
+      } else {
+        return 1;
+      }
+    },
+    maxDigits() {
+      if (this.onlyInteger) {
+        return 0;
+      } else {
+        return 10;
+      }
+    },
 
     showButtons() {
       if (this.min != null && this.max != null) {

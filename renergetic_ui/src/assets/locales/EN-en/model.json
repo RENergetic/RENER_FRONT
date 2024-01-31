@@ -1,4 +1,6 @@
 {
+  "name_description": "Object's name, code name used in RENergetic system to interact with other component, code used for automatic translations",
+  "label_description": "Object's human readable name, name used in RENergetic - `name` field is used if label is null",
   "dashboard": {
     "name": "Name",
     "url": "URL",
@@ -129,7 +131,13 @@
       "kpi_ep": "Energy potency",
       "kpi_co2": "CO₂ intensity",
       "kpi_ee": "Energy efficency",
-      "kpi_es": "Energy savings"
+      "kpi_es": "Energy savings",
+      "abstract_ens": "External Non Renewable Sources",
+      "abstract_ers": "ERS",
+      "abstract_lrs": "Local renewable sources",
+      "abstract_lns": "Local Non Renewable Sources",
+      "abstract_losses": "Losses",
+      "abstract_load": "Load"
     },
     "panel_count": "Linked panels count",
     "measurement_type": "Measurement type",
@@ -145,6 +153,7 @@
     "sensor_name": "Sensor name",
     "asset_category": "Asset category",
     "physical_name": "Physical name",
+    "physical_type": "Physical unit type",
     "asset": "Asset"
   },
   "user": {
