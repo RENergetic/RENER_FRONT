@@ -49,7 +49,7 @@
           :id="s.key"
           v-model="mModel[s.key]"
           v-tooltip="s.description"
-          :placeholder="s.placeholder"
+          :placeholder="`${s.placeholder}`"
           :disabled="disabled"
           :min-fraction-digits="0"
           :max-fraction-digits="5"

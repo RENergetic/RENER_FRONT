@@ -56,7 +56,7 @@
     <Column field="export">
       <template #body="item">
         <!--  :header="$t('view.export_json')" pi-file-export-->
-        <Button v-tooltip="$t('view.export_json')" icon="pi pi-file" class="p-button-rounded" @click="exportJSON(item.data)" />
+        <Button v-tooltip="$t('view.export_json')" icon="pi pi-file" class="p-button-rounded" @click="exportJSON(item.data, true)" />
       </template> </Column
     ><Column field="delete">
       <template #body="item">
@@ -237,11 +237,12 @@ export default {
       });
       this.panelEdit = true;
     },
-    async exportJSON(o) {
+    async exportJSON(o, template) {
       await this.$refs.spinner.run(async () => {
         await this.$ren.dashboardApi.getInformationPanel(o.id).then(async (panel) => {
-          let panelTemplate = getCleanPanelStructure(panel, true);
-          this.$ren.utils.downloadJSON(panelTemplate, `template_${panel.name}`, true);
+          let panelTemplate = getCleanPanelStructure(panel, template);
+          let filename = template ? `template_${panel.name}` : `${panel.id}_${panel.name}`;
+          this.$ren.utils.downloadJSON(panelTemplate, filename, true);
         });
       });
     },
@@ -252,7 +253,7 @@ export default {
       this.$emit("reload", ev);
     },
     async deletePanel(panel) {
-      await this.exportJSON(panel);
+      await this.exportJSON(panel, false); //export full panel
       await this.$refs.spinner.run(async () => {
         await this.$ren.dashboardApi.deleteInformationPanel(panel.id);
       });

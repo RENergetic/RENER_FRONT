@@ -87,11 +87,10 @@
               :show-cancel-button="false"
               accept="text/*, .json"
               :max-file-size="1000000"
-              @upload="onUpload"
               @uploader="onFileUpload"
               @select="onSelect"
             >
-              <!-- @upload="onFileUpload" -->
+              <!-- @upload="onUpload" -->
               <template #empty>
                 <!-- <ren-input-text v-if="submittedPanel" v-model="submittedPanel" :text-label="null" :cols="50" :maxlength="10000" /> -->
                 <ren-input-wrapper v-if="submittedPanelJSON" :text-label="null">
@@ -297,6 +296,7 @@ export default {
       }
       // await this._submit(event.files);
     },
+    onUpload() {},
 
     async infer(panel, overrideMeasurements) {
       if (!this.mModel.is_template) {
