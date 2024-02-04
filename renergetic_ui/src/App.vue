@@ -107,6 +107,7 @@ export default {
     if (this.$keycloak.isInitialized()) {
       this.keycloakState = 1;
       let currentLocale = this.$store.getters["settings/locales"].selectedLocale;
+      console.info(`User's language  ${currentLocale}`);
       if (currentLocale) {
         setLocale(currentLocale);
         this.refresh = !this.refresh;

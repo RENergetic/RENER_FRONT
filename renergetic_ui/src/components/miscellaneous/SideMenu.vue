@@ -366,6 +366,7 @@ export default {
       if ((flags & this.role) == 0) {
         return [];
       }
+      let managerFlags = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
 
       return [
         {
@@ -373,7 +374,7 @@ export default {
           icon: "pi pi-fw  pi-bell",
           command: () => {
             // this.$emit("notification");
-            if (this.notificationCount > 0) this.notificationDialog = !this.notificationDialog;
+            if (this.notificationCount > 0 || managerFlags & this.role) this.notificationDialog = !this.notificationDialog;
           },
           class: this.notificationCount == 0 ? "disabled" : "hl-warning",
         },
