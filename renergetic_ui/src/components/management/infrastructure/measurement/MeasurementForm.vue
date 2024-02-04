@@ -54,7 +54,7 @@
         </ren-input-wrapper>
         <ren-input-wrapper
           v-if="mModel.physical_type"
-          :text-label="'model.measurement.unit'"
+          :text-label="'model.measurement_type.unit'"
           :invalid="v$.mModel.unit.$invalid"
           :errors="v$.mModel.unit.$silentErrors"
         >

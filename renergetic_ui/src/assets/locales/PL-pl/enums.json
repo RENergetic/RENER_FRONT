@@ -4,7 +4,9 @@
     "power": "Moc"
   },
   "metric_type": {
+    "co2eq": "Ekwiwalent CO₂",
     "electricity": "Elektryczność",
+    "flow": "Przepływ",
     "heat": "Ciepło",
     "energy": "Energia",
     "temperature": "Temperatura",
@@ -15,7 +17,8 @@
     "energy_gj": "Energia Cieplna",
     "percentage": "Procent",
     "power": "Moc",
-    "value": "Wartość"
+    "value": "Wartość",
+    "voltage": "Napięcie"
   },
   "measurement_aggregation": {
     "sum": "Suma",

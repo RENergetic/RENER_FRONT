@@ -217,7 +217,7 @@ export default {
         ...this._grafanaDashboardManagement(),
         ...this._panelManagementItems(),
         ...this._measurementItems(),
-        ...this._notificationItems(),
+        // ...this._notificationItems(),
         ...this._hdrItems(),
         ...this._abstractMeters(),
       ];
@@ -297,18 +297,18 @@ export default {
       ];
     },
 
-    _notificationItems() {
-      return [
-        {
-          class: this.checkPath({ name: "NotificationList" }) ? "hl-menu" : "",
-          label: this.$t("menu.manage_notifications"),
-          icon: "pi pi-fw pi-bell",
-          command: () => {
-            this.$router.push({ name: "NotificationList", path: "/management/notification" });
-          },
-        },
-      ];
-    },
+    // _notificationItems() {
+    //   return [
+    //     {
+    //       class: this.checkPath({ name: "NotificationList" }) ? "hl-menu" : "",
+    //       label: this.$t("menu.manage_notifications"),
+    //       icon: "pi pi-fw pi-bell",
+    //       command: () => {
+    //         this.$router.push({ name: "NotificationList", path: "/management/notification" });
+    //       },
+    //     },
+    //   ];
+    // },
     _hdrItems() {
       return [
         {

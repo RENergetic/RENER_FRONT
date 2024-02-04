@@ -4,7 +4,9 @@
     "power": "Power"
   },
   "metric_type": {
+    "co2eq": "CO₂ equivalent",
     "electricity": "electricity",
+    "flow": "Flow",
     "heat": "heat",
     "energy": "Energy",
     "temperature": "temperature",
@@ -15,7 +17,8 @@
     "energy_gj": "Heat energy",
     "percentage": "Percentage",
     "power": "Power",
-    "value": "Value"
+    "value": "Value",
+    "voltage": "Voltage"
   },
   "measurement_aggregation": {
     "sum": "Sum",
