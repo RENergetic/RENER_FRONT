@@ -6,11 +6,12 @@
         <div class="ren">
           <ren-input
             v-model="editCategoryModel.name"
+            :text-info="'model.name_description'"
             :text-label="'model.asset.name'"
             :invalid="v$.editCategoryModel.name.$invalid"
             :errors="v$.editCategoryModel.name.$silentErrors"
           />
-          <ren-input v-model="editCategoryModel.label" :text-label="'model.asset.label'" />
+          <ren-input v-model="editCategoryModel.label" :text-info="'model.label_description'" :text-label="'model.asset.label'" />
           <ren-input-text v-model="editCategoryModel.description" :text-label="'model.asset.description'" />
         </div>
       </template>

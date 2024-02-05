@@ -1,6 +1,6 @@
 <template>
   <div class="field grid">
-    <label for="ren-input" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t(textLabel) }} </label>
+    <label for="ren-input" class="col-12 mb-2 md:col-2 md:mb-0 ren-label"> {{ $t(textLabel) }} </label>
     <div class="col-12 md:col-10"><Password id="ren-input" v-model="mValue" :disabled="disabled" /></div>
     <span v-if="invalid">
       <span v-for="(error, index) of errors" id="name-error" :key="index">

@@ -26,7 +26,6 @@
         :tile-preview="false"
         @preview-tile="onPreview"
       />
-      <!-- -->
     </div>
 
     <div class="flex-grow-1 flex flex-column justify-content-center flex-wrap">
@@ -85,7 +84,7 @@ export default {
   },
   computed: {
     settings() {
-      return { legend: false, title: false, center: false, cellWidth: 100, asset_id: this.demand.asset ? this.demand.asset.id : null };
+      return { legend: false, title: false, center: false, cellWidth: null, asset_id: this.demand.asset ? this.demand.asset.id : null };
     },
     demandIncrease() {
       return this.actionType == DemandActionType.INCREASE;

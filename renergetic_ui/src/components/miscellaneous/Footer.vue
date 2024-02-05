@@ -19,13 +19,15 @@ export default {
 </script>
 <style>
 #pagefooter {
-  max-height: 4rem;
-  height: 4rem;
+  max-height: 2rem;
+  flex-grow: 0;
+  height: 2rem;
   display: flex;
-  position: relative;
+  /* position: relative; */
   bottom: 0;
   left: 0;
-  height: 4rem;
+  height: 2rem;
+  min-height: 2rem;
   bottom: 0;
   left: 0;
   margin: 0;

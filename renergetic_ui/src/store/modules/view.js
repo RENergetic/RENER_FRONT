@@ -13,6 +13,8 @@ function groupMeasurementTypes(measurementTypes) {
       d[mt.physical_name] = [];
     }
     d[mt.physical_name].push({
+      name: mt.name,
+      physical_name: mt.physical_name,
       id: mt.id,
       unit: mt.unit,
       factor: mt.factor,
@@ -58,6 +60,7 @@ export default {
       // state.state =  getF("state",[]);
       state.data = getF("data", []);
       state.measurementTypes = groupMeasurementTypes(getF("measurement_types", []));
+      state.measurementTypeList = getF("measurement_types", []);
       state.assetPanels = getF("asset_panels", []);
       state.assetPanelsMap = mapAssetPanelId(state.assetPanels);
       console.info(state.assetPanelsMap);
@@ -139,15 +142,15 @@ export default {
       return (value * currentMeasurementType.factor) / mt.factor;
       // return (value / currentMeasurementType.factor) * mt.factor;
     },
+
     convertSIValue: (state) => (physicalName, value, newUnit) => {
+      //Convert base SI unit into newUnit
       if (newUnit == null || newUnit == "%" || newUnit == "any") {
         return value;
       }
       //get new unit
       let mt = state.measurementTypes[physicalName].find((mt) => mt.unit == newUnit);
-
       return value / mt.factor;
-      // return (value / currentMeasurementType.factor) * mt.factor;
     },
     locationList: (state /* getters*/) => {
       return state.locationList;

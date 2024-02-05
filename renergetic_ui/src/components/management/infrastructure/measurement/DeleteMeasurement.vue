@@ -3,7 +3,7 @@ export default {
   name: "DeleteMeasurement",
   components: {},
   props: {
-    measurement: {
+    measurements: {
       type: Object,
       default: null,
     },
@@ -11,21 +11,28 @@ export default {
   emits: ["delete"],
   mounted() {},
   methods: {
-    async delete(measurement) {
-      let mMeasurement = measurement ? measurement : this.measurement;
-      if (mMeasurement == null) {
+    async delete(measurements) {
+      let mMeasurements = measurements ? measurements : this.measurements;
+      if (mMeasurements == null) {
         return;
         //todo: log error ?
       }
+      var label = mMeasurements.map((m) => this.measurementLabel(m)).join(",");
       await this.$confirm.require({
         message: this.$t("view.measurement_delete_confirm", {
-          label: mMeasurement.label ? mMeasurement.label : mMeasurement.name,
+          label: label,
         }),
         header: this.$t("view.measurement_delete"),
         icon: "pi pi-exclamation-triangle",
         accept: async () => {
-          let res = await this.deleteConfirmed(mMeasurement.id);
-          if (res) this.$emit("delete", mMeasurement);
+          let deleted = [];
+          for (let m of mMeasurements) {
+            let res = await this.deleteConfirmed(m.id);
+            if (res) {
+              deleted.push(m);
+            }
+          }
+          if (deleted.length > 0) this.$emit("delete", deleted);
         },
         reject: () => {
           this.$confirm.close();

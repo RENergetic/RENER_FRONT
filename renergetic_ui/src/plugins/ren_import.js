@@ -1,3 +1,7 @@
+import { Chart } from "chart.js";
+import annotationPlugin from "chartjs-plugin-annotation";
+Chart.register(annotationPlugin);
+
 import SettingsDialog from "@/components/miscellaneous/settings/SettingsDialog.vue";
 import RenSpinner from "@/components/miscellaneous/RenSpinner";
 import RenPaginator from "@/components/miscellaneous/RenPaginator";

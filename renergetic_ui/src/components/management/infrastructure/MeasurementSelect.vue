@@ -81,11 +81,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-i.pi {
-  margin-left: 0.25rem;
-}
-.flex > div {
-  flex-grow: 1;
-}
-</style>
+<style lang="scss"></style>

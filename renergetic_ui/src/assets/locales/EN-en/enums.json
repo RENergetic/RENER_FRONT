@@ -4,7 +4,9 @@
     "power": "Power"
   },
   "metric_type": {
+    "co2eq": "CO₂ equivalent",
     "electricity": "electricity",
+    "flow": "Flow",
     "heat": "heat",
     "energy": "Energy",
     "temperature": "temperature",
@@ -14,7 +16,9 @@
     "heat_energy_gj": "Heat energy",
     "energy_gj": "Heat energy",
     "percentage": "Percentage",
-    "power": "Power"
+    "power": "Power",
+    "value": "Value",
+    "voltage": "Voltage"
   },
   "measurement_aggregation": {
     "sum": "Sum",
@@ -71,9 +75,14 @@
     "none": "N/A"
   },
   "tile_type": {
-    "knob": "knob",
-    "doughnut": "doughnut",
-    "list": "list"
+    "chart": "Chart",
+    "knob": "Knob chart",
+    "multi_knob": "Multi knob chart",
+    "doughnut": "Doughnut chart",
+    "list": "List",
+    "single": "Single",
+    "panel": "Panel",
+    "multi_doughnut": "Multi doughnut chart"
   },
   "heatmap_type": {
     "default": "Normal",
@@ -112,6 +121,11 @@
     "owner": "Can be owner of an asset",
     "notification": "Access Notification",
     "read": "Can receive read privilages to asset or dashboard"
+  },
+  "asset_connection": {
+    "owner": "Owner",
+    "resident": "Resident",
+    "visitor": "Visitor"
   },
   "role": {
     "ren-staff": "Staff",

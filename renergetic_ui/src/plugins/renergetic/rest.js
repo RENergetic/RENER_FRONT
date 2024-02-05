@@ -5,6 +5,7 @@ import ManagementApi from "./ren_api/managementapi";
 import UserApi from "./ren_api/userapi";
 import AxiosAPI from "./ren_api/axiosapi";
 import WrapperApi from "./ren_api/wrapper_api";
+import HDRAPI from "./ren_api/hdrapi";
 import {
   DashboardApi as DummyDashboardApi,
   ManagementApi as DummyManagementApi,
@@ -44,5 +45,6 @@ export default function createRest(vueInstance) {
     managementApi: !USE_DUMMY ? new ManagementApi(axiosInstance, vueInstance) : new DummyManagementApi(),
     userApi: !USE_DUMMY ? new UserApi(axiosInstance, vueInstance) : new DummyUserApi(),
     wrapperApi: !USE_DUMMY ? new WrapperApi(axiosInstance, vueInstance) : new DummyWrapperApi(),
+    hdrApi: new HDRAPI(axiosInstance, vueInstance),
   };
 }

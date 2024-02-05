@@ -1,8 +1,5 @@
 <template>
-  <div v-if="mPanel && mPData" id="panel-grid-stack" style="" class="grid-stack">
-    <!-- {{ mSettings }}
-    {{ settings }} -->
-    <!-- {{ mPData }} -->
+  <div v-if="mPanel && mPData && loaded" id="panel-grid-stack" style="" class="grid-stack">
     <InformationTileGridWrapper
       v-for="(tile, index) in tiles"
       :key="tile.id"
@@ -31,47 +28,9 @@ import NotificationList from "../../management/notification/NotificationList.vue
 import TileMeasurementPreview from "./informationtile/TileMeasurementPreview.vue";
 import { GridStack } from "gridstack";
 // import { TileTypes, NotificationContext } from "@/plugins/model/Enums.js";
-import { NotificationContext, RenRoles } from "@/plugins/model/Enums.js";
+import { NotificationContext } from "@/plugins/model/Enums.js";
 // import "gridstack/dist/h5/gridstack-dd-native";
 import "gridstack/dist/gridstack.min.css";
-let role = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
-
-function validateSettings(settings, panel, ctx) {
-  let mSettings = {};
-  if (settings == null) {
-    mSettings = {};
-  } else {
-    mSettings = settings;
-  }
-  if (panel.props) {
-    let props = panel.props;
-    let overrideMode = props.overrideMode;
-    if (role & ctx.$store.getters["auth/renRole"] && mSettings.ignoreOverrideMode) {
-      // alert("");
-      mSettings = { ...panel.props, ...mSettings };
-    } else
-      switch (overrideMode) {
-        case "fixed":
-          mSettings = panel.props;
-          break;
-        case "override":
-          mSettings = { ...mSettings, ...panel.props };
-          break;
-        case "default":
-        default:
-          mSettings = { ...panel.props, ...mSettings };
-          break;
-      }
-  }
-  // mSettings.legend = mSettings.legend != null ? mSettings.legend : true;
-  // mSettings.legend = mSettings.legend != null ? mSettings.legend : null;
-  mSettings.asset_id = ctx.assetId;
-  // settings.title = settings.title != null ? settings.title : true;
-  // settings.color = settings.color != null ? settings.color : "#d6ebff";
-  let size = mSettings != null && mSettings.fontSize != null ? mSettings.fontSize : `${2.0}rem`;
-  mSettings.fontSize = size;
-  return mSettings;
-}
 
 export default {
   name: "InformationPanel",
@@ -123,9 +82,10 @@ export default {
   emits: ["editTile", "update", "timeseries-update"],
   data() {
     return {
+      loaded: false,
       grid: null,
-      mSettings: validateSettings(this.settings, this.panel, this),
-      // loaded: false,
+      mSettings: this.computePanelSettings(this.settings, this.panel),
+      reload: false,
       notificationDialog: false,
       selectedItem: null,
       mPanel: this.panel,
@@ -151,22 +111,10 @@ export default {
         this.setMeasurementLabels(this.mPanel);
         this.reloadGrid();
       },
-      deep: true,
+      deep: false,
     },
     pdata: {
       handler: function (newValue) {
-        // if (this.mSettings.relativeValues && newValue) {
-        //   this.mPData = this.$ren.utils.convertPanelData(this.mPanel, newValue, this.$store.getters["settings/conversion"]);
-        //   this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, this.mSettings);
-        // } else if (newValue) {
-        //   console.info("watch pdata");
-        //   this.mPData = this.$ren.utils.convertPanelData(this.mPanel, newValue, this.$store.getters["settings/conversion"]);
-        //   console.error(this.mPData);
-        //   //TODO: check this
-        //   this.mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, this.mPData, this.mSettings);
-        //   console.error(this.mPData);
-        // }
-
         this.recalculateData(newValue);
       },
       deep: true,
@@ -175,8 +123,9 @@ export default {
     mSettings: {
       // handler(newVal) {
       handler() {
-        console.info("watch mSettings");
+        console.debug("Panel settings have changed - reload");
         this.recalculateData(this.pdata);
+        this.reloadGrid();
       },
       deep: true,
     },
@@ -191,6 +140,7 @@ export default {
       this.recalculateData(this.pdata);
 
       this.reloadGrid();
+      this.loaded = true;
     }
   },
   methods: {
@@ -209,9 +159,9 @@ export default {
         console.debug(panelData);
         let mPData = JSON.parse(JSON.stringify(panelData));
         mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, mPData, this.settings);
-        console.error(mPData);
+        // console.error(mPData);
         mPData = this.$ren.utils.convertPanelData(this.mPanel, mPData, this.$store.getters["settings/conversion"]);
-        console.error(mPData);
+        // console.error(mPData);
         this.mPData = mPData;
       }
     },
@@ -221,10 +171,12 @@ export default {
     reloadGrid() {
       if (this.grid != null) this.grid.destroy(false);
       let grid = GridStack.init({ float: true, column: 12, cellHeight: "8vh", margin: 5 }, "#panel-grid-stack");
+
       if (grid == null) {
-        console.warn("Cannot find #panel-grid-stack, is panel:" + (this.mPanel != null) + ", is data:" + (this.pdata != null));
+        if (this.loaded) console.warn("Cannot find #panel-grid-stack, is panel:" + (this.mPanel != null) + ", is data:" + (this.pdata != null));
         return;
       }
+      console.debug("reloadGrid");
       if (this.locked) {
         grid.disable();
       } else {
@@ -234,7 +186,7 @@ export default {
 
       this.mSettings.cellWidth = grid.el.clientWidth / grid.getColumn();
       this.mSettings.cellHeight = grid.el.clientHeight / grid.getRow();
-
+      // console.warn(this.mSettings.cellHeight);
       this.grid = grid;
     },
 
