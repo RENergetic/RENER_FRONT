@@ -122,7 +122,7 @@ export default {
           console.warn(`knob: wrong value  ${v}, min: ${this.minV}`);
           v = this.maxV;
         }
-        return this.$ren.utils.roundValue(v) * 0.5; // Math.round(v * 10) / 10.0;
+        return this.$ren.utils.roundValue(v); // Math.round(v * 10) / 10.0;
       } catch (e) {
         return null;
       }
