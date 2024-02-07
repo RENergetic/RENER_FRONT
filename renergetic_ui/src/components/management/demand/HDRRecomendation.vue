@@ -20,7 +20,7 @@
               :title-visible="true"
               :legend="true"
               :measurements="group.measurements"
-              :annotations="annotations"
+              :annotations="getAnnotations(group)"
               :immediate="false"
             />
           </TabPanel>
@@ -170,11 +170,12 @@ export default {
         mGroups[k].measurements.push(m);
         if (m._current) {
           let mLabel = m.label ? m.label : m.name;
-          mGroups[k].header = mLabel + " " + (m.asset ? (m.asset.label ? m.asset.label : m.asset.name) : "");
+          mGroups[k].header = mLabel + (m.asset ? (m.asset.label ? ` - ${m.asset.label}` : `" - ${m.asset.name}`) : "");
+          mGroups[k].current = m;
         }
       }
       this.mGroups = Object.values(mGroups);
-      console.info(measurements);
+      // console.info(measurements);
       //todo: filter last 24h and 24h ahead
       let nowTs = new Date().getTime();
       let from = new Date(nowTs - 24 * 3600 * 1000).getTime();
@@ -184,7 +185,7 @@ export default {
       if (measurements.length > 0) {
         this.$refs.spinner.run(async () => {
           if (this.currentMeasurements != null) {
-            console.info(this.currentMeasurements);
+            console.debug(this.currentMeasurements);
             let curIds = this.currentMeasurements.map((it) => it.id);
             // let pDataCurrent = await this.$ren.dataApi.getMeasurementTimeseries(this.currentMeasurements, filterCurrent);
             // console.info(pDataCurrent);
@@ -207,13 +208,13 @@ export default {
             }
 
             this.pData = pData;
-            console.info(this.pData);
+            // console.info(this.pData);
           } else {
             this.pData = await this.$ren.dataApi.getMeasurementTimeseries(measurements, filterCurrent);
           }
 
-          this.annotations = this.getAnnotations();
-          console.info(this.annotations);
+          // this.annotations = this.getAnnotations();
+          // console.info(this.annotations);
           this.reloadChart = !this.reloadChart;
         });
       }
@@ -222,18 +223,35 @@ export default {
     reload() {
       this.$emit("reload");
     },
-    getAnnotations() {
-      // console.info(this.pData);
+    getAnnotations(group) {
       let annotations = [];
+      if (this.hdrRequest == null) {
+        return annotations;
+      }
       // let minIdx = Math.round(this.pData["timestamps"].length * 0.7);
       // let maxIdx = Math.round(this.pData["timestamps"].length * 0.9);
       // let annotationMin = this._getAnnotation(this.pData["timestamps"][minIdx]);
       // let annotationMax = this._getAnnotation(this.pData["timestamps"][maxIdx]);
       // let annotationBox = this._getBoxAnnotation(this.pData["timestamps"][minIdx], this.pData["timestamps"][maxIdx]);
       let currentLine = this._getAnnotationX(new Date().getTime());
-      // let requestLine = this._getAnnotationY(this.hdrRequest.max_value != null ? this.hdrRequest.max_value : this.hdrRequest.value_change);
       annotations.push(currentLine);
-      // annotations.push(requestLine);
+      let cur = group.current;
+      // console.info(cur.type);
+      // console.info(this.currentMeasurements[index]);
+      // console.info(this.hdrRequest.value_type);
+      if (cur.domain == "heat" && cur.type.physical_name == this.hdrRequest.value_type.physical_name) {
+        // console.info(this.hdrRequest.value_type);
+        // console.error(this.pData.current[cur.id]);
+        console.error("todo: convert hdr request and current measurement units");
+        if (this.hdrRequest.max_value != null) {
+          let requestLine = this._getAnnotationY(this.hdrRequest.max_value);
+          annotations.push(requestLine);
+        } else if (this.hdrRequest.value_change != null) {
+          let v = Math.max(...this.pData.current[cur.id]) + this.hdrRequest.value_change;
+          let requestLine = this._getAnnotationY(v);
+          annotations.push(requestLine);
+        }
+      }
       if (this.hdrRequest != null) {
         let annotationBox = this._getBoxAnnotation(this.hdrRequest.date_from, this.hdrRequest.date_to);
         annotations.push(annotationBox);
@@ -261,7 +279,7 @@ export default {
       return {
         type: "line",
         drawTime: "afterDatasetsDraw",
-        borderColor: "black",
+        borderColor: "red",
         borderDash: [6, 6],
         borderWidth: 1.5,
         yMax: y,
