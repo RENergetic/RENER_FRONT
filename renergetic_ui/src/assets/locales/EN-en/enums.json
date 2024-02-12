@@ -17,6 +17,7 @@
     "energy_gj": "Heat energy",
     "percentage": "Percentage",
     "power": "Power",
+    "ratio": "Ratio",
     "value": "Value",
     "voltage": "Voltage"
   },
@@ -66,6 +67,7 @@
     "speed": "Speed",
     "moisture": "Moisture",
     "pressure": "Pressure",
+    "ratio": "Ratio",
     "value": "Value",
     "precipation": "Precipation"
   },

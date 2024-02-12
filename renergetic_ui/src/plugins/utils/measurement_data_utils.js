@@ -35,7 +35,7 @@ export default {
     else mt = null;
     // console.info(conversionSettings);
     let unit = mt ? mt : measurement.type.unit;
-    if (unit == "any") {
+    if (unit == "any" || unit == "ratio") {
       return null;
     }
     return unit;

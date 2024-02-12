@@ -170,12 +170,17 @@ export default {
     },
     reloadGrid() {
       if (this.grid != null) this.grid.destroy(false);
-      let grid = GridStack.init({ float: true, column: 12, cellHeight: "8vh", margin: 5 }, "#panel-grid-stack");
-
-      if (grid == null) {
-        if (this.loaded) console.warn("Cannot find #panel-grid-stack, is panel:" + (this.mPanel != null) + ", is data:" + (this.pdata != null));
+      let grid;
+      if (this.mPanel && this.mPData && this.loaded) {
+        grid = GridStack.init({ float: true, column: 12, cellHeight: "8vh", margin: 5 }, "#panel-grid-stack");
+        if (grid == null) {
+          if (this.loaded) console.warn("Cannot find #panel-grid-stack, is panel:" + (this.mPanel != null) + ", is data:" + (this.pdata != null));
+          return;
+        }
+      } else {
         return;
       }
+
       console.debug("reloadGrid");
       if (this.locked) {
         grid.disable();

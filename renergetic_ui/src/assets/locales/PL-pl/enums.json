@@ -17,6 +17,7 @@
     "energy_gj": "Energia Cieplna",
     "percentage": "Procent",
     "power": "Moc",
+    "ratio": "Współczynnik",
     "value": "Wartość",
     "voltage": "Napięcie"
   },
@@ -66,6 +67,7 @@
     "speed": "Prędkość",
     "moisture": "Wilgotność",
     "pressure": "Ciśnienie",
+    "ratio": "Współczynnik",
     "value": "Liczba",
     "precipation": "Precipation"
   },

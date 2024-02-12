@@ -6,7 +6,7 @@
       <!-- <div style="max-width: 20rem; overflow: hidden; max-height: 15rem">{{ chartData }}</div> -->
       <!-- {{ pData["timeseries_labels"] }} -->
       <Chart
-        v-if="!titleVisible && height && width"
+        v-if="!titleVisible && height && width && loaded"
         :key="chartData"
         :style="mStyle"
         :type="chartType"
@@ -106,7 +106,7 @@ export default {
     },
     options: function () {
       let annotations = this.annotations;
-      console.info(annotations);
+      // console.info(annotations);
 
       let position = this.mMeasurements.length > 4 ? "top" : "chartArea";
       return {

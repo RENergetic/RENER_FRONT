@@ -52,6 +52,7 @@ export default {
     //   measurement = this.tile.measurements[0];
     // }
     let measurement = this.getTileMeasurement();
+    console.error(this.pdata);
     let maxV =
       !this.settings.panel.relativeValues &&
       this.pdata.max &&
@@ -132,6 +133,9 @@ export default {
   mounted() {},
   methods: {
     defaultMax(measurement) {
+      switch (measurement.type.base_unit) {
+        case "%":
+      }
       return measurement.type.base_unit == "%" || this.settings.panel.relativeValues ? 100.0 : 1.0;
     },
   },
