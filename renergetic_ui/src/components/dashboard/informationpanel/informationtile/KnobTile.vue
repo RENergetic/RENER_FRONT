@@ -60,7 +60,7 @@ export default {
       this.pdata.max[measurement.aggregation_function][measurement.id]
         ? this.pdata.max[measurement.aggregation_function][measurement.id]
         : this.defaultMax(measurement);
-
+    console.error(measurement.id);
     let minV =
       !this.settings.panel.relativeValues &&
       this.pdata.min &&
