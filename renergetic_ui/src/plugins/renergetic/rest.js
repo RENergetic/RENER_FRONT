@@ -6,6 +6,7 @@ import UserApi from "./ren_api/userapi";
 import AxiosAPI from "./ren_api/axiosapi";
 import WrapperApi from "./ren_api/wrapper_api";
 import HDRAPI from "./ren_api/hdrapi";
+import KubeflowAPI from "./ren_api/kubeflowapi";
 import {
   DashboardApi as DummyDashboardApi,
   ManagementApi as DummyManagementApi,
@@ -24,6 +25,7 @@ if (process.env.VUE_APP_DUMMY_API == true) {
   USE_DUMMY = false;
 }
 export var BASE_URL = process.env.VUE_APP_API_URL;
+export var KUBEFLOW_SERVICE_BASE_URL = process.env.VUE_APP_KUBEFLOW_SERVICE_BASE_URL ? process.env.VUE_APP_KUBEFLOW_SERVICE_BASE_URL : null;
 
 const axiosInstance = axios.create({ baseURL: BASE_URL });
 
@@ -45,6 +47,7 @@ export default function createRest(vueInstance) {
     managementApi: !USE_DUMMY ? new ManagementApi(axiosInstance, vueInstance) : new DummyManagementApi(),
     userApi: !USE_DUMMY ? new UserApi(axiosInstance, vueInstance) : new DummyUserApi(),
     wrapperApi: !USE_DUMMY ? new WrapperApi(axiosInstance, vueInstance) : new DummyWrapperApi(),
+    kubeflowApi: !USE_DUMMY ? new KubeflowAPI(axiosInstance, vueInstance, KUBEFLOW_SERVICE_BASE_URL) : new DummyWrapperApi(),
     hdrApi: new HDRAPI(axiosInstance, vueInstance),
   };
 }
