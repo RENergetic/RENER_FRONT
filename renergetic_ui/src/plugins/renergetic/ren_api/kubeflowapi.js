@@ -10,10 +10,11 @@ export default class KubeflowApi extends RestComponent {
     return this.get(`${this.BASE_URL}/workflow`);
   }
   adminList({ visible = null }) {
+    console.info(visible);
     let args = this.parseArgs({ visible: visible });
     return this.get(`${this.BASE_URL}/admin/workflow?${args}`);
   }
-  setVisible(experimentId) {
+  showExperiment(experimentId) {
     return this.put(`${this.BASE_URL}/admin/workflow/${experimentId}/visibility`);
   }
   hideExperiment(experimentId) {
@@ -22,8 +23,8 @@ export default class KubeflowApi extends RestComponent {
   getExperimentRun(experimentId) {
     return this.get(`${this.BASE_URL}/workflow/${experimentId}/run`);
   }
-  startExperiment(experimentId) {
-    return this.post(`${this.BASE_URL}/workflow/${experimentId}/run`);
+  startExperiment(experimentId, experimentParams) {
+    return this.post(`${this.BASE_URL}/workflow/${experimentId}/run`, experimentParams);
   }
   stopExperiment(experimentId) {
     return this.delete(`${this.BASE_URL}/workflow/${experimentId}/run`);

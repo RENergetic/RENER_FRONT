@@ -61,6 +61,19 @@ class RenUtils {
     Object.assign(this, MeasurementUtils);
     Object.assign(this, MeasurementDataUtils);
   }
+  toPrimeFilter(filterDict) {
+    if (filterDict == null) {
+      return {};
+    }
+    return Object.fromEntries(Object.entries(filterDict).map((it) => [it[0], { value: it[1] }]));
+  }
+
+  fromPrimeFilter(primeFilterDict) {
+    if (primeFilterDict == null) {
+      return {};
+    }
+    return Object.fromEntries(Object.entries(primeFilterDict).map((it) => [it[0], it[1].value]));
+  }
   get app() {
     return this.vueInstance.config.globalProperties;
   }

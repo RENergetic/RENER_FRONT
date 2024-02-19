@@ -82,6 +82,7 @@ export default {
         ...this.demandsItem(),
 
         ...this.managementItems(),
+        ...this.adminItems(),
         ...this.userItems(),
       ];
     },
