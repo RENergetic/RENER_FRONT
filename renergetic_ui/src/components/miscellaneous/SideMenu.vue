@@ -229,6 +229,32 @@ export default {
         },
       ];
     },
+    adminItems() {
+      let flags = RenRoles.REN_ADMIN;
+      if ((flags & this.role) == 0) return [];
+
+      let items = [...this._workflowItems()];
+      return [
+        {
+          label: this.$t("menu.admin"),
+          icon: "pi pi-fw pi-wrench pi-cog",
+          items: items,
+        },
+      ];
+    },
+    _workflowItems() {
+      let items = [
+        {
+          class: this.checkPath({ name: "Workflows" }) ? "hl-menu" : "",
+          label: this.$t("menu.manage_workflows"),
+          icon: "pi pi-fw pi-wrench",
+          command: () => {
+            this.$router.push({ name: "Workflows" });
+          },
+        },
+      ];
+      return items;
+    },
     _userItems() {
       let items = [
         {
