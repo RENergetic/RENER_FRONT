@@ -114,13 +114,25 @@ class RenUtils {
   default(value, defaultValue = undefined) {
     return value !== null && value !== undefined ? value : defaultValue;
   }
+  dateString(ts = null) {
+    if (ts == null) {
+      return null;
+    }
+    var dateObj = new Date(ts);
+    var dd = String(dateObj.getDate()).padStart(2, "0");
+    var mm = String(dateObj.getMonth() + 1).padStart(2, "0"); //January is 0!
+    var yyyy = dateObj.getFullYear();
+    dateObj = mm + "/" + dd + "/" + yyyy + " " + dateObj.getHours() + ":" + dateObj.getMinutes();
+    return dateObj;
+  }
   currentDate() {
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, "0");
-    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-    var yyyy = today.getFullYear();
-    today = mm + "/" + dd + "/" + yyyy + " " + today.getHours() + ":" + today.getMinutes();
-    return today;
+    return this.dateString(new Date().getTime());
+    // var today = new Date();
+    // var dd = String(today.getDate()).padStart(2, "0");
+    // var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    // var yyyy = today.getFullYear();
+    // today = mm + "/" + dd + "/" + yyyy + " " + today.getHours() + ":" + today.getMinutes();
+    // return today;
   }
   openNewTab(path) {
     var parser = document.createElement("a");

@@ -187,5 +187,11 @@
   "panel_templates": {
     "kpi_electricity": "Electricity KPI ",
     "kpi_heat": "Heat KPI"
+  },
+  "workflowrun": {
+    "run_id": "Run id",
+    "start_time": "Start time",
+    "end_time": "End time",
+    "parameters": "Parameters"
   }
 }
