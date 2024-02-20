@@ -15,10 +15,6 @@
   >
     <template #header>
       <ren-switch v-model="mFilters.visible.value" :text-label="'model.workflow.visibility'" />
-      <!-- <span class="p-input-icon-left" style="margin-left: 1rem">
-        <i class="pi pi-search" /> -->
-      <!-- <Dropdown v-model="mFilters.visible.value" show-clear :options="tagsKeys" :placeholder="$t('view.tag_filter')" /> -->
-      <!-- </span> -->
     </template>
 
     <Column field="name" :header="$t('model.workflow.name')" :show-filter-menu="false" />

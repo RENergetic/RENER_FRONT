@@ -82,7 +82,7 @@ export default {
         r1 = this.recommendation.label ? `${this.recommendation.label}(${this.recommendation.tag.value})` : this.recommendation.tag.value;
       }
       if (this.comparewith) {
-        r2 = this.comparewith.label ? `${this.recommecomparewithndation.label}(${this.comparewith.tag.value})` : this.comparewith.tag.value;
+        r2 = this.comparewith.label ? `${this.comparewith.label}(${this.comparewith.tag.value})` : this.comparewith.tag.value;
       }
       if (r1 && r2) {
         return `${r1}-${r2}`;
