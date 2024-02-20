@@ -206,11 +206,15 @@ export default {
             // console.info(pDataCurrent);
 
             let pData = await this.$ren.dataApi.getMeasurementTimeseries(measurements, filterCurrent);
-            let idx = pData.timestamps.findIndex((ts) => ts >= nowTs);
-
-            // let d = pDataCurrent.timestamps.length - pDataRecommendations.timestamps.length;
+            let idx = pData.timestamps.findIndex((ts) => ts >= nowTs); //border  between past and future data
+            if (idx < 1) {
+              this.pData = pData;
+              return;
+            }
             for (let mId in pData.current) {
               if (!curIds.includes(Number(mId))) {
+                //only recommendations
+                let recomemndationMeasurement = mDict[mId];
                 let timeseries = pData.current[mId];
                 for (let i in timeseries) {
                   if (i < idx) {
@@ -219,11 +223,13 @@ export default {
                     break;
                   }
                 }
+                //get the last point from the current timeseries
+                let currentMeasurement = mGroups[this.measurementGroupKey(recomemndationMeasurement)].current;
+
+                timeseries[idx - 1] = pData.current[currentMeasurement.id][idx - 1];
               }
             }
-
             this.pData = pData;
-            // console.info(this.pData);
           } else {
             this.pData = await this.$ren.dataApi.getMeasurementTimeseries(measurements, filterCurrent);
           }
