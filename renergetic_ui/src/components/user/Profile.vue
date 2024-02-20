@@ -74,7 +74,7 @@ export default {
   async mounted() {
     await this.$refs.spinner.run(async () => {
       this.user = await this.$ren.userApi.getProfile();
-      console.warn(this.user);
+      // console.warn(this.user);
     });
   },
   methods: {

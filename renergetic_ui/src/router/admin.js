@@ -16,7 +16,7 @@ var adminRoutes = [
   },
   {
     path: "/admin/workflow",
-    name: "Workflows",
+    name: "AdminWorkflows",
     meta: { isAuthenticated: true, roles: ["ren-admin", "ren-dev"], roleFlag: RenRoles.REN_ADMIN },
     component: () => import("../views/admin/WorkflowListView.vue"),
   },

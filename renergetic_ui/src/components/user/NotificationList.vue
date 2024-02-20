@@ -76,7 +76,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 h3,
 h4 {
   width: 100%;

@@ -220,6 +220,7 @@ export default {
         ...this._measurementItems(),
         // ...this._notificationItems(),
         ...this._hdrItems(),
+        ...this._workflowItems(),
         ...this._abstractMeters(),
       ];
       return [
@@ -234,7 +235,7 @@ export default {
       let flags = RenRoles.REN_ADMIN;
       if ((flags & this.role) == 0) return [];
 
-      let items = [...this._workflowItems()];
+      let items = [...this._adminWorkflowItems()];
       return [
         {
           label: this.$t("menu.admin"),
@@ -243,14 +244,14 @@ export default {
         },
       ];
     },
-    _workflowItems() {
+    _adminWorkflowItems() {
       let items = [
         {
-          class: this.checkPath({ name: "Workflows" }) ? "hl-menu" : "",
+          class: this.checkPath({ name: "AdminWorkflows" }) ? "hl-menu" : "",
           label: this.$t("menu.manage_workflows"),
           icon: "pi pi-fw pi-wrench",
           command: () => {
-            this.$router.push({ name: "Workflows" });
+            this.$router.push({ name: "AdminWorkflows" });
           },
         },
       ];
@@ -344,6 +345,18 @@ export default {
           icon: "pi pi-fw pi-sliders-h",
           command: () => {
             this.$router.push({ name: "HDRView", path: "/management/demand/hdr" });
+          },
+        },
+      ];
+    },
+    _workflowItems() {
+      return [
+        {
+          class: this.checkPath({ name: "Workflows" }) ? "hl-menu" : "",
+          label: this.$t("menu.manage_workflows"),
+          icon: "pi pi-fw pi-wrench",
+          command: () => {
+            this.$router.push({ name: "Workflows" });
           },
         },
       ];

@@ -17,6 +17,7 @@
               :width="1200"
               :height="500"
               :chart-type="chartType"
+              :title="chartTitle"
               :title-visible="true"
               :legend="true"
               :measurements="group.measurements"
@@ -73,6 +74,20 @@ export default {
     },
     compareId() {
       return this.comparewith ? this.comparewith.id : null;
+    },
+    chartTitle() {
+      let r1 = "";
+      let r2 = "";
+      if (this.recommendation) {
+        r1 = this.recommendation.label ? `${this.recommendation.label}(${this.recommendation.tag.value})` : this.recommendation.tag.value;
+      }
+      if (this.comparewith) {
+        r2 = this.comparewith.label ? `${this.recommecomparewithndation.label}(${this.comparewith.tag.value})` : this.comparewith.tag.value;
+      }
+      if (r1 && r2) {
+        return `${r1}-${r2}`;
+      }
+      return `${r1}${r2}`;
     },
   },
   watch: {

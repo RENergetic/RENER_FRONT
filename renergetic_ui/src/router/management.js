@@ -24,6 +24,17 @@ var management = [
     component: () => import("../views/management/demand/HDRView.vue"),
   },
   {
+    path: "/admin/workflow",
+    name: "Workflows",
+    meta: {
+      isAuthenticated: true,
+      roles: ["ren-admin", "ren-technical-manager"],
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
+    },
+    component: () => import("../views/management/workflow/WorkflowListView.vue"),
+  },
+
+  {
     path: "/management/measurement",
     name: "MeasurementList",
     props: {},
