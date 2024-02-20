@@ -1,10 +1,12 @@
 <template>
-  <Card v-if="workflow">
+  <Card v-if="mModel">
     <template #content>
       <div class="ren">
-        {{ workflow }}
-        { "run_id": "run_1708352625187", "workflow": { "pipelines": null, "experiment_id": "experiment_4", "name": null, "parameters": {}, "visible":
-        false, "current_run": null }, "parameters": {}, "start_time": 1708352625187, "end_time": null }
+        <ren-input v-model="mModel.run_id" :text-label="'model.workflowrun.run_id'" :read-only="true" />
+        <ren-input v-model="mModel.start_time" :text-label="'model.workflowrun.start_time'" :read-only="true" />
+        <ren-input v-model="mModel.end_time" :text-label="'model.workflowrun.end_time'" :read-only="true" />
+        <ren-input v-for="key in mModel.parameters" :key="key" v-model="mModel.parameters[key]" :text-label="key" :read-only="true" />
+
         <!-- <ren-input
           v-model="mModel.name"
           :text-info="'model.name_description'"
@@ -25,18 +27,15 @@
             />
           </template>
         </ren-input-wrapper>
-        <ren-input-wrapper :text-label="'model.asset.parent'">
-          <template #content>
-            <span v-if="parentLabel" @click="selectAsset">{{ parentLabel }}</span>
-            <span v-else @click="selectAsset">{{ $t("view.select_parent_asset") }}</span>
-          </template>
-        </ren-input-wrapper>
+ 
         <ren-input-wrapper :text-label="'model.asset.owner'">
           <template #content>
             <span v-if="ownerLabel" @click="selectOwner">{{ ownerLabel }}</span>
             <span v-else @click="selectOwner">{{ $t("view.select_owner") }}</span>
           </template>
         </ren-input-wrapper> -->
+
+        todo: stop button
       </div>
     </template>
   </Card>
@@ -46,10 +45,10 @@
 export default {
   name: "WorkflowRunDetails",
   components: {},
-  props: { workflow: { type: Object, default: () => ({}) } },
+  props: { workflowRun: { type: Object, default: () => ({}) } },
   emits: ["update"],
   data() {
-    return {};
+    return { mModel: this.workflowRun };
   },
   computed: {},
 

@@ -53,7 +53,7 @@
 
     <Column :header="$t('model.workflow.run_task')" :show-filter-menu="false">
       TODO: check if task hasn't already been running
-      <template #body="item"> <Button :label="$t('view.button.start')" icon="pi pi-cog" @click="runTask(item.data)" /> </template>
+      <template #body="item"> <Button :label="$t('view.button.start')" icon="pi pi-cog" @click="showStartDialog(item.data)" /> </template>
     </Column>
     <!-- <Column v-if="!basic" selection-mode="multiple" header-style="width: 3rem"></Column> -->
   </DataTable>
@@ -61,7 +61,10 @@
 
   <!-- <ren-paginator v-if="measurementList" v-model:offset="mOffset" style="left: 0" sticky :current-rows="measurementList.length" @update="reload" /> -->
   <Dialog v-model:visible="workflowRunDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <WorkflowRunDetails :workflow="selectedWorkflowRunDetails" />
+    <WorkflowRunDetails :workflow-run="selectedWorkflowRunDetails" />
+  </Dialog>
+  <Dialog v-model:visible="workflowRunStartDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <WorkflowRun :work-flow="selectedWorkflow" />
   </Dialog>
 </template>
 
@@ -69,10 +72,11 @@
 // import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 import WorkflowRunDetails from "./WorkflowRunDetails.vue";
+import WorkflowRun from "./WorkflowRun.vue";
 
 export default {
   name: "WorkflowList",
-  components: { WorkflowRunDetails },
+  components: { WorkflowRunDetails, WorkflowRun },
   props: {
     workflowList: { type: Array, default: () => [] },
     basic: { type: Boolean, default: false },
@@ -88,13 +92,14 @@ export default {
       deferredEmitFilter: null,
       selectedWorkflowRunDetails: null,
       workflowRunDetailsDialog: false,
+      workflowRunStartDialog: false,
     };
   },
   computed: {},
   watch: {
-    selectedWorkflow: function (v) {
-      this.$emit("select", v);
-    },
+    // selectedWorkflow: function (v) {
+    //   this.$emit("select", v);
+    // },
     mFilters: {
       handler: async function () {
         this.onFilter();
@@ -149,6 +154,11 @@ export default {
     showRunDetails(workflowRun) {
       this.selectedWorkflowRunDetails = workflowRun;
       this.workflowRunDetailsDialog = true;
+    },
+
+    showStartDialog(workflow) {
+      this.selectedWorkflow = workflow;
+      this.workflowRunStartDialog = true;
     },
   },
 };

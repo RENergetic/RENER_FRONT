@@ -1,9 +1,8 @@
 <template>
   <!-- {{ schema }} -->
-  {{ runProperties }}
-  <Settings v-if="schema" :schema="schema" :settings="runProperties"></Settings>
-  <!-- {{ mModel }}
-  {{ model }} -->
+  {{ runParameters }} aaaaa {{ workFlowParameters }} bbb
+  {{ workFlow }}
+  <Settings v-if="schema" :schema="schema" :settings="runParameters"></Settings>
 </template>
 
 <script>
@@ -14,11 +13,12 @@ export default {
   components: {
     Settings,
   },
-  props: { workflow: { type: Object, default: () => ({}) } },
+  props: { workFlow: { type: Object, default: () => ({}) } },
   emits: ["update"],
   data() {
     return {
-      runProperties: {},
+      workFlowParameters: this.workFlow.parameters ? this.workFlow.parameters : {},
+      runParameters: {},
       schema: null,
     };
   },
@@ -47,16 +47,16 @@ export default {
     getSetting(key) {
       return {
         label: key,
-        description: this.props[key],
+        description: this.workFlowParameters[key],
         ext: {},
         type: this.getType(key),
         key: key,
       };
     },
     getSchema() {
-      var schema = this.detailKeys.map((k) => this.getSetting(k));
+      var schema = Object.keys(this.workFlowParameters).map((k) => this.getSetting(k));
       schema.push({
-        label: this.$t("view.button"),
+        label: this.$t("view.button.start"),
         ext: {
           click: this.onClick,
         },
