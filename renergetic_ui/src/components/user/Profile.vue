@@ -66,7 +66,7 @@ export default {
   data() {
     return {
       // data: this.$store.getters["auth/current"],
-      user: undefined,
+      user: null,
       edit: false,
     };
   },
@@ -74,12 +74,16 @@ export default {
   async mounted() {
     await this.$refs.spinner.run(async () => {
       this.user = await this.$ren.userApi.getProfile();
+      // console.warn(this.user);
     });
   },
   methods: {
     async onSave(user) {
       await this.$refs.spinner.run(async () => {
-        this.user = await this.$ren.userApi.updateProfile(user);
+        console.error(user);
+        let success = await this.$ren.userApi.updateProfile(user);
+        if (success) this.$emitter.emit("information", { message: this.$t("information.user_updated") });
+        this.user = await this.$ren.userApi.getProfile();
       });
     },
   },

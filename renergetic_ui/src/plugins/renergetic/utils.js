@@ -61,6 +61,19 @@ class RenUtils {
     Object.assign(this, MeasurementUtils);
     Object.assign(this, MeasurementDataUtils);
   }
+  toPrimeFilter(filterDict) {
+    if (filterDict == null) {
+      return {};
+    }
+    return Object.fromEntries(Object.entries(filterDict).map((it) => [it[0], { value: it[1] }]));
+  }
+
+  fromPrimeFilter(primeFilterDict) {
+    if (primeFilterDict == null) {
+      return {};
+    }
+    return Object.fromEntries(Object.entries(primeFilterDict).map((it) => [it[0], it[1].value]));
+  }
   get app() {
     return this.vueInstance.config.globalProperties;
   }
@@ -153,6 +166,19 @@ class RenUtils {
         }
       }
     }
+    for (let tile of informationPanel.tiles) {
+      for (let m of tile.measurements) {
+        if ((m.name == "ess" || m.name == "ep") && m.type && m.type.name == "value") {
+          m.type.base_unit = "ratio";
+          // m.type.factor = 1;
+          m.type.unit = "ratio";
+          m.type.label = "ratio";
+          m.type.name = "Ratio";
+          m.type.physical_name = "ratio";
+          m.type.id = -1;
+        }
+      }
+    }
     return informationPanel;
   }
 
@@ -202,6 +228,20 @@ class RenUtils {
     }
     let _this = this;
     await this.app.$ren.wrapperApi.get(q.build()).then((data) => {
+      console.error("TODO: hotfix , add required measuremnt type to the database");
+
+      data.measurement_types.push({
+        base_unit: "ratio",
+        color: null,
+        dashboard_visibility: false,
+        description: null,
+        factor: 1,
+        id: -1,
+        label: "Ratio",
+        name: "ratio",
+        physical_name: "ratio",
+        unit: "ratio",
+      });
       _this.app.$store.commit("view/wrapper", data);
       _this.app.$store.dispatch("slideshow/set");
     });

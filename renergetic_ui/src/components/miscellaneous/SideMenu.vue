@@ -82,6 +82,7 @@ export default {
         ...this.demandsItem(),
 
         ...this.managementItems(),
+        ...this.adminItems(),
         ...this.userItems(),
       ];
     },
@@ -217,8 +218,9 @@ export default {
         ...this._grafanaDashboardManagement(),
         ...this._panelManagementItems(),
         ...this._measurementItems(),
-        ...this._notificationItems(),
+        // ...this._notificationItems(),
         ...this._hdrItems(),
+        ...this._workflowItems(),
         ...this._abstractMeters(),
       ];
       return [
@@ -228,6 +230,32 @@ export default {
           items: items,
         },
       ];
+    },
+    adminItems() {
+      let flags = RenRoles.REN_ADMIN;
+      if ((flags & this.role) == 0) return [];
+
+      let items = [...this._adminWorkflowItems()];
+      return [
+        {
+          label: this.$t("menu.admin"),
+          icon: "pi pi-fw pi-wrench pi-cog",
+          items: items,
+        },
+      ];
+    },
+    _adminWorkflowItems() {
+      let items = [
+        {
+          class: this.checkPath({ name: "AdminWorkflows" }) ? "hl-menu" : "",
+          label: this.$t("menu.manage_workflows"),
+          icon: "pi pi-fw pi-wrench",
+          command: () => {
+            this.$router.push({ name: "AdminWorkflows" });
+          },
+        },
+      ];
+      return items;
     },
     _userItems() {
       let items = [
@@ -297,18 +325,18 @@ export default {
       ];
     },
 
-    _notificationItems() {
-      return [
-        {
-          class: this.checkPath({ name: "NotificationList" }) ? "hl-menu" : "",
-          label: this.$t("menu.manage_notifications"),
-          icon: "pi pi-fw pi-bell",
-          command: () => {
-            this.$router.push({ name: "NotificationList", path: "/management/notification" });
-          },
-        },
-      ];
-    },
+    // _notificationItems() {
+    //   return [
+    //     {
+    //       class: this.checkPath({ name: "NotificationList" }) ? "hl-menu" : "",
+    //       label: this.$t("menu.manage_notifications"),
+    //       icon: "pi pi-fw pi-bell",
+    //       command: () => {
+    //         this.$router.push({ name: "NotificationList", path: "/management/notification" });
+    //       },
+    //     },
+    //   ];
+    // },
     _hdrItems() {
       return [
         {
@@ -317,6 +345,18 @@ export default {
           icon: "pi pi-fw pi-sliders-h",
           command: () => {
             this.$router.push({ name: "HDRView", path: "/management/demand/hdr" });
+          },
+        },
+      ];
+    },
+    _workflowItems() {
+      return [
+        {
+          class: this.checkPath({ name: "Workflows" }) ? "hl-menu" : "",
+          label: this.$t("menu.manage_workflows"),
+          icon: "pi pi-fw pi-wrench",
+          command: () => {
+            this.$router.push({ name: "Workflows" });
           },
         },
       ];
@@ -366,6 +406,7 @@ export default {
       if ((flags & this.role) == 0) {
         return [];
       }
+      let managerFlags = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
 
       return [
         {
@@ -373,7 +414,7 @@ export default {
           icon: "pi pi-fw  pi-bell",
           command: () => {
             // this.$emit("notification");
-            if (this.notificationCount > 0) this.notificationDialog = !this.notificationDialog;
+            if (this.notificationCount > 0 || managerFlags & this.role) this.notificationDialog = !this.notificationDialog;
           },
           class: this.notificationCount == 0 ? "disabled" : "hl-warning",
         },

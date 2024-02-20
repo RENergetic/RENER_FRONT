@@ -138,6 +138,7 @@ export default {
     },
     async loadStructure() {
       this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id);
+      // let m = this.panel.tiles.map((it) => ({ id: it.id, m: it.measurements.map((m) => ({ name: m.name, label: m.label })) }));
     },
     updateFilter() {
       this.filterSettings = this.$store.getters["settings/parsedFilter"]();

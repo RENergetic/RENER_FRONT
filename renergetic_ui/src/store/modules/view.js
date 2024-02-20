@@ -132,7 +132,9 @@ export default {
         currentMeasurementType.unit == "%" ||
         newUnit == "%" ||
         currentMeasurementType.unit == "any" ||
-        newUnit == "any"
+        newUnit == "any" ||
+        currentMeasurementType.unit == "ratio" ||
+        newUnit == "ratio"
       ) {
         return value;
       }
@@ -145,7 +147,7 @@ export default {
 
     convertSIValue: (state) => (physicalName, value, newUnit) => {
       //Convert base SI unit into newUnit
-      if (newUnit == null || newUnit == "%" || newUnit == "any") {
+      if (newUnit == null || newUnit == "%" || newUnit == "any" || newUnit == "ratio") {
         return value;
       }
       //get new unit

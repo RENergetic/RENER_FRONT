@@ -93,7 +93,7 @@ export default {
 h3,
 h4 {
   width: 100%;
-  color: white;
+  // color: white;
   margin-bottom: 0.25rem;
   margin-top: 1.5rem;
 }

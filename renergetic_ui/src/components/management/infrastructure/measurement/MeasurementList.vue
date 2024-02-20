@@ -72,7 +72,7 @@
     </Column>
     <Column field="type" filter-field="type.id" :header="$t('model.measurement.type')" :show-filter-menu="false">
       <template #body="slotProps">
-        <span> {{ typeLabel(slotProps.data.type) }} </span>
+        <span> {{ typeUnitLabel(slotProps.data.type) }} </span>
       </template>
       <template #filter="{ filterModel, filterCallback }">
         <!-- <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" /> -->
@@ -82,7 +82,7 @@
           style="min-width: 12rem"
           class="p-column-filter"
           :options="measurementTypeList"
-          :option-label="(opt) => typeLabel(opt)"
+          :option-label="(opt) => typeUnitLabel(opt)"
           option-value="id"
           :placeholder="$t('view.select_measurement_type')"
           :show-clear="true"
@@ -327,8 +327,8 @@ export default {
       this.addDialog = false;
       this.reload();
     },
-    typeLabel(mType) {
-      return `(${mType.id}) ${this.$t("enums.metric_type." + mType.name)} [${mType.unit}] `;
+    typeUnitLabel(mType) {
+      return `(${mType.id}) ${this.$t("enums.metric_type." + mType.physical_name)} [${mType.unit}] `;
     },
     async exportJSON() {
       var sm = this.selectedMeasurements.map((it) => {

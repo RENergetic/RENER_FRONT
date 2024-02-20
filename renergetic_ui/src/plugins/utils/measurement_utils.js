@@ -77,7 +77,7 @@ export default {
 
     if (u == null) u = "";
 
-    return u && u != "any" ? `[${u}]` : ``;
+    return u && u != "any" && u != "ratio" ? `[${u}]` : ``;
   },
 };
 // valueAgg(key, value, baseUnit, dict) {

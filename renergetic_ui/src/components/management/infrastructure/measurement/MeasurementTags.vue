@@ -60,12 +60,12 @@ export default {
   },
   computed: {},
   watch: {
-    measurement: {
-      // handler: function (newVal) {
-      //   this.$emit("update", newVal);
-      // },
-      // deep: true,
-    },
+    // measurement: {
+    //   // handler: function (newVal) {
+    //   //   this.$emit("update", newVal);
+    //   // },
+    //   // deep: true,
+    // },
   },
   async mounted() {
     await this.loadTags();

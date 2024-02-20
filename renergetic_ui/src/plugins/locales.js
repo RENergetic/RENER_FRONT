@@ -44,6 +44,7 @@ const i18n = createI18n({
 export async function setLocale(localeCode) {
   if (loadedLocales.has(localeCode)) {
     i18n.global.locale = localeCode;
+    console.info(`locale changed to: ${i18n.global.locale}`);
     return;
   }
   if (localeCode == null) {
@@ -55,7 +56,7 @@ export async function setLocale(localeCode) {
         i18n.global.setLocaleMessage(localeCode, localeResource.default);
         loadedLocales.add(localeCode);
         i18n.global.locale = localeCode;
-        console.info(`locale changed to: ${i18n.global.locale}`);
+        console.info(`locale loaded and changed to: ${i18n.global.locale}`);
       } catch (error) {
         console.error(`Locale not found ${localeCode}:${allowedLocales[localeCode]}. ${error}`);
       }
