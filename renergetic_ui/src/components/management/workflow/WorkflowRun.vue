@@ -1,6 +1,7 @@
 <template>
   <!-- {{ schema }} -->
-  <Settings v-if="schema" :schema="schema" :settings="mModel"></Settings>
+  {{ runProperties }}
+  <Settings v-if="schema" :schema="schema" :settings="runProperties"></Settings>
   <!-- {{ mModel }}
   {{ model }} -->
 </template>
@@ -9,7 +10,7 @@
 import Settings from "@/components/miscellaneous/settings/Settings.vue";
 var parameterTypes = {};
 export default {
-  name: "MeasurementDetails",
+  name: "WorkflowRun",
   components: {
     Settings,
   },
@@ -17,8 +18,7 @@ export default {
   emits: ["update"],
   data() {
     return {
-      mModel: this.model,
-      keys: [],
+      runProperties: {},
       schema: null,
     };
   },
@@ -32,14 +32,14 @@ export default {
     },
   },
   async mounted() {
-    this.keys = Object.keys(this.mModel);
-
+    // this.keys = Object.keys(this.mModel);
     this.schema = this.getSchema();
   },
 
   methods: {
     onClick() {
-      this.$emit("update", this.mModel);
+      alert("TODO: start");
+      // this.$emit("update", this.mModel);
     },
     getType(key) {
       return parameterTypes[key] ? parameterTypes[key] : String;
@@ -56,12 +56,12 @@ export default {
     getSchema() {
       var schema = this.detailKeys.map((k) => this.getSetting(k));
       schema.push({
-        label: this.$t("settings.submit"),
+        label: this.$t("view.button"),
         ext: {
           click: this.onClick,
         },
         type: "Submit",
-        key: "detailsSubmit",
+        key: "startTask",
       });
       return schema;
     },

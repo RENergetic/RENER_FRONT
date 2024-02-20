@@ -24,7 +24,7 @@ var management = [
     component: () => import("../views/management/demand/HDRView.vue"),
   },
   {
-    path: "/admin/workflow",
+    path: "/management/workflow",
     name: "Workflows",
     meta: {
       isAuthenticated: true,

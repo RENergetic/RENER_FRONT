@@ -1,6 +1,4 @@
 <template>
-  <!-- filters: {{ mFilters }}<br /> -->
-  <!-- workflows: {{ workflowList }} -->
   <DataTable
     v-if="workflowList"
     v-model:selection="selectedWorkflow"
@@ -14,7 +12,7 @@
     @filter="onFilter"
   >
     <template #header>
-      <ren-switch v-model="mFilters.visible.value" :text-label="'model.workflow.visibility'" />
+      <!-- <ren-switch v-model="mFilters.visible.value" :text-label="'model.workflow.visibility'" /> -->
     </template>
 
     <Column field="name" :header="$t('model.workflow.name')" :show-filter-menu="false" />
@@ -35,16 +33,24 @@
     </Column>
     <Column field="current_run" :header="$t('model.workflow.current_run')" :show-filter-menu="false">
       <template #body="slotProps">
-        <span v-if="slotProps.data.current_run"> TODO: {{ slotProps.data.current_run }}</span>
+        <div
+          v-if="
+            slotProps.data.current_run &&
+            slotProps.data.current_run.start_time &&
+            (slotProps.data.current_run.end_time == null || slotProps.data.current_run.end_time < 0)
+          "
+          @click="showRunDetails(slotProps.data.current_run)"
+        >
+          <div>
+            {{ slotProps.data.current_run.run_id }}
+          </div>
+          <div class="disabled">_start time:{{ new Date(slotProps.data.current_run.start_time).toUTCString() }}</div>
+        </div>
+
         <span v-else> {{ $t("model.workflow.run_state.not_running") }} </span>
       </template>
     </Column>
-    <Column field="visible" :header="$t('model.workflow.visible')" :show-filter-menu="false">
-      <template #body="item">
-        <i v-if="item.data.visible" class="pi pi-eye" style="font-size: 1.5rem" @click="setExperimentVisibility(item.data, false)" />
-        <i v-else class="pi pi-eye-slash" style="font-size: 1.5rem" @click="setExperimentVisibility(item.data, true)" />
-      </template>
-    </Column>
+
     <Column :header="$t('model.workflow.run_task')" :show-filter-menu="false">
       TODO: check if task hasn't already been running
       <template #body="item"> <Button :label="$t('view.button.start')" icon="pi pi-cog" @click="runTask(item.data)" /> </template>
@@ -52,16 +58,21 @@
     <!-- <Column v-if="!basic" selection-mode="multiple" header-style="width: 3rem"></Column> -->
   </DataTable>
   <RenSpinner ref="spinner" />
+
   <!-- <ren-paginator v-if="measurementList" v-model:offset="mOffset" style="left: 0" sticky :current-rows="measurementList.length" @update="reload" /> -->
+  <Dialog v-model:visible="workflowRunDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <WorkflowRunDetails :workflow="selectedWorkflowRunDetails" />
+  </Dialog>
 </template>
 
 <script>
 // import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
+import WorkflowRunDetails from "./WorkflowRunDetails.vue";
 
 export default {
   name: "WorkflowList",
-  components: {},
+  components: { WorkflowRunDetails },
   props: {
     workflowList: { type: Array, default: () => [] },
     basic: { type: Boolean, default: false },
@@ -75,6 +86,8 @@ export default {
       mFilters: this.initFilters(),
       selectedWorkflow: null,
       deferredEmitFilter: null,
+      selectedWorkflowRunDetails: null,
+      workflowRunDetailsDialog: false,
     };
   },
   computed: {},
@@ -132,6 +145,10 @@ export default {
     },
     reload() {
       this.$emit("reload");
+    },
+    showRunDetails(workflowRun) {
+      this.selectedWorkflowRunDetails = workflowRun;
+      this.workflowRunDetailsDialog = true;
     },
   },
 };
