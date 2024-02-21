@@ -33,27 +33,32 @@
     </Column>
     <Column field="current_run" :header="$t('model.workflow.current_run')" :show-filter-menu="false">
       <template #body="slotProps">
-        <div
-          v-if="
-            slotProps.data.current_run &&
-            slotProps.data.current_run.start_time &&
-            (slotProps.data.current_run.end_time == null || slotProps.data.current_run.end_time < 0)
-          "
-          @click="showRunDetails(slotProps.data.current_run)"
-        >
+        <div v-if="isTaskRunning(slotProps.data.current_run)" @click="showRunDetails(slotProps.data.current_run)">
           <div>
-            {{ slotProps.data.current_run.run_id }}
+            {{
+              slotProps.data.current_run.name
+                ? `${slotProps.data.current_run.name} (${slotProps.data.current_run.run_id})`
+                : slotProps.data.current_run.run_id
+            }}
           </div>
-          <div class="disabled">_start time:{{ new Date(slotProps.data.current_run.start_time).toUTCString() }}</div>
+          <div class="disabled">
+            {{ $t("model.workflowrun.start_time_formatted", { start_time: $ren.utils.dateString(slotProps.data.current_run.start_time) }) }}
+          </div>
         </div>
 
-        <span v-else> {{ $t("model.workflow.run_state.not_running") }} </span>
+        <span v-else> {{ $t("model.workflowrun.run_state.not_running") }} </span>
       </template>
     </Column>
 
-    <Column :header="$t('model.workflow.run_task')" :show-filter-menu="false">
-      TODO: check if task hasn't already been running
-      <template #body="item"> <Button :label="$t('view.button.start')" icon="pi pi-cog" @click="showStartDialog(item.data)" /> </template>
+    <Column :show-filter-menu="false">
+      <template #body="slotProps">
+        <Button
+          :label="$t('view.button.start')"
+          icon="pi pi-cog"
+          :disabled="false && isTaskRunning(slotProps.data)"
+          @click="showStartDialog(slotProps.data)"
+        />
+      </template>
     </Column>
     <!-- <Column v-if="!basic" selection-mode="multiple" header-style="width: 3rem"></Column> -->
   </DataTable>
@@ -64,7 +69,7 @@
     <WorkflowRunDetails :workflow-run="selectedWorkflowRunDetails" />
   </Dialog>
   <Dialog v-model:visible="workflowRunStartDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <WorkflowRun :work-flow="selectedWorkflow" />
+    <WorkflowRun :workflow="selectedWorkflow" @onStart="onTaskStart" />
   </Dialog>
 </template>
 
@@ -118,26 +123,10 @@ export default {
     this.tagsKeys = await this.$ren.managementApi.listTagKeys();
   },
   methods: {
-    async runTask(selectedExperiment) {
-      console.warn(selectedExperiment);
-      console.error(" TODO: check if task hasn't already been running");
-      await this.$ren.kubeflowApi.startExperiment(selectedExperiment.experiment_id, {});
+    isTaskRunning(workflowRun) {
+      return workflowRun && workflowRun.start_time && (workflowRun.end_time == null || workflowRun.end_time < 0);
     },
-    async setExperimentVisibility(selectedExperiment, state) {
-      await this.$refs.spinner.run(async () => {
-        let res;
-        if (state) {
-          res = await this.$ren.kubeflowApi.showExperiment(selectedExperiment.experiment_id);
-        } else {
-          res = await this.$ren.kubeflowApi.hideExperiment(selectedExperiment.experiment_id);
-        }
-        if (res == state) {
-          this.$emitter.emit("information", { message: this.$t("information.visibility_changed") });
-          selectedExperiment.visible = state;
-          this.$emit("reload");
-        } else this.$emitter.emit("error", { message: this.$t("information.visibility_not_changed") });
-      });
-    },
+
     initFilters() {
       let pf = this.$ren.utils.toPrimeFilter(this.filters);
       return { ...{ visible: { value: true } }, ...pf };
@@ -155,10 +144,16 @@ export default {
       this.selectedWorkflowRunDetails = workflowRun;
       this.workflowRunDetailsDialog = true;
     },
-
     showStartDialog(workflow) {
+      console.warn(workflow);
+      console.error(" TODO: check if task hasn't already been running");
       this.selectedWorkflow = workflow;
       this.workflowRunStartDialog = true;
+    },
+    onTaskStart(workflowRun) {
+      console.debug(workflowRun);
+      this.workflowRunStartDialog = false;
+      this.$emit("reload");
     },
   },
 };
