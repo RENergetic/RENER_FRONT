@@ -178,7 +178,7 @@
   "view_asset_children": "Show sub assets",
   "view_asset_measurements": "Show measurements",
   "view_json": "View json",
-  "workflowrun_preview": "Run preview for {parameter}",
+  "workflowrun_preview": "Run preview for {label}",
   "workflowrun_param_format": "Parameter: {parameter}",
   "unauthorized": "Unauthorized access",
   "button": {

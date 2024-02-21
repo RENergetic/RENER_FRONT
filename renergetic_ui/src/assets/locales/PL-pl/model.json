@@ -158,22 +158,22 @@
   },
   "user": {
     "login": "Login",
-    "password": "Password",
+    "password": "Hasło",
     "email": "Email",
-    "firstname": "First name",
-    "lastname": "Last name",
-    "username": "Username",
-    "password_repeat": "Repeat password",
-    "temp_password": "Temporary password",
-    "roles": "Roles"
+    "firstname": "Imię",
+    "lastname": "Nazwisko",
+    "username": "Nazwa użytkownika",
+    "password_repeat": "Powtórz hasło",
+    "temp_password": "Tymczasowe hasło",
+    "roles": "Role"
   },
   "role": {
-    "name": "Name"
+    "name": "Nazwa"
   },
   "notification": {
     "id": "Id",
     "type": "Type",
-    "notification_code": "Code",
+    "notification_code": "Kod",
     "asset": "Asset",
     "dashboard": "Dashboard",
     "date_from": "From",
@@ -185,7 +185,29 @@
     "message": "Message"
   },
   "panel_templates": {
-    "kpi_electricity": "Electricity KPI ",
-    "kpi_heat": "Heat KPI"
+    "kpi_electricity": "KPI-Elektryczność",
+    "kpi_heat": "KPI-ciepło"
+  },
+  "workflow": {
+    "name": "Nazwa",
+    "experiment_id": "Id eksperymentu",
+    "parameters": "Parametry eksperymentu",
+    "pipelines": "Pipelines",
+    "current_run": "Aktuanie uruchomiony eksperyment",
+    "visibility": "Widoczność",
+    "visible": "Dostępność"
+  },
+  "workflowrun": {
+    "run_id": "Id startu",
+    "start_time": "Czas startu",
+    "start_time_formatted": "Czas rozpoczęcia: {start_time}",
+    "end_time": "Czas zakończenia",
+    "parameters": "Parametry",
+    "run_state": {
+      "running": "Uruchomiony",
+      "finished": "Skończony",
+      "error": "Błąd",
+      "not_running": "Brak"
+    }
   }
 }
