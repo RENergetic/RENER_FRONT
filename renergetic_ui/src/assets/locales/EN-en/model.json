@@ -193,7 +193,9 @@
     "experiment_id": "Experiment id",
     "parameters": "Run parameters",
     "pipelines": "Pipelines",
-    "current_run": "Current run"
+    "current_run": "Current run",
+    "visibility": "Visibility",
+    "visible": "Visibility"
   },
   "workflowrun": {
     "run_id": "Run id",

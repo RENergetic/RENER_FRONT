@@ -11,9 +11,9 @@
     class="sticky-header"
     @filter="onFilter"
   >
-    <template #header>
-      <!-- <ren-switch v-model="mFilters.visible.value" :text-label="'model.workflow.visibility'" /> -->
-    </template>
+    <!-- <template #header>
+       <ren-switch v-model="mFilters.visible.value" :text-label="'model.workflow.visibility'" /> 
+    </template> -->
 
     <Column field="name" :header="$t('model.workflow.name')" :show-filter-menu="false" />
     <Column field="experiment_id" :header="$t('model.workflow.experiment_id')" :show-filter-menu="false" />
@@ -54,7 +54,7 @@
       <template #body="slotProps">
         <Button
           :label="$t('view.button.start')"
-          icon="pi pi-cog"
+          icon="pi pi-play"
           :disabled="false && isTaskRunning(slotProps.data)"
           @click="showStartDialog(slotProps.data)"
         />
@@ -66,10 +66,10 @@
 
   <!-- <ren-paginator v-if="measurementList" v-model:offset="mOffset" style="left: 0" sticky :current-rows="measurementList.length" @update="reload" /> -->
   <Dialog v-model:visible="workflowRunDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <WorkflowRunDetails :workflow-run="selectedWorkflowRunDetails" />
+    <WorkflowRunDetails :workflow-run="selectedWorkflowRunDetails" @on-stop="onWorkflowStop" />
   </Dialog>
   <Dialog v-model:visible="workflowRunStartDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <WorkflowRun :workflow="selectedWorkflow" @onStart="onTaskStart" />
+    <WorkflowRun :workflow="selectedWorkflow" @on-start="onWorkflowStart" />
   </Dialog>
 </template>
 
@@ -144,13 +144,18 @@ export default {
       this.selectedWorkflowRunDetails = workflowRun;
       this.workflowRunDetailsDialog = true;
     },
+    onWorkflowStop(state) {
+      console.debug(`Stop state ${state}`);
+      this.workflowRunDetailsDialog = false;
+      this.$emit("reload");
+    },
     showStartDialog(workflow) {
       console.warn(workflow);
       console.error(" TODO: check if task hasn't already been running");
       this.selectedWorkflow = workflow;
       this.workflowRunStartDialog = true;
     },
-    onTaskStart(workflowRun) {
+    onWorkflowStart(workflowRun) {
       console.debug(workflowRun);
       this.workflowRunStartDialog = false;
       this.$emit("reload");

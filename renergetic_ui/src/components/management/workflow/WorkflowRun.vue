@@ -6,22 +6,25 @@
       </h3>
     </template>
     <template #content>
-      <div class="ren">
-        <!-- {{ runParameters }} aaaaa {{ workflowParameters }} bbb
+      <RenSpinner ref="runspinner" :lock="true" style="width: 100%">
+        <template #content>
+          <div class="ren">
+            <!-- {{ runParameters }} aaaaa {{ workflowParameters }} bbb
   {{ workflow }} -->
-
-        <ren-input-wrapper>
-          <template #content>
-            <Settings v-if="schema && schema.length > 0" :schema="schema" :settings="runParameters" />
-            <span v-else>{{ $t("view.no_parameters") }} </span>
-          </template>
-        </ren-input-wrapper>
-        <ren-input-wrapper>
-          <template #content>
-            <Button v-tooltip="$t('view.start')" class="ren" icon="pi pi-times" @click="startConfirm">{{ $t("view.button.start") }}</Button>
-          </template>
-        </ren-input-wrapper>
-      </div>
+            <ren-input-wrapper>
+              <template #content>
+                <Settings v-if="schema && schema.length > 0" :schema="schema" :settings="runParameters" />
+                <span v-else>{{ $t("view.no_parameters") }} </span>
+              </template>
+            </ren-input-wrapper>
+            <ren-input-wrapper>
+              <template #content>
+                <Button v-tooltip="$t('view.start')" class="ren" icon="pi pi-play" :label="$t('view.button.start')" @click="startConfirm" />
+              </template>
+            </ren-input-wrapper>
+          </div>
+        </template>
+      </RenSpinner>
     </template>
   </Card>
 </template>
@@ -64,12 +67,22 @@ export default {
 
   methods: {
     async start() {
-      let res = await this.$ren.kubeflowApi.startExperiment(this.workflow.experiment_id, this.runParameters);
+      let experimentId = this.workflow.experiment_id;
+      let parameters = this.runParameters;
+      let res = null;
+      await this.$refs.runspinner.run(
+        async () => {
+          res = await this.$ren.kubeflowApi.startExperiment(experimentId, parameters);
+        },
+        500,
+        5000,
+      );
+
       if (res && res.run_id) {
         this.$emitter.emit("information", { message: this.$t("information.worflowrun_start", { run_id: res.run_id }) });
         this.$emit("onStart", res);
       } else {
-        this.$emitter.emit("error", { message: this.$t("information.worflowrun_start", { label: this.workflowLabel }) });
+        this.$emitter.emit("error", { message: this.$t("error.worflowrun_start", { label: this.workflowLabel }) });
       }
     },
     async startConfirm() {

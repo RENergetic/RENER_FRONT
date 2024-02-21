@@ -16,7 +16,7 @@
 
         <ren-input-wrapper v-if="workflowRun.start_time > 0">
           <template #content>
-            <Button v-tooltip="$t('view.stop')" class="ren" icon="pi pi-times" @click="stopConfirm">{{ $t("view.button.stop") }}</Button>
+            <Button v-tooltip="$t('view.stop')" class="ren" icon="pi pi-stop" :label="$t('view.button.stop')" @click="stopConfirm" />
           </template>
         </ren-input-wrapper>
       </div>
@@ -29,7 +29,7 @@ export default {
   name: "WorkflowRunDetails",
   components: {},
   props: { workflowRun: { type: Object, default: () => ({}) } },
-  emits: ["update"],
+  emits: ["onStop"],
   data() {
     return {
       mModel: this.workflowRun,
@@ -37,10 +37,27 @@ export default {
       endTime: this.workflowRun ? this.$ren.utils.dateString(this.workflowRun.end_time) : null,
     };
   },
-  computed: {},
+  computed: {
+    workflowLabel: function () {
+      let workflow = this.workflowRun != null && this.workflowRun.workflow != null ? this.workflowRun.workflow : null;
+      if (workflow == null) return null;
+      return workflow.name ? workflow.name : workflow.experiment_id;
+    },
+  },
   methods: {
     async stop() {
-      await this.$ren.kubeflowApi.stopExperiment(this.workflowRun.workflow.experiment_id);
+      let res = await this.$ren.kubeflowApi.stopExperiment(this.workflowRun.workflow.experiment_id);
+      if (res) {
+        this.$emitter.emit("information", {
+          message: this.$t("information.worflow_stop", { label: this.workflowLabel }),
+        });
+
+        this.$emit("onStop", res);
+      } else {
+        this.$emitter.emit("error", { message: this.$t("error.worflow_stop", { label: this.workflowLabel }) });
+        this.$emit("onStop", false);
+      }
+      console.error(res);
     },
     async stopConfirm() {
       await this.$confirm.require({

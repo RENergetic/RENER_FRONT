@@ -52,7 +52,8 @@
     "settings_saved": "Settings saved",
     "visibility_changed": "Visibility changed",
     "tag_deleted": "Tag deleted",
-    "worflowrun_start": "{run_id} - started"
+    "worflowrun_start": "{run_id} - started",
+    "worflow_stop": "{label} - stopped"
   },
   "error": {
     "error": "Error",
@@ -68,7 +69,8 @@
     "asset_panel_revoked": "Asset not revoked from the dashboard",
     "asset_panel_assigned": "Asset not assigned to the panel",
     "visibility_changed": "Visibility not changed",
-    "worflowrun_start": "{label} failed to start"
+    "worflowrun_start": "{label} failed to start",
+    "worflow_stop": "{label} failed to stop"
   },
   "message": {
     "anomaly": {
