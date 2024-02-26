@@ -1,6 +1,6 @@
 {
   "validations": {
-    "required": "The field '{property}' is required.",
+    "required": "Pole: '{property}' jest wymagane.",
     "minLength": "The '{property}' field has a value of '{model}', but it must have a min length of {min}.",
     "maxLength": "The '{property}' field has a value of '{model}', but it must have a max length of {max}.",
     "passMinLength": "The '{property}', but it must have a min length of {min}.",
@@ -41,6 +41,7 @@
     "dashboard_delete_success": "Dashboard has been deleted.",
     "dashboard_not_updated": "Dashboard has not been updated",
     "measurement_created": "Measurement has been created",
+    "measurements_created": "Pomyślnie dodano nowe szeregi czasowe",
     "measurement_updated": "Measurement has been updated",
     "measurement_delete_success": "Measurement has been deleted.",
     "measurement_not_updated": "Measurement has not been updated",
@@ -51,7 +52,7 @@
     "panel_update": "Panel {0} update success.",
     "settings_saved": "Settings saved",
     "visibility_changed": "Visibility changed",
-    "tag_deleted": "Tag deleted",
+    "tag_deleted": "Tag usunięty",
     "worflowrun_start": "{run_id} - rozpoczęty",
     "worflow_stop": "{label} - zatrzymany"
   },

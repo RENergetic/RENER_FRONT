@@ -41,6 +41,7 @@
     "dashboard_delete_success": "Dashboard has been deleted.",
     "dashboard_not_updated": "Dashboard has not been updated",
     "measurement_created": "Measurement has been created",
+    "measurements_created": "Measurements have been created",
     "measurement_updated": "Measurement has been updated",
     "measurement_delete_success": "Measurement has been deleted.",
     "measurement_not_updated": "Measurement has not been updated",
