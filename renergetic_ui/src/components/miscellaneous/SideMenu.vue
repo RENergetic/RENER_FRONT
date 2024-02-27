@@ -249,7 +249,7 @@ export default {
         {
           class: this.checkPath({ name: "AdminWorkflows" }) ? "hl-menu" : "",
           label: this.$t("menu.manage_workflows"),
-          icon: "pi pi-fw pi-wrench",
+          icon: "pi pi-fw pi-cog",
           command: () => {
             this.$router.push({ name: "AdminWorkflows" });
           },
@@ -294,7 +294,7 @@ export default {
     _assetItems() {
       return [
         {
-          class: this.checkPath({ name: "AssetList" }) ? "hl-menu" : "",
+          class: this.checkPath({ name: "AssetList" }) || this.checkPath({ name: "AssetTypeList" }) ? "hl-menu" : "",
           label: this.$t("menu.manage_assets"),
           icon: "pi pi-fw pi-list",
 
@@ -354,7 +354,7 @@ export default {
         {
           class: this.checkPath({ name: "Workflows" }) ? "hl-menu" : "",
           label: this.$t("menu.manage_workflows"),
-          icon: "pi pi-fw pi-wrench",
+          icon: "pi pi-fw  pi-desktop",
           command: () => {
             this.$router.push({ name: "Workflows" });
           },

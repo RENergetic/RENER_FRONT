@@ -1,6 +1,4 @@
 <template>
-  <!-- filters: {{ mFilters }}<br /> -->
-  <!-- workflows: {{ workflowList }} -->
   <DataTable
     v-if="workflowList"
     v-model:selection="selectedWorkflow"
@@ -13,13 +11,9 @@
     class="sticky-header"
     @filter="onFilter"
   >
-    <template #header>
-      <ren-switch v-model="mFilters.visible.value" :text-label="'model.workflow.visibility'" />
-      <!-- <span class="p-input-icon-left" style="margin-left: 1rem">
-        <i class="pi pi-search" /> -->
-      <!-- <Dropdown v-model="mFilters.visible.value" show-clear :options="tagsKeys" :placeholder="$t('view.tag_filter')" /> -->
-      <!-- </span> -->
-    </template>
+    <!-- <template #header>
+       <ren-switch v-model="mFilters.visible.value" :text-label="'model.workflow.visibility'" /> 
+    </template> -->
 
     <Column field="name" :header="$t('model.workflow.name')" :show-filter-menu="false" />
     <Column field="experiment_id" :header="$t('model.workflow.experiment_id')" :show-filter-menu="false" />
@@ -39,33 +33,55 @@
     </Column>
     <Column field="current_run" :header="$t('model.workflow.current_run')" :show-filter-menu="false">
       <template #body="slotProps">
-        <span v-if="slotProps.data.current_run"> TODO: {{ slotProps.data.current_run }}</span>
-        <span v-else> {{ $t("model.workflow.run_state.not_running") }} </span>
+        <div v-if="isTaskRunning(slotProps.data.current_run)" @click="showRunDetails(slotProps.data.current_run)">
+          <div>
+            {{
+              slotProps.data.current_run.name
+                ? `${slotProps.data.current_run.name} (${slotProps.data.current_run.run_id})`
+                : slotProps.data.current_run.run_id
+            }}
+          </div>
+          <div class="disabled">
+            {{ $t("model.workflowrun.start_time_formatted", { start_time: $ren.utils.dateString(slotProps.data.current_run.start_time) }) }}
+          </div>
+        </div>
+
+        <span v-else> {{ $t("model.workflowrun.run_state.not_running") }} </span>
       </template>
     </Column>
-    <Column field="visible" :header="$t('model.workflow.visible')" :show-filter-menu="false">
-      <template #body="item">
-        <i v-if="item.data.visible" class="pi pi-eye" style="font-size: 1.5rem" @click="setExperimentVisibility(item.data, false)" />
-        <i v-else class="pi pi-eye-slash" style="font-size: 1.5rem" @click="setExperimentVisibility(item.data, true)" />
+
+    <Column :show-filter-menu="false">
+      <template #body="slotProps">
+        <Button
+          :label="$t('view.button.start')"
+          icon="pi pi-play"
+          :disabled="false && isTaskRunning(slotProps.data)"
+          @click="showStartDialog(slotProps.data)"
+        />
       </template>
-    </Column>
-    <Column :header="$t('model.workflow.run_task')" :show-filter-menu="false">
-      TODO: check if task hasn't already been running
-      <template #body="item"> <Button :label="$t('view.button.start')" icon="pi pi-cog" @click="runTask(item.data)" /> </template>
     </Column>
     <!-- <Column v-if="!basic" selection-mode="multiple" header-style="width: 3rem"></Column> -->
   </DataTable>
   <RenSpinner ref="spinner" />
+
   <!-- <ren-paginator v-if="measurementList" v-model:offset="mOffset" style="left: 0" sticky :current-rows="measurementList.length" @update="reload" /> -->
+  <Dialog v-model:visible="workflowRunDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <WorkflowRunDetails :workflow-run="selectedWorkflowRunDetails" @on-stop="onWorkflowStop" />
+  </Dialog>
+  <Dialog v-model:visible="workflowRunStartDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <WorkflowRun :workflow="selectedWorkflow" @on-start="onWorkflowStart" />
+  </Dialog>
 </template>
 
 <script>
 // import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
+import WorkflowRunDetails from "./WorkflowRunDetails.vue";
+import WorkflowRun from "./WorkflowRun.vue";
 
 export default {
   name: "WorkflowList",
-  components: {},
+  components: { WorkflowRunDetails, WorkflowRun },
   props: {
     workflowList: { type: Array, default: () => [] },
     basic: { type: Boolean, default: false },
@@ -79,13 +95,16 @@ export default {
       mFilters: this.initFilters(),
       selectedWorkflow: null,
       deferredEmitFilter: null,
+      selectedWorkflowRunDetails: null,
+      workflowRunDetailsDialog: false,
+      workflowRunStartDialog: false,
     };
   },
   computed: {},
   watch: {
-    selectedWorkflow: function (v) {
-      this.$emit("select", v);
-    },
+    // selectedWorkflow: function (v) {
+    //   this.$emit("select", v);
+    // },
     mFilters: {
       handler: async function () {
         this.onFilter();
@@ -104,26 +123,10 @@ export default {
     this.tagsKeys = await this.$ren.managementApi.listTagKeys();
   },
   methods: {
-    async runTask(selectedExperiment) {
-      console.warn(selectedExperiment);
-      console.error(" TODO: check if task hasn't already been running");
-      await this.$ren.kubeflowApi.startExperiment(selectedExperiment.experiment_id, {});
+    isTaskRunning(workflowRun) {
+      return workflowRun && workflowRun.start_time && (workflowRun.end_time == null || workflowRun.end_time < 0);
     },
-    async setExperimentVisibility(selectedExperiment, state) {
-      await this.$refs.spinner.run(async () => {
-        let res;
-        if (state) {
-          res = await this.$ren.kubeflowApi.showExperiment(selectedExperiment.experiment_id);
-        } else {
-          res = await this.$ren.kubeflowApi.hideExperiment(selectedExperiment.experiment_id);
-        }
-        if (res == state) {
-          this.$emitter.emit("information", { message: this.$t("information.visibility_changed") });
-          selectedExperiment.visible = state;
-          this.$emit("reload");
-        } else this.$emitter.emit("error", { message: this.$t("information.visibility_not_changed") });
-      });
-    },
+
     initFilters() {
       let pf = this.$ren.utils.toPrimeFilter(this.filters);
       return { ...{ visible: { value: true } }, ...pf };
@@ -135,6 +138,26 @@ export default {
       await this.deferredEmitFilter.run();
     },
     reload() {
+      this.$emit("reload");
+    },
+    showRunDetails(workflowRun) {
+      this.selectedWorkflowRunDetails = workflowRun;
+      this.workflowRunDetailsDialog = true;
+    },
+    onWorkflowStop(state) {
+      console.debug(`Stop state ${state}`);
+      this.workflowRunDetailsDialog = false;
+      this.$emit("reload");
+    },
+    showStartDialog(workflow) {
+      console.warn(workflow);
+      console.error(" TODO: check if task hasn't already been running");
+      this.selectedWorkflow = workflow;
+      this.workflowRunStartDialog = true;
+    },
+    onWorkflowStart(workflowRun) {
+      console.debug(workflowRun);
+      this.workflowRunStartDialog = false;
       this.$emit("reload");
     },
   },

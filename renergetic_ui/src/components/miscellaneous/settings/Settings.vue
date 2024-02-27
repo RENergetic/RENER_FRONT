@@ -97,7 +97,8 @@
           </div>
         </div>
         <div v-else-if="s.type == 'Datetime'">
-          <Calendar :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" :disabled="disabled" :show-time="true" hour-format="24" />
+          <!-- <Calendar :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" :disabled="disabled" :show-time="true" hour-format="24" /> -->
+          <UnixCalendar :id="s.key" v-model="mModel[s.key]" :description="s.description" :disabled="disabled" />
         </div>
 
         <div v-else-if="s.type == 'Submit'">
@@ -118,16 +119,18 @@ import Slider from "primevue/slider";
 import InputNumber from "primevue/inputnumber";
 import ListBox from "primevue/listbox";
 import ColorPicker from "primevue/colorpicker";
-import Calendar from "primevue/calendar";
+// import Calendar from "primevue/calendar";
+import UnixCalendar from "./UnixCalendar.vue";
 export default {
   name: "Settings",
   components: {
     Slider,
+    UnixCalendar,
     SelectButton,
     InputNumber,
     ListBox,
     ColorPicker,
-    Calendar,
+    // Calendar,
     // ToggleButton
   },
   props: {

@@ -21,6 +21,7 @@
       <!-- {{ tile.measurements }} -->
       <MeasurementChartList ref="dataPreview" :filter="filter" :chart-type="'scatter'" :measurements="measurements" @on-load="onLoad()" />
     </div>
+
     <!-- </template>
     </Card> -->
   </Dialog>

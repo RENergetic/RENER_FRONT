@@ -32,7 +32,22 @@ export default class ManagementApi extends RestComponent {
     } else params = { offset: offset, limit: limit };
     return this.get(`/api/assets`, params);
   }
+  //ASSET TYPES
+  async listAssetTypes() {
+    return this.get(`/api/assets/type`, { offset: 0, limit: 1000 });
+  }
+  async updateAssetType(assetType) {
+    return this.put(`/api/assets/type/${assetType.id}`, assetType);
+  }
+  async addAssetType(assetType) {
+    return this.post("/api/assets/type", assetType);
+  }
 
+  async deleteAssetType(assetType) {
+    return this.delete(`/api/assets/type/${assetType.id}`);
+  }
+
+  //ASSET CATEGORIES
   async listCategories() {
     return this.get(`/api/assetCategories`);
   }

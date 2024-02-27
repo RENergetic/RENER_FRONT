@@ -187,5 +187,27 @@
   "panel_templates": {
     "kpi_electricity": "Electricity KPI ",
     "kpi_heat": "Heat KPI"
+  },
+  "workflow": {
+    "name": "Name",
+    "experiment_id": "Experiment id",
+    "parameters": "Run parameters",
+    "pipelines": "Pipelines",
+    "current_run": "Current run",
+    "visibility": "Visibility",
+    "visible": "Visibility"
+  },
+  "workflowrun": {
+    "run_id": "Run id",
+    "start_time": "Start time",
+    "start_time_formatted": "Task started at {start_time}",
+    "end_time": "End time",
+    "parameters": "Parameters",
+    "run_state": {
+      "running": "Running",
+      "finished": "Finished",
+      "error": "Error",
+      "not_running": "Not running"
+    }
   }
 }

@@ -69,12 +69,17 @@ export default {
       await new Promise((r) => setTimeout(r, t));
     },
 
-    async run(handler, t = null) {
+    async run(handler, delay = null, minTime = null) {
       this.start();
       try {
+        let start = new Date().getTime();
         this.update();
-        await this.sleep(t);
+        await this.sleep(delay);
         await handler();
+        let timeDelta = new Date().getTime() - start;
+        if (minTime != null && timeDelta < minTime) {
+          await this.sleep(minTime - timeDelta);
+        }
       } finally {
         this.stop();
       }

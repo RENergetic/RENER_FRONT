@@ -24,7 +24,7 @@ var management = [
     component: () => import("../views/management/demand/HDRView.vue"),
   },
   {
-    path: "/admin/workflow",
+    path: "/management/workflow",
     name: "Workflows",
     meta: {
       isAuthenticated: true,
@@ -44,6 +44,17 @@ var management = [
       roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
     },
     component: () => import("../views/management/infrastructure/MeasurementListView.vue"),
+  },
+  {
+    path: "/management/assettype",
+    name: "AssetTypeList",
+    props: {},
+    meta: {
+      isAuthenticated: true,
+      roles: ["ren-admin", "ren-technical-manager"],
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
+    },
+    component: () => import("../views/management/infrastructure/AssetTypeListView.vue"),
   },
   {
     path: "/management/assetcategory",
