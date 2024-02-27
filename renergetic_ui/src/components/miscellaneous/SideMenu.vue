@@ -294,7 +294,7 @@ export default {
     _assetItems() {
       return [
         {
-          class: this.checkPath({ name: "AssetList" }) ? "hl-menu" : "",
+          class: this.checkPath({ name: "AssetList" }) || this.checkPath({ name: "AssetTypeList" }) ? "hl-menu" : "",
           label: this.$t("menu.manage_assets"),
           icon: "pi pi-fw pi-list",
 

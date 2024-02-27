@@ -182,6 +182,7 @@
     <template #end>
       <Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="assetAdd = true" />
 
+      <Button style="margin-left: 0.5rem" icon="pi pi-list" :label="$t('view.button.manage_asset_types')" @click="manageTypes" />
       <Button style="margin-left: 0.5rem" icon="pi pi-list" :label="$t('view.button.manage_asset_categories')" @click="manageCategories" />
     </template>
   </Toolbar>
@@ -400,6 +401,10 @@ export default {
     },
     manageCategories() {
       this.$router.push({ name: "AssetCategoryList" });
+    },
+
+    manageTypes() {
+      this.$router.push({ name: "AssetTypeList" });
     },
 
     revokeMeasurement(measurement) {
