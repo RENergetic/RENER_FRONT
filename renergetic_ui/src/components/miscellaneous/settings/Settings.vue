@@ -97,7 +97,6 @@
           </div>
         </div>
         <div v-else-if="s.type == 'Datetime'">
-          {{ mModel[s.key] }}ddd
           <!-- <Calendar :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" :disabled="disabled" :show-time="true" hour-format="24" /> -->
           <UnixCalendar :id="s.key" v-model="mModel[s.key]" :description="s.description" :disabled="disabled" />
         </div>

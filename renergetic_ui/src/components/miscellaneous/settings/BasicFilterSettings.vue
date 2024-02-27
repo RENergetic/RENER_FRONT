@@ -86,8 +86,9 @@ export default {
     async onClick() {
       let mSettings = { ...this.settings };
       mSettings["predictionIntervalms"] = mSettings.predictionInterval * 3600;
-      if (mSettings.date_from) mSettings.date_from = mSettings.date_from.getTime();
-      if (mSettings.date_to) mSettings.date_to = mSettings.date_to.getTime();
+      validateDateInterval(mSettings);
+      // if (mSettings.date_from) mSettings.date_from = mSettings.date_from.getTime();
+      // if (mSettings.date_to) mSettings.date_to = mSettings.date_to.getTime();
       // this.settings["predictionIntervalms"] = this.settings.predictionInterval * 3600;
       this.$store.commit("settings/filters", mSettings, this.settingKey);
 
