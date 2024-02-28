@@ -1,82 +1,81 @@
 {
-     
-     "dashboard": {
-          "name": "Nombre",
-          "url": "URL",
-          "label": "Etiqueta",
-          "model": "Modelo",
-          "measurement_type": "Tipo de medición",
-          "unit": "Unidad",
-          "user": "Usuario"
-     },
-     "heatmap": {
-          "name": "Nombre",
-          "label": "Etiqueta",
-          "areas": "Áreas",
-          "attributes": "Atributos",
-          "recommendations": "Recomendaciones",
-          "notifications": "Notificaciones",
-          "dashboard": "Panel",
-          "heatmap": "Mapa de calor",
-          "imgUrl": "URL de imagen",
-          "description": "Descripción",
-          "id": "Id"
-     },
-     "asset": {
-          "asset_connections": "Conexiones entre activos",
-          "name": "Nombre",
-          "id": "Id",
-          "child": "Sub activos",
-          "asset_type": "Tipo de activo",
-          "asset_category": "Categoría de activo",
-          "label": "Etiqueta",
-          "measurements": "Mediciones",
-          "geo_location": "Geoposicionamiento",
-          "owner": "Propietario",
-          "parent": "Padre",
-          "type": {
-               "room": "Habitación",
-               "pv": "PV"
-          },
-          "category": {}
-     },
-     "information_tile": {
-          "type": "tipo"
-     },
-     "information_panel": {
-          "id": "Id",
-          "label": "Etiqueta",
-          "name": "Nombre"
-     },
-     "measurement": {
-          "name": "Nombre",
-          "label": "Etiqueta",
-          "measurement_type": "Tipo de medición",
-          "location_name": "Ubicación",
-          "type": "Tipo de medición",
-          "id": "Id",
-          "details": "Detalles",
-          "direction": "Direcición",
-          "direction_out": "Salida",
-          "direction_in": "Entrada",
-          "direction_null": "N/A"
-     },
-     "panel": {
-          "name": "Nombre",
-          "label": "Etiqueta"
-     },
-     "user": {
-          "login": "Iniciar sesión",
-          "password": "Contraseña",
-          "email":"Email",
-          "firstname":"Nombre",
-          "lastname":"Apellidos",
-          "username":"Usuario"    , 
-          "password_repeat":"Repetir contraseña",
-          "temp_password":"Contraseña temporal" ,    
-          "roles":"Roles"      
-     },
-     "role":{
-          "name":"Nombre"
-     }
+  "dashboard": {
+    "name": "Nombre",
+    "url": "URL",
+    "label": "Etiqueta",
+    "model": "Modelo",
+    "measurement_type": "Tipo de medición",
+    "unit": "Unidad",
+    "user": "Usuario"
+  },
+  "heatmap": {
+    "name": "Nombre",
+    "label": "Etiqueta",
+    "areas": "Áreas",
+    "attributes": "Atributos",
+    "recommendations": "Recomendaciones",
+    "notifications": "Notificaciones",
+    "dashboard": "Panel",
+    "heatmap": "Mapa de calor",
+    "imgUrl": "URL de imagen",
+    "description": "Descripción",
+    "id": "Id"
+  },
+  "asset": {
+    "asset_connections": "Conexiones entre activos",
+    "name": "Nombre",
+    "id": "Id",
+    "child": "Sub activos",
+    "asset_type": "Tipo de activo",
+    "asset_category": "Categoría de activo",
+    "label": "Etiqueta",
+    "measurements": "Mediciones",
+    "geo_location": "Geoposicionamiento",
+    "owner": "Propietario",
+    "parent": "Padre",
+    "types": {
+      "room": "Habitación",
+      "pv": "PV"
+    },
+    "category": {}
+  },
+  "information_tile": {
+    "type": "tipo"
+  },
+  "information_panel": {
+    "id": "Id",
+    "label": "Etiqueta",
+    "name": "Nombre"
+  },
+  "measurement": {
+    "name": "Nombre",
+    "label": "Etiqueta",
+    "measurement_type": "Tipo de medición",
+    "location_name": "Ubicación",
+    "type": "Tipo de medición",
+    "id": "Id",
+    "details": "Detalles",
+    "direction": "Direcición",
+    "direction_out": "Salida",
+    "direction_in": "Entrada",
+    "direction_null": "N/A"
+  },
+  "panel": {
+    "name": "Nombre",
+    "label": "Etiqueta"
+  },
+  "user": {
+    "login": "Iniciar sesión",
+    "password": "Contraseña",
+    "email": "Email",
+    "firstname": "Nombre",
+    "lastname": "Apellidos",
+    "username": "Usuario",
+    "password_repeat": "Repetir contraseña",
+    "temp_password": "Contraseña temporal",
+    "roles": "Roles"
+  },
+  "role": {
+    "name": "Nombre"
+  }
 }

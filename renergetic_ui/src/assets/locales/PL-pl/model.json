@@ -54,6 +54,11 @@
     "owner": "Owner",
     "parent": "Parent",
     "type": {
+      "id": "Id",
+      "label": "Etykieta",
+      "name": "Nazwa"
+    },
+    "types": {
       "room": "Room",
       "pv": "Panel PV",
       "pv_plant": "Panel PV",
