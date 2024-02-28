@@ -26,6 +26,7 @@ export default class ManagementApi extends RestComponent {
   async listAsset(params = undefined, offset = 0, limit = 20) {
     // Params: category, type, name, owner_id, parent_id
     //TODO: add filtering in the backed
+    console.log(params);
     if (params) {
       params.offset = offset;
       params.limit = limit;

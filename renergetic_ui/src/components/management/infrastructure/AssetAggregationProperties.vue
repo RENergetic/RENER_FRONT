@@ -36,6 +36,8 @@
                 v-model="aggr.outputs[i].aggregationType"
                 :options="outputFunctionsParams"
                 placeholder="Select a Output"
+                optionValue="value"
+                optionLabel="label"
                 class="w-full md:w-14rem"
               />
               <ren-input v-model="aggr.outputs[i].timeMin" :text-label="'Time min'" class="m-0" />
@@ -57,26 +59,52 @@
       <div class="flex flex-row gap-3">
         <Dropdown
           v-model="configuration.mvoComponentType.type"
+          showClear
           :options="optimizerTypes"
           optionValue="name"
           optionLabel="name"
           placeholder="Select a type"
           class="w-full md:w-14rem"
-          @change="fetchOptimizerParameters"
+          @change="fetchOptimizerParametersAndUpdateDropdowns"
         />
-        <Dropdown v-model="configuration.mvoComponentType.domainA" :options="domains" placeholder="Select domain A" class="w-full md:w-14rem" />
-        <Dropdown v-model="configuration.mvoComponentType.domainB" :options="domains" placeholder="Select domain B" class="w-full md:w-14rem" />
+        <Dropdown
+          v-if="configuration.mvoComponentType.domainsQuantity !== null && configuration.mvoComponentType.domainsQuantity > 0"
+          v-model="configuration.mvoComponentType.domainA"
+          showClear
+          :options="optimizerDomainAssets"
+          optionValue="id"
+          optionLabel="label"
+          placeholder="Select domain A"
+          class="w-full md:w-14rem"
+        />
+        <Dropdown
+          v-if="configuration.mvoComponentType.domainsQuantity !== null && configuration.mvoComponentType.domainsQuantity > 1"
+          v-model="configuration.mvoComponentType.domainB"
+          showClear
+          :options="optimizerDomainAssets"
+          optionValue="id"
+          optionLabel="label"
+          placeholder="Select domain B"
+          class="w-full md:w-14rem"
+        />
       </div>
-      <h3>Parameters Aggregation Configuration</h3>
+      <h3>Asset details Aggregation Configuration</h3>
       <div
         v-if="configuration.parametersAggregationConfiguration !== null && Object.keys(configuration.parametersAggregationConfiguration).length > 0"
       >
-        <DataTable :value="configuration.parametersAggregationConfiguration">
+        <DataTable
+          :value="configuration.parametersAggregationConfiguration"
+          :rowClass="(desc) => (desc.required !== null ? 'bg-highlight' : null)"
+          editMode="row"
+        >
           <Column header="Aggregation">
             <template #body="slotProps">
               <Dropdown
                 v-model="slotProps.data.aggregation"
+                showClear
                 :options="aggregationFunctionsParams"
+                optionValue="value"
+                optionLabel="label"
                 placeholder="Aggregation"
                 class="w-full md:w-14rem"
               />
@@ -86,6 +114,13 @@
             <template #body="slotProps">
               <div v-bind:class="{ 'font-bold': slotProps.data.required }">
                 {{ slotProps.index }}
+              </div>
+            </template>
+          </Column>
+          <Column header="Requirement">
+            <template #body="slotProps">
+              <div v-bind:class="{ 'font-bold': slotProps.data.required }">
+                {{ slotProps.data.required === null ? "" : slotProps.data.required ? "Required" : "Optional" }}
               </div>
             </template>
           </Column>
@@ -119,16 +154,29 @@ export default {
       mValue: this.modelValue,
       dialog: false,
       viewKeysGeneration: 1,
-      aggregationFunctionsParams: ["sum", "min", "max", "mean"],
-      outputFunctionsParams: ["sum", "min", "max", "mean", "last"],
+      aggregationFunctionsParams: [
+        { label: "Sum", value: "sum" },
+        { label: "Min", value: "min" },
+        { label: "Max", value: "max" },
+        { label: "Mean", value: "mean" },
+      ],
+      outputFunctionsParams: [
+        { label: "Sum", value: "sum" },
+        { label: "Min", value: "min" },
+        { label: "Max", value: "max" },
+        { label: "Mean", value: "mean" },
+        { label: "Last", value: "last" },
+      ],
       measurementsData: [],
+      optimizerDomainAssets: [],
       optimizerTypes: [],
       configuration: {
         measurementAggregation: [],
         mvoComponentType: {
           type: "",
-          domainA: "",
-          domainB: "",
+          domainsQuantity: null,
+          domainA: null,
+          domainB: null,
         },
         parametersAggregationConfiguration: {},
       },
@@ -169,6 +217,11 @@ export default {
                   });
               }
             }
+
+            await this.$ren.managementApi.listAsset({ type: "optimizer_domain" }, 0, 50).then((optimizerDomainAssets) => {
+              console.log(optimizerDomainAssets);
+              this.optimizerDomainAssets = optimizerDomainAssets;
+            });
           }
         }
         this.configuration = config;
@@ -180,15 +233,32 @@ export default {
         this.optimizerTypes = optimizerTypes;
       });
 
-      await this.fetchOptimizerParameters();
+      await this.fetchOptimizerParametersAndUpdateDropdowns();
       //this.configuration = this.configuration; //TODO: Fetch data from backend
       this.dialog = true;
     },
-    async fetchOptimizerParameters() {
+    async fetchOptimizerParametersAndUpdateDropdowns() {
       //TODO: Temporary store the mvoComponentType retrieved from api and restore it upon selection here in the list.
       if (this.configuration.mvoComponentType.type === null || this.configuration.mvoComponentType.type === undefined) {
+        this.configuration.mvoComponentType.domainsQuantity = 0;
+        this.configuration.mvoComponentType.domainA = null;
+        this.configuration.mvoComponentType.domainB = null;
         return;
       }
+
+      //TODO: Fetch the right optimizer in the list and put its domainsQuantity
+      var optimizer = this.optimizerTypes.filter((x) => x.name === this.configuration.mvoComponentType.type);
+      console.log("===================");
+      console.log(optimizer);
+      if (optimizer.length > 0) {
+        this.configuration.mvoComponentType.domainsQuantity = optimizer[0].domainsQuantity;
+        if (optimizer[0].domainsQuantity == null || optimizer[0].domainsQuantity.length === 0) {
+          this.configuration.mvoComponentType.domainA = null;
+        } else if (optimizer[0].domainsQuantity.length === 1) {
+          this.configuration.mvoComponentType.domainB = null;
+        }
+      }
+
       await this.$ren.managementApi.getOptimizerParameters(this.assetId, this.configuration.mvoComponentType.type).then((optimizerParameters) => {
         this.configuration.parametersAggregationConfiguration = optimizerParameters;
         this.transformAssetValues();
@@ -285,5 +355,10 @@ h4 {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+</style>
+<style>
+.bg-highlight {
+  background-color: rgba(0, 191, 83, 0.15) !important;
 }
 </style>

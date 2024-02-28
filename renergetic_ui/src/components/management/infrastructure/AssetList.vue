@@ -154,8 +154,17 @@
           @click="manageConnections(slotProps.data)"
         />
         <Button v-tooltip="$t('view.properties')" icon="pi  pi-sliders-h" class="p-button-rounded" @click="manageAssetProperties(slotProps.data)" />
-        <Button v-tooltip="$t('view.edit')" icon="pi pi-copy" class="p-button-rounded" @click="manageAssetAggregrationProperties(slotProps.data)" />
-        <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
+        <Button
+          v-if="
+            (slotProps.data.type !== undefined || slotProps.data.type !== null) &&
+            (slotProps.data.type.name === 'pv_virtual_asset_group' || slotProps.data.type.name === 'virtual_asset_group')
+          "
+          v-tooltip="$t('view.edit')"
+          icon="pi pi-copy"
+          class="p-button-rounded"
+          @click="manageAssetAggregrationProperties(slotProps.data)"
+        />
+        <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="test(slotProps.data)" />
         <Button v-tooltip="$t('view.rules')" icon="pi pi-code" class="p-button-rounded" @click="editRules(slotProps.data)" />
         <Button
           v-tooltip="$t('view.delete') + hasMeasurementsTooltip(slotProps.data)"
@@ -350,7 +359,6 @@ export default {
     AssetCategorySelection,
     DemandResponseView,
   },
-
   props: {
     assetList: { type: Array, default: () => [] },
     filters: { type: Array, default: () => initFilter() },
