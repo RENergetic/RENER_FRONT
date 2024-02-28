@@ -20,7 +20,7 @@
       <h4 style="width: 100%; margin: auto">{{ $t("view.empty_home_dashboard") }}</h4>
     </div>
     <div style="margin-left: 1rem; margin-top: 2rem">
-      <ParsedDateFilter />
+      <ParsedDateFilter :key="parsedFilterRefresh" />
     </div>
   </div>
   <div v-if="settings.demandVisibility && loggedIn" style="position: relative">
@@ -118,6 +118,7 @@ export default {
       settings: this.$store.getters["settings/home"],
       filter: this.$store.getters["settings/parsedFilter"](),
       panelSettings: this.$store.getters["settings/panel"],
+      parsedFilterRefresh: false,
     };
   },
   computed: {
@@ -207,7 +208,10 @@ export default {
       return model;
     },
   },
-  watch: {},
+  watch: {
+    // filter: function () {
+    // },
+  },
   async created() {
     this.loaded = false;
   },
@@ -251,6 +255,7 @@ export default {
     },
     updateFilter() {
       this.filter = this.$store.getters["settings/parsedFilter"]();
+      this.parsedFilterRefresh = !this.parsedFilterRefresh;
       if (this.slideshow) {
         this.slideshow.reset();
       }

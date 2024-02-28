@@ -22,7 +22,7 @@
       :panel-settings="settings"
     />
     <div style="margin-left: 1rem; margin-top: 2rem">
-      <ParsedDateFilter />
+      <ParsedDateFilter :key="parsedFilterRefresh" />
     </div>
     <!-- <Card style="width: 90%; margin: auto; margin-top: 1rem">
       <template #content>
@@ -99,6 +99,7 @@ export default {
       settings: this.$store.getters["settings/panel"],
       filter: this.$store.getters["settings/parsedFilter"]("private"),
       settingsDialog: false,
+      parsedFilterRefresh: false,
     };
   },
   computed: {
@@ -197,6 +198,7 @@ export default {
       this.filter = this.$store.getters["settings/parsedFilter"]("private");
       this.settings = this.$store.getters["settings/panel"];
       this.conversionSettings = this.$store.getters["settings/conversion"];
+      this.parsedFilterRefresh = !this.parsedFilterRefresh;
     },
 
     async toggleLock() {

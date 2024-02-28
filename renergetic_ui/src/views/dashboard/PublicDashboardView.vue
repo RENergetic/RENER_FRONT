@@ -11,7 +11,7 @@
       :filter="filterSettings"
     ></InformationPanelWrapper>
     <div style="margin-left: 1rem; margin-top: 2rem">
-      <ParsedDateFilter />
+      <ParsedDateFilter :key="parsedFilterRefresh" />
     </div>
   </div>
   <RenSettingsDialog ref="settingsDialog">
@@ -82,6 +82,7 @@ export default {
       settingsDialog: false,
       filterSettingsDialog: false,
       conversionSettingsDialog: false,
+      parsedFilterRefresh: false,
     };
   },
   computed: {
@@ -147,6 +148,7 @@ export default {
       this.filterSettings = this.$store.getters["settings/parsedFilter"]();
       this.settings = this.$store.getters["settings/panel"];
       this.conversionSettings = this.$store.getters["settings/conversion"];
+      this.parsedFilterRefresh = !this.parsedFilterRefresh;
     },
   },
 };
