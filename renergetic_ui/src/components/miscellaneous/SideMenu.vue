@@ -396,6 +396,10 @@ export default {
     },
 
     _grafanaDashboardManagement() {
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_USER | RenRoles.REN_TECHNICAL_MANAGER;
+      if ((flags & this.role) == 0) {
+        return [];
+      }
       let items = [];
       items.push({
         class: this.checkPath({ name: "GrafanaDashboardListView" }) ? "hl-menu" : "",

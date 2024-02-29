@@ -1,4 +1,5 @@
 import { RenRoles } from "@/plugins/model/Enums.js";
+// RenMixins
 export default {
   data() {
     return {
@@ -71,6 +72,21 @@ export default {
       }
       return label;
 
+    },
+
+    objectLabel: function (obj, tKey) {
+      if (obj == null) return null
+      if (obj.label && this.$te(`${tKey}.${obj.label}`)) {
+        return this.$t(`${tKey}.${obj.label}`);
+      }
+      if (obj.name && this.$te(`${tKey}.${obj.name}`)) {
+        return this.$t(`${tKey}.${obj.name}`);
+      }
+      return obj.label ? obj.label : obj.name
+
+    },
+    fieldLabel: function (field, tKey) {
+      return field != null && this.$te(`${tKey}.${field}`) ? this.$t(`${tKey}.${field}`) : field
     },
     getTileMeasurement: function () {
       // console.error(this.tile)

@@ -1,5 +1,6 @@
 <template>
   <DotMenu v-if="loggedIn" :model="menuModel" :fixed="true" />
+  {{ $store.getters["settings/filter"] }}
   <div v-if="settings.panelVisibility" style="position: relative">
     <!-- {{ $store.getters["view/featuredPanels"] }}  -->
     <!-- {{ $store.getters["view/assetPanels"] }}d -->

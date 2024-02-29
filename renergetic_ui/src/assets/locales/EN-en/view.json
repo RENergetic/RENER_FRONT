@@ -11,6 +11,8 @@
   "asset": "Asset",
   "asset_category": "No asset category assigned",
   "asset_child_empty": "No sub assets",
+  "asset_connection_delete_header": "Delete asset connection?",
+  "asset_connection_delete_body": "Do you want to delete asset connection with {label}?",
   "asset_details_dont_exist": "No details for this asset",
   "asset_delete": "Asset delete",
   "asset_deleted": "Asset deleted",
