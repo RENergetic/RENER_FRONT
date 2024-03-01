@@ -1,5 +1,5 @@
 <template>
-  <Settings :schema="schema" :settings="settings" :columns="columns" :labels="labels" />
+  <Settings :schema="schema" :settings="mSettings" :columns="columns" :labels="labels" :disabled="disabled" />
   <!-- {{ $store.getters["settings/all"].filters }} -->
   <!-- {{ schema }}{{ settings }} -->
   <!-- {{ settings }} -->
@@ -32,14 +32,16 @@ export default {
     settingKey: { type: String, default: "filter" },
     submitButton: { type: Boolean, default: true },
     labels: { type: Boolean, default: true },
+    settings: { type: Object, default: null },
+    disabled: { type: Boolean, default: false },
   },
-  emits: ["update"],
+  emits: ["update", "update:settings"],
   data() {
-    // let settings = setSettings(this.$store.getters["settings/filters"](this.settingKey));
-    let settings = this.$store.getters["settings/filters"](this.settingKey);
+    let settings = this.settings ? this.settings : this.$store.getters["settings/filters"](this.settingKey);
+
     return {
       //https://vueschool.io/lessons/dynamic-vuex-getters
-      settings: settings,
+      mSettings: settings,
 
       timeIntervalType: settings.timeIntervalType,
       schema: {},
@@ -48,7 +50,7 @@ export default {
   computed: {},
   watch: {
     //watch only without submit button
-    settings: {
+    mSettings: {
       handler: function (newVal) {
         validateDateInterval(newVal);
         if (newVal["timeIntervalType"] != this.timeIntervalType) {
@@ -60,22 +62,20 @@ export default {
         console.info(newVal.date_from instanceof Date);
         if (newVal.date_from && newVal.date_from instanceof Date) newVal.date_from = newVal.date_from.getTime();
         if (newVal.date_to && newVal.date_to instanceof Date) newVal.date_to = newVal.date_to.getTime();
-        this.$store.commit("settings/filters", { payload: newVal, key: this.settingKey });
-        this.$emit("update");
+        this.parseDateFilter(newVal);
+        if (this.settings) {
+          this.$emit("update:settings", newVal);
+        } else {
+          this.$store.commit("settings/filters", { payload: newVal, key: this.settingKey });
+          this.$emit("update");
+        }
       },
       deep: true,
     },
   },
   async mounted() {
-    // this.settings = setSettings(this.$store.getters["settings/filters"](this.settingKey));
-    this.settings = this.$store.getters["settings/filters"](this.settingKey);
-    this.timeIntervalType = this.settings.timeIntervalType;
-    // await this.$ren.dashboardApi.listInformationPanel().then((panels) => {
-    //   this.panels = panels;
-    // });
-    // .then(() => {
-    //   this.schema = this.getSchema();
-    // });
+    this.mSettings = this.settings ? this.settings : this.$store.getters["settings/filters"](this.settingKey);
+    this.timeIntervalType = this.mSettings.timeIntervalType;
     this.schema = this.getSchema();
   },
 
@@ -84,20 +84,20 @@ export default {
   },
   methods: {
     async onClick() {
-      let mSettings = { ...this.settings };
+      let mSettings = { ...this.mSettings };
       mSettings["predictionIntervalms"] = mSettings.predictionInterval * 3600;
       validateDateInterval(mSettings);
-      // if (mSettings.date_from) mSettings.date_from = mSettings.date_from.getTime();
-      // if (mSettings.date_to) mSettings.date_to = mSettings.date_to.getTime();
-      // this.settings["predictionIntervalms"] = this.settings.predictionInterval * 3600;
-      this.$store.commit("settings/filters", mSettings, this.settingKey);
-
-      await this.$ren.utils.saveSettings();
-
-      this.$emit("update");
+      this.parseDateFilter(mSettings);
+      if (this.settings) {
+        this.$emit("update:settings", mSettings);
+      } else {
+        this.$store.commit("settings/filters", { payload: mSettings, key: this.settingKey });
+        await this.$ren.utils.saveSettings();
+        this.$emit("update");
+      }
     },
     getTimeIntrvalSchema() {
-      var isCustomInterval = this.settings && this.settings["timeIntervalType"] == "custom_interval";
+      var isCustomInterval = this.mSettings && this.mSettings["timeIntervalType"] == "custom_interval";
       if (!isCustomInterval) return [];
       else {
         return [

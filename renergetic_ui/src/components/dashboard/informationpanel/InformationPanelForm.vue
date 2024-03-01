@@ -35,7 +35,9 @@
           />
         </AccordionTab>
         <AccordionTab :key="mModel.props" :header="$t('view.information_panel_props')">
+          <!-- {{ mModel.props }} -->
           <Settings :schema="schema" :settings="mModel.props"></Settings>
+          <BasicFilterSettings :settings="mModel.props" :submit-button="false" />
         </AccordionTab>
         <!-- {{ modelValue }} -->
 
@@ -156,10 +158,12 @@ import { useVuelidate } from "@vuelidate/core";
 import { maxLength, required, minLength, minValue, maxValue } from "@/plugins/validators.js";
 import InfoIcon from "../../miscellaneous/InfoIcon.vue";
 import Settings from "@/components/miscellaneous/settings/Settings.vue";
+import BasicFilterSettings from "@/components/miscellaneous/settings/BasicFilterSettings.vue";
+
 const ASSET_TAG = "{asset}";
 export default {
   name: "InformationPanelForm",
-  components: { InfoIcon, FileUpload, InformationPanelTilesWrapper, Settings },
+  components: { InfoIcon, FileUpload, InformationPanelTilesWrapper, Settings, BasicFilterSettings },
   props: {
     modelValue: {
       type: Object,

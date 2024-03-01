@@ -55,6 +55,50 @@ export default {
   },
 
   methods: {
+    parseDateFilter: function (filter) {
+      let f = filter ? filter : {};
+      let from = f.date_from;
+      let to = f.date_to;
+      var date = new Date();
+      switch (f.timeIntervalType) {
+        case "current_day":
+          from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+          to = null;
+          break;
+        case "last_24h":
+          from = new Date().getTime() - 3600 * 24 * 1000;
+          to = null;
+          break;
+        case "last_week":
+          from = new Date().getTime() - 3600 * 24 * 1000 * 7;
+          to = null;
+          break;
+        case "current_month":
+          from = new Date(date.getFullYear(), date.getMonth(), 1).getTime();
+          to = null;
+          break;
+        case "previous_month":
+          from = new Date(date.getFullYear(), date.getMonth() - 1, 1).getTime();
+          to = new Date(date.getFullYear(), date.getMonth(), 1).getTime();
+          break;
+        case "current_year":
+          from = new Date(date.getFullYear(), 0, 1).getTime();
+          to = null;
+          break;
+        case "previous_year":
+          from = new Date(date.getFullYear() - 1, 0, 1).getTime();
+          to = new Date(date.getFullYear(), 0, 1).getTime();
+          break;
+        default:
+          if (from == null) from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+          break;
+      }
+      filter.from = from;
+      filter.to = to;
+      return filter
+    },
+
+
     measurementLabel: function (measurement) {
       if (measurement == null) return null
       let localKey;
@@ -159,6 +203,42 @@ export default {
       return false;
     },
 
+
+    /**
+     * 
+     * @param {*} s1 -  settings object  
+     * @param {*} s2 - settings to merge with
+     * @param {*} mode- merge/override mode: 'fixed' =  s2, 'override' = s2<=s1, 'default' = s1, 'merge' and others - s2+s1
+     * @returns  final settings for the panel 
+     */
+    mergeSettings(s1, s2, mode) {
+      s1 = s1 == null ? {} : s1;
+      s2 = s2 == null ? {} : s2;
+      let mSettings;
+      switch (mode) {
+        case "fixed":
+          mSettings = { ...s2 };
+          break;
+        case "override":
+          mSettings = { ...s2, ...s1 };
+          break;
+        case "default":
+          mSettings = { ...s1 };
+          break;
+        case "merge":
+        default:
+          mSettings = { ...s2 };
+          for (let k in s1) {
+            if (!(k in mSettings) || mSettings[k] == null) {
+              mSettings[k] = s1[k];
+            }
+          }
+          break;
+      }
+      return mSettings;
+    },
+
+
     /**
      * 
      * @param {*} settings - user settings 
@@ -166,47 +246,50 @@ export default {
      * @returns  final settings for the panel 
      */
     computePanelSettings(settings, panel) {
-      let mSettings = {};
-      if (settings == null) {
-        mSettings = {};
-      } else {
-        mSettings = settings;
-      }
-      if (panel.props) {
-        let props = panel.props;
-        let overrideMode = props.overrideMode;
-        let role = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
-        if (role & this.$store.getters["auth/renRole"] && mSettings.ignoreOverrideMode) {
-          mSettings = { ...panel.props, ...mSettings };
-        } else
-          switch (overrideMode) {
-            case "fixed":
-              mSettings = panel.props;
-              break;
-            case "override":
-              mSettings = { ...panel.props, ...mSettings };
-              break;
-            case "default":
-              mSettings = settings;
-              break;
-            default:
-              mSettings = { ...panel.props };
+      // let mSettings = {};
+      // if (settings == null) {
+      //   mSettings = {};
+      // } else {
+      //   mSettings = settings;
+      // }
+      // if (panel.props) {
+      //   let overrideMode = panel.props.overrideMode;
+      //   let role = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
+      //   if (role & this.$store.getters["auth/renRole"] && mSettings.ignoreOverrideMode) {
+      //     mSettings = { ...panel.props, ...mSettings };
+      //   } else
+      //     switch (overrideMode) {
+      //       case "fixed":
+      //         mSettings = panel.props;
+      //         break;
+      //       case "override":
+      //         mSettings = { ...panel.props, ...mSettings };
+      //         break;
+      //       case "default":
+      //         mSettings = settings;
+      //         break;
+      //       default:
+      //         mSettings = { ...panel.props };
 
-              for (let k in settings) {
-                if (!(k in mSettings) || mSettings[k] == null) {
-                  mSettings[k] = settings[k];
-                }
-              }
-              break;
-          }
+      //         for (let k in settings) {
+      //           if (!(k in mSettings) || mSettings[k] == null) {
+      //             mSettings[k] = settings[k];
+      //           }
+      //         }
+      //         break;
+      //     }
+      // }
+      // // mSettings.legend = mSettings.legend != null ? mSettings.legend : true;
+      // // mSettings.legend = mSettings.legend != null ? mSettings.legend : null;
+      if (panel == null) {
+        return {}
       }
-      // mSettings.legend = mSettings.legend != null ? mSettings.legend : true;
-      // mSettings.legend = mSettings.legend != null ? mSettings.legend : null;
+      let overrideMode = panel.props && panel.props.overrideMode ? panel.props.overrideMode : null;
+      let mSettings = this.mergeSettings(settings, panel.props, overrideMode)
       mSettings.asset_id = this.assetId;
       // settings.title = settings.title != null ? settings.title : true;
-      // settings.color = settings.color != null ? settings.color : "#d6ebff";
-      let size = mSettings != null && mSettings.fontSize != null ? mSettings.fontSize : `${2.0}rem`;
-      mSettings.fontSize = size;
+      // settings.color = settings.color != null ? settings.color : "#d6ebff"; 
+      mSettings.fontSize = mSettings.fontSize != null ? mSettings.fontSize : `${2.0}rem`;;
       return mSettings;
     }
   }
