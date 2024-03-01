@@ -89,13 +89,12 @@
         />
       </div>
       <h3>Asset details Aggregation Configuration</h3>
-      <div
-        v-if="configuration.parametersAggregationConfiguration !== null && Object.keys(configuration.parametersAggregationConfiguration).length > 0"
-      >
+      <div v-if="configuration.parametersAggregationConfiguration !== null && configuration.parametersAggregationConfiguration.length > 0">
         <DataTable
           :value="configuration.parametersAggregationConfiguration"
           :rowClass="(desc) => (desc.required !== null ? 'bg-highlight' : null)"
-          editMode="row"
+          editMode="cell"
+          @cell-edit-complete="onCellEditComplete"
         >
           <Column header="Aggregation">
             <template #body="slotProps">
@@ -113,7 +112,7 @@
           <Column header="Parameter">
             <template #body="slotProps">
               <div v-bind:class="{ 'font-bold': slotProps.data.required }">
-                {{ slotProps.index }}
+                {{ slotProps.data.parameter }}
               </div>
             </template>
           </Column>
@@ -124,14 +123,17 @@
               </div>
             </template>
           </Column>
-          <Column v-for="column of columns" :key="column.id" :header="'Asset ' + column.value" class="">
-            <template #body="slotProps">
-              <div class="text-red-500" v-if="getTableData(slotProps.data, column.value) === null">
-                <span v-if="slotProps.data.required">Required</span>
+          <Column v-for="column of configuration.columns" :key="column.key" :field="column.key" :header="'Asset ' + column.label" class="">
+            <template #body="{ data, field }">
+              <div class="text-red-500" v-if="data[field] === null">
+                <span v-if="data.required">Required</span>
               </div>
               <div v-else>
-                {{ getTableData(slotProps.data, column.value) }}
+                {{ data[field] }}
               </div>
+            </template>
+            <template #editor="{ data, field }">
+              <InputText v-model="data[field]" autofocus />
             </template>
           </Column>
         </DataTable>
@@ -178,13 +180,12 @@ export default {
           domainA: null,
           domainB: null,
         },
-        parametersAggregationConfiguration: {},
+        parametersAggregationConfiguration: [],
+        columns: [],
       },
       domains: MeasurementDomains.keys(),
       directions: MeasurementDirection.keys(),
       assetId: null,
-      assetValues: [],
-      columns: [],
     };
   },
   methods: {
@@ -219,13 +220,11 @@ export default {
             }
 
             await this.$ren.managementApi.listAsset({ type: "optimizer_domain" }, 0, 50).then((optimizerDomainAssets) => {
-              console.log(optimizerDomainAssets);
               this.optimizerDomainAssets = optimizerDomainAssets;
             });
           }
         }
         this.configuration = config;
-        this.transformAssetValues();
       });
 
       await this.$ren.managementApi.getOptimizerTypes().then((optimizerTypes) => {
@@ -234,11 +233,9 @@ export default {
       });
 
       await this.fetchOptimizerParametersAndUpdateDropdowns();
-      //this.configuration = this.configuration; //TODO: Fetch data from backend
       this.dialog = true;
     },
     async fetchOptimizerParametersAndUpdateDropdowns() {
-      //TODO: Temporary store the mvoComponentType retrieved from api and restore it upon selection here in the list.
       if (this.configuration.mvoComponentType.type === null || this.configuration.mvoComponentType.type === undefined) {
         this.configuration.mvoComponentType.domainsQuantity = 0;
         this.configuration.mvoComponentType.domainA = null;
@@ -246,10 +243,7 @@ export default {
         return;
       }
 
-      //TODO: Fetch the right optimizer in the list and put its domainsQuantity
       var optimizer = this.optimizerTypes.filter((x) => x.name === this.configuration.mvoComponentType.type);
-      console.log("===================");
-      console.log(optimizer);
       if (optimizer.length > 0) {
         this.configuration.mvoComponentType.domainsQuantity = optimizer[0].domainsQuantity;
         if (optimizer[0].domainsQuantity == null || optimizer[0].domainsQuantity.length === 0) {
@@ -261,21 +255,7 @@ export default {
 
       await this.$ren.managementApi.getOptimizerParameters(this.assetId, this.configuration.mvoComponentType.type).then((optimizerParameters) => {
         this.configuration.parametersAggregationConfiguration = optimizerParameters;
-        this.transformAssetValues();
       });
-    },
-    getTableData(in1, in2) {
-      return in1.assetValues[in2];
-    },
-    transformAssetValues() {
-      this.columns = [];
-      let keys = Object.keys(this.configuration.parametersAggregationConfiguration);
-      if (keys.length > 0) {
-        for (const [index] of Object.entries(this.configuration.parametersAggregationConfiguration[keys[0]].assetValues)) {
-          this.columns.push({ id: this.viewKeysGeneration, value: index });
-          this.viewKeysGeneration += 1;
-        }
-      }
     },
     addMAC() {
       this.configuration.measurementAggregation.push({
@@ -287,6 +267,14 @@ export default {
     },
     deleteMAC(index) {
       this.configuration.measurementAggregation.splice(index, 1);
+    },
+    onCellEditComplete(event) {
+      let { data, newValue, field } = event;
+      if (newValue !== null && newValue.trim().length > 0) {
+        data[field] = newValue;
+      } else {
+        data[field] = null;
+      }
     },
     async addMeasurement(item, i) {
       if (item.length === 0) {
@@ -330,7 +318,6 @@ export default {
     async submit() {
       await this.$ren.managementApi.saveMeasurementAggregation(this.assetId, this.configuration).then((config) => {
         this.configuration = config;
-        this.transformAssetValues();
       });
     },
   },
