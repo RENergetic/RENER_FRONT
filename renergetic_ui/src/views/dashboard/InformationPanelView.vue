@@ -102,7 +102,7 @@
           <span> {{ $t("view.user_filter_settings") }}:</span>
         </template>
         <template #content>
-          {{ $store.getters["settings/filters"]("private") }}
+          <!-- {{ $store.getters["settings/filters"]("private") }} -->
           <BasicFilterSettings :setting-key="'private'" @update="reloadSettings()" />
           <!-- <PanelSettings @update="reloadPanelSettings()"> </PanelSettings> -->
         </template>
