@@ -31,6 +31,7 @@
     <!-- <Column field="id" :header="$t('model.measurement.id')"></Column> -->
     <Column field="name" :header="$t('model.measurement.name')" :show-filter-menu="false">
       <template #body="slotProps">
+        TODO: {{ slotProps.data._selected }}
         <span v-if="slotProps.data._label"> {{ slotProps.data.label }} ({{ slotProps.data._label }})</span>
         <span v-else> {{ slotProps.data.label }} </span>
         <div>

@@ -194,6 +194,7 @@
     "add_new_tag": "Add new tag",
     "add_connection": "Add connection",
     "add_category_connection": "Add category connection",
+    "add_measurement_template": "Add dynamic measurement",
     "add_tile": "Add tile",
     "measurement_types": "Measurement types",
     "edit_area": "Edit area",

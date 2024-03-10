@@ -159,7 +159,8 @@
     "asset_category": "Asset category",
     "physical_name": "Physical meaning",
     "physical_type": "Physical unit type",
-    "asset": "Asset"
+    "asset": "Asset",
+    "temp_id": "Temporary id"
   },
   "user": {
     "login": "Login",

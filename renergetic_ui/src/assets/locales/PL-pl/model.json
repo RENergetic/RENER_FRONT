@@ -159,7 +159,8 @@
     "asset_category": "Asset category",
     "physical_name": "Znaczenie fizyczne",
     "physical_type": "Nazwa jednostki fizycznej",
-    "asset": "Obiekt"
+    "asset": "Obiekt",
+    "temp_id": "Id tymczasowe"
   },
   "user": {
     "login": "Login",

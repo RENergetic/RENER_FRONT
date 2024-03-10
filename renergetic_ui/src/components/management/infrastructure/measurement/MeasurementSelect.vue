@@ -17,9 +17,17 @@ export default {
   components: {
     MeasurementList,
   },
+  props: {
+    selectedMeasurements: { type: Array, default: null },
+  },
   emits: ["select"],
   data() {
+    //tODO: filter tempId or match dynamic measurements here ?
+    let mSelectedMeasurements = this.selectedMeasurements
+      ? Object.fromEntries(this.selectedMeasurements.map((m) => [m.id ? m.id : m.tempId, m]))
+      : [];
     return {
+      mSelectedMeasurements: mSelectedMeasurements,
       filters: null,
       measurementList: [],
       selectedMeasurement: null,
@@ -35,6 +43,9 @@ export default {
     },
   },
   mounted() {
+    this.mSelectedMeasurements = this.selectedMeasurements
+      ? Object.fromEntries(this.selectedMeasurements.map((m) => [m.id ? m.id : m.tempId, m]))
+      : [];
     this.loadMeasurements();
   },
   methods: {
@@ -68,6 +79,11 @@ export default {
         await this.$ren.managementApi.listMeasurement({ params: params, offset: offset, limit: limit }).then((data) => {
           for (let m of data) {
             this.$ren.utils.setMeasurementLabel(m);
+          }
+          console.error(this.mSelectedMeasurements);
+          for (let m of data) {
+            console.error(m);
+            m._selected = this.mSelectedMeasurements[m.id] ? true : false;
           }
           this.measurementList = data;
         });

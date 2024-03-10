@@ -134,6 +134,9 @@ class RenUtils {
     // today = mm + "/" + dd + "/" + yyyy + " " + today.getHours() + ":" + today.getMinutes();
     // return today;
   }
+  currentTimestamp() {
+    return new Date().getTime();
+  }
   openNewTab(path) {
     var parser = document.createElement("a");
     parser.href = location;
