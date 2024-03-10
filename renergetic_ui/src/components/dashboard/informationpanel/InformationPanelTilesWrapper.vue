@@ -4,8 +4,15 @@
       <Button :label="$t('view.button.edit_tiles')" style="float: left; max-width: 20rem" icon="pi pi-plus-circle" @click="tilesDialog = true" />
     </template>
   </ren-input-wrapper>
-  <Dialog v-model:visible="tilesDialog" :style="{ width: '100vw', height: '100vh', maxHeight: '100vh' }" :modal="true" :dismissable-mask="true">
-    <div class="grid ren flex" style="height: 100%; overflow: auto">
+  <Dialog
+    v-model:visible="tilesDialog"
+    :closable="false"
+    :style="{ width: '100vw', height: '100vh', maxHeight: '100vh' }"
+    :modal="true"
+    :dismissable-mask="false"
+    :show-header="false"
+  >
+    <div class="grid ren flex" style="height: 100%; overflow: auto; padding-top: 0.5rem">
       <!-- :key="selectedRecommendation.id + (compareWith ? compareWith.id : '')" -->
       <div class="col-3 flex flex-column" style="height: 100%">
         <Listbox
@@ -42,11 +49,11 @@
           </template>
         </Listbox>
 
-        <Button :label="$t('view.button.add_tile')" class="flex-grow-0" style="width: 100%" icon="pi pi-plus-circle" @click="addTile" />
+        <Button :label="$t('view.button.add_tile')" class="flex-grow-0 ren-button" style="width: 100%" icon="pi pi-plus-circle" @click="addTile" />
         <Button
           v-if="selectedTile"
           icon="pi pi-trash"
-          class="p-button-danger"
+          class="p-button-danger ren-button"
           :label="$t('view.button.delete_selected_tile')"
           style="float: right"
           @click="deleteTile(selectedTile)"
@@ -54,11 +61,12 @@
         <Button
           v-else
           icon="pi pi-trash"
-          class="p-button-danger"
+          class="p-button-danger ren-button"
           :label="$t('view.button.delete_selected_tile')"
           style="float: right"
           :disabled="true"
         />
+        <Button :label="$t('view.button.cancel')" class="flex-grow-0 ren-button" style="width: 100%" @click="tilesDialog = false" />
       </div>
       <div class="col-9 flex flex-column" style="height: 100%">
         <!-- <AccordionTab v-if="selectedTile">

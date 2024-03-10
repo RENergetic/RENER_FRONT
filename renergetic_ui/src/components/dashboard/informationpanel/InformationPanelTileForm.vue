@@ -115,11 +115,11 @@
           </ul>
         </div>
 
-        <div class="grid ren flex">
-          <div class="col-6 flex flex-column">
+        <div class="col-12 grid ren flex">
+          <div class="col-12 flex flex-column">
             <Button :label="$t('view.button.add_measurement')" icon="pi pi-plus-circle" @click="addMeasurementDialog = true" />
           </div>
-          <div class="col-6 flex flex-column">
+          <div class="col-12 flex flex-column">
             <Button :label="$t('view.button.add_measurement_template')" icon="pi pi-plus-circle" @click="addMeasurementTemplateDialog = true" />
           </div>
         </div>
