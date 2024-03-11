@@ -192,7 +192,8 @@
   },
   "panel_templates": {
     "kpi_electricity": "KPI-Elektryczność",
-    "kpi_heat": "KPI-ciepło"
+    "kpi_heat": "KPI-ciepło",
+    "island_consumption": "Widok konsumpcji"
   },
   "workflow": {
     "name": "Nazwa",

@@ -192,7 +192,8 @@
   },
   "panel_templates": {
     "kpi_electricity": "Electricity KPI ",
-    "kpi_heat": "Heat KPI"
+    "kpi_heat": "Heat KPI",
+    "island_consumption": "Energy island consumption view"
   },
   "workflow": {
     "name": "Name",

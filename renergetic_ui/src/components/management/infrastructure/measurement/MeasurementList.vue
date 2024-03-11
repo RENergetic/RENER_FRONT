@@ -31,7 +31,6 @@
     <!-- <Column field="id" :header="$t('model.measurement.id')"></Column> -->
     <Column field="name" :header="$t('model.measurement.name')" :show-filter-menu="false">
       <template #body="slotProps">
-        TODO: {{ slotProps.data._selected }}
         <span v-if="slotProps.data._label"> {{ slotProps.data.label }} ({{ slotProps.data._label }})</span>
         <span v-else> {{ slotProps.data.label }} </span>
         <div>
@@ -311,6 +310,12 @@ export default {
       await this.deferredEmitFilter.run();
     },
     rowClass(data) {
+      if (data._selected && data.panel_count === 0) {
+        return "disabled selected";
+      }
+      if (data._selected) {
+        return "selected";
+      }
       if (data.panel_count === 0) {
         return "disabled";
       }

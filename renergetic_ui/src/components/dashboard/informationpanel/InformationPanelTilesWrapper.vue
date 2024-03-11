@@ -66,7 +66,7 @@
           style="float: right"
           :disabled="true"
         />
-        <Button :label="$t('view.button.cancel')" class="flex-grow-0 ren-button" style="width: 100%" @click="tilesDialog = false" />
+        <Button :label="$t('view.button.close')" class="flex-grow-0 ren-button" style="width: 100%" @click="tilesDialog = false" />
       </div>
       <div class="col-9 flex flex-column" style="height: 100%">
         <!-- <AccordionTab v-if="selectedTile">
