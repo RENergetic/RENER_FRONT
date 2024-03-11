@@ -38,6 +38,7 @@ async function initDummy() {
   await storage.setDefault(`${MANAGEMENT_API_KEY}.${MEASUREMENT_KEY}`, measurementList);
   await storage.setDefault(`${MANAGEMENT_API_KEY}.${ASSET_KEY}`, assetList);
 }
+//TODO: temporaty example objectc
 
 class ManagementApi {
   //Infrastructure  REQUESTS
@@ -94,10 +95,12 @@ class ManagementApi {
   }
 
   async getDemand(assetId) {
+    //TODO:
     console.info(assetId);
     return demandList;
   }
   async getNotifications(assetId, context = NotificationContext.USER) {
+    //TODO:
     console.info(assetId + " " + context);
     return notificationList;
   }
@@ -293,9 +296,11 @@ class DataApi {
     return generator.getHeatMapData(heatmap);
   }
   async getNotifications(objectIds) {
+    // todo:
     return objectIds;
   }
   async getUserNotifications(userId) {
+    // todo:
     return userId;
   }
 }
