@@ -54,6 +54,11 @@
     "owner": "Owner",
     "parent": "Parent",
     "type": {
+      "id": "Id",
+      "label": "Etykieta",
+      "name": "Nazwa"
+    },
+    "types": {
       "room": "Room",
       "pv": "Panel PV",
       "pv_plant": "Panel PV",
@@ -154,7 +159,8 @@
     "asset_category": "Asset category",
     "physical_name": "Znaczenie fizyczne",
     "physical_type": "Nazwa jednostki fizycznej",
-    "asset": "Obiekt"
+    "asset": "Obiekt",
+    "temp_id": "Id tymczasowe"
   },
   "user": {
     "login": "Login",
@@ -186,7 +192,10 @@
   },
   "panel_templates": {
     "kpi_electricity": "KPI-Elektryczność",
-    "kpi_heat": "KPI-ciepło"
+    "kpi_heat": "KPI-ciepło",
+    "island_consumption": "Widok konsumpcji",
+    "island_production": "Widok produkcji energii",
+    "private_dashboard_consumption": "Dynamiczny widok konsumpcji"
   },
   "workflow": {
     "name": "Nazwa",

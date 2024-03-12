@@ -1,5 +1,6 @@
 <template>
   <DotMenu v-if="loggedIn" :model="menuModel" :fixed="true" />
+  <!-- {{ effectiveFilterSettings }} -->
   <div v-if="settings.panelVisibility" style="position: relative">
     <!-- {{ $store.getters["view/featuredPanels"] }}  -->
     <!-- {{ $store.getters["view/assetPanels"] }}d -->
@@ -11,7 +12,7 @@
       :locked="locked"
       :edit-mode="false"
       :panel="panel"
-      :filter="filter"
+      :filter="effectiveFilterSettings"
       :auto-reload="autoReload"
       :panel-settings="panelSettings"
     ></InformationPanelWrapper>
@@ -20,7 +21,7 @@
       <h4 style="width: 100%; margin: auto">{{ $t("view.empty_home_dashboard") }}</h4>
     </div>
     <div style="margin-left: 1rem; margin-top: 2rem">
-      <ParsedDateFilter />
+      <ParsedDateFilter :key="parsedFilterRefresh" :filter="effectiveFilterSettings" />
     </div>
   </div>
   <div v-if="settings.demandVisibility && loggedIn" style="position: relative">
@@ -68,7 +69,35 @@
     <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="filterSettingsDialog" :save="false">
-    <template #settings><FilterSettings @update="updateFilter()"></FilterSettings></template>
+    <template #settings>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
+        </template>
+        <template #content>
+          <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
+          <!-- <Settings :schema="schema" :settings="effectiveFilterSettings" :disabled="true" /> -->
+        </template>
+      </Card>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_filter_settings") }}:</span>
+        </template>
+        <template #content>
+          <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
+          <!-- <Settings :schema="schema" :settings="panel.props" :disabled="true" /> -->
+        </template>
+      </Card>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.user_filter_settings") }}:</span>
+        </template>
+        <template #content>
+          <BasicFilterSettings @update="updateFilter()" />
+          <!-- <PanelSettings @update="reloadPanelSettings()"> </PanelSettings> -->
+        </template>
+      </Card>
+    </template>
   </RenSettingsDialog>
   <div v-if="$refs.panelSettingsDialog">{{ $refs.panelSettingsDialog.settingsDialog }}</div>
 </template>
@@ -81,7 +110,7 @@ import NotificationList from "@/components/user/NotificationList.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 import InformationPanelWrapper from "@/components/dashboard/informationpanel/InformationPanelWrapper.vue";
 import DemandList from "@/components/user/demand/DemandList.vue";
-import FilterSettings from "@/components/miscellaneous/settings/FilterSettings.vue";
+import BasicFilterSettings from "@/components/miscellaneous/settings/BasicFilterSettings.vue";
 import ParsedDateFilter from "@/components/miscellaneous/settings/ParsedDateFilter.vue";
 import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
 
@@ -96,7 +125,6 @@ export default {
     Settings,
     DotMenu,
     RoleMatrix,
-    FilterSettings,
     ConversionSettings,
     DemandList,
     HomeSettings,
@@ -104,6 +132,7 @@ export default {
     NotificationList,
     InformationPanelWrapper,
     ParsedDateFilter,
+    BasicFilterSettings,
   },
   data() {
     return {
@@ -116,14 +145,22 @@ export default {
       assetId: null,
       panel: this.$store.getters["view/homePanel"],
       settings: this.$store.getters["settings/home"],
-      filter: this.$store.getters["settings/parsedFilter"](),
+      // filter: this.$store.getters["settings/parsedFilter"](),
       panelSettings: this.$store.getters["settings/panel"],
+      parsedFilterRefresh: false,
     };
   },
   computed: {
     effectivePanelSettings: function () {
       return this.computePanelSettings(this.panelSettings, this.panel);
     },
+    effectiveFilterSettings: function () {
+      let userFilter = this.$store.getters["settings/filters"]();
+      let overrideMode = this.panel.props && this.panel.props.overrideMode ? this.panel.props.overrideMode : null;
+      let settings = this.mergeSettings(userFilter, this.panel.props, overrideMode);
+      return this.parseDateFilter(settings);
+    },
+
     loggedIn: function () {
       return this.$store.getters["auth/isAuthenticated"];
     },
@@ -207,7 +244,10 @@ export default {
       return model;
     },
   },
-  watch: {},
+  watch: {
+    // filter: function () {
+    // },
+  },
   async created() {
     this.loaded = false;
   },
@@ -250,7 +290,7 @@ export default {
       this.settings = this.$store.getters["settings/home"];
     },
     updateFilter() {
-      this.filter = this.$store.getters["settings/parsedFilter"]();
+      this.parsedFilterRefresh = !this.parsedFilterRefresh;
       if (this.slideshow) {
         this.slideshow.reset();
       }

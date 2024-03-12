@@ -68,6 +68,11 @@ export default {
   mounted: function () {},
   methods: {
     async loadDetails() {
+      if (this.mMeasurement.id == null) {
+        console.debug("Measurement has no id ");
+        this.modelJSON = JSON.stringify(this.mMeasurement, null, "\t");
+        return;
+      }
       if (this.reload) {
         await this.$ren.managementApi.getMeasurement(this.mMeasurement.id).then((m) => {
           this.mMeasurement = m;

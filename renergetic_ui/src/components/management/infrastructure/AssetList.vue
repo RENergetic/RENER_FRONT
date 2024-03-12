@@ -70,8 +70,8 @@
         >
           <template #value="slotProps">
             <div v-if="slotProps.value">
-              <div v-if="$te('model.asset.type.' + slotProps.value.name)">
-                {{ $t("model.asset.type." + slotProps.value.name) }}
+              <div v-if="$te('model.asset.types.' + slotProps.value.name)">
+                {{ $t("model.asset.types." + slotProps.value.name) }}
               </div>
               <div v-else>{{ slotProps.value.label }}</div>
             </div>
@@ -80,8 +80,8 @@
             </span>
           </template>
           <template #option="slotProps">
-            <div v-if="$te('model.asset.type.' + slotProps.option.name)">
-              {{ $t("model.asset.type." + slotProps.option.name) }}
+            <div v-if="$te('model.asset.types.' + slotProps.option.name)">
+              {{ $t("model.asset.types." + slotProps.option.name) }}
             </div>
             <div v-else>{{ slotProps.option.label }}</div>
           </template>
@@ -203,9 +203,16 @@
       <template #content>
         <DataTable v-if="selectedAsset" :value="selectedAsset.child">
           <!-- <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.asset.' + col)"></Column> -->
-          <Column field="name" :header="$t('model.asset.name')"> </Column>
-          <Column field="label" :header="$t('model.asset.label')"> </Column>
-          <Column field="type" :header="$t('model.asset.asset_type')"> </Column>
+          <Column field="name" :header="$t('model.asset.name')" />
+          <Column field="label" :header="$t('model.asset.label')" />
+          <Column field="type" :header="$t('model.asset.asset_type')">
+            <template #body="slotProps">
+              <span v-if="slotProps.data.type">
+                {{ objectLabel(slotProps.data.type, "model.asset.types") }}
+              </span>
+              <span v-else>{{ $t("view.na") }}</span>
+            </template>
+          </Column>
         </DataTable>
         <span v-else>
           {{ $t("view.asset_child_empty") }}

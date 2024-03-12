@@ -80,9 +80,14 @@ body {
   margin: 0.25rem 0.25rem;
 }
 .disabled {
-  color: rgba(144, 144, 144, 0.75);
-  font-style: italic;
+  color: rgba(144, 144, 144, 0.75) !important;
+  font-style: italic !important;
   opacity: 0.6;
+}
+.selected {
+  // TODO: use
+  background-color: $ren-primary-color-tr !important;
+  opacity: 0.8 !important;
 }
 .ren {
   li div {
@@ -211,6 +216,15 @@ body {
     border-radius: 1.5rem;
     margin-left: 0.25rem;
     margin-right: 0.25rem;
+    display: inline-block;
+  }
+  .badge-sm {
+    text-align: center;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 1rem;
+    margin-left: 0.15rem;
+    margin-right: 0.15rem;
     display: inline-block;
   }
 }

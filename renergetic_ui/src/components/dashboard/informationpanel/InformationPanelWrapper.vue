@@ -1,9 +1,7 @@
 <template>
-  <!-- {{ $store.getters["view/measurementTypes"] }}  -->
-  <!-- {{ $store.getters["settings/filter"] }} -->
   <!-- {{ pdata }} -->
-  <!-- panel: {{ panel.name }}{{ panel.id }} {{ assetId }} -->
   <!-- {{ $store.getters["view/panelAsset"](panel.id, assetId) }} -->
+  <!-- {{ filter }}dd -->
   <RenSpinner ref="spinner" :lock="true" style="width: 100%; min-height: 15rem">
     <template #content>
       <!-- {{ mPanel }} -->

@@ -54,6 +54,11 @@
     "owner": "Owner",
     "parent": "Parent",
     "type": {
+      "id": "Id",
+      "label": "Label",
+      "name": "Name"
+    },
+    "types": {
       "room": "Room",
       "pv": "PV",
       "pv_plant": "PV",
@@ -154,7 +159,8 @@
     "asset_category": "Asset category",
     "physical_name": "Physical meaning",
     "physical_type": "Physical unit type",
-    "asset": "Asset"
+    "asset": "Asset",
+    "temp_id": "Temporary id"
   },
   "user": {
     "login": "Login",
@@ -186,7 +192,10 @@
   },
   "panel_templates": {
     "kpi_electricity": "Electricity KPI ",
-    "kpi_heat": "Heat KPI"
+    "kpi_heat": "Heat KPI",
+    "island_consumption": "Energy island consumption view",
+    "island_production": "Energy island production view",
+    "private_dashboard_consumption": "Private dashboard consumption"
   },
   "workflow": {
     "name": "Name",

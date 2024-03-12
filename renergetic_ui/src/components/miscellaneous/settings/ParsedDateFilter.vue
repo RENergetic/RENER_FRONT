@@ -8,23 +8,24 @@
 export default {
   name: "ParsedDateFilter",
   components: {},
-  props: {},
+  props: { filter: { type: Object, default: null } },
   data() {
+    let mFilter = this.filter ? this.filter : this.$store.getters["settings/parsedFilter"]();
     return {
-      filter: this.$store.getters["settings/parsedFilter"](),
+      mFilter: mFilter,
     };
   },
   computed: {
     dateFrom: function () {
-      if (this.filter.from) {
-        let d = new Date(this.filter.from).toLocaleString();
+      if (this.mFilter.from) {
+        let d = new Date(this.mFilter.from).toLocaleString();
         return this.$t("view.data_date_from", { date: d });
       }
       return null;
     },
     dateTo: function () {
-      if (this.filter.to) {
-        let d = new Date(this.filter.to).toLocaleString();
+      if (this.mFilter.to) {
+        let d = new Date(this.mFilter.to).toLocaleString();
         return this.$t("view.data_date_to", { date: d });
       }
       return null;

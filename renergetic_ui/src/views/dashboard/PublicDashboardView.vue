@@ -1,4 +1,5 @@
 <template>
+  <!-- PUBLIC DASHBOARD -->
   <div v-if="panel" id="panel-box">
     <DotMenu :model="menuModel" />
     <InformationPanelWrapper
@@ -8,10 +9,10 @@
       :panel="panel"
       :edit-mode="false"
       :panel-settings="settings"
-      :filter="filterSettings"
+      :filter="effectiveFilterSettings"
     ></InformationPanelWrapper>
     <div style="margin-left: 1rem; margin-top: 2rem">
-      <ParsedDateFilter />
+      <ParsedDateFilter :key="parsedFilterRefresh" :filter="effectiveFilterSettings" />
     </div>
   </div>
   <RenSettingsDialog ref="settingsDialog">
@@ -46,7 +47,35 @@
     <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="filterSettingsDialog" :save="false">
-    <template #settings><FilterSettings @update="updateFilter()"></FilterSettings></template>
+    <template #settings>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
+        </template>
+        <template #content>
+          <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
+          <!-- <Settings :schema="schema" :settings="effectiveFilterSettings" :disabled="true" /> -->
+        </template>
+      </Card>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_filter_settings") }}:</span>
+        </template>
+        <template #content>
+          <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
+          <!-- <Settings :schema="schema" :settings="panel.props" :disabled="true" /> -->
+        </template>
+      </Card>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.user_filter_settings") }}:</span>
+        </template>
+        <template #content>
+          <BasicFilterSettings @update="updateFilter()" />
+          <!-- <PanelSettings @update="reloadPanelSettings()"> </PanelSettings> -->
+        </template>
+      </Card>
+    </template>
   </RenSettingsDialog>
 </template>
 <script>
@@ -55,15 +84,15 @@ import InformationPanelWrapper from "@/components/dashboard/informationpanel/Inf
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
-import FilterSettings from "@/components/miscellaneous/settings/FilterSettings.vue";
 import Settings from "@/components/miscellaneous/settings/Settings.vue";
 import ParsedDateFilter from "@/components/miscellaneous/settings/ParsedDateFilter.vue";
 import { panelSchema } from "@/plugins/model/settings.js";
+import BasicFilterSettings from "@/components/miscellaneous/settings/BasicFilterSettings.vue";
 export default {
   name: "PublicDashboardView",
   components: {
+    BasicFilterSettings,
     InformationPanelWrapper,
-    FilterSettings,
     ParsedDateFilter,
     DotMenu,
     PanelSettings,
@@ -78,13 +107,19 @@ export default {
       // locked: false,
       notifications: [],
       settings: this.$store.getters["settings/panel"],
-      filterSettings: this.$store.getters["settings/parsedFilter"](),
       settingsDialog: false,
       filterSettingsDialog: false,
       conversionSettingsDialog: false,
+      parsedFilterRefresh: false,
     };
   },
   computed: {
+    effectiveFilterSettings: function () {
+      let userFilter = this.$store.getters["settings/filters"]();
+      let overrideMode = this.panel.props && this.panel.props.overrideMode ? this.panel.props.overrideMode : null;
+      let settings = this.mergeSettings(userFilter, this.panel.props, overrideMode);
+      return this.parseDateFilter(settings);
+    },
     settingsButton: function () {
       return { label: this.$t("menu.panel_settings"), command: () => this.$refs.settingsDialog.open(), icon: "pi pi-fw pi-plus-circle" };
     },
@@ -141,12 +176,14 @@ export default {
       // let m = this.panel.tiles.map((it) => ({ id: it.id, m: it.measurements.map((m) => ({ name: m.name, label: m.label })) }));
     },
     updateFilter() {
-      this.filterSettings = this.$store.getters["settings/parsedFilter"]();
+      // this.filterSettings = this.$store.getters["settings/parsedFilter"]();
+      this.parsedFilterRefresh = !this.parsedFilterRefresh;
     },
     reloadSettings() {
-      this.filterSettings = this.$store.getters["settings/parsedFilter"]();
+      // this.filterSettings = this.$store.getters["settings/parsedFilter"]();
       this.settings = this.$store.getters["settings/panel"];
       this.conversionSettings = this.$store.getters["settings/conversion"];
+      this.parsedFilterRefresh = !this.parsedFilterRefresh;
     },
   },
 };

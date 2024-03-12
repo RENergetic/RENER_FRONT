@@ -310,6 +310,12 @@ export default {
       await this.deferredEmitFilter.run();
     },
     rowClass(data) {
+      if (data._selected && data.panel_count === 0) {
+        return "disabled selected";
+      }
+      if (data._selected) {
+        return "selected";
+      }
       if (data.panel_count === 0) {
         return "disabled";
       }

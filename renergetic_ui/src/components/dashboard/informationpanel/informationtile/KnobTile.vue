@@ -95,13 +95,6 @@ export default {
 
     mlabel: function () {
       return this.measurementLabel(this.measurement);
-      // if (this.measurement.label != null) {
-      //   let k = `model.measurement.labels.${this.measurement.label}`;
-      //   return this.$te(k) ? this.$t(k) : this.measurement.label;
-      // } else {
-      //   //TODO: translate it
-      //   return this.measurement.name;
-      // }
     },
 
     strokeWidth: function () {

@@ -1,3 +1,4 @@
+TODO: describe API
 ## REST API description
 general parameters
 default parameters:
@@ -28,18 +29,9 @@ get all metadata for the view
 
 ### Data API
 api for data aquuisition
-backend: [dashboard](./api/data.md)
-vue: todo:
-* getMeasurement(resourceId,measurements) -
-    * measurements - list of measurements, possible values: 'heat','power',...  ,empty = all TODO:
+backend: [dashboard](./api/data.md) 
 
-getCurrentMeasurements -> TODO:
-
-* getMeasurements(resourceIds,measurements) -
-    * measurements - list of measurements, possible values: 'heat','power',...  ,empty = all TODO:
-
-* getPanelMeasurements(informationPanel)  -> TODO:
-* getHeatmapMeasurements(Heatmap)  -> TODO:
+ 
 
 ### management
 manage resources in the energy island. Add roles create connections etc

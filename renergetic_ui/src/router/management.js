@@ -18,8 +18,8 @@ var management = [
     props: {},
     meta: {
       isAuthenticated: true,
-      roles: ["ren-admin", "ren-technical-manager"],
-      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
+      roles: ["ren-admin", "ren-technical-manager", "ren-manager"],
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN | RenRoles.REN_MANAGER,
     },
     component: () => import("../views/management/demand/HDRView.vue"),
   },
@@ -28,8 +28,8 @@ var management = [
     name: "Workflows",
     meta: {
       isAuthenticated: true,
-      roles: ["ren-admin", "ren-technical-manager"],
-      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
+      roles: ["ren-admin", "ren-technical-manager", "ren-manager"],
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN | RenRoles.REN_MANAGER,
     },
     component: () => import("../views/management/workflow/WorkflowListView.vue"),
   },
@@ -85,7 +85,7 @@ var management = [
     meta: {
       isAuthenticated: true,
       roles: ["ren-admin", "ren-technical-manager"],
-      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN | RenRoles.REN_MANAGER,
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
     },
     component: () => import("../views/management/abstract/AbstractMetersView.vue"),
   },

@@ -209,11 +209,10 @@ export default {
       }
     },
     managementItems() {
-      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_MANAGER;
       if ((flags & this.role) == 0) return [];
 
       let items = [
-        ...this._userItems(),
         ...this._assetItems(),
         ...this._grafanaDashboardManagement(),
         ...this._panelManagementItems(),
@@ -235,7 +234,7 @@ export default {
       let flags = RenRoles.REN_ADMIN;
       if ((flags & this.role) == 0) return [];
 
-      let items = [...this._adminWorkflowItems()];
+      let items = [...this._userItems(), ...this._adminWorkflowItems()];
       return [
         {
           label: this.$t("menu.admin"),
@@ -292,6 +291,8 @@ export default {
       // ];
     },
     _assetItems() {
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
+      if ((flags & this.role) == 0) return [];
       return [
         {
           class: this.checkPath({ name: "AssetList" }) || this.checkPath({ name: "AssetTypeList" }) ? "hl-menu" : "",
@@ -313,6 +314,8 @@ export default {
     },
 
     _measurementItems() {
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
+      if ((flags & this.role) == 0) return [];
       return [
         {
           class: this.checkPath({ name: "MeasurementList" }) ? "hl-menu" : "",
@@ -363,6 +366,8 @@ export default {
     },
 
     _abstractMeters() {
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
+      if ((flags & this.role) == 0) return [];
       return [
         {
           class: this.checkPath({ name: "AbstractMeters" }) ? "hl-menu" : "",
@@ -375,6 +380,8 @@ export default {
       ];
     },
     _panelManagementItems() {
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
+      if ((flags & this.role) == 0) return [];
       let items = [
         {
           class: this.checkPath({ name: "InformationPanelListView" }) ? "hl-menu" : "",
@@ -389,6 +396,10 @@ export default {
     },
 
     _grafanaDashboardManagement() {
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_USER | RenRoles.REN_TECHNICAL_MANAGER;
+      if ((flags & this.role) == 0) {
+        return [];
+      }
       let items = [];
       items.push({
         class: this.checkPath({ name: "GrafanaDashboardListView" }) ? "hl-menu" : "",
