@@ -79,9 +79,9 @@ reused modules included in the views or other components
 * dashboard -> data modules, grafana, information panel
   * grafana -> grafana
   * informationpanel -> main data view components
-  * ~~area -> components related with heatmap/area, TODO: Openstreet map integration~~~
-  * measurements -> measurements/sensors view, management -> TODO: 
-* ev -> electric vehicles modules, TODO:
+  * ~~area -> components related with heatmap/area,  Openstreet map integration~~
+  * measurements -> measurements/sensors view, management  
+* ~~ev -> electric vehicles modules ~~
 * management -> modules related to energy island management , demand &notification definition 
 * miscellaneous - other components , spinners, form elements. 
   * settings - settings templates 

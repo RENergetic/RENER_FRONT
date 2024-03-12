@@ -263,28 +263,6 @@ export default {
       this.panelStructure.tiles.push(tile);
       // this.$emit("update:modelValue", this.panelStructure); -> watcher should emmit this
     },
-    // async deleteTile(tile) {
-    //   let mDashboard = dashboard ? dashboard : this.dashboard;
-    //   if (mDashboard == null) {
-    //     return;
-    //     //todo: log error ?
-    //   }
-    //   await this.$confirm.require({
-    //     message: this.$t("view.dashboard_delete_confirm", {
-    //       label: mDashboard.label ? mDashboard.label : mDashboard.name,
-    //     }),
-    //     header: this.$t("view.dashboard_delete"),
-    //     icon: "pi pi-exclamation-triangle",
-    //     accept: async () => {
-    //       this.$store.commit("view/dashboardsDel", mDashboard.id);
-    //       let res = await this.deleteConfirmed(mDashboard.id);
-    //       if (res) this.$emit("delete", mDashboard);
-    //     },
-    //     reject: () => {
-    //       this.$confirm.close();
-    //     },
-    //   });
-    // },
   },
 };
 </script>

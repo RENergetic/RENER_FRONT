@@ -33,7 +33,6 @@ import ConfirmationService from "primevue/confirmationservice";
 
 const app = createApp(App);
 app.use(i18n);
-//TODO: if normal user?
 app.use(VueKonva);
 // app.use(PrimeVue, { locale: PrimeLocale });
 app.use(PrimeVue);

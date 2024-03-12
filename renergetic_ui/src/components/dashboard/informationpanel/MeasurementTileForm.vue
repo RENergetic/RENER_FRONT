@@ -8,7 +8,7 @@
   <Card v-if="mModel">
     <!-- <template #title> </template> -->
     <template #content>
-      {{ mModel }}
+      <!-- {{ mModel }} -->
       <div class="ren">
         <!-- TODO: get list of possible measurement names from the database. keep in mind that labels might be different for the same measurement name therefore we shouldnt use label here -->
         <ren-input v-model="mModel.name" :text-info="'model.name_description'" :text-label="'model.measurement.name'" />
