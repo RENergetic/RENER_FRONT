@@ -193,7 +193,9 @@
   "panel_templates": {
     "kpi_electricity": "KPI-Elektryczność",
     "kpi_heat": "KPI-ciepło",
-    "island_consumption": "Widok konsumpcji"
+    "island_consumption": "Widok konsumpcji",
+    "island_production": "Widok produkcji energii",
+    "private_dashboard_consumption": "Dynamiczny widok konsumpcji"
   },
   "workflow": {
     "name": "Nazwa",

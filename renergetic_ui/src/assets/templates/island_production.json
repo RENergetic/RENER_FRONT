@@ -1,0 +1,220 @@
+{
+  "label": "Production Overview",
+  "tiles": [
+    {
+      "name": "energy_production",
+      "label": "Energy Production",
+      "type": "single",
+      "measurements": [],
+      "props": {
+        "icon_visibility": false,
+        "background": "none"
+      },
+      "layout": {
+        "w": 12,
+        "x": 0,
+        "h": 1,
+        "y": 0
+      }
+    },
+    {
+      "name": "electricity",
+      "label": "Electricity",
+      "type": "doughnut",
+      "featured": null,
+      "measurements": [
+        {
+          "name": "energy_import",
+          "domain": "electricity",
+          "direction": "in",
+          "sensor_name": "energy_meter",
+          "aggregation_function": "sum",
+          "type": {
+            "physical_name": "energy",
+            "name": "energy_kwh",
+            "unit": "kWh"
+          }
+        },
+        {
+          "name": "renewables",
+          "domain": "electricity",
+          "direction": "out",
+          "sensor_name": "energy_meter",
+          "aggregation_function": "sum",
+          "type": {
+            "physical_name": "energy",
+            "name": "energy_kwh",
+            "unit": "kWh"
+          }
+        },
+        {
+          "name": "non-renewables",
+          "domain": "electricity",
+          "direction": "out",
+          "sensor_name": "energy_meter",
+          "aggregation_function": "sum",
+          "type": {
+            "physical_name": "energy",
+            "name": "energy_kwh",
+            "unit": "kWh"
+          }
+        }
+      ],
+      "props": {
+        "icon": "electricity"
+      },
+      "layout": {
+        "w": 4,
+        "x": 1,
+        "h": 9,
+        "y": 1
+      }
+    },
+    {
+      "name": "heat",
+      "label": "Heat",
+      "type": "doughnut",
+      "featured": null,
+      "measurements": [
+        {
+          "name": "energy_import",
+          "domain": "heat",
+          "direction": "in",
+          "sensor_name": "energy_meter",
+          "aggregation_function": "sum",
+          "type": {
+            "physical_name": "energy",
+            "name": "energy_kwh",
+            "unit": "kWh"
+          }
+        },
+        {
+          "name": "renewables",
+          "domain": "heat",
+          "direction": "out",
+          "sensor_name": "energy_meter",
+          "aggregation_function": "sum",
+          "type": {
+            "physical_name": "energy",
+            "name": "energy_kwh",
+            "unit": "kWh"
+          }
+        },
+        {
+          "name": "non-renewables",
+          "domain": "heat",
+          "direction": "out",
+          "sensor_name": "energy_meter",
+          "aggregation_function": "sum",
+          "type": {
+            "physical_name": "energy",
+            "name": "energy_kwh",
+            "unit": "kWh"
+          }
+        }
+      ],
+      "props": {
+        "icon": "heat",
+        "mask": "#9effa360"
+      },
+      "layout": {
+        "w": 4,
+        "x": 7,
+        "h": 9,
+        "y": 1
+      }
+    },
+    {
+      "name": "renewables",
+      "label": "Energy from renewables",
+      "type": "single",
+      "featured": null,
+      "measurements": [
+        {
+          "name": "renewables",
+          "domain": null,
+          "direction": "out",
+          "sensor_name": "energy_meter",
+          "aggregation_function": "sum",
+          "type": {
+            "physical_name": "energy",
+            "name": "energy_kwh",
+            "unit": "kWh"
+          }
+        }
+      ],
+      "props": {
+        "icon": "solar_energy",
+        "mask": "#9effa360"
+      },
+      "layout": {
+        "w": 2,
+        "x": 5,
+        "h": 3,
+        "y": 1
+      }
+    },
+    {
+      "name": "non_renewables",
+      "label": "Fossil fuels energy",
+      "type": "single",
+      "featured": null,
+      "measurements": [
+        {
+          "name": "non-renewables",
+          "domain": null,
+          "direction": "out",
+          "sensor_name": "energy_meter",
+          "aggregation_function": "sum",
+          "type": {
+            "physical_name": "energy",
+            "name": "energy_gj",
+            "unit": "GJ"
+          }
+        }
+      ],
+      "props": {
+        "icon": "heat_exchanged",
+        "mask": "#9effa360"
+      },
+      "layout": {
+        "w": 2,
+        "x": 5,
+        "h": 3,
+        "y": 4
+      }
+    },
+    {
+      "name": "energy_import",
+      "label": "Energy imported",
+      "type": "single",
+      "featured": null,
+      "measurements": [
+        {
+          "name": "energy_import",
+          "sensor_name": "energy_meter",
+          "aggregation_function": "sum",
+          "direction": "in",
+          "type": {
+            "physical_name": "mass",
+            "name": "mass_kg",
+            "unit": "kg"
+          }
+        }
+      ],
+      "props": {
+        "icon": "renewables",
+        "mask": "#9effa360"
+      },
+      "layout": {
+        "w": 2,
+        "x": 5,
+        "h": 3,
+        "y": 7
+      }
+    }
+  ],
+  "is_template": false,
+  "featured": true,
+  "props": {}
+}
