@@ -19,6 +19,7 @@
     @row-unselect="$emit('onSelect', null)"
     @update:selection="onSelect"
   >
+    <Column field="id" :header="$t('model.asset.id')" :show-filter-menu="false"></Column>
     <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false">
       <template #filter="{ filterModel, filterCallback }">
         <InputText v-model="filterModel.value" type="text" class="p-column-filter" :placeholder="$t('view.search')" @input="filterCallback()" />
@@ -164,7 +165,7 @@
           class="p-button-rounded"
           @click="manageAssetAggregrationProperties(slotProps.data)"
         />
-        <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="test(slotProps.data)" />
+        <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
         <Button v-tooltip="$t('view.rules')" icon="pi pi-code" class="p-button-rounded" @click="editRules(slotProps.data)" />
         <Button
           v-tooltip="$t('view.delete') + hasMeasurementsTooltip(slotProps.data)"
@@ -519,10 +520,10 @@ export default {
     },
     async updateDetails(asset, details) {
       for (const [key, value] of Object.entries(details)) {
-        if (value === "") {
-          continue;
-        }
-        if (asset.details[key] === null || asset.details[key] === undefined) {
+        console.log(key + " " + value);
+        if (value === null || value.length === 0) {
+          await this.$ren.managementApi.deleteAssetDetail(asset.id, key);
+        } else if (asset.details[key] === null || asset.details[key] === undefined) {
           await this.$ren.managementApi.addAssetDetail(asset.id, key, value);
         } else {
           await this.$ren.managementApi.updateAssetDetail(asset.id, key, value);

@@ -89,6 +89,7 @@ const AssetConnectionType = Object.freeze({
   OWNER: "owner",
   RESIDENT: "resident",
   VISITOR: "visitor",
+  VA_GROUPING: "va_grouping",
 });
 
 const RenRoles = init({

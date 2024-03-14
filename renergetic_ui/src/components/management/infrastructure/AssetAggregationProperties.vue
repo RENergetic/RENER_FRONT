@@ -55,7 +55,7 @@
         </AccordionTab>
       </Accordion>
       <Button class="col-12 md:col-4 mx-auto" :label="'Add Configuration'" @click="addMAC" />
-      <h3>Multi-Vector Component Type</h3>
+      <h3>Component Type</h3>
       <div class="flex flex-row gap-3">
         <Dropdown
           v-model="configuration.mvoComponentType.type"
@@ -74,7 +74,7 @@
           :options="optimizerDomainAssets"
           optionValue="id"
           optionLabel="label"
-          placeholder="Select domain A"
+          :placeholder="'Select ' + configuration.mvoComponentType.domainAReadableConnection"
           class="w-full md:w-14rem"
         />
         <Dropdown
@@ -84,11 +84,11 @@
           :options="optimizerDomainAssets"
           optionValue="id"
           optionLabel="label"
-          placeholder="Select domain B"
+          :placeholder="'Select ' + configuration.mvoComponentType.domainBReadableConnection"
           class="w-full md:w-14rem"
         />
       </div>
-      <h3>Asset details Aggregation Configuration</h3>
+      <h3>Asset Details Aggregation Configuration</h3>
       <div v-if="configuration.parametersAggregationConfiguration !== null && configuration.parametersAggregationConfiguration.length > 0">
         <DataTable
           :value="configuration.parametersAggregationConfiguration"
@@ -116,7 +116,7 @@
               </div>
             </template>
           </Column>
-          <Column header="Requirement">
+          <Column header="Component Requirement">
             <template #body="slotProps">
               <div v-bind:class="{ 'font-bold': slotProps.data.required }">
                 {{ slotProps.data.required === null ? "" : slotProps.data.required ? "Required" : "Optional" }}
@@ -240,16 +240,21 @@ export default {
         this.configuration.mvoComponentType.domainsQuantity = 0;
         this.configuration.mvoComponentType.domainA = null;
         this.configuration.mvoComponentType.domainB = null;
-        return;
-      }
-
-      var optimizer = this.optimizerTypes.filter((x) => x.name === this.configuration.mvoComponentType.type);
-      if (optimizer.length > 0) {
-        this.configuration.mvoComponentType.domainsQuantity = optimizer[0].domainsQuantity;
-        if (optimizer[0].domainsQuantity == null || optimizer[0].domainsQuantity.length === 0) {
-          this.configuration.mvoComponentType.domainA = null;
-        } else if (optimizer[0].domainsQuantity.length === 1) {
-          this.configuration.mvoComponentType.domainB = null;
+        this.configuration.mvoComponentType.domainAReadableConnection = "";
+        this.configuration.mvoComponentType.domainBReadableConnection = "";
+      } else {
+        var optimizer = this.optimizerTypes.filter((x) => x.name === this.configuration.mvoComponentType.type);
+        if (optimizer.length > 0) {
+          this.configuration.mvoComponentType.domainsQuantity = optimizer[0].domainsQuantity;
+          this.configuration.mvoComponentType.domainAReadableConnection = optimizer[0].domainAReadableConnection;
+          this.configuration.mvoComponentType.domainBReadableConnection = optimizer[0].domainBReadableConnection;
+          if (optimizer[0].domainsQuantity == null || optimizer[0].domainsQuantity === 0) {
+            this.configuration.mvoComponentType.domainA = null;
+            this.configuration.mvoComponentType.domainAReadableConnection = "";
+          } else if (optimizer[0].domainsQuantity === 1) {
+            this.configuration.mvoComponentType.domainB = null;
+            this.configuration.mvoComponentType.domainBReadableConnection = "";
+          }
         }
       }
 

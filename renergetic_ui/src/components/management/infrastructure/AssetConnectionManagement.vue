@@ -135,9 +135,10 @@ export default {
     async deleteConnection(conn) {
       //TODO: confirm dialog, TODO: delete by connection type ?, can two assets can have more than 1 connection (different type)?
       console.info(`connection type: ${conn.type.id}, connected asset : ${conn.id}:${conn.name}(${conn.label ? conn.label : "no label"}) `);
+      console.info(conn);
 
       this.$refs.spinner.run(async () => {
-        await this.$ren.managementApi.deleteAssetConnection(this.asset.id, conn.id);
+        await this.$ren.managementApi.deleteAssetConnection(this.asset.id, conn.id, conn.connection_type);
         this.connectedAssets = await this.$ren.managementApi.listConnectedAssets(this.asset.id, 0, 200);
       });
     },

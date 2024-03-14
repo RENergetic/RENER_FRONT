@@ -71,8 +71,8 @@ export default class ManagementApi extends RestComponent {
     });
   }
 
-  deleteAssetConnection(assetId, connectedAssetId) {
-    this.delete(`/api/assets/connect/${assetId}`, { connected_asset_id: connectedAssetId }, null, (e) => {
+  deleteAssetConnection(assetId, connectedAssetId, type) {
+    this.delete(`/api/assets/connect/${assetId}`, { connected_asset_id: connectedAssetId, type: type }, null, (e) => {
       if (e.response.status == 404) {
         //TODO: handle connectedAssetId not found
         this.emitError(`${assetId} not found: ${e.message}`, { code: "asset_not_found", args: [assetId] });
@@ -335,6 +335,15 @@ export default class ManagementApi extends RestComponent {
   }
   async updateAssetDetail(id, key, value) {
     return await this.put(`/api/assets/${id}/info`, { key: key, value: value }, null, null, (e) => {
+      this.emitError(`Asset ${id} not found: ${e.message}`, {
+        code: "asset_not_found",
+        args: [id],
+      });
+      return true;
+    });
+  }
+  async deleteAssetDetail(id, key) {
+    return await this.delete(`/api/assets/${id}/info/key/${key}`, null, null, (e) => {
       this.emitError(`Asset ${id} not found: ${e.message}`, {
         code: "asset_not_found",
         args: [id],
