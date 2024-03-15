@@ -1,5 +1,6 @@
 {
   "home": "Homepage",
+  "admin": "Admin",
   "add_asset": "Create asset",
   "add_dashboard": "Add dashboard",
   "add_heatmap": "Add heatMap",
@@ -37,6 +38,7 @@
   "manage_measurements": "Measurements",
   "manage_categories": "Categories",
   "manage_users": "Users",
+  "manage_workflows": "Manage workflows",
   "measurements": "Measurements",
   "management": "Management",
   "notifications": "Notifications",

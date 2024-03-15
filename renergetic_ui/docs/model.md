@@ -18,14 +18,7 @@
  
  
  
-## examples
-* [dashboard.json](./model/dashboard.json)
-* [wrapper.json](./model/wrapper.json) TODO:
-* [data.json](./model/data.json) 
-* [asset_panel.json](./model/asset_panel.json)
-* [panel.json](./model/panel.json) TODO:
-* [asset.json](./model/asset.json) TODO: update
-
+ 
 
 
 

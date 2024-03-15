@@ -82,6 +82,7 @@ export default {
         ...this.demandsItem(),
 
         ...this.managementItems(),
+        ...this.adminItems(),
         ...this.userItems(),
       ];
     },
@@ -208,17 +209,17 @@ export default {
       }
     },
     managementItems() {
-      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_MANAGER;
       if ((flags & this.role) == 0) return [];
 
       let items = [
-        ...this._userItems(),
         ...this._assetItems(),
         ...this._grafanaDashboardManagement(),
         ...this._panelManagementItems(),
         ...this._measurementItems(),
         // ...this._notificationItems(),
         ...this._hdrItems(),
+        ...this._workflowItems(),
         ...this._abstractMeters(),
       ];
       return [
@@ -228,6 +229,32 @@ export default {
           items: items,
         },
       ];
+    },
+    adminItems() {
+      let flags = RenRoles.REN_ADMIN;
+      if ((flags & this.role) == 0) return [];
+
+      let items = [...this._userItems(), ...this._adminWorkflowItems()];
+      return [
+        {
+          label: this.$t("menu.admin"),
+          icon: "pi pi-fw pi-wrench pi-cog",
+          items: items,
+        },
+      ];
+    },
+    _adminWorkflowItems() {
+      let items = [
+        {
+          class: this.checkPath({ name: "AdminWorkflows" }) ? "hl-menu" : "",
+          label: this.$t("menu.manage_workflows"),
+          icon: "pi pi-fw pi-cog",
+          command: () => {
+            this.$router.push({ name: "AdminWorkflows" });
+          },
+        },
+      ];
+      return items;
     },
     _userItems() {
       let items = [
@@ -264,9 +291,11 @@ export default {
       // ];
     },
     _assetItems() {
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
+      if ((flags & this.role) == 0) return [];
       return [
         {
-          class: this.checkPath({ name: "AssetList" }) ? "hl-menu" : "",
+          class: this.checkPath({ name: "AssetList" }) || this.checkPath({ name: "AssetTypeList" }) ? "hl-menu" : "",
           label: this.$t("menu.manage_assets"),
           icon: "pi pi-fw pi-list",
 
@@ -285,6 +314,8 @@ export default {
     },
 
     _measurementItems() {
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
+      if ((flags & this.role) == 0) return [];
       return [
         {
           class: this.checkPath({ name: "MeasurementList" }) ? "hl-menu" : "",
@@ -321,8 +352,22 @@ export default {
         },
       ];
     },
+    _workflowItems() {
+      return [
+        {
+          class: this.checkPath({ name: "Workflows" }) ? "hl-menu" : "",
+          label: this.$t("menu.manage_workflows"),
+          icon: "pi pi-fw  pi-desktop",
+          command: () => {
+            this.$router.push({ name: "Workflows" });
+          },
+        },
+      ];
+    },
 
     _abstractMeters() {
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
+      if ((flags & this.role) == 0) return [];
       return [
         {
           class: this.checkPath({ name: "AbstractMeters" }) ? "hl-menu" : "",
@@ -335,6 +380,8 @@ export default {
       ];
     },
     _panelManagementItems() {
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
+      if ((flags & this.role) == 0) return [];
       let items = [
         {
           class: this.checkPath({ name: "InformationPanelListView" }) ? "hl-menu" : "",
@@ -349,6 +396,10 @@ export default {
     },
 
     _grafanaDashboardManagement() {
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_USER | RenRoles.REN_TECHNICAL_MANAGER;
+      if ((flags & this.role) == 0) {
+        return [];
+      }
       let items = [];
       items.push({
         class: this.checkPath({ name: "GrafanaDashboardListView" }) ? "hl-menu" : "",

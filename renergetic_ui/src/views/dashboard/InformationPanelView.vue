@@ -1,5 +1,9 @@
 <template>
+  <!-- PRIVATE DASHBOARD -->
+
   <div v-if="panel" id="panel-box">
+    <!-- {{ effectiveFilterSettings }} -->
+    <!-- {{ $store.getters["settings/parsedFilter"]("private") }} -->
     <DotMenu :model="menuModel" />
     <BasicFilterSettings
       v-if="!panelTitle"
@@ -18,11 +22,11 @@
       :locked="locked"
       :panel="panel"
       :edit-mode="editMode"
-      :filter="filter"
+      :filter="effectiveFilterSettings"
       :panel-settings="settings"
     />
     <div style="margin-left: 1rem; margin-top: 2rem">
-      <ParsedDateFilter />
+      <ParsedDateFilter :key="parsedFilterRefresh" :filter="effectiveFilterSettings" />
     </div>
     <!-- <Card style="width: 90%; margin: auto; margin-top: 1rem">
       <template #content>
@@ -74,7 +78,36 @@
     <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="filterSettingsDialog" :save="false">
-    <template #settings><BasicFilterSettings :setting-key="'private'" @update="reloadSettings()" /></template>
+    <template #settings>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
+        </template>
+        <template #content>
+          <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
+          <!-- <Settings :schema="schema" :settings="effectiveFilterSettings" :disabled="true" /> -->
+        </template>
+      </Card>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_filter_settings") }}:</span>
+        </template>
+        <template #content>
+          <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
+          <!-- <Settings :schema="schema" :settings="panel.props" :disabled="true" /> -->
+        </template>
+      </Card>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.user_filter_settings") }}:</span>
+        </template>
+        <template #content>
+          <!-- {{ $store.getters["settings/filters"]("private") }} -->
+          <BasicFilterSettings :setting-key="'private'" @update="reloadSettings()" />
+          <!-- <PanelSettings @update="reloadPanelSettings()"> </PanelSettings> -->
+        </template>
+      </Card>
+    </template>
   </RenSettingsDialog>
 </template>
 <script>
@@ -97,11 +130,18 @@ export default {
       locked: false,
       editMode: false,
       settings: this.$store.getters["settings/panel"],
-      filter: this.$store.getters["settings/parsedFilter"]("private"),
+      // filter: this.$store.getters["settings/parsedFilter"]("private"),
       settingsDialog: false,
+      parsedFilterRefresh: false,
     };
   },
   computed: {
+    effectiveFilterSettings: function () {
+      let userFilter = this.$store.getters["settings/filters"]("private");
+      let overrideMode = this.panel.props && this.panel.props.overrideMode ? this.panel.props.overrideMode : null;
+      let settings = this.mergeSettings(userFilter, this.panel.props, overrideMode);
+      return this.parseDateFilter(settings);
+    },
     panelTitle: function () {
       let asset = this.$store.getters["view/panelAsset"](this.panel.id, this.$route.params.asset_id);
       if (asset) {
@@ -194,9 +234,10 @@ export default {
     reloadSettings() {
       // console.info("reloadSettings");
       // this.$store.getters["settings/filter"];
-      this.filter = this.$store.getters["settings/parsedFilter"]("private");
+      // this.filter = this.$store.getters["settings/parsedFilter"]("private");
       this.settings = this.$store.getters["settings/panel"];
       this.conversionSettings = this.$store.getters["settings/conversion"];
+      this.parsedFilterRefresh = !this.parsedFilterRefresh;
     },
 
     async toggleLock() {

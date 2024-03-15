@@ -1,5 +1,6 @@
 {
   "home": "Strona domowa",
+  "admin": "Administrator",
   "add_asset": "Dodaj obiekt",
   "add_dashboard": "Dodaj panel",
   "add_heatmap": "Dodatej heatMap",
@@ -37,6 +38,7 @@
   "manage_measurements": "Zarządzaj czujnikami",
   "manage_categories": "Kategorie",
   "manage_users": "Użytkownicy",
+  "manage_workflows": "Zarządzaj zadaniami",
   "measurements": "Czujniki",
   "management": "Zarządzanie",
   "notifications": "Powiadomienia",

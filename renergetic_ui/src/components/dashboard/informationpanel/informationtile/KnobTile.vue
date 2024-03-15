@@ -52,6 +52,7 @@ export default {
     //   measurement = this.tile.measurements[0];
     // }
     let measurement = this.getTileMeasurement();
+    console.error(this.pdata);
     let maxV =
       !this.settings.panel.relativeValues &&
       this.pdata.max &&
@@ -59,7 +60,7 @@ export default {
       this.pdata.max[measurement.aggregation_function][measurement.id]
         ? this.pdata.max[measurement.aggregation_function][measurement.id]
         : this.defaultMax(measurement);
-
+    console.error(measurement.id);
     let minV =
       !this.settings.panel.relativeValues &&
       this.pdata.min &&
@@ -94,13 +95,6 @@ export default {
 
     mlabel: function () {
       return this.measurementLabel(this.measurement);
-      // if (this.measurement.label != null) {
-      //   let k = `model.measurement.labels.${this.measurement.label}`;
-      //   return this.$te(k) ? this.$t(k) : this.measurement.label;
-      // } else {
-      //   //TODO: translate it
-      //   return this.measurement.name;
-      // }
     },
 
     strokeWidth: function () {
@@ -122,7 +116,7 @@ export default {
           console.warn(`knob: wrong value  ${v}, min: ${this.minV}`);
           v = this.maxV;
         }
-        return this.$ren.utils.roundValue(v) * 0.5; // Math.round(v * 10) / 10.0;
+        return this.$ren.utils.roundValue(v); // Math.round(v * 10) / 10.0;
       } catch (e) {
         return null;
       }
@@ -132,6 +126,9 @@ export default {
   mounted() {},
   methods: {
     defaultMax(measurement) {
+      switch (measurement.type.base_unit) {
+        case "%":
+      }
       return measurement.type.base_unit == "%" || this.settings.panel.relativeValues ? 100.0 : 1.0;
     },
   },

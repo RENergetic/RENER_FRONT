@@ -310,6 +310,12 @@ export default {
       await this.deferredEmitFilter.run();
     },
     rowClass(data) {
+      if (data._selected && data.panel_count === 0) {
+        return "disabled selected";
+      }
+      if (data._selected) {
+        return "selected";
+      }
       if (data.panel_count === 0) {
         return "disabled";
       }
@@ -331,14 +337,19 @@ export default {
       return `(${mType.id}) ${this.$t("enums.metric_type." + mType.physical_name)} [${mType.unit}] `;
     },
     async exportJSON() {
-      var sm = this.selectedMeasurements.map((it) => {
-        if (it._label) {
-          let label = it.label;
-          it.label = it._label; //label code
-          it._label = label; //translated code
-        }
-        return it;
-      });
+      var sm = await Promise.all(
+        this.selectedMeasurements.map(async (it) => {
+          if (it._label) {
+            let label = it.label;
+            it.label = it._label; //label code
+            it._label = label; //translated code
+          }
+          await this.$ren.managementApi.getMeasurementProperties(it.id).then((details) => {
+            it.measurement_details = details ? details : {};
+          });
+          return it;
+        }),
+      );
       this.$ren.utils.downloadJSON(sm, `measurements`);
     },
     onDelete() {

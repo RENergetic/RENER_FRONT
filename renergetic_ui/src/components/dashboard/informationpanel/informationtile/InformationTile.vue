@@ -158,7 +158,7 @@ export default {
   },
   emits: ["edit", "notification", "timeseries-update", "preview-tile"],
   data() {
-    console.info(this.settings);
+    // console.info(this.settings);
     return {
       conversionSettings: this.$store.getters["settings/conversion"],
       mSettings: this.mSettings,

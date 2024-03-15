@@ -35,7 +35,7 @@ export default {
     else mt = null;
     // console.info(conversionSettings);
     let unit = mt ? mt : measurement.type.unit;
-    if (unit == "any") {
+    if (unit == "any" || unit == "ratio") {
       return null;
     }
     return unit;
@@ -152,10 +152,14 @@ export default {
       // }
       pData.max[m.aggregation_function][m.id] = accuDict[key].accu;
     }
-    console.info(pData);
+    console.info(accuDict);
     return pData;
   },
   valueAccu(key, value, baseUnit, dict) {
+    if (baseUnit == "ratio") {
+      dict[key] = { accu: 1.0, counter: 1 };
+      return dict;
+    }
     if (dict[key] == null) {
       dict[key] = { accu: value, counter: 1 };
       return dict;
@@ -166,6 +170,9 @@ export default {
       case "Wh":
       case "any":
         dict[key].accu += value;
+        break;
+      case "ratio":
+        dict[key].accu = 1.0;
         break;
       default:
         console.error(`measurement type accu not defined for ${baseUnit}, ${key}`);

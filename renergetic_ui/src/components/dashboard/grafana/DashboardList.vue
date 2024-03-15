@@ -179,7 +179,6 @@ export default {
     },
 
     async reload() {
-      //TODO: filter
       this.filters = this.initFilter();
       this.mOffset = 0;
       this.$emit("reload", { q: this.filters.global.value, limit: this.limit, offset: this.mOffset });

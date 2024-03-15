@@ -6,7 +6,7 @@
       <!-- <div style="max-width: 20rem; overflow: hidden; max-height: 15rem">{{ chartData }}</div> -->
       <!-- {{ pData["timeseries_labels"] }} -->
       <Chart
-        v-if="!titleVisible && height && width"
+        v-if="!titleVisible && height && width && loaded"
         :key="chartData"
         :style="mStyle"
         :type="chartType"
@@ -16,7 +16,7 @@
         :width="width"
       />
       <div v-if="titleVisible" class="flex flex-none flex-column justify-content-center" style="max-width: 75%">
-        <h3>{{ title }}</h3>
+        <h3>{{ mTitle }}</h3>
       </div>
       <div
         v-if="titleVisible"
@@ -49,6 +49,7 @@ export default {
     assetId: { type: String, default: null },
     immediate: { type: Boolean, default: true }, //immediately reload data if not present locally
     titleVisible: { type: Boolean, default: false },
+    title: { type: String, default: null },
     // loadData: { type: Boolean, default: true },
     annotations: {
       type: [Object, Array],
@@ -82,9 +83,12 @@ export default {
     };
   },
   computed: {
-    title: function () {
+    mTitle: function () {
       if (this.titleVisible) {
         // let label = " ";
+        if (this.title) {
+          return this.title;
+        }
         var _l = this.mMeasurements.map((m) => {
           let measurementName = m.label ? m.label : m.name;
           if (m.asset) {
@@ -106,7 +110,7 @@ export default {
     },
     options: function () {
       let annotations = this.annotations;
-      console.info(annotations);
+      // console.info(annotations);
 
       let position = this.mMeasurements.length > 4 ? "top" : "chartArea";
       return {

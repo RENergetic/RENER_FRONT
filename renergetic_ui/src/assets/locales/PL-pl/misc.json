@@ -1,6 +1,6 @@
 {
   "validations": {
-    "required": "The field '{property}' is required.",
+    "required": "Pole: '{property}' jest wymagane.",
     "minLength": "The '{property}' field has a value of '{model}', but it must have a min length of {min}.",
     "maxLength": "The '{property}' field has a value of '{model}', but it must have a max length of {max}.",
     "passMinLength": "The '{property}', but it must have a min length of {min}.",
@@ -41,17 +41,21 @@
     "dashboard_delete_success": "Dashboard has been deleted.",
     "dashboard_not_updated": "Dashboard has not been updated",
     "measurement_created": "Measurement has been created",
+    "measurements_created": "Pomyślnie dodano nowe szeregi czasowe",
     "measurement_updated": "Measurement has been updated",
     "measurement_delete_success": "Measurement has been deleted.",
     "measurement_not_updated": "Measurement has not been updated",
     "user_updated": "User has been updated",
     "user_created": "User has been created",
+    "asset_connection_deleted": "Relacja obiektów usunięta",
     "asset_panel_revoked": "Asset revoked from the dashboard",
     "asset_panel_assigned": "Asset assigned to the panel",
     "panel_update": "Panel {0} update success.",
     "settings_saved": "Settings saved",
     "visibility_changed": "Visibility changed",
-    "tag_deleted": "Tag deleted"
+    "tag_deleted": "Tag usunięty",
+    "worflowrun_start": "{run_id} - rozpoczęty",
+    "worflow_stop": "{label} - zatrzymany"
   },
   "error": {
     "error": "Error",
@@ -60,13 +64,16 @@
     "measurement_not_updated": "Measurement has not been updated",
     "measurement_delete_fail": "Measurement has not been deleted.",
     "rest_title": "API Error",
-    "panel_not_found": "Panel: {0} not found.",
-    "panel_update": "Panel {0} update failed.",
-    "user_not_found": "User: {0} not found ",
-    "user_not_updated": "User not updated",
+    "panel_not_found": "Nie odnaleziono widoku: {0}.",
+    "panel_update": "Aktualizacja widoku {0} nie powiadła się.",
+    "user_not_found": "Brak użytkownika: {0}.",
+    "user_not_updated": "Aktualizacja użytkownika nie powidła się.",
+    "asset_connection_not_deleted": "Usuwanie relacji nie powiodło się",
     "asset_panel_revoked": "Asset not revoked from the dashboard",
     "asset_panel_assigned": "Asset not assigned to the panel",
-    "visibility_changed": "Visibility not changed"
+    "visibility_changed": "Visibility not changed",
+    "worflowrun_start": "{label} - błąd przy próbie uruchomienia",
+    "worflow_stop": "{label} - błąd przy próbie zatrzymania"
   },
   "message": {
     "anomaly": {
