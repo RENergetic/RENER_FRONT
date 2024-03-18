@@ -71,7 +71,7 @@ export default class ManagementApi extends RestComponent {
     });
   }
 
-  deleteAssetConnection(assetId, connectedAssetId, type) {
+  async deleteAssetConnection(assetId, connectedAssetId, type) {
     this.delete(`/api/assets/connect/${assetId}`, { connected_asset_id: connectedAssetId, type: type }, null, (e) => {
       if (e.response.status == 404) {
         //TODO: handle connectedAssetId not found
