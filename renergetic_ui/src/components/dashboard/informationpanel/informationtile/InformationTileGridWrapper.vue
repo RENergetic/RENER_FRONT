@@ -1,6 +1,5 @@
 <template>
   <div v-if="slotProps" :class="'grid-stack-item ren'" v-bind="gridStackAttributes">
-    <!-- :style="mStyle" -->
     <div :class="'grid-stack-item-content ' + state" :style="background">
       <div class="tile-bar">
         <Button
@@ -24,7 +23,7 @@
         :tile="tile"
         :pdata="tileData"
         :filter="filter"
-        :settings="settings"
+        :settings="mSettings"
         @preview-tile="onPreview"
         @timeseries-update="onTimeseriesUpdate"
       />
@@ -61,12 +60,13 @@ export default {
   emits: ["edit", "notification", "timeseries-update", "preview-tile"],
   data() {
     return {
+      mSettings: this.settings,
       tileData: this.pdata, //&& this.pdata.data ? this.pdata.data : {},
     };
   },
   computed: {
     fontSize: function () {
-      let size = this.settings != null && this.settings.fontSize != null ? this.settings.fontSize : 2.0;
+      let size = this.mSettings != null && this.mSettings.fontSize != null ? this.mSettings.fontSize : 2.0;
       return `${size}rem`;
     },
     tile: function () {
@@ -86,7 +86,7 @@ export default {
     },
     notificationVisible: function () {
       //default visible
-      return !(this.settings != null && !this.settings.notificationVisibility);
+      return !(this.mSettings != null && !this.mSettings.notificationVisibility);
     },
     state: function () {
       // return state class
@@ -127,6 +127,12 @@ export default {
       },
       deep: true,
     },
+    // settings: {
+    //   handler: function (newValue) {
+    //     this.mSettings = newValue;
+    //   },
+    //   deep: true,
+    // },
   },
   methods: {
     onPreview() {

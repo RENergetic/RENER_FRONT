@@ -1,5 +1,6 @@
 {
   "home": "Homepage",
+  "admin": "Admin",
   "add_asset": "Create asset",
   "add_dashboard": "Add dashboard",
   "add_heatmap": "Add heatMap",
@@ -13,6 +14,8 @@
   "delete_dashboard": "Delete dashboard",
   "demands": "Recommendations",
   "edit_dashboard": "Edit dashboard",
+  "export": "Export",
+  "export_template": "Export template",
   "feedback": "Feedback",
   "filter_settings": "Filter settings",
   "grafana_dashboards": "Grafana dashboards",
@@ -35,6 +38,7 @@
   "manage_measurements": "Measurements",
   "manage_categories": "Categories",
   "manage_users": "Users",
+  "manage_workflows": "Manage workflows",
   "measurements": "Measurements",
   "management": "Management",
   "notifications": "Notifications",

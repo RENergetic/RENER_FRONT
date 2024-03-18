@@ -8,7 +8,7 @@
   <Card v-if="mModel">
     <!-- <template #title> </template> -->
     <template #content>
-      <!-- {{ mModel }}  -->
+      <!-- {{ mModel }} -->
       <div class="ren">
         <!-- <ren-input
           v-model="mModel.label"
@@ -22,7 +22,15 @@
           :errors="v$.mModel.date_from.$silentErrors"
         >
           <template #content>
-            <Calendar :id="s.key" v-model="mModel.date_from" :show-time="true" hour-format="24" step-minute="60" />
+            <Calendar
+              v-model="mModel.date_from"
+              :disabled="disabled"
+              :min-date="minDate"
+              :max-date="maxDate"
+              :show-time="true"
+              hour-format="24"
+              step-minute="60"
+            />
           </template>
         </ren-input-wrapper>
         <ren-input-wrapper
@@ -31,7 +39,7 @@
           :errors="v$.mModel.interval_length.$silentErrors"
         >
           <template #content>
-            <Slider v-model="mModel.interval_length" class="settings-slider" :max="60 * 12" :step="30" />
+            <Slider v-model="mModel.interval_length" :disabled="disabled" class="settings-slider" :max="60 * 12" :step="30" :min="60" />
             <span>{{ mModel.interval_length }}</span>
           </template>
         </ren-input-wrapper>
@@ -45,6 +53,7 @@
             <Dropdown
               id="measurementType"
               v-model="mModel.physical_type"
+              :disabled="disabled"
               :options="physicalTypes"
               :option-label="(opt) => $t('enums.physical_type.' + opt)"
               :placeholder="$t('view.select_physical_type')"
@@ -63,38 +72,55 @@
             <Dropdown
               id="measurementUnit"
               v-model="mModel.unit"
+              :disabled="disabled"
               :options="mUnits"
               option-label="unit"
               option-value="unit"
-              :placeholder="$t('view.select_hdrrequest_unit')"
+              :placeholder="$t('model.hdrrequest.unit')"
             />
           </template>
         </ren-input-wrapper>
         <!-- //max or change -->
         <ren-switch
           v-model="mModel.isLimit"
+          :disabled="disabled"
           :text-label="'model.hdrrequest.change_or_limit'"
           :options="[
-            { label: $t('view.button.max_value'), value: true },
-            { label: $t('view.button.change_by'), value: false },
+            { label: $t('model.hdrrequest.max_value'), value: true },
+            { label: $t('model.hdrrequest.delta_value'), value: false },
           ]"
         />
-        <ren-input-wrapper
+        <!-- {{ mModel.priority }} -->
+        <ren-input-number
+          v-if="mModel.physical_type"
+          v-model="mModel.requestValue"
+          :invalid="v$.mModel.requestValue.$invalid"
+          :errors="v$.mModel.requestValue.$silentErrors"
+          :disabled="disabled"
+          :text-label="mModel.isLimit ? 'model.hdrrequest.max_value' : 'model.hdrrequest.delta_value'"
+          :placeholder="mModel.isLimit ? $t('model.hdrrequest.max_value') : $t('model.hdrrequest.delta_value')"
+        />
+        <!-- <ren-input-wrapper
           v-if="mModel.physical_type"
           :text-label="mModel.isLimit ? 'model.hdrrequest.max_value' : 'model.hdrrequest.delta_value'"
           :invalid="v$.mModel.requestValue.$invalid"
           :errors="v$.mModel.requestValue.$silentErrors"
         >
-          <template #content>
-            <!-- {{ mModel.unit }} -->
-            <InputNumber v-if="mModel.isLimit" v-model="mModel.requestValue" :placeholder="$t('model.hdrrequest.max_value')" />
-            <InputNumber v-else v-model="mModel.requestValue" :use-grouping="false" :placeholder="$t('model.hdrrequest.delta_value')" />
+          <template #content> 
+            <InputNumber v-if="mModel.isLimit" v-model="mModel.requestValue" :disabled="disabled" :placeholder="$t('model.hdrrequest.max_value')" />
+            <InputNumber
+              v-else
+              v-model="mModel.requestValue"
+              :disabled="disabled"
+              :use-grouping="false"
+              :placeholder="$t('model.hdrrequest.delta_value')"
+            /> 
           </template>
-        </ren-input-wrapper>
+        </ren-input-wrapper> -->
       </div>
     </template>
   </Card>
-  <ren-submit :cancel-button="true" :disabled="v$.$invalid" @cancel="cancel" @submit="submit" />
+  <ren-submit v-if="!disabled" :cancel-button="true" :disabled="v$.$invalid" @cancel="cancel" @submit="submit" />
 
   <!-- <Button :label="$t('view.button.submit')" @click="submit" />
   <Button :label="$t('view.button.cancel')" @click="cancel" /> -->
@@ -103,7 +129,7 @@
 
 <script>
 import { useVuelidate } from "@vuelidate/core";
-import InfoIcon from "../../../miscellaneous/InfoIcon.vue";
+import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import AssetSelectDialog from "@/components/management/infrastructure/AssetSelectDialog.vue";
 
 import { required /*minValue, maxValue , minLength, maxLength */ } from "@/plugins/validators.js"; //,requiredTr, maxLengthTr
@@ -116,6 +142,10 @@ export default {
     modelValue: {
       type: Object,
       default: () => ({}),
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ["update:modelValue", "cancel", "update"],
@@ -131,9 +161,10 @@ export default {
       m.physical_type = m.value_type != null ? m.value_type.physical_name : null;
       m.unit = m.value_type != null ? m.value_type.unit : null;
       if (m.physical_type) mUnits = this.$store.getters["view/measurementTypes"][m.physical_type];
-      m.interval_length = m.date_from - m.date_to;
+      m.interval_length = m.date_from && m.date_to ? (m.date_to - m.date_from) / 60000 : 60;
       m.isLimit = m.max_value ? true : false;
       m.requestValue = m.max_value ? m.max_value : m.value_change;
+      m.date_from = m.date_from ? new Date(m.date_from) : null;
     }
     //  date_from interval_length physical_type unit requestValue
     return {
@@ -145,6 +176,8 @@ export default {
       editDialog: false,
       addDialog: false,
       measurementTypes: this.$store.getters["view/measurementTypes"],
+      minDate: new Date(this.getRoundHour() + 3 * 3600000),
+      maxDate: new Date(this.getRoundHour() + 7 * 24 * 3600000),
     };
   },
   computed: {
@@ -154,6 +187,9 @@ export default {
     },
   },
   watch: {},
+  updated() {
+    this.minDate = new Date(this.getRoundHour() + 3600000);
+  },
   validations() {
     return {
       mModel: {
@@ -172,6 +208,9 @@ export default {
     };
   },
   methods: {
+    getRoundHour() {
+      return Math.round(new Date().getTime() / 3600000) * 3600000;
+    },
     typeChange(evt) {
       let v;
       try {
@@ -189,19 +228,22 @@ export default {
       this.mModel.asset = selectedAsset;
     },
     submit() {
-      this.mModel.type = {
+      let mModel = { ...this.mModel };
+      mModel.value_type = {
         id: this.mUnits.find((it) => it.unit == this.mModel.unit).id,
         unit: this.mModel.unit,
         physical_name: this.mModel.physical_type,
       };
-      this.mModel = this.mModel.date_from + this.mModel.interval_length;
-      if (this.mModel.isLimit) {
-        this.mModel.max_value = this.mModel.requestValue;
+      mModel.date_from = new Date(this.mModel.date_from).getTime();
+      mModel.date_to = mModel.date_from + this.mModel.interval_length * 60 * 1000;
+
+      if (mModel.isLimit) {
+        mModel.max_value = this.mModel.requestValue;
       } else {
-        this.mModel.value_change = this.mModel.requestValue;
+        mModel.value_change = this.mModel.requestValue;
       }
-      this.$emit("update:modelValue", this.mModel);
-      this.$emit("update", this.mModel);
+      this.$emit("update:modelValue", mModel);
+      this.$emit("update", mModel);
     },
     cancel() {
       this.$emit("update:modelValue", this.modelValue);

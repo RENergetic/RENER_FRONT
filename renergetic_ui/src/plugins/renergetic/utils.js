@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 import { QueryBuilder } from "./ren_api/wrapper_api";
 import { RenRoles } from "../model/Enums";
+import MeasurementUtils from "../utils/measurement_utils";
+import MeasurementDataUtils from "../utils/measurement_data_utils";
 class DeferredFunction {
   timeoutInstance = null;
   timeout = null;
@@ -51,11 +53,26 @@ class DeferredFunction {
   }
 }
 
-export default class RenUtils {
+class RenUtils {
   vueInstance = null;
   host = document.location.origin;
   constructor(vueInstance) {
     this.vueInstance = vueInstance;
+    Object.assign(this, MeasurementUtils);
+    Object.assign(this, MeasurementDataUtils);
+  }
+  toPrimeFilter(filterDict) {
+    if (filterDict == null) {
+      return {};
+    }
+    return Object.fromEntries(Object.entries(filterDict).map((it) => [it[0], { value: it[1] }]));
+  }
+
+  fromPrimeFilter(primeFilterDict) {
+    if (primeFilterDict == null) {
+      return {};
+    }
+    return Object.fromEntries(Object.entries(primeFilterDict).map((it) => [it[0], it[1].value]));
   }
   get app() {
     return this.vueInstance.config.globalProperties;
@@ -64,8 +81,9 @@ export default class RenUtils {
     return uuidv4();
   }
 
-  downloadJSON(obj, filename) {
-    var file = new Blob([JSON.stringify(obj)], { type: "application/json" });
+  downloadJSON(obj, filename, pretty = false) {
+    var json = pretty ? JSON.stringify(obj, null, "\t") : JSON.stringify(obj);
+    var file = new Blob([json], { type: "application/json" });
     var downloadLink = document.createElement("a");
     downloadLink.download = filename + ".json";
     downloadLink.href = window.URL.createObjectURL(file);
@@ -96,13 +114,28 @@ export default class RenUtils {
   default(value, defaultValue = undefined) {
     return value !== null && value !== undefined ? value : defaultValue;
   }
+  dateString(ts = null) {
+    if (ts == null) {
+      return null;
+    }
+    var dateObj = new Date(ts);
+    var dd = String(dateObj.getDate()).padStart(2, "0");
+    var mm = String(dateObj.getMonth() + 1).padStart(2, "0"); //January is 0!
+    var yyyy = dateObj.getFullYear();
+    dateObj = mm + "/" + dd + "/" + yyyy + " " + dateObj.getHours() + ":" + dateObj.getMinutes();
+    return dateObj;
+  }
   currentDate() {
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, "0");
-    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-    var yyyy = today.getFullYear();
-    today = mm + "/" + dd + "/" + yyyy + " " + today.getHours() + ":" + today.getMinutes();
-    return today;
+    return this.dateString(new Date().getTime());
+    // var today = new Date();
+    // var dd = String(today.getDate()).padStart(2, "0");
+    // var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    // var yyyy = today.getFullYear();
+    // today = mm + "/" + dd + "/" + yyyy + " " + today.getHours() + ":" + today.getMinutes();
+    // return today;
+  }
+  currentTimestamp() {
+    return new Date().getTime();
   }
   openNewTab(path) {
     var parser = document.createElement("a");
@@ -130,26 +163,6 @@ export default class RenUtils {
     this.app.$store.commit("settings", settings);
   }
 
-  // localPanel(id, assetId) {
-  //   let panel = null;
-  //   if (assetId != null) {
-  //     panel = this.app.$store.getters["view/assetPanel"](id, assetId);
-  //     if (!panel.is_template) {
-  //       let index = this.app.$store.getters["view/informationPanelsMap"][id];
-  //       if (index != null) {
-  //         panel = this.app.$store.getters["view/informationPanels"][index];
-  //       }
-  //     }
-  //   } else {
-  //     let index = this.app.$store.getters["view/informationPanelsMap"][id];
-  //     if (index != null) {
-  //       panel = this.app.$store.getters["view/informationPanels"][index];
-  //     }
-  //   }
-  //   // console.info(panel);
-  //   return panel;
-  // }
-
   async getPanelStructure(panelId, assetId) {
     let informationPanel = null;
     if (assetId == null) {
@@ -168,12 +181,25 @@ export default class RenUtils {
         }
       }
     }
+    for (let tile of informationPanel.tiles) {
+      for (let m of tile.measurements) {
+        if ((m.name == "ess" || m.name == "ep") && m.type && m.type.name == "value") {
+          m.type.base_unit = "ratio";
+          // m.type.factor = 1;
+          m.type.unit = "ratio";
+          m.type.label = "ratio";
+          m.type.name = "Ratio";
+          m.type.physical_name = "ratio";
+          m.type.id = -1;
+        }
+      }
+    }
     return informationPanel;
   }
 
   async loadSettings() {
     let settings = await this.app.$ren.userApi.getSettings();
-    console.info(settings);
+    console.debug(settings);
     this.app.$store.commit("settings", settings);
   }
 
@@ -189,7 +215,7 @@ export default class RenUtils {
    * reload basic app data
    */
   async reloadStore() {
-    console.info("reload user data");
+    console.debug("reload user data");
     let isAuthenticated = this.app.$store.getters["auth/isAuthenticated"];
     if (!isAuthenticated) {
       // console.error("TODO: handle not logged in user");
@@ -217,6 +243,20 @@ export default class RenUtils {
     }
     let _this = this;
     await this.app.$ren.wrapperApi.get(q.build()).then((data) => {
+      console.error("TODO: hotfix , add required measuremnt type to the database");
+
+      data.measurement_types.push({
+        base_unit: "ratio",
+        color: null,
+        dashboard_visibility: false,
+        description: null,
+        factor: 1,
+        id: -1,
+        label: "Ratio",
+        name: "ratio",
+        physical_name: "ratio",
+        unit: "ratio",
+      });
       _this.app.$store.commit("view/wrapper", data);
       _this.app.$store.dispatch("slideshow/set");
     });
@@ -251,244 +291,7 @@ export default class RenUtils {
     }
     return Math.round(value * 1000.0) / 1000.0;
   }
-  knobColors(measurement) {
-    if (measurement.type.color) {
-      let color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
-      // console.info(measurement);
-      // console.info(color);
-      if (color.length == 7) {
-        return [`#${color.slice(1)}FF`, `#${color.slice(1)}40`];
-      }
-      return [`#${color.slice(1, color.length - 2)}FF`, `#${color.slice(1, color.length - 2)}40`];
-    }
-  }
-
-  measurementBackgroundColor(measurement, tileSettings, value) {
-    let alpha = value ? 0.75 : 0.75 - value * 0.5;
-    let alphaHex = Math.round(alpha * 255).toString(16);
-    if (tileSettings && tileSettings.background == "none") {
-      return "none";
-    }
-    let color;
-    if (tileSettings && tileSettings.background) {
-      color = tileSettings.background;
-    } else {
-      color = measurement.measurement_details.background
-        ? measurement.measurement_details.background
-        : this.measurementColor(measurement, null).color;
-    }
-    if (color.length == 7) {
-      return `#${color.slice(1)}${alphaHex}`;
-    }
-    return `#${color.slice(1, color.length - 2)}${alphaHex}`;
-  }
-
-  measurementColor(measurement, value) {
-    let alpha = value ? 1.0 : 1.0 - value / 2;
-    let color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
-
-    return { alpha: alpha, color: color };
-  }
-  setMeasurementLabel(measurement) {
-    if (measurement.label) {
-      let k = `model.measurement.labels.${measurement.label}`;
-      if (this.app.$te(k)) {
-        measurement._label = measurement.label;
-        measurement.label = this.app.$t(k);
-      } else {
-        measurement._label = measurement.name;
-      }
-    } else {
-      measurement.label = measurement.name;
-    }
-
-    return measurement;
-  }
-  aggKey(measurement, settings) {
-    let key = `${measurement.type.base_unit}_${measurement.aggregation_function}`;
-    if (settings.groupByDirection) {
-      key += `_${measurement.direction}`;
-    }
-    if (settings.groupByMeasurement) {
-      key += `_${measurement.name}`;
-    }
-    if (settings.groupByDomain) {
-      key += `_${measurement.domain}`;
-    } else {
-      switch (measurement.domain) {
-        case "heat":
-        case "electricity":
-          key += "_he";
-          break;
-        default:
-          key += "_none";
-      }
-    }
-    return key;
-  }
-  getUnit(measurement, panelSettings, conversionSettings) {
-    if (panelSettings && panelSettings.relativeValues) {
-      return "%";
-    }
-    let domainKey = measurement.domain + "_" + measurement.type.physical_name;
-    let mt;
-    let defaultKey = "default_" + measurement.type.physical_name;
-    if (conversionSettings) mt = conversionSettings[domainKey] ? conversionSettings[domainKey] : conversionSettings[defaultKey];
-    else mt = null;
-    // console.info(conversionSettings);
-    let unit = mt ? mt : measurement.type.unit;
-    if (unit == "any") {
-      return null;
-    }
-    return unit;
-  }
-  convertDemandData(demandList, pData, settings) {
-    var cp = pData;
-    var mDict = {};
-    for (let demand of demandList) {
-      if (demand.demand_definition && demand.demand_definition.tile) {
-        let tile = demand.demand_definition.tile;
-        for (let m of tile.measurements) {
-          // mDict[m.id] = m;
-          mDict[`${m.id}_${m.aggregation_function}`] = m;
-        }
-      }
-    }
-    for (let mId in mDict) {
-      let m = mDict[mId];
-      var newUnit = this.getUnit(m, null, settings); // settings[m.type.physical_name];
-      if (newUnit) {
-        let value = pData.current[m.aggregation_function][m.id];
-        let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
-        cp.current[m.aggregation_function][m.id] = newV;
-        if (pData.max && pData.max[m.aggregation_function]) {
-          let value = pData.max[m.aggregation_function][m.id];
-          let newV = this.app.$store.getters["view/convertSIValue"](m.type.physical_name, value, newUnit);
-          cp.max[m.aggregation_function][m.id] = newV;
-        }
-      }
-    }
-    //todo:
-    return cp;
-  }
-  convertPanelData(panel, pData, settings) {
-    var mDict = {};
-    //TODO: initialize this dictionary in the vuex store
-    // console.error(settings);
-    var cp = pData; //
-    if (panel && panel.tiles) {
-      for (let tile of panel.tiles) {
-        for (let m of tile.measurements) {
-          mDict[`${m.id}_${m.aggregation_function}`] = m;
-          // mDict[m.id] = m;
-        }
-      }
-    }
-    //TODO: convert min, max, prediction etc
-    for (let mId in mDict) {
-      let m = mDict[mId];
-      // console.info(m);
-      var newUnit = this.getUnit(m, null, settings); // settings[m.type.physical_name];
-      // console.info(m.type.physical_name + " " + newUnit);
-      if (newUnit) {
-        let value = pData.current[m.aggregation_function][m.id];
-        let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
-        cp.current[m.aggregation_function][m.id] = newV;
-        if (pData.max && pData.max[m.aggregation_function]) {
-          let value = pData.max[m.aggregation_function][m.id];
-          let newV = this.app.$store.getters["view/convertSIValue"](m.type.physical_name, value, newUnit);
-          cp.max[m.aggregation_function][m.id] = newV;
-        }
-      }
-    }
-    return cp;
-  }
-  calcPanelRelativeValues(panel, pData, settings) {
-    var accuDict = {};
-    // console.info(settings);
-    // var aggDict = { current: { last: {} }, predictions: pData.predictions };
-    //TODO: aggregate also predictions - not only current values
-    //TODO: include min values
-    var mDict = {};
-    //TODO: initialize this dictionary in the vuex store
-    if (panel && panel.tiles) {
-      for (let tile of panel.tiles) {
-        if (tile.props && !tile.props.ignore_grouping) {
-          for (let m of tile.measurements) {
-            //TODO: ignore percentage type ?
-            if (m.id != null && m.type.base_unit != "%") mDict[`${m.id}_${m.aggregation_function}`] = m;
-          }
-        }
-      }
-    }
-    console.info(mDict);
-
-    for (let mId in mDict) {
-      let m = mDict[mId];
-      let key = this.aggKey(m, settings);
-      // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
-      let factor = m.type.factor;
-      let value = pData.current[m.aggregation_function][m.id] * factor; //todo: raise exception if value not found
-      accuDict = this.valueAccu(key, value, m.type.base_unit, accuDict);
-    }
-    pData.max = {};
-    for (let mId in mDict) {
-      let m = mDict[mId];
-      // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
-      let key = this.aggKey(m, settings);
-      // console.info(key);
-      // let factor = m.type.factor;
-      // let value = pData.current.last[m.id] * factor;
-      // let aggValue = this.valueAgg(key, value, m.type.base_unit, accuDict);
-      // pData.current.last[m.id] = aggValue;
-      if (!pData.current.min) {
-        pData.current.min = {};
-      }
-      pData.current.min[m.id] = 0;
-      // if (!pData.current.max) {
-      //   pData.current.max = {};
-      // }
-      // pData.current.max[m.id] = accuDict[key].accu * factor;
-      if (!pData.max[m.aggregation_function]) {
-        pData.max[m.aggregation_function] = {};
-      }
-      // if (!pData.max[m.aggregation_function][m.id]) {
-      //   pData.max[m.aggregation_function][m.id] = {};
-      // }
-      pData.max[m.aggregation_function][m.id] = accuDict[key].accu;
-    }
-    console.info(pData);
-    return pData;
-  }
-  valueAccu(key, value, baseUnit, dict) {
-    if (dict[key] == null) {
-      dict[key] = { accu: value, counter: 1 };
-      return dict;
-    }
-    dict[key].counter += 1;
-    switch (baseUnit) {
-      case "W":
-      case "Wh":
-      case "any":
-        dict[key].accu += value;
-        break;
-      default:
-        console.error(`measurement type accu not defined for ${baseUnit}, ${key}`);
-        break;
-    }
-    return dict;
-  }
-  // valueAgg(key, value, baseUnit, dict) {
-  //   switch (baseUnit) {
-  //     case "W":
-  //     case "Wh":
-  //       return dict[key].accu != 0 ? (value / dict[key].accu) * 100.0 : 0.0;
-  //     default:
-  //       console.error(`measurement type agreggation not defined for ${baseUnit}, ${key}`);
-  //       break;
-  //   }
-  //   return dict;
-  // }
 }
-
+Object.assign(RenUtils.prototype, MeasurementUtils.prototype);
+export default RenUtils;
 export { DeferredFunction };

@@ -4,7 +4,9 @@
     "power": "Power"
   },
   "metric_type": {
+    "co2eq": "CO₂ equivalent",
     "electricity": "electricity",
+    "flow": "Flow",
     "heat": "heat",
     "energy": "Energy",
     "temperature": "temperature",
@@ -14,7 +16,10 @@
     "heat_energy_gj": "Heat energy",
     "energy_gj": "Heat energy",
     "percentage": "Percentage",
-    "power": "Power"
+    "power": "Power",
+    "ratio": "Ratio",
+    "value": "Value",
+    "voltage": "Voltage"
   },
   "measurement_aggregation": {
     "sum": "Sum",
@@ -62,6 +67,7 @@
     "speed": "Speed",
     "moisture": "Moisture",
     "pressure": "Pressure",
+    "ratio": "Ratio",
     "value": "Value",
     "precipation": "Precipation"
   },
@@ -76,7 +82,9 @@
     "multi_knob": "Multi knob chart",
     "doughnut": "Doughnut chart",
     "list": "List",
-    "single": "Single"
+    "single": "Single",
+    "panel": "Panel",
+    "multi_doughnut": "Multi doughnut chart"
   },
   "heatmap_type": {
     "default": "Normal",

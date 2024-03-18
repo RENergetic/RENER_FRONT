@@ -11,6 +11,7 @@
           :invalid="v$.mUser.username.$invalid"
           :errors="v$.mUser.username.$silentErrors"
           :text-label="'model.user.username'"
+          :disabled="user != null"
         />
         <ren-input
           v-model="mUser.firstName"
@@ -24,7 +25,13 @@
           :errors="v$.mUser.lastName.$silentErrors"
           :text-label="'model.user.lastname'"
         />
-        <ren-input v-model="mUser.email" :invalid="v$.mUser.email.$invalid" :errors="v$.mUser.email.$silentErrors" :text-label="'model.user.email'" />
+        <ren-input
+          v-model="mUser.email"
+          :disabled="user != null"
+          :invalid="v$.mUser.email.$invalid"
+          :errors="v$.mUser.email.$silentErrors"
+          :text-label="'model.user.email'"
+        />
         <ren-password
           v-if="!user"
           v-model="mUser.password"

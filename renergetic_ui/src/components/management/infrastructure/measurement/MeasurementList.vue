@@ -1,66 +1,45 @@
 <template>
-  <InfoIcon :show-icon="false">
-    <template #content>
-      <!-- some info -->
-    </template>
-  </InfoIcon>
-  <!-- @row-expand="onexpand" -->
-  <!-- {{ mFilters }} -->
-  <!-- {{ mFilters }} -->
-  <!-- :global-filter-fields="['name', 'label', 'type.name', 'type.physical_name', 'domain', 'direction', 'asset.name']" -->
-
+  <!-- aaa {{ selectedMeasurements }}aaa -->
   <DataTable
     v-model:expandedRows="expanded"
     v-model:selection="selectedMeasurements"
+    :selection-mode="basic ? 'single' : null"
     :filters="mFilters"
     :lazy="true"
     data-key="id"
-    :rows="50"
-    :paginator="true"
     :row-class="rowClass"
-    :rows-per-page-options="[10, 20, 50, 100]"
     :value="measurementList"
     filter-display="row"
+    class="sticky-header"
     @filter="onFilter"
   >
     <template #header>
-      <!-- <span class="p-input-icon-left">
-        <i class="pi pi-search" />
-        <InputText v-model="mFilters['global'].value" :placeholder="$t('view.search')" />
-      </span> -->
-      <Button
-        v-if="selectedMeasurements.length > 0"
-        :label="$t('view.export_json')"
-        icon="pi pi-list"
-        style="position: sticky; left: 2rem; top: 1rem; z-index: 3333"
-        @click="exportJSON"
-      />
       <span class="p-input-icon-left" style="margin-left: 1rem">
         <i class="pi pi-search" />
         <Dropdown v-model="mFilters.tag_key.value" show-clear :options="tagsKeys" :placeholder="$t('view.tag_filter')" />
       </span>
+      <div v-if="selectedMeasurements.length > 0" style="display: inline; position: sticky; left: 2rem; top: 1rem; z-index: 3333; margin-left: 1rem">
+        <Button :label="$t('view.measurements_export_json')" icon="pi pi-list" style="margin-right: 1rem" @click="exportJSON" />
+        <Button v-tooltip="$t('view.delete_measurements')" :label="$t('view.delete_measurements')" icon="pi pi-trash" @click="deleteMeasurements" />
+      </div>
     </template>
 
-    <Column :expander="true" header-style="width: 3rem" />
+    <Column v-if="!basic" :expander="true" header-style="width: 3rem" />
     <template #expansion="slotProps">
-      <!-- refresh button: TODO: :ref="'roles_' + user.data.id" :user="user.data.id"-->
       <measurement-extension :measurement="slotProps.data" @reload="reload()" />
     </template>
     <!-- <Column field="id" :header="$t('model.measurement.id')"></Column> -->
     <Column field="name" :header="$t('model.measurement.name')" :show-filter-menu="false">
-      <!-- <template #filter="{ filterModel, filterCallback }">
-        <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
-      </template> -->
       <template #body="slotProps">
         <span v-if="slotProps.data._label"> {{ slotProps.data.label }} ({{ slotProps.data._label }})</span>
         <span v-else> {{ slotProps.data.label }} </span>
+        <div>
+          <span v-if="slotProps.data.measurementTags">
+            <li v-for="tag in slotProps.data.measurementTags" :key="tag.id">{{ tag.key }}={{ tag.value }}</li>
+          </span>
+        </div>
       </template>
     </Column>
-    <!-- <Column field="label" :header="$t('model.measurement.label')" :show-filter-menu="false">
-      <template #filter="{ filterModel, filterCallback }">
-        <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
-      </template>
-    </Column> -->
     <Column field="physical_name" filter-field="type.physical_name" :header="$t('model.measurement.physical_name')" :show-filter-menu="false">
       <template #body="slotProps">
         <span> {{ $t("enums.metric_type." + slotProps.data.type.physical_name) }} </span>
@@ -93,7 +72,7 @@
     </Column>
     <Column field="type" filter-field="type.id" :header="$t('model.measurement.type')" :show-filter-menu="false">
       <template #body="slotProps">
-        <span> {{ typeLabel(slotProps.data.type) }} </span>
+        <span> {{ typeUnitLabel(slotProps.data.type) }} </span>
       </template>
       <template #filter="{ filterModel, filterCallback }">
         <!-- <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" /> -->
@@ -103,7 +82,7 @@
           style="min-width: 12rem"
           class="p-column-filter"
           :options="measurementTypeList"
-          :option-label="(opt) => typeLabel(opt)"
+          :option-label="(opt) => typeUnitLabel(opt)"
           option-value="id"
           :placeholder="$t('view.select_measurement_type')"
           :show-clear="true"
@@ -118,8 +97,6 @@
         {{ $t(`enums.domain.${slotProps.data.domain}`) }}
       </template>
       <template #filter="{ filterModel, filterCallback }">
-        <!-- <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" /> -->
-
         <Dropdown
           v-model="filterModel.value"
           style="min-width: 12rem"
@@ -136,7 +113,6 @@
     <Column field="direction" :header="$t('model.measurement.direction')" :show-filter-menu="false">
       <template #body="slotProps">
         <span v-if="slotProps.data.direction"> {{ $t(`enums.measurement_direction.${slotProps.data.direction}`) }}</span>
-
         <span v-else> {{ $t("enums.measurement_direction.none") }}</span>
       </template>
       <!-- <template #filter="{ filterModel, filterCallback }">
@@ -149,26 +125,10 @@
       </template>
     </Column>
 
-    <!-- <Column field="measurement_details" :header="$t('model.measurement.details')">
-      <template #body="slotProps">
-        <span @click="showDetails(slotProps.data)">
-          {{ $t("view.show_details") }}
-        </span>
-      </template>
-    </Column> -->
-    <!-- <Column field="edit" :header="$t('view.edit')">
-      <template #body="slotProps">
-        <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="edit(slotProps.data)" />
-      </template>
-    </Column>
-    <Column field="delete" :header="$t('view.delete')">
-      <template #body="slotProps">
-        <Button v-tooltip="$t('view.delete')" icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteConfirm(slotProps.data)" />
-      </template>
-    </Column> -->
-    <Column selection-mode="multiple" header-style="width: 3rem"></Column>
+    <Column v-if="!basic" selection-mode="multiple" header-style="width: 3rem"></Column>
   </DataTable>
-  <Toolbar>
+  <ren-paginator v-if="measurementList" v-model:offset="mOffset" style="left: 0" sticky :current-rows="measurementList.length" @update="reload" />
+  <Toolbar v-if="!basic" class="ren-toolbar ren-sticky">
     <template #end>
       <Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="addDialog = true" />
       <Button style="margin-left: 0.5rem" @click="importMeasurementsDialog = true">{{ $t("view.upload_measurements") }}</Button>
@@ -178,17 +138,10 @@
     </template>
   </Toolbar>
 
-  <!-- <Dialog v-model:visible="measurementDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <MeasurementDetails :model="selectedMeasurement.measurement_details" @update="onDetailsUpdate"></MeasurementDetails>
-  </Dialog> -->
-  <!-- <DeleteMeasurement ref="deleteMeasurement" :measurement="selectedMeasurement" @delete="onDelete" />
-  <Dialog v-model:visible="editDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <MeasurementForm v-if="selectedMeasurement" v-model="selectedMeasurement" @update="onEdit($event)" @cancel="editDialog = false" />
-  </Dialog> -->
   <Dialog v-model:visible="addDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
     <MeasurementForm @update="onCreate($event)" @cancel="addDialog = false" />
   </Dialog>
-  <Dialog v-model:visible="typeDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
+  <Dialog v-model:visible="typeDialog" class="ren-page-content" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
     <MeasurementTypeList />
   </Dialog>
   <Dialog v-model:visible="importMeasurementsDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
@@ -227,11 +180,10 @@
       </template>
     </Card>
   </Dialog>
+  <DeleteMeasurement ref="deleteMeasurement" @delete="onDelete" />
 </template>
 
 <script>
-// if (mPanel.name !== undefined) delete mPanel.name;
-// if (mPanel.id !== undefined) delete mPanel.id;
 function clearMeasurementInput(measurements) {
   let mMeasurements = JSON.parse(JSON.stringify(measurements));
   mMeasurements = mMeasurements
@@ -239,10 +191,12 @@ function clearMeasurementInput(measurements) {
       let obj;
       obj = {
         name: m.name,
+        label: m.label,
         domain: m.domain,
         direction: m.direction,
         sensor_name: m.sensor_name,
         aggregation_function: m.aggregation_function,
+        measurement_details: m.measurement_details,
       };
       if (m.type) {
         obj.type = { id: m.type.id, physical_name: m.type.physical_name, unit: m.type.unit, name: m.type.name };
@@ -253,25 +207,46 @@ function clearMeasurementInput(measurements) {
       return obj;
     })
     .filter((m) => m != null);
-
   return mMeasurements;
 }
-import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
+function initFilters(filters) {
+  var f = {
+    global: { value: null, tagKey: null },
+    name: { value: null },
+    label: { value: null },
+    // "type.name": { value: null },
+    "type.id": { value: null },
+    "type.physical_name": { value: null },
+    "asset.name": { value: null },
+    domain: { value: null },
+    direction: { value: null },
+    sensor_name: { value: null },
+    tag_key: { value: null },
+    // "asset.name": { value: null },
+  };
+  if (filters != null) {
+    return { ...f, ...filters };
+  }
+  return f;
+}
+// import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import MeasurementForm from "./MeasurementForm.vue";
 // import MeasurementDetails from "./MeasurementDetails.vue";
-// import DeleteMeasurement from "./DeleteMeasurement.vue";
 import MeasurementTypeList from "./MeasurementTypeList.vue";
 import MeasurementExtension from "./MeasurementExtension.vue";
+import DeleteMeasurement from "./DeleteMeasurement.vue";
 import { MeasurementDomains, MeasurementDirection } from "@/plugins/model/Enums.js";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 
 export default {
   name: "MeasurementList",
-  components: { InfoIcon, MeasurementForm, MeasurementTypeList, MeasurementExtension },
+  components: { MeasurementForm, MeasurementTypeList, MeasurementExtension, DeleteMeasurement },
   props: {
     measurementList: { type: Array, default: () => [] },
+    basic: { type: Boolean, default: false },
+    filters: { type: Object, default: null },
   },
-  emits: ["reload", "update:filters"],
+  emits: ["reload", "update:filters", "select"],
   data() {
     let physicalTypes = Object.keys(this.$store.getters["view/measurementTypes"]).map((it) => {
       return { value: it, label: this.$t("enums.metric_type." + it) };
@@ -279,6 +254,7 @@ export default {
 
     return {
       // measurementAdd: false,
+      mOffset: 0,
       domains: MeasurementDomains.keys(),
       directions: MeasurementDirection.keys(),
       physicalTypes: physicalTypes,
@@ -287,7 +263,7 @@ export default {
       selectedMeasurements: [],
       submittedMeasurements: null,
       columns: [],
-      mFilters: this.initFilters(),
+      mFilters: initFilters(this.filters),
       selectedMeasurement: null,
       editDialog: false,
       importMeasurementsDialog: false,
@@ -300,8 +276,14 @@ export default {
   },
   computed: {},
   watch: {
+    selectedMeasurements: function (v) {
+      this.$emit("select", v);
+    },
     "mFilters.tag_key.value": async function () {
       await this.onFilter({ filters: this.mFilters });
+    },
+    measurementList: async function (mList) {
+      await this.loadTags(mList);
     },
   },
   created() {
@@ -309,14 +291,18 @@ export default {
   },
   async mounted() {
     if (this.measurementList != null && this.measurementList.length > 0) {
-      this.columns = Object.keys(this.measurementList[0]);
+      this.columns = await Object.keys(this.measurementList[0]);
     }
-
     this.tagsKeys = await this.$ren.managementApi.listTagKeys();
   },
   methods: {
+    async loadTags(mList) {
+      if (mList != null && mList.length < 30)
+        for (let m of mList) {
+          m.measurementTags = await this.$ren.managementApi.getMeasurementTags(m.id);
+        }
+    },
     _emitFilter() {
-      // console.info("emitFilter: " + new Date());
       this.$emit("update:filters", this.mFilters);
     },
     async onFilter(ev) {
@@ -324,47 +310,22 @@ export default {
       await this.deferredEmitFilter.run();
     },
     rowClass(data) {
+      if (data._selected && data.panel_count === 0) {
+        return "disabled selected";
+      }
+      if (data._selected) {
+        return "selected";
+      }
       if (data.panel_count === 0) {
         return "disabled";
       }
       return "";
     },
-    initFilters() {
-      return {
-        global: { value: null, tagKey: null },
-        name: { value: null },
-        label: { value: null },
-        // "type.name": { value: null },
-        "type.id": { value: null },
-        "type.physical_name": { value: null },
-        "asset.name": { value: null },
-        domain: { value: null },
-        direction: { value: null },
-        sensor_name: { value: null },
-        tag_key: { value: null },
-        // "asset.name": { value: null },
-      };
-    },
+
     filterNameCallback(f) {
       this.mFilters.label = f;
     },
-    // async onDetailsUpdate(details) {
-    //   this.selectedMeasurement.measurement_details = details;
-    //   await this.$ren.managementApi.updateMeasurementProperties(this.selectedMeasurement, details).then(() => {
-    //     this.reload();
-    //   });
-    //   //todo: store to db save
-    // },
-    // async showDetails(row) {
-    //   await this.$ren.managementApi.getMeasurementProperties(row.id).then((details) => {
-    //     row.measurement_details = details;
-    //   });
-    //   this.selectedMeasurement = row;
-    //   this.measurementDetailsDialog = true;
-    // },
-
     async onCreate(o) {
-      // console.info(o);
       await this.$ren.managementApi.addMeasurement(o).then((measurement) => {
         console.info("add measurement:" + measurement.name);
         this.$emitter.emit("information", { message: this.$t("information.measurement_created") });
@@ -372,53 +333,45 @@ export default {
       this.addDialog = false;
       this.reload();
     },
-    typeLabel(mType) {
-      return `(${mType.id}) ${this.$t("enums.metric_type." + mType.name)} [${mType.unit}] `;
+    typeUnitLabel(mType) {
+      return `(${mType.id}) ${this.$t("enums.metric_type." + mType.physical_name)} [${mType.unit}] `;
     },
     async exportJSON() {
-      this.$ren.utils.downloadJSON(this.selectedMeasurements, `measurements`);
+      var sm = await Promise.all(
+        this.selectedMeasurements.map(async (it) => {
+          if (it._label) {
+            let label = it.label;
+            it.label = it._label; //label code
+            it._label = label; //translated code
+          }
+          await this.$ren.managementApi.getMeasurementProperties(it.id).then((details) => {
+            it.measurement_details = details ? details : {};
+          });
+          return it;
+        }),
+      );
+      this.$ren.utils.downloadJSON(sm, `measurements`);
     },
-    // edit(o) {
-    //   this.selectedMeasurement = o;
-    //   this.editDialog = true;
-    // },
-    // async onEdit(o) {
-    //   await this.$ren.managementApi.updateMeasurement(o).then((res) => {
-    //     if (res) {
-    //       this.$emitter.emit("information", { message: this.$t("information.measurement_updated") });
-    //       this.editDialog = false;
-    //       this.reload();
-    //     } else {
-    //       this.$emitter.emit("error", { message: this.$t("information.measurement_not_updated") });
-    //     }
-    //   });
-    // },
-    // deleteConfirm(o) {
-    //   this.selectedMeasurement = o;
-    //   this.$refs.deleteMeasurement.delete(o);
-    // },
-    // // onDelete(o){
-    // onDelete() {
-    //   this.selectedMeasurement = null;
-    //   this.reload();
-    // },
-    reload() {
-      //TODO: filter
-      this.$emit("reload");
+    onDelete() {
+      this.reload();
+    },
+    async deleteMeasurements() {
+      this.$refs.deleteMeasurement.delete(this.selectedMeasurements);
+    },
+
+    reload(evt) {
+      this.$emit("reload", evt);
     },
     onSelect() {
       if (this.$refs.FileUpload !== undefined) this.hasFiles = this.$refs.FileUpload.files.length > 0;
       else this.hasFiles = false;
     },
     onFileClear() {
-      // this.mPanelStructure = null;
-
       this.submittedMeasurements = null;
       this.submittedMeasurementsJSON = "";
     },
     async submitMeasurements() {
       var measurements = JSON.parse(this.submittedMeasurementsJSON);
-      // console.info(measurements);
       console.warn("TODO: make yesno confirm dialog  ");
 
       await this.$ren.managementApi.addMeasurements(measurements).then((measurementsResponse) => {
@@ -437,16 +390,13 @@ export default {
     },
     async onFileUpload(evt) {
       this.submittedMeasurements = null;
-      // console.info(evt.files);
       if (evt.files.length == 1) {
         this.submittedMeasurements = clearMeasurementInput(await this.$ren.utils.readJSONFile(evt.files[0]));
         this.submittedMeasurementsJSON = JSON.stringify(this.submittedMeasurements, null, "\t");
       }
-      // await this._submit(event.files);
     },
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss"></style>
+<style lang="scss"></style>

@@ -7,6 +7,7 @@ import Panel from "primevue/panel";
 import ScrollPanel from "primevue/scrollpanel";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import Calendar from "primevue/calendar";
 import ColumnGroup from "primevue/columngroup";
 import Tooltip from "primevue/tooltip";
 import Textarea from "primevue/textarea";
@@ -23,6 +24,7 @@ import Card from "primevue/card";
 import FileUpload from "primevue/fileupload";
 import Listbox from "primevue/listbox";
 import Tree from "primevue/tree";
+import Slider from "primevue/slider";
 // import Paginator from "primevue/paginator";
 
 import Accordion from "primevue/accordion";
@@ -58,6 +60,8 @@ plugin.install = function (Vue /*, options*/) {
   Vue.component("Accordion", Accordion);
   Vue.component("AccordionTab", AccordionTab);
   Vue.component("ScrollPanel", ScrollPanel);
+  Vue.component("Calendar", Calendar);
+  Vue.component("Slider", Slider);
   // Vue.component("Paginator", Paginator);
 }; // install
 export default plugin;

@@ -1,12 +1,13 @@
 <template>
   <RenSpinner ref="spinner" :lock="true">
     <template #content>
-      <!-- {{ measurements }} -->
-      <!-- {{ pdata }} -->
       <!-- {{ mMeasurements.length }} -->
       <!-- {{ annotations }} -->
+      <!-- <div style="max-width: 20rem; overflow: hidden; max-height: 15rem">{{ chartData }}</div> -->
+      <!-- {{ pData["timeseries_labels"] }} -->
       <Chart
-        v-if="!titleVisible && height && width"
+        v-if="!titleVisible && height && width && loaded"
+        :key="chartData"
         :style="mStyle"
         :type="chartType"
         :data="chartData"
@@ -15,10 +16,8 @@
         :width="width"
       />
       <div v-if="titleVisible" class="flex flex-none flex-column justify-content-center" style="max-width: 75%">
-        <h2>{{ title }}</h2>
-        <!-- v-if="legend"-->
+        <h3>{{ mTitle }}</h3>
       </div>
-      <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
       <div
         v-if="titleVisible"
         class="flex flex-grow-1 flex-column align-items-center justify-content-center"
@@ -39,16 +38,19 @@ export default {
   name: "MeasurementChart",
   components: { Chart },
   props: {
-    pdata: { type: Object, default: () => ({}) },
+    pData: { type: Object, default: () => ({}) },
     measurements: { type: Array, default: null },
     tile: { type: Object, default: null },
     width: { type: Number, default: 1600 },
     height: { type: Number, default: 900 },
     chartType: { type: String, default: "scatter" },
+    legendLabelColor: { type: String, default: "#495057" },
     legend: { type: Boolean, default: false },
     assetId: { type: String, default: null },
-    immediate: { type: Boolean, default: true },
+    immediate: { type: Boolean, default: true }, //immediately reload data if not present locally
     titleVisible: { type: Boolean, default: false },
+    title: { type: String, default: null },
+    // loadData: { type: Boolean, default: true },
     annotations: {
       type: [Object, Array],
       default: () => {
@@ -72,7 +74,7 @@ export default {
       yAxisTitle = `${this.$t("enums.physical_type." + mMeasurements[0].type.physical_name)}${unit}`;
     }
     return {
-      labels: this.pdata["timeseries_labels"] ? this.pdata["timeseries_labels"] : [],
+      labels: this.pData["timeseries_labels"] ? this.pData["timeseries_labels"] : [],
       datasets: [],
       plugins: [chartjsMoment, chartjsPluginAnnotation],
       mStyle: "max-width: 100rem;max-height:60rem; margin: auto;height:100%;width:100%",
@@ -81,9 +83,12 @@ export default {
     };
   },
   computed: {
-    title: function () {
+    mTitle: function () {
       if (this.titleVisible) {
         // let label = " ";
+        if (this.title) {
+          return this.title;
+        }
         var _l = this.mMeasurements.map((m) => {
           let measurementName = m.label ? m.label : m.name;
           if (m.asset) {
@@ -105,7 +110,9 @@ export default {
     },
     options: function () {
       let annotations = this.annotations;
-      console.info(annotations);
+      // console.info(annotations);
+
+      let position = this.mMeasurements.length > 4 ? "top" : "chartArea";
       return {
         responsive: true,
         maintainAspectRatio: false,
@@ -114,13 +121,14 @@ export default {
             annotations: annotations,
           },
           legend: {
-            position: "chartArea",
+            maxHeight: 100,
+            // position: "chartArea",
+            position: position,
             align: "start",
             display: this.legend,
-            maxWidth: 200,
             fullSize: false,
             labels: {
-              color: "#495057",
+              color: this.legendLabelColor,
             },
           },
         },
@@ -165,32 +173,45 @@ export default {
       },
       deep: true,
     },
+    pData: {
+      handler: async function (newV) {
+        if (newV != null && !this.immediate) {
+          this.setLocalData();
+        }
+      },
+
+      deep: true,
+    },
   },
   async mounted() {
     if (this.immediate) await this.reload();
+    else {
+      this.setLocalData();
+    }
   },
   methods: {
     localData() {
       let hasAllData = false;
-      if (this.pdata["timeseries"] && this.pdata["timeseries"]["current"]) {
+      if (this.pData["timeseries"] && this.pData["timeseries"]["current"]) {
         hasAllData = true;
         this.mMeasurements.forEach((m) => {
           hasAllData &=
-            this.pdata["timeseries"]["current"][m.id] &&
-            this.pdata["timeseries"]["current"][m.id].length == this.pdata["timeseries"]["timestamps"].length;
+            this.pData["timeseries"]["current"][m.id] &&
+            this.pData["timeseries"]["current"][m.id].length == this.pData["timeseries"]["timestamps"].length;
         });
       }
-      console.info(hasAllData);
+
+      console.debug(`has all data ${hasAllData}`);
       if (hasAllData) {
-        this.labels = this.pdata["timeseries"]["timestamps"];
-        return this.pdata["timeseries"]["current"];
+        this.labels = this.pData["timeseries"]["timestamps"];
+        return this.pData["timeseries"]["current"];
       }
       return null;
     },
 
-    async loadData() {
+    async loadTimeseriesData() {
       //TODO: make it comgigurable in tile / args prediction & aggregation func
-      // let data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
+      // let data = this.tile.measurements.map((m) => this.pData.current[m.aggregation_function][m.id]);
       // let measurementIds = this.tile.measurements.map((m) => m.id);
       let data = this.localData();
       if (data == null) {
@@ -199,6 +220,7 @@ export default {
         if (this.mMeasurements) {
           timeseriesData = await this.$ren.dataApi.getMeasurementTimeseries(this.mMeasurements, this.filter);
         }
+
         this.labels = timeseriesData["timestamps"];
         data = timeseriesData["current"];
         if (timeseriesData) {
@@ -211,12 +233,12 @@ export default {
       let datasets = [];
       for (let idx in this.mMeasurements) {
         let m = this.mMeasurements[idx];
-        let color = m.measurement_details.color ? m.measurement_details.color : "#90A4AE";
+        let color = this.$ren.utils.measurementColor(m).color;
         console.error("TODO: convert timeseries unit");
         let aggFunc = this.$t("enums.measurement_aggregation." + m.aggregation_function);
 
         let unitLabel = m.type.unit != "any" ? `: ${this.$t("enums.physical_type." + m.type.physical_name)} [${m.type.unit}]` : "";
-        let label = m.label ? m.label : m.name;
+        let label = this.measurementLabel(m);
         datasets.push({
           data: data[m.id],
           label: `${label}(${aggFunc})${unitLabel}`,
@@ -235,11 +257,19 @@ export default {
       let run = this.$refs.spinner.run;
       await run(async () => {
         // await new Promise((r) => setTimeout(r, 250));
-        var pData = await this.loadData();
+        var pData = await this.loadTimeseriesData();
         this.setDataset(pData);
         this.loaded = true;
         this.refreshDate = new Date();
       });
+    },
+    setLocalData() {
+      var pData = this.localData();
+      if (pData !== null) {
+        this.setDataset(pData);
+        this.loaded = true;
+        this.refreshDate = null;
+      }
     },
   },
 };

@@ -1,8 +1,10 @@
 <template>
-  <Card class="col-12" style="width: 90%; margin: auto; margin-top: 1rem">
+  <Card class="ren-page-content" style="max-width: 95rem">
+    <template #title>{{ $t("menu.manage_grafana_dashboard") }}</template>
     <template #content>
-      <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 80rem">
+      <RenSpinner ref="spinner" :lock="true" style="width: 100%">
         <template #content>
+          <!-- {{ dashboards }} -->
           <dashboard-list :dashboards="dashboards" @reload="reload" />
         </template>
       </RenSpinner>
@@ -21,8 +23,8 @@ export default {
       dashboards: [], // this.$store.getters["view/dashboards"],
     };
   },
-  mounted() {
-    this.loadDashboards();
+  async mounted() {
+    await this.loadDashboards();
   },
   methods: {
     async loadDashboards() {

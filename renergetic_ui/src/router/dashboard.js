@@ -44,7 +44,7 @@ var dashboardRoutes = [
     props: {},
     meta: {
       isAuthenticated: true,
-      layout: "fullscr",
+      // layout: "fullscr",
       roles: ["ren-admin", "ren-technical-manager"],
       roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
     },

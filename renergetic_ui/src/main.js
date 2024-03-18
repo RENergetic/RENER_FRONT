@@ -7,6 +7,7 @@ import PrimeVue from "primevue/config";
 //import renergetic plugins
 //renergetic plugins this.$ren.{plugin}
 import plugin from "./plugins/ren_plugins";
+import renMixins from "./plugins/ren_mixins";
 //import primevue plugins
 import PrimeImport from "./plugins/primevue_import";
 import RenImport from "./plugins/ren_import";
@@ -32,7 +33,6 @@ import ConfirmationService from "primevue/confirmationservice";
 
 const app = createApp(App);
 app.use(i18n);
-//TODO: if normal user?
 app.use(VueKonva);
 // app.use(PrimeVue, { locale: PrimeLocale });
 app.use(PrimeVue);
@@ -49,4 +49,5 @@ app.config.globalProperties.$te = i18n.global.te;
 app.use(store);
 app.use(plugin);
 app.use(createRouter(app));
+app.mixin(renMixins);
 app.mount("#app");

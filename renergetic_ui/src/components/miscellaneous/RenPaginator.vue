@@ -2,6 +2,7 @@
   <Paginator
     v-if="totalRows != null"
     v-model:first="mOffset"
+    :class="mClass"
     :rows="limit"
     :total-records="totalRows"
     template="FirstPageLink PrevPageLink   PageLinks  CurrentPageReport  NextPageLink LastPageLink   "
@@ -9,8 +10,9 @@
   <Paginator
     v-else
     v-model:first="mOffset"
+    :class="mClass"
     :rows="limit"
-    :total-records="mOffset + 1 + (currentRows ? currentRows : limit)"
+    :total-records="mOffset + (currentRows ? 1 + currentRows : 0)"
     template="FirstPageLink PrevPageLink PageLinks NextPageLink    "
   />
   <!-- {{ mOffset }};{{ mOffset + 1 + (currentRows ? currentRows : limit) }};{{ currentRows }} -->
@@ -21,10 +23,11 @@ export default {
   name: "RenPaginator",
   components: { Paginator },
   props: {
+    sticky: { default: false, type: Boolean },
     page: { default: null, type: Number },
     totalRows: { default: null, type: Number },
     offset: { default: 0, type: Number },
-    limit: { default: 10, type: Number },
+    limit: { default: 25, type: Number },
     currentRows: { default: 0, type: Number },
   },
   emits: ["update:offset", "update:page", "update", "created"],
@@ -39,6 +42,13 @@ export default {
     // mTotalRows: function () {
     //   return this.totalRows ? this.totalRows : this.mOffset + this.limit + this.currentRows;
     // },
+
+    mClass: function () {
+      if (this.sticky) {
+        return "ren-sticky";
+      }
+      return "";
+    },
   },
   watch: {
     mOffset: {

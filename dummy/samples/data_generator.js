@@ -1,5 +1,4 @@
 //generate data for panels
-// import { Colors } from "../../../plugins/model/Enums.js";
 // console.info(Object.keys(Colors));
 function listMeasurements(informationPanel) {
   console.info(informationPanel);

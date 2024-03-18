@@ -1,6 +1,5 @@
 <template>
   <!-- todo:  confirm buttons -->
-  <!-- {{ panelList }} -->
 
   <DataTable :key="headers" :value="panelList">
     <!-- <Column v-for="h of headers" :key="h" :field="h" :header="$t('model.information_panel.' + h)"></Column> -->
@@ -57,7 +56,7 @@
     <Column field="export">
       <template #body="item">
         <!--  :header="$t('view.export_json')" pi-file-export-->
-        <Button v-tooltip="$t('view.export_json')" icon="pi pi-file" class="p-button-rounded" @click="exportJSON(item.data)" />
+        <Button v-tooltip="$t('view.export_json')" icon="pi pi-file" class="p-button-rounded" @click="exportJSON(item.data, true)" />
       </template> </Column
     ><Column field="delete">
       <template #body="item">
@@ -66,16 +65,15 @@
       </template>
     </Column>
   </DataTable>
-  <Toolbar>
+  <ren-paginator v-model:offset="mOffset" style="left: 0" sticky :limit="limit" :current-rows="panelList.length" @update="onPagination" />
+  <Toolbar class="ren-toolbar ren-sticky">
     <template #end><Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="panelAdd = true" /> </template>
   </Toolbar>
-
-  <RenSpinner ref="spinner"> </RenSpinner>
+  <RenSpinner ref="spinner" />
   <RenSpinner ref="assetSpinner" :lock="true" style="margin: auto; max-width: 95%">
     <template #content>
       <Dialog v-model:visible="assetManagementDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
         <div v-if="selectedAsset">
-          <!-- <ren-input-wrapper :text-label="`${selectedAsset.label}(${selectedAsset.name})`"> -->
           <div class="ren">
             <ren-input-wrapper :text-label="null">
               <template #content>
@@ -94,7 +92,6 @@
               </template>
             </ren-input-wrapper>
           </div>
-          <!-- {{ selectedAsset }} -->
         </div>
         <asset-list :basic="true" :asset-list="assetList" hidden-filters="true" @on-select="(evt) => (selectedAsset = evt)" />
         <div>
@@ -104,7 +101,6 @@
               <Button :label="$t('view.select_asset')" @click="$refs.assetSelectDialog.open()" />
             </template>
           </ren-input-wrapper>
-          <!-- {{ selectedAsset }} -->
         </div>
       </Dialog>
     </template>
@@ -133,6 +129,7 @@
 </template>
 <script>
 import InformationPanelForm from "./InformationPanelForm.vue";
+import { getCleanPanelStructure } from "./InformationPanelForm.vue";
 import AssetSelectDialog from "@/components/management/infrastructure/AssetSelectDialog.vue";
 import AssetList from "@/components/management/infrastructure/AssetList.vue";
 function initFilter() {
@@ -151,12 +148,12 @@ export default {
     page: { type: Number, default: 0 },
     offset: { type: Number, default: 0 },
   },
-  emits: ["update:filters", "reload", "update:page"],
+  emits: ["update:filters", "reload"],
   data() {
     return {
       headers: [],
       panelEdit: false,
-      mPage: this.page,
+      limit: 15,
       mOffset: this.offset,
       mFilters: this.filters ? this.filters : initFilter(),
       selectedRow: null,
@@ -240,18 +237,23 @@ export default {
       });
       this.panelEdit = true;
     },
-    async exportJSON(o) {
+    async exportJSON(o, template) {
       await this.$refs.spinner.run(async () => {
-        await this.$ren.dashboardApi.getInformationPanel(o.id).then(async (res) => {
-          this.$ren.utils.downloadJSON(res, `${res.name}_${res.id}`);
+        await this.$ren.dashboardApi.getInformationPanel(o.id).then(async (panel) => {
+          let panelTemplate = getCleanPanelStructure(panel, template);
+          let filename = template ? `template_${panel.name}` : `${panel.id}_${panel.name}`;
+          this.$ren.utils.downloadJSON(panelTemplate, filename, true);
         });
       });
     },
     reload() {
       this.$emit("reload");
     },
+    onPagination(ev) {
+      this.$emit("reload", ev);
+    },
     async deletePanel(panel) {
-      await this.exportJSON(panel);
+      await this.exportJSON(panel, false); //export full panel
       await this.$refs.spinner.run(async () => {
         await this.$ren.dashboardApi.deleteInformationPanel(panel.id);
       });

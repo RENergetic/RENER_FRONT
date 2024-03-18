@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import NotificationList from "../management/notification/NotificationList.vue";
+import NotificationList from "@/components/user/NotificationList.vue";
 import DemandList from "@/components/user/demand/DemandList.vue";
 import DashboardForm from "../dashboard/grafana/DashboardForm.vue";
 import LocaleSettings from "@/components/miscellaneous/settings/LocaleSettings.vue";
@@ -62,7 +62,6 @@ export default {
     "update:dashboard",
     "update:notificationDialog",
     "update:demandDialog",
-    "UpdateMenu",
     "update:locales",
     "update:notifications",
     "update:user",
@@ -172,17 +171,16 @@ export default {
       await this.$ren.dashboardApi.add(dashboard).then((dashboardReq) => {
         this.mAddDashboard = false;
         this.$store.commit("view/dashboardsAdd", dashboardReq);
-        this.$emit("UpdateMenu", null);
+        this.$emitter.$emit("update-menu");
       });
     },
-    async onUserSave(o) {
-      await this.$ren.userApi.addUser(o).then((user) => {
-        console.info("add user:" + user.username);
-        this.$emitter.emit("information", { message: this.$t("information.user_created") });
-        this.mAddUser = false;
-        // this.$emit("UpdateMenu", null);
-      });
-    },
+    // async onUserSave(o) {
+    //   await this.$ren.userApi.addUser(o).then((user) => {
+    //     this.$emitter.emit("information", { message: this.$t("information.user_created", { user: user.username }) });
+    //     this.mAddUser = false;
+    //     // this.$emitter.$emit("update-menu")
+    //   });
+    // },
     onNotificationUpdate(notifications) {
       if (notifications) this.$emit("update:notifications", notifications);
       else this.$emit("update:notifications", []);

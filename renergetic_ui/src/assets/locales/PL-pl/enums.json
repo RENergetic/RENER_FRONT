@@ -4,7 +4,9 @@
     "power": "Moc"
   },
   "metric_type": {
+    "co2eq": "Ekwiwalent CO₂",
     "electricity": "Elektryczność",
+    "flow": "Przepływ",
     "heat": "Ciepło",
     "energy": "Energia",
     "temperature": "Temperatura",
@@ -14,7 +16,10 @@
     "heat_energy_gj": "Energia Cieplna",
     "energy_gj": "Energia Cieplna",
     "percentage": "Procent",
-    "power": "Moc"
+    "power": "Moc",
+    "ratio": "Współczynnik",
+    "value": "Wartość",
+    "voltage": "Napięcie"
   },
   "measurement_aggregation": {
     "sum": "Suma",
@@ -62,6 +67,7 @@
     "speed": "Prędkość",
     "moisture": "Wilgotność",
     "pressure": "Ciśnienie",
+    "ratio": "Współczynnik",
     "value": "Liczba",
     "precipation": "Precipation"
   },
@@ -76,7 +82,9 @@
     "multi_knob": "Multi wykres zegarowy",
     "doughnut": "Wykres pierścieniowy",
     "list": "Lista",
-    "single": "Pojedyncza wartość"
+    "single": "Pojedyncza wartość",
+    "panel": "Panel",
+    "multi_doughnut": "Multi doughnut chart"
   },
   "heatmap_type": {
     "default": "Normal",

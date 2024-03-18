@@ -1,10 +1,10 @@
 <template>
   <Button id="sideMenuButton" icon="pi pi-arrow-right" @click="visible = true" />
-
   <Sidebar v-model:visible="visible" class="ren-sidebar" :show-close-icon="false">
     <div id="sideMenuLogo"><Logo /></div>
     <PanelMenu class="ren" :model="menuModel" />
   </Sidebar>
+  <!-- {{ $route.path }}{{ $route.name }} -->
   <Dialogs
     :notification-dialog="notificationDialog"
     :demand-dialog="demandDialog"
@@ -13,10 +13,8 @@
     :add-user="userDialog"
     @update:notification-dialog="notificationDialog = $event"
     @update:demand-dialog="demandDialog = $event"
-    @update-menu="reload"
     @update:notifications="onNotificationChange($event)"
   ></Dialogs>
-  <!-- @update:demands="onDemandChange($event)" -->
 </template>
 
 <script>
@@ -53,7 +51,14 @@ export default {
       return this.$pluginLoaded;
     },
   },
-  watch: {},
+  watch: {
+    "$route.path": {
+      handler: function () {
+        this.menuModel = this.initMenu();
+      },
+      deep: true,
+    },
+  },
   mounted() {
     this.menuModel = this.initMenu();
     this.reload();
@@ -63,9 +68,10 @@ export default {
     initMenu() {
       return [
         {
+          class: this.checkPath({ path: "/" }) ? "hl-menu" : "",
           label: this.$t("menu.home"),
           icon: "pi pi-home",
-          to: "/",
+          command: () => this.$router.push({ path: "/" }),
         },
         ...this.featuredPanels(), //public dashboard
         ...this.assetsItems(), //private dashboard
@@ -76,6 +82,7 @@ export default {
         ...this.demandsItem(),
 
         ...this.managementItems(),
+        ...this.adminItems(),
         ...this.userItems(),
       ];
     },
@@ -106,13 +113,13 @@ export default {
 
     featuredPanels() {
       var featuredPanels = this.$store.getters["view/featuredPanels"];
+      if (featuredPanels == null && featuredPanels.length == 0) return [];
       var items = featuredPanels.map((panel) => {
         // let to = `/panel/view/${panel.id}`;
         return {
-          // label: this.$t("menu.group_list"),
+          class: this.checkPath({ name: "PublicDashboardView", params: { id: panel.id } }) ? "hl-menu" : "",
           label: panel.label ? panel.label : panel.name,
           icon: "pi pi-fw pi-th-large",
-
           command: () => {
             this.$router.push({ name: "PublicDashboardView", params: { id: panel.id } });
           },
@@ -133,14 +140,18 @@ export default {
       let flags = RenRoles.REN_VISITOR | RenRoles.REN_USER;
       if ((flags & this.role) == 0) return [];
       let assetPanels = this.$store.getters["view/assetPanels"];
-      if (assetPanels.length == 0) return [];
+      if (assetPanels == null && assetPanels.length == 0) return [];
       let items = assetPanels.map((assetPanel) => {
         // let to = `/asset/${assetPanel.asset.id}/panel/${assetPanel.panel.id}`;
         return {
-          // label: this.$t("menu.group_list"),
+          class: this.checkPath({
+            name: "AssetPanelView",
+            params: { asset_id: assetPanel.asset.id, id: assetPanel.panel.id },
+          })
+            ? "hl-menu"
+            : "",
           label: assetPanel.panel.label.replace("{asset}", assetPanel.asset.label),
           icon: "pi pi-fw pi-th-large",
-          // to: to,
           command: () => {
             this.$router.push({
               name: "AssetPanelView",
@@ -178,7 +189,6 @@ export default {
               // label: this.$t("menu.group_list"),
               label: dashboardItem.label ? dashboardItem.label : dashboardItem.name,
               icon: "pi pi-fw pi-th-large",
-              // to: to,
               command: () => {
                 window.open(dashboardItem.url, "_blank");
                 // this.$router.push(to);
@@ -199,17 +209,17 @@ export default {
       }
     },
     managementItems() {
-      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_MANAGER;
       if ((flags & this.role) == 0) return [];
 
       let items = [
-        ...this._userItems(),
         ...this._assetItems(),
         ...this._grafanaDashboardManagement(),
         ...this._panelManagementItems(),
         ...this._measurementItems(),
-        ...this._notificationItems(),
+        // ...this._notificationItems(),
         ...this._hdrItems(),
+        ...this._workflowItems(),
         ...this._abstractMeters(),
       ];
       return [
@@ -220,13 +230,38 @@ export default {
         },
       ];
     },
+    adminItems() {
+      let flags = RenRoles.REN_ADMIN;
+      if ((flags & this.role) == 0) return [];
+
+      let items = [...this._userItems(), ...this._adminWorkflowItems()];
+      return [
+        {
+          label: this.$t("menu.admin"),
+          icon: "pi pi-fw pi-wrench pi-cog",
+          items: items,
+        },
+      ];
+    },
+    _adminWorkflowItems() {
+      let items = [
+        {
+          class: this.checkPath({ name: "AdminWorkflows" }) ? "hl-menu" : "",
+          label: this.$t("menu.manage_workflows"),
+          icon: "pi pi-fw pi-cog",
+          command: () => {
+            this.$router.push({ name: "AdminWorkflows" });
+          },
+        },
+      ];
+      return items;
+    },
     _userItems() {
       let items = [
         {
-          // label: this.$t("menu.manage"),
+          class: this.checkPath({ name: "Users" }) ? "hl-menu" : "",
           label: this.$t("menu.manage_users"),
           icon: "pi pi-fw pi-users",
-          to: "/admin/users",
           command: () => {
             this.$router.push({ name: "Users" });
           },
@@ -235,7 +270,6 @@ export default {
         //   // label: this.$t("menu.group_list"),
         //   label: this.$t("menu.add_user"),
         //   icon: "pi pi-fw pi-user-plus",
-        //   // to: "/admin/users/add",
         //   command: () => {
         //     this.userDialog = !this.userDialog;
         //     // this.$router.push({ name: "AddUser" });
@@ -257,33 +291,16 @@ export default {
       // ];
     },
     _assetItems() {
-      // let items = [
-      //   {
-      //     label: this.$t("menu.manage"),
-      //     icon: "pi pi-fw pi-list",
-      //     to: "/management/asset",
-      //     command: () => {
-      //       this.$router.push({ name: "AssetList" });
-      //     },
-      //   },
-      //   {
-      //     label: this.$t("menu.add_asset"),
-      //     icon: "pi pi-fw pi-plus-circle",
-      //     to: "/management/asset/create",
-      //     command: () => {
-      //       alert("todo:");
-      //       // this.$router.push({ name: "Users" });
-      //     },
-      //   },
-      // ];
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
+      if ((flags & this.role) == 0) return [];
       return [
         {
-          // label: this.$t("menu.manage"),
+          class: this.checkPath({ name: "AssetList" }) || this.checkPath({ name: "AssetTypeList" }) ? "hl-menu" : "",
           label: this.$t("menu.manage_assets"),
           icon: "pi pi-fw pi-list",
-          to: "/management/asset",
+
           command: () => {
-            this.$router.push({ name: "AssetList" });
+            this.$router.push({ name: "AssetList", path: "/management/asset" });
           },
         },
       ];
@@ -297,115 +314,102 @@ export default {
     },
 
     _measurementItems() {
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
+      if ((flags & this.role) == 0) return [];
       return [
         {
+          class: this.checkPath({ name: "MeasurementList" }) ? "hl-menu" : "",
           label: this.$t("menu.manage_measurements"),
           icon: "pi pi-fw pi-list",
-          to: "/management/measurement",
           command: () => {
-            this.$router.push({ name: "MeasurementList" });
+            this.$router.push({ name: "MeasurementList", path: "/management/measurement" });
           },
         },
       ];
     },
 
-    _notificationItems() {
+    // _notificationItems() {
+    //   return [
+    //     {
+    //       class: this.checkPath({ name: "NotificationList" }) ? "hl-menu" : "",
+    //       label: this.$t("menu.manage_notifications"),
+    //       icon: "pi pi-fw pi-bell",
+    //       command: () => {
+    //         this.$router.push({ name: "NotificationList", path: "/management/notification" });
+    //       },
+    //     },
+    //   ];
+    // },
+    _hdrItems() {
       return [
         {
-          label: this.$t("menu.manage_notifications"),
-          icon: "pi pi-fw pi-list",
-          to: "/management/notification",
+          class: this.checkPath({ name: "HDRView" }) ? "hl-menu" : "",
+          label: this.$t("menu.hdr_view"),
+          icon: "pi pi-fw pi-sliders-h",
           command: () => {
-            this.$router.push({ name: "NotificationList" });
+            this.$router.push({ name: "HDRView", path: "/management/demand/hdr" });
           },
         },
       ];
     },
-    _hdrItems() {
+    _workflowItems() {
       return [
         {
-          label: this.$t("menu.hdr_view"),
-          icon: "pi pi-fw pi-list",
-          to: "/management/demand/hdr",
+          class: this.checkPath({ name: "Workflows" }) ? "hl-menu" : "",
+          label: this.$t("menu.manage_workflows"),
+          icon: "pi pi-fw  pi-desktop",
           command: () => {
-            this.$router.push({ name: "HDRView" });
+            this.$router.push({ name: "Workflows" });
           },
         },
       ];
     },
 
     _abstractMeters() {
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
+      if ((flags & this.role) == 0) return [];
       return [
         {
+          class: this.checkPath({ name: "AbstractMeters" }) ? "hl-menu" : "",
           label: this.$t("menu.abstract_meter"),
           icon: "pi pi-fw pi-list",
-          to: "/management/abstract",
           command: () => {
-            this.$router.push({ name: "AbstractMeters" });
+            this.$router.push({ name: "AbstractMeters", path: "/management/abstract" });
           },
         },
       ];
     },
     _panelManagementItems() {
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
+      if ((flags & this.role) == 0) return [];
       let items = [
         {
-          // label: this.$t("menu.manage"),
+          class: this.checkPath({ name: "InformationPanelListView" }) ? "hl-menu" : "",
           label: this.$t("menu.manage_information_panels"),
-
           icon: "pi pi-fw  pi-th-large",
-          to: "/panel",
           command: () => {
-            this.$router.push({ name: "InformationPanelListView" });
+            this.$router.push({ name: "InformationPanelListView", path: "/panel" });
           },
         },
-        // {
-        //   label: this.$t("menu.add_information_panel"),
-        //   icon: "pi pi-fw pi-plus-circle",
-        //   to: "/panel/add",
-        //   command: () => {
-        //     this.$router.push({ name: "InformationPanelCreator" });
-        //   },
-        // },
       ];
       return items;
-      // return [
-      //   {
-      //     label: this.$t("menu.manage_information_panels"),
-      //     icon: "pi pi-fw pi-list",
-      //     items: items,
-      //   },
-      // ];
     },
 
     _grafanaDashboardManagement() {
+      let flags = RenRoles.REN_ADMIN | RenRoles.REN_USER | RenRoles.REN_TECHNICAL_MANAGER;
+      if ((flags & this.role) == 0) {
+        return [];
+      }
       let items = [];
-      // items.push({
-      //   // label: this.$t("menu.group_list"),
-      //   label: this.$t("menu.add_dashboard"),
-      //   icon: "pi pi-fw pi-plus",
-      //   // to: "/dashboard/add",
-      //   command: () => {
-      //     this.dashboardDialog = !this.dashboardDialog;
-      //     // this.$router.push({ name: "DashboadAdd" });
-      //   },
-      // });
       items.push({
-        // label: this.$t("menu.group_list"),
+        class: this.checkPath({ name: "GrafanaDashboardListView" }) ? "hl-menu" : "",
         label: this.$t("menu.manage_grafana_dashboard"),
         icon: "pi pi-fw pi-th-large",
-        to: "/dashboard/grafana/list",
         command: () => {
-          this.$router.push({ name: "GrafanaDashboardList" });
+          this.$router.push({ name: "GrafanaDashboardListView" });
         },
       });
       return items;
-      // return [
-      //   {
-      //     label: this.$t("menu.manage_dashboard"),
-      //     // icon: "pi pi-fw pi-chart-line",
-      //     items: items,
-      //   },
-      // ];
     },
 
     notificationsItem() {
@@ -413,15 +417,17 @@ export default {
       if ((flags & this.role) == 0) {
         return [];
       }
+      let managerFlags = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
+
       return [
         {
           label: this.$t("menu.notifications"),
           icon: "pi pi-fw  pi-bell",
           command: () => {
             // this.$emit("notification");
-            this.notificationDialog = !this.notificationDialog;
+            if (this.notificationCount > 0 || managerFlags & this.role) this.notificationDialog = !this.notificationDialog;
           },
-          class: this.notificationCount == 0 ? "" : "hl-warning",
+          class: this.notificationCount == 0 ? "disabled" : "hl-warning",
         },
       ];
     },
@@ -435,10 +441,9 @@ export default {
           label: this.$t("menu.demands"),
           icon: "pi pi-fw  pi-bell",
           command: () => {
-            // this.$emit("notification");
-            this.demandDialog = !this.demandDialog;
+            if (this.demandCount > 0) this.demandDialog = !this.demandDialog;
           },
-          class: this.demandCount == 0 ? "" : "hl-warning",
+          class: this.demandCount == 0 ? "disabled" : "hl-warning",
         },
       ];
     },
@@ -447,9 +452,10 @@ export default {
       if (!this.isLoggedIn) {
         return [
           {
+            class: this.checkPath({ path: "/login" }) ? "hl-menu" : "",
             label: this.$t("menu.login"),
             icon: "pi pi-sign-in",
-            to: "/login",
+            command: () => this.$router.push({ path: "/login" }),
             // visible: () => !this.isLoggedIn,
           },
         ];
@@ -461,26 +467,26 @@ export default {
           icon: "pi pi-fw pi-user",
           items: [
             {
+              class: this.checkPath({ path: "/profile" }) ? "hl-menu" : "",
               label: this.$t("menu.profile_settings"),
               icon: "pi pi-fw pi-user",
-              to: "/profile",
               command: () => {
                 this.$router.push("/profile");
               },
             },
             {
               label: this.$t("menu.locales"),
-              icon: "pi pi-fw  pi-bell",
+              icon: "pi pi-fw pi-cog", //pi-language
               command: () => {
                 // this.$emit("notification");
                 this.localesDialog = !this.localesDialog;
               },
             },
             {
+              class: this.checkPath({ survey: "/profile/survey" }) ? "hl-menu" : "",
               label: this.$t("menu.feedback"),
               icon: "pi pi-fw pi-check-square",
               visible: () => (flags & this.role) > 0,
-              to: "/profile/survey",
               command: () => {
                 this.$router.push("/profile/survey");
                 // this.$router.push("/feedback");
@@ -492,7 +498,6 @@ export default {
         // {
         //   label: this.$t("menu.signup"),
         //   icon: "pi pi-sign-in",
-        //   to: "/signup",
         //   visible: () => !this.isLoggedIn,
         //   command: () => {
         //     this.$router.push({ name: "SignUp" });
@@ -501,7 +506,6 @@ export default {
         {
           label: this.$t("menu.logout"),
           icon: "pi pi-sign-out",
-          to: "/",
           visible: () => this.isLoggedIn,
           command: () => {
             this.$keycloak.logout();
@@ -528,31 +532,6 @@ export default {
 //   icon: "pi pi-fw pi-chart-line",
 //   items: this.heatMapItems(),
 // },
-/**
-heatMapItems() {
-      return [
-        {
-          // label: this.$t("menu.group_list"),
-          label: this.$t("menu.list_heatmap"),
-          icon: "pi pi-fw pi-align-left",
-          to: "/dashboard/heatmap/list",
-          command: () => {
-            this.$router.push({ name: "HeatMapListView" });
-          },
-        },
-        {
-          // label: this.$t("menu.group_list"),
-          label: this.$t("menu.add_heatmap"),
-          icon: "pi pi-fw pi-plus",
-          to: "/dashboard/heatmap/add",
-          command: () => {
-            this.$router.push({ name: "DashboadAdd" });
-          },
-        },
-      ];
-    },
-
-**/
 </script>
 <style scoped lang="scss">
 #sideMenuLogo {
@@ -568,7 +547,7 @@ heatMapItems() {
   padding-bottom: 0;
 }
 #sideMenuButton {
-  background: none;
+  // background: none;
   width: $sidemenu-button-width;
   height: $sidemenu-button-width;
   font-size: $sidemenu-button-width;

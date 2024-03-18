@@ -1,11 +1,8 @@
 <template>
   <div ref="spinnerContent" :class="'ren-spinner-wrapper ' + inputClass">
-    <!-- <ProgressSpinner><slot name="content" /></ProgressSpinner> -->
     <slot name="content" />
     <div v-if="!isContent" class="spinner-default-content" />
-    <div v-if="counter && mLock" class="ren-spinner-bg">
-      <!-- {{ size }} -->
-    </div>
+    <div v-if="counter && mLock" class="ren-spinner-bg"></div>
     <ProgressSpinner v-if="counter" class="ren-spinner" :stroke-width="strokeWidth"></ProgressSpinner>
   </div>
 </template>
@@ -25,7 +22,7 @@ export default {
     return {
       isContent: !!this.$slots.content,
       // size: 0,
-      strokeWidth: 2,
+      strokeWidth: "2",
       counter: 0,
     };
   },
@@ -58,10 +55,10 @@ export default {
         //
         // console.info(this.$refs.spinnerContent.clientHeight);
         // console.info(this.$refs.spinnerContent.clientWidth);
-        this.strokeWidth = Math.min(8, Math.max(2, size / 150));
+        this.strokeWidth = Math.min(8, Math.max(2, size / 150)) + "";
         // console.info(size + " " + this.strokeWidth);
       } catch (Exception) {
-        this.strokeWidth = 2;
+        this.strokeWidth = "2";
       }
     },
     async sleep(timeMillis) {
@@ -72,12 +69,17 @@ export default {
       await new Promise((r) => setTimeout(r, t));
     },
 
-    async run(handler, t = null) {
+    async run(handler, delay = null, minTime = null) {
       this.start();
       try {
+        let start = new Date().getTime();
         this.update();
-        await this.sleep(t);
+        await this.sleep(delay);
         await handler();
+        let timeDelta = new Date().getTime() - start;
+        if (minTime != null && timeDelta < minTime) {
+          await this.sleep(minTime - timeDelta);
+        }
       } finally {
         this.stop();
       }

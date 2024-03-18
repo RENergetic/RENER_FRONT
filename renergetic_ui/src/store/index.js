@@ -12,11 +12,11 @@ export default createStore({
       try {
         settings = { ...settings, ...payload };
       } catch (e) {
-        console.info(`load settings error ${e}`);
+        console.warn(`load settings error ${e}`);
       }
 
-      console.info("set settings: ");
-      console.info(settings);
+      // console.info("set settings: ");
+      console.debug(JSON.stringify(settings));
       state.settings = settings;
     },
   },

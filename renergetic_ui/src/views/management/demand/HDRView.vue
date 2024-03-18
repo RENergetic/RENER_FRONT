@@ -1,16 +1,28 @@
 <template>
-  <Card style="margin: auto; margin-top: 0.5rem; max-width: 95vw">
+  <Card class="ren-page-content" style="width: 95vw">
+    <template #title>{{ $t("menu.hdr_view") }}</template>
     <template #content>
       <div class="grid">
         <!-- :key="selectedRecommendation.id + (compareWith ? compareWith.id : '')" -->
         <div class="col-9">
-          <HDRRecomendation v-if="selectedRecommendation" :recommendation="selectedRecommendation" :comparewith="compareWith" />
+          <HDRRecomendation
+            v-if="selectedRecommendation"
+            :key="reloadRecommendation"
+            :hdr-request="hdrRequest"
+            :recommendation="selectedRecommendation"
+            :comparewith="compareWith"
+          />
           <h2 v-else>{{ $t("view.select_recommendation") }}</h2>
         </div>
-        <div class="col-3">
+        <div class="col-3" style="min-width: 15rem">
           <RenSpinner ref="spinner" :lock="true" style="width: 100%">
             <template #content>
-              <HDRRecomendationList v-model="selectedRecommendation" v-model:comparewith="compareWith" :recommendation-list="recommendationList" />
+              <HDRRecomendationList
+                v-model="selectedRecommendation"
+                v-model:comparewith="compareWith"
+                v-model:hdr-request="hdrRequest"
+                :recommendation-list="recommendationList"
+              />
             </template>
           </RenSpinner>
         </div>
@@ -30,11 +42,13 @@ export default {
   },
   data() {
     return {
+      hdrRequest: null,
       assetAdd: false,
       assetList: [],
       recommendationList: [],
       selectedRecommendation: null,
       compareWith: null,
+      reloadRecommendation: false,
     };
   },
   watch: {
@@ -46,6 +60,12 @@ export default {
     //   },
     //   deep: true,
     // },
+    hdrRequest: {
+      handler: async function (r) {
+        if (r != null) this.reloadRecommendation = !this.reloadRecommendation;
+      },
+      deep: true,
+    },
   },
 
   mounted() {

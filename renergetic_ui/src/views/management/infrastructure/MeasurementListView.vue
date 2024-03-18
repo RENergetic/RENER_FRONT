@@ -1,29 +1,34 @@
 <template>
-  <Card style="margin: auto; margin-top: 1rem">
+  <Card class="ren-page-content">
+    <template #title>
+      {{ $t("menu.manage_measurements") }}
+      <span style="float: right"> <Button :label="$t('view.button.manage_tags')" icon="pi pi-list" @click="tagListDialog = true" /></span>
+    </template>
     <template #content>
-      <RenSpinner ref="spinner" :lock="true" style="margin: auto; max-width: 95%">
-        <!--  max-width: 80vw -->
+      <RenSpinner ref="spinner" :lock="true" style="min-width: 100%">
         <template #content>
-          <!-- {{ filters }} -->
-          <!-- {{ filters }} -->
           <measurement-list v-model:filters="filters" :measurement-list="measurementList" @reload="loadMeasurements" />
         </template>
       </RenSpinner>
     </template>
   </Card>
+  <Dialog v-model:visible="tagListDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <!-- {{ availableTags }}
+    {{ availableTagsValues }} -->
+    <TagManagement />
+  </Dialog>
 </template>
 <script>
 import MeasurementList from "@/components/management/infrastructure/measurement/MeasurementList.vue";
+import TagManagement from "@/components/management/infrastructure/measurement/TagManagement.vue";
 export default {
   name: "MeasurementListView",
   components: {
     MeasurementList,
+    TagManagement,
   },
   data() {
-    return {
-      filters: null,
-      measurementList: [],
-    };
+    return { tagListDialog: false, filters: null, measurementList: [] };
   },
 
   watch: {
@@ -38,7 +43,13 @@ export default {
     this.loadMeasurements();
   },
   methods: {
-    async loadMeasurements() {
+    async loadMeasurements(evt) {
+      let offset = 0;
+      let limit = 25;
+      if (evt) {
+        offset = evt.offset;
+        limit = evt.limit;
+      }
       let params = {};
       //  { "global": { "value": null },
       if (this.filters)
@@ -53,7 +64,7 @@ export default {
           tag_key: this.filters.tag_key.value,
         };
       await this.$refs.spinner.run(async () => {
-        await this.$ren.managementApi.listMeasurement({ ...params, limit: 2000 }).then((data) => {
+        await this.$ren.managementApi.listMeasurement({ params: params, offset: offset, limit: limit }).then((data) => {
           for (let m of data) {
             this.$ren.utils.setMeasurementLabel(m);
           }

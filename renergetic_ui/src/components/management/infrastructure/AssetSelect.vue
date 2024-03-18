@@ -39,8 +39,8 @@
             >
               <template #value="slotProps">
                 <div v-if="slotProps.value">
-                  <div v-if="$te('model.asset.type.' + slotProps.value.name)">
-                    {{ $t("model.asset.type." + slotProps.value.name) }}
+                  <div v-if="$te('model.asset.types.' + slotProps.value.name)">
+                    {{ $t("model.asset.types." + slotProps.value.name) }}
                   </div>
                   <div v-else>{{ slotProps.value.label }}</div>
                 </div>
@@ -49,8 +49,8 @@
                 </span>
               </template>
               <template #option="slotProps">
-                <div v-if="$te('model.asset.type.' + slotProps.option.name)">
-                  {{ $t("model.asset.type." + slotProps.option.name) }}
+                <div v-if="$te('model.asset.types.' + slotProps.option.name)">
+                  {{ $t("model.asset.types." + slotProps.option.name) }}
                 </div>
                 <div v-else>{{ slotProps.option.label }}</div>
               </template>
