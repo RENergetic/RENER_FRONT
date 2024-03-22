@@ -1,0 +1,125 @@
+{
+  "label": "Consumption for: {asset} ",
+  "tiles": [
+    {
+      "name": "energy_consumption",
+      "label": "Energy consumption",
+      "type": "single",
+      "featured": null,
+      "measurements": [],
+      "props": {
+        "icon_visibility": false,
+        "background": "none"
+      },
+      "layout": {
+        "w": 12,
+        "x": 0,
+        "h": 1,
+        "y": 0
+      }
+    },
+    {
+      "name": "electricity",
+      "label": "Electricity",
+      "type": "single",
+      "featured": null,
+      "measurements": [
+        {
+          "name": "energy",
+          "domain": "electricity",
+          "direction": "in",
+          "sensor_name": "energy_meter",
+          "aggregation_function": "sum"
+        }
+      ],
+      "props": {
+        "icon": "electricity",
+        "mask": "#3498db60"
+      },
+      "layout": {
+        "w": 4,
+        "x": 2,
+        "h": 4,
+        "y": 1
+      }
+    },
+    {
+      "name": "electricity",
+      "label": "Electricity",
+      "type": "single",
+      "featured": null,
+      "measurements": [
+        {
+          "name": "current_power",
+          "domain": "electricity",
+          "direction": "in",
+          "sensor_name": "energy_meter",
+          "aggregation_function": "mean"
+        }
+      ],
+      "props": {
+        "icon": "electricity",
+        "mask": "#3498db60"
+      },
+      "layout": {
+        "w": 4,
+        "x": 6,
+        "h": 4,
+        "y": 1
+      }
+    },
+    {
+      "name": "heat",
+      "label": "Heat",
+      "type": "single",
+      "featured": null,
+      "measurements": [
+        {
+          "name": "energy",
+          "domain": "heat",
+          "direction": "in",
+          "sensor_name": "energy_meter",
+          "aggregation_function": "sum"
+        }
+      ],
+      "props": {
+        "icon": "heat",
+        "mask": "#3498db60"
+      },
+      "layout": {
+        "w": 4,
+        "x": 2,
+        "h": 4,
+        "y": 5
+      }
+    },
+    {
+      "name": "heat",
+      "label": "Heat",
+      "type": "single",
+      "featured": null,
+      "measurements": [
+        {
+          "name": "current_power",
+          "domain": "heat",
+          "direction": "in",
+          "sensor_name": "energy_meter",
+          "aggregation_function": "mean"
+        }
+      ],
+      "props": {
+        "icon": "heat",
+        "mask": "#3498db60"
+      },
+      "layout": {
+        "w": 4,
+        "x": 6,
+        "h": 4,
+        "y": 5
+      }
+    }
+  ],
+  "is_template": true,
+  "featured": true,
+  "props": {}
+}

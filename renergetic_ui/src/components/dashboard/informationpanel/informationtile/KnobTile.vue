@@ -1,28 +1,28 @@
 <template>
   <div v-if="measurement" class="flex flex-column justify-content-center" :style="tileStyle">
     <div v-if="mSettings.tile.template" class="flex flex-none flex-column align-items-center justify-content-center">
-      <h3 id="value" :style="color">
+      <h3 id="value" :style="`color:${tileTitleColor}`">
         {{ $t(`tile_templates.${tile.name}`, { value: `${$ren.utils.roundValue(value)} ${unit} ` }) }}
       </h3>
     </div>
     <div v-else class="flex flex-none flex-column align-items-center justify-content-center">
       <span
-        ><h3 id="label" :style="color">{{ mSettings.tile.label ? mSettings.tile.label : measurementlabel }} {{ unitTitle }}</h3></span
+        ><h3 id="label" :style="`color:${tileTitleColor}`">{{ mSettings.tile.label ? mSettings.tile.label : mlabel }} {{ unitLabel }}</h3></span
       >
     </div>
     <Knob
       v-if="valuetemplate"
       id="knob_component"
       v-model="value"
-      range-color="#e9e8e8"
+      :range-color="rangeColor"
       :min="minV"
       :text-color="color"
       :value-color="color"
       :value-template="valuetemplate"
       :max="maxV"
       :stroke-width="strokeWidth"
-      class="flex flex-none flex-column align-items-center justify-content-center"
-      :style="{ textAlign: 'center', maxHeight: '80%' }"
+      class="flex flex-grow-1 flex-column align-items-center justify-content-center"
+      :style="{ textAlign: 'center', maxHeight: '80%', overflow: 'hidden' }"
       :size="1000"
     />
   </div>
@@ -38,7 +38,7 @@ export default {
   name: "KnobTile",
   components: { Knob },
   props: {
-    settings: { type: Object, default: () => ({}) },
+    settings: { type: Object, default: () => ({ panel: {}, tile: {} }) },
     pdata: { type: Object, default: () => ({}) },
     conversionSettings: { type: Object, default: () => ({}) },
     tile: {
@@ -47,20 +47,22 @@ export default {
     },
   },
   data() {
-    let measurement = null;
-    if (this.tile.measurements) {
-      measurement = this.tile.measurements[0];
-    }
+    // let measurement = null;
+    // if (this.tile.measurements) {
+    //   measurement = this.tile.measurements[0];
+    // }
+    let measurement = this.getTileMeasurement();
+    console.error(this.pdata);
     let maxV =
-      this.settings.panel.relativeValues &&
+      !this.settings.panel.relativeValues &&
       this.pdata.max &&
       this.pdata.max[measurement.aggregation_function] &&
       this.pdata.max[measurement.aggregation_function][measurement.id]
         ? this.pdata.max[measurement.aggregation_function][measurement.id]
         : this.defaultMax(measurement);
-
+    console.error(measurement.id);
     let minV =
-      this.settings.panel.relativeValues &&
+      !this.settings.panel.relativeValues &&
       this.pdata.min &&
       this.pdata.min[measurement.aggregation_function] &&
       this.pdata.min[measurement.aggregation_function][measurement.id]
@@ -68,41 +70,31 @@ export default {
         : 0.0;
     let unit = this.$ren.utils.getUnit(measurement, this.settings.panel, this.conversionSettings);
     return {
+      unit: unit,
       mSettings: this.settings,
       measurement: measurement,
+      rangeColor: this.settings.tile["knob_color"] ? this.settings.tile["knob_color"] : "#e9e8e8",
+
       maxV: maxV,
       minV: minV,
-      valuetemplate: unit && unit != "any" ? "{value}[" + unit + "]" : "{value}",
+      valuetemplate: unit != null ? "{value}" + unit : "{value}",
     };
   },
   computed: {
-    unit: function () {
-      return this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings);
-    },
-    unitTitle: function () {
-      let u = this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings);
-      return u ? `[${u}]` : "";
-    },
+    // unit: function () {
+    //   return this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings);
+    // },
     color: function () {
       let color = this.$ren.utils.measurementColor(this.measurement, this.value);
       return color.color;
     },
 
     tileStyle: function () {
-      let color = this.mSettings.tile.measurement_background
-        ? this.$ren.utils.measurementBackgroundColor(this.measurement, this.mSettings.tile, this.value)
-        : "none";
-      // let color = this.$ren.utils.measurementBackgroundColor(this.measurement, this.settings.tile, this.value);
-      return `height: 100%;background:${color} `;
+      return `height: 100%;background:${this.tileBackgroundColor} `;
     },
-    measurementlabel: function () {
-      if (this.measurement.label != null) {
-        let k = `model.measurement.labels.${this.measurement.label}`;
-        return this.$te(k) ? this.$t(k) : this.measurement.label;
-      } else {
-        //TODO: translate it
-        return this.measurement.name;
-      }
+
+    mlabel: function () {
+      return this.measurementLabel(this.measurement);
     },
 
     strokeWidth: function () {
@@ -119,11 +111,10 @@ export default {
         }
         if (v > this.maxV) {
           console.warn(`knob: value overflow ${v}, max: ${this.maxV}`);
-          return this.maxV;
-        }
-        if (v < this.minV) {
+          v = this.maxV;
+        } else if (v < this.minV) {
           console.warn(`knob: wrong value  ${v}, min: ${this.minV}`);
-          return this.maxV;
+          v = this.maxV;
         }
         return this.$ren.utils.roundValue(v); // Math.round(v * 10) / 10.0;
       } catch (e) {
@@ -135,6 +126,9 @@ export default {
   mounted() {},
   methods: {
     defaultMax(measurement) {
+      switch (measurement.type.base_unit) {
+        case "%":
+      }
       return measurement.type.base_unit == "%" || this.settings.panel.relativeValues ? 100.0 : 1.0;
     },
   },

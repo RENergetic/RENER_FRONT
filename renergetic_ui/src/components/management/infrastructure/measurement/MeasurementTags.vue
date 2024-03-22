@@ -30,12 +30,12 @@
   <Dialog v-model:visible="newTagDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <!-- {{ availableTags }}
     {{ availableTagsValues }} -->
-    <tag-form :tags="availableTags" @update:model-value="onNewTag" @cancel="tagCancel" />
+    <tag-form :tags="availableTags" @update:model-value="onTagSave" @cancel="tagCancel" />
   </Dialog>
   <Dialog v-model:visible="tagListDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <!-- {{ availableTags }}
     {{ availableTagsValues }} -->
-    <TagManagement @on-delete="tagOnDelete" />
+    <TagManagement @on-delete="tagOnDelete" @on-create="onNewTag" />
   </Dialog>
 </template>
 
@@ -60,12 +60,12 @@ export default {
   },
   computed: {},
   watch: {
-    measurement: {
-      // handler: function (newVal) {
-      //   this.$emit("update", newVal);
-      // },
-      // deep: true,
-    },
+    // measurement: {
+    //   // handler: function (newVal) {
+    //   //   this.$emit("update", newVal);
+    //   // },
+    //   // deep: true,
+    // },
   },
   async mounted() {
     await this.loadTags();
@@ -97,9 +97,11 @@ export default {
     addTagForm() {
       this.newTagDialog = true;
     },
-    async onNewTag(evt) {
+    async onTagSave(evt) {
       let newTag = await this.$ren.managementApi.createNewTag(evt);
-
+      this.onNewTag(newTag);
+    },
+    onNewTag(newTag) {
       let tKey = newTag.key;
       let tValue = newTag.value;
       this.newTagDialog = false;

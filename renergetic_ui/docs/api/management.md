@@ -73,6 +73,7 @@
             "asset_id": 1, //related asset 
             "measurement_details": {
                           "color": "#5C6BC0"
+                          "description":{}
             }
     
 }

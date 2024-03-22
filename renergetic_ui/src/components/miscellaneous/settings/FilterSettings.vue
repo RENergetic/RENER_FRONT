@@ -5,14 +5,17 @@
 
 <script>
 import Settings from "./Settings.vue";
-function setSettings(s) {
-  if (s.date_from) s.date_from = new Date(s.date_from);
-  if (s.date_to) s.date_to = new Date(s.date_to);
-  return s;
-}
+// function setSettings(s) {
+//   if (s.date_from) s.date_from = new Date(s.date_from);
+//   if (s.date_to) s.date_to = new Date(s.date_to);
+//   return s;
+// }
 function validateDateInterval(s) {
-  if (s.date_to && s.date_from && s.date_to.getTime() < s.date_from.getTime()) {
-    s.date_to = new Date(s.date_from.getTime() + 15 * 60000);
+  // if (s.date_to && s.date_from && s.date_to.getTime() < s.date_from.getTime()) {
+  //   s.date_to = new Date(s.date_from.getTime() + 15 * 60000);
+  // }
+  if (s.date_to && s.date_from && s.date_to < s.date_from) {
+    s.date_to = new Date(s.date_from + 15 * 60000);
   }
   return s;
   // this.updateModel();
@@ -25,8 +28,8 @@ export default {
   props: {},
   emits: ["update"],
   data() {
-    let settings = setSettings(this.$store.getters["settings/filter"]);
-
+    // let settings = setSettings(this.$store.getters["settings/filter"]);
+    let settings = this.$store.getters["settings/filter"];
     return {
       settings: settings,
       timeIntervalType: settings.timeIntervalType,
@@ -47,7 +50,8 @@ export default {
     },
   },
   async mounted() {
-    this.settings = setSettings(this.$store.getters["settings/filter"]);
+    // this.settings = setSettings(this.$store.getters["settings/filter"]);
+    this.settings = this.$store.getters["settings/filter"];
     this.timeIntervalType = this.settings.timeIntervalType;
     await this.$ren.dashboardApi.listInformationPanel().then((panels) => {
       this.panels = panels;
@@ -65,8 +69,10 @@ export default {
     async onClick() {
       let mSettings = { ...this.settings };
       mSettings["predictionIntervalms"] = mSettings.predictionInterval * 3600;
-      if (mSettings.date_from) mSettings.date_from = mSettings.date_from.getTime();
-      if (mSettings.date_to) mSettings.date_to = mSettings.date_to.getTime();
+
+      validateDateInterval(mSettings);
+      // if (mSettings.date_from) mSettings.date_from = mSettings.date_from.getTime();
+      // if (mSettings.date_to) mSettings.date_to = mSettings.date_to.getTime();
       this.$store.commit("settings/filter", mSettings);
       await this.$ren.utils.saveSettings();
       this.$emit("update");
@@ -140,4 +146,3 @@ export default {
   },
 };
 </script>
-<style scoped lang="scss"></style>

@@ -1,6 +1,9 @@
 <template>
   <Card class="ren-page-content">
-    <template #title>{{ $t("menu.manage_measurements") }}</template>
+    <template #title>
+      {{ $t("menu.manage_measurements") }}
+      <span style="float: right"> <Button :label="$t('view.button.manage_tags')" icon="pi pi-list" @click="tagListDialog = true" /></span>
+    </template>
     <template #content>
       <RenSpinner ref="spinner" :lock="true" style="min-width: 100%">
         <template #content>
@@ -9,19 +12,23 @@
       </RenSpinner>
     </template>
   </Card>
+  <Dialog v-model:visible="tagListDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <!-- {{ availableTags }}
+    {{ availableTagsValues }} -->
+    <TagManagement />
+  </Dialog>
 </template>
 <script>
 import MeasurementList from "@/components/management/infrastructure/measurement/MeasurementList.vue";
+import TagManagement from "@/components/management/infrastructure/measurement/TagManagement.vue";
 export default {
   name: "MeasurementListView",
   components: {
     MeasurementList,
+    TagManagement,
   },
   data() {
-    return {
-      filters: null,
-      measurementList: [],
-    };
+    return { tagListDialog: false, filters: null, measurementList: [] };
   },
 
   watch: {

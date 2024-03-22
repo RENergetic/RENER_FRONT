@@ -1,5 +1,4 @@
 <template>
-  <!-- {{ mDashboards }} -->
   <!-- :filters="filters"
     filter-display="row"
     :global-filter-fields="['name', 'label','url']" 
@@ -180,7 +179,6 @@ export default {
     },
 
     async reload() {
-      //TODO: filter
       this.filters = this.initFilter();
       this.mOffset = 0;
       this.$emit("reload", { q: this.filters.global.value, limit: this.limit, offset: this.mOffset });
@@ -191,6 +189,7 @@ export default {
     },
     filter() {
       if (!this.filters.state) {
+        this.onPagination();
         return;
       }
       let q = this.filters.global.value;

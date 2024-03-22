@@ -4,6 +4,7 @@
     <template #content>
       <RenSpinner ref="spinner" :lock="true" style="width: 100%">
         <template #content>
+          <!-- {{ dashboards }} -->
           <dashboard-list :dashboards="dashboards" @reload="reload" />
         </template>
       </RenSpinner>
@@ -22,8 +23,8 @@ export default {
       dashboards: [], // this.$store.getters["view/dashboards"],
     };
   },
-  mounted() {
-    this.loadDashboards();
+  async mounted() {
+    await this.loadDashboards();
   },
   methods: {
     async loadDashboards() {

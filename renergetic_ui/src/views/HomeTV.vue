@@ -13,7 +13,7 @@
       :locked="locked"
       :edit-mode="false"
       :panel="panel"
-      :filter="filter"
+      :filter="effectiveFilterSettings"
       :auto-reload="autoReload"
       :panel-settings="panelSettings"
     ></InformationPanelWrapper>
@@ -57,11 +57,16 @@ export default {
       assetId: null,
       panel: this.$store.getters["view/homePanel"],
       settings: this.$store.getters["settings/home"],
-      filter: this.$store.getters["settings/parsedFilter"](),
       panelSettings: this.$store.getters["settings/panel"],
     };
   },
   computed: {
+    effectiveFilterSettings: function () {
+      let userFilter = this.$store.getters["settings/filters"]();
+      let overrideMode = this.panel.props && this.panel.props.overrideMode ? this.panel.props.overrideMode : null;
+      let settings = this.mergeSettings(userFilter, this.panel.props, overrideMode);
+      return this.parseDateFilter(settings);
+    },
     loggedIn: function () {
       return this.$store.getters["auth/isAuthenticated"];
     },
@@ -148,7 +153,6 @@ export default {
       this.settings = this.$store.getters["settings/home"];
     },
     updateFilter() {
-      this.filter = this.$store.getters["settings/parsedFilter"]();
       if (this.slideshow) {
         this.slideshow.reset();
       }

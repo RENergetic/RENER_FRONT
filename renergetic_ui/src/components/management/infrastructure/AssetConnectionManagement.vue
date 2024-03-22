@@ -8,9 +8,14 @@
           <span v-if="connectedAssets.length === 0">{{ $t("view.no_connections_found") }}</span>
           <!-- <div v-if="!loading && connectedAssets.length > 0"> -->
           <DataTable :value="connectedAssets" :lazy="true" data-key="id">
-            <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false"></Column>
-            <Column field="label" :header="$t('model.asset.label')" :show-filter-menu="false"></Column>
-            <Column field="connection_type" :header="$t('model.asset.connection_type')" :show-filter-menu="false"></Column>
+            <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false" />
+            <Column field="label" :header="$t('model.asset.label')" :show-filter-menu="false" />
+            <Column field="connection_type" :header="$t('model.asset.connection_type')" :show-filter-menu="false">
+              <template #body="conn">
+                {{ fieldLabel(conn.data.connection_type, "enums.asset_connection") }}
+              </template>
+            </Column>
+
             <Column :exportable="false" style="min-width: 8rem">
               <template #body="conn">
                 <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteConnection(conn.data)" />
@@ -142,14 +147,41 @@ export default {
     onAssetSelect(selectedAsset) {
       this.selectedAsset = selectedAsset;
     },
-    async deleteConnection(conn) {
-      //TODO: confirm dialog, TODO: delete by connection type ?, can two assets can have more than 1 connection (different type)?
-      console.info(`connection type: ${conn.type.id}, connected asset : ${conn.id}:${conn.name}(${conn.label ? conn.label : "no label"}) `);
-
-      this.$refs.spinner.run(async () => {
-        await this.$ren.managementApi.deleteAssetConnection(this.asset.id, conn.id);
-        this.connectedAssets = await this.$ren.managementApi.listConnectedAssets(this.asset.id, 0, 200);
+    async deleteConnection(assetConnection) {
+      //
+      console.error(
+        `TODO: confirm dialog, TODO: delete by connection type ?, can two assets can have more than 1 connection (different type)? connection type: ${
+          assetConnection.type.id
+        }, connected asset : ${assetConnection.id}:${assetConnection.name}(${assetConnection.label ? assetConnection.label : "no label"}) `,
+      );
+      await this.$confirm.require({
+        message: this.$t("view.asset_connection_delete_body", {
+          label: assetConnection.label ? assetConnection.label : assetConnection.name,
+        }),
+        header: this.$t("view.asset_connection_delete_header"),
+        icon: "pi pi-exclamation-triangle",
+        accept: async () => {
+          await this.deleteAssetConnection(assetConnection);
+        },
+        reject: () => {
+          this.$confirm.close();
+        },
       });
+    },
+
+    async deleteAssetConnection(assetConnection) {
+      let res = false;
+      this.$refs.spinner.run(async () => {
+        await this.$ren.managementApi.deleteAssetConnection(this.asset.id, assetConnection.id);
+        this.connectedAssets = await this.$ren.managementApi.listConnectedAssets(this.asset.id, 0, 200);
+        res = true;
+      });
+      if (res) {
+        this.$emitter.emit("information", { message: this.$t("information.asset_connection_deleted") });
+      } else {
+        this.$emitter.emit("error", { message: this.$t("information.asset_connection_not_deleted") });
+      }
+      return res;
     },
     async submitAssetConnection() {
       await this.$ren.managementApi.submitAssetConnection(this.asset.id, this.selectedAsset.id, this.connectionType.name, this.twoDirection);

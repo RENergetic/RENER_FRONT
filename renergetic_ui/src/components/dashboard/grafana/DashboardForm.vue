@@ -9,6 +9,7 @@
         <!-- {{ $store.getters["view/dashboardUnits"] }}   {{ measurementTypes }}  {{ mDashboard }} -->
         <ren-input
           v-model="mDashboard.name"
+          :text-info="'model.name_description'"
           :text-label="'model.dashboard.name'"
           :invalid="v$.mDashboard.name.$invalid"
           :errors="v$.mDashboard.name.$silentErrors"
@@ -30,6 +31,7 @@
 
         <ren-input
           v-model="mDashboard.label"
+          :text-info="'model.label_description'"
           :text-label="'model.dashboard.label'"
           :invalid="v$.mDashboard.label.$invalid"
           :errors="v$.mDashboard.label.$silentErrors"

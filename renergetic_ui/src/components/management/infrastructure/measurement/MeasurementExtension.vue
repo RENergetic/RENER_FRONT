@@ -19,6 +19,7 @@
 
       <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="edit()" />
       <Button v-tooltip="$t('view.copy')" icon="pi pi-copy" class="p-button-rounded" @click="copy()" />
+      <Button v-tooltip="$t('view.view_json')" icon="pi pi-question-circle" class="p-button-rounded" @click="jsonDialog = true" />
 
       <Button v-tooltip="$t('view.delete')" icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteConfirm()" />
     </div>
@@ -42,20 +43,22 @@
   </div>
 
   <Dialog v-model:visible="measurementDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <!-- {{ selectedMeasurement.measurement_details }} -->
     <MeasurementDetails :model="mMeasurement.measurement_details" @update="onDetailsUpdate"></MeasurementDetails>
-    <!-- @update:model-value="onCreate($event, 0)" -->
   </Dialog>
   <!-- <Button :label="$t('view.button.add')" @click="measurementAdd = true" /> -->
   <!-- <Dialog v-model:visible="measurementEditDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <MeasurementForm @update:model-value="onCreate($event, 0)"></MeasurementForm>
   </Dialog> -->
-  <DeleteMeasurement ref="deleteMeasurement" :measurement="mMeasurement" @delete="onDelete" />
+  <DeleteMeasurement ref="deleteMeasurement" :measurements="[mMeasurement]" @delete="onDelete" />
   <Dialog v-model:visible="editDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <MeasurementForm v-if="mMeasurement" v-model="mMeasurement" @update="onEdit($event)" @cancel="editDialog = false" />
   </Dialog>
   <Dialog v-model:visible="typeDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
     <MeasurementTypeList />
+  </Dialog>
+  <Dialog v-model:visible="panelListDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
+    measurement {{ mMeasurement.name }}({{ mMeasurement.id }}) :{{ mMeasurement.panel_count }}
+    TODO: list panels
   </Dialog>
   <Dialog v-model:visible="dataDialog" :style="{ width: '90vw' }" :modal="true" :dismissable-mask="true">
     <div>
@@ -78,12 +81,15 @@
       />
     </div>
   </Dialog>
+  <MeasurementDialog v-model:visible="jsonDialog" v-model="mMeasurement" />
+
   <measurement-tags ref="tagDialog" :measurement="mMeasurement" />
 </template>
 
 <script>
 import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import MeasurementForm from "./MeasurementForm.vue";
+import MeasurementDialog from "./MeasurementDialog.vue";
 import MeasurementDetails from "./MeasurementDetails.vue";
 import DeleteMeasurement from "./DeleteMeasurement.vue";
 import MeasurementTypeList from "./MeasurementTypeList.vue";
@@ -101,6 +107,7 @@ export default {
     MeasurementTags,
     MeasurementDetails,
     DeleteMeasurement,
+    MeasurementDialog,
     MeasurementTypeList,
   },
   props: {
@@ -111,9 +118,10 @@ export default {
     return {
       mMeasurement: this.measurement,
       mName: this.measurement.label ? `${this.measurement.label} (${this.measurement.name})` : this.measurement.name,
-      hasPanels: false, //TODO:
+      panelListDialog: false,
       editDialog: false,
       addDialog: false,
+      jsonDialog: false,
       typeDialog: false,
       dataDialog: false,
       measurementDetailsDialog: false,
@@ -125,7 +133,6 @@ export default {
   watch: {
     // "filters.name": function (f1 ) {
     //   this.filters.label.value = f1.value;
-    //   // alert(value);
     // },
   },
   async mounted() {
@@ -134,11 +141,14 @@ export default {
   methods: {
     reloadSettings() {
       this.filter = this.$store.getters["settings/parsedFilter"]("measurement");
-      // this.settings = this.$store.getters["settings/panel"];
       // this.conversionSettings = this.$store.getters["settings/conversion"];
     },
     async manageTags() {
       await this.$refs.tagDialog.open();
+    },
+    listPanels() {
+      alert("todo:");
+      this.panelListDialog = true;
     },
     async onDetailsUpdate(details) {
       this.mMeasurement.measurement_details = details;
@@ -156,7 +166,7 @@ export default {
     },
     async showDetails() {
       await this.$ren.managementApi.getMeasurementProperties(this.mMeasurement.id).then((details) => {
-        this.mMeasurement.measurement_details = details;
+        this.mMeasurement.measurement_details = details ? details : {};
       });
 
       this.measurementDetailsDialog = true;
@@ -185,7 +195,7 @@ export default {
       });
     },
     deleteConfirm() {
-      this.$refs.deleteMeasurement.delete(this.mMeasurement);
+      this.$refs.deleteMeasurement.delete([this.mMeasurement]);
     },
     // onDelete(o){
     onDelete() {

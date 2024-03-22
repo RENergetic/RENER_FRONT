@@ -9,8 +9,14 @@
     <!-- <template #title> </template> -->
     <template #content>
       <div class="ren">
-        <ren-input v-model="mModel.name" :text-label="'model.asset.name'" :invalid="v$.mModel.name.$invalid" :errors="v$.mModel.name.$silentErrors" />
-        <ren-input v-model="mModel.label" :text-label="'model.asset.label'" />
+        <ren-input
+          v-model="mModel.name"
+          :text-info="'model.name_description'"
+          :text-label="'model.asset.name'"
+          :invalid="v$.mModel.name.$invalid"
+          :errors="v$.mModel.name.$silentErrors"
+        />
+        <ren-input v-model="mModel.label" :text-info="'model.label_description'" :text-label="'model.asset.label'" />
         <ren-input-wrapper :text-label="'model.asset.asset_type'" :invalid="v$.mModel.type.$invalid" :errors="v$.mModel.type.$silentErrors">
           <template #content>
             <Dropdown

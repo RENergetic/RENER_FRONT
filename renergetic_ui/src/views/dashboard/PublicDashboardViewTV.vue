@@ -1,5 +1,6 @@
 <template>
-  <div v-if="panel" id="panel-box" style="max-height:100vh:overflow:hidden">
+  <!-- PUBLIC DASHBOARD -->
+  <div v-if="panel" id="panel-box" style="max-height:100vh:overflow:hidden;">
     <DotMenu :model="menuModel" />
     <InformationPanelWrapper
       ref="panel"
@@ -8,7 +9,7 @@
       :panel="panel"
       :edit-mode="false"
       :panel-settings="settings"
-      :filter="filterSettings"
+      :filter="effectiveFilterSettings"
     ></InformationPanelWrapper>
   </div>
 </template>
@@ -25,16 +26,15 @@ export default {
   data() {
     return {
       panel: null,
-      // locked: false,
-      notifications: [],
-      settings: this.$store.getters["settings/panel"],
-      filterSettings: this.$store.getters["settings/parsedFilter"](),
-      settingsDialog: false,
-      filterSettingsDialog: false,
-      conversionSettingsDialog: false,
     };
   },
   computed: {
+    effectiveFilterSettings: function () {
+      let userFilter = this.$store.getters["settings/filters"]();
+      let overrideMode = this.panel.props && this.panel.props.overrideMode ? this.panel.props.overrideMode : null;
+      let settings = this.mergeSettings(userFilter, this.panel.props, overrideMode);
+      return this.parseDateFilter(settings);
+    },
     normalViewButton: function () {
       return {
         label: this.$t("menu.normal_view_mode"),
@@ -60,11 +60,6 @@ export default {
     async loadStructure() {
       this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id);
     },
-    updateFilter() {
-      this.filterSettings = this.$store.getters["settings/parsedFilter"]();
-    },
   },
 };
 </script>
-
-<style lang="scss"></style>

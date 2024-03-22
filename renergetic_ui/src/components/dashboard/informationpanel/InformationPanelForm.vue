@@ -7,12 +7,14 @@
         <AccordionTab :header="$t('view.information_panel_form')">
           <ren-input
             v-model="mModel.name"
+            :text-info="'model.name_description'"
             :text-label="'model.information_panel.name'"
             :invalid="v$.mModel.name.$invalid"
             :errors="v$.mModel.name.$silentErrors"
           />
           <!-- :key="mModel ? mModel.label : ''" -->
           <ren-input
+            :key="mModel.label"
             v-model="mModel.label"
             :text-info="mModel.is_template ? $t('view.panel_label_info', ['{asset}']) : null"
             :text-label="'model.information_panel.label'"
@@ -32,9 +34,14 @@
             :errors="v$.mModel.priority.$silentErrors"
           />
         </AccordionTab>
+        <AccordionTab :key="mModel.props" :header="$t('view.information_panel_props')">
+          <!-- {{ mModel.props }} -->
+          <Settings :schema="schema" :settings="mModel.props"></Settings>
+          <BasicFilterSettings :settings="mModel.props" :submit-button="false" />
+        </AccordionTab>
         <!-- {{ modelValue }} -->
 
-        <AccordionTab v-if="panelStructure && panelStructure.tiles != null" :header="$t('model.information_panel.tiles')">
+        <AccordionTab v-if="panelStructure && panelStructure.tiles != null" :header="$t('model.information_panel.tiles')" @click="() => alert('')">
           <InformationPanelTilesWrapper v-if="panelStructure" :key="refreshTiles" v-model="panelStructure" :is-template="mModel.is_template" />
         </AccordionTab>
         <AccordionTab :header="$t('model.information_panel.structure')">
@@ -82,11 +89,10 @@
               :show-cancel-button="false"
               accept="text/*, .json"
               :max-file-size="1000000"
-              @upload="onUpload"
               @uploader="onFileUpload"
               @select="onSelect"
             >
-              <!-- @upload="onFileUpload" -->
+              <!-- @upload="onUpload" -->
               <template #empty>
                 <!-- <ren-input-text v-if="submittedPanel" v-model="submittedPanel" :text-label="null" :cols="50" :maxlength="10000" /> -->
                 <ren-input-wrapper v-if="submittedPanelJSON" :text-label="null">
@@ -121,8 +127,9 @@
       v-model="inferMeasurements"
       :text-label="'view.infer_measurements'"
       :options="[
-        { label: $t('view.infer_measurements'), value: true },
-        { label: $t('view.no_infer_measurements'), value: false },
+        { label: $t('view.infer_measurements'), value: 'refill' },
+        { label: $t('view.no_infer_measurements'), value: 'default' },
+        { label: $t('view.ignore_measurements_ids'), value: 'override' },
       ]"
     />
     <ren-submit v-if="submittedPanelJSON != null" :cancel-button="true" @submit="fileSubmit" @cancel="onFileClear" />
@@ -132,13 +139,14 @@
 <script>
 import { cleanTileStructure } from "./InformationPanelTileForm.vue";
 import panelTemplates from "@/plugins/model/information_panel_templates";
-function getCleanPanelStructure(panel /*, isTemplate*/) {
+export function getCleanPanelStructure(panel, clearIDs = false /*, isTemplate*/) {
+  console.error(panel);
   let mPanel = JSON.parse(JSON.stringify(panel));
   if (mPanel.name !== undefined) delete mPanel.name;
   if (mPanel.id !== undefined) delete mPanel.id;
   // console.info(mPanel);
   for (let tile of mPanel.tiles) {
-    cleanTileStructure(tile);
+    cleanTileStructure(tile, clearIDs);
   }
   return mPanel;
   // return JSON.stringify(mPanel, null, "\t");
@@ -146,26 +154,32 @@ function getCleanPanelStructure(panel /*, isTemplate*/) {
 import FileUpload from "primevue/fileupload";
 
 import InformationPanelTilesWrapper from "./InformationPanelTilesWrapper.vue";
+import { panelSchema } from "@/plugins/model/settings.js";
 import { useVuelidate } from "@vuelidate/core";
 import { maxLength, required, minLength, minValue, maxValue } from "@/plugins/validators.js";
 import InfoIcon from "../../miscellaneous/InfoIcon.vue";
+import Settings from "@/components/miscellaneous/settings/Settings.vue";
+import BasicFilterSettings from "@/components/miscellaneous/settings/BasicFilterSettings.vue";
+
 const ASSET_TAG = "{asset}";
 export default {
   name: "InformationPanelForm",
-  components: { InfoIcon, FileUpload, InformationPanelTilesWrapper },
+  components: { InfoIcon, FileUpload, InformationPanelTilesWrapper, Settings, BasicFilterSettings },
   props: {
     modelValue: {
       type: Object,
-      default: () => ({ tiles: [] }),
+      default: () => ({ tiles: [], props: {} }),
     },
   },
   emits: ["update:modelValue", "cancel"],
   setup: () => ({ v$: useVuelidate() }),
   data() {
-    let mModel = this.modelValue ? this.modelValue : { tiles: [] };
-    let panelStructure = getCleanPanelStructure(mModel);
+    let mModel = this.modelValue ? this.modelValue : { tiles: [], props: {} };
+    mModel.props = mModel.props ? mModel.props : {};
+    let panelStructure = getCleanPanelStructure(mModel, false);
     return {
-      inferMeasurements: false,
+      schema: panelSchema,
+      inferMeasurements: "default",
       mModel: mModel,
       addMode: this.modelValue == null || this.modelValue.name == null,
       panelTemplates: panelTemplates,
@@ -218,38 +232,59 @@ export default {
         this.labelWarning = null;
       }
     },
+    // mModel: {
+    //   handler: function () {
+    //     this;
+    //   },
+    //   deep: true,
+    // },
   },
   async mounted() {},
   methods: {
     onTemplateSelect() {
-      this.inferMeasurements = true;
+      this.inferMeasurements = "refill";
+    },
+    updateModel(submittedPanel) {
+      if (submittedPanel.label) this.mModel.label = submittedPanel.label;
+      if (submittedPanel.props) this.mModel.props = { ...this.mModel.props, ...submittedPanel.props };
     },
     submitStructure() {
       let submittedPanel = JSON.parse(this.mPanelStructureJSON);
-      this.panelStructure = getCleanPanelStructure(submittedPanel);
+      this.panelStructure = getCleanPanelStructure(submittedPanel, this.inferMeasurements == "override");
+      this.updateModel(this.panelStructure);
       this.refreshTiles = !this.refreshTiles;
     },
     onSelect() {
+      //on file select
       if (this.$refs.FileUpload !== undefined) this.hasFiles = this.$refs.FileUpload.files.length > 0;
       else this.hasFiles = false;
     },
     onFileClear() {
-      this.panelStructure = getCleanPanelStructure(this.mModel);
+      this.panelStructure = getCleanPanelStructure(this.mModel, false);
       this.submittedPanelJSON = null;
     },
     async fileSubmit() {
       let submittedPanel = JSON.parse(this.submittedPanelJSON);
-      if (this.inferMeasurements) {
-        this.panelStructure = await this.infer(submittedPanel);
-      } else {
-        this.panelStructure = getCleanPanelStructure(submittedPanel);
+      switch (this.inferMeasurements) {
+        case "override":
+          this.panelStructure = await this.infer(submittedPanel, true);
+          break;
+        case "refill":
+          this.panelStructure = await this.infer(submittedPanel, false);
+          break;
+        default:
+          this.panelStructure = getCleanPanelStructure(submittedPanel);
       }
+      // if (this.inferMeasurements=='refill' ) {
+      //   this.panelStructure = await this.infer(submittedPanel);
+      // } else {
+      //   this.panelStructure = getCleanPanelStructure(submittedPanel);
+      // }
+      this.updateModel(this.panelStructure);
       this.refreshTiles = !this.refreshTiles;
       this.importPanelDialog = false;
     },
     async onFileUpload(evt) {
-      // this.submittedPanel = null;
-      // console.info(evt.files);
       if (evt.files.length == 1) {
         let submittedPanel = await this.$ren.utils.readJSONFile(evt.files[0]);
         if (submittedPanel.name !== undefined) {
@@ -258,36 +293,31 @@ export default {
         if (submittedPanel.id !== undefined) {
           delete submittedPanel.id;
         }
-        console.error(submittedPanel);
-        submittedPanel = getCleanPanelStructure(submittedPanel);
+        // console.error(submittedPanel);
+        submittedPanel = getCleanPanelStructure(submittedPanel, false);
+        this.updateModel(submittedPanel);
+
         this.submittedPanelJSON = JSON.stringify(submittedPanel, null, "\t");
       }
       // await this._submit(event.files);
     },
+    onUpload() {},
 
-    async infer(panel) {
+    async infer(panel, overrideMeasurements) {
       if (!this.mModel.is_template) {
-        return await this.$ren.dashboardApi.inferMeasurements(panel).then((inferredPanel) => {
-          return getCleanPanelStructure(inferredPanel);
+        let mPanel = getCleanPanelStructure(panel, overrideMeasurements);
+        return await this.$ren.dashboardApi.inferMeasurements(mPanel).then((inferredPanel) => {
+          return getCleanPanelStructure(inferredPanel, false);
         });
       }
-      return getCleanPanelStructure(panel);
-
-      // let panel = JSON.parse(this.mPanelStructureText);
-      // panel.name = this.mModel.name;
-      // panel.id = this.mModel.id;
-      // panel.label = this.mModel.label ? this.mModel.label : this.panel.label;
-      // this.mModel = panel;
-      // this.$emit("update:modelValue", this.mModel);
+      return getCleanPanelStructure(panel, false);
     },
     submit() {
       if (this.mModel.label && !this.mModel.label.includes(ASSET_TAG) && this.mModel.is_template) {
         this.mModel.label = `${this.mModel.label} - (${ASSET_TAG})`;
       }
-
-      // let panel = JSON.parse(this.mPanelStructureText);
-
       this.panelStructure.name = this.mModel.name;
+      this.panelStructure.props = { ...this.panelStructure.props, ...this.mModel.props };
       this.panelStructure.id = this.mModel.id;
       this.panelStructure.label = this.mModel.label ? this.mModel.label : this.panelStructure.label;
       this.mModel = this.panelStructure;
@@ -319,7 +349,7 @@ export default {
     // padding-top: 0 !important;
   }
 }
-#panelForm > .p-accordion > .p-accordion-tab {
+#panelForm > .p-accordion .p-accordion-content {
   max-height: 70vh;
   overflow: auto;
 }

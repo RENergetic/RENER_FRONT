@@ -43,10 +43,9 @@ export default {
   },
 
   data() {
-    let measurement = this.tile.measurements.length > 0 ? this.tile.measurements[0] : null;
     return {
-      measurement: measurement,
       mSettings: this.settings,
+      measurement: this.getTileMeasurement(),
     };
   },
   computed: {
@@ -72,19 +71,19 @@ export default {
       return `height: 100%;background:${color} `;
     },
     value: function () {
-      //todo support other aggregation functions
-      try {
-        if (this.mSettings.panel.relativeValues && this.measurement.type.base_unit != "%") {
-          return (
-            (this.pdata.current[this.measurement.aggregation_function][this.measurement.id] /
-              this.pdata.max[this.measurement.aggregation_function][this.measurement.id]) *
-            100.0
-          );
-        }
-        return this.pdata.current[this.measurement.aggregation_function][this.measurement.id];
-      } catch (e) {
-        return null;
-      }
+      return this.$ren.utils.getConvertedValue(this.measurement, this.pdata, this.mSettings);
+      // try {
+      //   if (this.mSettings.panel.relativeValues && this.measurement.type.base_unit != "%") {
+      //     return (
+      //       (this.pdata.current[this.measurement.aggregation_function][this.measurement.id] /
+      //         this.pdata.max[this.measurement.aggregation_function][this.measurement.id]) *
+      //       100.0
+      //     );
+      //   }
+      //   return this.pdata.current[this.measurement.aggregation_function][this.measurement.id];
+      // } catch (e) {
+      //   return null;
+      // }
     },
   },
 

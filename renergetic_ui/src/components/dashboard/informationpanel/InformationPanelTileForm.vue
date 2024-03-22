@@ -1,106 +1,183 @@
 <template>
-  <div class="ren">
-    <TabView>
-      <TabPanel :header="$t('view.properties')">
-        <ren-input v-if="mModel.id" v-model="mModel.id" :disabled="true" :text-label="'model.information_panel.tile.id'" />
-        <ren-input
-          v-model="mModel.name"
-          :text-label="'model.information_panel.tile.name'"
-          :invalid="v$.mModel.name.$invalid"
-          :errors="v$.mModel.name.$silentErrors"
-        />
-        <ren-input
-          v-model="mModel.label"
-          :text-label="'model.information_panel.tile.label'"
-          :invalid="v$.mModel.label.$invalid"
-          :errors="v$.mModel.label.$silentErrors"
-        />
-        <ren-switch
-          v-model="mModel.type"
-          :text-label="'model.information_panel.tile.type'"
-          :options="[
-            { label: $t('enums.tile_type.list'), value: 'list' },
-            { label: $t('enums.tile_type.single'), value: 'single' },
-            { label: $t('enums.tile_type.doughnut'), value: 'doughnut' },
-            { label: $t('enums.tile_type.chart'), value: 'chart' },
-            { label: $t('enums.tile_type.multi_knob'), value: 'multi_knob' },
-            { label: $t('enums.tile_type.knob'), value: 'knob' },
-          ]"
-          :invalid="v$.mModel.type.$invalid"
-          :errors="v$.mModel.type.$silentErrors"
-        />
-        <ren-input v-model="propsJSON" :text-label="'model.information_panel.tile.props'" />
+  <!-- <div class="ren"> -->
+  <TabView id="tile-panel" class="ren flex flex-column" style="height: 100%">
+    <TabPanel :header="$t('view.properties')">
+      <ren-input
+        v-model="mModel.name"
+        :text-info="'model.name_description'"
+        :text-label="'model.information_panel.tile.name'"
+        :invalid="v$.mModel.name.$invalid"
+        :errors="v$.mModel.name.$silentErrors"
+      />
+      <ren-input
+        v-model="mModel.label"
+        :text-info="'model.label_description'"
+        :text-label="'model.information_panel.tile.label'"
+        :invalid="v$.mModel.label.$invalid"
+        :errors="v$.mModel.label.$silentErrors"
+      />
+      <ren-switch
+        v-model="mModel.type"
+        :text-label="'model.information_panel.tile.type'"
+        :options="[
+          { label: $t('enums.tile_type.list'), value: 'list' },
+          { label: $t('enums.tile_type.single'), value: 'single' },
+          { label: $t('enums.tile_type.doughnut'), value: 'doughnut' },
+          { label: $t('enums.tile_type.chart'), value: 'chart' },
+          { label: $t('enums.tile_type.multi_knob'), value: 'multi_knob' },
+          { label: $t('enums.tile_type.knob'), value: 'knob' },
+        ]"
+        :invalid="v$.mModel.type.$invalid"
+        :errors="v$.mModel.type.$silentErrors"
+      />
+      <ren-input v-model="propsJSON" :text-label="'model.information_panel.tile.props'" />
 
-        <ren-input-number
-          v-model="mModel.layout.x"
-          :min="0"
-          :max="100"
-          :only-integer="true"
-          :default-value="0"
-          :text-label="'model.information_panel.tile.x'"
-        />
-        <ren-input-number
-          v-model="mModel.layout.y"
-          :min="0"
-          :max="100"
-          :only-integer="true"
-          :default-value="0"
-          :text-label="'model.information_panel.tile.y'"
-        />
-        <ren-input-number
-          v-model="mModel.layout.h"
-          :min="1"
-          :max="12"
-          :only-integer="true"
-          :default-value="3"
-          :text-label="'model.information_panel.tile.h'"
-        />
-        <ren-input-number
-          v-model="mModel.layout.w"
-          :min="1"
-          :max="12"
-          :only-integer="true"
-          :default-value="3"
-          :text-label="'model.information_panel.tile.w'"
-        />
-      </TabPanel>
-      <TabPanel :header="$t('view.measurements')">
-        <ren-input-wrapper :text-label="null">
-          <template #content>
-            <Textarea v-model="measurementsJSON" style="width: 100%" :maxlength="10000" rows="15" :cols="80"></Textarea>
-          </template>
-        </ren-input-wrapper>
-      </TabPanel>
-    </TabView>
-  </div>
+      <ren-input-number
+        v-model="mModel.layout.x"
+        :min="0"
+        :max="100"
+        :only-integer="true"
+        :default-value="0"
+        :text-label="'model.information_panel.tile.x'"
+      />
+      <ren-input-number
+        v-model="mModel.layout.y"
+        :min="0"
+        :max="100"
+        :only-integer="true"
+        :default-value="0"
+        :text-label="'model.information_panel.tile.y'"
+      />
+      <ren-input-number
+        v-model="mModel.layout.h"
+        :min="1"
+        :max="12"
+        :only-integer="true"
+        :default-value="3"
+        :text-label="'model.information_panel.tile.h'"
+      />
+      <ren-input-number
+        v-model="mModel.layout.w"
+        :min="1"
+        :max="12"
+        :only-integer="true"
+        :default-value="3"
+        :text-label="'model.information_panel.tile.w'"
+      />
+      <ren-input v-if="mModel.id" v-model="mModel.id" :disabled="true" :text-label="'model.information_panel.tile.id'" />
+    </TabPanel>
+    <TabPanel :header="$t('view.measurements')">
+      <div class="grid ren flex">
+        <div class="col-12 flex flex-column">
+          <ul>
+            <li v-for="m in mModel.measurements" :key="m.id">
+              <div>
+                <!-- <span v-if="m.aggregation_function">{{ m.id }} ({{ $t("enums.measurement_aggregation." + m.aggregation_function) }})</span>
+              <span v-else>{{ m.id }} </span> -->
+                <!-- <span>{{ m.id }} </span> -->
+
+                <ren-input v-if="m.id" :model-value="$t('model.measurement.id') + ': ' + m.id" disabled :read-only="true" />
+                <ren-input v-else :model-value="$t('model.measurement.temp_id') + ': ' + m.tempId" disabled :read-only="true" />
+                <span style="width: 15rem">
+                  <ren-input-wrapper
+                    :text-label="null"
+                    :inline="true"
+                    :model-value="
+                      $t('model.measurement.measurement_aggregation') + ': ' + $t('enums.measurement_aggregation.' + m.aggregation_function)
+                    "
+                  >
+                    <template #content>
+                      <Dropdown
+                        v-model="m.aggregation_function"
+                        style="min-width: 12rem"
+                        :options="aggregations"
+                        :option-label="(opt) => $t(`enums.measurement_aggregation.${opt}`)"
+                        :placeholder="$t('view.select_measurement_aggregation')"
+                        @change="functionChange"
+                      />
+                    </template>
+                  </ren-input-wrapper>
+                </span>
+                <!-- @change="filterCallback()" -->
+                <Button
+                  :key="m.tooltip"
+                  v-tooltip="m.tooltip"
+                  icon="pi pi-question-circle"
+                  class="p-button-rounded"
+                  @mouseover="downloadMeasurementDetails(m)"
+                  @click="showMeasurement(m)"
+                />
+                <Button v-tooltip="$t('view.delete')" icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteMeasurement(m)" />
+
+                <!-- $t('view.view_json') click more details -->
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-12 grid ren flex">
+          <div class="col-12 flex flex-column">
+            <Button :label="$t('view.button.add_measurement')" icon="pi pi-plus-circle" @click="addMeasurementDialog = true" />
+          </div>
+          <div class="col-12 flex flex-column">
+            <Button :label="$t('view.button.add_measurement_template')" icon="pi pi-plus-circle" @click="addMeasurementTemplateDialog = true" />
+          </div>
+        </div>
+      </div>
+    </TabPanel>
+  </TabView>
+  <!-- </div> -->
+  <!-- v-model:visible="jsonMesurementDialog" v-model="selectedMesurement" -->
+  <MeasurementDialog ref="mesurementDialog" :reload="true" />
+  <Dialog v-model:visible="addMeasurementDialog" :style="{ width: '100vw', height: '100vh', maxHeight: '100%' }" :modal="true">
+    <Card class="ren-page-content">
+      <template #content>
+        <MeasurementSelect :selected-measurements="mModel.measurements" @select="addMeasurement" />
+      </template>
+    </Card>
+  </Dialog>
+  <Dialog v-model:visible="addMeasurementTemplateDialog" :style="{ width: '100vw', height: '100vh', maxHeight: '100%' }" :modal="true">
+    <Card class="ren-page-content">
+      <template #content>
+        <MeasurementTileForm @update="addMeasurementTemplate" @cancel="addMeasurementTemplateDialog = false" />
+      </template>
+    </Card>
+  </Dialog>
 </template>
 
 <script>
-export function cleanTileStructure(mTile) {
-  // let mTile = JSON.parse(JSON.stringify(tile));
+import { MeasurementAggregation } from "@/plugins/model/Enums.js";
+export function cleanTileStructure(mTile, clearIDs = false) {
+  if (clearIDs) delete mTile.id;
   if (mTile.measurements) {
     mTile.measurements = mTile.measurements
       .map((m) => {
         let obj;
-        if (m.id !== undefined && m.id != null) {
-          return { id: m.id, aggregation_function: m.aggregation_function };
-        } else {
-          //if (isTemplate) {
-          obj = {
-            name: m.name === null ? undefined : m.name,
-            domain: m.domain === null ? undefined : m.domain,
-            direction: m.direction === null ? undefined : m.direction,
-            sensor_name: m.sensor_name === null ? undefined : m.sensor_name,
-            aggregation_function: m.aggregation_function === null ? undefined : m.aggregation_function,
-          };
-          if (m.type) {
-            obj.type = { id: m.type.id, physical_name: m.type.physical_name, name: m.type.name, unit: m.type.unit };
-          }
-          if (m.asset) {
-            obj.asset = { id: m.asset.id, name: m.asset.name };
-          }
-          return obj;
+        // if (m.id !== undefined && m.id != null && !clearIDs) {
+        //   return { id: m.id, aggregation_function: m.aggregation_function };
+        // } else {
+        //if (isTemplate) {
+        obj = {
+          name: m.name === null ? undefined : m.name,
+          domain: m.domain === null ? undefined : m.domain,
+          direction: m.direction === null ? undefined : m.direction,
+          sensor_name: m.sensor_name === null ? undefined : m.sensor_name,
+          aggregation_function: m.aggregation_function === null ? undefined : m.aggregation_function,
+        };
+        if (!clearIDs) obj.id = m.id;
+        if (m.type) {
+          obj.type = { physical_name: m.type.physical_name, name: m.type.name, unit: m.type.unit };
+          if (!clearIDs) obj.type.id = m.type.id;
         }
+        if (m.asset) {
+          obj.asset = { name: m.asset.name };
+          if (!clearIDs) obj.asset.id = m.asset.id;
+        }
+        if (!obj.id) {
+          obj.tempId = new Date().getTime() + Math.round(Math.random() * new Date().getTime());
+        }
+        return obj;
+        // }
         //return null;
       })
       .filter((m) => m != null);
@@ -108,8 +185,12 @@ export function cleanTileStructure(mTile) {
 }
 import { useVuelidate } from "@vuelidate/core";
 import { maxLength, required, minLength } from "@/plugins/validators.js";
+import MeasurementDialog from "@/components/management/infrastructure/measurement/MeasurementDialog.vue";
+import MeasurementSelect from "@/components/management/infrastructure/measurement/MeasurementSelect.vue";
+import MeasurementTileForm from "./MeasurementTileForm.vue";
 export default {
   name: "InformationPanelTileForm",
+  components: { MeasurementDialog, MeasurementSelect, MeasurementTileForm },
   props: {
     modelValue: {
       type: Object,
@@ -122,6 +203,11 @@ export default {
     let tileStructure = this.modelValue;
     cleanTileStructure(tileStructure);
     return {
+      // jsonMesurementDialog: false,
+      // selectedMesurement: null,
+      aggregations: MeasurementAggregation.keys(),
+      addMeasurementDialog: false,
+      addMeasurementTemplateDialog: false,
       mModel: tileStructure,
       // mPanelStructure: null,
       measurementsJSON: JSON.stringify(tileStructure.measurements, null, "\t"),
@@ -155,7 +241,7 @@ export default {
     },
     mModel: {
       handler: function (mModel) {
-        console.info(mModel);
+        // console.info(mModel);
         this.$emit("update:modelValue", mModel);
       },
       deep: true,
@@ -164,15 +250,67 @@ export default {
   },
   async mounted() {},
   methods: {
-    // async infer( ) {
-    //     return await this.$ren.dashboardApi.inferTileMeasurements(this.mModel).then((inferredTile) => {
-    //       return cleanTileStructure(inferredPanel);
-    //     });
-    //   }
-    //   return getCleanPanelStructure(panel);
-    // },
+    async downloadMeasurementDetails(m) {
+      if (m.id) {
+        if (!m.name)
+          await this.$ren.managementApi.getMeasurement(m.id).then((mm) => {
+            m.name = mm.name;
+            m.label = mm.label;
+            m.tooltip = mm.label ? `${mm.label} (${mm.name})` : mm.name;
+          });
+        else {
+          m.tooltip = m.label ? `${m.label} (${m.name})` : m.name;
+        }
+      } else {
+        //template
+        m.tooltip = m.name ? m.name : this.$t("view.measurement_template");
+      }
+    },
+    showMeasurement(m) {
+      this.$refs.mesurementDialog.show(m);
+      // this.jsonMesurementDialog = true;
+    },
+    async deleteMeasurement(m) {
+      if (m.id) {
+        await this.downloadMeasurementDetails(m);
+        await this.deleteConfirm({
+          message: this.$t("view.delete_tile_measurement", { label: m.label ? m.label : m.name }),
+          action: async () => {
+            this.mModel.measurements = this.mModel.measurements.filter((it) => it.id != m.id);
+            this.$emit("update:modelValue", this.mModel);
+          },
+        });
+      } else {
+        this.mModel.measurements = this.mModel.measurements.filter((it) => it.tempId != m.tempId);
+        this.$emit("update:modelValue", this.mModel);
+      }
+    },
+    functionChange() {
+      this.$emit("update:modelValue", this.mModel);
+    },
+    addMeasurementTemplate(mt) {
+      mt.aggregation_function = MeasurementAggregation.last;
+      this.mModel.measurements.push(mt);
+      this.$emit("update:modelValue", this.mModel);
+      this.addMeasurementTemplateDialog = false;
+    },
+    addMeasurement(m) {
+      var exists = this.mModel.measurements.filter((it) => it.id == m.id).length > 0;
+      if (!exists) {
+        m.aggregation_function = MeasurementAggregation.last;
+        this.mModel.measurements.push(m);
+        this.$emit("update:modelValue", this.mModel);
+      }
+      this.addMeasurementDialog = false;
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+#tile-panel .p-tabview-panels {
+  flex-grow: 1;
+  height: 100%;
+  overflow: auto;
+}
+</style>

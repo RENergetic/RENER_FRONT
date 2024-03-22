@@ -32,7 +32,22 @@ export default class ManagementApi extends RestComponent {
     } else params = { offset: offset, limit: limit };
     return this.get(`/api/assets`, params);
   }
+  //ASSET TYPES
+  async listAssetTypes() {
+    return this.get(`/api/assets/type`, { offset: 0, limit: 1000 });
+  }
+  async updateAssetType(assetType) {
+    return this.put(`/api/assets/type/${assetType.id}`, assetType);
+  }
+  async addAssetType(assetType) {
+    return this.post("/api/assets/type", assetType);
+  }
 
+  async deleteAssetType(assetType) {
+    return this.delete(`/api/assets/type/${assetType.id}`);
+  }
+
+  //ASSET CATEGORIES
   async listCategories() {
     return this.get(`/api/assetCategories`);
   }
@@ -213,7 +228,7 @@ export default class ManagementApi extends RestComponent {
     return await this.get(`/api/measurements`, { name: q, offset: offset, limit: limit }, null, null);
   }
   async listMeasurementType() {
-    return this.get(`/api/measurements/type`);
+    return this.get(`/api/measurements/type`, { limit: 1000 });
   }
   async updateMeasurementType(type) {
     return this.put(`/api/measurements/type/${type.id}`, type);
@@ -247,6 +262,7 @@ export default class ManagementApi extends RestComponent {
   async duplicateMeasurement(id) {
     return this.post(`/api/measurements/id/${id}/copy`);
   }
+
   async listTags() {
     return this.get(`/api/measurements/tags`);
   }
@@ -314,7 +330,7 @@ export default class ManagementApi extends RestComponent {
   }
 
   async getMeasurement(id) {
-    return this.get(`/api/measurements/${id}`, null, null, (e) => {
+    return this.get(`/api/measurements/id/${id}`, null, null, (e) => {
       if (e.response.status == 404) {
         this.emitError(`Measurement ${id} not found: ${e.message}`, {
           code: "measurement_not_found",

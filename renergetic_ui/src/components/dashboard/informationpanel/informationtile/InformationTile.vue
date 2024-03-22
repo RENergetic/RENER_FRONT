@@ -1,25 +1,16 @@
 <template>
-  <!-- {{ mSettings }} -->
-  <div :class="tileClass" :style="background">
-    <i
-      v-if="tilePreview && tile.measurements.length > 0"
-      v-tooltip="$t('view.measurements')"
-      class="pi pi-chart-line"
-      style="font-size: 1.5rem; position: absolute; top: 0.5rem; right: 0.5rem"
-      @click="viewMeasurements()"
-    />
-    <!-- {{ tile.props }}
-    {{ tile.measurements.map((it) => it.measurement_details) }}
+  <div v-if="mSettings" :class="tileClass" :style="background">
+    <i v-if="tileDataPreview" v-tooltip="$t('view.measurements')" class="pi pi-chart-line data-preview" @click="viewMeasurements()" />
+
+    <!-- {{ tile.measurements.map((it) => it.measurement_details) }}
     {{ tile.measurements.map((it) => it.type.color) }} -->
     <!-- {{ filter }} -->
-    <!-- {{ pdata }} -->
-    <!-- todo: group by sensor_name -->
     <div
       v-if="(titleVisible || tile.measurements.length == 0) && tile.label"
       class="flex flex-column justify-content-center"
       style="height: 100%; width: 100%"
     >
-      <h3 style="margin: 0; text-align: center">{{ tile.label }}</h3>
+      <h3 :style="`margin: 0; text-align: center;color:${titleColor}`">{{ tile.label }}</h3>
     </div>
 
     <KnobTile
@@ -110,16 +101,19 @@ function validateTileSettings(tile, settings, ctx) {
       icon: icons[tile.props.icon],
       icon_visibility: tile.props.icon_visibility != null ? tile.props.icon_visibility : true,
       legend: tile.props.legend != null ? tile.props.legend : settings.legend,
+      legend_label_color: tile.props.legend_label_color != null ? tile.props.legend_label_color : "#495057",
       chart_type: tile.props.chart_type != null ? tile.props.chart_type : settings.chart_type,
       title_visibility:
         !ctx.demand &&
         (tile.props.title_visibility != null ? tile.props.title_visibility : settings.title_visibility != null ? settings.title_visibility : true),
       measurement_list: tile.props.measurement_list != null ? tile.props.measurement_list : true,
       measurement_background: tile.props.measurement_background != null ? tile.props.measurement_background : false,
+      title_color: tile.props.title_color != null ? tile.props.title_color : null,
       fontSize: settings.fontSize,
       background_mask: tile.props.mask,
       background: tile.props.background,
       template: tile.props.template,
+      knob_color: tile.props.knob_color,
       // asset_id: settings.asset_id,
     };
   }
@@ -164,12 +158,23 @@ export default {
   },
   emits: ["edit", "notification", "timeseries-update", "preview-tile"],
   data() {
+    // console.info(this.settings);
     return {
       conversionSettings: this.$store.getters["settings/conversion"],
-      mSettings: { tile: validateTileSettings(this.tile, this.settings, this), panel: this.settings },
+      mSettings: this.mSettings,
     };
   },
   computed: {
+    titleColor: function () {
+      return this.tileTitleColor;
+    },
+    tileDataPreview: function () {
+      try {
+        return this.tilePreview && this.tile.measurements.length > 0;
+      } catch {
+        return false;
+      }
+    },
     background: function () {
       return `background-color:${this.mSettings.tile.background_mask}`;
     },
@@ -195,6 +200,9 @@ export default {
       },
       deep: true,
     },
+  },
+  beforeCreate() {
+    this.mSettings = { tile: validateTileSettings(this.tile, this.settings, this), panel: this.settings };
   },
 
   mounted() {},
@@ -234,5 +242,11 @@ export default {
   stroke: $ren-primary-border-color;
   stroke-width: 10;
   stroke-linejoin: round;
+}
+.data-preview {
+  font-size: 1.5rem;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
 }
 </style>

@@ -6,10 +6,9 @@
 * .env - file containing default environmental config properties for vuejs app (endpoints, ports etc)
 * .env.local - local  .env file, not included in git 
 * docs -> project's documentation files [link](./docs/docs.md)
-
-TODO:
+ 
  "@vue/cli-plugin-unit-jest": "~5.0.0-rc.1",
- todo: global loading spinner
+ 
 
  https://babeljs.io/blog/2020/07/13/the-state-of-babel-eslint
 
