@@ -313,6 +313,8 @@ export default {
     },
     openCalculationsFormula() {
       this.$refs.measurementsListFormula.open();
+      console.log("depurando mlist #1 AbstractMetersView: ");
+      console.log(this.MeasurementSelectionList);
     },
     openCalculationsCondition() {
       this.$refs.measurementsListCondition.open();
