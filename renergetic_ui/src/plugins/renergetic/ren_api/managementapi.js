@@ -515,6 +515,36 @@ export default class ManagementApi extends RestComponent {
       }
     });
   }
+  ////// LOGS
+  async listLogs(offset = null, limit = null, severity = null, service = null, from = null, to = null) {
+    var params = "";
+    if (offset !== null && offset !== undefined) {
+      params += (params.length !== 0 ? "&" : "") + "offset=" + offset;
+    }
+    if (limit !== null && limit !== undefined) {
+      params += (params.length !== 0 ? "&" : "") + "limit=" + limit;
+    }
+    if (severity !== null && severity !== undefined && severity.length > 0) {
+      params += (params.length !== 0 ? "&" : "") + "severity=" + severity;
+    }
+    if (service !== null && service !== undefined && service.length > 0) {
+      params += (params.length !== 0 ? "&" : "") + "service=" + service;
+    }
+    if (from !== null && from !== undefined && from.length > 0) {
+      params += (params.length !== 0 ? "&" : "") + "from=" + from;
+    }
+    if (to !== null && to !== undefined && to.length > 0) {
+      params += (params.length !== 0 ? "&" : "") + "to=" + to;
+    }
+    return this.get(`/api/log/list${params.length === 0 ? "" : "?" + params}`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Logs not found`, {
+          code: "log_fetch_error",
+        });
+      }
+      return true;
+    });
+  }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
