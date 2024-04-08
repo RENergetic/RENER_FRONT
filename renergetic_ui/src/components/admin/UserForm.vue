@@ -46,6 +46,11 @@
           :errors="v$.mUser.passwordRepeat.$silentErrors"
           :text-label="'model.user.password_repeat'"
         />
+        <ren-input-wrapper v-if="!user" v-model="mUser.roles" :text-label="'model.user.roles'">
+          <template #content>
+            <UserRoleForm v-model="mUser.roles" />
+          </template>
+        </ren-input-wrapper>
         <ren-submit :disabled="v$.$invalid" @submit="submit" />
       </div>
     </template>
@@ -53,9 +58,12 @@
 </template>
 <script>
 import { useVuelidate } from "@vuelidate/core";
+import UserRoleForm from "@/components/admin/UserRoleForm.vue";
+
 import { required, minLength, email, maxLength, sameAs, minLengthTr, maxLengthTr } from "@/plugins/validators.js";
 export default {
   name: "UserForm",
+  components: { UserRoleForm },
   props: {
     user: {
       type: Object,

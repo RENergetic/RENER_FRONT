@@ -177,7 +177,7 @@ export default {
   methods: {
     lowerCase(s) {
       if (s) {
-        return s.toLowerCase();
+        return (s + "").toLowerCase();
       } else return null;
     },
     colorChange(k) {

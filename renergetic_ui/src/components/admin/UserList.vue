@@ -36,7 +36,12 @@
     <UserForm v-else @save="onCreate" @cancel="editDialog = false" />
   </Dialog>
   <Dialog v-model:visible="addDialog" :style="{ width: '75vw' }" :modal="true" :dismissable-mask="true">
-    <UserForm @save="onCreate" @cancel="addDialog = false" />
+    <RenSpinner ref="spinner" :lock="true" style="margin: auto; width: 100%">
+      <!-- max-width: 80vw; -->
+      <template #content>
+        <UserForm @save="onCreate" @cancel="addDialog = false" />
+      </template>
+    </RenSpinner>
   </Dialog>
 </template>
 
@@ -92,12 +97,19 @@ export default {
     },
     async onCreate(o) {
       // console.log(o);
-      await this.$ren.userApi.addUser(o).then((user) => {
-        console.info("add user:" + user.username);
-        this.$emitter.emit("information", { message: this.$t("information.user_created") });
-        this.$emit("onCreate", user);
+      this.$refs.spinner.run(async () => {
+        await this.$ren.userApi.addUser(o).then(async (user) => {
+          console.info("add user:" + user.username);
+          this.$emitter.emit("information", { message: this.$t("information.user_created") });
+          this.$emit("onCreate", user);
+          if (o.roles) {
+            for (let role of o.roles) {
+              await this.$ren.userApi.assignRole(user.id, role);
+            }
+          }
+        });
+        this.addDialog = false;
       });
-      this.addDialog = false;
     },
 
     onRolesReload() {
