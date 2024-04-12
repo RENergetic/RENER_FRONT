@@ -234,7 +234,7 @@ export default {
       let flags = RenRoles.REN_ADMIN;
       if ((flags & this.role) == 0) return [];
 
-      let items = [...this._userItems(), ...this._adminWorkflowItems()];
+      let items = [...this._userItems(), ...this._adminWorkflowItems(), ...this._logsListItems()];
       return [
         {
           label: this.$t("menu.admin"),
@@ -251,6 +251,19 @@ export default {
           icon: "pi pi-fw pi-cog",
           command: () => {
             this.$router.push({ name: "AdminWorkflows" });
+          },
+        },
+      ];
+      return items;
+    },
+    _logsListItems() {
+      let items = [
+        {
+          class: this.checkPath({ name: "AdminLogs" }) ? "hl-menu" : "",
+          label: "Logs",
+          icon: "pi pi-fw pi-cog",
+          command: () => {
+            this.$router.push({ name: "AdminLogs" });
           },
         },
       ];
