@@ -1,5 +1,6 @@
 {
-  "activate_condition": "Activate condition",
+  "activated_condition": "Activated condition",
+  "deactivated_condition": "Deactivated condition",
   "add_dashboard": "Add dashboard",
   "add_heatmap": "Add heatmap",
   "add_measurement": "Add measurement",

@@ -683,4 +683,3 @@ export default class ManagementApi extends RestComponent {
 //       if (error.response.status == 404) console.error("there are no assets types" + error.message);
 //     });
 // }
-
