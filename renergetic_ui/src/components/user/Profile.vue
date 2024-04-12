@@ -53,7 +53,6 @@
         </template>
         <BasicFilterSettings :setting-key="'public'" :submit="true" />
       </Panel>
-
       <Panel v-if="user" toggleable class="ren-settings">
         <template #header>
           <span> {{ $t("view.private_dashboard_filter_settings") }}:</span>

@@ -39,6 +39,13 @@
   "heatmap": "Heatmap",
   "chart": "Chart",
   "panel_font_size": "Panel font size",
+  "panel_override_mode": "Panel override mode",
+  "panel_override_modes": {
+    "fixed": "Fixed",
+    "override": "Override",
+    "default": "Use other settings",
+    "merge": "Merge"
+  },
   "request_demand": "Demand requests:",
   "request_demand_description": "Toggle demand requests list",
   "information_panel_visibility": "Information panels:",

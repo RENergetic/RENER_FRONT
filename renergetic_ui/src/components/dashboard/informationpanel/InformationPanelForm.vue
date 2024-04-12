@@ -14,7 +14,6 @@
           />
           <!-- :key="mModel ? mModel.label : ''" -->
           <ren-input
-            :key="mModel.label"
             v-model="mModel.label"
             :text-info="mModel.is_template ? $t('view.panel_label_info', ['{asset}']) : null"
             :text-label="'model.information_panel.label'"
@@ -155,6 +154,17 @@ import FileUpload from "primevue/fileupload";
 
 import InformationPanelTilesWrapper from "./InformationPanelTilesWrapper.vue";
 import { panelSchema } from "@/plugins/model/settings.js";
+// var schema = JSON.parse(JSON.stringify(panelSchema));
+// schema.push({
+//   label: this.$t("settings.panel_override_mode"),
+//   description: this.$t("settings.panel_override_mode_description"),
+//   ext: {
+//     true: this.$t("settings.enabled"),
+//     false: this.$t("settings.disabled"),
+//   },
+//   type: Boolean,
+//   key: "overrideMode",
+// });
 import { useVuelidate } from "@vuelidate/core";
 import { maxLength, required, minLength, minValue, maxValue } from "@/plugins/validators.js";
 import InfoIcon from "../../miscellaneous/InfoIcon.vue";

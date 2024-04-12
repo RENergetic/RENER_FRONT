@@ -4,6 +4,7 @@
   <div v-if="settings.panelVisibility" style="position: relative">
     <!-- {{ $store.getters["view/featuredPanels"] }}  -->
     <!-- {{ $store.getters["view/assetPanels"] }}d -->
+    <!-- {{ panelSettings }} -->
     <InformationPanelWrapper
       v-if="panel"
       ref="panel"
@@ -36,30 +37,49 @@
   </RenSettingsDialog>
   <RenSettingsDialog ref="panelSettingsDialog">
     <template #settings>
-      <Card class="ren-settings">
+      <Panel toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.panel_effective_settings") }}:</span>
+        </template>
+        <Settings :schema="schema" :settings="effectivePanelSettings" :disabled="true" />
+      </Panel>
+
+      <!-- <Card class="ren-settings">
         <template #title>
           <span> {{ $t("view.panel_effective_settings") }}:</span>
         </template>
         <template #content>
           <Settings :schema="schema" :settings="effectivePanelSettings" :disabled="true" />
         </template>
-      </Card>
-      <Card class="ren-settings">
+      </Card> -->
+      <!-- <Card class="ren-settings">
         <template #title>
           <span> {{ $t("view.panel_settings") }}:</span>
         </template>
         <template #content>
           <Settings :schema="schema" :settings="panel.props" :disabled="true" />
         </template>
-      </Card>
-      <Card class="ren-settings">
+      </Card> -->
+      <Panel toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.panel_settings") }}:</span>
+        </template>
+        <Settings :schema="schema" :settings="panel.props" :disabled="true" />
+      </Panel>
+      <Panel toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.panel_user_settings") }}:</span>
+        </template>
+        <PanelSettings @update="reloadPanelSettings()"> </PanelSettings>
+      </Panel>
+      <!-- <Card class="ren-settings">
         <template #title>
           <span> {{ $t("view.panel_user_settings") }}:</span>
         </template>
         <template #content>
           <PanelSettings @update="reloadPanelSettings()"> </PanelSettings>
         </template>
-      </Card>
+      </Card> -->
     </template>
   </RenSettingsDialog>
   <!-- <RenSettingsDialog ref="panelSettingsDialog">
