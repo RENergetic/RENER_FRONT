@@ -53,12 +53,21 @@
         </template>
         <BasicFilterSettings :setting-key="'public'" :submit="true" />
       </Panel>
-
       <Panel v-if="user" toggleable class="ren-settings">
         <template #header>
           <span> {{ $t("view.private_dashboard_filter_settings") }}:</span>
         </template>
         <BasicFilterSettings :setting-key="'private'" :submit="true" />
+      </Panel>
+      <Panel v-if="user" toggleable collapsed>
+        <template #header>
+          <span> {{ $t("view.delete") }} </span>
+        </template>
+
+        <div class="col-12">
+          <ren-input v-model="deleteText" :text-label="'view.type_delete'" />
+          <ren-submit :disabled="deleteText != 'DELETE'" @submit="confirmDeleteUser" />
+        </div>
       </Panel>
     </template>
   </RenSpinner>
@@ -81,6 +90,7 @@ export default {
     return {
       // data: this.$store.getters["auth/current"],
       user: null,
+      deleteText: null,
       edit: false,
     };
   },
@@ -98,6 +108,23 @@ export default {
         let success = await this.$ren.userApi.updateProfile(user);
         if (success) this.$emitter.emit("information", { message: this.$t("information.user_updated") });
         this.user = await this.$ren.userApi.getProfile();
+      });
+    },
+
+    async deleteProfile() {
+      await this.$refs.spinner.run(async () => {
+        await this.$ren.userApi.deleteProfile();
+        this.$keycloak.logout();
+        this.$router.push("/");
+      });
+    },
+    confirmDeleteUser() {
+      this.$confirm.require({
+        message: this.$t("view.delete_profile_message"),
+        header: this.$t("view.delete_profile"),
+        icon: "pi pi-exclamation-triangle",
+        accept: () => this.deleteUser(),
+        reject: () => this.$confirm.close(),
       });
     },
   },

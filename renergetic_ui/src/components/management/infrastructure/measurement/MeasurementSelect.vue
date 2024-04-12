@@ -2,7 +2,13 @@
   <RenSpinner ref="spinner" :lock="true" style="min-width: 100%">
     <template #content>
       <div style="z-index: 1001">
-        <measurement-list v-model:filters="filters" :measurement-list="measurementList" :basic="true" @select="onSelect" @reload="loadMeasurements" />
+        <measurement-list
+          v-model:filters="mFilters"
+          :measurement-list="measurementList"
+          :basic="true"
+          @select="onSelect"
+          @reload="loadMeasurements"
+        />
       </div>
       <div style="position: sticky; bottom: 0; z-index: 999; padding-bottom: 0.5rem">
         <ren-submit v-if="selectedMeasurement != null" @submit="submit" />
@@ -19,6 +25,7 @@ export default {
   },
   props: {
     selectedMeasurements: { type: Array, default: null },
+    asset: { type: Object, default: null },
   },
   emits: ["select"],
   data() {
@@ -28,14 +35,14 @@ export default {
       : [];
     return {
       mSelectedMeasurements: mSelectedMeasurements,
-      filters: null,
+      mFilters: null,
       measurementList: [],
       selectedMeasurement: null,
     };
   },
 
   watch: {
-    filters: {
+    mFilters: {
       handler: function () {
         this.loadMeasurements();
       },
@@ -64,17 +71,20 @@ export default {
       }
       let params = {};
       //  { "global": { "value": null },
-      if (this.filters)
+      if (this.mFilters)
         params = {
-          name: this.filters.name.value,
-          type_id: this.filters["type.id"].value,
-          type_physical_name: this.filters["type.physical_name"].value,
-          asset_name: this.filters["asset.name"].value,
-          domain: this.filters.domain.value,
-          direction: this.filters.direction.value,
-          sensor_name: this.filters.sensor_name.value,
-          tag_key: this.filters.tag_key.value,
+          name: this.mFilters.name.value,
+          type_id: this.mFilters["type.id"].value,
+          type_physical_name: this.mFilters["type.physical_name"].value,
+          asset_name: this.mFilters["asset.name"].value,
+          domain: this.mFilters.domain.value,
+          direction: this.mFilters.direction.value,
+          sensor_name: this.mFilters.sensor_name.value,
+          tag_key: this.mFilters.tag_key.value,
         };
+      if (this.asset) {
+        params.asset_name = this.asset.name;
+      }
       await this.$refs.spinner.run(async () => {
         await this.$ren.managementApi.listMeasurement({ params: params, offset: offset, limit: limit }).then((data) => {
           for (let m of data) {

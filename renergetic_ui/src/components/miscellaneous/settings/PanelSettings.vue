@@ -5,7 +5,7 @@
 
 <script>
 import { RenRoles } from "@/plugins/model/Enums";
-import { panelSchema } from "@/plugins/model/settings.js";
+import { userPanelSchema } from "@/plugins/model/settings.js";
 
 import Settings from "./Settings.vue";
 export default {
@@ -58,7 +58,7 @@ export default {
     getSchema() {
       // console.error(panelSchema);
       // alert(JSON.stringify(panelSchema));
-      var schema = JSON.parse(JSON.stringify(panelSchema));
+      var schema = JSON.parse(JSON.stringify(userPanelSchema));
       let r = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
       if (r & this.$store.getters["auth/renRole"]) {
         schema.push({

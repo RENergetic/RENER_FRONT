@@ -11,8 +11,7 @@ export default class ManagementApi extends RestComponent {
   //// Asset       REQUESTS                              /////
   ////                                                   /////
   ////////////////////////////////////////////////////////////
-  //List assets
-
+  //Asset managemene
   async listNotifications(filter = {}) {
     let endpoint = "/api/notification";
 
@@ -32,6 +31,20 @@ export default class ManagementApi extends RestComponent {
       params.limit = limit;
     } else params = { offset: offset, limit: limit };
     return this.get(`/api/assets`, params);
+  }
+  async listByDetail(key, value, offset = 0, limit = 50) {
+    return this.get(`/api/assets/key/${key}/value/${value}`, { offset: offset, limit: limit });
+  }
+  async addAssetDetail(id, key, value) {
+    return await this.post(`/api/assets/${id}/info`, { key: key, value: value }, null, null, (e) => {
+      if (e.response.status === 404) {
+        this.emitError(`Asset ${id} not found: ${e.message}`, {
+          code: "asset_not_found",
+          args: [id],
+        });
+        return true;
+      }
+    });
   }
   //ASSET TYPES
   async listAssetTypes() {
@@ -217,6 +230,10 @@ export default class ManagementApi extends RestComponent {
     }
     return this.get(`/api/measurements/report`, { ...params, offset: offset, limit: limit });
   }
+
+  // async listAssetMeasurementByDetail(key, value, offset = 0, limit = 50) {
+  //   return this.get(`/api/assets/key/${key}/value/${value}`, { offset: offset, limit: limit });
+  // }
   async listTagMeasurements(tagKey, tagValue) {
     return this.get(`/api/measurements/key/${tagKey}/value/${tagValue}`);
   }
@@ -341,22 +358,12 @@ export default class ManagementApi extends RestComponent {
       }
     });
   }
-  async addAssetDetail(id, key, value) {
-    return await this.post(`/api/assets/${id}/info`, { key: key, value: value }, null, null, (e) => {
-      if (e.response.status === 404) {
-        this.emitError(`Asset ${id} not found: ${e.message}`, {
-          code: "asset_not_found",
-          args: [id],
-        });
-        return true;
-      }
-    });
-  }
-  async updateAssetDetail(id, key, value) {
-    return await this.put(`/api/assets/${id}/info`, { key: key, value: value }, null, null, (e) => {
-      this.emitError(`Asset ${id} not found: ${e.message}`, {
+
+  async updateAssetDetail(assetId, key, value) {
+    return await this.put(`/api/assets/${assetId}/info`, { key: key, value: value }, null, null, (e) => {
+      this.emitError(`Asset ${assetId} not found: ${e.message}`, {
         code: "asset_not_found",
-        args: [id],
+        args: [assetId],
       });
       return true;
     });
@@ -369,6 +376,9 @@ export default class ManagementApi extends RestComponent {
       });
       return true;
     });
+  }
+  async deleteAssetDetail(assetId, key) {
+    return await this.delete(`/api/assets/${assetId}/info/key/${key}`);
   }
   async getAssetDetails(asset_id) {
     return this.get(`api/assets/${asset_id}/info`, null, null, (e) => {

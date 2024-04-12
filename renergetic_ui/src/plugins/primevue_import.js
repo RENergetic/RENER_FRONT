@@ -25,6 +25,8 @@ import FileUpload from "primevue/fileupload";
 import Listbox from "primevue/listbox";
 import Tree from "primevue/tree";
 import Slider from "primevue/slider";
+import MultiSelect from "primevue/multiselect";
+
 // import Paginator from "primevue/paginator";
 
 import Accordion from "primevue/accordion";
@@ -39,6 +41,7 @@ plugin.install = function (Vue /*, options*/) {
   Vue.component("Button", Button);
   Vue.component("Panel", Panel);
   Vue.component("DataTable", DataTable);
+  Vue.component("MultiSelect", MultiSelect);
   Vue.component("Column", Column);
   Vue.component("ColumnGroup", ColumnGroup);
   Vue.component("CheckBox", CheckBox);

@@ -117,8 +117,12 @@ export default {
       return `${m.name}_${m.sensor_name}_${m.type.id}_${assetId}_${m.direction}_${m.domain}`;
     },
     async loadCurrentMeasurements() {
+      if (this.hdrRequest == null) {
+        return;
+      }
       let r = this.recommendation;
-      if (this.tagKey != r.tag.key) this.currentMeasurements = await this.$ren.managementApi.listTagMeasurements(r.tag.key, "no_tag");
+      // if (this.tagKey != r.tag.key)
+      this.currentMeasurements = await this.$ren.hdrApi.getMeasurements(this.hdrRequest.timestamp, r.tag.key, "no_tag");
       for (let m of this.currentMeasurements) {
         m.recommendation = null; //this.recommendation.tag.value;
         m._current = true;
@@ -134,7 +138,13 @@ export default {
     async loadMeasurements() {
       if (this.recommendation) {
         await this.loadCurrentMeasurements();
-        this.recommendationMeasurements = await this.$ren.hdrApi.getRecommendationsMeasurements(this.recommendation.id);
+        // alert(JSON.stringify(this.recommendation));
+        // this.recommendationMeasurements = await this.$ren.hdrApi.getRecommendationsMeasurements(this.recommendation.id);
+        this.recommendationMeasurements = await this.$ren.hdrApi.getMeasurements(
+          this.recommendation.timestamp,
+          this.recommendation.tag.key,
+          this.recommendation.tag.value,
+        );
         for (let m of this.recommendationMeasurements) {
           m.recommendation = this.recommendation.tag.value;
           m.label = `${m.recommendation}:${m.label ? m.label : m.name}`;
@@ -149,7 +159,12 @@ export default {
     },
     async loadCompareMeasurements() {
       if (this.comparewith) {
-        this.recommendationCompareMeasurements = await this.$ren.hdrApi.getRecommendationsMeasurements(this.comparewith.id);
+        // this.recommendationCompareMeasurements = await this.$ren.hdrApi.getRecommendationsMeasurements(this.comparewith.id);
+        this.recommendationMeasurements = await this.$ren.hdrApi.getMeasurements(
+          this.comparewith.timestamp,
+          this.comparewith.tag.key,
+          this.comparewith.tag.value,
+        );
         for (let m of this.recommendationCompareMeasurements) {
           m.recommendation = this.comparewith.tag.value;
           m.label = `${m.recommendation}:${m.label ? m.label : m.name}`;
