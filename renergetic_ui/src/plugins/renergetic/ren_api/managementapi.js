@@ -368,20 +368,17 @@ export default class ManagementApi extends RestComponent {
       return true;
     });
   }
-  async deleteAssetDetail(id, key) {
-    return await this.delete(`/api/assets/${id}/info/key/${key}`, null, null, (e) => {
-      this.emitError(`Asset ${id} not found: ${e.message}`, {
+  async deleteAssetDetail(assetId, key) {
+    return await this.delete(`/api/assets/${assetId}/info/key/${key}`, null, null, (e) => {
+      this.emitError(`Asset ${assetId} not found: ${e.message}`, {
         code: "asset_not_found",
-        args: [id],
+        args: [assetId],
       });
       return true;
     });
   }
-  async deleteAssetDetail(assetId, key) {
-    return await this.delete(`/api/assets/${assetId}/info/key/${key}`);
-  }
-  async getAssetDetails(asset_id) {
-    return this.get(`api/assets/${asset_id}/info`, null, null, (e) => {
+  async getAssetDetails(assetId) {
+    return this.get(`api/assets/${assetId}/info`, null, null, (e) => {
       if (e.response.status == 404) {
         this.emitError(`Asset details not found`, {
           code: "asset_details_not_found",
