@@ -38,6 +38,7 @@
             <InputText
               id="formula"
               v-model="formulaMeter"
+              :class="{ valid: formulaMeter && isValidInputFormula == true, invalid: formulaMeter && isValidInputFormula == false }"
               class="inputTextFormula"
               type="text"
               :placeholder="$t('view.formula_meter_placeholder')"
@@ -46,15 +47,26 @@
             <Button :label="$t('view.add_measurement')" @click="openCalculationsFormula()" />
             <!-- <p v-if="isValidInputFormula">The input is valid.</p> -->
           </div>
-          <div class="check_param gap-3">
-            <p>{{ $t("view.activate_condition") }}</p>
-            <Checkbox v-model="conditionMeterShown" :binary="true" @change="conditionButtonCheck" />
+          <div class="card flex-wrap gap-3 field grid box sub_container">
+            <ToggleButton
+              v-model="conditionMeterShown"
+              :on-label="$t('view.activated_condition')"
+              :off-label="$t('view.deactivated_condition')"
+              class="condition_button"
+              icon-pos="right"
+              on-icon="pi pi-check"
+              off-icon="pi pi-times"
+              @change="conditionButtonCheck"
+            />
+            <!-- <p>{{ $t("view.activate_condition") }}</p>
+            <Checkbox v-model="conditionMeterShown" :binary="true" @change="conditionButtonCheck" /> -->
           </div>
           <div class="card flex-wrap gap-3 field grid box sub_container">
             <!-- <InputText class="" v-model="conditionMeter" type="text" :placeholder="'Condition to calculate the meter'" @input="validateCondition" /> -->
             <InputText
               id="condition"
               v-model="conditionMeter"
+              :class="{ valid: conditionMeter && isValidInputCondition == true, invalid: conditionMeter && isValidInputCondition == false }"
               class="inputTextCondition"
               type="text"
               :placeholder="$t('view.condition_meter_placeholder')"
@@ -62,7 +74,6 @@
               @input="validateCondition"
             />
             <Button :disabled="!conditionMeterShown" :label="$t('view.add_measurement')" @click="openCalculationsCondition()" />
-            <!-- <p v-if="isValidInputCondition">The input is valid.</p> -->
           </div>
           <div class="gap-3 field grid">
             <Button :disabled="saveButtonDisabled" label="Save" @click="addUpdateAbstractMeter" />
@@ -93,17 +104,17 @@
 </template>
 <script>
 import MeasurementSelectionList from "@/components/management/infrastructure/MeasurementSelectionList.vue";
-import Checkbox from "primevue/checkbox";
 import Accordion from "primevue/accordion";
 import AccordionTab from "primevue/accordiontab";
+import ToggleButton from "primevue/togglebutton";
 
 export default {
   name: "AbstracMetersView",
   components: {
     MeasurementSelectionList,
-    Checkbox,
     Accordion,
     AccordionTab,
+    ToggleButton,
   },
   data() {
     return {
@@ -302,6 +313,8 @@ export default {
     },
     openCalculationsFormula() {
       this.$refs.measurementsListFormula.open();
+      console.log("depurando mlist #1 AbstractMetersView: ");
+      console.log(this.MeasurementSelectionList);
     },
     openCalculationsCondition() {
       this.$refs.measurementsListCondition.open();
@@ -387,6 +400,7 @@ export default {
     },
     updateGuide() {
       this.measurementList.splice(0, this.measurementList.length);
+      this.measurementIdList = [...new Set(this.measurementIdList)];
       console.log("Before: " + this.measurementIdList.length);
       console.log(this.measurementIdList);
       console.log(this.measurementList);
@@ -486,5 +500,19 @@ export default {
   /* Set the desired height for the container */
   height: 100%;
   margin-left: 5px;
+}
+
+.valid {
+  background: url("/public/valid.png") no-repeat right;
+  background-size: auto 100%;
+}
+
+.invalid {
+  background: url("/public/notValid.png") no-repeat right;
+  background-size: auto 100%;
+}
+
+.condition_button.p-highlight {
+  background-color: #94ba39;
 }
 </style>
