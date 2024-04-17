@@ -28,7 +28,8 @@
           <template #body="slotProps">
             <ul v-if="slotProps.data.parameters">
               <li v-for="key in Object.keys(slotProps.data.parameters)" :key="key">
-                {{ slotProps.data.parameters[key] }}
+                <!-- {{ slotProps.data.parameters[key] }} -->
+
                 {{ key }}
                 <Button
                   v-tooltip="$t('view.edit')"

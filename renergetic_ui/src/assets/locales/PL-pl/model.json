@@ -218,5 +218,12 @@
       "error": "Błąd",
       "not_running": "Brak"
     }
+  },
+  "workflow_parameter": {
+    "key": "Klucz",
+    "label": "Etykieta",
+    "description": "Opis",
+    "type": "Typ",
+    "defaultValue": "Domyślna wartość"
   }
 }

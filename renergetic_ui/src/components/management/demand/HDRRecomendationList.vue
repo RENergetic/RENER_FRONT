@@ -20,7 +20,7 @@
     <span v-else> {{ $t("view.current_request_null") }}</span>
 
     <!-- {{ currentRequest }} -->
-    <Button :label="$t('view.button.set_hdr')" @click="hdrRequestDialog = true" />
+    <Button :label="$t('view.button.set_hdr')" style="margin-right: 0.25rem" @click="hdrRequestDialog = true" />
     <Button :label="$t('view.button.hdr_settings')" @click="hdrSettingsDialog = true" />
   </Panel>
   <Panel :header="$t('view.select_base_recommendation')" toggleable>

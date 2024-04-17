@@ -30,7 +30,7 @@
               id="workflowParameterType"
               v-model="mModel.type"
               :options="types"
-              :option-label="(opt) => $t('model.workflow_parameter.types.' + opt)"
+              :option-label="(opt) => $t('settings.input_types.' + opt)"
               :placeholder="$t('view.select_workflow_parameter_type')"
             />
           </template>

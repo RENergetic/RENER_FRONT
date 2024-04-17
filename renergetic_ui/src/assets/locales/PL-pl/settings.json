@@ -39,6 +39,23 @@
   "selected_panel": "Wybierz panel",
   "chart": "Wykres",
   "panel_font_size": "Rozmiar czcionki",
+  "panel_override_mode": "Tryb nadpisania ustawień",
+  "panel_override_mode_description": "Sposób nadpisywanie ustawień użytkownika.",
+  "input_types": {
+    "boolean": "Prawda/Fałsz (True/False)",
+    "number": "Liczba",
+    "array": "Tablica elementów",
+    "list": "Lista elementów",
+    "color": "Kolor",
+    "datetime": "Data",
+    "string": "Tekst"
+  },
+  "panel_override_modes": {
+    "fixed": "Fixed",
+    "override": "Override",
+    "default": "Use other settings",
+    "merge": "Merge"
+  },
   "request_demand": "Aktualne zapotrzenowania:",
   "request_demand_description": "Włącz/wyłącz listę zapotrzenowań",
   "information_panel_visibility": "Widoczność widoków",
