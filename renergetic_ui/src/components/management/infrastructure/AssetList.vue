@@ -15,6 +15,7 @@
     @row-unselect="$emit('onSelect', null)"
     @update:selection="onSelect"
   >
+    <Column field="id" :header="$t('model.asset.id')" :show-filter-menu="false"></Column>
     <Column name="edit" :hidden="basic">
       <template #body="slotProps">
         <Button
@@ -39,6 +40,16 @@
           @click="manageConnections(slotProps.data)"
         />
         <Button v-tooltip="$t('view.properties')" icon="pi  pi-sliders-h" class="p-button-rounded" @click="manageAssetProperties(slotProps.data)" />
+        <Button
+          v-if="
+            (slotProps.data.type !== undefined || slotProps.data.type !== null) &&
+            (slotProps.data.type.name === 'pv_virtual_asset_group' || slotProps.data.type.name === 'virtual_asset_group')
+          "
+          v-tooltip="$t('view.edit')"
+          icon="pi pi-copy"
+          class="p-button-rounded"
+          @click="manageAssetAggregrationProperties(slotProps.data)"
+        />
         <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
         <Button v-tooltip="$t('view.rules')" icon="pi pi-code" class="p-button-rounded" @click="editRules(slotProps.data)" />
         <Button
@@ -161,7 +172,6 @@
         </span>
       </template>
     </Column> -->
-
     <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
     <template #header>
       <div v-if="!hiddenFilters" class="flex justify-content-between">
@@ -194,6 +204,7 @@
   <AssetConnectionManagementDialog ref="assetConnectionManagementDialog" />
   <AssetCategorySelection ref="assetCategorySelection" />
   <AssetProperties ref="assetPropertiesDialog" @submit="updateDetails" />
+  <AssetAggregationProperties ref="assetAggregationPropertiesDialog" />
   <AssetEdit ref="assetEditDialog" @submit="updateAsset" />
   <DemandResponseView ref="demandResponseView" />
 
@@ -277,6 +288,7 @@ import MeasurementSelect from "./MeasurementSelect.vue";
 import AssetConnectionManagementDialog from "./AssetConnectionManagementDialog.vue";
 import AssetCategorySelection from "./AssetCategorySelection.vue";
 import AssetProperties from "@/components/management/infrastructure/AssetProperties.vue";
+import AssetAggregationProperties from "@/components/management/infrastructure/AssetAggregationProperties.vue";
 import AssetEdit from "@/components/management/infrastructure/AssetEdit.vue";
 import DemandResponseView from "@/views/management/abstract/DemandResponseView.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
@@ -293,6 +305,7 @@ export default {
   components: {
     AssetEdit,
     AssetProperties,
+    AssetAggregationProperties,
     AssetForm,
     AssetSelectDialog,
     MeasurementSelect,
@@ -300,7 +313,6 @@ export default {
     AssetCategorySelection,
     DemandResponseView,
   },
-
   props: {
     assetList: { type: Array, default: () => [] },
     filters: { type: Array, default: () => initFilter() },
@@ -359,6 +371,9 @@ export default {
     manageAssetProperties(row) {
       let detailsKeys = this.$store.getters["view/assetDetailsKeys"];
       this.$refs.assetPropertiesDialog.open(row, detailsKeys);
+    },
+    manageAssetAggregrationProperties(row) {
+      this.$refs.assetAggregationPropertiesDialog.open(row);
     },
     ////
     manageAssetCategories(row) {
@@ -461,10 +476,10 @@ export default {
     },
     async updateDetails(asset, details) {
       for (const [key, value] of Object.entries(details)) {
-        if (value === "") {
-          continue;
-        }
-        if (asset.details[key] === null || asset.details[key] === undefined) {
+        console.log(key + " " + value);
+        if (value === null || value.length === 0) {
+          await this.$ren.managementApi.deleteAssetDetail(asset.id, key);
+        } else if (asset.details[key] === null || asset.details[key] === undefined) {
           await this.$ren.managementApi.addAssetDetail(asset.id, key, value);
         } else {
           await this.$ren.managementApi.updateAssetDetail(asset.id, key, value);

@@ -117,7 +117,7 @@ export default {
       }
     }
     console.debug(mDict);
-
+    console.info(settings);
     for (let mId in mDict) {
       let m = mDict[mId];
       let key = this.aggKey(m, settings);
