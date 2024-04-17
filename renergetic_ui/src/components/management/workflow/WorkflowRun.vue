@@ -9,8 +9,7 @@
       <RenSpinner ref="runspinner" :lock="true" style="width: 100%">
         <template #content>
           <div class="ren">
-            <!-- {{ runParameters }} aaaaa {{ workflowParameters }} bbb
-  {{ workflow }} -->
+            <!-- {{ runParameters }}   {{ workflowParameters }}   {{ workflow }} -->
             <ren-input-wrapper>
               <template #content>
                 <Settings v-if="schema && schema.length > 0" :schema="schema" :settings="runParameters" />
@@ -31,7 +30,7 @@
 
 <script>
 import Settings from "@/components/miscellaneous/settings/Settings.vue";
-var parameterTypes = {};
+
 export default {
   name: "WorkflowRun",
   components: {
@@ -62,6 +61,7 @@ export default {
   },
   async mounted() {
     // this.keys = Object.keys(this.mModel);
+    this.runParameters = Object.fromEntries(Object.keys(this.workflowParameters).map((key) => [key, null]));
     this.schema = this.getSchema();
   },
 
@@ -100,21 +100,38 @@ export default {
         },
       });
     },
-    getType(key) {
-      return parameterTypes[key] ? parameterTypes[key] : String;
+    getType(param) {
+      let propertyType = param.type ? this.lowerCase(param.type) : String;
+      if (propertyType == "array") propertyType == String;
+      if (propertyType == "json") propertyType == String;
+      return propertyType;
     },
-    getSetting(key) {
+    getExt(propertyType) {
+      if (propertyType == "boolean") {
+        return {
+          true: this.$t("settings.yes"),
+          false: this.$t("settings.no"),
+        };
+      }
+      return {};
+    },
+    getSetting(param) {
+      console.error(param);
+      let key = param.key;
+      let propertyType = this.getType(key);
+
       return {
-        label: key,
+        label: param.label ? `${param.label} (${key})` : key,
         description: this.workflowParameters[key],
-        ext: {},
+        ext: this.getExt(propertyType),
         type: this.getType(key),
         key: key,
-        defaultValue: "",
+        defaultValue: this.defaultValue,
       };
     },
     getSchema() {
-      var schema = Object.keys(this.workflowParameters).map((k) => this.getSetting(k));
+      var schema = Object.values(this.workflowParameters).map((param) => this.getSetting(param));
+
       // schema.push({
       //   label: this.$t("view.button.start"),
       //   ext: {

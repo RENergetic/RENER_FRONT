@@ -1,5 +1,4 @@
 <template>
-  <!-- filters: {{ mFilters }}<br /> -->
   <!-- workflows: {{ workflowList }} -->
   <RenSpinner ref="spinner_temp" :lock="true" style="width: 100%">
     <template #content>
@@ -28,7 +27,16 @@
         <Column field="parameters" :header="$t('model.workflow.parameters')" :show-filter-menu="false">
           <template #body="slotProps">
             <ul v-if="slotProps.data.parameters">
-              <li v-for="key in Object.keys(slotProps.data.parameters)" :key="key">{{ key }}</li>
+              <li v-for="key in Object.keys(slotProps.data.parameters)" :key="key">
+                {{ slotProps.data.parameters[key] }}
+                {{ key }}
+                <Button
+                  v-tooltip="$t('view.edit')"
+                  icon="pi pi-pencil"
+                  class="p-button-rounded"
+                  @click="editParameter(slotProps.data, slotProps.data.parameters[key])"
+                />
+              </li>
             </ul>
             <span v-else> {{ $t("view.na") }} </span>
           </template>
@@ -80,15 +88,23 @@
 
   <RenSpinner ref="spinner" />
   <!-- <ren-paginator v-if="measurementList" v-model:offset="mOffset" style="left: 0" sticky :current-rows="measurementList.length" @update="reload" /> -->
+  <Dialog v-model:visible="editParameterDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <WorkflowParameterForm
+      v-if="selectedWorkflow && selectedParameter"
+      v-model="selectedParameter"
+      @update="onParameterUpdate($event)"
+      @cancel="editParameterDialog = false"
+    />
+  </Dialog>
 </template>
 
 <script>
 // import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
-
+import WorkflowParameterForm from "./WorkflowParameterForm.vue";
 export default {
   name: "WorkflowList",
-  components: {},
+  components: { WorkflowParameterForm },
   props: {
     workflowList: { type: Array, default: () => [] },
     basic: { type: Boolean, default: false },
@@ -97,6 +113,7 @@ export default {
   emits: ["reload", "update:filters", "select"],
   data() {
     return {
+      editParameterDialog: false,
       mOffset: 0,
       columns: [],
       mFilters: this.initFilters(),
@@ -127,6 +144,19 @@ export default {
     this.tagsKeys = await this.$ren.managementApi.listTagKeys();
   },
   methods: {
+    async onParameterUpdate(evt) {
+      this.selectedWorkflow.parameters[evt.key] = evt;
+      this.editParameterDialog = false;
+      await this.$refs.spinner.run(async () => {
+        let res = await this.$ren.kubeflowApi.setParameters(this.selectedWorkflow.experiment_id, this.selectedWorkflow.parameters);
+        if (res != null) this.selectedWorkflow.parameters = res;
+      });
+    },
+    editParameter(workflow, selectedParameter) {
+      this.selectedParameter = selectedParameter;
+      this.selectedWorkflow = workflow;
+      this.editParameterDialog = true;
+    },
     isTaskRunning(workflowRun) {
       return workflowRun && workflowRun.start_time && (workflowRun.end_time == null || workflowRun.end_time < 0);
     },

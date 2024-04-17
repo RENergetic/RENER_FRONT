@@ -1,6 +1,5 @@
 <template>
   <div class="p-fluid formgrid grid">
-    <!-- {{ mModel }} -->
     <div v-for="s in schema" :key="s" :class="getClass(s)">
       <label
         v-if="labels && lowerCase(s.type) != 'submit' && s.description && lowerCase(s.type) != 'header'"
@@ -20,7 +19,6 @@
         off-icon="pi pi-times"
       /> -->
       <div class="col-12">
-        <!-- {{ s.ext.mode }} -->
         <SelectButton
           v-if="s.type == Boolean || lowerCase(s.type) == 'boolean'"
           :id="s.key"
@@ -49,7 +47,7 @@
           :id="s.key"
           v-model="mModel[s.key]"
           v-tooltip="s.description"
-          :placeholder="`${s.placeholder}`"
+          :placeholder="`${s.placeholder ? s.placeholder : $t('settings.number_placeholder')}`"
           :disabled="disabled"
           :min-fraction-digits="0"
           :max-fraction-digits="5"
