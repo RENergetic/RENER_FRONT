@@ -7,7 +7,6 @@
       <!-- {{ pData["timeseries_labels"] }} -->
       <Chart
         v-if="!titleVisible && height && width && loaded"
-        :key="chartData"
         :style="mStyle"
         :type="chartType"
         :data="chartData"
@@ -15,6 +14,7 @@
         :height="height"
         :width="width"
       />
+      <!-- :key="chartData" -->
       <div v-if="titleVisible" class="flex flex-none flex-column justify-content-center" style="max-width: 75%">
         <h3>{{ mTitle }}</h3>
       </div>
@@ -23,8 +23,12 @@
         class="flex flex-grow-1 flex-column align-items-center justify-content-center"
         style="position: relative; height: 100%; width: 100%"
       >
-        <div class="flex flex-none flex-column align-items-center justify-content-center" style="height: 85%; width: 100%">
-          <Chart v-if="height && width" :style="mStyle" :type="chartType" :data="chartData" :options="options" :height="height" :width="width" />
+        <div
+          v-if="height && width && loaded"
+          class="flex flex-none flex-column align-items-center justify-content-center"
+          style="height: 85%; width: 100%"
+        >
+          <Chart :style="mStyle" :type="chartType" :data="chartData" :options="options" :height="height" :width="width" />
         </div>
       </div>
     </template>

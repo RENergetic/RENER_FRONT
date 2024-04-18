@@ -29,7 +29,8 @@ export default {
       if (!payload) {
         return;
       }
-      console.debug("set token auth: " + payload.token);
+      // console.debug("set token auth: " + payload.token);
+      console.debug("set token auth ");
       state.data.token = payload.token;
       state.data.tokenExp = payload.exp;
     },
