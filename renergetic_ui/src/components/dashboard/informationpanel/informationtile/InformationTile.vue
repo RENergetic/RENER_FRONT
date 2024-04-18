@@ -249,4 +249,7 @@ export default {
   top: 0.5rem;
   right: 0.5rem;
 }
+.presentation-view .data-preview {
+  display: none;
+}
 </style>
