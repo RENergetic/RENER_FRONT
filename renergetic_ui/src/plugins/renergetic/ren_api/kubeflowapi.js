@@ -20,6 +20,9 @@ export default class KubeflowApi extends RestComponent {
   hideExperiment(experimentId) {
     return this.delete(`${this.BASE_URL}/admin/workflow/${experimentId}/visibility`);
   }
+  setParameters(experimentId, parameters) {
+    return this.put(`${this.BASE_URL}/admin/workflow/${experimentId}/parameters`, parameters);
+  }
   getExperimentRun(experimentId) {
     return this.get(`${this.BASE_URL}/workflow/${experimentId}/run`);
   }

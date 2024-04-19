@@ -98,6 +98,7 @@ export default {
 
   mounted() {
     let minD = this.tileContentSize1D();
+    console.info(minD);
     // var size = this.mSettings.tile.measurement_list ? 0.5 : 0.7;
     // let minD = Math.min(this.settings.panel.cellWidth * this.tile.layout.w, this.settings.panel.cellHeight * this.tile.layout.h);
     this.mStyle = `max-width: 25rem; margin: auto;width:${minD * 0.65}px`;
