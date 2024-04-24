@@ -52,6 +52,9 @@ export default {
       }
       let getF = (key, defaultValue) => (payload[key] ? payload[key] : defaultValue);
       state.informationPanels = getF("panels", []);
+      state.informationPanels.forEach((it) => {
+        it.label = it.label ? it.label : it.name;
+      });
 
       state.featuredPanels = state.informationPanels.filter((it) => it.featured);
       state.informationPanelsMap = mapPanelId(state.informationPanels);
@@ -198,6 +201,7 @@ export default {
       return state.informationPanels;
     },
     homePanel(state) {
+      console.error(state.informationPanels);
       if (state.informationPanels && state.informationPanels.length > 0) {
         if (state.default_asset) {
           let panel = state.informationPanels[0];

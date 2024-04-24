@@ -26,12 +26,14 @@ export default {
   data() {
     return {
       panel: null,
+      settings: this.$store.getters["settings/panel"],
     };
   },
   computed: {
     effectiveFilterSettings: function () {
-      let userFilter = this.$store.getters["settings/filters"]();
-      let overrideMode = this.panel.props && this.panel.props.overrideMode ? this.panel.props.overrideMode : null;
+      let userFilter = this.$store.getters["settings/filters"]("public");
+
+      let overrideMode = this.effectiveOverrideMode(this.settings, this.panel.props);
       let settings = this.mergeSettings(userFilter, this.panel.props, overrideMode);
       return this.parseDateFilter(settings);
     },
