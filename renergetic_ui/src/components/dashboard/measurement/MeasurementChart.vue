@@ -5,6 +5,7 @@
       <!-- {{ annotations }} -->
       <!-- <div style="max-width: 20rem; overflow: hidden; max-height: 15rem">{{ chartData }}</div> -->
       <!-- {{ pData["timeseries_labels"] }} -->
+      <!-- {{ width }} -->
       <Chart
         v-if="!titleVisible && height && width && loaded"
         :style="mStyle"
@@ -80,6 +81,7 @@ export default {
     return {
       labels: this.pData["timeseries_labels"] ? this.pData["timeseries_labels"] : [],
       datasets: [],
+      loaded: false,
       plugins: [chartjsMoment, chartjsPluginAnnotation],
       mStyle: "max-width: 100rem;max-height:60rem; margin: auto;height:100%;width:100%",
       mMeasurements: mMeasurements,
@@ -180,7 +182,7 @@ export default {
     pData: {
       handler: async function (newV) {
         if (newV != null && !this.immediate) {
-          this.setLocalData();
+          await this.setLocalData();
         }
       },
 
@@ -190,7 +192,7 @@ export default {
   async mounted() {
     if (this.immediate) await this.reload();
     else {
-      this.setLocalData();
+      await this.setLocalData();
     }
   },
   methods: {
@@ -257,7 +259,7 @@ export default {
       this.datasets = datasets;
     },
     async reload() {
-      console.info("chart reload: " + this.mMeasurements[0].id);
+      console.debug("chart reload: " + this.mMeasurements[0].id);
       let run = this.$refs.spinner.run;
       await run(async () => {
         // await new Promise((r) => setTimeout(r, 250));
@@ -267,8 +269,8 @@ export default {
         this.refreshDate = new Date();
       });
     },
-    setLocalData() {
-      var pData = this.localData();
+    async setLocalData() {
+      var pData = await this.localData();
       if (pData !== null) {
         this.setDataset(pData);
         this.loaded = true;
