@@ -1,8 +1,12 @@
 <template>
-  <Settings :schema="schema" :settings="mSettings" :columns="columns" :labels="labels" :disabled="disabled" />
+  <!-- {{ mSettings }} -->
+  <Settings :key="refresh" :schema="schema" :settings="mSettings" :columns="columns" :labels="labels" :disabled="disabled" />
+  <!-- {{ mSettings.date_to }} -->
+  <!-- {{ new Date(mSettings.date_to) }}
+  {{ mSettings.timeIntervalType }}  -->
   <!-- {{ $store.getters["settings/all"].filters }} -->
-  <!-- {{ schema }}{{ settings }} -->
-  <!-- {{ settings }} -->
+
+  <!-- {{ schema }} -->
 </template>
 
 <script>
@@ -15,11 +19,17 @@ import Settings from "./Settings.vue";
 function validateDateInterval(s) {
   // if (s.date_to && s.date_from && s.date_to.getTime() < s.date_from.getTime()) {
   //   s.date_to = new Date(s.date_from.getTime() + 15 * 60000);
-  // }
+  // }a
+  var modified = false;
   if (s.date_to && s.date_from && s.date_to < s.date_from) {
-    s.date_to = new Date(s.date_from + 15 * 60000);
+    s.date_to = new Date(s.date_from + 60 * 60000).getTime();
+    modified = true;
   }
-  return s;
+  if (!s.date_from && s.date_to) {
+    s.date_from = new Date(s.date_to - 24 * 60 * 60000).getTime();
+    modified = true;
+  }
+  return modified;
   // this.updateModel();
 }
 export default {
@@ -42,24 +52,38 @@ export default {
     return {
       //https://vueschool.io/lessons/dynamic-vuex-getters
       mSettings: settings,
-
+      refresh: false,
       timeIntervalType: settings.timeIntervalType,
       schema: {},
     };
   },
-  computed: {},
+  computed: {
+    // computedObjectToBeWatched () { to get oldValue in watcher
+    //     return Object.assign({}, this.exampleObject)
+    // }
+  },
   watch: {
     //watch only without submit button
     mSettings: {
       handler: function (newVal) {
-        validateDateInterval(newVal);
+        // console.debug(newVal);
+        // console.debug(new Date(newVal.date_to));
+        var modified = validateDateInterval(newVal);
+        // console.error(modified);
+        console.error(new Date(newVal.date_to));
         if (newVal["timeIntervalType"] != this.timeIntervalType) {
+          this.timeIntervalType = newVal["timeIntervalType"];
           this.schema = this.getSchema();
+          // modified = true;
+        }
+        if (modified) {
+          this.refresh = !this.refresh;
+          // this.mSettings = newVal;
         }
         if (this.submitButton) return;
         newVal["predictionIntervalms"] = newVal.predictionInterval * 3600;
-        console.info(newVal.date_from);
-        console.info(newVal.date_from instanceof Date);
+        // console.info(newVal.date_from);
+        // console.info(newVal.date_from instanceof Date);
         if (newVal.date_from && newVal.date_from instanceof Date) newVal.date_from = newVal.date_from.getTime();
         if (newVal.date_to && newVal.date_to instanceof Date) newVal.date_to = newVal.date_to.getTime();
         this.parseDateFilter(newVal);
@@ -74,6 +98,7 @@ export default {
     },
   },
   async mounted() {
+    console.error("mounted");
     this.mSettings = this.settings ? this.settings : this.$store.getters["settings/filters"](this.settingKey);
     this.timeIntervalType = this.mSettings.timeIntervalType;
     this.schema = this.getSchema();
@@ -96,7 +121,7 @@ export default {
         this.$emit("update");
       }
     },
-    getTimeIntrvalSchema() {
+    getTimeIntervalSchema() {
       var isCustomInterval = this.mSettings && this.mSettings["timeIntervalType"] == "custom_interval";
       if (!isCustomInterval) return [];
       else {
@@ -136,18 +161,18 @@ export default {
           type: Array,
           key: "timeIntervalType",
         },
-        ...this.getTimeIntrvalSchema(),
-        {
-          label: this.$t("settings.prediction_interval"),
-          ext: {
-            valueTemplate: (v) => this.$t("settings.templates.prediction_interval", [v]),
-            max: 48,
-            unit: "h",
-          },
-          type: Number,
-          mode: "slider",
-          key: "predictionInterval",
-        },
+        ...this.getTimeIntervalSchema(),
+        // {
+        //   label: this.$t("settings.prediction_interval"),
+        //   ext: {
+        //     valueTemplate: (v) => this.$t("settings.templates.prediction_interval", [v]),
+        //     max: 48,
+        //     unit: "h",
+        //   },
+        //   type: Number,
+        //   mode: "slider",
+        //   key: "predictionInterval",
+        // },
       ];
       if (this.submitButton) {
         schema.push({

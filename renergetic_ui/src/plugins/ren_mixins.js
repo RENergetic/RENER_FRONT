@@ -238,11 +238,29 @@ export default {
       }
       return mSettings;
     },
+    /**
+       * 
+       * @param {*} settings - user's panel settings 
+       * @param {*} panel - panel model
+       * @returns  final settings for the panel 
+       */
+    effectiveOverrideMode(settings, panel) {
+      let overrideMode = panel.props && panel.props.overrideMode ? panel.props.overrideMode : false;
 
+      let role = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
 
+      if (role & this.$store.getters["auth/renRole"] && settings.ignoreOverrideMode) {
+        overrideMode = "override";
+      }
+      else {
+        overrideMode = overrideMode ? "fixed" : "merge"
+      }
+
+      return overrideMode;
+    },
     /**
      * 
-     * @param {*} settings - user settings 
+     * @param {*} settings - user's panel settings 
      * @param {*} panel - panel model
      * @returns  final settings for the panel 
      */
@@ -285,17 +303,7 @@ export default {
       if (panel == null) {
         return {}
       }
-      let overrideMode = panel.props && panel.props.overrideMode ? panel.props.overrideMode : false;
-
-      let role = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
-
-      if (role & this.$store.getters["auth/renRole"] && settings.ignoreOverrideMode) {
-        overrideMode = "override";
-      }
-      else {
-        overrideMode = overrideMode ? "fixed" : "merge"
-      }
-
+      let overrideMode = this.effectiveOverrideMode(settings, panel)
       console.debug("settings override mode: " + overrideMode)
       let mSettings = this.mergeSettings(settings, panel.props, overrideMode)
       mSettings.asset_id = this.assetId;

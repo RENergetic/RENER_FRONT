@@ -35,7 +35,12 @@ function parseDateFilter(filter) {
       to = new Date(date.getFullYear(), 0, 1).getTime();
       break;
     default:
-      if (from == null) from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+      if (!from) {
+        if (to != null) {
+          let d = new Date(to - 3600 * 1000 * 24);
+          from = new Date(d).getTime();
+        } else from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+      }
       break;
   }
   return { from: from, to: to };
@@ -86,6 +91,7 @@ export default {
       feedbackVisibility: false,
       notificationVisibility: false,
       demandVisibility: true,
+      panelId: null,
     },
     homeLayout: {
       // demandTile: { x: 8, y: 0, w: 4, h: 5 },
@@ -138,8 +144,6 @@ export default {
       state.filter = payload;
     },
     filters(state, { payload, key }) {
-      console.info("filters: " + key);
-      console.debug(payload);
       if (key == "filter") {
         return (state.filter = payload);
       } else {
@@ -157,6 +161,7 @@ export default {
       return state.locales;
     },
     home: (state /* getters*/) => {
+      console.error(state.home);
       return state.home;
     },
     homeLayout: (state /* getters*/) => {
@@ -183,7 +188,10 @@ export default {
       } else {
         filter = state.filters[filterKey];
       }
-      if (filter == null) console.error(filterKey + ": filter not found");
+      if (filter == null) {
+        console.error(filterKey + ": filter not found");
+        filter = { predictionInterval: 0, timeIntervalType: "current_day" };
+      }
       let parsed = parseDateFilter(filter);
       parsed["predictions"] = filter && filter.predictionIntervalms ? filter.predictionIntervalms : 0;
       return parsed;
@@ -192,13 +200,17 @@ export default {
       return state.filter;
     },
     filters: (state) => (filterKey) => {
-      if (filterKey == "filter") {
-        return state.filter;
+      let filter;
+      if (filterKey == "filter" || !filterKey) {
+        filter = state.filter;
+      } else {
+        filter = state.filters[filterKey];
       }
-      if (!state.filters[filterKey]) {
-        return { predictionInterval: 0, timeIntervalType: "current_day" };
+      if (filter == null) {
+        console.error(filterKey + ": filter not found");
+        filter = { predictionInterval: 0, timeIntervalType: "current_day" };
       }
-      return state.filters[filterKey];
+      return filter;
     },
 
     all: (state) => {

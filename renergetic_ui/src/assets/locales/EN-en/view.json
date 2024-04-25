@@ -236,7 +236,7 @@
   "home_settings": "Home Settings",
   "panel_effective_settings": "Effective panel settings",
   "panel_effective_filter_settings": "Effective date filter settings ",
-  "panel_filter_settings": "Effective date filter seetings ",
+  "panel_filter_settings": "Panel date filter filter ",
   "panel_user_settings": "User's panel settings",
   "panel_settings": "Panel settings",
   "panel_label_info": "Each label requires following tag: '{0}' , if tag is not found, it will be added automatically.",
