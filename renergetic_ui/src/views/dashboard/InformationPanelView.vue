@@ -2,7 +2,6 @@
   <!-- PRIVATE DASHBOARD -->
 
   <div v-if="panel" id="panel-box">
-    <!-- {{ effectiveFilterSettings }} -->
     <!-- {{ $store.getters["settings/parsedFilter"]("private") }} -->
     <DotMenu :model="menuModel" />
     <BasicFilterSettings
@@ -138,7 +137,7 @@ export default {
   computed: {
     effectiveFilterSettings: function () {
       let userFilter = this.$store.getters["settings/filters"]("private");
-      let overrideMode = this.panel.props && this.panel.props.overrideMode ? this.panel.props.overrideMode : null;
+      let overrideMode = this.effectiveOverrideMode(this.settings, this.panel.props);
       let settings = this.mergeSettings(userFilter, this.panel.props, overrideMode);
       return this.parseDateFilter(settings);
     },

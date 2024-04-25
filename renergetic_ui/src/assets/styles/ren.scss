@@ -14,6 +14,9 @@
 //       &[gs-max-w='#{$i}'] { max-width: (100% / $gridstack-columns) * $i; }
 //     }
 //   }
+html {
+  background: transparent;
+}
 body {
   // background-color: lightgrey;
   // background: linear-gradient(to right, #232526, #414345);
@@ -231,7 +234,8 @@ body {
 
 .fullscr,
 .standard {
-  max-width: 99.5vw;
+  // max-width: 99.5vw;
+  max-width: 100vw;
   width: 100%;
   min-height: 100vh;
   max-height: 100vh;
@@ -463,6 +467,12 @@ body {
 .standard div::-webkit-scrollbar:hover {
   background: $ren-primary-border-color-tr;
 }
+
+#panel-box.presentation-view {
+  overflow: hidden;
+  background: transparent;
+}
+
 .p-dialog div,
 .p-sidebar-content {
   // box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);

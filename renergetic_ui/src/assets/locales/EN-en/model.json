@@ -1,6 +1,7 @@
 {
   "name_description": "Object's name, code name used in RENergetic system to interact with other component, code used for automatic translations",
   "label_description": "Object's human readable name, name used in RENergetic - `name` field is used if label is null",
+  "description": "Description",
   "dashboard": {
     "name": "Name",
     "url": "URL",
@@ -218,5 +219,12 @@
       "error": "Error",
       "not_running": "Not running"
     }
+  },
+  "workflow_parameter": {
+    "key": "Key",
+    "label": "Label",
+    "description": "Description",
+    "type": "Type",
+    "defaultValue": "Default value"
   }
 }

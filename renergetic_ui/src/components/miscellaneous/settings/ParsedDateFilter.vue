@@ -1,6 +1,6 @@
 <template>
-  <div v-if="dateFrom">{{ dateFrom }}</div>
-  <div v-if="dateTo">{{ dateTo }}</div>
+  <span v-if="dateFrom">{{ dateFrom }}</span>
+  <span v-if="dateTo">{{ dateTo }}</span>
   <!-- {{ $store.getters["settings/filter"] }} -->
 </template>
 

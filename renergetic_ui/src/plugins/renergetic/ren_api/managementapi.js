@@ -257,7 +257,7 @@ export default class ManagementApi extends RestComponent {
   }
   async updateMeasurement(measurement) {
     // TODO: -> only allow to update labels ,  color, and key-value properties
-    return this.put(`/api/measurements/${measurement.id}`, measurement, null, null, (e) => {
+    return this.put(`/api/measurements/id/${measurement.id}`, measurement, null, null, (e) => {
       if (e.response.status == 404) {
         this.emitError(`Measurement ${measurement.id} not found: ${e.message}`, {
           code: "measurement_not_found",
@@ -269,13 +269,13 @@ export default class ManagementApi extends RestComponent {
   }
 
   async getMeasurementProperties(id) {
-    return this.get(`/api/measurements/${id}/properties`);
+    return this.get(`/api/measurements/id/${id}/properties`);
   }
   async getMeasurementLinkedPanels(id) {
-    return this.get(`/api/measurements/${id}/panels`);
+    return this.get(`/api/measurements/id/${id}/panels`);
   }
   async getMeasurementTags(id) {
-    return this.get(`/api/measurements/${id}/tags`);
+    return this.get(`/api/measurements/id/${id}/tags`);
   }
   async duplicateMeasurement(id) {
     return this.post(`/api/measurements/id/${id}/copy`);
@@ -312,7 +312,7 @@ export default class ManagementApi extends RestComponent {
 
   async updateMeasurementTags(measurement, tags) {
     // TODO: -> only allow to update labels ,  color, and key-value properties
-    return this.put(`/api/measurements/${measurement.id}/tags`, tags, null, null, (e) => {
+    return this.put(`/api/measurements/id/${measurement.id}/tags`, tags, null, null, (e) => {
       if (e.response.status == 404) {
         this.emitError(`Measurement ${measurement.id} not found: ${e.message}`, {
           code: "measurement_not_found",
@@ -324,7 +324,7 @@ export default class ManagementApi extends RestComponent {
   }
   async updateMeasurementProperties(measurement, properties) {
     // TODO: -> only allow to update labels ,  color, and key-value properties
-    return this.put(`/api/measurements/${measurement.id}/properties`, properties, null, null, (e) => {
+    return this.put(`/api/measurements/id/${measurement.id}/properties`, properties, null, null, (e) => {
       if (e.response.status == 404) {
         this.emitError(`Measurement ${measurement.id} not found: ${e.message}`, {
           code: "measurement_not_found",
@@ -336,7 +336,7 @@ export default class ManagementApi extends RestComponent {
   }
 
   async deleteMeasurement(measurementId) {
-    return this.delete(`/api/measurements/${measurementId}`, null, null, null, (e) => {
+    return this.delete(`/api/measurements/id/${measurementId}`, null, null, null, (e) => {
       if (e.response.status == 404) {
         this.emitError(`Measurement ${measurementId} not found: ${e.message}`, {
           code: "measurement_not_found",
@@ -627,19 +627,7 @@ export default class ManagementApi extends RestComponent {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// async deleteMeasurement(id) {
-//   return this.axios
-//     .delete(`/api/measurements/${id}`, {
-//       headers: { "Content-type": "application/json; charset=UTF-8" },
-//     })
-//     .then((response) => {
-//       return response.data;
-//     })
-//     .catch(function (error) {
-//       console.error("delete measurement error" + error.message);
-//       if (error.response.status == 404) console.error("measurement not found" + error.message);
-//     });
-// }
+
 //
 // async searchAsset(query, params = undefined, offset = 0, limit = 20) {
 //   // Params: category, type, name, owner_id, parent_id

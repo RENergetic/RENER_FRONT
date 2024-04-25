@@ -1,7 +1,7 @@
 <template>
   <!-- {{ pdata }} -->
   <!-- {{ $store.getters["view/panelAsset"](panel.id, assetId) }} -->
-  <!-- {{ filter }}dd -->
+  <!-- ff{{ filter }}dd -->
   <RenSpinner ref="spinner" :lock="true" style="width: 100%; min-height: 15rem">
     <template #content>
       <!-- {{ mPanel }} -->

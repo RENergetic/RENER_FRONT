@@ -39,8 +39,8 @@
           :errors="v$.mModel.interval_length.$silentErrors"
         >
           <template #content>
-            <Slider v-model="mModel.interval_length" :disabled="disabled" class="settings-slider" :max="60 * 12" :step="30" :min="60" />
-            <span>{{ mModel.interval_length }}</span>
+            <Slider v-model="mModel.interval_length" :disabled="disabled" class="settings-slider" :max="60 * 24" :step="60" :min="60" />
+            <span>{{ mModel.interval_length }}[min] ({{ mModel.interval_length / 60 }}[h])</span>
           </template>
         </ren-input-wrapper>
 
