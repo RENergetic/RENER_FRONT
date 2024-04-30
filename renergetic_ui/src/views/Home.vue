@@ -1,9 +1,10 @@
 <template>
   <DotMenu v-if="loggedIn" :model="menuModel" :fixed="true" />
   <!-- {{ effectiveFilterSettings }} -->
-  <div v-if="panel && settings.panelVisibility" style="position: relative">
+  <div v-if="settings.panelVisibility" style="position: relative">
     <!-- {{ $store.getters["view/featuredPanels"] }}  -->
     <!-- {{ $store.getters["view/assetPanels"] }}d -->
+    <!-- {{ panelSettings }} -->
     <InformationPanelWrapper
       v-if="panel"
       ref="panel"
@@ -21,7 +22,7 @@
       <h4 style="width: 100%; margin: auto">{{ $t("view.empty_home_dashboard") }}</h4>
     </div>
     <div style="margin-left: 1rem; margin-top: 2rem">
-      <ParsedDateFilter :key="parsedFilterRefresh" :filter="effectiveFilterSettings" /> <span v-if="panel">(view: {{ panel.id }})</span>
+      <ParsedDateFilter :key="parsedFilterRefresh" :filter="effectiveFilterSettings" />
     </div>
   </div>
   <div v-if="settings.demandVisibility && loggedIn" style="position: relative">
@@ -153,6 +154,7 @@ export default {
     ParsedDateFilter,
     BasicFilterSettings,
   },
+  props: {},
   data() {
     return {
       schema: panelSchema,
@@ -162,7 +164,7 @@ export default {
       slideshow: null,
       autoReload: true,
       assetId: null,
-      panel: null,
+      panel: this.$store.getters["view/homePanel"],
       settings: this.$store.getters["settings/home"],
       // filter: this.$store.getters["settings/parsedFilter"](),
       panelSettings: this.$store.getters["settings/panel"],
@@ -175,9 +177,8 @@ export default {
     },
     effectiveFilterSettings: function () {
       let userFilter = this.$store.getters["settings/filters"]();
-      let overrideMode = this.effectiveOverrideMode(this.settings, this.panel.props);
+      let overrideMode = this.panel.props && this.panel.props.overrideMode ? this.panel.props.overrideMode : null;
       let settings = this.mergeSettings(userFilter, this.panel.props, overrideMode);
-
       return this.parseDateFilter(settings);
     },
 
@@ -272,9 +273,6 @@ export default {
     this.loaded = false;
   },
   async mounted() {
-    this.panel = await (this.$store.getters["settings/home"].homePanel
-      ? this.$ren.utils.getPanelStructure(this.$store.getters["settings/home"].homePanel)
-      : this.$store.getters["view/homePanel"]);
     var df = new DeferredFunction(this.slideshowLoop, 1000);
     df.run();
   },
@@ -298,7 +296,6 @@ export default {
           _this.autoReload = true;
         }
       };
-      console.error(this.settings);
       if (this.settings.slideshowLoopInterval > 0) {
         this.slideshow = LoopRunner.init(f, this.settings.slideshowLoopInterval);
         this.slideshow.start();

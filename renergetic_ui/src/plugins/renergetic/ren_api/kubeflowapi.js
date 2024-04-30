@@ -7,30 +7,30 @@ export default class KubeflowApi extends RestComponent {
   }
 
   list() {
-    return this.get(`${this.BASE_URL}/workflow`);
+    return this.get(`${this.BASE_URL}/pipeline`);
   }
   adminList({ visible = null }) {
     console.info(visible);
     let args = this.parseArgs({ visible: visible });
-    return this.get(`${this.BASE_URL}/admin/workflow?${args}`);
+    return this.get(`${this.BASE_URL}/admin/pipeline?${args}`);
   }
-  showExperiment(experimentId) {
-    return this.put(`${this.BASE_URL}/admin/workflow/${experimentId}/visibility`);
+  showExperiment(pipelineId) {
+    return this.put(`${this.BASE_URL}/admin/pipeline/${pipelineId}/visibility`);
   }
-  hideExperiment(experimentId) {
-    return this.delete(`${this.BASE_URL}/admin/workflow/${experimentId}/visibility`);
+  hideExperiment(pipelineId) {
+    return this.delete(`${this.BASE_URL}/admin/pipeline/${pipelineId}/visibility`);
   }
-  setParameters(experimentId, parameters) {
-    return this.put(`${this.BASE_URL}/admin/workflow/${experimentId}/parameters`, parameters);
+  setParameters(pipelineId, parameters) {
+    return this.put(`${this.BASE_URL}/admin/pipeline/${pipelineId}/parameters`, parameters);
   }
-  getExperimentRun(experimentId) {
-    return this.get(`${this.BASE_URL}/workflow/${experimentId}/run`);
+  getExperimentRun(pipelineId) {
+    return this.get(`${this.BASE_URL}/pipeline/${pipelineId}/run`);
   }
-  startExperiment(experimentId, experimentParams) {
-    return this.post(`${this.BASE_URL}/workflow/${experimentId}/run`, experimentParams);
+  startExperiment(pipelineId, experimentParams) {
+    return this.post(`${this.BASE_URL}/pipeline/${pipelineId}/run`, experimentParams);
   }
-  stopExperiment(experimentId) {
-    return this.delete(`${this.BASE_URL}/workflow/${experimentId}/run`);
+  stopExperiment(pipelineId) {
+    return this.delete(`${this.BASE_URL}/pipeline/${pipelineId}/run`);
   }
 
   // setCurrentRequest(request) {

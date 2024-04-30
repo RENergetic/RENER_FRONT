@@ -70,7 +70,6 @@ export default {
         // console.debug(new Date(newVal.date_to));
         var modified = validateDateInterval(newVal);
         // console.error(modified);
-        console.error(new Date(newVal.date_to));
         if (newVal["timeIntervalType"] != this.timeIntervalType) {
           this.timeIntervalType = newVal["timeIntervalType"];
           this.schema = this.getSchema();

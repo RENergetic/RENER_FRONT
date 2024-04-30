@@ -37,6 +37,7 @@
         </ren-input-wrapper>
 
         <ren-input v-model="mModel.defaultValue" :text-label="'model.workflow_parameter.defaultValue'" />
+        <ren-switch v-model="mModel.visible" :text-label="'model.workflow_parameter.visibility'" />
       </div>
     </template>
   </Card>

@@ -5,7 +5,7 @@
     :selection-mode="'single'"
     :filters="mFilters"
     :lazy="true"
-    data-key="experiment_id"
+    data-key="pipeline_id"
     :value="workflowList"
     filter-display="row"
     class="sticky-header"
@@ -16,7 +16,7 @@
     </template> -->
 
     <Column field="name" :header="$t('model.workflow.name')" :show-filter-menu="false" />
-    <Column field="experiment_id" :header="$t('model.workflow.experiment_id')" :show-filter-menu="false" />
+    <Column field="pipeline_id" :header="$t('model.workflow.pipeline_id')" :show-filter-menu="false" />
     <Column field="parameters" :header="$t('model.workflow.parameters')" :show-filter-menu="false">
       <template #body="slotProps">
         <ul v-if="slotProps.data.parameters">
@@ -25,12 +25,12 @@
         <span v-else> {{ $t("view.na") }} </span>
       </template>
     </Column>
-    <Column field="pipelines" :header="$t('model.workflow.pipelines')" :show-filter-menu="false">
+    <!-- <Column field="pipelines" :header="$t('model.workflow.pipelines')" :show-filter-menu="false">
       <template #body="slotProps">
         <span v-if="slotProps.data.pipelines"> {{ $t("model.workflow.pipelines", { length: slotProps.data.pipelines.length }) }}</span>
         <span v-else> {{ $t("view.na") }} </span>
       </template>
-    </Column>
+    </Column> -->
     <Column field="current_run" :header="$t('model.workflow.current_run')" :show-filter-menu="false">
       <template #body="slotProps">
         <div v-if="isTaskRunning(slotProps.data.current_run)" @click="showRunDetails(slotProps.data.current_run)">

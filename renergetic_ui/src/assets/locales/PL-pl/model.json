@@ -200,6 +200,7 @@
   "workflow": {
     "name": "Nazwa",
     "experiment_id": "Id eksperymentu",
+    "pipeline_id": "Id Pipeline",
     "parameters": "Parametry eksperymentu",
     "pipelines": "Pipelines",
     "current_run": "Aktuanie uruchomiony eksperyment",
@@ -224,6 +225,7 @@
     "label": "Etykieta",
     "description": "Opis",
     "type": "Typ",
-    "defaultValue": "Domyślna wartość"
+    "defaultValue": "Domyślna wartość",
+    "visibility": "Widoczność"
   }
 }

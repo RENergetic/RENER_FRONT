@@ -201,8 +201,8 @@
   "workflow": {
     "name": "Name",
     "experiment_id": "Experiment id",
+    "pipeline_id": "Pipeline id",
     "parameters": "Run parameters",
-    "pipelines": "Pipelines",
     "current_run": "Current run",
     "visibility": "Visibility",
     "visible": "Visibility"
@@ -225,6 +225,7 @@
     "label": "Label",
     "description": "Description",
     "type": "Type",
-    "defaultValue": "Default value"
+    "defaultValue": "Default value",
+    "visibility": "Visibility"
   }
 }
