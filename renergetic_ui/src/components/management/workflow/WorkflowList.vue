@@ -33,7 +33,7 @@
     </Column> -->
     <Column field="current_run" :header="$t('model.workflow.current_run')" :show-filter-menu="false">
       <template #body="slotProps">
-        <div v-if="isTaskRunning(slotProps.data.current_run)" @click="showRunDetails(slotProps.data.current_run)">
+        <div v-if="isTaskRunning(slotProps.data.current_run)" @click="showRunDetails(slotProps.data)">
           <div>
             {{
               slotProps.data.current_run.name
@@ -66,7 +66,7 @@
 
   <!-- <ren-paginator v-if="measurementList" v-model:offset="mOffset" style="left: 0" sticky :current-rows="measurementList.length" @update="reload" /> -->
   <Dialog v-model:visible="workflowRunDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <WorkflowRunDetails :workflow-run="selectedWorkflowRunDetails" @on-stop="onWorkflowStop" />
+    <WorkflowRunDetails :workflow-run="selectedWorkflowRunDetails" @on-stop="onWorkflowStop" @update="onRunUpdate" />
   </Dialog>
   <Dialog v-model:visible="workflowRunStartDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <WorkflowRun :workflow="selectedWorkflow" @on-start="onWorkflowStart" />
@@ -96,6 +96,7 @@ export default {
       selectedWorkflow: null,
       deferredEmitFilter: null,
       selectedWorkflowRunDetails: null,
+      selectedWorkflowDetails: null,
       workflowRunDetailsDialog: false,
       workflowRunStartDialog: false,
     };
@@ -140,9 +141,13 @@ export default {
     reload() {
       this.$emit("reload");
     },
-    showRunDetails(workflowRun) {
-      this.selectedWorkflowRunDetails = workflowRun;
+    showRunDetails(workflow) {
+      this.selectedWorkflowDetails = workflow;
+      this.selectedWorkflowRunDetails = workflow.current_run;
       this.workflowRunDetailsDialog = true;
+    },
+    onRunUpdate(workflowRun) {
+      this.selectedWorkflowDetails.current_run = workflowRun;
     },
     onWorkflowStop(state) {
       console.debug(`Stop state ${state}`);

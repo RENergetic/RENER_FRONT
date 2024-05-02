@@ -213,11 +213,13 @@
     "start_time_formatted": "Task started at {start_time}",
     "end_time": "End time",
     "parameters": "Parameters",
+    "state": "State",
     "run_state": {
       "running": "Running",
       "finished": "Finished",
       "error": "Error",
-      "not_running": "Not running"
+      "not_running": "Not running",
+      "terminating": "Terminating"
     }
   },
   "workflow_parameter": {

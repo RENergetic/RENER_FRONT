@@ -213,11 +213,13 @@
     "start_time_formatted": "Czas rozpoczęcia: {start_time}",
     "end_time": "Czas zakończenia",
     "parameters": "Parametry",
+    "state": "Status",
     "run_state": {
       "running": "Uruchomiony",
       "finished": "Skończony",
       "error": "Błąd",
-      "not_running": "Brak"
+      "not_running": "Brak",
+      "terminating": "Zatrzymywanie"
     }
   },
   "workflow_parameter": {
