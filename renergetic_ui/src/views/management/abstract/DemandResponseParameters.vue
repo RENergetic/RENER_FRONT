@@ -3,8 +3,8 @@
     <template #content>
       <div class="gap-3 field grid container">
         <!-- obtained from the backend -->
-        <Checkbox v-model="rowActiveCheckBox" :binary="true" />
-        <label> {{ $t("view.enable_asset") }} </label>
+        <Checkbox v-if="showCheckbox" v-model="rowActiveCheckBox" :binary="true" />
+        <label v-if="showLabel"> {{ $t("view.enable_rule") }} </label>
         <!-- <Dropdown v-model="measurementList" :options="formattedOptions" :placeholder="'Measurements'" optionLabel="label" optionValue="value" /> -->
         <Button :label="formattedMeasurementValue" @click="measurementSelectionDialog(0)"></Button>
         <Dropdown
@@ -49,7 +49,7 @@
         <div v-if="detailsError">
           <label>{{ $t("view.asset_details_dont_exist") }}</label>
         </div>
-        <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteDemandResponseUI()" />
+        <Button v-if="showButton" icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteDemandResponseUI()" />
         <MeasurementSelectionList ref="measurementSelectionList" @selected-measurement="handleMeasurementSelection"></MeasurementSelectionList>
       </div>
     </template>
@@ -64,6 +64,7 @@ export default {
     Checkbox,
     MeasurementSelectionList,
   },
+  emits: ["delete"],
   data() {
     return {
       measurementList: null,
@@ -80,6 +81,9 @@ export default {
       dropdownMeasurementList2: ["Measurement1", "Measurement2"],
       dropdownThresholdMeasurement: ["Threshold", "Measurement"],
       dropdownOperation: [">", ">=", "<", "<="],
+      showCheckbox: true,
+      showButton: true,
+      showLabel: true,
       checkBoxBool: true,
       valueMeasurement: null,
       rowActiveCheckBox: null,
@@ -117,6 +121,9 @@ export default {
   },
   created() {
     this.rowActiveCheckBox = false;
+    this.showCheckbox = true;
+    this.showButton = true;
+    this.showLabel = true;
     this.measurementList = this.dropdownMeasurementList[0];
     this.measurement1Function = this.dropdownMeasurementFunction[0];
     this.operationData = this.dropdownOperation[0];
@@ -256,6 +263,15 @@ export default {
         this.measurementList2 = selectedId;
         console.log(selectedId + " . " + this.measurementList2);
       }
+    },
+    hiddenCheckbox() {
+      this.showCheckbox = false;
+    },
+    hiddenButton() {
+      this.showButton = false;
+    },
+    hiddenLabel() {
+      this.showLabel = false;
     },
   },
 };
