@@ -101,7 +101,7 @@ export default {
       });
     },
     getType(param) {
-      let propertyType = param.type ? this.lowerCase(param.type) : String;
+      let propertyType = param.type ? param.type.toLowerCase() : String;
       if (propertyType == "array") propertyType == String;
       if (propertyType == "json") propertyType == String;
       return propertyType;
@@ -116,7 +116,6 @@ export default {
       return {};
     },
     getSetting(param) {
-      console.error(param);
       let key = param.key;
       let propertyType = this.getType(key);
 
@@ -124,7 +123,7 @@ export default {
         label: param.label ? `${param.label} (${key})` : key,
         description: param.description,
         ext: this.getExt(propertyType),
-        type: this.getType(key),
+        type: this.getType(param),
         key: key,
         defaultValue: param.defaultValue,
       };
