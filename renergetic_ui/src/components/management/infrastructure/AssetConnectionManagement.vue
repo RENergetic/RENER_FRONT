@@ -161,7 +161,7 @@ export default {
         header: this.$t("view.asset_connection_delete_header"),
         icon: "pi pi-exclamation-triangle",
         accept: async () => {
-          await this.deleteAssetConnection(assetConnection);
+          await this.deleteAssetConnection(this.asset.id, assetConnection.id, assetConnection.connection_type);
         },
         reject: () => {
           this.$confirm.close();

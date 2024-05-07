@@ -20,6 +20,12 @@ var adminRoutes = [
     meta: { isAuthenticated: true, roles: ["ren-admin", "ren-dev"], roleFlag: RenRoles.REN_ADMIN },
     component: () => import("../views/admin/WorkflowListView.vue"),
   },
+  {
+    path: "/admin/logs",
+    name: "AdminLogs",
+    meta: { isAuthenticated: true, roles: ["ren-admin", "ren-dev"], roleFlag: RenRoles.REN_ADMIN },
+    component: () => import("../views/admin/LogsListView.vue"),
+  },
 ];
 
 export default adminRoutes;

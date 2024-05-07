@@ -21,6 +21,7 @@
 
     <!-- {{ currentRequest }} -->
     <Button :label="$t('view.button.set_hdr')" @click="hdrRequestDialog = true" />
+    <Button :label="$t('view.button.hdr_settings')" @click="hdrSettingsDialog = true" />
   </Panel>
   <Panel :header="$t('view.select_base_recommendation')" toggleable>
     <Dropdown
@@ -44,13 +45,17 @@
   <Dialog v-model:visible="hdrRequestDialog" :style="{ width: '50vw' }" :maximizable="false" :modal="true" :dismissable-mask="true">
     <HDRRequestForm @update="onHDR" @cancel="hdrRequestDialog = false" />
   </Dialog>
+  <Dialog v-model:visible="hdrSettingsDialog" :style="{ width: '50vw' }" :maximizable="false" :modal="true" :dismissable-mask="true">
+    <HDRSettings @update="onHDR" @cancel="hdrSettingsDialog = false" />
+  </Dialog>
 </template>
 <script>
 import HDRRequestForm from "@/components/management/demand/HDRRequestForm.vue";
+import HDRSettings from "@/components/management/demand/HDRSettings.vue";
 import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 export default {
   name: "HDRRecomendationList",
-  components: { HDRRequestForm, InfoIcon },
+  components: { HDRRequestForm, HDRSettings, InfoIcon },
   props: {
     modelValue: {
       type: Object,
@@ -72,6 +77,7 @@ export default {
     return {
       currentRequest: this.hdrRequest,
       hdrRequestDialog: false,
+      hdrSettingsDialog: false,
       selectedRecommendation: this.modelValue,
       selectedCompareWith: this.comparewith ? this.comparewith : this.recommendationList ? this.recommendationList[0] : null,
     };

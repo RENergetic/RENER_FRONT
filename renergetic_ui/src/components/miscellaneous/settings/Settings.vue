@@ -3,14 +3,14 @@
     <!-- {{ mModel }} -->
     <div v-for="s in schema" :key="s" :class="getClass(s)">
       <label
-        v-if="labels && s.type != 'Submit' && s.description && s.type != 'Header'"
+        v-if="labels && lowerCase(s.type) != 'submit' && s.description && lowerCase(s.type) != 'header'"
         v-tooltip.top="{ value: s.description, class: '' }"
         :for="s.key"
         class="col-12"
       >
         {{ s.label }}
       </label>
-      <label v-else-if="labels && s.type != 'Submit' && s.type != 'Header'" :for="s.key" class="col-12">{{ s.label }}</label>
+      <label v-else-if="labels && lowerCase(s.type) != 'submit' && lowerCase(s.type) != 'header'" :for="s.key" class="col-12">{{ s.label }}</label>
 
       <!-- <ToggleButton
         v-model="mModel['key']"
@@ -22,7 +22,7 @@
       <div class="col-12">
         <!-- {{ s.ext.mode }} -->
         <SelectButton
-          v-if="s.type == Boolean || s.type == 'Boolean'"
+          v-if="s.type == Boolean || lowerCase(s.type) == 'boolean'"
           :id="s.key"
           v-model="mModel[s.key]"
           v-tooltip="s.description"
@@ -34,7 +34,7 @@
             { name: s.ext.false, value: false },
           ]"
         />
-        <div v-else-if="s.type == Number && s.mode == 'slider'">
+        <div v-else-if="s.type == Number && lowerCase(s.mode) == 'slider'">
           <Slider
             v-model="mModel[s.key]"
             v-tooltip="s.description"
@@ -45,7 +45,7 @@
           <span>{{ s.ext && s.ext.valueTemplate ? s.ext.valueTemplate(mModel[s.key]) : mModel[s.key] }} {{ s.ext ? s.ext.unit : "" }}</span>
         </div>
         <InputNumber
-          v-else-if="s.type == Number || s.type == 'Number'"
+          v-else-if="s.type == Number || lowerCase(s.type) == 'number'"
           :id="s.key"
           v-model="mModel[s.key]"
           v-tooltip="s.description"
@@ -57,7 +57,7 @@
           :use-grouping="false"
         />
 
-        <div v-else-if="s.type == 'list'">
+        <div v-else-if="lowerCase(s.type) == 'list'">
           <ListBox
             :id="s.key"
             v-model="mModel[s.key]"
@@ -70,7 +70,7 @@
           />
         </div>
 
-        <div v-else-if="s.type == Array || s.type == 'Array'">
+        <div v-else-if="s.type == Array || lowerCase(s.type) == 'array'">
           <SelectButton
             :id="s.key"
             v-model="mModel[s.key]"
@@ -81,7 +81,7 @@
             :option-label="s.ext.optionLabel"
           />
         </div>
-        <div v-else-if="s.type == 'Color'" class="grid">
+        <div v-else-if="lowerCase(s.type) == 'color'" class="grid">
           <div class="col-12 xl:col-3">
             <ColorPicker :id="s.key + '_color'" v-model="mModel[s.key]" v-tooltip="s.description" :disabled="disabled" @change="colorChange(s.key)" />
           </div>
@@ -96,15 +96,15 @@
             />
           </div>
         </div>
-        <div v-else-if="s.type == 'Datetime'">
+        <div v-else-if="lowerCase(s.type) == 'datetime'">
           <!-- <Calendar :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" :disabled="disabled" :show-time="true" hour-format="24" /> -->
           <UnixCalendar :id="s.key" v-model="mModel[s.key]" :description="s.description" :disabled="disabled" />
         </div>
 
-        <div v-else-if="s.type == 'Submit'">
+        <div v-else-if="lowerCase(s.type) == 'submit'">
           <Button v-if="!disabled" :id="s.key" v-tooltip="s.description" :label="s.label" @click="s.ext.click" />
         </div>
-        <div v-else-if="s.type == 'Header'">
+        <div v-else-if="lowerCase(s.type) == 'header'">
           <h2 :id="s.key" v-tooltip="s.description">{{ s.label }}</h2>
         </div>
         <InputText v-else :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" :placeholder="s.placeholder" :disabled="disabled" />
@@ -175,6 +175,11 @@ export default {
 
   async created() {},
   methods: {
+    lowerCase(s) {
+      if (s) {
+        return (s + "").toLowerCase();
+      } else return null;
+    },
     colorChange(k) {
       // console.info(this.mModel[k]);
       if (this.mModel[k] && this.mModel[k].length == 6) this.mModel[k] = "#" + this.mModel[k];

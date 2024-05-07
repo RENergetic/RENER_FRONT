@@ -6,14 +6,14 @@
         <Checkbox v-if="showCheckbox" v-model="rowActiveCheckBox" :binary="true" />
         <label v-if="showLabel"> {{ $t("view.enable_rule") }} </label>
         <!-- <Dropdown v-model="measurementList" :options="formattedOptions" :placeholder="'Measurements'" optionLabel="label" optionValue="value" /> -->
-        <Button :label="formattedMeasurementValue" @click="measurementSelectionDialog(0)"></Button>
+        <Button :label="formattedMeasurementValue" @click="measurementSelectionDialog(0)" :class="{ 'invalid-input': errors.measurement1 }"></Button>
         <Dropdown
           v-model="measurement1Function"
           :placeholder="dropdownMeasurementFunction[0]"
           :options="dropdownMeasurementFunction"
           class="w-full md:w-8rem"
         />
-        <InputText v-model="timeRange" class="md:w-4rem" :class="[borderColor0]" type="text" @input="validateInput(0)" />
+        <InputText v-model="timeRange" class="md:w-4rem" :class="{ 'invalid-input': errors.timeRange }" type="text" @input="validateTimeRange()" />
         <Dropdown v-model="durationSyntax" :placeholder="dropdownDurationSyntax[0]" :options="dropdownDurationSyntax" class="w-full md:w-6rem" />
         <Dropdown v-model="operationData" :placeholder="dropdownOperation[0]" :options="dropdownOperation" class="w-full md:w-5rem" />
         <Dropdown
@@ -28,21 +28,31 @@
           <InputText
             v-model="valueMeasurement"
             class="inputTextCondition"
-            :class="[borderColor2]"
+            :class="{ 'invalid-input': errors.valueMeasurement }"
             type="text"
             :placeholder="'0'"
-            @input="validateInput(2)"
+            @input="validateValueMeasurement()"
           />
         </div>
         <div v-else-if="thresholdMeasurement == 'Measurement'" class="gap-3 container">
-          <Button :label="formattedMeasurementValue2" @click="measurementSelectionDialog(1)"></Button>
+          <Button
+            :label="formattedMeasurementValue2"
+            @click="measurementSelectionDialog(1)"
+            :class="{ 'invalid-input': errors.measurement2 }"
+          ></Button>
           <Dropdown
             v-model="measurement2Function"
             :placeholder="dropdownMeasurementFunction[0]"
             :options="dropdownMeasurementFunction"
             class="w-full md:w-8rem"
           />
-          <InputText v-model="timeRange2" class="inputTextCondition md:w-4rem" :class="[borderColor1]" type="text" @input="validateInput(1)" />
+          <InputText
+            v-model="timeRange2"
+            class="inputTextCondition md:w-4rem"
+            :class="{ 'invalid-input': errors.timeRange2 }"
+            type="text"
+            @input="validateTimeRange2()"
+          />
           <Dropdown v-model="durationSyntax2" :placeholder="dropdownDurationSyntax[0]" :options="dropdownDurationSyntax" class="w-full md:w-6rem" />
         </div>
         <div v-else>ERROR</div>
@@ -52,15 +62,77 @@
         <Button v-if="showButton" icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteDemandResponseUI()" />
         <MeasurementSelectionList ref="measurementSelectionList" @selected-measurement="handleMeasurementSelection"></MeasurementSelectionList>
       </div>
+      <div class="gap-3 field grid container">
+        <Checkbox v-model="sendDemandTrue" :binary="true" />
+        <label>Demand (true)</label>
+        <div class="gap-3 grid" v-if="sendDemandTrue">
+          <Button
+            :label="formattedAssetValue(demandAssetTrue)"
+            @click="selectAssetTrue()"
+            :class="{ 'invalid-input': errors.demandAssetTrue }"
+          ></Button>
+          <AssetSelectDialog ref="assetSelectDialogDemandTrue" @submit="onAssetDemandTrueUpdate"></AssetSelectDialog>
+          <Dropdown
+            v-model="demandDefinitionTrueAction"
+            optionValue="value"
+            optionLabel="label"
+            placeholder="Action"
+            :options="demandActionsList"
+            class="w-full md:w-8rem"
+          />
+          <Dropdown
+            v-model="demandDefinitionTrueActionType"
+            optionValue="value"
+            optionLabel="label"
+            placeholder="Action type"
+            :options="demandActionTypesList"
+            class="w-full md:w-8rem"
+          />
+          <InputText v-model="demandDefinitionTrueActionMessage" class="inputTextCondition md:w-15rem" type="text" placeholder="Message" />
+        </div>
+      </div>
+      <div class="gap-3 field grid container">
+        <Checkbox v-model="sendDemandFalse" :binary="true" />
+        <label>Demand (false)</label>
+        <div class="gap-3 grid" v-if="sendDemandFalse">
+          <Button
+            :label="formattedAssetValue(demandAssetFalse)"
+            @click="selectAssetFalse()"
+            :class="{ 'invalid-input': errors.demandAssetFalse }"
+          ></Button>
+          <AssetSelectDialog ref="assetSelectDialogDemandFalse" @submit="onAssetDemandFalseUpdate"></AssetSelectDialog>
+          <Dropdown
+            v-model="demandDefinitionFalseAction"
+            optionValue="value"
+            optionLabel="label"
+            placeholder="Action"
+            :options="demandActionsList"
+            class="w-full md:w-8rem"
+          />
+          <Dropdown
+            v-model="demandDefinitionFalseActionType"
+            optionValue="value"
+            optionLabel="label"
+            placeholder="Action type"
+            :options="demandActionTypesList"
+            class="w-full md:w-8rem"
+          />
+          <InputText v-model="demandDefinitionFalseActionMessage" class="inputTextCondition md:w-15rem" type="text" placeholder="Message" />
+        </div>
+      </div>
     </template>
   </Card>
 </template>
 <script>
 import Checkbox from "primevue/checkbox";
 import MeasurementSelectionList from "@/components/management/infrastructure/MeasurementSelectionList.vue";
+import AssetSelectDialog from "@/components/management/infrastructure/AssetSelectDialog.vue";
+import { DemandActionType } from "@/plugins/model/Enums.js";
+import { DemandAction } from "@/plugins/model/Enums.js";
 export default {
   name: "DemandResponseParameters",
   components: {
+    AssetSelectDialog,
     Checkbox,
     MeasurementSelectionList,
   },
@@ -98,6 +170,27 @@ export default {
       borderColor2: "",
       detailsError: false,
       measurementModified: null,
+      sendDemandTrue: false,
+      demandDefinitionTrueAction: "",
+      demandDefinitionTrueActionType: "",
+      demandDefinitionTrueActionMessage: "",
+      demandAssetTrue: null,
+      sendDemandFalse: false,
+      demandDefinitionFalseAction: "",
+      demandDefinitionFalseActionType: "",
+      demandDefinitionFalseActionMessage: "",
+      demandAssetFalse: null,
+      demandActionsList: [],
+      demandActionTypesList: [],
+      errors: {
+        measurement1: false,
+        timeRange: false,
+        measurement2: false,
+        timeRange2: false,
+        demandAssetTrue: false,
+        demandAssetFalse: false,
+        valueMeasurement: false,
+      },
     };
   },
   computed: {
@@ -120,6 +213,15 @@ export default {
     },
   },
   created() {
+    this.demandActionTypesList = [];
+    for (const [, value] of Object.entries(DemandActionType)) {
+      this.demandActionTypesList.push({ label: this.$t(`enums.demand_action_type.${value}`), value: value.toUpperCase() });
+    }
+    this.demandActionsList = [];
+    for (const [, value] of Object.entries(DemandAction)) {
+      this.demandActionsList.push({ label: this.$t(`enums.demand_action.${value}`), value: value.toUpperCase() });
+    }
+
     this.rowActiveCheckBox = false;
     this.showCheckbox = true;
     this.showButton = true;
@@ -132,6 +234,17 @@ export default {
     this.measurement2Function = this.dropdownMeasurementFunction[0];
     this.durationSyntax = this.dropdownDurationSyntax[0];
     this.durationSyntax2 = this.dropdownDurationSyntax[0];
+
+    this.sendDemandTrue = false;
+    this.demandDefinitionTrueAction = this.demandActionsList[0].value;
+    this.demandDefinitionTrueActionType = this.demandActionTypesList[0].value;
+    this.demandDefinitionTrueActionMessage = "";
+    this.demandAssetTrue = null;
+    this.sendDemandFalse = false;
+    this.demandDefinitionFalseAction = this.demandActionsList[0].value;
+    this.demandDefinitionFalseActionType = this.demandActionTypesList[0].value;
+    this.demandAssetFalse = null;
+
     this.measurementsGetter();
   },
   methods: {
@@ -154,7 +267,7 @@ export default {
       return formattedMeasurement;
     },
     //Process to obtain the asset rules from the DDBB
-    addPrecreatedAssetRule(assetRule) {
+    async addPrecreatedAssetRule(assetRule) {
       this.rowActiveCheckBox = assetRule.active;
       this.measurementList = assetRule.measurement1Id;
       this.measurement1Function = assetRule.functionMeasurement1;
@@ -180,6 +293,50 @@ export default {
       } else {
         console.error("MESSAGE ERROR");
       }
+
+      this.sendDemandTrue = assetRule.sendDemandTrue;
+      this.demandAssetTrue = assetRule.demandAssetTrue !== null ? await this.$ren.managementApi.getAsset(assetRule.demandAssetTrue) : null;
+      if (assetRule.demandDefinitionTrue !== null) {
+        this.demandDefinitionTrueAction = assetRule.demandDefinitionTrue.action;
+        this.demandDefinitionTrueActionType = assetRule.demandDefinitionTrue.action_type;
+        this.demandDefinitionTrueActionMessage = assetRule.demandDefinitionTrue.message;
+      }
+
+      this.sendDemandFalse = assetRule.sendDemandFalse;
+      this.demandAssetFalse = assetRule.demandAssetFalse !== null ? await this.$ren.managementApi.getAsset(assetRule.demandAssetFalse) : null;
+      if (assetRule.demandDefinitionFalse !== null) {
+        this.demandDefinitionFalseAction = assetRule.demandDefinitionFalse.action;
+        this.demandDefinitionFalseActionType = assetRule.demandDefinitionFalse.action_type;
+        this.demandDefinitionFalseActionMessage = assetRule.demandDefinitionFalse.message;
+      }
+    },
+    async selectAssetTrue() {
+      if (this.demandAssetTrue !== null) {
+        this.$refs.assetSelectDialogDemandTrue.open(this.demandAssetTrue);
+      } else {
+        this.$refs.assetSelectDialogDemandTrue.open();
+      }
+    },
+    async onAssetDemandTrueUpdate(asset) {
+      this.demandAssetTrue = asset;
+      this.validateDemandAssetTrue();
+    },
+    async selectAssetFalse() {
+      if (this.demandAssetFalse !== null) {
+        this.$refs.assetSelectDialogDemandFalse.open(this.demandAssetFalse);
+      } else {
+        this.$refs.assetSelectDialogDemandFalse.open();
+      }
+    },
+    async onAssetDemandFalseUpdate(asset) {
+      this.demandAssetFalse = asset;
+      this.validateDemandAssetFalse();
+    },
+    formattedAssetValue(asset) {
+      if (asset === null) {
+        return "Asset Select";
+      }
+      return asset.label;
     },
     async measurementsGetter() {
       this.dropdownMeasurementList = await this.$ren.managementApi.getAllMeasurementsPaginationWorkaround();
@@ -187,6 +344,59 @@ export default {
     },
     async deleteDemandResponseUI() {
       this.$emit("delete");
+    },
+    validateAll() {
+      this.validateMeasurement1();
+      this.validateTimeRange();
+      this.validateMeasurement2();
+      this.validateTimeRange2();
+      this.validateDemandAssetTrue();
+      this.validateDemandAssetFalse();
+      this.validateValueMeasurement();
+
+      return (
+        this.errors.measurement1 ||
+        this.errors.timeRange ||
+        this.errors.measurement2 ||
+        this.errors.timeRange2 ||
+        this.errors.demandAssetTrue ||
+        this.errors.demandAssetFalse ||
+        this.errors.valueMeasurement
+      );
+    },
+    validateMeasurement1() {
+      console.log(this.measurementList);
+      this.errors.measurementList = this.measurementList === null || this.measurementList === undefined;
+    },
+    validateTimeRange() {
+      const expressionRegex = /^[0-9]+$/;
+      this.errors.timeRange = this.timeRange === null || this.timeRange.length === 0 || !expressionRegex.test(this.timeRange);
+    },
+    validateMeasurement2() {
+      this.errors.measurementList2 =
+        this.thresholdMeasurement !== "Threshold" && (this.measurementList2 === null || this.measurementList2 === undefined);
+    },
+    validateTimeRange2() {
+      const expressionRegex = /^[0-9]+$/;
+      this.errors.timeRange2 =
+        this.thresholdMeasurement !== "Threshold" &&
+        (this.timeRange2 === null || this.timeRange2.length === 0 || !expressionRegex.test(this.timeRange2));
+    },
+    validateDemandAssetTrue() {
+      console.log("=====1");
+      console.log(this.sendDemandTrue);
+      console.log(this.demandAssetTrue);
+      this.errors.demandAssetTrue = this.sendDemandTrue && (this.demandAssetTrue === null || this.demandAssetTrue === undefined);
+    },
+    validateDemandAssetFalse() {
+      console.log("=====2");
+      console.log(this.sendDemandFalse);
+      console.log(this.demandAssetFalse);
+      this.errors.demandAssetFalse = this.sendDemandFalse && (this.demandAssetFalse === null || this.demandAssetFalse === undefined);
+    },
+    validateValueMeasurement() {
+      const decimalExpressionValidation = /^[+-]?\d+(\.\d+)?$/;
+      this.errors.valueMeasurement = this.thresholdMeasurement === "Threshold" && !decimalExpressionValidation.test(this.valueMeasurement);
     },
     validateInput(index) {
       const expressionRegex = /^[0-9]+$/;
@@ -228,6 +438,24 @@ export default {
           thresholdMeasurement: this.thresholdMeasurement,
           checkBoxBool: this.checkBoxBool,
           valueMeasurement: this.valueMeasurement,
+          sendDemandTrue: this.sendDemandTrue,
+          demandAssetTrue: this.demandAssetTrue === null ? null : this.demandAssetTrue.id,
+          demandDefinitionTrue: !this.sendDemandTrue
+            ? null
+            : {
+                action_type: this.demandDefinitionTrueActionType,
+                action: this.demandDefinitionTrueAction,
+                message: this.demandDefinitionTrueActionMessage,
+              },
+          sendDemandFalse: this.sendDemandFalse,
+          demandAssetFalse: this.demandAssetFalse === null ? null : this.demandAssetFalse.id,
+          demandDefinitionFalse: !this.sendDemandFalse
+            ? null
+            : {
+                action_type: this.demandDefinitionFalseActionType,
+                action: this.demandDefinitionFalseAction,
+                message: this.demandDefinitionFalseActionMessage,
+              },
         };
       } else {
         return {
@@ -242,6 +470,23 @@ export default {
           measurement2Function: this.measurement2Function,
           timeRange2: this.timeRange2,
           durationSyntax2: this.durationSyntax2,
+          demandAssetTrue: this.demandAssetTrue === null ? null : this.demandAssetTrue.id,
+          demandDefinitionTrue: !this.sendDemandTrue
+            ? null
+            : {
+                actionType: this.demandDefinitionTrueActionType,
+                action: this.demandDefinitionTrueAction,
+                message: this.demandDefinitionTrueActionMessage,
+              },
+          sendDemandFalse: this.sendDemandFalse,
+          demandAssetFalse: this.demandAssetFalse === null ? null : this.demandAssetFalse.id,
+          demandDefinitionFalse: !this.sendDemandFalse
+            ? null
+            : {
+                actionType: this.demandDefinitionFalseActionType,
+                action: this.demandDefinitionFalseAction,
+                message: this.demandDefinitionFalseActionMessage,
+              },
         };
       }
     },
@@ -259,9 +504,11 @@ export default {
       if (this.measurementModified == 0) {
         this.measurementList = selectedId;
         console.log(selectedId + " . " + this.measurementList);
+        this.validateMeasurement1();
       } else {
         this.measurementList2 = selectedId;
         console.log(selectedId + " . " + this.measurementList2);
+        this.validateMeasurement2();
       }
     },
     hiddenCheckbox() {
