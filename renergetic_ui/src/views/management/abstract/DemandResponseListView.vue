@@ -63,7 +63,7 @@ export default {
     },
   },
   async created() {
-    this.assetList = await this.$ren.managementApi.listAsset();
+    this.assetList = await this.$ren.managementApi.listAsset(undefined, 0, 9000);
     this.drpIndex = 0;
     let ruleCounter = 0;
     for (let j = 0; j < this.assetList.length; j++) {
@@ -173,6 +173,13 @@ export default {
       let drpIndexList = 0;
       let msgType = "information";
       if (this.demandResponseList.length != 0) {
+        let errors = false;
+        for (let i = 0; i < this.demandResponseList.length; i++) {
+          errors = errors || this.$refs.demandResponseParameters[i].validateAll();
+        }
+        if (errors) {
+          return;
+        }
         for (let i = 0; i < this.demandResponseList.length; i++) {
           this.assetIdCurrent = this.demandResponseList[i].asset.id;
           for (let j = 0; j < this.demandResponseList[i].ruleList.length; j++) {
@@ -210,6 +217,12 @@ export default {
           manualThreshold: this.returnedInfo.valueMeasurement,
           comparator: this.returnedInfo.operationData,
           active: this.returnedInfo.rowActiveCheckBox,
+          sendDemandTrue: this.returnedInfo.sendDemandTrue,
+          demandAssetTrue: this.returnedInfo.demandAssetTrue,
+          demandDefinitionTrue: this.returnedInfo.demandDefinitionTrue,
+          sendDemandFalse: this.returnedInfo.sendDemandFalse,
+          demandAssetFalse: this.returnedInfo.demandAssetFalse,
+          demandDefinitionFalse: this.returnedInfo.demandDefinitionFalse,
         };
         assetDetails = await this.getAssetDetails(this.jsonData.assetId);
         if (assetDetails.length != 0 || !this.jsonData.compareToConfigThreshold) {
@@ -231,6 +244,12 @@ export default {
           timeRangeMeasurement2: this.returnedInfo.timeRange2 + this.returnedInfo.durationSyntax2,
           comparator: this.returnedInfo.operationData,
           active: this.returnedInfo.rowActiveCheckBox,
+          sendDemandTrue: this.returnedInfo.sendDemandTrue,
+          demandAssetTrue: this.returnedInfo.demandAssetTrue,
+          demandDefinitionTrue: this.returnedInfo.demandDefinitionTrue,
+          sendDemandFalse: this.returnedInfo.sendDemandFalse,
+          demandAssetFalse: this.returnedInfo.demandAssetFalse,
+          demandDefinitionFalse: this.returnedInfo.demandDefinitionFalse,
         };
         assetDetails = await this.getAssetDetails(this.jsonData.assetId);
         this.jsonMeasurementData.push(this.jsonData);
