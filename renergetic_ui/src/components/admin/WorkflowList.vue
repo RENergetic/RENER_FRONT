@@ -8,7 +8,7 @@
         :selection-mode="'single'"
         :filters="mFilters"
         :lazy="true"
-        data-key="experiment_id"
+        data-key="pipeline_id"
         :value="workflowList"
         filter-display="row"
         class="sticky-header"
@@ -23,7 +23,7 @@
         </template>
 
         <Column field="name" :header="$t('model.workflow.name')" :show-filter-menu="false" />
-        <Column field="experiment_id" :header="$t('model.workflow.experiment_id')" :show-filter-menu="false" />
+        <Column field="pipeline_id" :header="$t('model.workflow.pipeline_id')" :show-filter-menu="false" />
         <Column field="parameters" :header="$t('model.workflow.parameters')" :show-filter-menu="false">
           <template #body="slotProps">
             <ul v-if="slotProps.data.parameters">
@@ -42,15 +42,15 @@
             <span v-else> {{ $t("view.na") }} </span>
           </template>
         </Column>
-        <Column field="pipelines" :header="$t('model.workflow.pipelines')" :show-filter-menu="false">
+        <!-- <Column field="pipelines" :header="$t('model.workflow.pipelines')" :show-filter-menu="false">
           <template #body="slotProps">
             <span v-if="slotProps.data.pipelines"> {{ $t("model.workflow.pipelines", { length: slotProps.data.pipelines.length }) }}</span>
             <span v-else> {{ $t("view.na") }} </span>
           </template>
-        </Column>
+        </Column> -->
         <Column field="current_run" :header="$t('model.workflow.current_run')" :show-filter-menu="false">
           <template #body="slotProps">
-            <div v-if="isTaskRunning(slotProps.data.current_run)">
+            <div v-if="isTaskRunning(slotProps.data.current_run)" @click="showRunDetails(slotProps.data.current_run)">
               <div>
                 {{
                   slotProps.data.current_run.name
@@ -69,12 +69,12 @@
         <Column field="visible" :header="$t('model.workflow.visible')" :show-filter-menu="false">
           <template #body="slotProps">
             <span v-if="!isTaskRunning(slotProps.data.current_run)">
-              <i v-if="slotProps.data.visible" class="pi pi-eye" style="font-size: 1.5rem" @click="setExperimentVisibility(slotProps.data, false)" />
-              <i v-else class="pi pi-eye-slash" style="font-size: 1.5rem" @click="setExperimentVisibility(slotProps.data, true)" />
+              <i v-if="slotProps.data.visible" class="pi pi-eye" style="font-size: 1.5rem" @click="setPipelineVisibility(slotProps.data, false)" />
+              <i v-else class="pi pi-eye-slash" style="font-size: 1.5rem" @click="setPipelineVisibility(slotProps.data, true)" />
             </span>
             <span v-else>
               <i v-if="slotProps.data.visible" style="font-size: 1.5rem" class="pi pi-eye disabled" />
-              <i v-else style="font-size: 1.5rem" class="pi pi-eye-slash" @click="setExperimentVisibility(slotProps.data, true)" />
+              <i v-else style="font-size: 1.5rem" class="pi pi-eye-slash" @click="setPipelineVisibility(slotProps.data, true)" />
             </span>
           </template>
         </Column>
@@ -97,15 +97,19 @@
       @cancel="editParameterDialog = false"
     />
   </Dialog>
+  <Dialog v-model:visible="workflowRunDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <WorkflowRunDetails :workflow-run="selectedWorkflowRunDetails" @on-stop="onWorkflowStop" />
+  </Dialog>
 </template>
 
 <script>
 // import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 import WorkflowParameterForm from "./WorkflowParameterForm.vue";
+import WorkflowRunDetails from "./WorkflowRunDetails.vue";
 export default {
   name: "WorkflowList",
-  components: { WorkflowParameterForm },
+  components: { WorkflowParameterForm, WorkflowRunDetails },
   props: {
     workflowList: { type: Array, default: () => [] },
     basic: { type: Boolean, default: false },
@@ -120,6 +124,8 @@ export default {
       mFilters: this.initFilters(),
       selectedWorkflow: null,
       deferredEmitFilter: null,
+      selectedWorkflowRunDetails: null,
+      workflowRunDetailsDialog: false,
     };
   },
   computed: {},
@@ -145,11 +151,20 @@ export default {
     this.tagsKeys = await this.$ren.managementApi.listTagKeys();
   },
   methods: {
+    onWorkflowStop(state) {
+      console.debug(`Stop state ${state}`);
+      this.workflowRunDetailsDialog = false;
+      this.$emit("reload");
+    },
+    showRunDetails(workflowRun) {
+      this.selectedWorkflowRunDetails = workflowRun;
+      this.workflowRunDetailsDialog = true;
+    },
     async onParameterUpdate(evt) {
       this.selectedWorkflow.parameters[evt.key] = evt;
       this.editParameterDialog = false;
       await this.$refs.spinner.run(async () => {
-        let res = await this.$ren.kubeflowApi.setParameters(this.selectedWorkflow.experiment_id, this.selectedWorkflow.parameters);
+        let res = await this.$ren.kubeflowApi.setParameters(this.selectedWorkflow.pipeline_id, this.selectedWorkflow.parameters);
         if (res != null) this.selectedWorkflow.parameters = res;
       });
     },
@@ -168,7 +183,7 @@ export default {
       console.error(" TODO: check if task hasn't already been running");
       await this.$refs.spinner_temp.run(
         async () => {
-          await this.$ren.kubeflowApi.startExperiment(selectedExperiment.experiment_id, {});
+          await this.$ren.kubeflowApi.startExperiment(selectedExperiment.pipeline_id, {});
         },
         500,
         5000,
@@ -176,13 +191,13 @@ export default {
       alert("task scheduled");
       this.reload();
     },
-    async setExperimentVisibility(selectedExperiment, state) {
+    async setPipelineVisibility(selectedExperiment, state) {
       await this.$refs.spinner.run(async () => {
         let res;
         if (state) {
-          res = await this.$ren.kubeflowApi.showExperiment(selectedExperiment.experiment_id);
+          res = await this.$ren.kubeflowApi.showExperiment(selectedExperiment.pipeline_id);
         } else {
-          res = await this.$ren.kubeflowApi.hideExperiment(selectedExperiment.experiment_id);
+          res = await this.$ren.kubeflowApi.hideExperiment(selectedExperiment.pipeline_id);
         }
         if (res == state) {
           this.$emitter.emit("information", { message: this.$t("information.visibility_changed") });
@@ -193,7 +208,7 @@ export default {
     },
     initFilters() {
       let pf = this.$ren.utils.toPrimeFilter(this.filters);
-      return { ...{ visible: { value: true } }, ...pf };
+      return { ...{ visible: { value: null } }, ...pf };
     },
     _emitFilter() {
       this.$emit("update:filters", this.$ren.utils.fromPrimeFilter(this.mFilters));

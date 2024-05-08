@@ -48,7 +48,7 @@ export default {
   computed: {
     workflowLabel: function () {
       if (this.workflow == null) return null;
-      return this.workflow.name ? this.workflow.name : this.workflow.experiment_id;
+      return this.workflow.name ? this.workflow.name : this.workflow.pipeline_id;
     },
   },
   watch: {
@@ -67,7 +67,7 @@ export default {
 
   methods: {
     async start() {
-      let experimentId = this.workflow.experiment_id;
+      let experimentId = this.workflow.pipeline_id;
       let parameters = this.runParameters;
       let res = null;
       await this.$refs.runspinner.run(
@@ -101,7 +101,7 @@ export default {
       });
     },
     getType(param) {
-      let propertyType = param.type ? this.lowerCase(param.type) : String;
+      let propertyType = param.type ? param.type.toLowerCase() : String;
       if (propertyType == "array") propertyType == String;
       if (propertyType == "json") propertyType == String;
       return propertyType;
@@ -116,17 +116,16 @@ export default {
       return {};
     },
     getSetting(param) {
-      console.error(param);
       let key = param.key;
       let propertyType = this.getType(key);
 
       return {
         label: param.label ? `${param.label} (${key})` : key,
-        description: this.workflowParameters[key],
+        description: param.description,
         ext: this.getExt(propertyType),
-        type: this.getType(key),
+        type: this.getType(param),
         key: key,
-        defaultValue: this.defaultValue,
+        defaultValue: param.defaultValue,
       };
     },
     getSchema() {

@@ -201,8 +201,8 @@
   "workflow": {
     "name": "Name",
     "experiment_id": "Experiment id",
+    "pipeline_id": "Pipeline id",
     "parameters": "Run parameters",
-    "pipelines": "Pipelines",
     "current_run": "Current run",
     "visibility": "Visibility",
     "visible": "Visibility"
@@ -213,11 +213,13 @@
     "start_time_formatted": "Task started at {start_time}",
     "end_time": "End time",
     "parameters": "Parameters",
+    "state": "State",
     "run_state": {
       "running": "Running",
       "finished": "Finished",
       "error": "Error",
-      "not_running": "Not running"
+      "not_running": "Not running",
+      "terminating": "Terminating"
     }
   },
   "workflow_parameter": {
@@ -225,6 +227,7 @@
     "label": "Label",
     "description": "Description",
     "type": "Type",
-    "defaultValue": "Default value"
+    "defaultValue": "Default value",
+    "visibility": "Visibility"
   }
 }

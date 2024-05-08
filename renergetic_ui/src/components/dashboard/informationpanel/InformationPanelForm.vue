@@ -327,6 +327,7 @@ export default {
         this.mModel.label = `${this.mModel.label} - (${ASSET_TAG})`;
       }
       this.panelStructure.name = this.mModel.name;
+      this.panelStructure.is_template = this.mModel.is_template;
       this.panelStructure.props = { ...this.panelStructure.props, ...this.mModel.props };
       this.panelStructure.id = this.mModel.id;
       this.panelStructure.label = this.mModel.label ? this.mModel.label : this.panelStructure.label;
