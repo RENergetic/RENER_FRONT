@@ -512,6 +512,16 @@ export default class ManagementApi extends RestComponent {
       return true;
     });
   }
+  async getAllAssetRules() {
+    return this.get(`/api/assetRules/list/all`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Asset rules not found`, {
+          code: "asset_rules_error",
+        });
+      }
+      return true;
+    });
+  }
   async getAssetRules(asset_id) {
     return this.get(`/api/assetRules/asset/${asset_id}`, null, null, (e) => {
       if (e.response.status != 404) {
