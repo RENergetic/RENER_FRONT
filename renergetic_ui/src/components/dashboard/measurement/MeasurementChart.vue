@@ -5,9 +5,9 @@
       <!-- {{ annotations }} -->
       <!-- <div style="max-width: 20rem; overflow: hidden; max-height: 15rem">{{ chartData }}</div> -->
       <!-- {{ pData["timeseries_labels"] }} -->
+      <!-- {{ width }} -->
       <Chart
         v-if="!titleVisible && height && width && loaded"
-        :key="chartData"
         :style="mStyle"
         :type="chartType"
         :data="chartData"
@@ -15,6 +15,7 @@
         :height="height"
         :width="width"
       />
+      <!-- :key="chartData" -->
       <div v-if="titleVisible" class="flex flex-none flex-column justify-content-center" style="max-width: 75%">
         <h3>{{ mTitle }}</h3>
       </div>
@@ -23,8 +24,12 @@
         class="flex flex-grow-1 flex-column align-items-center justify-content-center"
         style="position: relative; height: 100%; width: 100%"
       >
-        <div class="flex flex-none flex-column align-items-center justify-content-center" style="height: 85%; width: 100%">
-          <Chart v-if="height && width" :style="mStyle" :type="chartType" :data="chartData" :options="options" :height="height" :width="width" />
+        <div
+          v-if="height && width && loaded"
+          class="flex flex-none flex-column align-items-center justify-content-center"
+          style="height: 85%; width: 100%"
+        >
+          <Chart :style="mStyle" :type="chartType" :data="chartData" :options="options" :height="height" :width="width" />
         </div>
       </div>
     </template>
@@ -76,6 +81,7 @@ export default {
     return {
       labels: this.pData["timeseries_labels"] ? this.pData["timeseries_labels"] : [],
       datasets: [],
+      loaded: false,
       plugins: [chartjsMoment, chartjsPluginAnnotation],
       mStyle: "max-width: 100rem;max-height:60rem; margin: auto;height:100%;width:100%",
       mMeasurements: mMeasurements,
@@ -176,7 +182,7 @@ export default {
     pData: {
       handler: async function (newV) {
         if (newV != null && !this.immediate) {
-          this.setLocalData();
+          await this.setLocalData();
         }
       },
 
@@ -186,7 +192,7 @@ export default {
   async mounted() {
     if (this.immediate) await this.reload();
     else {
-      this.setLocalData();
+      await this.setLocalData();
     }
   },
   methods: {
@@ -253,7 +259,7 @@ export default {
       this.datasets = datasets;
     },
     async reload() {
-      console.info("chart reload: " + this.mMeasurements[0].id);
+      console.debug("chart reload: " + this.mMeasurements[0].id);
       let run = this.$refs.spinner.run;
       await run(async () => {
         // await new Promise((r) => setTimeout(r, 250));
@@ -263,8 +269,8 @@ export default {
         this.refreshDate = new Date();
       });
     },
-    setLocalData() {
-      var pData = this.localData();
+    async setLocalData() {
+      var pData = await this.localData();
       if (pData !== null) {
         this.setDataset(pData);
         this.loaded = true;

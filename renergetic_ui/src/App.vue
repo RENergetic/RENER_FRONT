@@ -8,7 +8,7 @@
     <div style="color: white">{{ $keycloak && $keycloak.isInitialized() }}</div> -->
       <!-- display: - initial !important; -->
       <div v-if="hasAccess" class="flex" style="margin-bottom: 0rem; flex-grow: 1; overflow: auto; flex-direction: column">
-        <router-view :key="$route.path" />
+        <router-view :key="$route.path" :class="pageClass" />
         <!-- @update-menu="updateMenu()" -->
       </div>
       <div v-else :class="layout()">no access TODO:</div>
@@ -62,12 +62,18 @@ export default {
     },
     pageStyle() {
       if (this.tvMode) {
-        return "max-height:99vh;overflow:hidden";
+        return "max-height:99.9vh;overflow:hidden";
       }
       return "";
     },
     tvMode() {
       return !(this.$route.meta.tvMode == null || this.$route.meta.tvMode == undefined);
+    },
+    pageClass() {
+      if (this.tvMode) {
+        return "presentation-view";
+      }
+      return "normal-view";
     },
     isLoading() {
       return this.$store.getters["spinner/isLoading"];

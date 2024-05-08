@@ -1,6 +1,7 @@
 {
   "name_description": "Object's name, code name used in RENergetic system to interact with other component, code used for automatic translations",
   "label_description": "Object's human readable name, name used in RENergetic - `name` field is used if label is null",
+  "description": "Description",
   "dashboard": {
     "name": "Name",
     "url": "URL",
@@ -200,8 +201,8 @@
   "workflow": {
     "name": "Name",
     "experiment_id": "Experiment id",
+    "pipeline_id": "Pipeline id",
     "parameters": "Run parameters",
-    "pipelines": "Pipelines",
     "current_run": "Current run",
     "visibility": "Visibility",
     "visible": "Visibility"
@@ -212,11 +213,21 @@
     "start_time_formatted": "Task started at {start_time}",
     "end_time": "End time",
     "parameters": "Parameters",
+    "state": "State",
     "run_state": {
       "running": "Running",
       "finished": "Finished",
       "error": "Error",
-      "not_running": "Not running"
+      "not_running": "Not running",
+      "terminating": "Terminating"
     }
+  },
+  "workflow_parameter": {
+    "key": "Key",
+    "label": "Label",
+    "description": "Description",
+    "type": "Type",
+    "defaultValue": "Default value",
+    "visibility": "Visibility"
   }
 }

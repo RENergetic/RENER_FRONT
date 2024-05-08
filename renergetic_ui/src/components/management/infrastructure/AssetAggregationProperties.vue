@@ -218,12 +218,11 @@ export default {
                   });
               }
             }
-
-            await this.$ren.managementApi.listAsset({ type: "optimizer_domain" }, 0, 50).then((optimizerDomainAssets) => {
-              this.optimizerDomainAssets = optimizerDomainAssets;
-            });
           }
         }
+        await this.$ren.managementApi.listAsset({ type: "optimizer_domain" }, 0, 50).then((optimizerDomainAssets) => {
+          this.optimizerDomainAssets = optimizerDomainAssets;
+        });
         this.configuration = config;
       });
 

@@ -25,7 +25,7 @@ export default {
         this.loadWorkflows();
       },
       deep: true,
-      immediate: true,
+      immediate: false,
     },
   },
   mounted() {

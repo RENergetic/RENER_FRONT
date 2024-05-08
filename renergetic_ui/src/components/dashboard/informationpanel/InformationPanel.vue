@@ -1,5 +1,5 @@
 <template>
-  <div v-if="mPanel && mPData && loaded" id="panel-grid-stack" style="" class="grid-stack">
+  <div v-if="mPanel && mPData && loaded" id="panel-grid-stack" :key="loaded" class="grid-stack">
     <InformationTileGridWrapper
       v-for="(tile, index) in tiles"
       :key="tile.id"

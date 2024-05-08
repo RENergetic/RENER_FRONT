@@ -9,6 +9,8 @@
             <!-- :style="'margin:auto;max-width: 90%;'" -->
             <!-- :immediate="false" -->
             <!-- {{ group.measurements }} -->
+
+            <!-- :chart-type="chartType" -->
             <MeasurementChart
               :ref="`mChart_${index}`"
               :p-data="{ timeseries: pData }"
@@ -16,7 +18,6 @@
               style="width: 100%"
               :width="1200"
               :height="500"
-              :chart-type="chartType"
               :title="chartTitle"
               :title-visible="true"
               :legend="true"

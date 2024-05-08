@@ -154,6 +154,7 @@ export default {
     ParsedDateFilter,
     BasicFilterSettings,
   },
+  props: {},
   data() {
     return {
       schema: panelSchema,

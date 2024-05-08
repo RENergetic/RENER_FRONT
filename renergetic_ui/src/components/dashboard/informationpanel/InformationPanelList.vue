@@ -279,6 +279,7 @@ export default {
       });
     },
     async onCreate(o) {
+      console.error(o);
       await this.$ren.dashboardApi.saveInformationPanel(o).then((panel) => {
         this.$emitter.emit("information", { message: this.$t("information.panel_update", [panel.id]) });
         this.reload();

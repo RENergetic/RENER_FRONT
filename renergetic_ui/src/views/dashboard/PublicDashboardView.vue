@@ -71,7 +71,7 @@
           <span> {{ $t("view.user_filter_settings") }}:</span>
         </template>
         <template #content>
-          <BasicFilterSettings @update="updateFilter()" />
+          <BasicFilterSettings :setting-key="'public'" @update="updateFilter()" />
           <!-- <PanelSettings @update="reloadPanelSettings()"> </PanelSettings> -->
         </template>
       </Card>
@@ -115,8 +115,8 @@ export default {
   },
   computed: {
     effectiveFilterSettings: function () {
-      let userFilter = this.$store.getters["settings/filters"]();
-      let overrideMode = this.panel.props && this.panel.props.overrideMode ? this.panel.props.overrideMode : null;
+      let userFilter = this.$store.getters["settings/filters"]("public");
+      let overrideMode = this.effectiveOverrideMode(this.settings, this.panel.props);
       let settings = this.mergeSettings(userFilter, this.panel.props, overrideMode);
       return this.parseDateFilter(settings);
     },

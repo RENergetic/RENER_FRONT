@@ -1,6 +1,6 @@
 <template>
   <DotMenu v-if="loggedIn" :model="menuModel" :fixed="true" />
-  <div v-if="settings.panelVisibility" style="position: relative">
+  <div v-if="panel && settings.panelVisibility" style="position: relative">
     <!-- {{ $store.getters["view/featuredPanels"] }}  -->
     <!-- {{ $store.getters["view/assetPanels"] }}d -->
     <!-- panel: {{ panel.name }}, {{ panel.id }}, {{ assetId }} -->
@@ -55,7 +55,7 @@ export default {
       slideshow: null,
       autoReload: true,
       assetId: null,
-      panel: this.$store.getters["view/homePanel"],
+      panel: null,
       settings: this.$store.getters["settings/home"],
       panelSettings: this.$store.getters["settings/panel"],
     };
@@ -63,7 +63,7 @@ export default {
   computed: {
     effectiveFilterSettings: function () {
       let userFilter = this.$store.getters["settings/filters"]();
-      let overrideMode = this.panel.props && this.panel.props.overrideMode ? this.panel.props.overrideMode : null;
+      let overrideMode = this.effectiveOverrideMode(this.settings, this.panel.props);
       let settings = this.mergeSettings(userFilter, this.panel.props, overrideMode);
       return this.parseDateFilter(settings);
     },
@@ -113,6 +113,9 @@ export default {
     this.loaded = false;
   },
   async mounted() {
+    this.panel = await (this.$store.getters["settings/home"].homePanel
+      ? this.$ren.utils.getPanelStructure(this.$store.getters["settings/home"].homePanel)
+      : this.$store.getters["view/homePanel"]);
     var df = new DeferredFunction(this.slideshowLoop, 1000);
     df.run();
     document.documentElement.requestFullscreen();
