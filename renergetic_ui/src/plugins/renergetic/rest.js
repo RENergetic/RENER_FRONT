@@ -28,6 +28,7 @@ export var BASE_URL_BASE_API = process.env.VUE_APP_API_URL_BASE_API;
 export var BASE_URL_DATA_API = process.env.VUE_APP_API_URL_DATA_API;
 export var BASE_URL_USER_API = process.env.VUE_APP_API_URL_USER_API;
 export var BASE_URL_WRAPPER_API = process.env.VUE_APP_API_URL_WRAPPER_API;
+export var BASE_URL_KPI_API = process.env.VUE_APP_API_URL_KPI_API;
 export var BASE_URL_KUBEFLOW_API = process.env.VUE_APP_API_URL_KUBEFLOW_API;
 export var KUBEFLOW_SERVICE_BASE_URL = process.env.VUE_APP_KUBEFLOW_SERVICE_BASE_URL ? process.env.VUE_APP_KUBEFLOW_SERVICE_BASE_URL : null;
 
@@ -36,6 +37,7 @@ const axiosInstanceBase = axios.create({ baseURL: BASE_URL_BASE_API });
 const axiosInstanceData = axios.create({ baseURL: BASE_URL_DATA_API });
 const axiosInstanceUser = axios.create({ baseURL: BASE_URL_USER_API });
 const axiosInstanceWrapper = axios.create({ baseURL: BASE_URL_WRAPPER_API });
+const axiosInstanceKpi = axios.create({ baseURL: BASE_URL_KPI_API });
 const axiosInstanceKubeflow = axios.create({ baseURL: BASE_URL_KUBEFLOW_API });
 
 export default function createRest(vueInstance) {
@@ -61,5 +63,6 @@ export default function createRest(vueInstance) {
     wrapperApi: new WrapperApi(axiosInstanceWrapper, vueInstance),
     kubeflowApi: new KubeflowAPI(axiosInstanceKubeflow, vueInstance, "/api/kubeflow"),
     hdrApi: new HDRAPI(axiosInstanceHdr, vueInstance),
+    kpiApi: new KPIAPI(axiosInstanceKpi, vueInstance),
   };
 }
