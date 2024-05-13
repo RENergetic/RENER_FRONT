@@ -1,9 +1,8 @@
 import RestComponent from "./restcomponent";
 export default class KubeflowApi extends RestComponent {
   BASE_URL = "/api/kubeflow";
-  constructor(axiosInstance, vueInstance, baseUrl) {
+  constructor(axiosInstance, vueInstance) {
     super(axiosInstance, vueInstance);
-    if (baseUrl) this.BASE_URL = baseUrl;
   }
 
   list() {

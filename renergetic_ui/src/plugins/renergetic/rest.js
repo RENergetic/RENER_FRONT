@@ -25,9 +25,10 @@ import axios from "axios";
 //   USE_DUMMY = false;
 // }
 export var BASE_URL = process.env.VUE_APP_API_URL;
-export var KUBEFLOW_SERVICE_BASE_URL = process.env.VUE_APP_KUBEFLOW_SERVICE_BASE_URL ? process.env.VUE_APP_KUBEFLOW_SERVICE_BASE_URL : null;
+export var KUBEFLOW_SERVICE_BASE_URL = process.env.VUE_APP_KUBEFLOW_API_URL;
 
 const axiosInstance = axios.create({ baseURL: BASE_URL });
+const kubeflowAxiosInstance = axios.create({ baseURL: KUBEFLOW_SERVICE_BASE_URL });
 
 export default function createRest(vueInstance) {
   // return {
@@ -47,7 +48,7 @@ export default function createRest(vueInstance) {
     managementApi: new ManagementApi(axiosInstance, vueInstance),
     userApi: new UserApi(axiosInstance, vueInstance),
     wrapperApi: new WrapperApi(axiosInstance, vueInstance),
-    kubeflowApi: new KubeflowAPI(axiosInstance, vueInstance, KUBEFLOW_SERVICE_BASE_URL),
+    kubeflowApi: new KubeflowAPI(kubeflowAxiosInstance, vueInstance),
     hdrApi: new HDRAPI(axiosInstance, vueInstance),
   };
 }
