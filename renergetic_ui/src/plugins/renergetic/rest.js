@@ -30,7 +30,6 @@ export var BASE_URL_USER_API = process.env.VUE_APP_API_URL_USER_API;
 export var BASE_URL_WRAPPER_API = process.env.VUE_APP_API_URL_WRAPPER_API;
 export var BASE_URL_KPI_API = process.env.VUE_APP_API_URL_KPI_API;
 export var BASE_URL_KUBEFLOW_API = process.env.VUE_APP_API_URL_KUBEFLOW_API;
-export var KUBEFLOW_SERVICE_BASE_URL = process.env.VUE_APP_KUBEFLOW_SERVICE_BASE_URL ? process.env.VUE_APP_KUBEFLOW_SERVICE_BASE_URL : null;
 
 const axiosInstanceHdr = axios.create({ baseURL: BASE_URL_HDR_API });
 const axiosInstanceBase = axios.create({ baseURL: BASE_URL_BASE_API });
@@ -51,18 +50,15 @@ export default function createRest(vueInstance) {
   //   wrapperApi: !USE_DUMMY ? new WrapperApi(axiosInstance, vueInstance) : new DummyWrapperApi(),
   // };
   return {
-    axiosApi: new AxiosAPI(
-      [axiosInstanceBase, axiosInstanceData, axiosInstanceUser, axiosInstanceWrapper, axiosInstanceKubeflow, axiosInstanceHdr],
-      vueInstance,
-      this.auth,
-    ),
-    dashboardApi: new DashboardApi(axiosInstanceBase, vueInstance),
-    dataApi: new DataApi(axiosInstanceData, vueInstance),
-    managementApi: new ManagementApi(axiosInstanceBase, vueInstance),
-    userApi: new UserApi(axiosInstanceUser, vueInstance),
-    wrapperApi: new WrapperApi(axiosInstanceWrapper, vueInstance),
-    kubeflowApi: new KubeflowAPI(axiosInstanceKubeflow, vueInstance, "/api/kubeflow"),
-    hdrApi: new HDRAPI(axiosInstanceHdr, vueInstance),
+    auth: new AuthApi(axiosInstance, vueInstance),
+    axiosApi: new AxiosAPI(axiosInstance, vueInstance, this.auth),
+    dashboardApi: new DashboardApi(axiosInstance, vueInstance),
+    dataApi: new DataApi(axiosInstance, vueInstance),
+    managementApi: new ManagementApi(axiosInstance, vueInstance),
+    userApi: new UserApi(axiosInstance, vueInstance),
+    wrapperApi: new WrapperApi(axiosInstance, vueInstance),
+    kubeflowApi: new KubeflowAPI(kubeflowAxiosInstance, vueInstance),
+    hdrApi: new HDRAPI(axiosInstance, vueInstance),
     kpiApi: new KPIAPI(axiosInstanceKpi, vueInstance),
   };
 }
