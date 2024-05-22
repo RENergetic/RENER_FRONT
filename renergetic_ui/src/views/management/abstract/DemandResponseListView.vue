@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       demandResponseList: [],
-      assetList: [],
+      assetRuleList: [],
       returnedInfo: null,
       howManyRules: [],
       addedRule: [],
@@ -59,24 +59,24 @@ export default {
   },
   computed: {
     assetOptions() {
-      return this.assetList.map((asset) => asset.name);
+      return this.assetRuleList.map((assetList) => assetList.asset.name);
     },
   },
   async created() {
-    this.assetList = await this.$ren.managementApi.listAsset(undefined, 0, 9000);
+    this.assetRuleList = await this.$ren.managementApi.getAllAssetRules();
+    console.log("assetRuleList", this.assetRuleList);
     this.drpIndex = 0;
     let ruleCounter = 0;
-    for (let j = 0; j < this.assetList.length; j++) {
-      let rules = await this.$ren.managementApi.getAssetRules(this.assetList[j].id);
-      if (rules && rules.length > 0) {
+    for (let j = 0; j < this.assetRuleList.length; j++) {
+      if (this.assetRuleList[j].assetRules.length > 0) {
         const assetRule = {
-          asset: this.assetList[j],
+          asset: this.assetRuleList[j].asset,
           withRule: true,
-          ruleList: rules,
+          ruleList: this.assetRuleList[j].assetRules,
         };
         await this.demandResponseList.push(assetRule);
-        for (let i = 0; i < rules.length; i++) {
-          await this.$refs.demandResponseParameters[this.drpIndex].addPrecreatedAssetRule(rules[i]);
+        for (let i = 0; i < this.assetRuleList[j].assetRules.length; i++) {
+          await this.$refs.demandResponseParameters[this.drpIndex].addPrecreatedAssetRule(this.assetRuleList[j].assetRules[i]);
           this.drpIndex++;
           ruleCounter++;
         }
@@ -91,7 +91,7 @@ export default {
       this.assetName = null;
     },
     selectedAsset(assetName) {
-      return this.assetList.find((asset) => asset.name == assetName);
+      return this.assetRuleList.find((assetRuleList) => assetRuleList.asset.name == assetName);
     },
     searchAsset(id) {
       return this.demandResponseList.findIndex((demandResponse) => {
@@ -115,6 +115,19 @@ export default {
       this.$refs.demandResponseParameters[index1].timeRange2 = this.$refs.demandResponseParameters[index2].timeRange2;
       this.$refs.demandResponseParameters[index1].checkBoxBool = this.$refs.demandResponseParameters[index2].checkBoxBool;
       this.$refs.demandResponseParameters[index1].valueMeasurement = this.$refs.demandResponseParameters[index2].valueMeasurement;
+      this.$refs.demandResponseParameters[index1].sendDemandTrue = this.$refs.demandResponseParameters[index2].sendDemandTrue;
+      this.$refs.demandResponseParameters[index1].demandDefinitionTrueAction = this.$refs.demandResponseParameters[index2].demandDefinitionTrueAction;
+      this.$refs.demandResponseParameters[index1].demandDefinitionTrueActionType =
+        this.$refs.demandResponseParameters[index2].demandDefinitionTrueActionType;
+      this.$refs.demandResponseParameters[index1].demandDefinitionTrueActionMessage =
+        this.$refs.demandResponseParameters[index2].demandDefinitionTrueActionMessage;
+      this.$refs.demandResponseParameters[index1].demandAssetTrue = this.$refs.demandResponseParameters[index2].demandAssetTrue;
+      this.$refs.demandResponseParameters[index1].sendDemandFalse = this.$refs.demandResponseParameters[index2].sendDemandFalse;
+      this.$refs.demandResponseParameters[index1].demandDefinitionFalseAction =
+        this.$refs.demandResponseParameters[index2].demandDefinitionFalseAction;
+      this.$refs.demandResponseParameters[index1].demandDefinitionFalseActionType =
+        this.$refs.demandResponseParameters[index2].demandDefinitionFalseActionType;
+      this.$refs.demandResponseParameters[index1].demandAssetFalse = this.$refs.demandResponseParameters[index2].demandAssetFalse;
     },
     newAssetRule(asset) {
       return {
@@ -125,7 +138,9 @@ export default {
     },
     async addAssetRule(assetName) {
       const asset = this.selectedAsset(assetName);
-      const pos = this.searchAsset(asset.id);
+      console.log("vamos a añadir asset", asset);
+      const pos = this.searchAsset(asset.asset.id);
+      console.log("pos donde esta", pos);
       this.showDropdown = false;
       if (pos !== -1) {
         let insertPos = 0;
@@ -134,14 +149,14 @@ export default {
           insertPos += this.howManyRules[i];
         }
         const addRule = {
-          asset: asset,
+          asset: asset.asset,
           insertPos: insertPos,
           drpPos: this.drpIndex,
         };
         this.addedRule.push(addRule);
         this.drpIndex++;
       } else {
-        this.demandResponseList.push(this.newAssetRule(asset));
+        this.demandResponseList.push(this.newAssetRule(asset.asset));
         this.drpIndex++;
       }
     },
@@ -158,7 +173,7 @@ export default {
       let posDelete = this.posDelete(i, j);
       if (j != this.howManyRules[i] - 1) {
         for (let a = posDelete.ini; a < posDelete.fin; a++) {
-          this.drpExchange(a, a + 1);
+          // this.drpExchange(a, a + 1);
         }
       }
       this.demandResponseList[i].ruleList.splice(j, 1);
