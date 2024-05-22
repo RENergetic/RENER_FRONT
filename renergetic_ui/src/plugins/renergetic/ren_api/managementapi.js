@@ -542,6 +542,16 @@ export default class ManagementApi extends RestComponent {
       }
     });
   }
+  async updateCreateDeleteAll(assetRules) {
+    return await this.post(`api/assetRules/batch/update-create-delete`, assetRules, null, null, (e) => {
+      if (e.response.status === 404) {
+        this.emitError(`Asset rule not added: ${e.message}`, {
+          code: "asset_rule_adding_error",
+        });
+        return true;
+      }
+    });
+  }
   async getMeasurementAggregation(assetId) {
     return this.get(`/api/measurementsAggregation/list/${assetId}`, null, null, (e) => {
       if (e.response.status != 404) {
