@@ -192,7 +192,7 @@ export default {
     async open(row) {
       this.assetId = row.id;
 
-      await this.$ren.managementApi.getMeasurementAggregation(row.id).then(async (config) => {
+      await this.$ren.dataApi.getMeasurementAggregation(row.id).then(async (config) => {
         console.info(config);
         if (config.measurementAggregation !== null) {
           for (const [i, ma] of config.measurementAggregation.entries()) {
@@ -207,11 +207,11 @@ export default {
 
             if (ma.measurements != null) {
               if (ma.measurements.length === 0) {
-                await this.$ren.managementApi.getMeasurementsFromConnectedAssets(this.assetId).then((measurements) => {
+                await this.$ren.dataApi.getMeasurementsFromConnectedAssets(this.assetId).then((measurements) => {
                   this.measurementsData[i] = measurements;
                 });
               } else {
-                await this.$ren.managementApi
+                await this.$ren.dataApi
                   .getMeasurementsFromConnectedAssetsAndCompatibleWithSelectedMeasurement(this.assetId, ma.measurements[0])
                   .then((measurements) => {
                     this.measurementsData[i] = measurements;
@@ -226,7 +226,7 @@ export default {
         this.configuration = config;
       });
 
-      await this.$ren.managementApi.getOptimizerTypes().then((optimizerTypes) => {
+      await this.$ren.dataApi.getOptimizerTypes().then((optimizerTypes) => {
         console.info(optimizerTypes);
         this.optimizerTypes = optimizerTypes;
       });
@@ -257,7 +257,7 @@ export default {
         }
       }
 
-      await this.$ren.managementApi.getOptimizerParameters(this.assetId, this.configuration.mvoComponentType.type).then((optimizerParameters) => {
+      await this.$ren.dataApi.getOptimizerParameters(this.assetId, this.configuration.mvoComponentType.type).then((optimizerParameters) => {
         this.configuration.parametersAggregationConfiguration = optimizerParameters;
       });
     },
@@ -282,7 +282,7 @@ export default {
     },
     async addMeasurement(item, i) {
       if (item.length === 0) {
-        await this.$ren.managementApi.getMeasurementsFromConnectedAssets(this.assetId).then((measurements) => {
+        await this.$ren.dataApi.getMeasurementsFromConnectedAssets(this.assetId).then((measurements) => {
           this.measurementsData[i] = measurements;
         });
       }
@@ -290,7 +290,7 @@ export default {
     },
     async selectedMeasurement(measurementId, measurements, i) {
       if (measurements.length > 0 && this.measurementsOnlyContainsOneNonNull(measurements)) {
-        await this.$ren.managementApi
+        await this.$ren.dataApi
           .getMeasurementsFromConnectedAssetsAndCompatibleWithSelectedMeasurement(this.assetId, measurementId)
           .then((measurements) => {
             this.measurementsData[i] = measurements;
@@ -320,7 +320,7 @@ export default {
       this.configuration.measurementAggregation[indexMA].outputs.splice(index, 1);
     },
     async submit() {
-      await this.$ren.managementApi.saveMeasurementAggregation(this.assetId, this.configuration).then((config) => {
+      await this.$ren.dataApi.saveMeasurementAggregation(this.assetId, this.configuration).then((config) => {
         this.configuration = config;
       });
     },
