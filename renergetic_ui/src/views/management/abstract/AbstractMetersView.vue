@@ -146,7 +146,7 @@ export default {
     };
   },
   async created() {
-    let abstractMeterList = await this.$ren.managementApi.getAbstracMeterList();
+    let abstractMeterList = await this.$ren.kpiApi.getAbstracMeterList();
     let claves = Object.keys(abstractMeterList);
     for (let i = 0; i < claves.length; i++) {
       let clave = claves[i];
@@ -249,7 +249,7 @@ export default {
           condition: this.conditionMeter,
           domain: this.domainGlobal,
         };
-        returnValue = await this.$ren.managementApi.updateAbstractMeter(jsonAbstractMeter);
+        returnValue = await this.$ren.kpiApi.updateAbstractMeter(jsonAbstractMeter);
         if (typeof returnValue == "object") {
           this.showToast(2);
         } else {
@@ -262,7 +262,7 @@ export default {
           condition: this.conditionMeter,
           domain: this.domainGlobal,
         };
-        returnValue = await this.$ren.managementApi.addAbstractMeter(jsonAbstractMeter);
+        returnValue = await this.$ren.kpiApi.addAbstractMeter(jsonAbstractMeter);
         if (typeof returnValue == "object") {
           this.showToast(0);
         } else {
@@ -273,7 +273,7 @@ export default {
       //this.variableExistanceChecker();
     },
     async variableExistanceChecker() {
-      let abstractValue = await this.$ren.managementApi.getAnAbstracMeterConfiguration(
+      let abstractValue = await this.$ren.kpiApi.getAnAbstracMeterConfiguration(
         this.splitAbstractMeters(this.abstractMeterGlobal),
         this.domainGlobal,
       );
@@ -300,7 +300,7 @@ export default {
       this.validateMeasurements();
     },
     async deleteAbstractMeterFunc() {
-      const returnValue = await this.$ren.managementApi.deleteAbstractMeter(this.splitAbstractMeters(this.abstractMeterGlobal), this.domainGlobal);
+      const returnValue = await this.$ren.kpiApi.deleteAbstractMeter(this.splitAbstractMeters(this.abstractMeterGlobal), this.domainGlobal);
       if (returnValue) {
         this.showToast(1);
       } else {
