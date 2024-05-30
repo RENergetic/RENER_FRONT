@@ -61,6 +61,9 @@ class RenUtils {
     Object.assign(this, MeasurementUtils);
     Object.assign(this, MeasurementDataUtils);
   }
+  version() {
+    return process.env.VUE_APP_VERSION;
+  }
   toPrimeFilter(filterDict) {
     if (filterDict == null) {
       return {};

@@ -1,4 +1,5 @@
 {
+  "app_version":"Wersja klienta: {0}",
   "activated_condition": "Activated condition",
   "deactivated_condition": "Deactivated condition",
   "add_dashboard": "Dodaj panel",

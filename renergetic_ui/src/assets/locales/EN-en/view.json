@@ -1,4 +1,5 @@
 {
+  "app_version":"Client version: {0}",
   "activated_condition": "Activated condition",
   "deactivated_condition": "Deactivated condition",
   "add_dashboard": "Add dashboard",

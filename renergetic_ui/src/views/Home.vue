@@ -90,7 +90,7 @@
   </RenSettingsDialog>
   <RenSettingsDialog ref="filterSettingsDialog" :save="false">
     <template #settings>
-      <Card class="ren-settings">
+      <Card v-if="panel" class="ren-settings">
         <template #title>
           <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
         </template>
@@ -99,7 +99,7 @@
           <!-- <Settings :schema="schema" :settings="effectiveFilterSettings" :disabled="true" /> -->
         </template>
       </Card>
-      <Card class="ren-settings">
+      <Card v-if="panel" class="ren-settings">
         <template #title>
           <span> {{ $t("view.panel_filter_settings") }}:</span>
         </template>
@@ -176,6 +176,9 @@ export default {
       return this.computePanelSettings(this.panelSettings, this.panel);
     },
     effectiveFilterSettings: function () {
+      if (!this.panel) {
+        return {};
+      }
       let userFilter = this.$store.getters["settings/filters"]();
       let overrideMode = this.panel.props && this.panel.props.overrideMode ? this.panel.props.overrideMode : null;
       let settings = this.mergeSettings(userFilter, this.panel.props, overrideMode);
