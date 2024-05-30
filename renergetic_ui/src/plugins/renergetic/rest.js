@@ -5,6 +5,7 @@ import UserApi from "./ren_api/userapi";
 import AxiosAPI from "./ren_api/axiosapi";
 import WrapperApi from "./ren_api/wrapper_api";
 import HDRAPI from "./ren_api/hdrapi";
+import KPIAPI from "./ren_api/kpiapi";
 import KubeflowAPI from "./ren_api/kubeflowapi";
 import KPIAPI from "./ren_api/kpiapi";
 
