@@ -7,7 +7,6 @@ import WrapperApi from "./ren_api/wrapper_api";
 import HDRAPI from "./ren_api/hdrapi";
 import KPIAPI from "./ren_api/kpiapi";
 import KubeflowAPI from "./ren_api/kubeflowapi";
-import KPIAPI from "./ren_api/kpiapi";
 
 // import {
 //   DashboardApi as DummyDashboardApi,
@@ -26,7 +25,7 @@ import axios from "axios";
 // } else {
 //   USE_DUMMY = false;
 // }
-export var BASE_URL_HDR_API = process.env.VUE_APP_API_URL_HDR_API; // "http://localhost:7982"; //;
+export var BASE_URL_HDR_API = "http://localhost:7982"; //process.env.VUE_APP_API_URL_HDR_API; //  //;
 export var BASE_URL_BASE_API = process.env.VUE_APP_API_URL_BASE_API; // //;
 export var BASE_URL_DATA_API = process.env.VUE_APP_API_URL_DATA_API; // "http://localhost:7983"; //; // " //
 export var BASE_URL_USER_API = process.env.VUE_APP_API_URL_USER_API; //"http://localhost:7985"; //
