@@ -16,6 +16,8 @@
       <div v-if="!$store.getters['auth/isAuthenticated'] || $store.getters['auth/tokenExpired']" class="grid flex flex-none" style="margin: 2rem 0">
         <div class="col"></div>
         <div class="col-fixed flex-none" style="width: 20rem; text-align: center">
+          <!-- {{ $store.getters["auth/tokenExpired"] }} -->
+
           <Button icon="pi pi-sign-in" style="width: 100%" :label="$t('view.button.sign_in')" @click="login" />
         </div>
         <div class="col"></div>
