@@ -67,16 +67,16 @@ export default {
     console.log("assetRuleList", this.assetRuleList);
     this.drpIndex = 0;
     let ruleCounter = 0;
-    for (let j = 0; j < this.assetRuleList.length; j++) {
-      if (this.assetRuleList[j].assetRules.length > 0) {
+    for (let i = 0; i < this.assetRuleList.length; i++) {
+      if (this.assetRuleList[i].assetRules.length > 0) {
         const assetRule = {
-          asset: this.assetRuleList[j].asset,
+          asset: this.assetRuleList[i].asset,
           withRule: true,
-          ruleList: this.assetRuleList[j].assetRules,
+          ruleList: this.assetRuleList[i].assetRules,
         };
         await this.demandResponseList.push(assetRule);
-        for (let i = 0; i < this.assetRuleList[j].assetRules.length; i++) {
-          await this.$refs.demandResponseParameters[this.drpIndex].addPrecreatedAssetRule(this.assetRuleList[j].assetRules[i]);
+        for (let j = 0; j < this.assetRuleList[i].assetRules.length; j++) {
+          await this.$refs.demandResponseParameters[this.drpIndex].addPrecreatedAssetRule(this.assetRuleList[i].assetRules[j]);
           this.drpIndex++;
           ruleCounter++;
         }
@@ -84,6 +84,7 @@ export default {
         ruleCounter = 0;
       }
     }
+    console.log("la lista", this.demandResponseList);
   },
   methods: {
     addDemandResponse() {
@@ -173,7 +174,7 @@ export default {
       let posDelete = this.posDelete(i, j);
       if (j != this.howManyRules[i] - 1) {
         for (let a = posDelete.ini; a < posDelete.fin; a++) {
-          // this.drpExchange(a, a + 1);
+          this.drpExchange(a, a + 1);
         }
       }
       this.demandResponseList[i].ruleList.splice(j, 1);
@@ -190,7 +191,7 @@ export default {
       if (this.demandResponseList.length != 0) {
         let errors = false;
         for (let i = 0; i < this.demandResponseList.length; i++) {
-          errors = errors || this.$refs.demandResponseParameters[i].validateAll();
+          if (this.demandResponseList[i].ruleList.lenght > 0) errors = errors || this.$refs.demandResponseParameters[i].validateAll();
         }
         if (errors) {
           return;

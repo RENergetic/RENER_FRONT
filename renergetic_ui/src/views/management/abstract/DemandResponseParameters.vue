@@ -474,7 +474,7 @@ export default {
           demandDefinitionTrue: !this.sendDemandTrue
             ? null
             : {
-                actionType: this.demandDefinitionTrueActionType,
+                action_type: this.demandDefinitionTrueActionType,
                 action: this.demandDefinitionTrueAction,
                 message: this.demandDefinitionTrueActionMessage,
               },
@@ -483,7 +483,7 @@ export default {
           demandDefinitionFalse: !this.sendDemandFalse
             ? null
             : {
-                actionType: this.demandDefinitionFalseActionType,
+                action_type: this.demandDefinitionFalseActionType,
                 action: this.demandDefinitionFalseAction,
                 message: this.demandDefinitionFalseActionMessage,
               },
