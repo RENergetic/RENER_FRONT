@@ -7,10 +7,12 @@
   <!-- {{ $route.path }}{{ $route.name }} -->
   <Dialogs
     :notification-dialog="notificationDialog"
+    :version-dialog="versionDialog"
     :demand-dialog="demandDialog"
     :locales="localesDialog"
     :add-dashboard="dashboardDialog"
     :add-user="userDialog"
+    @update:version-dialog="versionDialog = $event"
     @update:notification-dialog="notificationDialog = $event"
     @update:demand-dialog="demandDialog = $event"
     @update:notifications="onNotificationChange($event)"
@@ -36,6 +38,7 @@ export default {
       menuModel: [],
       dashboards: [],
       notificationDialog: false,
+      versionDialog: false,
       demandDialog: false,
       dashboardDialog: false,
       userDialog: false,
@@ -503,6 +506,14 @@ export default {
               command: () => {
                 this.$router.push("/profile/survey");
                 // this.$router.push("/feedback");
+              },
+            },
+            {
+              label: this.$t("menu.client_version"),
+              icon: "pi pi-fw pi-cog", //pi-language
+              command: () => {
+                // this.$emit("notification");
+                this.versionDialog = !this.versionDialog;
               },
             },
           ],

@@ -65,6 +65,67 @@ export default class DataApi extends RestComponent {
     let endpoint = assetId != null ? `/api/data/panel/${panelId}/asset/${assetId}?${args}` : `/api/data/panel/${panelId}?${args}`;
     return this.get(endpoint);
   }
+  async getMeasurementAggregation(assetId) {
+    return this.get(`/api/measurementsAggregation/list/${assetId}`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Measurement aggregation not found`, {
+          code: "measurement_aggr_get_error",
+        });
+      }
+      return true;
+    });
+  }
+  async saveMeasurementAggregation(assetId, configuration) {
+    return this.post(`/api/measurementsAggregation/save/${assetId}`, configuration, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Measurement aggregation not saved`, {
+          code: "measurement_aggr_save_error",
+        });
+      }
+      return true;
+    });
+  }
+  async getOptimizerTypes() {
+    return this.get(`/api/measurementsAggregation/optimizerTypes`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Optimizer types not found`, {
+          code: "optimizer_type_get_error",
+        });
+      }
+      return true;
+    });
+  }
+  async getOptimizerParameters(assetId, optimizerType) {
+    return this.get(`/api/measurementsAggregation/optimizerParameters/${assetId}/${optimizerType}`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Optimizer parameters not found`, {
+          code: "optimizer_parameter_get_error",
+        });
+      }
+      return true;
+    });
+  }
+  async getMeasurementsFromConnectedAssets(assetId) {
+    return this.get(`/api/measurementsAggregation/measurements/${assetId}`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Measurements not found`, {
+          code: "measurements_connect_asset_get_error",
+        });
+      }
+      return true;
+    });
+  }
+  async getMeasurementsFromConnectedAssetsAndCompatibleWithSelectedMeasurement(assetId, measurementId) {
+    console.log("ok ?");
+    return this.get(`/api/measurementsAggregation/compatibleMeasurements/${assetId}/${measurementId}`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Compatible measurements not found`, {
+          code: "compatible_measurements_connect_asset_get_error",
+        });
+      }
+      return true;
+    });
+  }
 
   // async getNotifications(objectIds) {
   //   // todo:

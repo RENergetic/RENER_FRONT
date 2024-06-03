@@ -4,6 +4,7 @@
     <template #content>
       <DataTable
         v-if="workflowList"
+        v-model:expandedRows="expanded"
         v-model:selection="selectedWorkflow"
         :selection-mode="'single'"
         :filters="mFilters"
@@ -21,24 +22,38 @@
           <!-- <Dropdown v-model="mFilters.visible.value" show-clear :options="tagsKeys" :placeholder="$t('view.tag_filter')" /> -->
           <!-- </span> -->
         </template>
-
+        <Column :expander="true" header-style="width: 3rem" />
         <Column field="name" :header="$t('model.workflow.name')" :show-filter-menu="false" />
         <Column field="pipeline_id" :header="$t('model.workflow.pipeline_id')" :show-filter-menu="false" />
+        <template #expansion="slotProps">
+          <h3 v-if="slotProps.data.parameters">{{ $t("model.workflow.parameters") }}</h3>
+          <ul v-if="slotProps.data.parameters" class="ren">
+            <li v-for="key in Object.keys(slotProps.data.parameters)" :key="key">
+              <!-- {{ slotProps.data.parameters[key] }} -->
+
+              {{ key }}
+              <Button
+                v-if="slotProps.data.parameters[key].visible"
+                v-tooltip="$t('view.edit')"
+                icon="pi pi-pencil"
+                class="p-button-rounded"
+                @click="editParameter(slotProps.data, slotProps.data.parameters[key])"
+              />
+              <Button
+                v-else
+                v-tooltip="$t('view.edit')"
+                icon="pi pi-pencil"
+                class="p-button-rounded state error"
+                @click="editParameter(slotProps.data, slotProps.data.parameters[key])"
+              />
+            </li>
+          </ul>
+          <span v-else> {{ $t("view.na") }} </span>
+        </template>
         <Column field="parameters" :header="$t('model.workflow.parameters')" :show-filter-menu="false">
           <template #body="slotProps">
-            <ul v-if="slotProps.data.parameters">
-              <li v-for="key in Object.keys(slotProps.data.parameters)" :key="key">
-                <!-- {{ slotProps.data.parameters[key] }} -->
+            <div v-if="slotProps.data.parameters">{{ Object.keys(slotProps.data.parameters).length }}</div>
 
-                {{ key }}
-                <Button
-                  v-tooltip="$t('view.edit')"
-                  icon="pi pi-pencil"
-                  class="p-button-rounded"
-                  @click="editParameter(slotProps.data, slotProps.data.parameters[key])"
-                />
-              </li>
-            </ul>
             <span v-else> {{ $t("view.na") }} </span>
           </template>
         </Column>
@@ -121,6 +136,7 @@ export default {
       editParameterDialog: false,
       mOffset: 0,
       columns: [],
+      expanded: [],
       mFilters: this.initFilters(),
       selectedWorkflow: null,
       deferredEmitFilter: null,

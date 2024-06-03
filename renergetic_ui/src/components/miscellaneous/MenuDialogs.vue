@@ -15,6 +15,9 @@
   <Dialog v-model:visible="mLocales" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <LocaleSettings></LocaleSettings>
   </Dialog>
+  <Dialog v-model:visible="mVersionDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <h3>{{ $t("view.app_version", [$ren.utils.version()]) }}</h3>
+  </Dialog>
 </template>
 
 <script>
@@ -57,6 +60,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    versionDialog: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: [
     "update:dashboard",
@@ -65,6 +72,7 @@ export default {
     "update:locales",
     "update:notifications",
     "update:user",
+    "update:versionDialog",
     // "update:demands",
   ],
   data() {
@@ -73,6 +81,7 @@ export default {
       mDemandDialog: this.demandDialog,
       mAddDashboard: this.addDashboard,
       mLocales: this.locales,
+      mVersionDialog: this.versionDialog,
       mAddUser: this.addUser,
       notifications: [],
     };
@@ -120,6 +129,16 @@ export default {
       },
       // immediate: true,
     },
+    mVersionDialog: {
+      handler(newVal, oldValue) {
+        if (oldValue == null && newVal == null) {
+          return;
+        }
+        this.$emit("update:versionDialog", newVal);
+      },
+      // immediate: true,
+    },
+
     mNotificationDialog: {
       handler(newVal, oldValue) {
         if (oldValue == null && newVal == null) {
@@ -153,6 +172,12 @@ export default {
     locales: {
       handler(newVal) {
         this.mLocales = newVal;
+      },
+      immediate: true,
+    },
+    versionDialog: {
+      handler(newVal) {
+        this.mVersionDialog = newVal;
       },
       immediate: true,
     },
