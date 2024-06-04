@@ -180,7 +180,7 @@ class RenUtils {
     if (assetId == null) {
       for (let tile of informationPanel.tiles) {
         if (tile.measurements) {
-          tile.measurements = tile.measurements.filter((measurement) => measurement.id != null);
+          tile.measurements = tile.measurements.filter((measurement) => measurement != null && measurement.id != null);
         }
       }
     }
