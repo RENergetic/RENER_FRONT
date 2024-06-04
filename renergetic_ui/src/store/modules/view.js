@@ -70,6 +70,8 @@ export default {
       state.dashboards = getF("dashboards", []);
       state.dashboardMap = mapPanelId(state.dashboards);
       state.demands = getF("demands", []);
+      state.demandsFuture = getF("demandsFuture", []);
+      state.demandsPast = getF("demandsPast", []);
       let meta = getF("asset_metakeys", {});
       state.asset = {
         categories: meta.categories ? meta.categories : [],
@@ -171,6 +173,12 @@ export default {
     },
     demands: (state /* getters*/) => {
       return state.demands;
+    },
+    demandsFuture: (state /* getters*/) => {
+      return state.demandsFuture;
+    },
+    demandsPast: (state /* getters*/) => {
+      return state.demandsPast;
     },
     data: (state /* getters*/) => {
       return state.data;
