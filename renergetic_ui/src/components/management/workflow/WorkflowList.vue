@@ -1,6 +1,7 @@
 <template>
   <DataTable
     v-if="workflowList"
+    v-model:expandedRows="expanded"
     v-model:selection="selectedWorkflow"
     :selection-mode="'single'"
     :filters="mFilters"
@@ -15,13 +16,19 @@
        <ren-switch v-model="mFilters.visible.value" :text-label="'model.workflow.visibility'" /> 
     </template> -->
 
+    <Column :expander="true" header-style="width: 3rem" />
     <Column field="name" :header="$t('model.workflow.name')" :show-filter-menu="false" />
     <Column field="pipeline_id" :header="$t('model.workflow.pipeline_id')" :show-filter-menu="false" />
+    <template #expansion="slotProps">
+      <ul v-if="slotProps.data.parameters">
+        <li v-for="key in Object.keys(slotProps.data.parameters)" :key="key">{{ key }}</li>
+      </ul>
+      <span v-else> {{ $t("view.na") }} </span>
+    </template>
     <Column field="parameters" :header="$t('model.workflow.parameters')" :show-filter-menu="false">
       <template #body="slotProps">
-        <ul v-if="slotProps.data.parameters">
-          <li v-for="key in Object.keys(slotProps.data.parameters)" :key="key">{{ key }}</li>
-        </ul>
+        <div v-if="slotProps.data.parameters">{{ Object.keys(slotProps.data.parameters).length }}</div>
+
         <span v-else> {{ $t("view.na") }} </span>
       </template>
     </Column>
@@ -46,7 +53,12 @@
           </div>
         </div>
 
-        <span v-else> {{ $t("model.workflowrun.run_state.not_running") }} </span>
+        <span v-else class="disabled">
+          <div v-if="slotProps.data.current_run != null" @click="showRunDetails(slotProps.data)">
+            {{ $t("model.workflowrun.run_state.not_running") }}
+          </div>
+          <div v-else>{{ $t("model.workflowrun.run_state.not_running") }}</div>
+        </span>
       </template>
     </Column>
 
@@ -92,6 +104,7 @@ export default {
     return {
       mOffset: 0,
       columns: [],
+      expanded: [],
       mFilters: this.initFilters(),
       selectedWorkflow: null,
       deferredEmitFilter: null,
