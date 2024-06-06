@@ -67,9 +67,18 @@ export default {
       let msgType = "information";
       if (this.demandResponseList.length != 0) {
         msgType = "information";
+        let errors = false;
+        for (let i = 0; i < this.demandResponseList.length; i++) {
+          errors = errors || this.$refs.demandResponseParameters[i].validateAll();
+        }
+        if (errors) {
+          return;
+        }
         for (let i = 0; i < this.demandResponseList.length; i++) {
           this.questionnaire = this.$refs.demandResponseParameters[i];
           this.returnedInfo = await this.questionnaire.returnInfo();
+          console.log("=====pre");
+          console.log(this.returnedInfo);
           await this.jsonCreation();
         }
         this.saveData();
@@ -83,6 +92,8 @@ export default {
     },
     async jsonCreation() {
       let assetDetails;
+      console.log("=====pre2");
+      console.log(this.returnedInfo);
       if (this.returnedInfo.thresholdMeasurement == "Threshold") {
         this.jsonData = await {
           assetId: this.assetId,
@@ -93,8 +104,18 @@ export default {
           manualThreshold: this.returnedInfo.valueMeasurement,
           comparator: this.returnedInfo.operationData,
           active: this.returnedInfo.rowActiveCheckBox,
+          sendDemandTrue: this.returnedInfo.sendDemandTrue,
+          demandAssetTrue: this.returnedInfo.demandAssetTrue,
+          demandDefinitionTrue: this.returnedInfo.demandDefinitionTrue,
+          sendDemandFalse: this.returnedInfo.sendDemandFalse,
+          demandAssetFalse: this.returnedInfo.demandAssetFalse,
+          demandDefinitionFalse: this.returnedInfo.demandDefinitionFalse,
         };
+        console.log("=====pre3");
+        console.log(this.jsonData);
         assetDetails = await this.getAssetDetails(this.jsonData.assetId);
+        console.log("=====pre4");
+        console.log(this.jsonData);
         console.log("Asset Details");
         console.log(assetDetails);
         if (assetDetails.length != 0 || !this.jsonData.compareToConfigThreshold) {
@@ -120,6 +141,12 @@ export default {
           timeRangeMeasurement2: this.returnedInfo.timeRange2 + this.returnedInfo.durationSyntax2,
           comparator: this.returnedInfo.operationData,
           active: this.returnedInfo.rowActiveCheckBox,
+          sendDemandTrue: this.returnedInfo.sendDemandTrue,
+          demandAssetTrue: this.returnedInfo.demandAssetTrue,
+          demandDefinitionTrue: this.returnedInfo.demandDefinitionTrue,
+          sendDemandFalse: this.returnedInfo.sendDemandFalse,
+          demandAssetFalse: this.returnedInfo.demandAssetFalse,
+          demandDefinitionFalse: this.returnedInfo.demandDefinitionFalse,
         };
         assetDetails = await this.getAssetDetails(this.jsonData.assetId);
         console.log("Asset details");
