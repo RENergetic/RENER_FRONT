@@ -54,5 +54,6 @@
   "signup": "Registrarse",
   "settings": "Configuración",
   "unit_settings": "Configurar unidades",
-  "view": "Vista"
+  "view": "Vista",
+  "manage_rules": "Rules"
 }
