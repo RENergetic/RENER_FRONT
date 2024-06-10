@@ -6,7 +6,7 @@
         <ren-input v-model="startTime" :text-label="'model.workflowrun.start_time'" :read-only="true" :disabled="startTime == null" />
         <ren-input v-model="endTime" :text-label="'model.workflowrun.end_time'" :read-only="true" :disabled="endTime == null" />
         <ren-input v-model="state" :text-label="'model.workflowrun.state'" :read-only="true" :disabled="state == null" />
-        <h3 v-if="mModel.parameters && mModel.parameters.length > 0">{{ $t("model.workflowrun.parameters") }}</h3>
+        <h3 v-if="mModel.parameters && Object.keys(mModel.parameters).length > 0">{{ $t("model.workflowrun.parameters") }}:</h3>
         <ren-input
           v-for="key in Object.keys(mModel.parameters)"
           :key="key"

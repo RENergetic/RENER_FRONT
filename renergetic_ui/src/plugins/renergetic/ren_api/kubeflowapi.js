@@ -25,6 +25,11 @@ export default class KubeflowApi extends RestComponent {
   getExperimentRun(pipelineId) {
     return this.get(`${this.BASE_URL}/pipeline/${pipelineId}/run`);
   }
+
+  listRuns({ pipelineId, from = null, to = null }) {
+    let args = this.parseArgs({ from: from, to: to });
+    return this.get(`${this.BASE_URL}/pipeline/${pipelineId}/runs?${args}`);
+  }
   startExperiment(pipelineId, experimentParams) {
     return this.post(`${this.BASE_URL}/pipeline/${pipelineId}/run`, experimentParams);
   }

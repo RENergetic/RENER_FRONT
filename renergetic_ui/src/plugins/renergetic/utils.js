@@ -61,6 +61,9 @@ class RenUtils {
     Object.assign(this, MeasurementUtils);
     Object.assign(this, MeasurementDataUtils);
   }
+  version() {
+    return process.env.VUE_APP_VERSION;
+  }
   toPrimeFilter(filterDict) {
     if (filterDict == null) {
       return {};
@@ -177,7 +180,7 @@ class RenUtils {
     if (assetId == null) {
       for (let tile of informationPanel.tiles) {
         if (tile.measurements) {
-          tile.measurements = tile.measurements.filter((measurement) => measurement.id != null);
+          tile.measurements = tile.measurements.filter((measurement) => measurement != null && measurement.id != null);
         }
       }
     }

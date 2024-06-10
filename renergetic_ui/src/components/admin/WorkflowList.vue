@@ -4,6 +4,7 @@
     <template #content>
       <DataTable
         v-if="workflowList"
+        v-model:expandedRows="expanded"
         v-model:selection="selectedWorkflow"
         :selection-mode="'single'"
         :filters="mFilters"
@@ -21,24 +22,37 @@
           <!-- <Dropdown v-model="mFilters.visible.value" show-clear :options="tagsKeys" :placeholder="$t('view.tag_filter')" /> -->
           <!-- </span> -->
         </template>
-
+        <Column :expander="true" header-style="width: 3rem" />
         <Column field="name" :header="$t('model.workflow.name')" :show-filter-menu="false" />
         <Column field="pipeline_id" :header="$t('model.workflow.pipeline_id')" :show-filter-menu="false" />
+        <template #expansion="slotProps">
+          <h3 v-if="slotProps.data.parameters">{{ $t("model.workflow.parameters") }}</h3>
+          <ul v-if="slotProps.data.parameters" class="ren">
+            <li v-for="key in Object.keys(slotProps.data.parameters)" :key="key">
+              <!-- {{ slotProps.data.parameters[key] }} -->
+
+              {{ key }}
+              <Button
+                v-if="slotProps.data.parameters[key].visible"
+                v-tooltip="$t('view.edit')"
+                icon="pi pi-pencil"
+                class="p-button-rounded"
+                @click="editParameter(slotProps.data, slotProps.data.parameters[key])"
+              />
+              <Button
+                v-else
+                v-tooltip="$t('view.edit')"
+                icon="pi pi-pencil"
+                class="p-button-rounded state error"
+                @click="editParameter(slotProps.data, slotProps.data.parameters[key])"
+              />
+            </li>
+          </ul>
+          <span v-else> {{ $t("view.na") }} </span>
+        </template>
         <Column field="parameters" :header="$t('model.workflow.parameters')" :show-filter-menu="false">
           <template #body="slotProps">
-            <ul v-if="slotProps.data.parameters">
-              <li v-for="key in Object.keys(slotProps.data.parameters)" :key="key">
-                <!-- {{ slotProps.data.parameters[key] }} -->
-
-                {{ key }}
-                <Button
-                  v-tooltip="$t('view.edit')"
-                  icon="pi pi-pencil"
-                  class="p-button-rounded"
-                  @click="editParameter(slotProps.data, slotProps.data.parameters[key])"
-                />
-              </li>
-            </ul>
+            <div v-if="slotProps.data.parameters">{{ Object.keys(slotProps.data.parameters).length }}</div>
             <span v-else> {{ $t("view.na") }} </span>
           </template>
         </Column>
@@ -79,8 +93,11 @@
           </template>
         </Column>
         <Column :show-filter-menu="false">
-          TODO: check if task hasn't already been running
-          <template #body="item"> <Button :label="$t('view.button.start')" icon="pi pi-cog" @click="runTask(item.data)" /> </template>
+          <template #body="item">
+            <i v-tooltip="$t('view.run_log')" class="pi pi-list" @click="showRunLog(item.data)" />
+
+            <!-- <Button :label="$t('view.button.start')" icon="pi pi-cog" @click="runTask(item.data)" /> -->
+          </template>
         </Column>
         <!-- <Column v-if="!basic" selection-mode="multiple" header-style="width: 3rem"></Column> -->
       </DataTable>
@@ -99,6 +116,38 @@
   </Dialog>
   <Dialog v-model:visible="workflowRunDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <WorkflowRunDetails :workflow-run="selectedWorkflowRunDetails" @on-stop="onWorkflowStop" />
+  </Dialog>
+  <Dialog v-model:visible="runlogDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <DataTable v-if="runLogList" :lazy="true" data-key="run_id" :value="runLogList" class="sticky-header">
+      <Column field="run_id" :header="$t('model.workflowrun.run_id')" />
+
+      <Column field="pipeline" :header="$t('model.workflowrun.pipeline')">
+        <template #body="slotProps">
+          <!-- {{ slotProps.data.pipeline.name }} :  -->
+          {{ slotProps.data.pipeline.pipeline_id }}
+        </template>
+      </Column>
+      <Column field="start_time" :header="$t('model.workflowrun.start_time')">
+        <template #body="slotProps">
+          {{ $ren.utils.dateString(slotProps.data.start_time) }}
+        </template>
+      </Column>
+      <Column field="end_time" :header="$t('model.workflowrun.end_time')">
+        <template #body="slotProps">
+          {{ $ren.utils.dateString(slotProps.data.end_time) }}
+        </template>
+      </Column>
+      <Column field="state" :header="$t('model.workflowrun.state')">
+        <template #body="slotProps">
+          {{ slotProps.data.state }}
+        </template>
+      </Column>
+      <Column>
+        <template #body="slotProps">
+          <i class="pi pi-chevron-circle-right" @click="showRunDetails(slotProps.data)" />
+        </template>
+      </Column>
+    </DataTable>
   </Dialog>
 </template>
 
@@ -121,11 +170,14 @@ export default {
       editParameterDialog: false,
       mOffset: 0,
       columns: [],
+      expanded: [],
+      runLogList: [],
       mFilters: this.initFilters(),
       selectedWorkflow: null,
       deferredEmitFilter: null,
       selectedWorkflowRunDetails: null,
       workflowRunDetailsDialog: false,
+      runlogDialog: false,
     };
   },
   computed: {},
@@ -175,6 +227,14 @@ export default {
     },
     isTaskRunning(workflowRun) {
       return workflowRun && workflowRun.start_time && (workflowRun.end_time == null || workflowRun.end_time < 0);
+    },
+
+    async showRunLog(workflow) {
+      var lastWeek = this.$ren.utils.currentTimestamp() - 1000 * 3600 * 24 * 7;
+      await this.$refs.spinner_temp.run(async () => {
+        this.runLogList = await this.$ren.kubeflowApi.listRuns({ pipelineId: workflow.pipeline_id, from: lastWeek });
+        this.runlogDialog = true;
+      });
     },
 
     async runTask(selectedExperiment) {

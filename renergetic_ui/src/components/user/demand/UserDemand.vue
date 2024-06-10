@@ -39,6 +39,9 @@
         <!-- <div class="flex align-items-center justify-content-center">{{ demand.demand_definition.message }}</div> -->
         <div class="flex">{{ demand.demand_definition.message }}</div>
       </div>
+      <div class="flex align-content-start flex-wrap">
+        <div class="flex">{{ timeText }}</div>
+      </div>
     </div>
     <!-- <div class="flex-none flex align-items-center justify-content-center"> -->
     <div class="col-2 flex-none flex align-items-center justify-content-center notification-icon">
@@ -99,6 +102,18 @@ export default {
       tile.layout = l;
       return tile;
     },
+    timeText() {
+      var dateStart = new Date(this.demand.demand_start);
+      var dateStop = new Date(this.demand.demand_stop);
+      var current = new Date();
+      if (dateStart > current) {
+        return this.$t("view.demand_starts_in") + " " + this.transformWithUnit(current, dateStart);
+      } else if (dateStop < current) {
+        return this.$t("view.demand_expired") + " " + this.transformWithUnit(dateStop, current) + " " + this.$t("view.demand_expired_suffix");
+      } else {
+        return this.$t("view.demand_current") + " " + this.transformWithUnit(current, dateStop);
+      }
+    },
   },
   watch: {},
 
@@ -119,6 +134,19 @@ export default {
         default:
           return this.icons.default;
       }
+    },
+    transformWithUnit(dateRef, dateComp) {
+      var diff = dateComp - dateRef;
+      var days = Math.floor(diff / 86400000);
+      if (days > 0) {
+        return days + " " + (days > 1 ? this.$t("view.demand_days") : this.$t("view.demand_day"));
+      }
+      var hours = Math.floor((diff % 86400000) / 3600000);
+      if (hours > 0) {
+        return hours + " " + (hours > 1 ? this.$t("view.demand_hours") : this.$t("view.demand_hour"));
+      }
+      var minutes = Math.round(((diff % 86400000) % 3600000) / 60000);
+      return minutes + " " + (minutes > 1 ? this.$t("view.demand_minutes") : this.$t("view.demand_minutes"));
     },
   },
 };

@@ -462,6 +462,16 @@ export default class ManagementApi extends RestComponent {
       return true;
     });
   }
+  async getAllAssetRules() {
+    return this.get(`/api/assetRules/list/all`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Asset rules not found`, {
+          code: "asset_rules_error",
+        });
+      }
+      return true;
+    });
+  }
   async getAssetRules(asset_id) {
     return this.get(`/api/assetRules/asset/${asset_id}`, null, null, (e) => {
       if (e.response.status != 404) {
@@ -480,6 +490,77 @@ export default class ManagementApi extends RestComponent {
         });
         return true;
       }
+    });
+  }
+  async updateCreateDeleteAll(assetRules) {
+    return await this.post(`api/assetRules/batch/update-create-delete`, assetRules, null, null, (e) => {
+      if (e.response.status === 404) {
+        this.emitError(`Asset rule not added: ${e.message}`, {
+          code: "asset_rule_adding_error",
+        });
+        return true;
+      }
+    });
+  }
+  async getMeasurementAggregation(assetId) {
+    return this.get(`/api/measurementsAggregation/list/${assetId}`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Measurement aggregation not found`, {
+          code: "measurement_aggr_get_error",
+        });
+      }
+      return true;
+    });
+  }
+  async saveMeasurementAggregation(assetId, configuration) {
+    return this.post(`/api/measurementsAggregation/save/${assetId}`, configuration, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Measurement aggregation not saved`, {
+          code: "measurement_aggr_save_error",
+        });
+      }
+      return true;
+    });
+  }
+  async getOptimizerTypes() {
+    return this.get(`/api/measurementsAggregation/optimizerTypes`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Optimizer types not found`, {
+          code: "optimizer_type_get_error",
+        });
+      }
+      return true;
+    });
+  }
+  async getOptimizerParameters(assetId, optimizerType) {
+    return this.get(`/api/measurementsAggregation/optimizerParameters/${assetId}/${optimizerType}`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Optimizer parameters not found`, {
+          code: "optimizer_parameter_get_error",
+        });
+      }
+      return true;
+    });
+  }
+  async getMeasurementsFromConnectedAssets(assetId) {
+    return this.get(`/api/measurementsAggregation/measurements/${assetId}`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Measurements not found`, {
+          code: "measurements_connect_asset_get_error",
+        });
+      }
+      return true;
+    });
+  }
+  async getMeasurementsFromConnectedAssetsAndCompatibleWithSelectedMeasurement(assetId, measurementId) {
+    console.log("ok ?");
+    return this.get(`/api/measurementsAggregation/compatibleMeasurements/${assetId}/${measurementId}`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Compatible measurements not found`, {
+          code: "compatible_measurements_connect_asset_get_error",
+        });
+      }
+      return true;
     });
   }
 

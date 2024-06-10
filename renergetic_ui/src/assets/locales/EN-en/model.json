@@ -210,14 +210,17 @@
   "workflowrun": {
     "run_id": "Run id",
     "start_time": "Start time",
+    "init_time": "Init time", 
     "start_time_formatted": "Task started at {start_time}",
     "end_time": "End time",
     "parameters": "Parameters",
+    "pipeline":"Pipeline",
     "state": "State",
     "run_state": {
       "running": "Running",
       "finished": "Finished",
       "error": "Error",
+      "failed":"Failed",
       "not_running": "Not running",
       "terminating": "Terminating"
     }

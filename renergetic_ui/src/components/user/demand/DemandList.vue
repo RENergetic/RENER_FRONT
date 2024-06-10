@@ -1,6 +1,6 @@
 <template>
   <!-- {{ demands }} -->
-  <div v-if="mDemands && mDemands.length > 0" style="height: 100%" class="flex flex-column align-items-start align-content-start">
+  <div v-if="mDemands && mDemands.length > 0" class="flex flex-column align-items-start align-content-start">
     <h3 v-if="title">{{ $t("view.demand_list") }}:</h3>
 
     <template v-for="d in mDemands" :key="d">
@@ -9,6 +9,20 @@
   </div>
   <div v-else>
     <h4 v-if="title">{{ $t("view.no_demand_list") }}</h4>
+  </div>
+  <div v-if="demandsFuture && demandsFuture.length > 0" class="flex flex-column align-items-start align-content-start">
+    <h3 v-if="title">{{ $t("view.demand_list_future") }}:</h3>
+
+    <template v-for="d in demandsFuture" :key="d">
+      <UserDemand :demand="d" :pdata="pdata"></UserDemand>
+    </template>
+  </div>
+  <div v-if="demandsPast && demandsPast.length > 0" class="flex flex-column align-items-start align-content-start">
+    <h3 v-if="title">{{ $t("view.demand_list_past") }}:</h3>
+
+    <template v-for="d in demandsPast" :key="d">
+      <UserDemand :demand="d" :pdata="pdata"></UserDemand>
+    </template>
   </div>
 </template>
 <script>
@@ -33,7 +47,7 @@ export default {
   emits: ["update"],
   // emits: ["update"],
   data() {
-    return { mDemands: [], pdata: {} };
+    return { mDemands: [], pdata: {}, demandsPast: [], demandsFuture: [] };
   },
   computed: {},
   watch: {
@@ -54,6 +68,8 @@ export default {
         if (demands) {
           this.mDemands = demands;
         } else this.mDemands = await this.$ren.userApi.getDemand(); //TODO: check it
+        this.demandsFuture = this.$store.getters["view/demandsFuture"];
+        this.demandsPast = this.$store.getters["view/demandsPast"];
       }
       let pdata = this.$store.getters["view/data"];
       pdata = this.$ren.utils.convertDemandData(this.mDemands, pdata, this.$store.getters["settings/conversion"]);

@@ -11,6 +11,7 @@
             <!-- {{ group.measurements }} -->
 
             <!-- :chart-type="chartType" -->
+
             <MeasurementChart
               :ref="`mChart_${index}`"
               :p-data="{ timeseries: pData }"
@@ -141,8 +142,9 @@ export default {
         await this.loadCurrentMeasurements();
         // alert(JSON.stringify(this.recommendation));
         // this.recommendationMeasurements = await this.$ren.hdrApi.getRecommendationsMeasurements(this.recommendation.id);
+
         this.recommendationMeasurements = await this.$ren.hdrApi.getMeasurements(
-          this.recommendation.timestamp,
+          this.hdrRequest.timestamp,
           this.recommendation.tag.key,
           this.recommendation.tag.value,
         );
@@ -161,8 +163,8 @@ export default {
     async loadCompareMeasurements() {
       if (this.comparewith) {
         // this.recommendationCompareMeasurements = await this.$ren.hdrApi.getRecommendationsMeasurements(this.comparewith.id);
-        this.recommendationMeasurements = await this.$ren.hdrApi.getMeasurements(
-          this.comparewith.timestamp,
+        this.recommendationCompareMeasurements = await this.$ren.hdrApi.getMeasurements(
+          this.hdrRequest.timestamp,
           this.comparewith.tag.key,
           this.comparewith.tag.value,
         );

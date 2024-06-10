@@ -43,6 +43,18 @@ const MeasurementDetailsKeys = Object.freeze({
 const DemandActionType = Object.freeze({
   INCREASE: "increase",
   DECREASE: "decrease",
+  STOP: "stop",
+  START: "start",
+});
+
+const DemandAction = Object.freeze({
+  INCREASE_TEMPERATURE: "increase_temperature",
+  DECREASE_TEMPERATURE: "decrease_temperature",
+  INCREASE_POWER: "increase_power",
+  DECREASE_POWER: "decrease_power",
+  INCREASE_HEAT: "increase_heat",
+  DECREASE_HEAT: "decrease_heat",
+  CHARGE_EV: "charge_ev",
 });
 
 const TileTypes = Object.freeze({
@@ -167,6 +179,7 @@ export {
   RenRolesStr,
   RenFeatures,
   DemandActionType,
+  DemandAction,
   MeasurementDetailsKeys,
   DashboardMeasurementTypes,
   MeasurementDomains,
