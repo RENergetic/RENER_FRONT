@@ -587,7 +587,7 @@ export default {
             rangeTo: local.data.ruleDefinition.measurement1.rangeTo,
           },
           measurement2:
-            local.data.ruleDefinition.selection !== this.dropdownThresholdMeasurement[1]
+            local.data.ruleDefinition.selected !== this.dropdownThresholdMeasurement[1]
               ? null
               : {
                   id: local.data.ruleDefinition.measurement2.id,
