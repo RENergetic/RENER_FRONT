@@ -1,7 +1,7 @@
 <template>
   <Dialog v-model:visible="visibleDemandResponse" :style="{ width: '95%' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <Card style="width: 95%; margin: auto; margin-top: 1%">
-      <template #title>{{ $t("view.asset_rules_administration") }} </template>
+      <template #title>{{ $t("view.demand_response_rules_administration") }} </template>
       <template #content>
         <!-- Render existing questionnaires -->
         <div class="w-full md:w-200rem">
@@ -13,8 +13,8 @@
           </div>
         </div>
         <div class="gap-3 field grid button_grid">
-          <Button @click="addDemandResponse">{{ $t("view.add_asset_rule") }}</Button>
-          <Button @click="saveDemands()">{{ $t("view.save_asset_rules") }}</Button>
+          <Button @click="addDemandResponse">{{ $t("view.add_demand_response_rule") }}</Button>
+          <Button @click="saveDemands()">{{ $t("view.save_demand_response_rule") }}</Button>
         </div>
       </template>
     </Card>
