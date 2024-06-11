@@ -95,7 +95,7 @@ export default {
       }
       filter.from = from;
       filter.to = to;
-      return filter
+      return { from: from, to: to, predictionIntervalms: filter.predictionIntervalms }
     },
 
 

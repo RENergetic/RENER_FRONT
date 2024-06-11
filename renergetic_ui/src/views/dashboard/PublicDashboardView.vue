@@ -1,7 +1,7 @@
 <template>
   <!-- PUBLIC DASHBOARD -->
   <div v-if="panel" id="panel-box">
-    <DotMenu :model="menuModel" />
+    <DotMenu :model="menuModel" /><Figcaption></Figcaption>
     <InformationPanelWrapper
       ref="panel"
       :asset-id="$route.params.asset_id"

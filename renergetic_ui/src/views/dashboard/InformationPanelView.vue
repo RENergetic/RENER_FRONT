@@ -15,6 +15,7 @@
       @update="reloadSettings()"
     />
     <h3 v-if="panelTitle" style="width: 90%; margin: auto; margin-top: 1rem">{{ panelTitle }}</h3>
+
     <InformationPanelWrapper
       ref="panel"
       :asset-id="$route.params.asset_id"
@@ -40,7 +41,7 @@
       @update="reloadSettings()"
     />
     <!-- </template>
-    </Card> -->
+</Card> -->
   </div>
   <RenSettingsDialog ref="settingsDialog">
     <template #settings>
@@ -74,7 +75,9 @@
     <template #settings><PanelSettings @update="reloadSettings()"></PanelSettings></template>
   </RenSettingsDialog> -->
   <RenSettingsDialog ref="conversionSettingsDialog">
-    <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
+    <template #settings>
+      <ConversionSettings @update="reloadSettings()"></ConversionSettings>
+    </template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="filterSettingsDialog" :save="false">
     <template #settings>
@@ -139,7 +142,7 @@ export default {
       let userFilter = this.$store.getters["settings/filters"]("private");
       let overrideMode = this.effectiveOverrideMode(this.settings, this.panel.props);
       let settings = this.mergeSettings(userFilter, this.panel.props, overrideMode);
-      return this.parseDateFilter(settings);
+      return this.parseDateFiltereDateFilter(settings);
     },
     panelTitle: function () {
       let asset = this.$store.getters["view/panelAsset"](this.panel.id, this.$route.params.asset_id);
@@ -264,8 +267,11 @@ export default {
 
 <style lang="scss">
 #panel-box {
-  background: #232526; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #232526, #414345); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #232526, #414345); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #232526;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #232526, #414345);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #232526, #414345);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 </style>

@@ -54,12 +54,15 @@ export default {
   },
   methods: {
     async onLoad() {
+      console.info("onLoad");
       this.loaded = true;
       this.$emit("onLoad");
       await this.reload();
     },
     async reloadSettings() {
       this.filter = this.$store.getters["settings/parsedFilter"]("measurement");
+
+      //  this.$refs.dataPreview.reload();
       await this.reload();
     },
     async open(tile) {
