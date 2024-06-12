@@ -213,9 +213,6 @@ export default {
   async mounted() {
     await this.loadStructure();
   },
-  // async updated() {
-  //   await this.loadStructure();
-  // },
 
   methods: {
     exportPanel(template) {
@@ -234,8 +231,6 @@ export default {
       // }
     },
     reloadSettings() {
-      // console.info("reloadSettings");
-      // this.$store.getters["settings/filter"];
       // this.filter = this.$store.getters["settings/parsedFilter"]("private");
       this.settings = this.$store.getters["settings/panel"];
       this.conversionSettings = this.$store.getters["settings/conversion"];

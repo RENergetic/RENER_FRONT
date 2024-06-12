@@ -49,9 +49,7 @@
   </Dialog> -->
 </template>
 <script>
-// import NotificationList from "@/components/management/notification/NotificationList.vue";
 import InformationPanel from "./InformationPanel.vue";
-// import ManageSensors from "../measurements/ManageSensors.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 // import { GridStack } from "gridstack";
 import LoopRunner from "@/plugins/utils/loop_runner.js";
@@ -178,12 +176,12 @@ export default {
   async mounted() {
     var _this = this;
     var f = async () => {
-      console.debug("deffererd");
+      console.debug("deffered start");
       // console.error(_this.filterKey);
       // console.error(_this.$store.getters["settings/parsedFilter"](_this.filterKey));
       _this.mFilter = _this.filter ? _this.filter : _this.$store.getters["settings/parsedFilter"](_this.filterKey);
 
-      console.debug(_this.mFilterr);
+      console.debug(_this.mFilter);
       if (_this.loopRunner) {
         _this.loopRunner.reset();
       }
@@ -199,44 +197,29 @@ export default {
     } else {
       this.loadData();
     }
-    // this.reloadGrid();
   },
   methods: {
-    // reloadGrid() {
-    //   if (this.grid != null) this.grid.destroy(false);
-    //   let grid = GridStack.init({ float: true }, "#panel-grid-stack");
-    //   if (this.locked) {
-    //     grid.disable();
-    //   } else {
-    //     grid.enable();
-    //   }
-    //   grid.disable();
-    //   this.grid = grid;
-    // },
     onTimeseriesUpdate(evt) {
       console.error("onTimeseriesUpdate TODO:");
       console.error(evt);
     },
     async loadData() {
       if (this.panel.id != null) {
-        console.info("panel load data: " + this.panel.id);
+        // console.info("panel load data: " + this.panel.id);
         this.$refs.spinner.run(async () => {
           console.info("wait for panel data: " + this.panel.id + " " + this.panel.is_template);
           await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, this.mFilter).then((resp) => {
-            console.info(resp);
+            console.debug(resp);
             this.panelData = resp.data;
             if (this.panel.is_template) this.mPanel = resp.panel;
             else {
               this.mPanel = this.panel;
             }
+            console.info("Panel data loaded");
           });
         });
       }
-      console.info("Panel data loaded");
     },
-    // gridWidth(tile) {
-    //   return tile.col == null ? 2 : tile.col;
-    // },
     onEdit(evt) {
       //todo
       this.selectedItem = evt;
@@ -262,20 +245,8 @@ export default {
       this.mPanel.tiles = tiles;
       this.$emit("update", this.mPanel);
     },
-
-    // viewNotification(evt) {
-    //   //TODO: load here notifications for tile
-    //   this.selectedItem = evt;
-    //   this.notificationDialog = true;
-    // },
   },
 };
 </script>
 
-<style lang="scss">
-// #panel-grid-stack {
-//   width: 100%;
-//   position: absolute;
-//   top: 0;
-// }
-</style>
+<style lang="scss"></style>

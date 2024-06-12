@@ -1,5 +1,4 @@
 <template>
-  {{ loaded }}
   <div v-if="mPanel && mPanelData && loaded" id="panel-grid-stack" :key="reload" class="grid-stack">
     <InformationTileGridWrapper
       v-for="(tile, index) in tiles"
@@ -124,10 +123,16 @@ export default {
     },
     mSettings: {
       // handler(newVal) {
-      handler() {
+      handler(newVal, oldVal) {
         console.debug("Panel settings have changed - reload");
-        // this.recalculateData(this.panelData);
-        // this.reload = !this.reload;
+        console.debug(newVal);
+        console.debug(oldVal);
+        if (newVal != null && oldVal != null) {
+          if (!oldVal.cellHeight && newVal.cellHeight) {
+            console.debug("reload with cellheight");
+            this.reload = !this.reload;
+          }
+        }
       },
       deep: true,
       immediate: false,
@@ -140,7 +145,7 @@ export default {
   convertData() {},
   async mounted() {
     console.debug("mounted panel grid");
-    console.debug(this.panelData != null);
+    // console.debug(this.panelData != null);
     if (this.panelData != null) {
       this.recalculateData(this.panelData);
       this.reload = !this.reload;
@@ -196,7 +201,6 @@ export default {
       grid.disable();
       this.mSettings.cellWidth = grid.el.clientWidth / grid.getColumn();
       this.mSettings.cellHeight = grid.el.clientHeight / grid.getRow();
-      // console.warn(this.mSettings.cellHeight);
       this.grid = grid;
     },
 

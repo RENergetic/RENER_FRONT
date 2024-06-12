@@ -1,6 +1,6 @@
 <template>
   <!-- PUBLIC DASHBOARD -->
-  <div v-if="panel" id="panel-box" style="max-height:100vh:overflow:hidden;">
+  <div v-if="panel" id="panel-box" style="max-height: 100vh; overflow: hidden">
     <DotMenu :model="menuModel" />
     <InformationPanelWrapper
       ref="panel"

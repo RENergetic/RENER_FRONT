@@ -22,6 +22,7 @@ export default {
     return key;
   },
   getUnit(measurement, panelSettings, conversionSettings) {
+    //possible to add here predefined panel units
     if (measurement == null) {
       return "";
     }
