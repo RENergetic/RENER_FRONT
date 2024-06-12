@@ -1,5 +1,5 @@
 <template>
-  <!-- {{ pdata }} -->
+  <!-- {{ paneldata }} -->
   <!-- {{ $store.getters["view/panelAsset"](panel.id, assetId) }} -->
   <!-- ff{{ filter }}dd -->
   <RenSpinner ref="spinner" :lock="true" style="width: 100%; min-height: 15rem">
@@ -9,7 +9,7 @@
       <InformationPanel
         v-if="mPanel"
         :edit="editMode"
-        :pdata="pdata"
+        :panel-data="panelData"
         :panel="mPanel"
         :locked="locked"
         :settings="panelSettings"
@@ -120,7 +120,7 @@ export default {
       selectedItem: null,
       mPanel: null,
       manageSensorsDialog: false,
-      pdata: null,
+      panelData: null,
       deferredFilter: null,
       tileTypes: Object.entries(TileTypes).map((k) => {
         return { value: k[1], label: this.$t("enums.tile_type." + k[1]) };
@@ -178,11 +178,12 @@ export default {
   async mounted() {
     var _this = this;
     var f = async () => {
-      console.error("deffererd");
-      console.error(_this.filter);
-      console.error(_this.filterKey);
-      console.error(_this.$store.getters["settings/parsedFilter"](_this.filterKey));
+      console.debug("deffererd");
+      // console.error(_this.filterKey);
+      // console.error(_this.$store.getters["settings/parsedFilter"](_this.filterKey));
       _this.mFilter = _this.filter ? _this.filter : _this.$store.getters["settings/parsedFilter"](_this.filterKey);
+
+      console.debug(_this.mFilterr);
       if (_this.loopRunner) {
         _this.loopRunner.reset();
       }
@@ -223,7 +224,7 @@ export default {
           console.info("wait for panel data: " + this.panel.id + " " + this.panel.is_template);
           await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, this.mFilter).then((resp) => {
             console.info(resp);
-            this.pdata = resp.data;
+            this.panelData = resp.data;
             if (this.panel.is_template) this.mPanel = resp.panel;
             else {
               this.mPanel = this.panel;
