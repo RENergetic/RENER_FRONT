@@ -462,8 +462,8 @@ export default class ManagementApi extends RestComponent {
       return true;
     });
   }
-  async getAllAssetRules() {
-    return this.get(`/api/assetRules/list/all`, null, null, (e) => {
+  async getAllRules() {
+    return this.get(`/api/rules/list`, null, null, (e) => {
       if (e.response.status != 404) {
         this.emitError(`Asset rules not found`, {
           code: "asset_rules_error",
@@ -472,31 +472,15 @@ export default class ManagementApi extends RestComponent {
       return true;
     });
   }
-  async getAssetRules(asset_id) {
-    return this.get(`/api/assetRules/asset/${asset_id}`, null, null, (e) => {
-      if (e.response.status != 404) {
-        this.emitError(`Asset rules not found`, {
-          code: "asset_rules_error",
-        });
-      }
-      return true;
-    });
-  }
-  async updateCreateDelete(assetRule, id) {
-    return await this.post(`api/assetRules/batch/update-create-delete/${id}`, assetRule, null, null, (e) => {
+  async updateCreateDeleteRules(rules, deleted) {
+    var body = {
+      createUpdate: rules,
+      delete: deleted,
+    };
+    return await this.post(`api/rules/batch/update-create-delete`, body, null, null, (e) => {
       if (e.response.status === 404) {
-        this.emitError(`Asset rule not added: ${e.message}`, {
-          code: "asset_rule_adding_error",
-        });
-        return true;
-      }
-    });
-  }
-  async updateCreateDeleteAll(assetRules) {
-    return await this.post(`api/assetRules/batch/update-create-delete`, assetRules, null, null, (e) => {
-      if (e.response.status === 404) {
-        this.emitError(`Asset rule not added: ${e.message}`, {
-          code: "asset_rule_adding_error",
+        this.emitError(`Rules not saved: ${e.message}`, {
+          code: "rule_saving_error",
         });
         return true;
       }
