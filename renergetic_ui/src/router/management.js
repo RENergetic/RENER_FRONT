@@ -103,15 +103,26 @@ var management = [
   },
   */
   {
-    path: "/management/rules",
-    name: "RulesList",
+    path: "/management/demandResponse",
+    name: "DemandResponse",
     props: {},
     meta: {
       isAuthenticated: true,
       roles: ["ren-admin", "ren-technical-manager"],
       roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN | RenRoles.REN_MANAGER,
     },
-    component: () => import("../views/management/rules/RulesListView.vue"),
+    component: () => import("../views/management/abstract/DemandResponseView.vue"),
+  },
+  {
+    path: "/management/demandResponseList",
+    name: "DemandResponseList",
+    props: {},
+    meta: {
+      isAuthenticated: true,
+      roles: ["ren-admin", "ren-technical-manager"],
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN | RenRoles.REN_MANAGER,
+    },
+    component: () => import("../views/management/abstract/DemandResponseListView.vue"),
   },
 ];
 

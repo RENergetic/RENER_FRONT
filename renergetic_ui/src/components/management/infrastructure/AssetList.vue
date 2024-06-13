@@ -51,6 +51,7 @@
           @click="manageAssetAggregrationProperties(slotProps.data)"
         />
         <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
+        <Button v-tooltip="$t('view.rules')" icon="pi pi-code" class="p-button-rounded" @click="editRules(slotProps.data)" />
         <Button
           v-tooltip="$t('view.delete') + hasMeasurementsTooltip(slotProps.data)"
           :disabled="slotProps.data.type.name == 'user' || (slotProps.data.measurements && slotProps.data.measurements.length > 0)"
@@ -205,6 +206,7 @@
   <AssetProperties ref="assetPropertiesDialog" @submit="updateDetails" />
   <AssetAggregationProperties ref="assetAggregationPropertiesDialog" />
   <AssetEdit ref="assetEditDialog" @submit="updateAsset" />
+  <DemandResponseView ref="demandResponseView" />
 
   <Dialog v-model:visible="childDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <Card>
@@ -288,6 +290,7 @@ import AssetCategorySelection from "./AssetCategorySelection.vue";
 import AssetProperties from "@/components/management/infrastructure/AssetProperties.vue";
 import AssetAggregationProperties from "@/components/management/infrastructure/AssetAggregationProperties.vue";
 import AssetEdit from "@/components/management/infrastructure/AssetEdit.vue";
+import DemandResponseView from "@/views/management/abstract/DemandResponseView.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 function initFilter() {
   return {
@@ -308,6 +311,7 @@ export default {
     MeasurementSelect,
     AssetConnectionManagementDialog,
     AssetCategorySelection,
+    DemandResponseView,
   },
   props: {
     assetList: { type: Array, default: () => [] },
@@ -378,6 +382,9 @@ export default {
     ////
     editAsset(row) {
       this.$refs.assetEditDialog.open(row);
+    },
+    editRules(row) {
+      this.$refs.demandResponseView.open(row.id);
     },
     viewChildren(row) {
       console.info(row);

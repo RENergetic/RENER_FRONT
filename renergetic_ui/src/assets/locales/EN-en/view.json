@@ -261,32 +261,5 @@
   "settings": {
     "true": {},
     "false": {}
-  },
-  "rules_page_title": "Rules Management",
-  "rules_node_type": "Node types",
-  "rules_multiplier_label": "Multiplier",
-  "rules_number_tooltip": "e.g.: 1.2",
-  "rules_function_label": "Function",
-  "rules_measurement_label": "Measurement",
-  "rules_from_label": "From",
-  "rules_to_label": "To",
-  "rules_literal_tooltip": "valid inputs:\nnow\nday-start\nday-end\nnow-1h\nnow+5d\nnow(+-)[0-9]*(smhd)",
-  "rules_comparator_label": "Comparator",
-  "rules_compare_to_label": "Compare To",
-  "rules_threshold_label": "Threshold",
-  "rules_asset_label": "Asset",
-  "rules_duration_label": "Duration",
-  "rules_duration_tooltip": "valid inputs:\n10h\n5d\n[0-9]*(smhd)",
-  "rules_action_label": "Action",
-  "rules_action_type_label": "Action Type",
-  "rules_message_label": "Message",
-  "rules_add_label": "Add rule",
-  "rules_save_label": "Save all rules",
-  "rules_true_label": "True",
-  "rules_false_label": "False",
-  "rules_root_rule_label": "Root of rule",
-  "rules_contains_error": "Rules contain error, these are highlighted in red",
-  "rules_saving": "Saving rules",
-  "rules_saved": "Rules saved",
-  "rules_not_saved": "There was an error, rules not saved"
+  }
 }

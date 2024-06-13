@@ -64,6 +64,5 @@
   "view": "View",
   "manage_notifications": "Notifications",
   "tv_view_mode": "TV View",
-  "normal_view_mode": "Normal view",
-  "manage_rules": "Rules"
+  "normal_view_mode": "Normal view"
 }

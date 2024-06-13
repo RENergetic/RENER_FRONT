@@ -88,17 +88,6 @@ export default {
     this.$emitter.on("menu-update", () => {
       this.updateMenu();
     });
-    this.$emitter.on("success", (evt) => {
-      // console.error(evt);
-      let title = evt.title;
-      let msg = evt.message;
-      this.$toast.add({
-        severity: "success",
-        summary: title,
-        detail: msg,
-        life: 3000,
-      });
-    });
     this.$emitter.on("error", (evt) => {
       // console.error(evt);
       let title = evt.titleCode ? this.$t(`error.${evt.titleCode}`) : evt.title ? evt.title : this.$t(`error.error`);

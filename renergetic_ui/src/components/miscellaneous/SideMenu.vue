@@ -217,7 +217,6 @@ export default {
 
       let items = [
         ...this._assetItems(),
-        ...this._ruleItems(),
         ...this._grafanaDashboardManagement(),
         ...this._panelManagementItems(),
         ...this._measurementItems(),
@@ -328,21 +327,6 @@ export default {
       //     items: items,
       //   },
       // ];
-    },
-    _ruleItems() {
-      let flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
-      if ((flags & this.role) == 0) return [];
-      return [
-        {
-          class: this.checkPath({ name: "RulesList" }) ? "hl-menu" : "",
-          label: this.$t("menu.manage_rules"),
-          icon: "pi pi-fw pi-list",
-
-          command: () => {
-            this.$router.push({ name: "RulesList", path: "/management/rules" });
-          },
-        },
-      ];
     },
 
     _measurementItems() {
