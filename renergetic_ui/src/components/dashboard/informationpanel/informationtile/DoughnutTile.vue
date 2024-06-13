@@ -7,8 +7,9 @@
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
 
     <div class="flex flex-grow-1 flex-column align-items-center justify-content-center" style="position: relative">
-      <div class="flex flex-none flex-column align-items-center justify-content-center">
-        <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
+      <div v-if="loaded" class="flex flex-none flex-column align-items-center justify-content-center">
+        <!-- <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" /> -->
+        <Chart type="doughnut" :data="chartData" :options="options" />
       </div>
       <span
         v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
@@ -35,6 +36,9 @@ export default {
   },
   data() {
     return {
+      // width: this.settings.panel.cellWidth * this.tile.layout.w * 0.95,
+      // height: this.settings.panel.cellHeight * this.tile.layout.h * 0.75,
+      loaded: false,
       mSettings: this.settings,
       mStyle: "max-width: 25rem; margin: auto",
       options: {
@@ -95,13 +99,22 @@ export default {
       };
     },
   },
-
+  // created() {
+  //   console.debug("created " + this.loaded + " " + this.tile.id);
+  // },
+  // updated() {
+  //   console.debug("updated  " + this.loaded + " " + this.tile.id);
+  //   console.debug(this.chartData);
+  //   console.debug(this.options);
+  // },
   mounted() {
+    // console.debug("mounted " + this.tile.id);
     let minD = this.tileContentSize1D();
-    console.info(minD);
+    console.debug(this.tile.id + ": minD=" + minD);
     // var size = this.mSettings.tile.measurement_list ? 0.5 : 0.7;
     // let minD = Math.min(this.settings.panel.cellWidth * this.tile.layout.w, this.settings.panel.cellHeight * this.tile.layout.h);
     this.mStyle = `max-width: 25rem; margin: auto;width:${minD * 0.65}px`;
+    this.loaded = true;
   },
   methods: {},
 };
@@ -112,6 +125,7 @@ export default {
   position: absolute;
   height: 20%;
   width: 20%;
+
   svg {
     height: 100%;
   }

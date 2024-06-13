@@ -16,7 +16,6 @@
     />
   </div>
   <TileMeasurementPreview ref="dataPreview" />
-  <!--  @on-load="onChartsLoad()" -->
   <Dialog v-model:visible="notificationDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <notification-list v-if="selectedItem" :context="notificationContext" :object-id="selectedItem.tile.id" />
   </Dialog>

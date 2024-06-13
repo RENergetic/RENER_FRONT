@@ -1,11 +1,11 @@
 {
   "name": "renergetic_ui",
-  "version": "0.6.2",
+  "version": "0.7.0-0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "npm version patch & vue-cli-service build",
-    "release": "npm version patch",
+    "build": "npm version prerelease & vue-cli-service build",
+    "patch": "npm version prepatch",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "eslint": "npx eslint --fix ./src "
