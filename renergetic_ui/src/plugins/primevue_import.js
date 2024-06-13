@@ -1,13 +1,16 @@
-import Dropdown from "primevue/dropdown";
-import InputText from "primevue/inputtext";
+//
 import AutoComplete from "primevue/autocomplete";
 import Button from "primevue/button";
+import Calendar from "primevue/calendar";
+import Card from "primevue/card";
+// import Chart from "primevue/chart";
 import CheckBox from "primevue/checkbox";
+import DataTable from "primevue/datatable";
+import Dropdown from "primevue/dropdown";
+import InputText from "primevue/inputtext";
 import Panel from "primevue/panel";
 import ScrollPanel from "primevue/scrollpanel";
-import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import Calendar from "primevue/calendar";
 import ColumnGroup from "primevue/columngroup";
 import Tooltip from "primevue/tooltip";
 import Textarea from "primevue/textarea";
@@ -20,7 +23,6 @@ import Message from "primevue/message";
 import Toolbar from "primevue/toolbar";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
-import Card from "primevue/card";
 import FileUpload from "primevue/fileupload";
 import Listbox from "primevue/listbox";
 import Tree from "primevue/tree";
@@ -65,6 +67,7 @@ plugin.install = function (Vue /*, options*/) {
   Vue.component("ScrollPanel", ScrollPanel);
   Vue.component("Calendar", Calendar);
   Vue.component("Slider", Slider);
+  // Vue.component("Chart", Chart);
   // Vue.component("Paginator", Paginator);
 }; // install
 export default plugin;

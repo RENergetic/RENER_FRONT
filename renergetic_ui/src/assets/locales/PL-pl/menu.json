@@ -64,5 +64,6 @@
   "view": "Widok",
   "manage_notifications": "Powiadomienia",
   "tv_view_mode": "Widok prezentacji",
-  "normal_view_mode": "Widok normaly"
+  "normal_view_mode": "Widok normalny",
+  "manage_rules": "Zarządzaj regułami"
 }

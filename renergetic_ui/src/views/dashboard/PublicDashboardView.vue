@@ -44,7 +44,9 @@
     </template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="conversionSettingsDialog">
-    <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
+    <template #settings>
+      <ConversionSettings @update="reloadSettings()"></ConversionSettings>
+    </template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="filterSettingsDialog" :save="false">
     <template #settings>
@@ -72,7 +74,6 @@
         </template>
         <template #content>
           <BasicFilterSettings :setting-key="'public'" @update="updateFilter()" />
-          <!-- <PanelSettings @update="reloadPanelSettings()"> </PanelSettings> -->
         </template>
       </Card>
     </template>
@@ -173,14 +174,11 @@ export default {
     },
     async loadStructure() {
       this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id);
-      // let m = this.panel.tiles.map((it) => ({ id: it.id, m: it.measurements.map((m) => ({ name: m.name, label: m.label })) }));
     },
     updateFilter() {
-      // this.filterSettings = this.$store.getters["settings/parsedFilter"]();
       this.parsedFilterRefresh = !this.parsedFilterRefresh;
     },
     reloadSettings() {
-      // this.filterSettings = this.$store.getters["settings/parsedFilter"]();
       this.settings = this.$store.getters["settings/panel"];
       this.conversionSettings = this.$store.getters["settings/conversion"];
       this.parsedFilterRefresh = !this.parsedFilterRefresh;

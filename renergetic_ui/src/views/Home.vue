@@ -1,7 +1,7 @@
 <template>
   <DotMenu v-if="loggedIn" :model="menuModel" :fixed="true" />
   <!-- {{ effectiveFilterSettings }} -->
-  <div v-if="settings.panelVisibility" style="position: relative">
+  <div v-if="homeSettings.panelVisibility" style="position: relative">
     <!-- {{ $store.getters["view/featuredPanels"] }}  -->
     <!-- {{ $store.getters["view/assetPanels"] }}d -->
     <!-- {{ panelSettings }} -->
@@ -25,15 +25,17 @@
       <ParsedDateFilter :key="parsedFilterRefresh" :filter="effectiveFilterSettings" />
     </div>
   </div>
-  <div v-if="settings.demandVisibility && loggedIn" style="position: relative">
+  <div v-if="homeSettings.demandVisibility && loggedIn" style="position: relative">
     <DemandList id="demand-list" />
   </div>
-  <div v-if="settings.notificationVisibility && loggedIn" style="position: relative">
+  <div v-if="homeSettings.notificationVisibility && loggedIn" style="position: relative">
     <NotificationList id="notification-list" />
   </div>
   <RoleMatrix v-if="false" />
   <RenSettingsDialog ref="homeSettingsDialog">
-    <template #settings><HomeSettings @update="reloadSettings()"></HomeSettings></template>
+    <template #settings>
+      <HomeSettings @update="reloadHomeSettings()"></HomeSettings>
+    </template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="panelSettingsDialog">
     <template #settings>
@@ -86,7 +88,9 @@
     <template #settings><PanelSettings @update="reloadPanelSettings()"></PanelSettings></template>
   </RenSettingsDialog> -->
   <RenSettingsDialog ref="conversionSettingsDialog">
-    <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
+    <template #settings>
+      <ConversionSettings @update="reloadPanelSettings()"></ConversionSettings>
+    </template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="filterSettingsDialog" :save="false">
     <template #settings>
@@ -114,7 +118,6 @@
         </template>
         <template #content>
           <BasicFilterSettings @update="updateFilter()" />
-          <!-- <PanelSettings @update="reloadPanelSettings()"> </PanelSettings> -->
         </template>
       </Card>
     </template>
@@ -165,7 +168,7 @@ export default {
       autoReload: true,
       assetId: null,
       panel: this.$store.getters["view/homePanel"],
-      settings: this.$store.getters["settings/home"],
+      homeSettings: this.$store.getters["settings/home"],
       // filter: this.$store.getters["settings/parsedFilter"](),
       panelSettings: this.$store.getters["settings/panel"],
       parsedFilterRefresh: false,
@@ -201,20 +204,8 @@ export default {
         visible: false,
       };
     },
-    // saveButton: function () {
-    //   return {
-    //     label: this.$t("menu.save_grid"),
-    //     icon: "pi pi-fw pi-plus-circle",
-    //     command: () => this.saveGrid(),
-    //   };
-    // },
     filterSettingsButton: function () {
-      //TODO: set icon
-      return {
-        label: this.$t("menu.filter_settings"),
-        icon: "pi pi-fw pi-filter",
-        command: () => this.$refs.filterSettingsDialog.open(),
-      };
+      return { label: this.$t("menu.filter_settings"), icon: "pi pi-fw pi-filter", command: () => this.$refs.filterSettingsDialog.open() };
     },
     fullScreenButton: function () {
       return {
@@ -227,16 +218,13 @@ export default {
     },
 
     conversionSettingsButton: function () {
-      //TODO: set icon
       return {
         label: this.$t("menu.unit_settings"),
         icon: "pi pi-fw pi-cog",
         command: () => this.$refs.conversionSettingsDialog.open(),
       };
     },
-
     settingsButton: function () {
-      //TODO: set icon
       return {
         label: this.$t("menu.home_settings"),
         icon: "pi pi-fw pi-home",
@@ -244,7 +232,6 @@ export default {
       };
     },
     panelSettingsButton: function () {
-      //TODO: set icon
       return {
         label: this.$t("menu.panel_settings"),
         icon: "pi pi-fw pi-cog",
@@ -253,10 +240,7 @@ export default {
     },
     menuModel() {
       let model = [];
-      // if (!this.locked) model.push(this.saveButton);
       let role = this.$store.getters["auth/renRole"];
-
-      // model.push(this.toggleButton);
       model.push(this.settingsButton);
       if ((role & (this.RenRoles.REN_TECHNICAL_MANAGER | this.RenRoles.REN_MANAGER | this.RenRoles.REN_ADMIN)) > 0) {
         model.push(this.panelSettingsButton);
@@ -264,13 +248,8 @@ export default {
         model.push(this.filterSettingsButton);
       }
       model.push(this.fullScreenButton);
-
       return model;
     },
-  },
-  watch: {
-    // filter: function () {
-    // },
   },
   async created() {
     this.loaded = false;
@@ -299,8 +278,8 @@ export default {
           _this.autoReload = true;
         }
       };
-      if (this.settings.slideshowLoopInterval > 0) {
-        this.slideshow = LoopRunner.init(f, this.settings.slideshowLoopInterval);
+      if (this.homeSettings.slideshowLoopInterval > 0) {
+        this.slideshow = LoopRunner.init(f, this.homeSettings.slideshowLoopInterval);
         this.slideshow.start();
       } else {
         if (this.slideshow) {
@@ -310,8 +289,8 @@ export default {
       }
     },
 
-    reloadSettings() {
-      this.settings = this.$store.getters["settings/home"];
+    reloadHomeSettings() {
+      this.homeSettings = this.$store.getters["settings/home"];
     },
     updateFilter() {
       this.parsedFilterRefresh = !this.parsedFilterRefresh;
@@ -321,6 +300,8 @@ export default {
     },
     reloadPanelSettings() {
       this.panelSettingsDialog = this.$store.getters["settings/panel"];
+      this.conversionSettings = this.$store.getters["settings/conversion"];
+      this.parsedFilterRefresh = !this.parsedFilterRefresh;
     },
     async toggleLock() {
       this.locked = !this.locked;
@@ -336,6 +317,7 @@ export default {
   margin: auto;
   color: #3182ce;
 }
+
 #notification-list {
   width: 50rem;
   max-width: 95vw;

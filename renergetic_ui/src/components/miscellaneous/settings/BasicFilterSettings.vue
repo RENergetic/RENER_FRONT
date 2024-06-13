@@ -1,25 +1,12 @@
 <template>
-  <!-- {{ mSettings }} -->
-  <Settings :key="refresh" :schema="schema" :settings="mSettings" :columns="columns" :labels="labels" :disabled="disabled" />
-  <!-- {{ mSettings.date_to }} -->
-  <!-- {{ new Date(mSettings.date_to) }}
-  {{ mSettings.timeIntervalType }}  -->
+  <!-- {{ settingsObj }} -->
+  <Settings :key="refresh" v-model:settings="settingsObj" :schema="schema" :columns="columns" :labels="labels" :disabled="disabled" />
   <!-- {{ $store.getters["settings/all"].filters }} -->
-
-  <!-- {{ schema }} -->
 </template>
 
 <script>
 import Settings from "./Settings.vue";
-// function setSettings(s) {
-//   if (s.date_from) s.date_from = new Date(s.date_from);
-//   if (s.date_to) s.date_to = new Date(s.date_to);
-//   return s;
-// }
 function validateDateInterval(s) {
-  // if (s.date_to && s.date_from && s.date_to.getTime() < s.date_from.getTime()) {
-  //   s.date_to = new Date(s.date_from.getTime() + 15 * 60000);
-  // }a
   var modified = false;
   if (s.date_to && s.date_from && s.date_to < s.date_from) {
     s.date_to = new Date(s.date_from + 60 * 60000).getTime();
@@ -30,7 +17,6 @@ function validateDateInterval(s) {
     modified = true;
   }
   return modified;
-  // this.updateModel();
 }
 export default {
   name: "BasicFilterSettings",
@@ -52,6 +38,7 @@ export default {
     return {
       //https://vueschool.io/lessons/dynamic-vuex-getters
       mSettings: settings,
+      settingsObj: settings,
       refresh: false,
       timeIntervalType: settings.timeIntervalType,
       schema: {},
@@ -64,12 +51,13 @@ export default {
   },
   watch: {
     //watch only without submit button
-    mSettings: {
+    settingsObj: {
       handler: function (newVal) {
+        let mSettings = this.copyDateObj(newVal);
         // console.debug(newVal);
         // console.debug(new Date(newVal.date_to));
-        var modified = validateDateInterval(newVal);
-        // console.error(modified);
+        var modified = validateDateInterval(mSettings);
+
         if (newVal["timeIntervalType"] != this.timeIntervalType) {
           this.timeIntervalType = newVal["timeIntervalType"];
           this.schema = this.getSchema();
@@ -80,16 +68,16 @@ export default {
           // this.mSettings = newVal;
         }
         if (this.submitButton) return;
-        newVal["predictionIntervalms"] = newVal.predictionInterval * 3600;
+        mSettings["predictionIntervalms"] = mSettings.predictionInterval * 3600;
         // console.info(newVal.date_from);
         // console.info(newVal.date_from instanceof Date);
-        if (newVal.date_from && newVal.date_from instanceof Date) newVal.date_from = newVal.date_from.getTime();
-        if (newVal.date_to && newVal.date_to instanceof Date) newVal.date_to = newVal.date_to.getTime();
-        this.parseDateFilter(newVal);
+        if (mSettings.date_from && mSettings.date_from instanceof Date) mSettings.date_from = mSettings.date_from.getTime();
+        if (mSettings.date_to && mSettings.date_to instanceof Date) mSettings.date_to = mSettings.date_to.getTime();
+        this.parseDateFilter(mSettings);
         if (this.settings) {
-          this.$emit("update:settings", newVal);
+          this.$emit("update:settings", mSettings);
         } else {
-          this.$store.commit("settings/filters", { payload: newVal, key: this.settingKey });
+          this.$store.commit("settings/filters", { payload: mSettings, key: this.settingKey });
           this.$emit("update");
         }
       },
@@ -97,8 +85,9 @@ export default {
     },
   },
   async mounted() {
-    console.error("mounted");
     this.mSettings = this.settings ? this.settings : this.$store.getters["settings/filters"](this.settingKey);
+    let settingsObj = this.copyDateObj(this.mSettings);
+    this.settingsObj = settingsObj;
     this.timeIntervalType = this.mSettings.timeIntervalType;
     this.schema = this.getSchema();
   },
@@ -107,6 +96,14 @@ export default {
     this.schema = this.getSchema();
   },
   methods: {
+    copyDateObj(obj) {
+      let settingsObj = {
+        date_from: obj["date_from"],
+        date_to: obj["date_to"],
+        timeIntervalType: obj["timeIntervalType"],
+      };
+      return settingsObj;
+    },
     async onClick() {
       let mSettings = { ...this.mSettings };
       mSettings["predictionIntervalms"] = mSettings.predictionInterval * 3600;

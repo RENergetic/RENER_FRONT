@@ -1,12 +1,12 @@
 <template>
-  <div v-if="mPanel && mPData && loaded" id="panel-grid-stack" :key="loaded" class="grid-stack">
+  <div v-if="mPanel && mPanelData && loaded" id="panel-grid-stack" :key="reload" class="grid-stack">
     <InformationTileGridWrapper
       v-for="(tile, index) in tiles"
       :key="tile.id"
       class="card-container"
       :slot-props="{ tile: tile, index: index }"
       :edit="edit"
-      :pdata="mPData"
+      :pdata="mPanelData"
       :settings="mSettings"
       :filter="filter"
       @edit="$emit('editTile', { tile: tile, index: index })"
@@ -16,7 +16,6 @@
     />
   </div>
   <TileMeasurementPreview ref="dataPreview" />
-  <!--  @on-load="onChartsLoad()" -->
   <Dialog v-model:visible="notificationDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <notification-list v-if="selectedItem" :context="notificationContext" :object-id="selectedItem.tile.id" />
   </Dialog>
@@ -40,7 +39,7 @@ export default {
     TileMeasurementPreview,
   },
   props: {
-    pdata: {
+    panelData: {
       type: Object,
       default: () => null,
     },
@@ -89,8 +88,7 @@ export default {
       notificationDialog: false,
       selectedItem: null,
       mPanel: this.panel,
-      mPData: null,
-
+      mPanelData: null,
       notificationContext: NotificationContext.TILE,
       selectedTile: null,
     };
@@ -100,47 +98,56 @@ export default {
       // return this.panel != null ? this.panel.tiles : [];
       return this.mPanel != null ? this.mPanel.tiles : [];
     },
-    gridItems: function () {
-      return this.grid != null ? this.grid.getGridItems() : [];
-    },
+    // gridItems: function () {return this.grid != null ? this.grid.getGridItems() : []; },
   },
   watch: {
     panel: {
       handler: function (newValue) {
         this.mPanel = newValue;
+        //translate standard labels
         this.setMeasurementLabels(this.mPanel);
-        this.reloadGrid();
+        // this.reloadGrid();
+        this.reload = !this.reload;
       },
-      deep: false,
+      deep: false, //->newValue is modified in the handler
     },
-    pdata: {
+    panelData: {
       handler: function (newValue) {
+        console.debug("Panel data updated: " + (newValue != null));
         this.recalculateData(newValue);
+        this.reload = !this.reload;
       },
       deep: true,
       immediate: true,
     },
     mSettings: {
       // handler(newVal) {
-      handler() {
+      handler(newVal, oldVal) {
         console.debug("Panel settings have changed - reload");
-        this.recalculateData(this.pdata);
-        this.reloadGrid();
+        console.debug(newVal);
+        console.debug(oldVal);
+        if (newVal != null && oldVal != null) {
+          if (!oldVal.cellHeight && newVal.cellHeight) {
+            console.debug("reload with cellheight");
+            this.reload = !this.reload;
+          }
+        }
       },
       deep: true,
+      immediate: false,
     },
   },
   async updated() {
-    console.info("update panel grid");
+    console.debug("update panel grid");
     this.reloadGrid();
   },
   convertData() {},
   async mounted() {
-    if (this.pdata != null) {
-      this.recalculateData(this.pdata);
-
-      this.reloadGrid();
-      this.loaded = true;
+    console.debug("mounted panel grid");
+    // console.debug(this.panelData != null);
+    if (this.panelData != null) {
+      this.recalculateData(this.panelData);
+      this.reload = !this.reload;
     }
   },
   methods: {
@@ -157,12 +164,13 @@ export default {
       if (panelData) {
         console.error("TODO: convert timeseries");
         console.debug(panelData);
-        let mPData = JSON.parse(JSON.stringify(panelData));
-        mPData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, mPData, this.settings);
-        // console.error(mPData);
-        mPData = this.$ren.utils.convertPanelData(this.mPanel, mPData, this.$store.getters["settings/conversion"]);
-        // console.error(mPData);
-        this.mPData = mPData;
+        let mPanelData = JSON.parse(JSON.stringify(panelData));
+        mPanelData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, mPanelData, this.settings);
+        mPanelData = this.$ren.utils.convertPanelData(this.mPanel, mPanelData, this.$store.getters["settings/conversion"]);
+        // console.error(mPanelData);
+        this.mPanelData = mPanelData;
+        this.loaded = true;
+        // this.reload = !this.reload;
       }
     },
     onTimeseriesUpdate(evt) {
@@ -171,27 +179,27 @@ export default {
     reloadGrid() {
       if (this.grid != null) this.grid.destroy(false);
       let grid;
-      if (this.mPanel && this.mPData && this.loaded) {
+      if (this.mPanel && this.mPanelData) {
         grid = GridStack.init({ float: true, column: 12, cellHeight: "8vh", margin: 5 }, "#panel-grid-stack");
+        // this.loaded = true;
         if (grid == null) {
-          if (this.loaded) console.warn("Cannot find #panel-grid-stack, is panel:" + (this.mPanel != null) + ", is data:" + (this.pdata != null));
+          if (this.loaded) console.warn("Cannot find #panel-grid-stack, is panel:" + (this.mPanel != null) + ", is data:" + (this.paneldata != null));
           return;
         }
       } else {
+        //data not loaded
         return;
       }
-
       console.debug("reloadGrid");
+      // this.reload = !this.reload;
       if (this.locked) {
         grid.disable();
       } else {
         grid.enable();
       }
       grid.disable();
-
       this.mSettings.cellWidth = grid.el.clientWidth / grid.getColumn();
       this.mSettings.cellHeight = grid.el.clientHeight / grid.getRow();
-      // console.warn(this.mSettings.cellHeight);
       this.grid = grid;
     },
 

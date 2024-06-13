@@ -10,7 +10,6 @@
       ref="panel"
       :key="panel.id"
       :asset-id="assetId"
-      :locked="locked"
       :edit-mode="false"
       :panel="panel"
       :filter="effectiveFilterSettings"
@@ -51,7 +50,6 @@ export default {
     return {
       loaded: false,
       grid: null,
-      locked: true,
       slideshow: null,
       autoReload: true,
       assetId: null,
@@ -73,23 +71,6 @@ export default {
     hasAccess: function () {
       return (this.$store.getters["auth/renRole"] | RenRoles.REN_ADMIN) > 0;
     },
-    toggleButton: function () {
-      //TODO: if permission
-      let label = this.locked ? this.$t("menu.grid_unlock") : this.$t("menu.grid_lock");
-      return {
-        label: label,
-        icon: "pi pi-fw pi-lock",
-        command: () => this.toggleLock(),
-        visible: false,
-      };
-    },
-    // saveButton: function () {
-    //   return {
-    //     label: this.$t("menu.save_grid"),
-    //     icon: "pi pi-fw pi-plus-circle",
-    //     command: () => this.saveGrid(),
-    //   };
-    // },
     normalViewButton: function () {
       return {
         label: this.$t("menu.normal_view_mode"),
@@ -104,7 +85,6 @@ export default {
     menuModel() {
       let model = [];
       model.push(this.normalViewButton);
-
       return model;
     },
   },
@@ -125,7 +105,6 @@ export default {
       this.slideshow.stop();
     }
   },
-  updated() {},
   methods: {
     async slideshowLoop() {
       let _this = this;
@@ -151,7 +130,6 @@ export default {
         this.slideshow = null;
       }
     },
-
     reloadSettings() {
       this.settings = this.$store.getters["settings/home"];
     },
@@ -162,9 +140,6 @@ export default {
     },
     reloadPanelSettings() {
       this.panelSettingsDialog = this.$store.getters["settings/panel"];
-    },
-    async toggleLock() {
-      this.locked = !this.locked;
     },
   },
 };

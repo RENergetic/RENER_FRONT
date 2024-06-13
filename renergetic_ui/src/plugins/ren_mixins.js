@@ -95,7 +95,7 @@ export default {
       }
       filter.from = from;
       filter.to = to;
-      return filter
+      return { from: from, to: to, predictionIntervalms: filter.predictionIntervalms }
     },
 
 
@@ -162,11 +162,15 @@ export default {
         this.settings.panel && this.settings.panel.cellHeight
           ? this.settings.panel.cellHeight * this.tile.layout.h
           : this.$parent.$el.parentElement.clientHeight * 0.9;
-      let minD = Math.min(w, h);
+      if (!h) {
+        h = window.innerHeight * 0.1;
+      } 
+      if (!w) {
+        w = window.innerWidth*0.95/12;
+      }
+      let minD = Math.min(w, h); 
       console.debug("cell height: " + this.settings.panel.cellHeight + ":  " + w + "," + h)
-      console.debug(this.settings.panel)
-      // console.debug(this.settings.panel.cellHeight)
-      // console.error(this.$parent.$el)
+      console.debug(this.settings.panel) 
       return minD
     },
     /**
