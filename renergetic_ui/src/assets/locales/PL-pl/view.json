@@ -262,7 +262,7 @@
     "true": {},
     "false": {}
   },
-  "rules_page_title": "Rules Management",
+  "rules_page_title": "Zarządzanie regułami",
   "rules_node_type": "Node types",
   "rules_multiplier_label": "Multiplier",
   "rules_number_tooltip": "e.g.: 1.2",
