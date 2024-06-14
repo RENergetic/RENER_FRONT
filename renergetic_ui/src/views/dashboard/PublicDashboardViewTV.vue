@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     async loadStructure() {
-      this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id);
+      this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id, false);
     },
   },
 };

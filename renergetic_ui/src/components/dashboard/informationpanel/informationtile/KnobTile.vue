@@ -150,7 +150,7 @@ export default {
   // height: 4.5rem;
   height: 75%;
   .p-knob-text {
-    // font-size: 1rem;
+    font-size: 1rem;
   }
   // svg {
   //   height: 100%;
