@@ -83,6 +83,7 @@
   "edit_locked": "Edit options are locked",
   "edit_user": "Edit {username}",
   "export_json": "Export JSON",
+  "export_json_template":"Export template JSON",
   "enable_rule": "Enable rule",
   "empty_home_dashboard": "No defined home dashboard",
   "find_asset": "Find asset",

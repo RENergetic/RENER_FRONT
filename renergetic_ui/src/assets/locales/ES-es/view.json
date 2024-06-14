@@ -74,6 +74,7 @@
   "edit_locked": "Las opciones de edición están bloqueadas",
   "edit_user": "Editar {username}",
   "export_json": "Exportar JSON",
+  "export_json_template":"Exportar JSON plantilla",
   "enable_rule": "Habilitar regla",
   "empty_home_dashboard": "Sin panel de control de inicio definido",
   "find_asset": "Buscar activo",
