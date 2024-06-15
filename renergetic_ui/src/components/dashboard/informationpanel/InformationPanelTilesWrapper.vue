@@ -83,6 +83,7 @@
         <information-panel-tile-form
           v-if="selectedTile"
           :key="selectedTile.id ? selectedTile.id : selectedTile.tempId"
+          v-model:activeTab="activeTab"
           v-model="selectedTile"
           class="flex flex-grow-1"
         />
@@ -116,6 +117,7 @@ export default {
       selectedTile: null,
       mSelectedTile: null,
       addMode: this.modelValue == null || this.modelValue.name == null,
+      activeTab: 0,
       // mPanelStructure: null,
       panelStructure: this.modelValue,
       labelWarning: null,

@@ -1,6 +1,6 @@
 <template>
   <!-- <div class="ren"> -->
-  <TabView id="tile-panel" class="ren flex flex-column" style="height: 100%">
+  <TabView id="tile-panel" v-model:activeIndex="mActiveTab" class="ren flex flex-column" style="height: 100%">
     <TabPanel :header="$t('view.properties')">
       <ren-input
         v-model="mModel.name"
@@ -201,12 +201,13 @@ export default {
   name: "InformationPanelTileForm",
   components: { MeasurementDialog, MeasurementSelect, MeasurementTileForm },
   props: {
+    activeTab: { type: Number, default: 0 },
     modelValue: {
       type: Object,
       default: () => ({ measurements: [] }),
     },
   },
-  emits: ["update:modelValue"],
+  emits: ["update:modelValue", "update:activeTab"],
   setup: () => ({ v$: useVuelidate() }),
   data() {
     let tileStructure = JSON.parse(JSON.stringify(this.modelValue));
@@ -214,6 +215,7 @@ export default {
     return {
       // jsonMesurementDialog: false,
       // selectedMesurement: null,
+      mActiveTab: this.activeTab,
       aggregations: MeasurementAggregation.keys(),
       addMeasurementDialog: false,
       addMeasurementTemplateDialog: false,
@@ -242,6 +244,13 @@ export default {
       },
       immediate: true,
     },
+    mActiveTab: {
+      handler: function (tab) {
+        this.$emit("update:activeTab", tab);
+      },
+      immediate: true,
+    },
+
     measurementsJSON: {
       handler: function (v) {
         if (v != null) this.mModel.measurements = JSON.parse(v);
