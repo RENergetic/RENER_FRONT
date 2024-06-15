@@ -217,7 +217,7 @@ export default {
   watch: {
     panelStructure: {
       handler: function (s) {
-        console.info(s);
+        console.error(s);
         if (s != null) {
           this.mPanelStructureJSON = JSON.stringify(s, null, "\t");
         } else {

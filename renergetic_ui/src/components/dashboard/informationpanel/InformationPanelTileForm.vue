@@ -70,7 +70,7 @@
       <div class="grid ren flex">
         <div class="col-12 flex flex-column">
           <ul>
-            <li v-for="m in mModel.measurements" :key="m.id">
+            <li v-for="(m, index) in mModel.measurements" :key="`${m.id}_${index}`">
               <div>
                 <!-- <span v-if="m.aggregation_function">{{ m.id }} ({{ $t("enums.measurement_aggregation." + m.aggregation_function) }})</span>
               <span v-else>{{ m.id }} </span> -->
@@ -107,7 +107,12 @@
                   @mouseover="downloadMeasurementDetails(m)"
                   @click="showMeasurement(m)"
                 />
-                <Button v-tooltip="$t('view.delete')" icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteMeasurement(m)" />
+                <Button
+                  v-tooltip="$t('view.delete')"
+                  icon="pi pi-trash"
+                  class="p-button-rounded p-button-danger"
+                  @click="deleteMeasurement(m, index)"
+                />
 
                 <!-- $t('view.view_json') click more details -->
               </div>
@@ -149,6 +154,9 @@
 import { MeasurementAggregation } from "@/plugins/model/Enums.js";
 export function cleanTileStructure(mTile, clearIDs = false) {
   if (clearIDs) delete mTile.id;
+  if (!mTile.id) {
+    mTile.tempId = new Date().getTime() + Math.round(Math.random() * new Date().getTime());
+  }
   if (mTile.measurements) {
     mTile.measurements = mTile.measurements
       .map((m) => {
@@ -176,6 +184,7 @@ export function cleanTileStructure(mTile, clearIDs = false) {
         if (!obj.id) {
           obj.tempId = new Date().getTime() + Math.round(Math.random() * new Date().getTime());
         }
+
         return obj;
         // }
         //return null;
@@ -200,7 +209,7 @@ export default {
   emits: ["update:modelValue"],
   setup: () => ({ v$: useVuelidate() }),
   data() {
-    let tileStructure = this.modelValue;
+    let tileStructure = JSON.parse(JSON.stringify(this.modelValue));
     cleanTileStructure(tileStructure);
     return {
       // jsonMesurementDialog: false,
@@ -239,14 +248,13 @@ export default {
       },
       immediate: true,
     },
-    mModel: {
-      handler: function (mModel) {
-        // console.info(mModel);
-        this.$emit("update:modelValue", mModel);
-      },
-      deep: true,
-      immediate: true,
-    },
+    // mModel: {
+    //   handler: function (mModel) {
+    //     this.$emit("update:modelValue", mModel);
+    //   },
+    //   deep: true,
+    //   immediate: true,
+    // },
   },
   async mounted() {},
   methods: {
@@ -270,18 +278,20 @@ export default {
       this.$refs.mesurementDialog.show(m);
       // this.jsonMesurementDialog = true;
     },
-    async deleteMeasurement(m) {
+    async deleteMeasurement(m, index) {
       if (m.id) {
         await this.downloadMeasurementDetails(m);
         await this.deleteConfirm({
           message: this.$t("view.delete_tile_measurement", { label: m.label ? m.label : m.name }),
           action: async () => {
-            this.mModel.measurements = this.mModel.measurements.filter((it) => it.id != m.id);
+            // this.mModel.measurements = this.mModel.measurements.filter((it) => it.id != m.id);
+            this.mModel.measurements.splice(index, 1);
             this.$emit("update:modelValue", this.mModel);
           },
         });
       } else {
-        this.mModel.measurements = this.mModel.measurements.filter((it) => it.tempId != m.tempId);
+        // this.mModel.measurements = this.mModel.measurements.filter((it) => it.tempId != m.tempId);
+        this.mModel.measurements.splice(index, 1);
         this.$emit("update:modelValue", this.mModel);
       }
     },
