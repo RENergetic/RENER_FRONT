@@ -94,22 +94,26 @@ import { TileTypes } from "@/plugins/model/Enums.js";
 import icons from "./icons";
 // import MultiDoughnutTile from "./MultiDoughnutTile.vue";
 
-function validateTileSettings(tile, settings, ctx) {
+function validateTileSettings(tile, panelSettings, ctx) {
   if (tile.props) {
     return {
       label: ctx.$te(`enums.measurement_name.${tile.name}`) ? ctx.$t(`enums.measurement_name.${tile.name}`) : tile.label,
       icon: icons[tile.props.icon],
       icon_visibility: tile.props.icon_visibility != null ? tile.props.icon_visibility : true,
-      legend: tile.props.legend != null ? tile.props.legend : settings.legend,
+      legend: tile.props.legend != null ? tile.props.legend : panelSettings.legend,
       legend_label_color: tile.props.legend_label_color != null ? tile.props.legend_label_color : "#495057",
-      chart_type: tile.props.chart_type != null ? tile.props.chart_type : settings.chart_type,
+      chart_type: tile.props.chart_type != null ? tile.props.chart_type : panelSettings.chart_type,
       title_visibility:
         !ctx.demand &&
-        (tile.props.title_visibility != null ? tile.props.title_visibility : settings.title_visibility != null ? settings.title_visibility : true),
+        (tile.props.title_visibility != null
+          ? tile.props.title_visibility
+          : panelSettings.title_visibility != null
+          ? panelSettings.title_visibility
+          : true),
       measurement_list: tile.props.measurement_list != null ? tile.props.measurement_list : true,
       measurement_background: tile.props.measurement_background != null ? tile.props.measurement_background : false,
       title_color: tile.props.title_color != null ? tile.props.title_color : null,
-      fontSize: settings.fontSize,
+      fontSize: panelSettings.fontSize,
       background_mask: tile.props.mask,
       background: tile.props.background,
       template: tile.props.template,
@@ -117,7 +121,7 @@ function validateTileSettings(tile, settings, ctx) {
       // asset_id: settings.asset_id,
     };
   }
-  return settings;
+  return panelSettings;
 }
 
 export default {

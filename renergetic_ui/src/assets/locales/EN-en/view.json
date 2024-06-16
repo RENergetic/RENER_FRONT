@@ -235,6 +235,8 @@
     "show_details": "Show details",
     "sign_in": "Sign In",
     "set_hdr": "Set HDR",
+    "show_available_tile_icons":"Show all icons",
+    "show_available_tile_properties":"Show available properties",
     "submit": "Submit",
     "start": "Start",
     "stop": "Stop",

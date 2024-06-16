@@ -31,7 +31,12 @@
         :errors="v$.mModel.type.$silentErrors"
       />
       <ren-input v-model="propsJSON" :text-label="'model.information_panel.tile.props'" />
-
+      <ren-input-wrapper :text-label="null">
+        <template #content>
+          <Button style="width: max-content" :label="$t('view.button.show_available_tile_icons')" @click="iconsDialog = true" />
+          <Button style="width: max-content" :label="$t('view.button.show_available_tile_properties')" @click="propertiesDialog = true" />
+        </template>
+      </ren-input-wrapper>
       <ren-input-number
         v-model="mModel.layout.x"
         :min="0"
@@ -148,6 +153,29 @@
       </template>
     </Card>
   </Dialog>
+  <Dialog v-model:visible="iconsDialog" :style="{ maxWidth: '80vw', maxHeight: '100%' }" :modal="true">
+    <Card class="ren-page-content" style="width: max-content">
+      <template #content>
+        ("icon_visibility"=true )
+        <div>
+          <ol>
+            <li v-for="icon in Object.keys(icons)" :key="icon">{{ icon }} : <font-awesome-icon :icon="icons[icon]" /> ({{ icons[icon] }})</li>
+          </ol>
+        </div>
+      </template>
+    </Card> </Dialog
+  ><Dialog v-model:visible="propertiesDialog" :style="{ maxHeight: '100%' }" :modal="true">
+    <Card class="ren-page-content" style="width: max-content">
+      <template #content>
+        <ol>
+          <li>
+            {{ $t("model.information_panel.tile.properties.icon_visibility") }} -
+            {{ $t("model.information_panel.tile.properties.icon_visibility.icon_visibility_description") }}
+          </li>
+        </ol>
+      </template>
+    </Card>
+  </Dialog>
 </template>
 
 <script>
@@ -197,6 +225,7 @@ import { maxLength, required, minLength } from "@/plugins/validators.js";
 import MeasurementDialog from "@/components/management/infrastructure/measurement/MeasurementDialog.vue";
 import MeasurementSelect from "@/components/management/infrastructure/measurement/MeasurementSelect.vue";
 import MeasurementTileForm from "./MeasurementTileForm.vue";
+import icons from "./informationtile/icons.js";
 export default {
   name: "InformationPanelTileForm",
   components: { MeasurementDialog, MeasurementSelect, MeasurementTileForm },
@@ -216,9 +245,12 @@ export default {
       // jsonMesurementDialog: false,
       // selectedMesurement: null,
       mActiveTab: this.activeTab,
+      icons: icons,
+      propertiesDialog: false,
       aggregations: MeasurementAggregation.keys(),
       addMeasurementDialog: false,
       addMeasurementTemplateDialog: false,
+      iconsDialog: false,
       mModel: tileStructure,
       // mPanelStructure: null,
       measurementsJSON: JSON.stringify(tileStructure.measurements, null, "\t"),
