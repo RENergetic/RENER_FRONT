@@ -45,11 +45,14 @@ export default {
       }
       return color;
     },
-    tileBackgroundColor: function () {
+    tileBackgroundColor: function () { 
+      let alpha = this.bgAlpha?  this.bgAlpha:null
+      console.warn("TODO: set tile background alpha")
+
       let measurement = 'measurement' in this ? this.measurement : null;
       let bgcolor = this.mSettings.tile.measurement_background
-        ? this.$ren.utils.measurementBackgroundColor(measurement, this.mSettings.tile, this.value)
-        : "none";
+        ? this.$ren.utils.measurementBackgroundColor(measurement, this.mSettings.tile,alpha)
+        : this.mSettings.tile.background?this.mSettings.tile.background:"none";
       return bgcolor
     },
   },

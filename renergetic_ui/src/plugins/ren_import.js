@@ -3,6 +3,8 @@ import annotationPlugin from "chartjs-plugin-annotation";
 Chart.register(annotationPlugin);
 
 import SettingsDialog from "@/components/miscellaneous/settings/SettingsDialog.vue";
+
+import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import RenSpinner from "@/components/miscellaneous/RenSpinner";
 import RenPaginator from "@/components/miscellaneous/RenPaginator";
 import RenInput from "@/components/miscellaneous/form/RenInput.vue";
@@ -16,6 +18,7 @@ import RenSubmit from "@/components/miscellaneous/form/RenSubmit.vue";
 const plugin = {};
 
 plugin.install = function (Vue) {
+  Vue.component("InfoIcon", InfoIcon);
   Vue.component("RenSettingsDialog", SettingsDialog);
   Vue.component("RenSpinner", RenSpinner);
   Vue.component("RenPaginator", RenPaginator);

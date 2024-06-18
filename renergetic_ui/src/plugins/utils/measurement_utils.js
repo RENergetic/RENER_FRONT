@@ -10,17 +10,18 @@ export default {
     // }
   },
 
-  measurementBackgroundColor(measurement, tileSettings, value) {
+  measurementBackgroundColor(measurement, tileSettings, alphaValue) {
     if (measurement == null) {
       return "none";
     }
-    let alpha = value ? 0.75 : 0.75 - value * 0.5;
-    let alphaHex = Math.round(alpha * 255).toString(16);
+    // let alpha = alphaValue ? 0.75 : 0.75 - alphaValue * 0.5;
+
+    let alphaHex = alphaValue ? Math.round(alphaValue * 255).toString(16) : Math.round(0.75 * 255).toString(16);
     if (tileSettings && tileSettings.background_mask == "none") {
       return "none";
     }
     let color;
-    if (tileSettings && tileSettings.background_mask) {
+    if (tileSettings && tileSettings.background_mask && alphaValue) {
       color = tileSettings.background_mask;
     } else {
       color = measurement.measurement_details.background
