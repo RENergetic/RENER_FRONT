@@ -49,14 +49,6 @@ export default {
     };
   },
   computed: {
-    // icon: function () {
-    //   //todo: default
-    //   let icon = this.measurement.type.metric_type;
-    //   if (this.measurement.measurement_details.icon != null) icon = this.measurement.measurement_details.icon;
-    //   else if (this.measurement.type.icon != null) icon = this.measurement.type.icon;
-    //   return this.icons[icon] != null ? this.icons[icon] : this.icons.default;
-    // },
-
     unit: function () {
       return this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings);
     },
@@ -65,9 +57,10 @@ export default {
       return `color:${color.color}`;
     },
     tileStyle: function () {
-      let color = this.mSettings.tile.measurement_background
-        ? this.$ren.utils.measurementBackgroundColor(this.measurement, this.mSettings.tile, this.value)
-        : "none";
+      // let color = this.mSettings.tile.measurement_background
+      //   ? this.$ren.utils.measurementBackgroundColor(this.measurement, this.mSettings.tile, this.value)
+      //   : "none";
+      let color = this.tileBackgroundColor;
       return `height: 100%;background:${color} `;
     },
     value: function () {

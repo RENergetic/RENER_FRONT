@@ -122,6 +122,9 @@ body {
     width: $inputwidth;
     max-width: $maxInputwidth;
   }
+  .ren-inputwrapper > i {
+    width: fit-content
+  }
   .col-12.ren-inputwrapper > * {
     max-width: 80vw;
   }

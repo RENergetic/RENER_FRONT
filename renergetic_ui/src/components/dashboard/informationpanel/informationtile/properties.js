@@ -41,6 +41,10 @@ export default [
     key: "knob_color",
     type: "hex",
   },
+  {
+    key: "background",
+    type: "hex",
+  },
 ];
 // TODO:
 // title_color: tile.props.title_color != null ? tile.props.title_color : null,

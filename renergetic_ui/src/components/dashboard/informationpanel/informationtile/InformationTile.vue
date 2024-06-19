@@ -5,6 +5,7 @@
     <!-- {{ tile.measurements.map((it) => it.measurement_details) }}
     {{ tile.measurements.map((it) => it.type.color) }} -->
     <!-- {{ filter }} -->
+
     <div
       v-if="(titleVisible || tile.measurements.length == 0) && tile.label"
       class="flex flex-column justify-content-center"
@@ -95,7 +96,7 @@ import icons from "./icons";
 // import MultiDoughnutTile from "./MultiDoughnutTile.vue";
 
 function validateTileSettings(tile, panelSettings, ctx) {
-  if (tile.props) {
+  if (tile != null && tile.props) {
     return {
       label: ctx.$te(`enums.measurement_name.${tile.name}`) ? ctx.$t(`enums.measurement_name.${tile.name}`) : tile.label,
       icon: icons[tile.props.icon],
@@ -109,12 +110,12 @@ function validateTileSettings(tile, panelSettings, ctx) {
           ? tile.props.title_visibility
           : panelSettings.title_visibility != null
           ? panelSettings.title_visibility
-          : true),
+          : false),
       measurement_list: tile.props.measurement_list != null ? tile.props.measurement_list : true,
       measurement_background: tile.props.measurement_background != null ? tile.props.measurement_background : false,
       title_color: tile.props.title_color != null ? tile.props.title_color : null,
       fontSize: panelSettings.fontSize,
-      background_mask: tile.props.mask,
+      background_mask: tile.props.background_mask ? tile.props.background_mask : tile.props.mask,
       background: tile.props.background,
       template: tile.props.template,
       knob_color: tile.props.knob_color,
@@ -165,7 +166,7 @@ export default {
     // console.info(this.settings);
     return {
       conversionSettings: this.$store.getters["settings/conversion"],
-      mSettings: this.mSettings,
+      mSettings: { tile: validateTileSettings(this.tile, this.settings, this), panel: this.settings },
     };
   },
   computed: {
@@ -191,7 +192,11 @@ export default {
 
     titleVisible: function () {
       //default use/show title
-      return this.settings == null || this.settings.title;
+      try {
+        return !this.mSettings.tile || this.mSettings.tile.title_visibility;
+      } catch {
+        return true;
+      }
     },
     title: function () {
       return this.tile && this.tile.title != null ? this.tile.title : null;

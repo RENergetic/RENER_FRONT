@@ -16,6 +16,7 @@
       <div class="col-3 flex flex-column" style="height: 100%">
         <Listbox
           v-if="panelStructure.tiles"
+          ref="tiles"
           v-model="mSelectedTile"
           class="flex-grow-1"
           :options="panelStructure.tiles"
@@ -79,13 +80,13 @@
               <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" style="float: right" @click="deleteTile(selectedTile)" />
             </div>
           </template> -->
-        <!-- {{ selectedTile }} -->
         <information-panel-tile-form
           v-if="selectedTile"
           :key="selectedTile.id ? selectedTile.id : selectedTile.tempId"
           v-model:activeTab="activeTab"
           v-model="selectedTile"
           class="flex flex-grow-1"
+          @update:model-value="tileUpdate"
         />
         <!-- </AccordionTab> -->
       </div>
@@ -153,6 +154,13 @@ export default {
   },
   async mounted() {},
   methods: {
+    tileUpdate() {
+      let tile = this.selectedTile;
+      let idx = this.panelStructure.tiles.findIndex(function (t) {
+        return t.id == tile.id;
+      });
+      this.panelStructure.tiles[idx] = tile;
+    },
     tileLabel(tile) {
       return tile.label ? tile.label : tile.name ? tile.name : `Tile ${tile.id ? tile.id : tile.tempId}`;
     },

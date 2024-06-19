@@ -30,11 +30,16 @@
         :invalid="v$.mModel.type.$invalid"
         :errors="v$.mModel.type.$silentErrors"
       />
-      <ren-input v-model="propsJSON" :text-label="'model.information_panel.tile.props'" />
+
       <ren-input-wrapper :text-label="null">
         <template #content>
-          <Button style="width: max-content" :label="$t('view.button.show_available_tile_icons')" @click="iconsDialog = true" />
-          <Button style="width: max-content" :label="$t('view.button.show_available_tile_properties')" @click="propertiesDialog = true" />
+          <InfoIcon :floating="true">
+            <template #content>
+              <Button style="width: max-content" :label="$t('view.button.show_available_tile_icons')" @click="iconsDialog = true" />
+              <Button :label="$t('view.button.show_available_tile_properties')" @click="propertiesDialog = true" />
+            </template>
+          </InfoIcon>
+          <ren-input v-model="propsJSON" :text-label="'model.information_panel.tile.props'" :invalid="!validJSON" />
         </template>
       </ren-input-wrapper>
       <ren-input-number
@@ -118,7 +123,13 @@
                   class="p-button-rounded p-button-danger"
                   @click="deleteMeasurement(m, index)"
                 />
-
+                <Button
+                  v-if="m.id != null"
+                  v-tooltip="$t('view.show_details')"
+                  icon="pi pi-cog"
+                  class="p-button-rounded"
+                  @click="showMeasurementDetails(m)"
+                />
                 <!-- $t('view.view_json') click more details -->
               </div>
             </li>
@@ -153,28 +164,40 @@
       </template>
     </Card>
   </Dialog>
-  <Dialog v-model:visible="iconsDialog" :style="{ maxWidth: '80vw', maxHeight: '100%' }" :modal="true">
+  <Dialog v-model:visible="iconsDialog" :dismissable-mask="true" :style="{ maxWidth: '80vw', maxHeight: '100%' }" :modal="true">
     <Card class="ren-page-content" style="width: max-content">
       <template #content>
-        ("icon_visibility"=true )
         <div>
           <ol>
             <li v-for="icon in Object.keys(icons)" :key="icon">{{ icon }} : <font-awesome-icon :icon="icons[icon]" /> ({{ icons[icon] }})</li>
           </ol>
         </div>
       </template>
-    </Card> </Dialog
-  ><Dialog v-model:visible="propertiesDialog" :style="{ maxHeight: '100%' }" :modal="true">
+    </Card>
+  </Dialog>
+  <Dialog v-model:visible="propertiesDialog" :dismissable-mask="true" :style="{ maxHeight: '100%' }" :modal="true">
     <Card class="ren-page-content" style="width: max-content">
       <template #content>
-        <ol>
-          <li>
-            {{ $t("model.information_panel.tile.properties.icon_visibility") }} -
-            {{ $t("model.information_panel.tile.properties.icon_visibility.icon_visibility_description") }}
+        <ul>
+          <li v-for="p in tileProperties.filter((it) => !it.hidden)" :key="p.key">
+            <ren-input v-model="p.key" :disabled="true" :text-label="`model.information_panel.tile.properties.${p.key}`" />
+
+            <!-- {{ $t(`model.information_panel.tile.properties.${p.key}`) }} - -->
+            {{ $t(`model.information_panel.tile.properties.${p.key}_description`) }} ({{ p.type ? p.type : "string" }})
           </li>
-        </ol>
+        </ul>
       </template>
     </Card>
+  </Dialog>
+  <Dialog v-model:visible="measurementDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <MeasurementDetails
+      v-if="mMeasurement"
+      :measurement="mMeasurement"
+      :autosave="true"
+      :model="mMeasurement.measurement_details"
+      @update="onMeasurementDetailsUpdate"
+    />
+    <!--  -->
   </Dialog>
 </template>
 
@@ -224,11 +247,13 @@ import { useVuelidate } from "@vuelidate/core";
 import { maxLength, required, minLength } from "@/plugins/validators.js";
 import MeasurementDialog from "@/components/management/infrastructure/measurement/MeasurementDialog.vue";
 import MeasurementSelect from "@/components/management/infrastructure/measurement/MeasurementSelect.vue";
+import MeasurementDetails from "@/components/management/infrastructure/measurement/MeasurementDetails.vue";
 import MeasurementTileForm from "./MeasurementTileForm.vue";
 import icons from "./informationtile/icons.js";
+import tileProperties from "./informationtile/properties.js";
 export default {
   name: "InformationPanelTileForm",
-  components: { MeasurementDialog, MeasurementSelect, MeasurementTileForm },
+  components: { MeasurementDialog, MeasurementSelect, MeasurementTileForm, MeasurementDetails },
   props: {
     activeTab: { type: Number, default: 0 },
     modelValue: {
@@ -244,9 +269,12 @@ export default {
     return {
       // jsonMesurementDialog: false,
       // selectedMesurement: null,
+      measurementDetailsDialog: false,
+      mMeasurement: null,
       mActiveTab: this.activeTab,
       icons: icons,
       propertiesDialog: false,
+      tileProperties: tileProperties,
       aggregations: MeasurementAggregation.keys(),
       addMeasurementDialog: false,
       addMeasurementTemplateDialog: false,
@@ -255,6 +283,7 @@ export default {
       // mPanelStructure: null,
       measurementsJSON: JSON.stringify(tileStructure.measurements, null, "\t"),
       propsJSON: tileStructure.props != null ? JSON.stringify(tileStructure.props, null, "\t") : "{}",
+      validJSON: true,
     };
   },
   validationConfig: {
@@ -272,7 +301,14 @@ export default {
   watch: {
     propsJSON: {
       handler: function (v) {
-        if (v != null) this.mModel.props = JSON.parse(v);
+        try {
+          if (v != null) {
+            this.mModel.props = JSON.parse(v);
+            this.validJSON = true;
+          }
+        } catch {
+          this.validJSON = false;
+        }
       },
       immediate: true,
     },
@@ -289,16 +325,27 @@ export default {
       },
       immediate: true,
     },
-    // mModel: {
-    //   handler: function (mModel) {
-    //     this.$emit("update:modelValue", mModel);
-    //   },
-    //   deep: true,
-    //   immediate: true,
-    // },
+    mModel: {
+      handler: function (mModel) {
+        this.$emit("update:modelValue", mModel);
+      },
+      deep: true,
+    },
   },
   async mounted() {},
   methods: {
+    async showMeasurementDetails(measurement) {
+      this.mMeasurement = measurement;
+      await this.$ren.managementApi.getMeasurementProperties(measurement.id).then((details) => {
+        this.mMeasurement.measurement_details = details ? details : {};
+      });
+
+      this.measurementDetailsDialog = true;
+    },
+    onMeasurementDetailsUpdate() {
+      this.mMeasurement = null;
+      this.measurementDetailsDialog = false;
+    },
     async downloadMeasurementDetails(m) {
       if (m.id) {
         if (!m.name)

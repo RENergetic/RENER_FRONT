@@ -100,7 +100,7 @@
         </div>
 
         <div v-else-if="lowerCase(s.type) == 'submit'">
-          <Button v-if="!disabled" :id="s.key" v-tooltip="s.description" :label="s.label" @click="s.ext.click" />
+          <Button v-if="!disabled" :id="s.key" v-tooltip="s.description" :label="s.label" @click="submitClick(s)" />
         </div>
         <div v-else-if="lowerCase(s.type) == 'header'">
           <h2 :id="s.key" v-tooltip="s.description">{{ s.label }}</h2>
@@ -198,6 +198,17 @@ export default {
     },
     toggle(event) {
       this.$refs.menu.toggle(event);
+    },
+    async submitClick(s) {
+      if (s.ext.click) {
+        if (s.ext.async) {
+          await s.ext.click();
+        } else {
+          s.ext.click();
+        }
+      } else {
+        console.warn("no submit action");
+      }
     },
   },
 };
