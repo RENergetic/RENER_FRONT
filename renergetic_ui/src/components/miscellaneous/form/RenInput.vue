@@ -18,7 +18,7 @@
     </div>
     <div v-else class="flex">
       <div class="flex flex-1">
-        <InputText id="ren-input" v-model="mValue" :disabled="disabled" :style="inputStyle" />
+        <InputText id="ren-input" v-model="mValue" :disabled="disabled" :style="inputStyle" @update:model-value="onInput($event)" />
         <span v-if="invalid">
           <span v-for="(error, index) of errors" id="name-error" :key="index">
             <small class="p-error">{{ error.$message }}</small>
@@ -49,9 +49,11 @@
     </label>
 
     <div v-if="textLabel != null && !readOnly" class="col-12 md:col-10">
-      <InputText id="ren-input" v-model="mValue" :disabled="disabled" :style="inputStyle" />
+      <InputText id="ren-input" v-model="mValue" :disabled="disabled" :style="inputStyle" @update:model-value="onInput($event)" />
     </div>
-    <div v-else-if="!readOnly" class="col-12"><InputText id="ren-input" v-model="mValue" :disabled="disabled" :style="inputStyle" /></div>
+    <div v-else-if="!readOnly" class="col-12">
+      <InputText id="ren-input" v-model="mValue" :disabled="disabled" :style="inputStyle" @update:model-value="onInput($event)" />
+    </div>
     <div v-else-if="textLabel != null && readOnly" class="col-12 md:col-10">
       <InputText id="ren-input" v-model="mValue" :disabled="disabled" :style="inputStyle" />
     </div>
@@ -95,15 +97,22 @@ export default {
     },
   },
   watch: {
-    mValue: {
-      handler() {
-        if (!this.inline) this.$emit("update:modelValue", this.mValue);
+    // mValue: {
+    //   handler() {
+    //     if (!this.inline) this.$emit("update:modelValue", this.mValue);
+    //   },
+    //   // immediate: true,
+    // },
+    modelValue: {
+      handler(v) {
+        this.mValue = v;
       },
-      // immediate: true,
     },
   },
-
   methods: {
+    onInput(evt) {
+      if (!this.inline) this.$emit("update:modelValue", evt);
+    },
     cancel() {
       this.mValue = this.modelValue;
       this.editMode = false;

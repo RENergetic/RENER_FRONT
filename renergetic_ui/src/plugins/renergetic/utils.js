@@ -83,6 +83,9 @@ class RenUtils {
   uuid() {
     return uuidv4();
   }
+  toJSON(obj, pretty = false) {
+    return pretty ? JSON.stringify(obj, null, "\t") : JSON.stringify(obj, null, "");
+  }
 
   downloadJSON(obj, filename, pretty = false) {
     var json = pretty ? JSON.stringify(obj, null, "\t") : JSON.stringify(obj);

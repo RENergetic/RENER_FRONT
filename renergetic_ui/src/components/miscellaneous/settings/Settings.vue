@@ -1,6 +1,6 @@
 <template>
   <div class="p-fluid formgrid grid">
-    <div v-for="s in schema" :key="s" :class="getClass(s)">
+    <div v-for="s in schema.filter((it) => it.disabled === undefined || !it.disabled)" :key="s" :class="getClass(s)">
       <label
         v-if="labels && lowerCase(s.type) != 'submit' && s.description && lowerCase(s.type) != 'header'"
         v-tooltip.top="{ value: s.description, class: '' }"
@@ -28,10 +28,11 @@
           option-label="name"
           option-value="value"
           :options="[
-            { name: s.ext.true, value: true },
-            { name: s.ext.false, value: false },
+            { name: s.ext && s.ext.true ? s.ext.true : 'true', value: true },
+            { name: s.ext && s.ext.false ? s.ext.false : 'false', value: false },
           ]"
         />
+
         <div v-else-if="s.type == Number && lowerCase(s.mode) == 'slider'">
           <Slider
             v-model="mModel[s.key]"
@@ -79,11 +80,33 @@
             :option-label="s.ext.optionLabel"
           />
         </div>
+        <div v-else-if="lowerCase(s.type) == 'icon'">
+          <SelectButton v-model="mModel[s.key]" :options="icons" option-label="value" option-value="value" data-key="value">
+            <template #option="slotProps">
+              <span>{{ slotProps.option.value }} </span> <font-awesome-icon :icon="slotProps.option.icon" class="settings-icon" />
+            </template>
+          </SelectButton>
+        </div>
+
         <div v-else-if="lowerCase(s.type) == 'color'" class="grid">
-          <div class="col-12 xl:col-3">
-            <ColorPicker :id="s.key + '_color'" v-model="mModel[s.key]" v-tooltip="s.description" :disabled="disabled" @change="colorChange(s.key)" />
+          <div class="col-12 xl:col-9">
+            <ColorPicker
+              v-if="false"
+              :id="s.key + '_color'"
+              v-model="mModel[s.key]"
+              v-tooltip="s.description"
+              :disabled="disabled"
+              @change="colorChange(s.key)"
+            />
+            <RenColorPicker
+              :id="s.key + '_color'"
+              v-model="mModel[s.key]"
+              v-tooltip="s.description"
+              :disabled="disabled"
+              @change="colorChange(s.key)"
+            />
           </div>
-          <div class="col-12 xl:col-6">
+          <div v-if="false" class="col-12 xl:col-6">
             <InputText
               :id="s.key"
               v-model="mModel[s.key]"
@@ -114,21 +137,21 @@
 <script>
 import SelectButton from "primevue/selectbutton";
 import Slider from "primevue/slider";
-import InputNumber from "primevue/inputnumber";
 import ListBox from "primevue/listbox";
 import ColorPicker from "primevue/colorpicker";
 // import Calendar from "primevue/calendar";
 import UnixCalendar from "./UnixCalendar.vue";
+import RenColorPicker from "./RenColorPicker.vue";
+import icons from "@/components/dashboard/informationpanel/informationtile/icons.js";
 export default {
   name: "Settings",
   components: {
     Slider,
     UnixCalendar,
+    RenColorPicker,
     SelectButton,
-    InputNumber,
     ListBox,
     ColorPicker,
-    // Calendar,
     // ToggleButton
   },
   props: {
@@ -157,8 +180,10 @@ export default {
           mModel[s.key] = s.defaultValue;
         }
       }
-
-    return { mModel: mModel };
+    let mIcons = Object.keys(icons).map((key) => {
+      return { value: key, icon: icons[key] };
+    });
+    return { mModel: mModel, icons: mIcons };
   },
   watch: {
     mModel: {
@@ -215,6 +240,9 @@ export default {
 </script>
 
 <style lang="scss">
+.settings-icon {
+  margin-left: 0.25rem;
+}
 .p-colorpicker {
   width: 100%;
   min-height: 3rem;

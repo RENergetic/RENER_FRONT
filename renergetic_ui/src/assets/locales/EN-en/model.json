@@ -111,6 +111,8 @@
         "icon_description": "Tile's icon",
         "icon_visibility": "Icon visibility",
         "icon_visibility_description": "Set tile's icon visibility",
+        "legend_label_color": "Legend's color",
+        "legend_label_color_description": "Legend's color", 
         "legend": "Legend's visibility",
         "legend_description": "Set legends's visibility in the tile's chart",
         "measurement_list": "Measurement list visibility",

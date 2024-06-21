@@ -7,6 +7,7 @@
 
 <script>
 import Settings from "@/components/miscellaneous/settings/Settings.vue";
+//TODO: create appropriate schema object
 var detailTypes = {
   color: "Color",
   cumulative: Boolean,
@@ -74,6 +75,11 @@ export default {
         ext = {
           true: this.$t("settings.yes"),
           false: this.$t("settings.no"),
+        };
+      }
+      if (mt == "Color") {
+        ext = {
+          use_alpha: true,
         };
       }
       return {
