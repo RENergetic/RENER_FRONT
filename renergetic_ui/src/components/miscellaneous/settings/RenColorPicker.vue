@@ -1,12 +1,17 @@
 <template>
-  <div>
+  <div v-if="useAlpha" style="flex-grow: 1; width: 100%">
     <ColorPicker :id="'_color'" v-model="mColor" :disabled="disabled" @update:model-value="colorChange" />
   </div>
-  <div>
+  <div v-else style="flex-grow: 0.5">
+    <ColorPicker :id="'_color'" v-model="mColor" :disabled="disabled" @update:model-value="colorChange" />
+  </div>
+  <div v-if="useAlpha" class="flex flex-row" style="flex-grow: 1">
+    <InputText :id="color" :key="mValue" v-model="mValue" style="height: 100%" :disabled="disabled" @update:model-value="colorInputChange" />
     <InputNumber
       v-if="useAlpha"
       :id="'_alpha'"
       v-model="mAlpha"
+      style="width: 10rem; margin-left: 0.5rem; height: 100%"
       :max="1.0"
       :min="0.0"
       show-buttons
@@ -14,7 +19,9 @@
       :disabled="disabled"
       @update:model-value="alphaChange"
     />
-    <InputText :id="color" :key="mValue" v-model="mValue" :disabled="disabled" @update:model-value="colorInputChange" />
+  </div>
+  <div v-else style="flex-grow: 0.5">
+    <InputText :id="color" :key="mValue" v-model="mValue" style="height: 100%" :disabled="disabled" @update:model-value="colorInputChange" />
   </div>
 </template>
 
@@ -40,7 +47,7 @@ export default {
     } else {
       c = this.modelValue;
     }
-    return { mValue: this.modelValue, mColor: c, hexAlpha: "FF", mAlpha: 1.0 };
+    return { mValue: this.modelValue, mColor: c ? c : "#6cd667", hexAlpha: "FF", mAlpha: 1.0 };
   },
   watch: {
     mValue: {
@@ -75,7 +82,7 @@ export default {
     colorChange(v) {
       // console.info(this.mModel[k]);
       if (v && v[0] != "#") this.mColor = "#" + v;
-      if (v && this.modelValue.length > 7) this.mColor = v;
+      if (v && v.length > 7) this.mColor = v;
       else {
         this.mValue = this.mColor + this.hexAlpha;
       }

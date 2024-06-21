@@ -31,15 +31,28 @@
         :errors="v$.mModel.type.$silentErrors"
       />
 
-      <ren-input-wrapper :text-label="null">
+      <ren-input-wrapper :text-label="'model.information_panel.tile.props'">
         <template #content>
-          <InfoIcon :floating="true">
+          <!-- <InfoIcon :floating="true">
             <template #content>
               <Button style="width: max-content" :label="$t('view.button.show_available_tile_icons')" @click="iconsDialog = true" />
               <Button :label="$t('view.button.show_available_tile_properties')" @click="propertiesDialog = true" />
             </template>
-          </InfoIcon>
-          <ren-input v-model="propsJSON" :text-label="'model.information_panel.tile.props'" :invalid="!validJSON" />
+          </InfoIcon> -->
+
+          <div class="flex flex-row">
+            <ren-input v-model="propsJSON" :invalid="!validJSON" style="flex-grow: 1" />
+
+            <Button
+              v-if="validJSON"
+              v-tooltip="$t('view.edit')"
+              style="width: 2.357rem"
+              icon="pi pi-pencil"
+              class="p-button-rounded"
+              @click="propertiesDialog = true"
+            />
+            <Button v-else v-tooltip="$t('view.edit')" style="width: 2.357rem" icon="pi pi-pencil" class="p-button-rounded disabled" />
+          </div>
         </template>
       </ren-input-wrapper>
       <ren-input-number
@@ -176,16 +189,22 @@
     </Card>
   </Dialog>
   <Dialog v-model:visible="propertiesDialog" :dismissable-mask="true" :style="{ maxHeight: '100%' }" :modal="true">
-    <Card class="ren-page-content" style="width: max-content">
+    <Card class="ren-page-content" style="width: max-content; max-width: 40rem">
       <template #content>
-        <ul>
+        <Settings
+          v-if="tilePropertiesSchema"
+          :schema="tilePropertiesSchema"
+          :settings="tileProperties"
+          @update:settings="onPropertiesChange"
+        ></Settings>
+        <!-- <ul>
           <li v-for="p in tileProperties.filter((it) => !it.hidden)" :key="p.key">
             <ren-input v-model="p.key" :disabled="true" :text-label="`model.information_panel.tile.properties.${p.key}`" />
 
-            <!-- {{ $t(`model.information_panel.tile.properties.${p.key}`) }} - -->
+           
             {{ $t(`model.information_panel.tile.properties.${p.key}_description`) }} ({{ p.type ? p.type : "string" }})
           </li>
-        </ul>
+        </ul> -->
       </template>
     </Card>
   </Dialog>
@@ -204,8 +223,9 @@
 <script>
 import { MeasurementAggregation } from "@/plugins/model/Enums.js";
 export function cleanTileStructure(mTile, clearIDs = false) {
+  console.error("dddddddddddddddddddd");
   if (clearIDs) delete mTile.id;
-  if (!mTile.id) {
+  if (!mTile.id && !mTile.tempId) {
     mTile.tempId = new Date().getTime() + Math.round(Math.random() * new Date().getTime());
   }
   if (mTile.measurements) {
@@ -248,12 +268,13 @@ import { maxLength, required, minLength } from "@/plugins/validators.js";
 import MeasurementDialog from "@/components/management/infrastructure/measurement/MeasurementDialog.vue";
 import MeasurementSelect from "@/components/management/infrastructure/measurement/MeasurementSelect.vue";
 import MeasurementDetails from "@/components/management/infrastructure/measurement/MeasurementDetails.vue";
+import Settings from "@/components/miscellaneous/settings/Settings.vue";
 import MeasurementTileForm from "./MeasurementTileForm.vue";
 import icons from "./informationtile/icons.js";
-import tileProperties from "./informationtile/properties.js";
+import tilePropertiesSchema from "./informationtile/properties.js";
 export default {
   name: "InformationPanelTileForm",
-  components: { MeasurementDialog, MeasurementSelect, MeasurementTileForm, MeasurementDetails },
+  components: { MeasurementDialog, MeasurementSelect, MeasurementTileForm, MeasurementDetails, Settings },
   props: {
     activeTab: { type: Number, default: 0 },
     modelValue: {
@@ -274,15 +295,16 @@ export default {
       mActiveTab: this.activeTab,
       icons: icons,
       propertiesDialog: false,
-      tileProperties: tileProperties,
+      tilePropertiesSchema: tilePropertiesSchema,
+      tileProperties: tileStructure.props,
       aggregations: MeasurementAggregation.keys(),
       addMeasurementDialog: false,
       addMeasurementTemplateDialog: false,
       iconsDialog: false,
       mModel: tileStructure,
       // mPanelStructure: null,
-      measurementsJSON: JSON.stringify(tileStructure.measurements, null, "\t"),
-      propsJSON: tileStructure.props != null ? JSON.stringify(tileStructure.props, null, "\t") : "{}",
+      measurementsJSON: this.$ren.utils.toJSON(tileStructure.measurements, true),
+      propsJSON: tileStructure.props != null ? this.$ren.utils.toJSON(tileStructure.props) : "{}",
       validJSON: true,
     };
   },
@@ -304,6 +326,7 @@ export default {
         try {
           if (v != null) {
             this.mModel.props = JSON.parse(v);
+            this.tileProperties = this.mModel.props;
             this.validJSON = true;
           }
         } catch {
@@ -334,6 +357,10 @@ export default {
   },
   async mounted() {},
   methods: {
+    onPropertiesChange(tileProperties) {
+      this.tileProperties = tileProperties;
+      this.propsJSON = this.$ren.utils.toJSON(tileProperties);
+    },
     async showMeasurementDetails(measurement) {
       this.mMeasurement = measurement;
       await this.$ren.managementApi.getMeasurementProperties(measurement.id).then((details) => {

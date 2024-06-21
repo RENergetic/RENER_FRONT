@@ -80,6 +80,7 @@
               <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" style="float: right" @click="deleteTile(selectedTile)" />
             </div>
           </template> -->
+
         <information-panel-tile-form
           v-if="selectedTile"
           :key="selectedTile.id ? selectedTile.id : selectedTile.tempId"
@@ -137,6 +138,7 @@ export default {
     // },
     mSelectedTile: {
       handler: function (v) {
+        console.debug("dddd");
         if (v != null) {
           this.selectedTile = v;
         } else {
@@ -157,8 +159,12 @@ export default {
     tileUpdate() {
       let tile = this.selectedTile;
       let idx = this.panelStructure.tiles.findIndex(function (t) {
-        return t.id == tile.id;
+        if (tile.id) return t.id == tile.id;
+        return t.tempId == tile.tempId;
       });
+      console.debug(tile);
+      console.debug(this.panelStructure.tiles);
+      console.debug(idx);
       this.panelStructure.tiles[idx] = tile;
     },
     tileLabel(tile) {
@@ -242,11 +248,13 @@ export default {
           w: 3,
           y: maxY,
         },
-        tempId: this.$ren.utils.currentTimestamp() - maxY,
+        tempId: this.$ren.utils.currentTimestamp() + Math.round(Math.random() * this.$ren.utils.currentTimestamp()),
         measurements: [],
         type: "single",
       };
       this.panelStructure.tiles.push(tile);
+
+      console.info(this.panelStructure.tiles);
       this.$emit("update:modelValue", this.panelStructure);
     },
   },

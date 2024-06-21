@@ -117,6 +117,7 @@ body {
       width: $inputwidth;
       max-width: $maxInputwidth;
     }
+
   }
   .ren-inputwrapper > * {
     width: $inputwidth;
@@ -126,7 +127,11 @@ body {
     width: fit-content
   }
   .col-12.ren-inputwrapper > * {
-    max-width: 80vw;
+    // max-width: 80vw;
+    max-width: $maxInputwidth; 
+  }
+  .ren-inputwrapper  .field.grid, .ren-inputwrapper   div.col-12{
+    margin:0 ;padding: 0;
   }
   .p-inputwrapper.p-dropdown,
   .p-inputwrapper.p-autocomplete {

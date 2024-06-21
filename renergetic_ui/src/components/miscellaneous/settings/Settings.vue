@@ -22,20 +22,17 @@
         <SelectButton
           v-if="s.type == Boolean || lowerCase(s.type) == 'boolean'"
           :id="s.key"
-          v-model="mModel[s.key]"
+          v-model="mModel[`${s.key}`]"
           v-tooltip="s.description"
           :disabled="disabled"
           option-label="name"
           option-value="value"
-          :options="[
-            { name: s.ext && s.ext.true ? s.ext.true : 'true', value: true },
-            { name: s.ext && s.ext.false ? s.ext.false : 'false', value: false },
-          ]"
+          :options="booleanOptions(s)"
         />
 
         <div v-else-if="s.type == Number && lowerCase(s.mode) == 'slider'">
           <Slider
-            v-model="mModel[s.key]"
+            v-model="mModel[`${s.key}`]"
             v-tooltip="s.description"
             :disabled="disabled"
             class="settings-slider"
@@ -46,7 +43,7 @@
         <InputNumber
           v-else-if="s.type == Number || lowerCase(s.type) == 'number'"
           :id="s.key"
-          v-model="mModel[s.key]"
+          v-model="mModel[`${s.key}`]"
           v-tooltip="s.description"
           :placeholder="`${s.placeholder ? s.placeholder : $t('settings.number_placeholder')}`"
           :disabled="disabled"
@@ -59,7 +56,7 @@
         <div v-else-if="lowerCase(s.type) == 'list'">
           <ListBox
             :id="s.key"
-            v-model="mModel[s.key]"
+            v-model="mModel[`${s.key}`]"
             v-tooltip="s.description"
             :disabled="disabled"
             :placeholder="s.placeholder"
@@ -72,7 +69,7 @@
         <div v-else-if="s.type == Array || lowerCase(s.type) == 'array'">
           <SelectButton
             :id="s.key"
-            v-model="mModel[s.key]"
+            v-model="mModel[`${s.key}`]"
             v-tooltip="s.description"
             :disabled="disabled"
             :options="s.ext.options"
@@ -81,7 +78,7 @@
           />
         </div>
         <div v-else-if="lowerCase(s.type) == 'icon'">
-          <SelectButton v-model="mModel[s.key]" :options="icons" option-label="value" option-value="value" data-key="value">
+          <SelectButton v-model="mModel[`${s.key}`]" :options="icons" option-label="value" option-value="value" data-key="value">
             <template #option="slotProps">
               <span>{{ slotProps.option.value }} </span> <font-awesome-icon :icon="slotProps.option.icon" class="settings-icon" />
             </template>
@@ -89,24 +86,24 @@
         </div>
 
         <div v-else-if="lowerCase(s.type) == 'color'" class="grid">
-          <div class="col-12 xl:col-9">
-            <ColorPicker
+          <!-- <ColorPicker
               v-if="false"
               :id="s.key + '_color'"
-              v-model="mModel[s.key]"
+              v-model="mModel[`${s.key}`]"
               v-tooltip="s.description"
               :disabled="disabled"
               @change="colorChange(s.key)"
-            />
-            <RenColorPicker
-              :id="s.key + '_color'"
-              v-model="mModel[s.key]"
-              v-tooltip="s.description"
-              :disabled="disabled"
-              @change="colorChange(s.key)"
-            />
-          </div>
-          <div v-if="false" class="col-12 xl:col-6">
+            /> -->
+          <RenColorPicker
+            :id="s.key"
+            v-model="mModel[`${s.key}`]"
+            v-tooltip="s.description"
+            :use-alpha="s.ext ? s.ext.use_alpha : false"
+            :disabled="disabled"
+          />
+          <!-- @change="colorChange(s.key)" -->
+
+          <!-- <div v-if="false" class="col-12 xl:col-6">
             <InputText
               :id="s.key"
               v-model="mModel[s.key]"
@@ -115,11 +112,11 @@
               :disabled="disabled"
               @change="colorChange(s.key)"
             />
-          </div>
+          </div> -->
         </div>
         <div v-else-if="lowerCase(s.type) == 'datetime'">
           <!-- <Calendar :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" :disabled="disabled" :show-time="true" hour-format="24" /> -->
-          <UnixCalendar :id="s.key" v-model="mModel[s.key]" :description="s.description" :disabled="disabled" />
+          <UnixCalendar :id="s.key" v-model="mModel[`${s.key}`]" :description="s.description" :disabled="disabled" />
         </div>
 
         <div v-else-if="lowerCase(s.type) == 'submit'">
@@ -128,7 +125,7 @@
         <div v-else-if="lowerCase(s.type) == 'header'">
           <h2 :id="s.key" v-tooltip="s.description">{{ s.label }}</h2>
         </div>
-        <InputText v-else :id="s.key" v-model="mModel[s.key]" v-tooltip="s.description" :placeholder="s.placeholder" :disabled="disabled" />
+        <InputText v-else :id="s.key" v-model="mModel[`${s.key}`]" v-tooltip="s.description" :placeholder="s.placeholder" :disabled="disabled" />
       </div>
     </div>
   </div>
@@ -138,7 +135,7 @@
 import SelectButton from "primevue/selectbutton";
 import Slider from "primevue/slider";
 import ListBox from "primevue/listbox";
-import ColorPicker from "primevue/colorpicker";
+// import ColorPicker from "primevue/colorpicker";
 // import Calendar from "primevue/calendar";
 import UnixCalendar from "./UnixCalendar.vue";
 import RenColorPicker from "./RenColorPicker.vue";
@@ -151,7 +148,7 @@ export default {
     RenColorPicker,
     SelectButton,
     ListBox,
-    ColorPicker,
+    // ColorPicker,
     // ToggleButton
   },
   props: {
@@ -223,6 +220,12 @@ export default {
     },
     toggle(event) {
       this.$refs.menu.toggle(event);
+    },
+    booleanOptions(s) {
+      return [
+        { name: s.ext && s.ext.true ? s.ext.true : "true", value: true },
+        { name: s.ext && s.ext.false ? s.ext.false : "false", value: false },
+      ];
     },
     async submitClick(s) {
       if (s.ext.click) {
