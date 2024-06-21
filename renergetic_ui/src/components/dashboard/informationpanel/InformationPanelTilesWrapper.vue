@@ -138,7 +138,6 @@ export default {
     // },
     mSelectedTile: {
       handler: function (v) {
-        console.debug("dddd");
         if (v != null) {
           this.selectedTile = v;
         } else {
@@ -162,9 +161,6 @@ export default {
         if (tile.id) return t.id == tile.id;
         return t.tempId == tile.tempId;
       });
-      console.debug(tile);
-      console.debug(this.panelStructure.tiles);
-      console.debug(idx);
       this.panelStructure.tiles[idx] = tile;
     },
     tileLabel(tile) {
@@ -254,7 +250,7 @@ export default {
       };
       this.panelStructure.tiles.push(tile);
 
-      console.info(this.panelStructure.tiles);
+      // console.info(this.panelStructure.tiles);
       this.$emit("update:modelValue", this.panelStructure);
     },
   },

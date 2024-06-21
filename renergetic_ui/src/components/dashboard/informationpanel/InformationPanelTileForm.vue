@@ -223,7 +223,6 @@
 <script>
 import { MeasurementAggregation } from "@/plugins/model/Enums.js";
 export function cleanTileStructure(mTile, clearIDs = false) {
-  console.error("dddddddddddddddddddd");
   if (clearIDs) delete mTile.id;
   if (!mTile.id && !mTile.tempId) {
     mTile.tempId = new Date().getTime() + Math.round(Math.random() * new Date().getTime());

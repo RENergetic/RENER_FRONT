@@ -60,7 +60,7 @@ export default {
       // let color = this.mSettings.tile.measurement_background
       //   ? this.$ren.utils.measurementBackgroundColor(this.measurement, this.mSettings.tile, this.value)
       //   : "none";
-      let color = this.tileBackgroundColor;
+      let color = this.tileMeasurementBackgroundColor;
       return `height: 100%;background:${color} `;
     },
     value: function () {

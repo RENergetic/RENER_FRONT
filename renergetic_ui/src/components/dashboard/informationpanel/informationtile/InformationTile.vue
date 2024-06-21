@@ -181,7 +181,7 @@ export default {
       }
     },
     background: function () {
-      return `background-color:${this.mSettings.tile.background_mask}`;
+      return `background-color:${this.mSettings.tile.background}`;
     },
     tileClass: function () {
       return this.settings != null && !this.settings.center ? "flex tile_wrapper" : " flex tile_wrapper_center";

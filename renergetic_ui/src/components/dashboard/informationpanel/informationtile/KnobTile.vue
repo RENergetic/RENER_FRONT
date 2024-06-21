@@ -90,7 +90,7 @@ export default {
     },
 
     tileStyle: function () {
-      return `height: 100%;background:${this.tileBackgroundColor} `;
+      return `height: 100%;background:${this.tileMeasurementBackgroundColor} `;
     },
 
     mlabel: function () {

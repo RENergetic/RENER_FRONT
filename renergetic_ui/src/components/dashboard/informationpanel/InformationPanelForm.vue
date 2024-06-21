@@ -139,7 +139,7 @@
 import { cleanTileStructure } from "./InformationPanelTileForm.vue";
 import panelTemplates from "@/plugins/model/information_panel_templates";
 export function getCleanPanelStructure(panel, clearIDs = false /*, isTemplate*/) {
-  console.error(panel);
+  // console.error(panel);
   let mPanel = JSON.parse(JSON.stringify(panel));
   if (mPanel.name !== undefined) delete mPanel.name;
   if (mPanel.id !== undefined) delete mPanel.id;

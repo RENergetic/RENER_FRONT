@@ -9,7 +9,15 @@ export default {
     return [`#${color.slice(1, color.length - 2)}FF`, `#${color.slice(1, color.length - 2)}40`];
     // }
   },
+  measurementColor(measurement, value) {
+    if (measurement == null) {
+      return { alpha: 1.0, color: "#94ba39" };
+    }
+    let alpha = value ? 1.0 : 1.0 - value / 2;
+    let color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
 
+    return { alpha: alpha, color: color ? color : this._getRandomColor() }; //"#94ba39"
+  },
   measurementBackgroundColor(measurement, tileSettings, alphaValue) {
     if (measurement == null) {
       return "none";
@@ -24,9 +32,11 @@ export default {
     if (tileSettings && tileSettings.background_mask && alphaValue) {
       color = tileSettings.background_mask;
     } else {
-      color = measurement.measurement_details.background
-        ? measurement.measurement_details.background
-        : this.measurementColor(measurement, null).color;
+      color = measurement.measurement_details.background ? measurement.measurement_details.background : null;
+      if (color == null) {
+        color = this.measurementColor(measurement, null).color;
+        if (alphaValue > 0.75) alphaHex = Math.round(0.75 * 255).toString(16);
+      }
     }
     if (color.length == 7) {
       return `#${color.slice(1)}${alphaHex}`;
@@ -49,15 +59,7 @@ export default {
     let b = 57 + Math.random() * 60 - 30;
     return this._rgbToHex(r, g, b);
   },
-  measurementColor(measurement, value) {
-    if (measurement == null) {
-      return { alpha: 1.0, color: "#94ba39" };
-    }
-    let alpha = value ? 1.0 : 1.0 - value / 2;
-    let color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
 
-    return { alpha: alpha, color: color ? color : this._getRandomColor() }; //"#94ba39"
-  },
   setMeasurementLabel(measurement) {
     if (measurement.label) {
       let k = `model.measurement.labels.${measurement.label}`;

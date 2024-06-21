@@ -121,7 +121,7 @@
         "measurement_background_description": "Use measurement's defined background (if it's defined, and tile's mask is undefined ) as tile's background  ",
         "background_mask": "Tile's background mask",
         "background_mask_description": "Tile's background mask (hex color) - background with transparency , where transparency value is dependant to the measurment value (only single tile measurements)",
-        "background": "Tile's   background",
+        "background": "Tile's wrapper background",
         "background_description": "Tile's default background, 'none'(inherits from panel) if not defined ",
         "template": "Tile's template",
         "template_description": "Use tile's text predefined template to present the value",
