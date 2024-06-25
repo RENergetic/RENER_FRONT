@@ -127,8 +127,12 @@
         "template_description": "Use tile's text predefined template to present the value",
         "knob_color": "Knob's color",
         "knob_color_description": "Hex color of the knob tile component (rangeColor).",
+        "measurement_color": "Measurement Color",
+        "measurement_color_description": "Overrride measurement color",
+        "title_color": "Tile's title color",
+        "title_color_description": "Override tile's default title color."  ,
         "": "_description",
-        "_description": "_description"
+        "_description": "_description" 
       }
     }
   },

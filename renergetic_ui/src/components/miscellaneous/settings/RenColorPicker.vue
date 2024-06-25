@@ -1,5 +1,5 @@
 <template>
-  <div v-if="useAlpha" style="flex-grow: 1; width: 100%">
+  <div v-if="useAlpha" style="flex-grow: 1; width: 100%; flex-direction: column">
     <ColorPicker :id="'_color'" v-model="mColor" :disabled="disabled" @update:model-value="colorChange" />
   </div>
   <div v-else style="flex-grow: 0.5">
@@ -19,9 +19,11 @@
       :disabled="disabled"
       @update:model-value="alphaChange"
     />
+    <i class="pi pi-times" style="font-size: 1.5rem; align-items: center; display: flex" @click="clear"></i>
   </div>
-  <div v-else style="flex-grow: 0.5">
+  <div v-else style="flex-grow: 0.5; display: flex">
     <InputText :id="color" :key="mValue" v-model="mValue" style="height: 100%" :disabled="disabled" @update:model-value="colorInputChange" />
+    <i class="pi pi-times" style="font-size: 1.5rem; align-items: center; display: flex" @click="clear"></i>
   </div>
 </template>
 
@@ -42,12 +44,15 @@ export default {
   emits: ["update:modelValue", "change"],
   data() {
     let c;
+    let mAlpha = 1.0;
     if (this.modelValue && this.modelValue.length > 7) {
       c = this.modelValue.substring(0, 7);
+      let alphaHex = this.modelValue.substring(7, Math.min(9, this.modelValue.length));
+      mAlpha = parseInt(alphaHex, 16) / 255.0;
     } else {
       c = this.modelValue;
     }
-    return { mValue: this.modelValue, mColor: c ? c : "#6cd667", hexAlpha: "FF", mAlpha: 1.0 };
+    return { mValue: this.modelValue, mColor: c ? c : "#6cd667", hexAlpha: "FF", mAlpha: mAlpha };
   },
   watch: {
     mValue: {
@@ -59,6 +64,11 @@ export default {
     },
   },
   methods: {
+    clear() {
+      this.mValue = null;
+      this.hexAlpha = "FF";
+      this.mAlpha = 1.0;
+    },
     _componentToHex(c) {
       var hex = (Math.round(c * 255) % 256).toString(16);
       return hex.length == 1 ? "0" + hex : hex;

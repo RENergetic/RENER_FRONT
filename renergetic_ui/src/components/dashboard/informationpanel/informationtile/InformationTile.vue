@@ -119,6 +119,7 @@ function validateTileSettings(tile, panelSettings, ctx) {
       background: tile.props.background,
       template: tile.props.template,
       knob_color: tile.props.knob_color,
+      measurement_color: tile.props.measurement_color,
       // asset_id: settings.asset_id,
     };
   }

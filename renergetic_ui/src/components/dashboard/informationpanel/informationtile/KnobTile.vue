@@ -52,7 +52,7 @@ export default {
     //   measurement = this.tile.measurements[0];
     // }
     let measurement = this.getTileMeasurement();
-    console.error(this.pdata);
+    // console.error(this.pdata);
     let maxV =
       !this.settings.panel.relativeValues &&
       this.pdata.max &&
@@ -60,7 +60,7 @@ export default {
       this.pdata.max[measurement.aggregation_function][measurement.id]
         ? this.pdata.max[measurement.aggregation_function][measurement.id]
         : this.defaultMax(measurement);
-    console.error(measurement.id);
+    // console.error(measurement.id);
     let minV =
       !this.settings.panel.relativeValues &&
       this.pdata.min &&
@@ -85,7 +85,7 @@ export default {
     //   return this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings);
     // },
     color: function () {
-      let color = this.$ren.utils.measurementColor(this.measurement, this.value);
+      let color = this.measurementColor; // this.$ren.utils.measurementColor(this.measurement, this.value);
       return color.color;
     },
 
@@ -110,9 +110,11 @@ export default {
           v = this.pdata.current[this.measurement.aggregation_function][this.measurement.id];
         }
         if (v > this.maxV) {
+          console.debug(this.getTileMeasurement());
           console.warn(`knob: value overflow ${v}, max: ${this.maxV}`);
           v = this.maxV;
         } else if (v < this.minV) {
+          console.debug(this.getTileMeasurement());
           console.warn(`knob: wrong value  ${v}, min: ${this.minV}`);
           v = this.maxV;
         }

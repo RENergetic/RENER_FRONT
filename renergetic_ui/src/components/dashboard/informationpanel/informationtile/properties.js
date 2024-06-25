@@ -28,6 +28,13 @@ export default [
     },
     key: "legend",
   },
+
+  {
+    label: $t(`model.information_panel.tile.properties.title_color`),
+    description: $t(`model.information_panel.tile.properties.title_color_description`),
+    type: "Color",
+    key: "title_color",
+  },
   {
     label: $t(`model.information_panel.tile.properties.legend_label_color`),
     description: $t(`model.information_panel.tile.properties.legend_label_color_description`),
@@ -58,6 +65,7 @@ export default [
     description: $t(`model.information_panel.tile.properties.background_mask_list_description`),
     type: "Color",
     key: "background_mask",
+    disabled: true,
   },
   {
     label: $t(`model.information_panel.tile.properties.measurement_background`),
@@ -78,6 +86,12 @@ export default [
       false: $t("settings.no"),
     },
     key: "template",
+  },
+  {
+    label: $t(`model.information_panel.tile.properties.measurement_color`),
+    description: $t(`model.information_panel.tile.properties.measurement_color_description`),
+    type: "Color",
+    key: "measurement_color",
   },
   {
     label: $t(`model.information_panel.tile.properties.knob_color`),

@@ -53,7 +53,7 @@ export default {
       return this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings);
     },
     color: function () {
-      let color = this.$ren.utils.measurementColor(this.measurement, this.value);
+      let color = this.measurementColor; //this.$ren.utils.measurementColor(this.measurement, this.value);
       return `color:${color.color}`;
     },
     tileStyle: function () {
