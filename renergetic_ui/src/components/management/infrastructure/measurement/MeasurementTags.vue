@@ -50,6 +50,7 @@ export default {
   data() {
     return {
       tags: {},
+      tagsInitial: {},
       measurementTagsDialog: false,
       tagListDialog: false,
       newTagDialog: false,
@@ -125,16 +126,26 @@ export default {
         mTags[t.key] = t.value;
       }
       this.tags = mTags;
+      this.tagsInitial = { ...mTags };
       this.measurementTagsDialog = true;
     },
     async submit() {
-      //TODO: yes no
-      console.info(this.tags);
-      await this.$ren.managementApi.updateMeasurementTags(this.measurement, this.tags);
-
-      this.$emit("update", this.tags);
-
-      this.measurementTagsDialog = false;
+      let keys = Object.keys(this.tags);
+      let noNullTag = true;
+      for (let i = 0; i < keys.length; i++) {
+        let key = keys[i];
+        if (this.tags[key] == null) {
+          if (key in this.tagsInitial) {
+            await this.$ren.managementApi.deleteMeasurementTag(this.measurement, { key: key, value: this.tagsInitial[key] });
+            delete this.tags[key];
+          } else noNullTag = false;
+        }
+      }
+      if (noNullTag) {
+        await this.$ren.managementApi.updateMeasurementTags(this.measurement, this.tags);
+        this.$emit("update", this.tags);
+        this.measurementTagsDialog = false;
+      }
     },
   },
 };
