@@ -14,8 +14,8 @@ export default {
     async delete(dashboard) {
       let mDashboard = dashboard ? dashboard : this.dashboard;
       if (mDashboard == null) {
+        console.debug("There is no selected dashboard");
         return;
-        //todo: log error ?
       }
       await this.$confirm.require({
         message: this.$t("view.dashboard_delete_confirm", {

@@ -142,7 +142,7 @@ export default {
       let userFilter = this.$store.getters["settings/filters"]("private");
       let overrideMode = this.effectiveOverrideMode(this.settings, this.panel.props);
       let settings = this.mergeSettings(userFilter, this.panel.props, overrideMode);
-      return this.parseDateFiltereDateFilter(settings);
+      return this.parseDateFilter(settings);
     },
     panelTitle: function () {
       let asset = this.$store.getters["view/panelAsset"](this.panel.id, this.$route.params.asset_id);
@@ -221,7 +221,7 @@ export default {
       this.$ren.utils.downloadJSON(panelStructure, filename, true);
     },
     async loadStructure() {
-      this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id);
+      this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id, false);
       // if (informationPanel == null) {
       //   this.$ren.dashboardApi.getInformationPanel(this.$route.params.id, this.$route.params.asset_id).then((panel) => {
       //     this.panel = panel;

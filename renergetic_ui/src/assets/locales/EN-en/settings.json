@@ -6,6 +6,7 @@
   "enabled": "Enabled",
   "disabled": "Disabled",
   "home_page_items": "Home page items visibility",
+  "home_panel":"Default panel on the homepage",
   "slideshow": "Panel loop settings",
   "loop_public_dashboard": "Include public dashboards",
   "loop_private_dashboard": "Include private dashboards",

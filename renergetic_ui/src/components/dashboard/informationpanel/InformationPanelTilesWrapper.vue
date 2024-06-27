@@ -13,26 +13,19 @@
     :show-header="false"
   >
     <div class="grid ren flex" style="height: 100%; overflow: auto; padding-top: 0.5rem">
-      <!-- :key="selectedRecommendation.id + (compareWith ? compareWith.id : '')" -->
       <div class="col-3 flex flex-column" style="height: 100%">
         <Listbox
           v-if="panelStructure.tiles"
-          v-model="mSelecteTile"
+          ref="tiles"
+          v-model="mSelectedTile"
           class="flex-grow-1"
           :options="panelStructure.tiles"
           style="width: 100%; overflow: auto; margin-bottom: 0.75rem"
         >
           <template #option="tileItem">
-            <!-- {{ tileItem }} -->
             <span :class="'badge-sm state ' + tileColor(tileItem.option)" />
             <span style="margin-right: 0.5rem" class="font-bold white-space-nowrap">
-              {{
-                tileItem.option.label
-                  ? tileItem.option.label
-                  : tileItem.option.name
-                  ? tileItem.option.name
-                  : `Tile ${tileItem.option.id ? tileItem.option.id : tileItem.option.tempId}`
-              }}
+              {{ tileLabel(tileItem.option) }}
             </span>
             <div style="flex-wrap: wrap">
               <span>
@@ -87,39 +80,18 @@
               <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" style="float: right" @click="deleteTile(selectedTile)" />
             </div>
           </template> -->
-        <!-- {{ selectedTile }} -->
+
         <information-panel-tile-form
           v-if="selectedTile"
           :key="selectedTile.id ? selectedTile.id : selectedTile.tempId"
+          v-model:activeTab="activeTab"
           v-model="selectedTile"
           class="flex flex-grow-1"
+          @update:model-value="tileUpdate"
         />
         <!-- </AccordionTab> -->
       </div>
     </div>
-    <!-- 
-    <Accordion v-if="panelStructure" v-model:activeIndex="activeTile" class="ren">
-      <AccordionTab v-for="(tile, idx) in panelStructure.tiles" :key="idx">
-        <template #header>
-          <span :class="'badge state ' + tileColor(tile)" />
-          <span style="margin-right: 0.5rem" class="font-bold white-space-nowrap">
-            {{ tile.label ? tile.label : tile.name ? tile.name : `Tile ${idx}` }}
-          </span>
-          <div>
-            {{ $t("view.measurements_static") }}: <span class="badge state ok">{{ tileCountMeasurements(tile) }}</span>
-          </div>
-          <div>
-            {{ $t("view.measurements_dynamic") }}:
-            <span v-if="!isTemplate" class="badge state warning">{{ tileCountEmpty(tile) }}</span>
-            <span v-else class="badge state ok">{{ tileCountEmpty(tile) }}</span>
-          </div>
-          <div style="flex-grow: 1">
-            <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" style="float: right" @click="deleteTile(idx)" />
-          </div>
-        </template>
-        <information-panel-tile-form v-model="panelStructure.tiles[idx]" />
-      </AccordionTab>
-    </Accordion> -->
   </Dialog>
 </template>
 
@@ -145,8 +117,9 @@ export default {
       inferMeasurements: false,
       activeTile: null,
       selectedTile: null,
-      mSelecteTile: null,
+      mSelectedTile: null,
       addMode: this.modelValue == null || this.modelValue.name == null,
+      activeTab: 0,
       // mPanelStructure: null,
       panelStructure: this.modelValue,
       labelWarning: null,
@@ -156,20 +129,19 @@ export default {
     };
   },
   watch: {
-    panelStructure: {
-      handler: function (s) {
-        console.info(s);
-        this.$emit("update:modelValue", s);
-      },
-      deep: true,
-      immediate: false,
-    },
-    mSelecteTile: {
+    // panelStructure: {
+    //   handler: function (s) {
+    //     this.$emit("update:modelValue", s);
+    //   },
+    //   deep: true,
+    //   immediate: false,
+    // },
+    mSelectedTile: {
       handler: function (v) {
         if (v != null) {
           this.selectedTile = v;
         } else {
-          this.mSelecteTile = this.selectedTile;
+          this.mSelectedTile = this.selectedTile;
         }
       },
     },
@@ -183,6 +155,17 @@ export default {
   },
   async mounted() {},
   methods: {
+    tileUpdate() {
+      let tile = this.selectedTile;
+      let idx = this.panelStructure.tiles.findIndex(function (t) {
+        if (tile.id) return t.id == tile.id;
+        return t.tempId == tile.tempId;
+      });
+      this.panelStructure.tiles[idx] = tile;
+    },
+    tileLabel(tile) {
+      return tile.label ? tile.label : tile.name ? tile.name : `Tile ${tile.id ? tile.id : tile.tempId}`;
+    },
     tileColor(tile) {
       if (this.isTemplate || tile.measurements.length == 0) {
         return "";
@@ -232,14 +215,19 @@ export default {
     //   this.panelStructure.tiles.splice(idx, 1);
     //   // this.$emit("update:modelValue", this.panelStructure); -> watcher should emmit this
     // },
-    deleteTile(tile) {
-      if (tile.id) {
-        this.panelStructure.tiles = this.panelStructure.tiles.filter((it) => it.id != tile.id);
-      } else {
-        this.panelStructure.tiles = this.panelStructure.tiles.filter((it) => it.tempId != tile.tempId);
-      }
-
-      // this.$emit("update:modelValue", this.panelStructure); -> watcher should emmit this
+    async deleteTile(tile) {
+      await this.deleteConfirm({
+        message: this.$t("view.delete_tile", { label: this.tileLabel(tile) }),
+        action: async () => {
+          // this.mModel.measurements = this.mModel.measurements.filter((it) => it.id != m.id);
+          if (tile.id) {
+            this.panelStructure.tiles = this.panelStructure.tiles.filter((it) => it.id != tile.id);
+          } else {
+            this.panelStructure.tiles = this.panelStructure.tiles.filter((it) => it.tempId != tile.tempId);
+          }
+          this.$emit("update:modelValue", this.panelStructure);
+        },
+      });
     },
 
     addTile() {
@@ -256,12 +244,14 @@ export default {
           w: 3,
           y: maxY,
         },
-        tempId: this.$ren.utils.currentTimestamp() - maxY,
+        tempId: this.$ren.utils.currentTimestamp() + Math.round(Math.random() * this.$ren.utils.currentTimestamp()),
         measurements: [],
         type: "single",
       };
       this.panelStructure.tiles.push(tile);
-      // this.$emit("update:modelValue", this.panelStructure); -> watcher should emmit this
+
+      // console.info(this.panelStructure.tiles);
+      this.$emit("update:modelValue", this.panelStructure);
     },
   },
 };

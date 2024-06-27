@@ -6,6 +6,7 @@
   "enabled": "Włączony",
   "disabled": "Wyłączony",
   "home_page_items": "Widoczność elementów na stronie domowej",
+  "home_panel":"Domyślny panel na stronei domowej",
   "slideshow": "Ustawienia pętli",
   "loop_public_dashboard": "Uwzględnij widoki publiczne",
   "loop_private_dashboard": "Uwzględnij szablony widoków",

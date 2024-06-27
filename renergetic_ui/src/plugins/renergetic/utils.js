@@ -83,6 +83,9 @@ class RenUtils {
   uuid() {
     return uuidv4();
   }
+  toJSON(obj, pretty = false) {
+    return pretty ? JSON.stringify(obj, null, "\t") : JSON.stringify(obj, null, "");
+  }
 
   downloadJSON(obj, filename, pretty = false) {
     var json = pretty ? JSON.stringify(obj, null, "\t") : JSON.stringify(obj);
@@ -166,7 +169,7 @@ class RenUtils {
     this.app.$store.commit("settings", settings);
   }
 
-  async getPanelStructure(panelId, assetId) {
+  async getPanelStructure(panelId, assetId, storePanel = false) {
     let informationPanel = null;
     if (assetId == null) {
       let index = this.app.$store.getters["view/informationPanelsMap"][panelId];
@@ -174,8 +177,12 @@ class RenUtils {
         informationPanel = this.app.$store.getters["view/informationPanels"][index];
       }
     }
+
     if (informationPanel == null) {
       informationPanel = await this.app.$ren.dashboardApi.getInformationPanel(panelId, assetId);
+      if (informationPanel != null && storePanel) {
+        this.app.$store.commit("view/setPanel", informationPanel);
+      }
     }
     if (assetId == null) {
       for (let tile of informationPanel.tiles) {

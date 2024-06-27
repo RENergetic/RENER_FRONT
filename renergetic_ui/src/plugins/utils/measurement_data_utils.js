@@ -1,6 +1,7 @@
 export default {
   aggKey(measurement, settings) {
     let key = `${measurement.type.base_unit}_${measurement.aggregation_function}`;
+    // console.debug(measurement.id + " " + measurement.type.base_unit);
     if (!settings.groupByDirection) {
       key += `_${measurement.direction}`;
     }
@@ -19,6 +20,7 @@ export default {
           key += "_none";
       }
     }
+    // console.debug(measurement.id + " " + key);
     return key;
   },
   getUnit(measurement, panelSettings, conversionSettings) {

@@ -67,6 +67,7 @@ export default {
       //TODO: make it comfigurable in tile / args prediction & aggregation func
       let data = null;
       let backgroundColor = this.tile.measurements.map((m) => this.$ren.utils.measurementColor(m).color);
+
       if (!this.mSettings.panel.relativeValues) {
         data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
       } else {

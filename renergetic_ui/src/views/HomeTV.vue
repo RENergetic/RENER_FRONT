@@ -1,6 +1,6 @@
 <template>
   <DotMenu v-if="loggedIn" :model="menuModel" :fixed="true" />
-  <div v-if="panel && settings.panelVisibility" style="position: relative">
+  <div v-if="panel && homeSettings.panelVisibility" style="position: relative">
     <!-- {{ $store.getters["view/featuredPanels"] }}  -->
     <!-- {{ $store.getters["view/assetPanels"] }}d -->
     <!-- panel: {{ panel.name }}, {{ panel.id }}, {{ assetId }} -->
@@ -21,10 +21,10 @@
       <h4 style="width: 100%; margin: auto">{{ $t("view.empty_home_dashboard") }}</h4>
     </div>
   </div>
-  <div v-if="settings.demandVisibility && loggedIn" style="position: relative">
+  <div v-if="homeSettings.demandVisibility && loggedIn" style="position: relative">
     <DemandList id="demand-list" />
   </div>
-  <div v-if="settings.notificationVisibility && loggedIn" style="position: relative">
+  <div v-if="homeSettings.notificationVisibility && loggedIn" style="position: relative">
     <NotificationList id="notification-list" />
   </div>
 </template>
@@ -54,14 +54,14 @@ export default {
       autoReload: true,
       assetId: null,
       panel: null,
-      settings: this.$store.getters["settings/home"],
+      homeSettings: this.$store.getters["settings/home"],
       panelSettings: this.$store.getters["settings/panel"],
     };
   },
   computed: {
     effectiveFilterSettings: function () {
       let userFilter = this.$store.getters["settings/filters"]();
-      let overrideMode = this.effectiveOverrideMode(this.settings, this.panel.props);
+      let overrideMode = this.effectiveOverrideMode(this.homeSettings, this.panel.props);
       let settings = this.mergeSettings(userFilter, this.panel.props, overrideMode);
       return this.parseDateFilter(settings);
     },
@@ -93,9 +93,11 @@ export default {
     this.loaded = false;
   },
   async mounted() {
-    this.panel = await (this.$store.getters["settings/home"].homePanel
-      ? this.$ren.utils.getPanelStructure(this.$store.getters["settings/home"].homePanel)
-      : this.$store.getters["view/homePanel"]);
+    let panel = null;
+    if (this.homeSettings.homePanel) {
+      panel = await this.$ren.utils.getPanelStructure(this.homeSettings.homePanel, null, true);
+    }
+    this.panel = panel ? panel : this.$store.getters["view/defaultHomePanel"];
     var df = new DeferredFunction(this.slideshowLoop, 1000);
     df.run();
     document.documentElement.requestFullscreen();
@@ -113,15 +115,15 @@ export default {
         // console.error(panelDetails);
         if (panelDetails) {
           _this.autoReload = false;
-          let panel = await _this.$ren.utils.getPanelStructure(panelDetails.panelId, panelDetails.assetId);
+          let panel = await _this.$ren.utils.getPanelStructure(panelDetails.panelId, panelDetails.assetId, true);
           _this.assetId = panelDetails.assetId;
           _this.panel = panel;
         } else {
           _this.autoReload = true;
         }
       };
-      if (this.settings.slideshowLoopInterval > 0) {
-        this.slideshow = LoopRunner.init(f, this.settings.slideshowLoopInterval);
+      if (this.homeSettings.slideshowLoopInterval > 0) {
+        this.slideshow = LoopRunner.init(f, this.homeSettings.slideshowLoopInterval);
         this.slideshow.start();
       } else {
         if (this.slideshow) {
@@ -131,7 +133,7 @@ export default {
       }
     },
     reloadSettings() {
-      this.settings = this.$store.getters["settings/home"];
+      this.homeSettings = this.$store.getters["settings/home"];
     },
     updateFilter() {
       if (this.slideshow) {

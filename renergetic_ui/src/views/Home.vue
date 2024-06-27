@@ -3,8 +3,8 @@
   <!-- {{ effectiveFilterSettings }} -->
   <div v-if="homeSettings.panelVisibility" style="position: relative">
     <!-- {{ $store.getters["view/featuredPanels"] }}  -->
-    <!-- {{ $store.getters["view/assetPanels"] }}d -->
     <!-- {{ panelSettings }} -->
+
     <InformationPanelWrapper
       v-if="panel"
       ref="panel"
@@ -159,6 +159,7 @@ export default {
   },
   props: {},
   data() {
+    console.debug(this.$store.getters["settings/home"]);
     return {
       schema: panelSchema,
       loaded: false,
@@ -167,7 +168,7 @@ export default {
       slideshow: null,
       autoReload: true,
       assetId: null,
-      panel: this.$store.getters["view/homePanel"],
+      panel: null,
       homeSettings: this.$store.getters["settings/home"],
       // filter: this.$store.getters["settings/parsedFilter"](),
       panelSettings: this.$store.getters["settings/panel"],
@@ -255,6 +256,12 @@ export default {
     this.loaded = false;
   },
   async mounted() {
+    let panel = null;
+    if (this.homeSettings.homePanel) {
+      panel = await this.$ren.utils.getPanelStructure(this.homeSettings.homePanel, null, true);
+    }
+    this.panel = panel ? panel : this.$store.getters["view/defaultHomePanel"];
+
     var df = new DeferredFunction(this.slideshowLoop, 1000);
     df.run();
   },

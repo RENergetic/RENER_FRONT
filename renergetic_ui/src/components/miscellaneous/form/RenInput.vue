@@ -1,5 +1,5 @@
 <template>
-  <div v-if="inline" class="field grid">
+  <div v-if="inline" class="field grid" style="border: red">
     <div v-if="!editMode" class="flex">
       <label class="flex flex-1">
         {{ mValue }}
@@ -18,7 +18,7 @@
     </div>
     <div v-else class="flex">
       <div class="flex flex-1">
-        <InputText id="ren-input" v-model="mValue" :disabled="disabled" />
+        <InputText id="ren-input" v-model="mValue" :disabled="disabled" :style="inputStyle" @update:model-value="onInput($event)" />
         <span v-if="invalid">
           <span v-for="(error, index) of errors" id="name-error" :key="index">
             <small class="p-error">{{ error.$message }}</small>
@@ -31,7 +31,7 @@
       </div>
     </div>
   </div>
-  <div v-else class="field grid">
+  <div v-else class="field grid" style="border: red">
     <label v-if="textLabel != null" for="ren-input" class="col-12 mb-2 md:col-2 md:mb-0 ren-label">
       <div v-if="$te(textLabel)">
         {{ $t(textLabel) }}
@@ -48,13 +48,17 @@
       <!-- {{ $t(textLabel) }}  -->
     </label>
 
-    <div v-if="textLabel != null && !readOnly" class="col-12 md:col-10"><InputText id="ren-input" v-model="mValue" :disabled="disabled" /></div>
-    <div v-else-if="!readOnly" class="col-12"><InputText id="ren-input" v-model="mValue" :disabled="disabled" /></div>
+    <div v-if="textLabel != null && !readOnly" class="col-12 md:col-10">
+      <InputText id="ren-input" v-model="mValue" :disabled="disabled" :style="inputStyle" @update:model-value="onInput($event)" />
+    </div>
+    <div v-else-if="!readOnly" class="col-12">
+      <InputText id="ren-input" v-model="mValue" :disabled="disabled" :style="inputStyle" @update:model-value="onInput($event)" />
+    </div>
     <div v-else-if="textLabel != null && readOnly" class="col-12 md:col-10">
-      <InputText id="ren-input" v-model="mValue" :disabled="disabled" />
+      <InputText id="ren-input" v-model="mValue" :disabled="disabled" :style="inputStyle" />
     </div>
     <div v-else class="col-12">
-      <InputText id="ren-input" v-model="mValue" :disabled="disabled" />
+      <InputText id="ren-input" v-model="mValue" :disabled="disabled" :style="inputStyle" />
     </div>
     <span v-if="invalid">
       <span v-for="(error, index) of errors" id="name-error" :key="index">
@@ -84,16 +88,31 @@ export default {
   data() {
     return { mValue: this.modelValue, editMode: false };
   },
-  watch: {
-    mValue: {
-      handler() {
-        if (!this.inline) this.$emit("update:modelValue", this.mValue);
-      },
-      // immediate: true,
+  computed: {
+    inputStyle() {
+      if (this.invalid && !this.errors) {
+        return "border: solid rgba(255,30,30,0.85) 0.2rem";
+      }
+      return "";
     },
   },
-
+  watch: {
+    // mValue: {
+    //   handler() {
+    //     if (!this.inline) this.$emit("update:modelValue", this.mValue);
+    //   },
+    //   // immediate: true,
+    // },
+    modelValue: {
+      handler(v) {
+        this.mValue = v;
+      },
+    },
+  },
   methods: {
+    onInput(evt) {
+      if (!this.inline) this.$emit("update:modelValue", evt);
+    },
     cancel() {
       this.mValue = this.modelValue;
       this.editMode = false;

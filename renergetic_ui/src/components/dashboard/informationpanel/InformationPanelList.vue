@@ -56,7 +56,7 @@
     <Column field="export">
       <template #body="item">
         <!--  :header="$t('view.export_json')" pi-file-export-->
-        <Button v-tooltip="$t('view.export_json')" icon="pi pi-file" class="p-button-rounded" @click="exportJSON(item.data, true)" />
+        <Button v-tooltip="$t('view.export_json_template')" icon="pi pi-file" class="p-button-rounded" @click="exportJSON(item.data, true)" />
       </template> </Column
     ><Column field="delete">
       <template #body="item">
