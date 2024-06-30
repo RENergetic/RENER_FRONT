@@ -64,6 +64,7 @@
   "view": "Widok",
   "manage_notifications": "Powiadomienia",
   "tv_view_mode": "Widok prezentacji",
+  "toggle_edit_mode": "Przełącz tryb edycji",
   "normal_view_mode": "Widok normalny",
   "manage_rules": "Zarządzaj regułami"
 }

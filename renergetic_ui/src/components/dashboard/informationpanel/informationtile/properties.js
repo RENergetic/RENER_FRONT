@@ -1,5 +1,5 @@
 import i18n from "@/plugins/locales";
-
+//TILE PROPERTIES:
 const $t = i18n.global.t.bind(i18n);
 export default [
   {

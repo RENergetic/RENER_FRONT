@@ -349,6 +349,8 @@ export default {
     },
     mModel: {
       handler: function (mModel) {
+        console.info("update tile");
+        console.debug(mModel);
         this.$emit("update:modelValue", mModel);
       },
       deep: true,

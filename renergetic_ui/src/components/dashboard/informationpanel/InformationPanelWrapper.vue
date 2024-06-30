@@ -16,6 +16,7 @@
         :asset-id="assetId"
         :filter="mFilter"
         @timeseries-update="onTimeseriesUpdate"
+        @update:tile="onTileUpdate"
       />
     </template>
   </RenSpinner>
@@ -107,7 +108,7 @@ export default {
       default: false,
     },
   },
-  emits: ["update"],
+  emits: ["update", "update:tile"],
   data() {
     return {
       mNotifications: [],
@@ -132,9 +133,9 @@ export default {
       // return this.panel != null ? this.panel.tiles : [];
       return this.mPanel != null ? this.mPanel.tiles : [];
     },
-    gridItems: function () {
-      return this.grid != null ? this.grid.getGridItems() : [];
-    },
+    // gridItems: function () {
+    //   return this.grid != null ? this.grid.getGridItems() : [];
+    // },
   },
   watch: {
     manageSensorsDialog: function (newValue) {
@@ -172,6 +173,7 @@ export default {
     if (this.loopRunner) {
       this.loopRunner.stop();
     }
+    this.mPanel = null;
   },
   async mounted() {
     var _this = this;
@@ -199,6 +201,9 @@ export default {
     }
   },
   methods: {
+    onTileUpdate(ev) {
+      this.$emit("update:tile", ev);
+    },
     onTimeseriesUpdate(evt) {
       console.error("onTimeseriesUpdate TODO:");
       console.error(evt);

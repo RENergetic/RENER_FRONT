@@ -284,6 +284,9 @@ export default {
 
       return overrideMode;
     },
+    hasRole(flags){   
+      return flags & this.$store.getters["auth/renRole"]        
+    },
     /**
      * 
      * @param {*} settings - user's panel settings 

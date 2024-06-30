@@ -9,12 +9,18 @@
       :pdata="mPanelData"
       :settings="mSettings"
       :filter="filter"
-      @edit="$emit('editTile', { tile: tile, index: index })"
+      @edit="editTile(tile, index)"
       @preview-tile="onPreview"
       @timeseries-update="onTimeseriesUpdate"
       @notification="viewNotification"
     />
   </div>
+  <!-- :style="{ width: '50vw' }" -->
+  <Dialog v-model:visible="tileEditDialog" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <InformationPanelTileForm v-if="selectedTileIndex && selectedTile" :model-value="selectedTile" @update:modelValue="onTileEdit" />
+    <ren-submit @submit="submitTile" />
+    <!-- {{ selectedTile }} -->
+  </Dialog>
   <TileMeasurementPreview ref="dataPreview" />
   <Dialog v-model:visible="notificationDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <notification-list v-if="selectedItem" :context="notificationContext" :object-id="selectedItem.tile.id" />
@@ -22,6 +28,7 @@
 </template>
 <script>
 import InformationTileGridWrapper from "./informationtile/InformationTileGridWrapper.vue";
+import InformationPanelTileForm from "./InformationPanelTileForm.vue";
 import NotificationList from "../../management/notification/NotificationList.vue";
 
 import TileMeasurementPreview from "./informationtile/TileMeasurementPreview.vue";
@@ -37,6 +44,7 @@ export default {
     InformationTileGridWrapper,
     NotificationList,
     TileMeasurementPreview,
+    InformationPanelTileForm,
   },
   props: {
     panelData: {
@@ -78,7 +86,7 @@ export default {
       default: false,
     },
   },
-  emits: ["editTile", "update", "timeseries-update"],
+  emits: ["update:tile", "update", "timeseries-update"],
   data() {
     return {
       loaded: false,
@@ -90,7 +98,9 @@ export default {
       mPanel: this.panel,
       mPanelData: null,
       notificationContext: NotificationContext.TILE,
+      tileEditDialog: false,
       selectedTile: null,
+      selectedTileIndex: null,
     };
   },
   computed: {
@@ -151,6 +161,17 @@ export default {
     }
   },
   methods: {
+    editTile(tile, index) {
+      this.selectedTile = tile;
+      this.selectedTileIndex = index;
+      this.tileEditDialog = true;
+    },
+    onTileEdit(tile) {
+      this.selectedTile = tile;
+    },
+    submitTile() {
+      this.$emit("update:tile", { tile: this.selectedTile, index: this.selectedTileIndex });
+    },
     setMeasurementLabels(panel) {
       if (panel) {
         for (let t in panel.tiles) {

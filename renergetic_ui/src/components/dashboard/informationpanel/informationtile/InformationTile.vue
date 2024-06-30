@@ -1,7 +1,9 @@
 <template>
   <div v-if="mSettings" :class="tileClass" :style="background">
-    <i v-if="tileDataPreview" v-tooltip="$t('view.measurements')" class="pi pi-chart-line data-preview" @click="viewMeasurements()" />
-
+    <div class="tile-bar">
+      <i v-if="tileDataPreview" v-tooltip="$t('view.measurements')" class="pi pi-chart-line data-preview tile-icon" @click="viewMeasurements()" />
+      <i v-if="edit" v-tooltip="$t('view.edit')" class="pi pi-pencil tile-icon" @click="$emit('edit')" />
+    </div>
     <!-- {{ tile.measurements.map((it) => it.measurement_details) }}
     {{ tile.measurements.map((it) => it.type.color) }} -->
     <!-- {{ filter }} -->
@@ -164,7 +166,6 @@ export default {
   },
   emits: ["edit", "notification", "timeseries-update", "preview-tile"],
   data() {
-    // console.info(this.settings);
     return {
       conversionSettings: this.$store.getters["settings/conversion"],
       mSettings: { tile: validateTileSettings(this.tile, this.settings, this), panel: this.settings },
@@ -254,10 +255,39 @@ export default {
   stroke-linejoin: round;
 }
 .data-preview {
-  font-size: 1.5rem;
+  // font-size: 1.5rem;
+  // position: absolute;
+  // top: 0.5rem;
+  // right: 0.5rem;
+}
+.tile-icon {
+  margin-left: 0.25rem;
+}
+.tile-bar {
+  i {
+    font-size: 0.75rem;
+  }
+  font-size: 0.75rem;
+  min-width: 5rem;
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 0.25rem;
+  right: 0.25rem;
+  width: max-content;
+  display: flex;
+  flex-direction: row-reverse;
+  opacity: 0.4;
+}
+
+.tile-bar:hover {
+  i {
+    font-size: 1.5rem;
+  }
+  // background: red;
+  opacity: 1;
+  z-index: 4444444;
+}
+.presentation-view .tile-bar {
+  display: none;
 }
 .presentation-view .data-preview {
   display: none;

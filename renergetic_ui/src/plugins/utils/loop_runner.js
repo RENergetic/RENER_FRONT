@@ -4,6 +4,8 @@ export default class LoopRunner {
   minInterval = MIN_INTERVAL_MS;
   interval = DEFAULT_REFRESH_INTERVAL_MS;
   running = false;
+  _promise = null;
+  _handlerPromise = null;
   id = 0;
   handler;
 
@@ -22,20 +24,32 @@ export default class LoopRunner {
     if (this.running) return;
     this.running = true;
     this.id = this.id++;
-    console.info(`start loop(${this.id}) : ${this.interval} `);
+    console.debug(`start loop(${this.id}) : ${this.interval} `);
     this.loop();
   }
-  stop() {
+  async stop() {
     if (!this.running) return;
-    console.info(`stop loop(${this.id}) : ${this.interval} `);
+    console.debug(`stop loop(${this.id}) : ${this.interval} `);
     this.running = false;
+    try {
+      if (this._promise != null) {
+        await this._promise;
+      }
+      if (this._handlerPromise != null) {
+        await this._handlerPromise;
+      }
+    } catch (ex) {
+      console.debug(ex);
+    }
   }
   async reset() {
-    console.info(`reset loop(${this.id}) : ${this.interval} `);
-    this.stop();
+    console.debug(`reset loop(${this.id}) : ${this.interval} `);
+    await this.stop();
     let dt = Math.max(this.interval, this.minInterval);
     // console.info(dt);
-    await new Promise((r) => setTimeout(r, dt));
+    this._promise = new Promise((r) => setTimeout(r, dt));
+    await this._promise;
+    this._promise = null;
     this.start();
   }
   async loop() {
@@ -44,7 +58,9 @@ export default class LoopRunner {
       console.debug(`loop(${id}) : ${this.interval} `);
       let t = Date.now();
       try {
-        await this.handler();
+        this._handlerPromise = this.handler();
+        await this._handlerPromise;
+        this._handlerPromise = null;
       } catch (ex) {
         console.error(ex);
       }
@@ -53,7 +69,9 @@ export default class LoopRunner {
       // console.info(dt);
       dt = Math.max(this.interval - dt, this.minInterval);
       // console.info(dt);
-      await new Promise((r) => setTimeout(r, dt));
+      this._promise = new Promise((r) => setTimeout(r, dt));
+      await this._promise;
+      this._promise = null;
     }
   }
 }

@@ -52,7 +52,7 @@ export default {
         return;
       }
       panel.label = panel.label ? panel.label : panel.name;
-      console.debug(state.informationPanels);
+      // console.debug(state.informationPanels);
       state.informationPanels.push(panel);
       state.informationPanelsMap[panel.id] = state.informationPanels.length - 1;
       console.debug(state.informationPanels);
@@ -60,7 +60,7 @@ export default {
     },
     wrapper(state, payload) {
       if (!payload) {
-        console.error("Empty wrraper payload");
+        console.error("Empty wrapper payload");
         return;
       }
       let getF = (key, defaultValue) => (payload[key] ? payload[key] : defaultValue);
