@@ -104,7 +104,37 @@
       "x": "x",
       "y": "y",
       "h": "h",
-      "w": "w"
+      "w": "w",
+      "properties": {
+        "icon": "icon",
+        "icon_description": "Tile's icon",
+        "icon_visibility": "Icon visibility",
+        "icon_visibility_description": "Set tile's icon visibility",
+        "legend_label_color": "Legend's color",
+        "legend_label_color_description": "Legend's color",
+        "legend": "Legend's visibility",
+        "legend_description": "Set legends's visibility in the tile's chart",
+        "measurement_list": "Measurement list visibility",
+        "measurement_list_description": "Set measurements list visibility e.g. in knob tile or doughnut tiles",
+        "measurement_background": "Measurement background",
+        "measurement_background_description": "Use measurement's defined background (if it's defined, and tile's mask is undefined ) as tile's background  ",
+        "background_mask": "Tile's background mask",
+        "background_mask_description": "Tile's background mask (hex color) - background with transparency , where transparency value is dependant to the measurment value (only single tile measurements)",
+        "background": "Tile's wrapper background",
+        "background_description": "Tile's default background, 'none'(inherits from panel) if not defined ",
+        "template": "Tile's template",
+        "template_description": "Use tile's text predefined template to present the value",
+        "knob_color": "Knob's color",
+        "knob_color_description": "Hex color of the knob tile component (rangeColor).",
+        "measurement_color": "Measurement Color",
+        "measurement_color_description": "Overrride measurement color",
+        "title_color": "Tile's title color",
+        "title_color_description": "Override tile's default title color.",
+        "title_visibility": "Title visibility",
+        "title_visibility_description": "Set tile's title visibility.",
+        "": "_description",
+        "_description": "_description"
+      }
     }
   },
   "measurement_type": {
@@ -210,17 +240,17 @@
   "workflowrun": {
     "run_id": "Id startu",
     "start_time": "Czas startu",
-    "init_time": "Czas utworzenia", 
+    "init_time": "Czas utworzenia",
     "start_time_formatted": "Czas rozpoczęcia: {start_time}",
     "end_time": "Czas zakończenia",
     "parameters": "Parametry",
-    "pipeline":"Pipeline",
+    "pipeline": "Pipeline",
     "state": "Status",
     "run_state": {
       "running": "Uruchomiony",
       "finished": "Skończony",
       "error": "Błąd",
-      "failed":"Niepowodzenie",
+      "failed": "Niepowodzenie",
       "not_running": "Brak",
       "terminating": "Zatrzymywanie"
     }

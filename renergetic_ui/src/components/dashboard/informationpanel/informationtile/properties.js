@@ -72,14 +72,14 @@ export default [
   },
   {
     label: $t(`model.information_panel.tile.properties.background_mask`),
-    description: $t(`model.information_panel.tile.properties.background_mask_list_description`),
+    description: $t(`model.information_panel.tile.properties.background_mask_description`),
     type: "Color",
     key: "background_mask",
     disabled: true,
   },
   {
     label: $t(`model.information_panel.tile.properties.measurement_background`),
-    description: $t(`model.information_panel.tile.properties.measurement_background_list_description`),
+    description: $t(`model.information_panel.tile.properties.measurement_background_description`),
     type: "Boolean",
     ext: {
       true: $t("settings.yes"),
@@ -89,7 +89,7 @@ export default [
   },
   {
     label: $t(`model.information_panel.tile.properties.template`),
-    description: $t(`model.information_panel.tile.properties.template_list_description`),
+    description: $t(`model.information_panel.tile.properties.template_description`),
     type: "Boolean",
     ext: {
       true: $t("settings.yes"),
@@ -105,13 +105,13 @@ export default [
   },
   {
     label: $t(`model.information_panel.tile.properties.knob_color`),
-    description: $t(`model.information_panel.tile.properties.knob_color_list_description`),
+    description: $t(`model.information_panel.tile.properties.knob_color_description`),
     type: "Color",
     key: "knob_color",
   },
   {
     label: $t(`model.information_panel.tile.properties.background`),
-    description: $t(`model.information_panel.tile.properties.background_list_description`),
+    description: $t(`model.information_panel.tile.properties.background_description`),
     type: "Color",
     key: "background",
     ext: {

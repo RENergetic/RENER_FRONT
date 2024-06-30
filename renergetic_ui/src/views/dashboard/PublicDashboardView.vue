@@ -2,10 +2,10 @@
   <!-- PUBLIC DASHBOARD -->
   <div v-if="panel" id="panel-box">
     <DotMenu :model="menuModel" />
+    <!-- :asset-id="$route.params.asset_id" -->
     <InformationPanelWrapper
       ref="panel"
       :key="panelReload"
-      :asset-id="$route.params.asset_id"
       :locked="locked"
       :panel="panel"
       :edit-mode="editMode"
