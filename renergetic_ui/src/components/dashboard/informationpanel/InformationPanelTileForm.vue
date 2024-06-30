@@ -1,5 +1,4 @@
 <template>
-  <!-- <div class="ren"> -->
   <TabView id="tile-panel" v-model:activeIndex="mActiveTab" class="ren flex flex-column" style="height: 100%">
     <TabPanel :header="$t('view.properties')">
       <ren-input
@@ -160,8 +159,6 @@
       </div>
     </TabPanel>
   </TabView>
-  <!-- </div> -->
-  <!-- v-model:visible="jsonMesurementDialog" v-model="selectedMesurement" -->
   <MeasurementDialog ref="mesurementDialog" :reload="true" />
   <Dialog v-model:visible="addMeasurementDialog" :style="{ width: '100vw', height: '100vh', maxHeight: '100%' }" :modal="true">
     <Card class="ren-page-content">
@@ -197,6 +194,7 @@
           :settings="tileProperties"
           @update:settings="onPropertiesChange"
         ></Settings>
+        <Button :label="$t('view.button.close')" class="flex-grow-0 ren-button" style="width: 100%" @click="propertiesDialog = false" />
         <!-- <ul>
           <li v-for="p in tileProperties.filter((it) => !it.hidden)" :key="p.key">
             <ren-input v-model="p.key" :disabled="true" :text-label="`model.information_panel.tile.properties.${p.key}`" />

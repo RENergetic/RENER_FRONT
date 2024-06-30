@@ -131,6 +131,8 @@
         "measurement_color_description": "Overrride measurement color",
         "title_color": "Tile's title color",
         "title_color_description": "Override tile's default title color."  ,
+        "title_visibility": "Title visibility",
+        "title_visibility_description": "Set tile's title visibility.",  
         "": "_description",
         "_description": "_description" 
       }

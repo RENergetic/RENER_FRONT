@@ -15,10 +15,18 @@
       @notification="viewNotification"
     />
   </div>
-  <!-- :style="{ width: '50vw' }" -->
-  <Dialog v-model:visible="tileEditDialog" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <InformationPanelTileForm v-if="selectedTileIndex && selectedTile" :model-value="selectedTile" @update:modelValue="onTileEdit" />
-    <ren-submit @submit="submitTile" />
+  <Dialog v-model:visible="tileEditDialog" :maximizable="true" :style="{ height: '90%' }" :modal="true" :dismissable-mask="true">
+    <div style="display: flex; height: 100%; flex-direction: column">
+      <div style="height: 100%; flex-grow: 1; overflow: auto">
+        <InformationPanelTileForm
+          v-if="selectedTileIndex && selectedTile"
+          style="flex-grow: 1; overflow: auto"
+          :model-value="selectedTile"
+          @update:modelValue="onTileEdit"
+        />
+      </div>
+      <ren-submit style="width: 100%" :cancel-button="true" @submit="submitTile" @cancel="onTileEditCancel" />
+    </div>
     <!-- {{ selectedTile }} -->
   </Dialog>
   <TileMeasurementPreview ref="dataPreview" />
@@ -168,6 +176,11 @@ export default {
     },
     onTileEdit(tile) {
       this.selectedTile = tile;
+    },
+    onTileEditCancel() {
+      this.selectedTile = null;
+      this.selectedTileIndex = null;
+      this.tileEditDialog = false;
     },
     submitTile() {
       this.$emit("update:tile", { tile: this.selectedTile, index: this.selectedTileIndex });

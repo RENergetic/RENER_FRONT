@@ -8,8 +8,8 @@
 
     <div class="flex flex-grow-1 flex-column align-items-center justify-content-center" style="position: relative">
       <div v-if="loaded" class="flex flex-none flex-column align-items-center justify-content-center">
-        <!-- <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" /> -->
-        <Chart type="doughnut" :data="chartData" :options="options" />
+        <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
+        <!-- <Chart type="doughnut" :data="chartData" :options="options" /> -->
       </div>
       <span
         v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"

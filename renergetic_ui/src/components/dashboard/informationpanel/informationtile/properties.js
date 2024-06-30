@@ -9,6 +9,16 @@ export default [
     key: "icon",
   },
   {
+    label: $t(`model.information_panel.tile.properties.title_visibility`),
+    description: $t(`model.information_panel.tile.properties.title_visibility_description`),
+    type: "Boolean",
+    ext: {
+      true: $t("settings.yes"),
+      false: $t("settings.no"),
+    },
+    key: "title_visibility",
+  },
+  {
     label: $t(`model.information_panel.tile.properties.icon_visibility`),
     description: $t(`model.information_panel.tile.properties.icon_visibility_description`),
     type: "Boolean",
