@@ -25,11 +25,9 @@
       <ParsedDateFilter :key="parsedFilterRefresh" :filter="effectiveFilterSettings" />
     </div>
   </div>
-  <div v-if="homeSettings.demandVisibility && loggedIn" style="position: relative">
-    <DemandList id="demand-list" />
-  </div>
-  <div v-if="homeSettings.notificationVisibility && loggedIn" style="position: relative">
-    <NotificationList id="notification-list" />
+  <div v-if="homeSettings.demandVisibility && loggedIn"><DemandList id="demand-list" /></div>
+  <div v-if="homeSettings.notificationVisibility && loggedIn">
+    <UserNotificationList id="notification-list" />
   </div>
   <RoleMatrix v-if="false" />
   <RenSettingsDialog ref="homeSettingsDialog">
@@ -128,7 +126,7 @@
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import HomeSettings from "@/components/miscellaneous/settings/HomeSettings.vue";
 import RoleMatrix from "@/components/miscellaneous/settings/RoleMatrix.vue";
-import NotificationList from "@/components/user/NotificationList.vue";
+import UserNotificationList from "@/components/user/NotificationList.vue";
 // import SettingsDialog from "@/components/miscellaneous/settings/SettingsDialog.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 import InformationPanelWrapper from "@/components/dashboard/informationpanel/InformationPanelWrapper.vue";
@@ -152,7 +150,7 @@ export default {
     DemandList,
     HomeSettings,
     PanelSettings,
-    NotificationList,
+    UserNotificationList,
     InformationPanelWrapper,
     ParsedDateFilter,
     BasicFilterSettings,
@@ -318,16 +316,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+#notification-list,
 #demand-list {
-  width: 50rem;
-  max-width: 95vw;
+  width: 60rem;
+  max-width: 90vw;
   margin: auto;
-  color: #3182ce;
-}
-
-#notification-list {
-  width: 50rem;
-  max-width: 95vw;
-  margin: auto;
+  position: relative;
 }
 </style>

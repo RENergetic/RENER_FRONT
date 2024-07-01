@@ -1,5 +1,6 @@
 {
     "message": {
+      "code_high": "High value ({value}) of {measurement_label} for {asset_name}",
         "anomaly": {
             "high": "The energy consumption is abnormally high",
             "low": "The energy consumption is abnormally low"
