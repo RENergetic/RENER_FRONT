@@ -83,13 +83,30 @@
   </RenSettingsDialog>
   <RenSettingsDialog ref="filterSettingsDialog" :save="false">
     <template #settings>
-      <Card class="ren-settings">
+      <Panel v-if="panel" toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
+        </template>
+        <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
+      </Panel>
+      <Panel v-if="panel" toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.panel_filter_settings") }}:</span>
+        </template>
+        <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
+      </Panel>
+      <Panel v-if="panel" toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.user_filter_settings") }}:</span>
+        </template>
+        <BasicFilterSettings :setting-key="'private'" @update="updateFilter()" />
+      </Panel>
+      <!-- <Card class="ren-settings">
         <template #title>
           <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
         </template>
         <template #content>
-          <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
-          <!-- <Settings :schema="schema" :settings="effectiveFilterSettings" :disabled="true" /> -->
+          <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" /> 
         </template>
       </Card>
       <Card class="ren-settings">
@@ -97,8 +114,7 @@
           <span> {{ $t("view.panel_filter_settings") }}:</span>
         </template>
         <template #content>
-          <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
-          <!-- <Settings :schema="schema" :settings="panel.props" :disabled="true" /> -->
+          <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" /> 
         </template>
       </Card>
       <Card class="ren-settings">
@@ -106,11 +122,10 @@
           <span> {{ $t("view.user_filter_settings") }}:</span>
         </template>
         <template #content>
-          <!-- {{ $store.getters["settings/filters"]("private") }} -->
-          <BasicFilterSettings :setting-key="'private'" @update="reloadSettings()" />
-          <!-- <PanelSettings @update="reloadPanelSettings()"> </PanelSettings> -->
+            {{ $store.getters["settings/filters"]("private") }}  
+          <BasicFilterSettings :setting-key="'private'" @update="reloadSettings()" /> 
         </template>
-      </Card>
+      </Card> -->
     </template>
   </RenSettingsDialog>
 </template>

@@ -92,32 +92,48 @@
   </RenSettingsDialog>
   <RenSettingsDialog ref="filterSettingsDialog" :save="false">
     <template #settings>
-      <Card v-if="panel" class="ren-settings">
+      <Panel v-if="panel" toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
+        </template>
+        <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
+      </Panel>
+      <Panel v-if="panel" toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.panel_filter_settings") }}:</span>
+        </template>
+        <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
+      </Panel>
+      <Panel v-if="panel" toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.user_filter_settings") }}:</span>
+        </template>
+        <BasicFilterSettings @update="updateFilter()" />
+      </Panel>
+      <!-- <Card v-if="panel" class="ren-settings">
         <template #title>
           <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
         </template>
         <template #content>
           <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
-          <!-- <Settings :schema="schema" :settings="effectiveFilterSettings" :disabled="true" /> -->
-        </template>
-      </Card>
-      <Card v-if="panel" class="ren-settings">
+           </template>
+      </Card> -->
+      <!-- <Card v-if="panel" class="ren-settings">
         <template #title>
           <span> {{ $t("view.panel_filter_settings") }}:</span>
         </template>
         <template #content>
-          <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
-          <!-- <Settings :schema="schema" :settings="panel.props" :disabled="true" /> -->
+          <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" /> 
         </template>
-      </Card>
-      <Card class="ren-settings">
+      </Card> -->
+      <!-- <Card class="ren-settings">
         <template #title>
           <span> {{ $t("view.user_filter_settings") }}:</span>
         </template>
         <template #content>
           <BasicFilterSettings @update="updateFilter()" />
         </template>
-      </Card>
+      </Card> -->
     </template>
   </RenSettingsDialog>
   <div v-if="$refs.panelSettingsDialog">{{ $refs.panelSettingsDialog.settingsDialog }}</div>
@@ -284,6 +300,7 @@ export default {
         }
       };
       if (this.homeSettings.slideshowLoopInterval > 0) {
+        console.info(`init slide show:  ${this.homeSettings.slideshowLoopInterval}`);
         this.slideshow = LoopRunner.init(f, this.homeSettings.slideshowLoopInterval);
         this.slideshow.start();
       } else {
