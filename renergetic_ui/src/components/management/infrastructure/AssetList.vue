@@ -486,10 +486,9 @@ export default {
     },
 
     async onCreate(o) {
-      console.log(o);
       await this.$ren.managementApi.addAsset(o).then((assetId) => {
-        console.info("add asset:" + assetId);
-
+        console.debug("add asset:" + assetId);
+        this.addAsset = false;
         // o.id = assetId;
         // this.assetList.push(o);
       });

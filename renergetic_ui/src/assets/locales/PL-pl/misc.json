@@ -51,6 +51,8 @@
     "asset_panel_revoked": "Asset revoked from the dashboard",
     "asset_panel_assigned": "Asset assigned to the panel",
     "panel_update": "Panel {0} update success.",
+    "asset_type_delete":"Asset type deleted",
+    "new_asset_type": "Nowy typ obiektu: {label}({name})",
     "settings_saved": "Settings saved",
     "visibility_changed": "Visibility changed",
     "tag_deleted": "Tag usunięty",

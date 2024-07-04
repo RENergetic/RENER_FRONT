@@ -35,12 +35,12 @@
             <span v-else @click="selectAsset">{{ $t("view.select_parent_asset") }}</span>
           </template>
         </ren-input-wrapper>
-        <ren-input-wrapper :text-label="'model.asset.owner'">
+        <!-- <ren-input-wrapper :text-label="'model.asset.owner'">
           <template #content>
             <span v-if="ownerLabel" @click="selectOwner">{{ ownerLabel }}</span>
             <span v-else @click="selectOwner">{{ $t("view.select_owner") }}</span>
           </template>
-        </ren-input-wrapper>
+        </ren-input-wrapper> -->
       </div>
     </template>
   </Card>

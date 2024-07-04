@@ -176,6 +176,13 @@ export default {
     },
 
     tileContentSize1D() {
+      let d = this.tileContentSize2D()
+      let minD = Math.min(d.w, d.h);
+      console.debug("cell height: " + this.settings.panel.cellHeight + ":  " + d.w + "," + d.h)
+      console.debug(this.settings.panel)
+      return minD
+    },
+    tileContentSize2D() {
       let w =
         this.settings.panel && this.settings.panel.cellWidth
           ? this.settings.panel.cellWidth * this.tile.layout.w
@@ -189,11 +196,8 @@ export default {
       }
       if (!w) {
         w = window.innerWidth * 0.95 / 12 * this.tile.layout.w;
-      }
-      let minD = Math.min(w, h);
-      console.debug("cell height: " + this.settings.panel.cellHeight + ":  " + w + "," + h)
-      console.debug(this.settings.panel)
-      return minD
+      } 
+      return {w:w,h:h}
     },
     /**
      * 

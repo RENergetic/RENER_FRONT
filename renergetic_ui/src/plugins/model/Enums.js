@@ -65,6 +65,8 @@ const TileTypes = Object.freeze({
   multi_doughnut: "multi_doughnut",
   multi_knob: "multi_knob",
   single: "single",
+  image: "image",
+  qrcode: "qrcode",
 });
 
 const NotificationContext = Object.freeze({
