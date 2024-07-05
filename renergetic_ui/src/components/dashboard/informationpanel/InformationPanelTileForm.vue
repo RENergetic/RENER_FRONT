@@ -1,10 +1,6 @@
 <template>
   <TabView id="tile-panel" v-model:activeIndex="mActiveTab" class="ren flex flex-column" style="height: 100%">
     <TabPanel :header="$t('view.properties')">
-      <div>
-        <ren-input v-model="mModel.name" :text-label="'model.information_panel.tile.name'" />
-        <ren-input v-model="mModel.label" :text-label="'model.information_panel.tile.label'" />
-      </div>
       <ren-input
         v-model="mModel.name"
         :text-info="'model.name_description'"
