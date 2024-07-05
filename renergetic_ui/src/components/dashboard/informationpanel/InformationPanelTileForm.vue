@@ -1,6 +1,10 @@
 <template>
   <TabView id="tile-panel" v-model:activeIndex="mActiveTab" class="ren flex flex-column" style="height: 100%">
     <TabPanel :header="$t('view.properties')">
+      <div>
+        <ren-input v-model="mModel.name" :text-label="'model.information_panel.tile.name'" />
+        <ren-input v-model="mModel.label" :text-label="'model.information_panel.tile.label'" />
+      </div>
       <ren-input
         v-model="mModel.name"
         :text-info="'model.name_description'"
@@ -25,6 +29,8 @@
           { label: $t('enums.tile_type.chart'), value: 'chart' },
           { label: $t('enums.tile_type.multi_knob'), value: 'multi_knob' },
           { label: $t('enums.tile_type.knob'), value: 'knob' },
+          { label: $t('enums.tile_type.image'), value: 'image' },
+          { label: $t('enums.tile_type.qrcode'), value: 'qrcode' },
         ]"
         :invalid="v$.mModel.type.$invalid"
         :errors="v$.mModel.type.$silentErrors"

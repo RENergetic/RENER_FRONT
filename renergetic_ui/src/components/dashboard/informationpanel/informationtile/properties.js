@@ -118,6 +118,18 @@ export default [
       use_alpha: true,
     },
   },
+  {
+    label: $t(`model.information_panel.tile.properties.img_url`),
+    description: $t(`model.information_panel.tile.properties.img_url_description`),
+    type: "String",
+    key: "img_url",
+  },
+  {
+    label: $t(`model.information_panel.tile.properties.qrcode_content`),
+    description: $t(`model.information_panel.tile.properties.qrcode_content_description`),
+    type: "String",
+    key: "qrcode_content",
+  },
 ];
 // TODO:
 // title_color: tile.props.title_color != null ? tile.props.title_color : null,

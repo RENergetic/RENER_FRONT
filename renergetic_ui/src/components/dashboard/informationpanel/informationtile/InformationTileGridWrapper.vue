@@ -19,6 +19,7 @@
           @click="$emit('notification', slotProps)"
         /> -- >
       </div> -->
+
       <InformationTile
         :tile="tile"
         :edit="edit"

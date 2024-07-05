@@ -20,6 +20,10 @@
       />
     </template>
   </RenSpinner>
+  <div v-if="mPanel && mPanel.props.qrcode">
+    <QRCode v-model="mPanel.props.qrcode" :position="mPanel.props.qrcodePosition" :size="mPanel.props.qrcodeSize" />
+  </div>
+
   <!-- <Dialog v-model:visible="editDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <div class="field grid">
       <label for="assetType" class="col-fixed" style="width: 5rem">
@@ -54,6 +58,7 @@ import InformationPanel from "./InformationPanel.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 // import { GridStack } from "gridstack";
 import LoopRunner from "@/plugins/utils/loop_runner.js";
+import QRCode from "@/components/miscellaneous/QRCode.vue";
 import { TileTypes, NotificationContext } from "@/plugins/model/Enums.js";
 // THEN to get HTML5 drag&drop
 // import "gridstack/dist/h5/gridstack-dd-native";
@@ -62,6 +67,7 @@ export default {
   name: "InformationPanelWrapper",
   components: {
     InformationPanel,
+    QRCode,
     // ManageSensors,
     // NotificationList,
   },

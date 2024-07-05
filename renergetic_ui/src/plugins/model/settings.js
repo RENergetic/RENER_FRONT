@@ -88,6 +88,36 @@ var panelSchema = [
     type: Boolean,
     key: "overrideMode",
   },
+  {
+    label: $t("settings.panel_qr_code"),
+    description: $t("settings.panel_qr_code_description"),
+    type: String,
+    key: "qrcode",
+  },
+  {
+    label: $t("settings.panel_qr_code_position"),
+    description: $t("settings.panel_qr_code_position_description"),
+    type: Array,
+    key: "qrcodePosition",
+    ext: {
+      options: [
+        { id: "top_right", label: $t("settings.top_right") },
+        { id: "top_left", label: $t("settings.top_left") },
+        { id: "bottom_right", label: $t("settings.bottom_right") },
+        { id: "bottom_left", label: $t("settings.bottom_left") },
+      ],
+      optionLabel: "label",
+      optionValue: "id",
+    },
+    defaultValue: "top_right",
+  },
+  {
+    label: $t("settings.panel_qr_code_size"),
+    description: $t("settings.panel_qr_code_size_description"),
+    type: Number,
+    key: "qrcodeSize",
+    defaultValue: 200,
+  },
 ];
 var userPanelSchema = [
   {
