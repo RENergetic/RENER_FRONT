@@ -19,7 +19,7 @@
     <div style="display: flex; height: 100%; flex-direction: column">
       <div style="height: 100%; flex-grow: 1; overflow: auto">
         <InformationPanelTileForm
-          v-if="selectedTileIndex && selectedTile"
+          v-if="(selectedTileIndex || selectedTileIndex == 0) && selectedTile"
           style="flex-grow: 1; overflow: auto"
           :model-value="selectedTile"
           @update:modelValue="onTileEdit"
