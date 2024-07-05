@@ -1,5 +1,6 @@
 <template>
   <!-- TODO: unslect row event responsive-layout="scroll"-->
+
   <DataTable
     class="asset-list"
     :value="assetList"
@@ -324,6 +325,7 @@ export default {
       assetAdd: false,
       mFilters: this.filters ? this.filters : initFilter(),
       // selectedRow: null,
+
       childDialog: false,
       measurementDialog: false,
       deferredEmitFilter: null,

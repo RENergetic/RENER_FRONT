@@ -1,12 +1,12 @@
 <template>
   <div class="field grid ren-input">
-    <label v-if="textLabel != null" for="ren-input-text" class="col-12 mb-2 md:col-2 md:mb-0 ren-label"> {{ $t(textLabel) }} </label>
+    <label v-if="textLabel != null" :for="mId" class="col-12 mb-2 md:col-2 md:mb-0 ren-label"> {{ $t(textLabel) }} </label>
     <div v-if="textLabel != null" class="col-12 md:col-10">
-      <Textarea id="ren-input-text" v-model="mValue" :maxlength="maxlength" :disabled="disabled" auto-resize rows="5" :cols="cols"></Textarea>
+      <Textarea :id="mId" v-model="mValue" :maxlength="maxlength" :disabled="disabled" auto-resize rows="5" :cols="cols"></Textarea>
     </div>
     <div v-else class="col-12">
       <Textarea
-        id="ren-input-text"
+        :id="mId"
         v-model="mValue"
         style="width: 100%"
         :maxlength="maxlength"
@@ -17,7 +17,8 @@
       ></Textarea>
     </div>
     <span v-if="invalid">
-      <span v-for="(error, index) of errors" id="name-error" :key="index">
+      <!-- id="name-error"  -->
+      <span v-for="(error, index) of errors" :key="index">
         <small class="p-error">{{ error.$message }}</small>
       </span>
     </span>

@@ -11,7 +11,13 @@
             :invalid="v$.mModel.name.$invalid"
             :errors="v$.mModel.name.$silentErrors"
           />
-          <ren-input v-model="mModel.label" :text-info="'model.label_description'" :text-label="'model.asset.label'" />
+          <ren-input
+            v-model="mModel.label"
+            :text-info="'model.label_description'"
+            :text-label="'model.asset.label'"
+            :invalid="v$.mModel.label.$invalid"
+            :errors="v$.mModel.label.$silentErrors"
+          />
           <ren-input-text v-model="mModel.description" :text-label="'model.asset.description'" />
           <ren-input v-model="mModel.geo_location" :text-label="'model.asset.geo_location'" />
           <ren-input-wrapper :text-label="'model.asset.asset_type'" :invalid="v$.mModel.type.$invalid" :errors="v$.mModel.type.$silentErrors">
@@ -30,47 +36,6 @@
       </template>
     </Card>
     <ren-submit :cancel-button="false" :disabled="v$.$invalid" @cancel="cancel" @submit="submit" />
-    <!-- <div class="edit-form">
-      <div class="property-form">
-        <label>Name</label>
-        <InputText v-model="updateAsset.name" type="text"></InputText>
-      </div>
-      <div class="property-form">
-        <label>Label</label>
-        <InputText v-model="updateAsset.label" type="text"></InputText>
-      </div>
-      <div class="property-form">
-        <label for="description">Description</label>
-        <Textarea id="description" v-model="updateAsset.description" auto-resize rows="5" cols="30"></Textarea>
-      </div>
-      <div class="property-form">
-        <label for="geo_location">Geo Location</label>
-        <InputText
-          id="geo_location"
-          v-model="updateAsset.geo_location"
-          type="text"
-          auto-resize
-          rows="5"
-          cols="30"
-        ></InputText>
-      </div>
-      <div class="field grid">
-        <label for="assetType" class="col-fixed" style="width: 5rem">
-          {{ $t("model.asset.asset_type") }}
-        </label>
-        <div class="col">
-          <Dropdown
-            id="assetType"
-            v-model="updateAsset.type"
-            :options="assetTypes"
-            option-label="label"
-            option-value="value"
-            :placeholder="$t('view.select_asset_type')"
-          />
-        </div>
-      </div>
-    </div>
-    <Button @click="submit">Submit</Button> -->
   </Dialog>
 </template>
 
@@ -95,7 +60,9 @@ export default {
   validations() {
     return {
       mModel: {
-        name: { maxLength: maxLength(60), required: required, minLength: minLength(3) },
+        name: { maxLength: maxLength(70), required: required, minLength: minLength(3) },
+        label: { maxLength: maxLength(60), minLength: minLength(2) },
+
         type: { required: requiredTr("validations.fields.custom.asset.") },
       },
     };

@@ -1,13 +1,26 @@
 import { RenRoles } from "@/plugins/model/Enums.js";
 // RenMixins
 export default {
+  props: {
+    componentId: {
+      type: String,
+      default: null,
+    },
+  },
   data() {
     return {
       RenRoles: RenRoles,
     }
   },
   computed: {
-
+    mId: function () {
+      let id = 'componentId' in this && this.componentId ? this.componentId : null
+      if (id == null) {
+        id = 'id' in this && this.id ? this.id : null
+      }
+      return id ? id : Math.random().toString(36)
+        .replace("0.", (this.$options.name ? this.$options.name.toLowerCase() + "-" : "component-") || "")
+    },
     unitLabel: function () {
       let measurement = 'measurement' in this ? this.measurement : null;
       return this.$ren.utils.unitLabel(measurement, this.settings.panel, this.conversionSettings);
@@ -58,10 +71,10 @@ export default {
         if (('measurement' in this && this.measurement != null)) {
           color = this.$ren.utils.measurementColor(this.measurement, this.value).color;
         }
-        else{
+        else {
           color = "#d6ebff";
         }
-      } 
+      }
       return color;
     },
     tileMeasurementBackgroundColor: function () {
@@ -77,6 +90,7 @@ export default {
   },
 
   methods: {
+    
     parseDateFilter: function (filter) {
       let f = filter ? filter : {};
       let from = f.date_from;
@@ -196,8 +210,8 @@ export default {
       }
       if (!w) {
         w = window.innerWidth * 0.95 / 12 * this.tile.layout.w;
-      } 
-      return {w:w,h:h}
+      }
+      return { w: w, h: h }
     },
     /**
      * 
@@ -288,8 +302,8 @@ export default {
 
       return overrideMode;
     },
-    hasRole(flags){   
-      return flags & this.$store.getters["auth/renRole"]        
+    hasRole(flags) {
+      return flags & this.$store.getters["auth/renRole"]
     },
     /**
      * 
