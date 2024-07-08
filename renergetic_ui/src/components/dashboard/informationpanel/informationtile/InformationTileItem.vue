@@ -57,10 +57,7 @@ export default {
       return (this.mSettings && this.mSettings.tile ? this.mSettings.tile.icon_visibility : true) && this.mSettings.tile.icon;
     },
     style: function () {
-      // let backgroundColor = !this.mSettings.tile.measurement_background
-      //   ? this.$ren.utils.measurementBackgroundColor(this.measurement, this.mSettings.tile, this.value)
-      //   : "none";
-      let color = this.$ren.utils.measurementColor(this.measurement, this.value);
+      let color = this.measurementColor; //this.$ren.utils.measurementColor(this.measurement, this.value);
       return `background:${color.color};opacity:${color.alpha};color: set-text-color(${color.color});`;
     },
     state: function () {

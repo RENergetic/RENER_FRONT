@@ -1,10 +1,13 @@
 <template>
   <div v-if="mSettings" :class="tileClass" :style="background">
-    <i v-if="tileDataPreview" v-tooltip="$t('view.measurements')" class="pi pi-chart-line data-preview" @click="viewMeasurements()" />
-
+    <div class="tile-bar">
+      <i v-if="tileDataPreview" v-tooltip="$t('view.measurements')" class="pi pi-chart-line data-preview tile-icon" @click="viewMeasurements()" />
+      <i v-if="edit" v-tooltip="$t('view.edit')" class="pi pi-pencil tile-icon" @click="$emit('edit')" />
+    </div>
     <!-- {{ tile.measurements.map((it) => it.measurement_details) }}
     {{ tile.measurements.map((it) => it.type.color) }} -->
     <!-- {{ filter }} -->
+
     <div
       v-if="(titleVisible || tile.measurements.length == 0) && tile.label"
       class="flex flex-column justify-content-center"
@@ -94,30 +97,35 @@ import { TileTypes } from "@/plugins/model/Enums.js";
 import icons from "./icons";
 // import MultiDoughnutTile from "./MultiDoughnutTile.vue";
 
-function validateTileSettings(tile, settings, ctx) {
-  if (tile.props) {
+function validateTileSettings(tile, panelSettings, ctx) {
+  if (tile != null && tile.props) {
     return {
       label: ctx.$te(`enums.measurement_name.${tile.name}`) ? ctx.$t(`enums.measurement_name.${tile.name}`) : tile.label,
       icon: icons[tile.props.icon],
       icon_visibility: tile.props.icon_visibility != null ? tile.props.icon_visibility : true,
-      legend: tile.props.legend != null ? tile.props.legend : settings.legend,
+      legend: tile.props.legend != null ? tile.props.legend : panelSettings.legend,
       legend_label_color: tile.props.legend_label_color != null ? tile.props.legend_label_color : "#495057",
-      chart_type: tile.props.chart_type != null ? tile.props.chart_type : settings.chart_type,
+      chart_type: tile.props.chart_type != null ? tile.props.chart_type : panelSettings.chart_type,
       title_visibility:
         !ctx.demand &&
-        (tile.props.title_visibility != null ? tile.props.title_visibility : settings.title_visibility != null ? settings.title_visibility : true),
+        (tile.props.title_visibility != null
+          ? tile.props.title_visibility
+          : panelSettings.title_visibility != null
+          ? panelSettings.title_visibility
+          : false),
       measurement_list: tile.props.measurement_list != null ? tile.props.measurement_list : true,
       measurement_background: tile.props.measurement_background != null ? tile.props.measurement_background : false,
       title_color: tile.props.title_color != null ? tile.props.title_color : null,
-      fontSize: settings.fontSize,
-      background_mask: tile.props.mask,
+      fontSize: panelSettings.fontSize,
+      background_mask: tile.props.background_mask ? tile.props.background_mask : tile.props.mask,
       background: tile.props.background,
       template: tile.props.template,
       knob_color: tile.props.knob_color,
+      measurement_color: tile.props.measurement_color,
       // asset_id: settings.asset_id,
     };
   }
-  return settings;
+  return panelSettings;
 }
 
 export default {
@@ -158,10 +166,9 @@ export default {
   },
   emits: ["edit", "notification", "timeseries-update", "preview-tile"],
   data() {
-    // console.info(this.settings);
     return {
       conversionSettings: this.$store.getters["settings/conversion"],
-      mSettings: this.mSettings,
+      mSettings: { tile: validateTileSettings(this.tile, this.settings, this), panel: this.settings },
     };
   },
   computed: {
@@ -176,7 +183,7 @@ export default {
       }
     },
     background: function () {
-      return `background-color:${this.mSettings.tile.background_mask}`;
+      return `background-color:${this.mSettings.tile.background}`;
     },
     tileClass: function () {
       return this.settings != null && !this.settings.center ? "flex tile_wrapper" : " flex tile_wrapper_center";
@@ -187,7 +194,11 @@ export default {
 
     titleVisible: function () {
       //default use/show title
-      return this.settings == null || this.settings.title;
+      try {
+        return !this.mSettings.tile || this.mSettings.tile.title_visibility;
+      } catch {
+        return true;
+      }
     },
     title: function () {
       return this.tile && this.tile.title != null ? this.tile.title : null;
@@ -244,10 +255,39 @@ export default {
   stroke-linejoin: round;
 }
 .data-preview {
-  font-size: 1.5rem;
+  // font-size: 1.5rem;
+  // position: absolute;
+  // top: 0.5rem;
+  // right: 0.5rem;
+}
+.tile-icon {
+  margin-left: 0.25rem;
+}
+.tile-bar {
+  i {
+    font-size: 0.75rem;
+  }
+  font-size: 0.75rem;
+  min-width: 5rem;
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 0.25rem;
+  right: 0.25rem;
+  width: max-content;
+  display: flex;
+  flex-direction: row-reverse;
+  opacity: 0.4;
+}
+
+.tile-bar:hover {
+  i {
+    font-size: 1.5rem;
+  }
+  // background: red;
+  opacity: 1;
+  z-index: 4444444;
+}
+.presentation-view .tile-bar {
+  display: none;
 }
 .presentation-view .data-preview {
   display: none;

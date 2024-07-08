@@ -103,15 +103,15 @@ var management = [
   },
   */
   {
-    path: "/management/demandResponse",
-    name: "DemandResponse",
+    path: "/management/rules",
+    name: "RulesList",
     props: {},
     meta: {
       isAuthenticated: true,
       roles: ["ren-admin", "ren-technical-manager"],
       roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN | RenRoles.REN_MANAGER,
     },
-    component: () => import("../views/management/abstract/DemandResponseView.vue"),
+    component: () => import("../views/management/rules/RulesListView.vue"),
   },
 ];
 

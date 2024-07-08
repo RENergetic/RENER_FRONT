@@ -38,18 +38,40 @@ export default {
       return this.isTileHorizontal ? 'horizontal-tile' : 'vertical-tile'
     },
 
+    measurementColor: function () {
+      let colorObj;
+      if (!this.mSettings.tile.measurement_color) {
+        if ('measurement' in this && this.measurement != null)
+          colorObj = this.$ren.utils.measurementColor(this.measurement, this.value);
+        else {
+          colorObj = this.$ren.utils.measurementColor(null, null);
+        }
+      }
+      else {
+        colorObj = { color: this.mSettings.tile.measurement_color, alpha: this.value ? 1.0 : 1.0 - this.value / 2 }
+      }
+      return colorObj;
+    },
     tileTitleColor: function () {
       let color = this.mSettings.tile.title_color;
-      if (color == null && ('measurement' in this && this.measurement != null)) {
-        color = this.$ren.utils.measurementColor(this.measurement, this.value).color;
-      }
+      if (color == null) {
+        if (('measurement' in this && this.measurement != null)) {
+          color = this.$ren.utils.measurementColor(this.measurement, this.value).color;
+        }
+        else{
+          color = "#d6ebff";
+        }
+      } 
       return color;
     },
-    tileBackgroundColor: function () {
+    tileMeasurementBackgroundColor: function () {
+      let alpha = this.bgAlpha ? this.bgAlpha : null
+      console.warn("TODO: set tile background alpha")
+
       let measurement = 'measurement' in this ? this.measurement : null;
       let bgcolor = this.mSettings.tile.measurement_background
-        ? this.$ren.utils.measurementBackgroundColor(measurement, this.mSettings.tile, this.value)
-        : "none";
+        ? this.$ren.utils.measurementBackgroundColor(measurement, this.mSettings.tile, alpha)
+        : "none";// this.mSettings.tile.background?this.mSettings.tile.background:"none";
       return bgcolor
     },
   },
@@ -95,7 +117,7 @@ export default {
       }
       filter.from = from;
       filter.to = to;
-      return filter
+      return { from: from, to: to, predictionIntervalms: filter.predictionIntervalms }
     },
 
 
@@ -162,11 +184,15 @@ export default {
         this.settings.panel && this.settings.panel.cellHeight
           ? this.settings.panel.cellHeight * this.tile.layout.h
           : this.$parent.$el.parentElement.clientHeight * 0.9;
+      if (!h) {
+        h = window.innerHeight * 0.95 / 12 * this.tile.layout.h;
+      }
+      if (!w) {
+        w = window.innerWidth * 0.95 / 12 * this.tile.layout.w;
+      }
       let minD = Math.min(w, h);
       console.debug("cell height: " + this.settings.panel.cellHeight + ":  " + w + "," + h)
       console.debug(this.settings.panel)
-      // console.debug(this.settings.panel.cellHeight)
-      // console.error(this.$parent.$el)
       return minD
     },
     /**
@@ -257,6 +283,9 @@ export default {
       }
 
       return overrideMode;
+    },
+    hasRole(flags){   
+      return flags & this.$store.getters["auth/renRole"]        
     },
     /**
      * 

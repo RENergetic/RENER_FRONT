@@ -1,5 +1,4 @@
 <template>
-  <!-- aaa {{ selectedMeasurements }}aaa -->
   <DataTable
     v-model:expandedRows="expanded"
     v-model:selection="selectedMeasurements"

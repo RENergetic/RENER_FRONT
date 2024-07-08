@@ -1,6 +1,6 @@
 <template>
   <DotMenu v-if="loggedIn" :model="menuModel" :fixed="true" />
-  <div v-if="panel && settings.panelVisibility" style="position: relative">
+  <div v-if="panel && homeSettings.panelVisibility" style="position: relative">
     <!-- {{ $store.getters["view/featuredPanels"] }}  -->
     <!-- {{ $store.getters["view/assetPanels"] }}d -->
     <!-- panel: {{ panel.name }}, {{ panel.id }}, {{ assetId }} -->
@@ -10,7 +10,6 @@
       ref="panel"
       :key="panel.id"
       :asset-id="assetId"
-      :locked="locked"
       :edit-mode="false"
       :panel="panel"
       :filter="effectiveFilterSettings"
@@ -22,16 +21,16 @@
       <h4 style="width: 100%; margin: auto">{{ $t("view.empty_home_dashboard") }}</h4>
     </div>
   </div>
-  <div v-if="settings.demandVisibility && loggedIn" style="position: relative">
+  <div v-if="homeSettings.demandVisibility && loggedIn">
     <DemandList id="demand-list" />
   </div>
-  <div v-if="settings.notificationVisibility && loggedIn" style="position: relative">
-    <NotificationList id="notification-list" />
+  <div v-if="homeSettings.notificationVisibility && loggedIn">
+    <UserNotificationList id="notification-list" />
   </div>
 </template>
 <script>
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
-import NotificationList from "@/components/user/NotificationList.vue";
+import UserNotificationList from "@/components/user/NotificationList.vue";
 // import SettingsDialog from "@/components/miscellaneous/settings/SettingsDialog.vue";
 import InformationPanelWrapper from "@/components/dashboard/informationpanel/InformationPanelWrapper.vue";
 import DemandList from "@/components/user/demand/DemandList.vue";
@@ -44,26 +43,25 @@ export default {
   components: {
     DotMenu,
     DemandList,
-    NotificationList,
+    UserNotificationList,
     InformationPanelWrapper,
   },
   data() {
     return {
       loaded: false,
       grid: null,
-      locked: true,
       slideshow: null,
       autoReload: true,
       assetId: null,
       panel: null,
-      settings: this.$store.getters["settings/home"],
+      homeSettings: this.$store.getters["settings/home"],
       panelSettings: this.$store.getters["settings/panel"],
     };
   },
   computed: {
     effectiveFilterSettings: function () {
       let userFilter = this.$store.getters["settings/filters"]();
-      let overrideMode = this.effectiveOverrideMode(this.settings, this.panel.props);
+      let overrideMode = this.effectiveOverrideMode(this.homeSettings, this.panel.props);
       let settings = this.mergeSettings(userFilter, this.panel.props, overrideMode);
       return this.parseDateFilter(settings);
     },
@@ -73,23 +71,6 @@ export default {
     hasAccess: function () {
       return (this.$store.getters["auth/renRole"] | RenRoles.REN_ADMIN) > 0;
     },
-    toggleButton: function () {
-      //TODO: if permission
-      let label = this.locked ? this.$t("menu.grid_unlock") : this.$t("menu.grid_lock");
-      return {
-        label: label,
-        icon: "pi pi-fw pi-lock",
-        command: () => this.toggleLock(),
-        visible: false,
-      };
-    },
-    // saveButton: function () {
-    //   return {
-    //     label: this.$t("menu.save_grid"),
-    //     icon: "pi pi-fw pi-plus-circle",
-    //     command: () => this.saveGrid(),
-    //   };
-    // },
     normalViewButton: function () {
       return {
         label: this.$t("menu.normal_view_mode"),
@@ -104,7 +85,6 @@ export default {
     menuModel() {
       let model = [];
       model.push(this.normalViewButton);
-
       return model;
     },
   },
@@ -113,9 +93,11 @@ export default {
     this.loaded = false;
   },
   async mounted() {
-    this.panel = await (this.$store.getters["settings/home"].homePanel
-      ? this.$ren.utils.getPanelStructure(this.$store.getters["settings/home"].homePanel)
-      : this.$store.getters["view/homePanel"]);
+    let panel = null;
+    if (this.homeSettings.homePanel) {
+      panel = await this.$ren.utils.getPanelStructure(this.homeSettings.homePanel, null, true);
+    }
+    this.panel = panel ? panel : this.$store.getters["view/defaultHomePanel"];
     var df = new DeferredFunction(this.slideshowLoop, 1000);
     df.run();
     document.documentElement.requestFullscreen();
@@ -125,7 +107,6 @@ export default {
       this.slideshow.stop();
     }
   },
-  updated() {},
   methods: {
     async slideshowLoop() {
       let _this = this;
@@ -134,15 +115,15 @@ export default {
         // console.error(panelDetails);
         if (panelDetails) {
           _this.autoReload = false;
-          let panel = await _this.$ren.utils.getPanelStructure(panelDetails.panelId, panelDetails.assetId);
+          let panel = await _this.$ren.utils.getPanelStructure(panelDetails.panelId, panelDetails.assetId, true);
           _this.assetId = panelDetails.assetId;
           _this.panel = panel;
         } else {
           _this.autoReload = true;
         }
       };
-      if (this.settings.slideshowLoopInterval > 0) {
-        this.slideshow = LoopRunner.init(f, this.settings.slideshowLoopInterval);
+      if (this.homeSettings.slideshowLoopInterval > 0) {
+        this.slideshow = LoopRunner.init(f, this.homeSettings.slideshowLoopInterval);
         this.slideshow.start();
       } else {
         if (this.slideshow) {
@@ -151,9 +132,8 @@ export default {
         this.slideshow = null;
       }
     },
-
     reloadSettings() {
-      this.settings = this.$store.getters["settings/home"];
+      this.homeSettings = this.$store.getters["settings/home"];
     },
     updateFilter() {
       if (this.slideshow) {
@@ -163,35 +143,16 @@ export default {
     reloadPanelSettings() {
       this.panelSettingsDialog = this.$store.getters["settings/panel"];
     },
-    async toggleLock() {
-      this.locked = !this.locked;
-    },
   },
 };
 </script>
 
 <style lang="scss">
+#notification-list,
 #demand-list {
-  width: 50rem;
-  max-width: 95vw;
+  width: 60rem;
+  max-width: 90vw;
   margin: auto;
-  color: #3182ce;
+  position: relative;
 }
-#notification-list {
-  width: 50rem;
-  max-width: 95vw;
-  margin: auto;
-}
-// .grid-stack-item {
-//   margin: 0;
-// }
-// .grid-stack-item-content {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   color: #3182ce;
-//   background-color: #bee3f8;
-//   font-weight: 600;
-//   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-// }
 </style>

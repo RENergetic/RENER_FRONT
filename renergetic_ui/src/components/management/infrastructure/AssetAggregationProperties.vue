@@ -321,6 +321,7 @@ export default {
     },
     async submit() {
       await this.$ren.dataApi.saveMeasurementAggregation(this.assetId, this.configuration).then((config) => {
+        this.$emitter.emit("success", { title: "Configuration saved" });
         this.configuration = config;
       });
     },

@@ -2,8 +2,10 @@
   <Dialog v-model:visible="mNotificationDialog" :style="{ width: '75vw' }" :maximizable="false" :modal="true" :dismissable-mask="true">
     <NotificationList @update="onNotificationUpdate($event)"></NotificationList>
   </Dialog>
-  <Dialog v-model:visible="mDemandDialog" :style="{ width: '75vw' }" :maximizable="false" :modal="true" :dismissable-mask="true">
-    <DemandList @update="onDemandUpdate($event)"></DemandList>
+  <Dialog v-model:visible="mDemandDialog" :maximizable="false" :modal="true" :dismissable-mask="true">
+    <div style="padding: 0 2rem">
+      <DemandList style="width: 50rem; margin: auto" @update="onDemandUpdate($event)"></DemandList>
+    </div>
   </Dialog>
 
   <Dialog v-model:visible="mAddDashboard" :style="{ width: '50vw' }" :modal="true" :dismissable-mask="true">

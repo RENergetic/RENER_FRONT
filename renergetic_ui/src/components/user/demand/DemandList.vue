@@ -1,28 +1,30 @@
 <template>
   <!-- {{ demands }} -->
-  <div v-if="mDemands && mDemands.length > 0" class="flex flex-column align-items-start align-content-start">
-    <h3 v-if="title">{{ $t("view.demand_list") }}:</h3>
+  <div class="flex flex-column align-items-start align-content-start">
+    <div v-if="mDemands && mDemands.length > 0" class="demands-wrapper">
+      <h3 v-if="title">{{ $t("view.demand_list") }}:</h3>
 
-    <template v-for="d in mDemands" :key="d">
-      <UserDemand :demand="d" :pdata="pdata"></UserDemand>
-    </template>
-  </div>
-  <div v-else>
-    <h4 v-if="title">{{ $t("view.no_demand_list") }}</h4>
-  </div>
-  <div v-if="demandsFuture && demandsFuture.length > 0" class="flex flex-column align-items-start align-content-start">
-    <h3 v-if="title">{{ $t("view.demand_list_future") }}:</h3>
+      <template v-for="d in mDemands" :key="d">
+        <UserDemand :demand="d" :pdata="pdata"></UserDemand>
+      </template>
+    </div>
+    <div v-else>
+      <h4 v-if="title">{{ $t("view.no_demand_list") }}</h4>
+    </div>
+    <div v-if="demandsFuture && demandsFuture.length > 0" class="demands-wrapper">
+      <h3 v-if="title">{{ $t("view.demand_list_future") }}:</h3>
 
-    <template v-for="d in demandsFuture" :key="d">
-      <UserDemand :demand="d" :pdata="pdata"></UserDemand>
-    </template>
-  </div>
-  <div v-if="demandsPast && demandsPast.length > 0" class="flex flex-column align-items-start align-content-start">
-    <h3 v-if="title">{{ $t("view.demand_list_past") }}:</h3>
+      <template v-for="d in demandsFuture" :key="d">
+        <UserDemand :demand="d" :pdata="pdata"></UserDemand>
+      </template>
+    </div>
+    <div v-if="demandsPast && demandsPast.length > 0" class="demands-wrapper">
+      <h3 v-if="title">{{ $t("view.demand_list_past") }}:</h3>
 
-    <template v-for="d in demandsPast" :key="d">
-      <UserDemand :demand="d" :pdata="pdata"></UserDemand>
-    </template>
+      <template v-for="d in demandsPast" :key="d">
+        <UserDemand :demand="d" :pdata="pdata"></UserDemand>
+      </template>
+    </div>
   </div>
 </template>
 <script>
@@ -82,30 +84,10 @@ export default {
 </script>
 
 <style lang="scss">
-// .heatdemand {
-//   padding: 0.5rem;
-//   i {
-//     font-size: 2rem;
-//     margin-left: 0.75rem;
-//   }
-//   .description {
-//     font-size: 1rem;
-//     font-style: italic;
-//   }
-//   .message {
-//     font-size: 1.5rem;
-//     font-weight: 600;
-//   }
-// }
-// #demandicon {
-//   width: 5rem;
-//   height: 5rem;
-//   // display: inherit;
-//   background-size: contain;
-//   background-repeat: no-repeat;
-//   background-position: center;
-//   margin-right: 1rem;
-// }
+.demands-wrapper {
+  width: inherit;
+}
+
 h3,
 h4 {
   width: 100%;

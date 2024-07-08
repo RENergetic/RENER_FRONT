@@ -1,6 +1,6 @@
 <template>
   <!-- PUBLIC DASHBOARD -->
-  <div v-if="panel" id="panel-box" style="max-height:100vh:overflow:hidden;">
+  <div v-if="panel" id="panel-box" style="max-height: 100vh; overflow: hidden">
     <DotMenu :model="menuModel" />
     <InformationPanelWrapper
       ref="panel"
@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     async loadStructure() {
-      this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id);
+      this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id, false);
     },
   },
 };

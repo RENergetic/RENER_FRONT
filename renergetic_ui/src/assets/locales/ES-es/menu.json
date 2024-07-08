@@ -7,6 +7,7 @@
   "add_user": "Crear usuario",
   "administration": "Administración",
   "manage_assets": "Activos",
+  "demand_response_rules": "Demand response rules",
   "abstract_meter": "Métricas genéricas",
   "cancel": "Cancelar",
   "dashboards": "Paneles",
@@ -53,5 +54,6 @@
   "signup": "Registrarse",
   "settings": "Configuración",
   "unit_settings": "Configurar unidades",
-  "view": "Vista"
+  "view": "Vista",
+  "manage_rules": "Rules"
 }

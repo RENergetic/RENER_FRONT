@@ -6,7 +6,8 @@
   "add_heatmap": "Dodatej heatMap",
   "add_information_panel": "Dodaj widok ",
   "add_user": "Dodaj użytkwonika",
-  "administration": "Zarządzanie",
+  "administration": "Zarządzanie",  
+  "demand_response_rules": "Reguły reakcji żądań (DR)",
   "manage_assets": "Zarządzanie obiektami",
   "abstract_meter": "Wirtualne liczniki",
   "cancel": "Anuluj",
@@ -63,5 +64,7 @@
   "view": "Widok",
   "manage_notifications": "Powiadomienia",
   "tv_view_mode": "Widok prezentacji",
-  "normal_view_mode": "Widok normaly"
+  "toggle_edit_mode": "Przełącz tryb edycji",
+  "normal_view_mode": "Widok normalny",
+  "manage_rules": "Zarządzaj regułami"
 }

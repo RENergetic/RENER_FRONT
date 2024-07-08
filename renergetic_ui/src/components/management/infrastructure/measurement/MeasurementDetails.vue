@@ -7,6 +7,7 @@
 
 <script>
 import Settings from "@/components/miscellaneous/settings/Settings.vue";
+//TODO: create appropriate schema object
 var detailTypes = {
   color: "Color",
   cumulative: Boolean,
@@ -18,7 +19,11 @@ export default {
   components: {
     Settings,
   },
-  props: { model: { type: Object, default: () => ({}) } },
+  props: {
+    model: { type: Object, default: () => ({}) },
+    autosave: { type: Boolean, default: false },
+    measurement: { type: Object, default: null },
+  },
   emits: ["update"],
   data() {
     return {
@@ -44,7 +49,10 @@ export default {
   },
 
   methods: {
-    onClick() {
+    async onClick() {
+      if (this.autosave && this.measurement != null) {
+        await this.$ren.managementApi.updateMeasurementProperties(this.measurement, this.mModel);
+      }
       this.$emit("update", this.mModel);
     },
     getType(key) {
@@ -69,6 +77,11 @@ export default {
           false: this.$t("settings.no"),
         };
       }
+      if (mt == "Color") {
+        ext = {
+          use_alpha: true,
+        };
+      }
       return {
         label: this.$t("settings.measurement_details." + key),
         description: this.$te("settings.measurement_details.description." + key) ? this.$t("settings.measurement_details.description." + key) : null,
@@ -82,7 +95,8 @@ export default {
       schema.push({
         label: this.$t("settings.submit"),
         ext: {
-          click: this.onClick,
+          click: async () => await this.onClick(),
+          async: true,
         },
         type: "Submit",
         key: "detailsSubmit",

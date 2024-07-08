@@ -83,6 +83,9 @@ class RenUtils {
   uuid() {
     return uuidv4();
   }
+  toJSON(obj, pretty = false) {
+    return pretty ? JSON.stringify(obj, null, "\t") : JSON.stringify(obj, null, "");
+  }
 
   downloadJSON(obj, filename, pretty = false) {
     var json = pretty ? JSON.stringify(obj, null, "\t") : JSON.stringify(obj);
@@ -166,9 +169,9 @@ class RenUtils {
     this.app.$store.commit("settings", settings);
   }
 
-  async getPanelStructure(panelId, assetId) {
+  async getPanelStructure(panelId, assetId, storePanel = false, forceReload = false) {
     let informationPanel = null;
-    if (assetId == null) {
+    if (assetId == null && !forceReload) {
       let index = this.app.$store.getters["view/informationPanelsMap"][panelId];
       if (index != null) {
         informationPanel = this.app.$store.getters["view/informationPanels"][index];
@@ -176,6 +179,9 @@ class RenUtils {
     }
     if (informationPanel == null) {
       informationPanel = await this.app.$ren.dashboardApi.getInformationPanel(panelId, assetId);
+      if (informationPanel != null && storePanel) {
+        this.app.$store.commit("view/setPanel", informationPanel);
+      }
     }
     if (assetId == null) {
       for (let tile of informationPanel.tiles) {
@@ -184,6 +190,7 @@ class RenUtils {
         }
       }
     }
+    console.warn("measurement types hotfix");
     for (let tile of informationPanel.tiles) {
       for (let m of tile.measurements) {
         if ((m.name == "ess" || m.name == "ep") && m.type && m.type.name == "value") {
@@ -191,7 +198,7 @@ class RenUtils {
           // m.type.factor = 1;
           m.type.unit = "ratio";
           m.type.label = "ratio";
-          m.type.name = "Ratio";
+          m.type.name = "ratio";
           m.type.physical_name = "ratio";
           m.type.id = -1;
         }

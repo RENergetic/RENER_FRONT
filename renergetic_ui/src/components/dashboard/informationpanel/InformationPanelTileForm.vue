@@ -1,6 +1,5 @@
 <template>
-  <!-- <div class="ren"> -->
-  <TabView id="tile-panel" class="ren flex flex-column" style="height: 100%">
+  <TabView id="tile-panel" v-model:activeIndex="mActiveTab" class="ren flex flex-column" style="height: 100%">
     <TabPanel :header="$t('view.properties')">
       <ren-input
         v-model="mModel.name"
@@ -30,8 +29,31 @@
         :invalid="v$.mModel.type.$invalid"
         :errors="v$.mModel.type.$silentErrors"
       />
-      <ren-input v-model="propsJSON" :text-label="'model.information_panel.tile.props'" />
 
+      <ren-input-wrapper :text-label="'model.information_panel.tile.props'">
+        <template #content>
+          <!-- <InfoIcon :floating="true">
+            <template #content>
+              <Button style="width: max-content" :label="$t('view.button.show_available_tile_icons')" @click="iconsDialog = true" />
+              <Button :label="$t('view.button.show_available_tile_properties')" @click="propertiesDialog = true" />
+            </template>
+          </InfoIcon> -->
+
+          <div class="flex flex-row">
+            <ren-input v-model="propsJSON" :invalid="!validJSON" style="flex-grow: 1" />
+
+            <Button
+              v-if="validJSON"
+              v-tooltip="$t('view.edit')"
+              style="width: 2.357rem"
+              icon="pi pi-pencil"
+              class="p-button-rounded"
+              @click="propertiesDialog = true"
+            />
+            <Button v-else v-tooltip="$t('view.edit')" style="width: 2.357rem" icon="pi pi-pencil" class="p-button-rounded disabled" />
+          </div>
+        </template>
+      </ren-input-wrapper>
       <ren-input-number
         v-model="mModel.layout.x"
         :min="0"
@@ -70,7 +92,7 @@
       <div class="grid ren flex">
         <div class="col-12 flex flex-column">
           <ul>
-            <li v-for="m in mModel.measurements" :key="m.id">
+            <li v-for="(m, index) in mModel.measurements" :key="`${m.id}_${index}`">
               <div>
                 <!-- <span v-if="m.aggregation_function">{{ m.id }} ({{ $t("enums.measurement_aggregation." + m.aggregation_function) }})</span>
               <span v-else>{{ m.id }} </span> -->
@@ -107,8 +129,19 @@
                   @mouseover="downloadMeasurementDetails(m)"
                   @click="showMeasurement(m)"
                 />
-                <Button v-tooltip="$t('view.delete')" icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteMeasurement(m)" />
-
+                <Button
+                  v-tooltip="$t('view.delete')"
+                  icon="pi pi-trash"
+                  class="p-button-rounded p-button-danger"
+                  @click="deleteMeasurement(m, index)"
+                />
+                <Button
+                  v-if="m.id != null"
+                  v-tooltip="$t('view.show_details')"
+                  icon="pi pi-cog"
+                  class="p-button-rounded"
+                  @click="showMeasurementDetails(m)"
+                />
                 <!-- $t('view.view_json') click more details -->
               </div>
             </li>
@@ -126,8 +159,6 @@
       </div>
     </TabPanel>
   </TabView>
-  <!-- </div> -->
-  <!-- v-model:visible="jsonMesurementDialog" v-model="selectedMesurement" -->
   <MeasurementDialog ref="mesurementDialog" :reload="true" />
   <Dialog v-model:visible="addMeasurementDialog" :style="{ width: '100vw', height: '100vh', maxHeight: '100%' }" :modal="true">
     <Card class="ren-page-content">
@@ -143,12 +174,57 @@
       </template>
     </Card>
   </Dialog>
+  <Dialog v-model:visible="iconsDialog" :dismissable-mask="true" :style="{ maxWidth: '80vw', maxHeight: '100%' }" :modal="true">
+    <Card class="ren-page-content" style="width: max-content">
+      <template #content>
+        <div>
+          <ol>
+            <li v-for="icon in Object.keys(icons)" :key="icon">{{ icon }} : <font-awesome-icon :icon="icons[icon]" /> ({{ icons[icon] }})</li>
+          </ol>
+        </div>
+      </template>
+    </Card>
+  </Dialog>
+  <Dialog v-model:visible="propertiesDialog" :dismissable-mask="true" :style="{ maxHeight: '100%' }" :modal="true">
+    <Card class="ren-page-content" style="width: max-content; max-width: 40rem">
+      <template #content>
+        <Settings
+          v-if="tilePropertiesSchema"
+          :schema="tilePropertiesSchema"
+          :settings="tileProperties"
+          @update:settings="onPropertiesChange"
+        ></Settings>
+        <Button :label="$t('view.button.close')" class="flex-grow-0 ren-button" style="width: 100%" @click="propertiesDialog = false" />
+        <!-- <ul>
+          <li v-for="p in tileProperties.filter((it) => !it.hidden)" :key="p.key">
+            <ren-input v-model="p.key" :disabled="true" :text-label="`model.information_panel.tile.properties.${p.key}`" />
+
+           
+            {{ $t(`model.information_panel.tile.properties.${p.key}_description`) }} ({{ p.type ? p.type : "string" }})
+          </li>
+        </ul> -->
+      </template>
+    </Card>
+  </Dialog>
+  <Dialog v-model:visible="measurementDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <MeasurementDetails
+      v-if="mMeasurement"
+      :measurement="mMeasurement"
+      :autosave="true"
+      :model="mMeasurement.measurement_details"
+      @update="onMeasurementDetailsUpdate"
+    />
+    <!--  -->
+  </Dialog>
 </template>
 
 <script>
 import { MeasurementAggregation } from "@/plugins/model/Enums.js";
 export function cleanTileStructure(mTile, clearIDs = false) {
   if (clearIDs) delete mTile.id;
+  if (!mTile.id && !mTile.tempId) {
+    mTile.tempId = new Date().getTime() + Math.round(Math.random() * new Date().getTime());
+  }
   if (mTile.measurements) {
     mTile.measurements = mTile.measurements
       .map((m) => {
@@ -176,6 +252,7 @@ export function cleanTileStructure(mTile, clearIDs = false) {
         if (!obj.id) {
           obj.tempId = new Date().getTime() + Math.round(Math.random() * new Date().getTime());
         }
+
         return obj;
         // }
         //return null;
@@ -187,31 +264,45 @@ import { useVuelidate } from "@vuelidate/core";
 import { maxLength, required, minLength } from "@/plugins/validators.js";
 import MeasurementDialog from "@/components/management/infrastructure/measurement/MeasurementDialog.vue";
 import MeasurementSelect from "@/components/management/infrastructure/measurement/MeasurementSelect.vue";
+import MeasurementDetails from "@/components/management/infrastructure/measurement/MeasurementDetails.vue";
+import Settings from "@/components/miscellaneous/settings/Settings.vue";
 import MeasurementTileForm from "./MeasurementTileForm.vue";
+import icons from "./informationtile/icons.js";
+import tilePropertiesSchema from "./informationtile/properties.js";
 export default {
   name: "InformationPanelTileForm",
-  components: { MeasurementDialog, MeasurementSelect, MeasurementTileForm },
+  components: { MeasurementDialog, MeasurementSelect, MeasurementTileForm, MeasurementDetails, Settings },
   props: {
+    activeTab: { type: Number, default: 0 },
     modelValue: {
       type: Object,
       default: () => ({ measurements: [] }),
     },
   },
-  emits: ["update:modelValue"],
+  emits: ["update:modelValue", "update:activeTab"],
   setup: () => ({ v$: useVuelidate() }),
   data() {
-    let tileStructure = this.modelValue;
+    let tileStructure = JSON.parse(JSON.stringify(this.modelValue));
     cleanTileStructure(tileStructure);
     return {
       // jsonMesurementDialog: false,
       // selectedMesurement: null,
+      measurementDetailsDialog: false,
+      mMeasurement: null,
+      mActiveTab: this.activeTab,
+      icons: icons,
+      propertiesDialog: false,
+      tilePropertiesSchema: tilePropertiesSchema,
+      tileProperties: tileStructure.props,
       aggregations: MeasurementAggregation.keys(),
       addMeasurementDialog: false,
       addMeasurementTemplateDialog: false,
+      iconsDialog: false,
       mModel: tileStructure,
       // mPanelStructure: null,
-      measurementsJSON: JSON.stringify(tileStructure.measurements, null, "\t"),
-      propsJSON: tileStructure.props != null ? JSON.stringify(tileStructure.props, null, "\t") : "{}",
+      measurementsJSON: this.$ren.utils.toJSON(tileStructure.measurements, true),
+      propsJSON: tileStructure.props != null ? this.$ren.utils.toJSON(tileStructure.props) : "{}",
+      validJSON: true,
     };
   },
   validationConfig: {
@@ -229,10 +320,25 @@ export default {
   watch: {
     propsJSON: {
       handler: function (v) {
-        if (v != null) this.mModel.props = JSON.parse(v);
+        try {
+          if (v != null) {
+            this.mModel.props = JSON.parse(v);
+            this.tileProperties = this.mModel.props;
+            this.validJSON = true;
+          }
+        } catch {
+          this.validJSON = false;
+        }
       },
       immediate: true,
     },
+    mActiveTab: {
+      handler: function (tab) {
+        this.$emit("update:activeTab", tab);
+      },
+      immediate: true,
+    },
+
     measurementsJSON: {
       handler: function (v) {
         if (v != null) this.mModel.measurements = JSON.parse(v);
@@ -241,15 +347,31 @@ export default {
     },
     mModel: {
       handler: function (mModel) {
-        // console.info(mModel);
+        console.info("update tile");
+        console.debug(mModel);
         this.$emit("update:modelValue", mModel);
       },
       deep: true,
-      immediate: true,
     },
   },
   async mounted() {},
   methods: {
+    onPropertiesChange(tileProperties) {
+      this.tileProperties = tileProperties;
+      this.propsJSON = this.$ren.utils.toJSON(tileProperties);
+    },
+    async showMeasurementDetails(measurement) {
+      this.mMeasurement = measurement;
+      await this.$ren.managementApi.getMeasurementProperties(measurement.id).then((details) => {
+        this.mMeasurement.measurement_details = details ? details : {};
+      });
+
+      this.measurementDetailsDialog = true;
+    },
+    onMeasurementDetailsUpdate() {
+      this.mMeasurement = null;
+      this.measurementDetailsDialog = false;
+    },
     async downloadMeasurementDetails(m) {
       if (m.id) {
         if (!m.name)
@@ -270,18 +392,20 @@ export default {
       this.$refs.mesurementDialog.show(m);
       // this.jsonMesurementDialog = true;
     },
-    async deleteMeasurement(m) {
+    async deleteMeasurement(m, index) {
       if (m.id) {
         await this.downloadMeasurementDetails(m);
         await this.deleteConfirm({
           message: this.$t("view.delete_tile_measurement", { label: m.label ? m.label : m.name }),
           action: async () => {
-            this.mModel.measurements = this.mModel.measurements.filter((it) => it.id != m.id);
+            // this.mModel.measurements = this.mModel.measurements.filter((it) => it.id != m.id);
+            this.mModel.measurements.splice(index, 1);
             this.$emit("update:modelValue", this.mModel);
           },
         });
       } else {
-        this.mModel.measurements = this.mModel.measurements.filter((it) => it.tempId != m.tempId);
+        // this.mModel.measurements = this.mModel.measurements.filter((it) => it.tempId != m.tempId);
+        this.mModel.measurements.splice(index, 1);
         this.$emit("update:modelValue", this.mModel);
       }
     },

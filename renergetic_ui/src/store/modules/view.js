@@ -45,9 +45,22 @@ export default {
     locationList: ["en-EN"],
   },
   mutations: {
+    setPanel(state, panel) {
+      console.debug("Set Panel");
+      if (!panel || !panel.id) return;
+      if (state.informationPanels.filter((it) => (it.id = panel.id)).length != 0) {
+        return;
+      }
+      panel.label = panel.label ? panel.label : panel.name;
+      // console.debug(state.informationPanels);
+      state.informationPanels.push(panel);
+      state.informationPanelsMap[panel.id] = state.informationPanels.length - 1;
+      console.debug(state.informationPanels);
+      console.debug(state.informationPanelsMap);
+    },
     wrapper(state, payload) {
       if (!payload) {
-        console.error("Empty wrraper payload");
+        console.error("Empty wrapper payload");
         return;
       }
       let getF = (key, defaultValue) => (payload[key] ? payload[key] : defaultValue);
@@ -208,8 +221,8 @@ export default {
     informationPanels: (state /* getters*/) => {
       return state.informationPanels;
     },
-    homePanel(state) {
-      console.error(state.informationPanels);
+    defaultHomePanel(state) {
+      console.debug(state.informationPanels);
       if (state.informationPanels && state.informationPanels.length > 0) {
         if (state.default_asset) {
           let panel = state.informationPanels[0];

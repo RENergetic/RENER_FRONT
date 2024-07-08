@@ -7,6 +7,7 @@
   "add_information_panel": " Add information panels",
   "add_user": "Create user",
   "administration": "Administration",
+  "demand_response_rules": "Demand response rules",
   "manage_assets": "Assets",
   "abstract_meter": "Abstract meters",
   "cancel": "Cancel",
@@ -63,5 +64,7 @@
   "view": "View",
   "manage_notifications": "Notifications",
   "tv_view_mode": "TV View",
-  "normal_view_mode": "Normal view"
+  "toggle_edit_mode": "Toggle edit mode",
+  "normal_view_mode": "Normal view",
+  "manage_rules": "Rules"
 }

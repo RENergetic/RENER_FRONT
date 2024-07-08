@@ -2,14 +2,16 @@
   <!-- PUBLIC DASHBOARD -->
   <div v-if="panel" id="panel-box">
     <DotMenu :model="menuModel" />
+    <!-- :asset-id="$route.params.asset_id" -->
     <InformationPanelWrapper
       ref="panel"
-      :asset-id="$route.params.asset_id"
+      :key="panelReload"
       :locked="locked"
       :panel="panel"
-      :edit-mode="false"
+      :edit-mode="editMode"
       :panel-settings="settings"
       :filter="effectiveFilterSettings"
+      @update:tile="onTileUpdate"
     ></InformationPanelWrapper>
     <div style="margin-left: 1rem; margin-top: 2rem">
       <ParsedDateFilter :key="parsedFilterRefresh" :filter="effectiveFilterSettings" />
@@ -44,17 +46,36 @@
     </template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="conversionSettingsDialog">
-    <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
+    <template #settings>
+      <ConversionSettings @update="reloadSettings()"></ConversionSettings>
+    </template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="filterSettingsDialog" :save="false">
     <template #settings>
-      <Card class="ren-settings">
+      <Panel v-if="panel" toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
+        </template>
+        <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
+      </Panel>
+      <Panel v-if="panel" toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.panel_filter_settings") }}:</span>
+        </template>
+        <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
+      </Panel>
+      <Panel v-if="panel" toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.user_filter_settings") }}:</span>
+        </template>
+        <BasicFilterSettings :setting-key="'public'" @update="updateFilter()" />
+      </Panel>
+      <!-- <Card class="ren-settings">
         <template #title>
           <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
         </template>
         <template #content>
-          <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
-          <!-- <Settings :schema="schema" :settings="effectiveFilterSettings" :disabled="true" /> -->
+          <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" /> 
         </template>
       </Card>
       <Card class="ren-settings">
@@ -62,8 +83,7 @@
           <span> {{ $t("view.panel_filter_settings") }}:</span>
         </template>
         <template #content>
-          <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
-          <!-- <Settings :schema="schema" :settings="panel.props" :disabled="true" /> -->
+          <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" /> 
         </template>
       </Card>
       <Card class="ren-settings">
@@ -72,9 +92,8 @@
         </template>
         <template #content>
           <BasicFilterSettings :setting-key="'public'" @update="updateFilter()" />
-          <!-- <PanelSettings @update="reloadPanelSettings()"> </PanelSettings> -->
         </template>
-      </Card>
+      </Card> -->
     </template>
   </RenSettingsDialog>
 </template>
@@ -104,6 +123,8 @@ export default {
     return {
       schema: panelSchema,
       panel: null,
+      panelReload: false,
+      editMode: false,
       // locked: false,
       notifications: [],
       settings: this.$store.getters["settings/panel"],
@@ -135,6 +156,10 @@ export default {
     exportTemplateButton: function () {
       return { label: this.$t("menu.export_template"), icon: "pi pi-file", command: () => this.exportPanel(true) };
     },
+    editModeButton: function () {
+      return { label: this.$t("menu.toggle_edit_mode"), icon: "pi pi-pencil", command: () => (this.editMode = !this.editMode) };
+    },
+
     fullScreenButton: function () {
       return {
         label: this.$t("menu.tv_view_mode"),
@@ -157,8 +182,12 @@ export default {
       menu.push(this.conversionSettingsButton);
       menu.push(this.filterSettingsButton);
       menu.push(this.fullScreenButton);
-      menu.push(this.exportTemplateButton);
-      menu.push(this.exportStructureButton);
+      if (this.hasRole(this.RenRoles.REN_ADMIN | this.RenRoles.REN_MANAGER | this.RenRoles.REN_TECHNICAL_MANAGER)) {
+        menu.push(this.exportTemplateButton);
+        menu.push(this.exportStructureButton);
+        menu.push(this.editModeButton);
+      }
+
       return menu;
     },
   },
@@ -171,16 +200,22 @@ export default {
       let filename = template ? `template_${this.panel.name}` : `${this.panel.id}_${this.panel.name}`;
       this.$ren.utils.downloadJSON(panelStructure, filename, true);
     },
-    async loadStructure() {
-      this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id);
-      // let m = this.panel.tiles.map((it) => ({ id: it.id, m: it.measurements.map((m) => ({ name: m.name, label: m.label })) }));
+    async onTileUpdate(ev) {
+      this.panel.tiles[ev.index] = ev.tile;
+      await this.$ren.dashboardApi.updateInformationPanel(this.panel).then(async () => {
+        // console.debug(this.panel);
+        await this.loadStructure(true);
+        this.panelReload = !this.panelReload;
+        console.debug(this.panel);
+      });
+    },
+    async loadStructure(forceReload = false) {
+      this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id, !forceReload, forceReload);
     },
     updateFilter() {
-      // this.filterSettings = this.$store.getters["settings/parsedFilter"]();
       this.parsedFilterRefresh = !this.parsedFilterRefresh;
     },
     reloadSettings() {
-      // this.filterSettings = this.$store.getters["settings/parsedFilter"]();
       this.settings = this.$store.getters["settings/panel"];
       this.conversionSettings = this.$store.getters["settings/conversion"];
       this.parsedFilterRefresh = !this.parsedFilterRefresh;
