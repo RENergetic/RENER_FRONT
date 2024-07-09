@@ -4,17 +4,14 @@
       <i v-if="tileDataPreview" v-tooltip="$t('view.measurements')" class="pi pi-chart-line data-preview tile-icon" @click="viewMeasurements()" />
       <i v-if="edit" v-tooltip="$t('view.edit')" class="pi pi-pencil tile-icon" @click="$emit('edit')" />
     </div>
-    <!-- {{ tile.measurements.map((it) => it.measurement_details) }}
-    {{ tile.measurements.map((it) => it.type.color) }} -->
-    <!-- {{ filter }} -->
-
     <div
-      v-if="(titleVisible || tile.measurements.length == 0) && tile.label"
+      v-if="(titleVisible || tile.measurements.length == 0) && tile.label && tile.type != 'image' && tile.type != 'qrcode'"
       class="flex flex-column justify-content-center"
       style="height: 100%; width: 100%"
     >
       <h3 :style="`margin: 0; text-align: center;color:${titleColor}`">{{ tile.label }}</h3>
     </div>
+    <!--  register new tile  in enums  -->
 
     <KnobTile
       v-else-if="tile.type == 'knob'"
@@ -24,7 +21,22 @@
       :settings="mSettings"
       :conversion-settings="conversionSettings"
     ></KnobTile>
-
+    <ImageTile
+      v-else-if="tile.type == 'image'"
+      :style="'width:100%'"
+      :tile="tile"
+      :pdata="pdata"
+      :settings="mSettings"
+      :conversion-settings="conversionSettings"
+    />
+    <QRCodeTile
+      v-else-if="tile.type == 'qrcode'"
+      :style="'width:100%'"
+      :tile="tile"
+      :pdata="pdata"
+      :settings="mSettings"
+      :conversion-settings="conversionSettings"
+    />
     <ChartTile
       v-else-if="tile.type == 'chart'"
       :style="'width:100%'"
@@ -95,6 +107,8 @@ import InformationTileSingle from "./InformationTileSingle.vue";
 import MultiKnobTile from "./MultiKnobTile.vue";
 import { TileTypes } from "@/plugins/model/Enums.js";
 import icons from "./icons";
+import ImageTile from "./ImageTile.vue";
+import QRCodeTile from "./QRCodeTile.vue";
 // import MultiDoughnutTile from "./MultiDoughnutTile.vue";
 
 function validateTileSettings(tile, panelSettings, ctx) {
@@ -133,6 +147,8 @@ export default {
   components: {
     InformationListTile,
     KnobTile,
+    ImageTile,
+    QRCodeTile,
     DoughnutTile,
     InformationTileSingle,
     ChartTile,

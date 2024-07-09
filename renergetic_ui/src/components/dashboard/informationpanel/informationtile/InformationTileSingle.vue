@@ -1,5 +1,6 @@
 <template>
   <!-- {{ mSettings }} -->
+
   <div v-if="measurement" :class="'flex justify-content-center ' + tileOrientationClass" :style="tileStyle">
     <div
       v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
@@ -14,8 +15,18 @@
         <h3>{{ $t(`tile_templates.${tile.name}`, { value: `${$ren.utils.roundValue(value)} ${unit} ` }) }}</h3>
       </span>
     </div>
-    <div v-else id="tilecontent" class="flex flex-column align-items-center justify-content-center">
-      <span id="label" :style="color"> {{ mSettings.tile.label }} </span>
+    <div
+      v-else-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
+      id="tilecontent"
+      class="flex flex-column align-items-center justify-content-center"
+    >
+      <span id="label" :style="color"> {{ mSettings.tile.label ? mSettings.tile.label : `${measurementlabel}: ` }} </span>
+      <span id="value" :style="color">
+        <h2>{{ $ren.utils.roundValue(value) }} {{ unit }}</h2>
+      </span>
+    </div>
+    <div v-else id="tilecontent" :class="'flex flex-column align-items-center justify-content-center ' + tileOrientationClass">
+      <span id="label" :style="color"> {{ mSettings.tile.label ? mSettings.tile.label : `${measurementlabel}: ` }} </span>
       <span id="value" :style="color">
         <h2>{{ $ren.utils.roundValue(value) }} {{ unit }}</h2>
       </span>
@@ -85,57 +96,73 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-span {
-  float: left;
-  width: 100%;
-  text-align: center;
-}
 #tileicon {
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  padding: 5%;
+  // padding: 5%;
+  padding: 0.5rem;
+
   svg {
     height: 100%;
   }
 }
+
 .horizontal-tile {
+  span {
+    float: left;
+    margin-right: 0.5rem;
+    text-align: center;
+  }
   flex-direction: row !important;
+
   #tilecontent {
     flex-grow: 1;
     flex-shrink: 1;
     flex-basis: 0%;
   }
+
   #tileicon {
     height: 90%;
     // height: 4.5rem;
     width: 45%;
     max-width: 7rem;
     margin: auto;
+
     svg {
       max-width: 7rem;
       max-height: 7rem;
     }
   }
 }
+
 .vertical-tile {
+  span {
+    float: left;
+    width: 100%;
+    text-align: center;
+  }
   flex-direction: column !important;
+
   #tilecontent {
     flex-grow: 0;
     flex-shrink: 0;
     flex-basis: 0%;
   }
+
   #tileicon {
     width: 100%;
     // height: 4.5rem;
     height: 45%;
     max-height: 7rem;
+
     svg {
       max-width: 7rem;
       max-height: 7rem;
     }
   }
 }
+
 h2 {
   margin: 0;
 }

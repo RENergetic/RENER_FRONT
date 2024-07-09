@@ -211,6 +211,7 @@ export default {
   text-align: center;
   svg {
     height: 100%;
+    width: 100%;
   }
 }
 

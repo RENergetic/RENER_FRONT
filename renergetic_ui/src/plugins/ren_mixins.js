@@ -51,6 +51,24 @@ export default {
       return this.isTileHorizontal ? 'horizontal-tile' : 'vertical-tile'
     },
 
+    measurementlabel: function () {
+      if ('measurement' in this && this.measurement != null) {
+        let labelKey = `model.measurement.labels.${this.measurement.label}`;
+        if (this.measurement.label != null && this.$te(labelKey)) {
+          return this.$t(labelKey);
+        }
+        let nameKey = `enums.measurement_name.${this.measurement.name}`;
+        if (this.$te(nameKey)) {
+          return this.$t(nameKey);
+        }
+        if (this.measurement.label != null) {
+          return this.measurement.label;
+        }
+        return this.measurement.name;
+      }
+      return null
+    },
+
     measurementColor: function () {
       let colorObj;
       if (!this.mSettings.tile.measurement_color) {
@@ -90,7 +108,7 @@ export default {
   },
 
   methods: {
-    
+
     parseDateFilter: function (filter) {
       let f = filter ? filter : {};
       let from = f.date_from;
