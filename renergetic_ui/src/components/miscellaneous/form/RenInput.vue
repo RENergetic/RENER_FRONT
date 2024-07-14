@@ -112,6 +112,13 @@ export default {
     },
   },
   methods: {
+    focus() {
+      try {
+        document.getElementById(this.mId).focus();
+      } catch {
+        console.warn(`Focus issue with ren-input ${this.mId}`);
+      }
+    },
     onInput(evt) {
       if (!this.inline) this.$emit("update:modelValue", evt);
     },

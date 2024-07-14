@@ -13,8 +13,8 @@ export default class KPIAPI extends RestComponent {
       }
     });
   }
-  getAnAbstracMeterConfiguration(meter_name, domain) {
-    return this.get(`/api/meter/${domain}/${meter_name}`, null, null, (e) => {
+  getAbstractMeterConfiguration(meterName, domain) {
+    return this.get(`/api/meter/${domain}/${meterName}`, null, null, (e) => {
       if (e.response.status != 404) {
         this.emitError(`Abstract meter list not found`, {
           code: "abstract_meter_list_error",

@@ -88,7 +88,6 @@ export default {
       return model;
     },
   },
-  watch: {},
   async created() {
     this.loaded = false;
   },

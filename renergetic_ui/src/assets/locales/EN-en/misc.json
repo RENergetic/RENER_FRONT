@@ -35,6 +35,9 @@
     "sameAs": "The '{property}' is not same as {same_as_property}."
   },
   "information": {
+    "create_success":"Object created succesfully",
+    "update_success":"Update success",
+    "delete_success":"Object deleted",
     "information": "Information",
     "dashboard_created": "Dashboard has been created",
     "dashboard_updated": "Dashboard has been updated",

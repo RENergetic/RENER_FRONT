@@ -115,8 +115,6 @@ export default {
       }
     },
   },
-  watch: {},
-
   methods: {
     onPreview() {
       this.$refs.dataPreview.open(this.mTile);
