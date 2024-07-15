@@ -47,6 +47,8 @@
   "copy": "Kopiuj",
   "correctly_added": "Values added correctly",
   "dashboards": "Dashboards",
+  "confirm_abstract_meter_delete":"Do you want to delete meter: {label}",
+  "delete_abstract_meter":"Delete actract meter",
   "delete_measurements": "Usuń wiele",
   "delete_profile": "Usuwanie profilu",
   "delete_profile_message": "Czy chcesz usunąć swój profil (bezpowrotnie).",

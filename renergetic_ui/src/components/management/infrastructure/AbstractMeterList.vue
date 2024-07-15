@@ -3,7 +3,7 @@
     <template #content>
       <!-- <h3>{{ $t("view.abstract_meter") }}:</h3> -->
       <div class="ren">
-        <!-- {{ measurementIds }}  -->
+        <!-- {{ meterMeasurements }}  -->
 
         <ren-input-wrapper :text-label="'view.abstract_meter_list'">
           <template #content>
@@ -52,6 +52,20 @@
           <ren-input-wrapper v-if="conditionMeterShown">
             <template #content> <Button :label="$t('view.add_measurement')" @click="selectConditionMeasurement()" /> </template>
           </ren-input-wrapper>
+          <div>
+            <!-- v-if="abstractMeter.measurement && abstractMeter.measurement.id" -->
+
+            <ren-input-wrapper :text-label="'model.abstract_meter.linked_measurement'">
+              <template #content>
+                <span v-if="abstractMeter.measurement" style="padding: 0.25rem">
+                  {{ abstractMeter.measurement.label ? abstractMeter.measurement.label : abstractMeter.measurement.label }}
+                  ({{ abstractMeter.measurement.id }})
+                </span>
+                <span v-else></span>
+                <Button :label="$t('view.link_measurement')" @click="selectLinkedMeasurement" />
+              </template>
+            </ren-input-wrapper>
+          </div>
           <ren-input-wrapper>
             <template #content>
               <Button v-if="!isValidMeter" disabled :label="$t('view.button.submit')" />
@@ -64,8 +78,8 @@
                 icon="pi pi-trash"
                 class="p-button-danger"
                 :disabled="abstractMeter._newInstance"
-                label="Delete"
-                @click="deleteAbstractMeterFunc"
+                :label="$t('view.button.delete')"
+                @click="deleteAbstractMeter"
               />
             </template>
           </ren-input-wrapper>
@@ -73,22 +87,22 @@
           <!-- <Button :disabled="saveButtonDisabled" label="Save" @click="addUpdateAbstractMeter" /> -->
         </div>
       </div>
-
-      <div class="gap-3 field grid"></div>
     </template>
   </Card>
   <Card class="measurement-list">
     <template #content>
       <h3>{{ $t("view.measurements") }}:</h3>
       <Accordion v-model:activeIndex="activeAccordion">
-        <AccordionTab v-for="(valueFormula, index) in Object.values(measurementIds)" :key="index" :header="valueFormula.id">
-          <p>{{ $t("model.measurement.name") }} : {{ valueFormula.name }}</p>
-          <p>{{ $t("model.measurement.label") }} : {{ valueFormula.label }}</p>
-          <p>{{ $t("model.measurement.domain") }} : {{ valueFormula.domain }}</p>
-          <p>{{ $t("model.asset.name") }} : {{ valueFormula.asset.name }}</p>
-          <p>{{ $t("model.measurement.type") }} : {{ valueFormula.type.name }}</p>
-          <p>{{ $t("model.measurement_type.unit") }} : {{ valueFormula.type.unit }}</p>
-          <p>{{ $t("model.measurement_type.physical_name") }} : {{ valueFormula.type.physical_name }}</p>
+        <AccordionTab v-for="(measurement, index) in Object.values(meterMeasurements)" :key="index" :header="measurement.id">
+          <span v-if="measurement._loaded">
+            <p>{{ $t("model.measurement.name") }} : {{ measurement.name }}</p>
+            <p>{{ $t("model.measurement.label") }} : {{ measurement.label }}</p>
+            <p>{{ $t("model.measurement.domain") }} : {{ measurement.domain }}</p>
+            <p>{{ $t("model.asset.name") }} : {{ measurement.asset.name }}</p>
+            <p>{{ $t("model.measurement.type") }} : {{ measurement.type.name }}</p>
+            <p>{{ $t("model.measurement_type.unit") }} : {{ measurement.type.unit }}</p>
+            <p>{{ $t("model.measurement_type.physical_name") }} : {{ measurement.type.physical_name }}</p>
+          </span>
         </AccordionTab>
       </Accordion>
     </template>
@@ -96,7 +110,7 @@
   <Dialog v-model:visible="measurementDialog" :style="{ width: '90vw', height: '90vh', maxHeight: '100%' }" :modal="true">
     <Card class="ren-page-content">
       <template #content>
-        <MeasurementSelect :selected-measurements="measurementIds" :filters="measurementFilter" @select="onMeasurementSelect" />
+        <MeasurementSelect :selected-measurements="selectedMeasurements" :filters="measurementFilter" @select="onMeasurementSelect" />
       </template>
     </Card>
   </Dialog>
@@ -127,12 +141,12 @@ export default {
       abstractMeter: null,
       dropdownDomain: ["heat", "electricity", "none"],
       isValidFormula: false,
-      isValidCondition: false, //      saveButtonDisabled: true,
+      isValidCondition: true, //      saveButtonDisabled: true,
       // abstracMeterExists: false,
       conditionMeterShown: false,
       toastMessage: null,
-      measurementIds: {},
-      measurementList: [],
+      meterMeasurements: {},
+      selectedMeasurements: {},
       activeAccordion: null,
       measurementHandler: null,
     };
@@ -168,7 +182,7 @@ export default {
         return;
       }
       this.isValidFormula = this.validateMeasurementFormula(newValue);
-      if (this.isValidFormula) this.measurementIds = this.listMeasurements();
+      if (this.isValidFormula) this.meterMeasurements = this.listMeasurements();
     },
     "abstractMeter.condition": function (newValue) {
       console.error("watch test2");
@@ -177,9 +191,9 @@ export default {
         return;
       }
       this.isValidCondition = this.validateMeasurementCondition(newValue);
-      if (this.isValidCondition) this.measurementIds = this.listMeasurements();
+      if (this.isValidCondition) this.meterMeasurements = this.listMeasurements();
     },
-    measurementIds: function (newVal) {
+    meterMeasurements: function (newVal) {
       this.loadMeasurements(newVal);
     },
   },
@@ -194,61 +208,73 @@ export default {
     },
     async mSetAbstractMeter(abstractMeter) {
       this.conditionMeterShown = abstractMeter.condition ? true : false;
-      this.measurementFilter = { "type.physical_name": { value: this.abstractMeterType.physicalName } };
+      this.measurementFilter = {
+        "type.physical_name": { value: this.abstractMeterType.physicalName },
+        domain: { value: abstractMeter.domain },
+      };
 
       this.abstractMeter = abstractMeter;
     },
-    selectFormulaMeasurement() {
+    async selectLinkedMeasurement() {
+      this.measurementFilter = {
+        domain: { value: this.abstractMeter.domain },
+        name: { value: this.abstractMeter.name.toLocaleLowerCase() },
+        sensor_name: { value: "abstract_meter" },
+      };
       var _this = this;
       this.measurementHandler = (m) => {
-        if (_this.abstractMeter) {
-          if (_this.abstractMeter.formula) _this.abstractMeter.formula += `[${m.id}]`;
-          else {
-            _this.abstractMeter.formula = `[${m.id}]`;
-          }
+        _this.abstractMeter.measurement = m;
+      };
+      if (this.abstractMeter.measurement) {
+        var selectedMeasurements = {};
+        selectedMeasurements[this.abstractMeter.measurement.id] = this.abstractMeter.measurement;
+        this.selectedMeasurements = selectedMeasurements;
+      }
+      this.measurementDialog = true;
+    },
+    mSetFormulaMeasurement(measurement, strFormula) {
+      measurement._loaded = true;
+      this.meterMeasurements[measurement.id] = measurement;
+      if (this.abstractMeter) {
+        if (strFormula) strFormula += `[${measurement.id}]`;
+        else {
+          strFormula = `[${measurement.id}]`;
         }
+      }
+      return strFormula;
+    },
+    selectFormulaMeasurement() {
+      var _this = this;
+
+      this.measurementHandler = (m) => {
+        _this.abstractMeter.formula = _this.mSetFormulaMeasurement(m, _this.abstractMeter.formula);
         _this.$refs.formulaInput.focus();
       };
+      this.selectedMeasurements = this.meterMeasurements;
+      this.measurementFilter = {
+        "type.physical_name": { value: this.abstractMeterType.physicalName },
+        domain: { value: this.abstractMeter.domain },
+      };
+
       this.measurementDialog = true;
     },
     selectConditionMeasurement() {
       var _this = this;
       this.measurementHandler = (m) => {
-        if (_this.abstractMeter) {
-          if (_this.abstractMeter.condition) _this.abstractMeter.condition += `[${m.id}]`;
-          else {
-            _this.abstractMeter.condition = `[${m.id}]`;
-          }
-        }
+        _this.abstractMeter.condition = _this.mSetFormulaMeasurement(m, _this.abstractMeter.condition);
         _this.$refs.conditionInput.focus();
       };
+      this.selectedMeasurements = this.meterMeasurements;
+      this.measurementFilter = {
+        "type.physical_name": { value: this.abstractMeterType.physicalName },
+        domain: { value: this.abstractMeter.domain },
+      };
+
       this.measurementDialog = true;
     },
     onMeasurementSelect(m) {
       this.measurementDialog = false;
-      m._loaded = true;
-      this.measurementIds[m.id] = m;
       this.measurementHandler(m);
-    },
-    showToast(option) {
-      let msgType = "error";
-      if (option == 0) {
-        msgType = "information";
-        this.toastMessage = "Content saved";
-      } else if (option == 1) {
-        msgType = "information";
-        this.toastMessage = "Content deleted";
-      } else if (option == 2) {
-        msgType = "information";
-        this.toastMessage = "Content updated";
-      } else if (option == 3) {
-        this.toastMessage = "Addition error";
-        ///console.error("Option failed");
-      } else {
-        this.toastMessage = "Option error";
-        //console.error("No correct option");
-      }
-      this.$emitter.emit(msgType, { message: this.toastMessage });
     },
     validateMeasurementCondition(measurementCondition) {
       if (!measurementCondition) {
@@ -286,12 +312,24 @@ export default {
       }
     },
 
-    async deleteAbstractMeterFunc() {
-      const returnValue = await this.$ren.kpiApi.deleteAbstractMeter(this.abstractMeter.meter, this.abstractMeter.domain);
-      if (returnValue) {
-        this.$emitter.emit("information", { code: "delete_success" });
-        this.abstractMeter = null;
-      }
+    async deleteAbstractMeter() {
+      this.$confirm.require({
+        message: this.$t("view.confirm_abstract_meter_delete", {
+          label: this.abstractMeter.name,
+        }),
+        header: this.$t("view.delete_abstract_meter"),
+        icon: "pi pi-exclamation-triangle",
+        accept: async () => {
+          const returnValue = await this.$ren.kpiApi.deleteAbstractMeter(this.abstractMeter.name, this.abstractMeter.domain);
+          if (returnValue) {
+            this.$emitter.emit("information", { code: "delete_success" });
+            this.abstractMeter = null;
+          }
+        },
+        reject: () => {
+          this.$confirm.close();
+        },
+      });
     },
 
     listMeasurements() {
@@ -299,16 +337,16 @@ export default {
       if (this.abstractMeter && this.abstractMeter.formula) {
         let ids = this.extractMeasurements(this.abstractMeter.formula);
         for (let mId of ids) {
-          if (!this.measurementIds[mId]) measurements[mId] = { id: mId };
-          else measurements[mId] = this.measurementIds[mId];
+          if (!this.meterMeasurements[mId]) measurements[mId] = { id: mId };
+          else measurements[mId] = this.meterMeasurements[mId];
         }
       }
 
       if (this.abstractMeter && this.abstractMeter.condition) {
         let ids = this.extractMeasurements(this.abstractMeter.condition);
         for (let mId of ids) {
-          if (!this.measurementIds[mId]) measurements[mId] = { id: mId };
-          else measurements[mId] = this.measurementIds[mId];
+          if (!this.meterMeasurements[mId]) measurements[mId] = { id: mId };
+          else measurements[mId] = this.meterMeasurements[mId];
         }
       }
       return measurements;
@@ -327,40 +365,6 @@ export default {
             measurement._loaded = true;
             measurements[mId] = measurement;
           });
-        }
-      }
-    },
-
-    measurementListener(position, operationType, meter) {
-      if (meter != null) {
-        let currentMeasurement = null;
-        if (operationType == 0) {
-          console.log("Formula " + position);
-        } else if (operationType == 1) {
-          console.log("Condition " + position);
-        }
-        let openings = [];
-        let closings = [];
-
-        // Finding indices of '[' and ']'
-        for (let i = 0; i < meter.length; i++) {
-          if (meter[i] === "[") {
-            openings.push(i);
-          } else if (meter[i] === "]") {
-            closings.push(i);
-          }
-        }
-        for (let i = 0; i < openings.length; i++) {
-          for (let j = 0; j < closings.length; j++) {
-            if (openings[i] < closings[j] && openings[i] < position && position <= closings[j]) {
-              currentMeasurement = meter.substring(openings[i] + 1, closings[i]);
-            }
-          }
-        }
-        for (let i = 0; i < this.measurementList.length; i++) {
-          if (this.measurementList[i].id == currentMeasurement) {
-            this.activeAccordion = i;
-          }
         }
       }
     },

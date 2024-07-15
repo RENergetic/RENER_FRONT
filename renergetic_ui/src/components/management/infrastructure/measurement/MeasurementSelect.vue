@@ -2,6 +2,7 @@
   <RenSpinner ref="spinner" :lock="true" style="min-width: 100%">
     <template #content>
       <div style="z-index: 1001">
+        <!-- {{ mFilters }} -->
         <measurement-list
           v-model:filters="mFilters"
           :measurement-list="measurementList"

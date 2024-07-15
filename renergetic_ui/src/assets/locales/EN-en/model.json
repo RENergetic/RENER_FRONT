@@ -2,6 +2,10 @@
   "name_description": "Object's name, code name used in RENergetic system to interact with other component, code used for automatic translations",
   "label_description": "Object's human readable name, name used in RENergetic - `name` field is used if label is null",
   "description": "Description",
+  "abstract_meter": {
+    "formula": "Formula",
+    "linked_measurement": "Linked measurement"
+  },
   "dashboard": {
     "name": "Name",
     "url": "URL",
@@ -112,7 +116,7 @@
         "icon_visibility": "Icon visibility",
         "icon_visibility_description": "Set tile's icon visibility",
         "legend_label_color": "Legend's color",
-        "legend_label_color_description": "Legend's color", 
+        "legend_label_color_description": "Legend's color",
         "legend": "Legend's visibility",
         "legend_description": "Set legends's visibility in the tile's chart",
         "measurement_list": "Measurement list visibility",
@@ -130,11 +134,11 @@
         "measurement_color": "Measurement Color",
         "measurement_color_description": "Overrride measurement color",
         "title_color": "Tile's title color",
-        "title_color_description": "Override tile's default title color."  ,
+        "title_color_description": "Override tile's default title color.",
         "title_visibility": "Title visibility",
-        "title_visibility_description": "Set tile's title visibility.",  
+        "title_visibility_description": "Set tile's title visibility.",
         "": "_description",
-        "_description": "_description" 
+        "_description": "_description"
       }
     }
   },
