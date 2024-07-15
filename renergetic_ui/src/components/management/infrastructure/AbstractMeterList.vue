@@ -57,11 +57,11 @@
 
             <ren-input-wrapper :text-label="'model.abstract_meter.linked_measurement'">
               <template #content>
-                <span v-if="abstractMeter.measurement" style="padding: 0.25rem">
+                <div v-if="abstractMeter.measurement" style="padding: 0.25rem">
                   {{ abstractMeter.measurement.label ? abstractMeter.measurement.label : abstractMeter.measurement.label }}
                   ({{ abstractMeter.measurement.id }})
-                </span>
-                <span v-else></span>
+                </div>
+                <div v-else>{{ $t("model.abstract_meter.linked_no_measurement") }}</div>
                 <Button :label="$t('view.link_measurement')" @click="selectLinkedMeasurement" />
               </template>
             </ren-input-wrapper>
@@ -91,20 +91,22 @@
   </Card>
   <Card class="measurement-list">
     <template #content>
-      <h3>{{ $t("view.measurements") }}:</h3>
-      <Accordion v-model:activeIndex="activeAccordion">
-        <AccordionTab v-for="(measurement, index) in Object.values(meterMeasurements)" :key="index" :header="measurement.id">
-          <span v-if="measurement._loaded">
-            <p>{{ $t("model.measurement.name") }} : {{ measurement.name }}</p>
-            <p>{{ $t("model.measurement.label") }} : {{ measurement.label }}</p>
-            <p>{{ $t("model.measurement.domain") }} : {{ measurement.domain }}</p>
-            <p>{{ $t("model.asset.name") }} : {{ measurement.asset.name }}</p>
-            <p>{{ $t("model.measurement.type") }} : {{ measurement.type.name }}</p>
-            <p>{{ $t("model.measurement_type.unit") }} : {{ measurement.type.unit }}</p>
-            <p>{{ $t("model.measurement_type.physical_name") }} : {{ measurement.type.physical_name }}</p>
-          </span>
-        </AccordionTab>
-      </Accordion>
+      <h3 v-if="abstractMeter && meterMeasurements && Object.keys(meterMeasurements).length > 0">{{ $t("view.measurements") }}:</h3>
+      <div v-if="abstractMeter && meterMeasurements && Object.keys(meterMeasurements).length > 0">
+        <Accordion v-model:activeIndex="activeAccordion">
+          <AccordionTab v-for="(measurement, index) in Object.values(meterMeasurements)" :key="index" :header="measurement.id">
+            <span v-if="measurement._loaded">
+              <p>{{ $t("model.measurement.name") }} : {{ measurement.name }}</p>
+              <p>{{ $t("model.measurement.label") }} : {{ measurement.label }}</p>
+              <p>{{ $t("model.measurement.domain") }} : {{ measurement.domain }}</p>
+              <p>{{ $t("model.asset.name") }} : {{ measurement.asset.name }}</p>
+              <p>{{ $t("model.measurement.type") }} : {{ measurement.type.name }}</p>
+              <p>{{ $t("model.measurement_type.unit") }} : {{ measurement.type.unit }}</p>
+              <p>{{ $t("model.measurement_type.physical_name") }} : {{ measurement.type.physical_name }}</p>
+            </span>
+          </AccordionTab>
+        </Accordion>
+      </div>
     </template>
   </Card>
   <Dialog v-model:visible="measurementDialog" :style="{ width: '90vw', height: '90vh', maxHeight: '100%' }" :modal="true">
@@ -114,8 +116,6 @@
       </template>
     </Card>
   </Dialog>
-  <!--  
-  <MeasurementSelectionList ref="measurementsListCondition" @selected-measurement="handleMeasurementReturnCondition" /> -->
 </template>
 <script>
 import MeasurementSelect from "@/components/management/infrastructure/measurement/MeasurementSelect.vue";
@@ -144,7 +144,6 @@ export default {
       isValidCondition: true, //      saveButtonDisabled: true,
       // abstracMeterExists: false,
       conditionMeterShown: false,
-      toastMessage: null,
       meterMeasurements: {},
       selectedMeasurements: {},
       activeAccordion: null,
@@ -197,7 +196,6 @@ export default {
       this.loadMeasurements(newVal);
     },
   },
-  async created() {},
   methods: {
     async setAbstractMeter(name, domain) {
       let abstractMeter = await this.$ren.kpiApi.getAbstractMeterConfiguration(name, domain);
@@ -293,7 +291,10 @@ export default {
     validateMeasurementFormula(text) {
       //match numbers(floats) or ids in square brackets, any amount of round brackets, math operiations between numbers or square brackets
       // eslint-disable-next-line no-useless-escape
-      const expressionRegex = /^\(*((\d+(\.\d+)?)|(\[\d+\]))([+*^\/-]\(*((\d+(\.\d+)?)|(\[\d+\]))\)*)*$/;
+      // const expressionRegex = /^\(*((\d+(\.\d+)?)|(\[\d+\]))([+*^\/-]\(*((\d+(\.\d+)?)|(\[\d+\]))\)*)*$/;
+
+      // const expressionRegex = /^((\d+(\.\d+)?)|(\[\d+\]))([+-]((\d+(\.\d+)?)|(\[\d+\])))*$/;
+      const expressionRegex = /^\(*((\d+(\.\d+)?)|(\[\d+\]))([+-]\(*((\d+(\.\d+)?)|(\[\d+\]))\)*)*$/;
       let isValidInput = expressionRegex.test(text);
       return isValidInput;
     },

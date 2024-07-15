@@ -138,6 +138,7 @@
   "notification_list": "Powiadomienia",
   "no_notification_list": "Aktualnie brak powiadomień",
   "logged_in_as": "Zalogowany jako: {username} ",
+  "link_measurement":"Połącz szereg czasowy",
   "profile": "Profil",
   "recommendation_list": "Lista rekomendacji",
   "manage_asset_assignment": "Manage asset assignments",

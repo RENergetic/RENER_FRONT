@@ -3,7 +3,8 @@
   "label_description": "Object's human readable name, name used in RENergetic - `name` field is used if label is null",
   "abstract_meter":{
     "formula":"Formula",
-    "linked_measurement":"Linked measurement"
+    "linked_measurement":"Linked measurement",
+    "linked_no_measurement":"Brak przypisanego szeregu czasowego"
   },
   "dashboard": {
     "name": "Nazwa",

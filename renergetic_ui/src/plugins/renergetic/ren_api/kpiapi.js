@@ -13,6 +13,10 @@ export default class KPIAPI extends RestComponent {
       }
     });
   }
+  getNotConfiguredAbstracMeters() {
+    return this.get(`/api/meter/list/notconfigured`);
+  }
+
   getAbstractMeterConfiguration(meterName, domain) {
     return this.get(`/api/meter/${domain}/${meterName}`, null, null, (e) => {
       if (e.response.status != 404) {
@@ -23,6 +27,7 @@ export default class KPIAPI extends RestComponent {
       return true;
     });
   }
+
   addAbstractMeter(abstractMeter) {
     return this.post(`/api/meter`, abstractMeter, null, null, (e) => {
       // if (e.response.status === 404) {
