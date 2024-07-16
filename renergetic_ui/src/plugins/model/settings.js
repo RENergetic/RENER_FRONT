@@ -101,10 +101,10 @@ var panelSchema = [
     key: "qrcodePosition",
     ext: {
       options: [
-        { id: "top_right", label: $t("settings.top_right") },
-        { id: "top_left", label: $t("settings.top_left") },
-        { id: "bottom_right", label: $t("settings.bottom_right") },
-        { id: "bottom_left", label: $t("settings.bottom_left") },
+        { id: "top_right", label: $t("settings.qr_code_position.top_right") },
+        { id: "top_left", label: $t("settings.qr_code_position.top_left") },
+        { id: "bottom_right", label: $t("settings.qr_code_position.bottom_right") },
+        { id: "bottom_left", label: $t("settings.qr_code_position.bottom_left") },
       ],
       optionLabel: "label",
       optionValue: "id",

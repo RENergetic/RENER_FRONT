@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-column justify-content-center" style="height: 100%">
-    <div class="flex flex-none flex-column justify-content-center">
+    <!-- <div class="flex flex-none flex-column justify-content-center">
       <h3 :style="`text-align: center;color:${tileTitleColor}`">{{ settings.tile.label }}</h3>
-    </div>
+    </div> -->
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
     <div class="flex flex-grow-1 flex-column align-items-center justify-content-center" :style="mStyle">
       <QRCode v-if="loaded" :size="dimension" />
@@ -52,7 +52,7 @@ export default {
   mounted() {
     console.debug("mounted " + this.tile.id);
     let dimension = this.tileContentSize1D();
-    dimension = dimension - 80;
+    dimension = dimension - 40;
     // var size = this.mSettings.tile.measurement_list ? 0.5 : 0.7;
     // let minD = Math.min(this.settings.panel.cellWidth * this.tile.layout.w, this.settings.panel.cellHeight * this.tile.layout.h);
     this.mStyle = `max-width: 100rem;max-height:60rem; margin: auto;height:${dimension}px;width:${dimension}px`;

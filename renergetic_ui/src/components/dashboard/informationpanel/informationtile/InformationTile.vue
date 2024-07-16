@@ -1,5 +1,6 @@
 <template>
-  <div v-if="mSettings" :class="tileClass" :style="background">
+  <div v-if="mSettings" :class="tileClass">
+    <!-- :style="background" -->
     <div class="tile-bar">
       <i v-if="tileDataPreview" v-tooltip="$t('view.measurements')" class="pi pi-chart-line data-preview tile-icon" @click="viewMeasurements()" />
       <i v-if="edit" v-tooltip="$t('view.edit')" class="pi pi-pencil tile-icon" @click="$emit('edit')" />

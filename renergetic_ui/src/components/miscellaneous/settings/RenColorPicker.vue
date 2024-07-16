@@ -11,7 +11,7 @@
     <InputNumber
       v-if="useAlpha"
       :id="'_alpha'"
-      v-model="mAlpha"
+      :model-value="mAlpha"
       style="width: 10rem; margin-left: 0.5rem; height: 100%"
       :max="1.0"
       :min="0.0"
@@ -103,8 +103,11 @@ export default {
       }
     },
     alphaChange(v) {
+      if (this.mAlpha == v) {
+        return;
+      }
       this.mAlpha = v;
-      if (v) {
+      if (v != null && v !== undefined) {
         this.hexAlpha = this._componentToHex(v);
         this.mValue = this.mColor + this.hexAlpha;
       } else {

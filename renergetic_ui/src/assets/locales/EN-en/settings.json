@@ -42,6 +42,9 @@
   "panel_font_size": "Panel font size",
   "panel_override_mode": "Settings override mode",
   "panel_override_mode_description": "User's settings override mode",
+  "panel_qr_code":"QR code text content",
+  "panel_qr_code_description":"Text which will be encoded into QR code graphics",
+  "panel_qr_code_position":"QR code position on the visible site area", 
   "input_types": {
     "boolean": "Boolean",
     "number": "Number",

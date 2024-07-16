@@ -42,6 +42,9 @@
   "panel_font_size": "Rozmiar czcionki",
   "panel_override_mode": "Tryb nadpisania ustawień",
   "panel_override_mode_description": "Sposób nadpisywanie ustawień użytkownika.",
+  "panel_qr_code":"Zawartość kou QR",
+  "panel_qr_code_description":"Zawartość kou QR",
+  "panel_qr_code_position":"Położenie kody QR na stronie",
   "input_types": {
     "boolean": "Prawda/Fałsz (True/False)",
     "number": "Liczba",
