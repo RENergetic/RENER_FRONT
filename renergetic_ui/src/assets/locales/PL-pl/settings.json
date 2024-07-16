@@ -45,6 +45,14 @@
   "panel_qr_code":"Zawartość kou QR",
   "panel_qr_code_description":"Zawartość kou QR",
   "panel_qr_code_position":"Położenie kody QR na stronie",
+  "panel_qr_code_size":"Rozmiar kodu QR",
+  "panel_qr_code_size_description":"Rozmiar kodu QR w pixelach",
+  "panel_qr_code_positions": {
+    "top_right": "Prawy górny",
+    "top_left": "Lewy górny",
+    "bottom_right": "Prawy dolny",
+    "bottom_left": "Lewy dolny"
+  },
   "input_types": {
     "boolean": "Prawda/Fałsz (True/False)",
     "number": "Liczba",

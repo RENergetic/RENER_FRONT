@@ -84,7 +84,9 @@
     "list": "List",
     "single": "Single",
     "panel": "Panel",
-    "multi_doughnut": "Multi doughnut chart"
+    "multi_doughnut": "Multi doughnut chart",
+    "image":"Image",
+    "qrcode":"QR code"
   },
   "heatmap_type": {
     "default": "Normal",
