@@ -31,7 +31,7 @@ export default {
     return {
       pagination: null,
       logs: [],
-      severities: [{ label: "info" }, { label: "debug" }, { label: "warning" }],
+      severities: [{ label: "debug" }, { label: "trace" }, { label: "info" }, { label: "warning" }, { label: "error" }],
       services: [{ label: "muveco_service" }, { label: "forecast_service" }],
     };
   },
