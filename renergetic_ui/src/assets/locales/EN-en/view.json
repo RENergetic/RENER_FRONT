@@ -134,6 +134,7 @@
   "no_value": "No asset",
   "no_values_added": "No values added",
   "no_timestamp": "No timestamp",
+  "not_configured_abstract_meters":"Abstract meters with missing configuration",
   "notification_history": "Notification history",
   "notification_list": "Notification list",
   "no_notification_list": "Currently there are no notifications",

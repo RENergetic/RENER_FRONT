@@ -10,22 +10,21 @@
       <!-- {{ mSettings.tile.icon }} -->
       <font-awesome-icon :icon="mSettings.tile.icon" />
     </div>
-    <div v-if="mSettings.tile.template" id="tilecontent" class="flex flex-column align-items-center justify-content-center">
+    <div v-if="mSettings.tile.template" class="flex flex-column align-items-center justify-content-center tilecontent">
       <span id="value" :style="color">
         <h3>{{ $t(`tile_templates.${tile.name}`, { value: `${$ren.utils.roundValue(value)} ${unit} ` }) }}</h3>
       </span>
     </div>
     <div
       v-else-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
-      id="tilecontent"
-      class="flex flex-column align-items-center justify-content-center"
+      class="flex flex-column align-items-center justify-content-center tilecontent"
     >
       <span id="label" :style="color"> {{ mSettings.tile.label ? mSettings.tile.label : `${measurementlabel}: ` }} </span>
       <span id="value" :style="color">
         <h2>{{ $ren.utils.roundValue(value) }} {{ unit }}</h2>
       </span>
     </div>
-    <div v-else id="tilecontent" :class="'flex flex-column align-items-center justify-content-center ' + tileOrientationClass">
+    <div v-else :class="'flex flex-column align-items-center justify-content-center tilecontent' + tileOrientationClass">
       <span id="label" :style="color"> {{ mSettings.tile.label ? mSettings.tile.label : `${measurementlabel}: ` }} </span>
       <span id="value" :style="color">
         <h2>{{ $ren.utils.roundValue(value) }} {{ unit }}</h2>
@@ -116,7 +115,7 @@ export default {
   }
   flex-direction: row !important;
 
-  #tilecontent {
+  .tilecontent {
     flex-grow: 1;
     flex-shrink: 1;
     flex-basis: 0%;

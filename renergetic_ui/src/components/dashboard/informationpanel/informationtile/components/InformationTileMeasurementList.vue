@@ -15,7 +15,7 @@
 <script>
 import InformationTileItem from "./InformationTileItem.vue";
 export default {
-  name: "InformationListTile",
+  name: "InformationTileMeasurementList",
   components: { InformationTileItem },
   props: {
     tile: { type: Object, default: () => ({}) },
@@ -31,6 +31,9 @@ export default {
     };
   },
   methods: {
+    iconVisibility: function () {
+      return (this.mSettings && this.mSettings.tile ? this.mSettings.tile.icon_visibility : true) && this.mSettings.tile.icon;
+    },
     onItemClick(ctx) {
       if (this.mTile.measurements[ctx.index].visible == null) {
         this.mTile.measurements[ctx.index].visible = false;

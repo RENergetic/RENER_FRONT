@@ -1,10 +1,11 @@
 {
   "name_description": "Object's name, code name used in RENergetic system to interact with other components, code used for automatic translations",
   "label_description": "Object's human readable name, name used in RENergetic - `name` field is used if label is null",
-  "abstract_meter":{
-    "formula":"Formula",
-    "linked_measurement":"Linked measurement",
-    "linked_no_measurement":"Brak przypisanego szeregu czasowego"
+  "description": "Description",
+  "abstract_meter": {
+    "formula": "Formula",
+    "linked_measurement": "Linked measurement",
+    "linked_no_measurement": "Brak przypisanego szeregu czasowego"
   },
   "dashboard": {
     "name": "Nazwa",
@@ -115,6 +116,8 @@
         "icon_description": "Tile's icon",
         "icon_visibility": "Icon visibility",
         "icon_visibility_description": "Set tile's icon visibility",
+        "item_icon_visibility": "Tile's items icon visibility",
+        "item_icon_visibility_description": "Tile's items(measurements) icon visibility",
         "legend_label_color": "Legend's color",
         "legend_label_color_description": "Legend's color",
         "legend": "Legend's visibility",
@@ -137,6 +140,10 @@
         "title_color_description": "Override tile's default title color.",
         "title_visibility": "Title visibility",
         "title_visibility_description": "Set tile's title visibility.",
+        "img_url": "Img url",
+        "img_url_description": "Tile's image location"  ,
+        "qrcode_content": "QR code text content",
+        "qrcode_content_description": "Text which will be encoded into QR code graphics", 
         "": "_description",
         "_description": "_description"
       }

@@ -4,11 +4,7 @@
       <!-- <span v-if="icon != null" id="tileicon" :style="'background-image: url(' + icon + ')'"></span> -->
       <!-- {{ settings }}fff -->
 
-      <span
-        v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
-        id="tileicon"
-        class="flex flex-none flex-column align-items-center justify-content-center"
-      >
+      <span v-if="iconVisibility" id="tileicon" class="flex flex-none flex-column align-items-center justify-content-center">
         <!-- {{ settings.tile.icon }} -->
         <!-- :style="'background-image: url(' + settings.icon + ')'" -->
         <font-awesome-icon :icon="icon" />
@@ -54,7 +50,7 @@ export default {
   },
   computed: {
     iconVisibility: function () {
-      return (this.mSettings && this.mSettings.tile ? this.mSettings.tile.icon_visibility : true) && this.mSettings.tile.icon;
+      return this.mSettings && this.mSettings.tile ? this.mSettings.tile.item_icon_visibility : true;
     },
     style: function () {
       let color = this.measurementColor; //this.$ren.utils.measurementColor(this.measurement, this.value);

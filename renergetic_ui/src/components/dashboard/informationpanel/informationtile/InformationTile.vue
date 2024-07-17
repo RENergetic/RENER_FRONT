@@ -88,7 +88,7 @@
       :settings="mSettings"
       :conversion-settings="conversionSettings"
     ></InformationTileSingle>
-    <InformationListTile
+    <InformationTileList
       v-else-if="tile.measurements && tile.measurements.length > 0"
       :style="'width:100%'"
       :tile="tile"
@@ -100,14 +100,14 @@
   </div>
 </template>
 <script>
-import InformationListTile from "./InformationListTile.vue";
+import InformationTileList from "./InformationTileList.vue";
 import KnobTile from "./KnobTile.vue";
 import DoughnutTile from "./DoughnutTile.vue";
 import ChartTile from "./ChartTile.vue";
 import InformationTileSingle from "./InformationTileSingle.vue";
 import MultiKnobTile from "./MultiKnobTile.vue";
 import { TileTypes } from "@/plugins/model/Enums.js";
-import icons from "./icons";
+import icons from "./components/icons";
 import ImageTile from "./ImageTile.vue";
 import QRCodeTile from "./QRCodeTile.vue";
 // import MultiDoughnutTile from "./MultiDoughnutTile.vue";
@@ -118,6 +118,7 @@ function validateTileSettings(tile, panelSettings, ctx) {
       label: ctx.$te(`enums.measurement_name.${tile.name}`) ? ctx.$t(`enums.measurement_name.${tile.name}`) : tile.label,
       icon: icons[tile.props.icon],
       icon_visibility: tile.props.icon_visibility != null ? tile.props.icon_visibility : true,
+      item_icon_visibility: tile.props.item_icon_visibility != null ? tile.props.item_icon_visibility : true,
       legend: tile.props.legend != null ? tile.props.legend : panelSettings.legend,
       legend_label_color: tile.props.legend_label_color != null ? tile.props.legend_label_color : "#495057",
       chart_type: tile.props.chart_type != null ? tile.props.chart_type : panelSettings.chart_type,
@@ -146,7 +147,7 @@ function validateTileSettings(tile, panelSettings, ctx) {
 export default {
   name: "InformationTile",
   components: {
-    InformationListTile,
+    InformationTileList,
     KnobTile,
     ImageTile,
     QRCodeTile,

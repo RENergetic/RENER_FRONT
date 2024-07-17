@@ -1,7 +1,7 @@
 import i18n from "@/plugins/locales";
 //TILE PROPERTIES:
 const $t = i18n.global.t.bind(i18n);
-export default [
+const tileProperties = [
   {
     label: $t(`model.information_panel.tile.properties.icon`),
     description: $t(`model.information_panel.tile.properties.icon_description`),
@@ -27,6 +27,16 @@ export default [
       false: $t("settings.no"),
     },
     key: "icon_visibility",
+  },
+  {
+    label: $t(`model.information_panel.tile.properties.item_icon_visibility`),
+    description: $t(`model.information_panel.tile.properties.item_icon_visibility_description`),
+    type: "Boolean",
+    ext: {
+      true: $t("settings.yes"),
+      false: $t("settings.no"),
+    },
+    key: "item_icon_visibility",
   },
   {
     label: $t(`model.information_panel.tile.properties.legend`),
@@ -131,11 +141,115 @@ export default [
     key: "qrcode_content",
   },
 ];
-// TODO:
-// title_color: tile.props.title_color != null ? tile.props.title_color : null,
-// fontSize: panelSettings.fontSize,
-// background_mask: tile.props.mask,
-// background: tile.props.background,
-// template: tile.props.template,
-// legend: tile.props.legend != null ? tile.props.legend : panelSettings.legend,
-// legend_label_color: tile.props.legend_label_color != null ? tile.props.legend_label_color : "#495057",
+console.debug(tileProperties.map((it) => it.key).join(","));
+export default tileProperties;
+const chartProperties = new Set([
+  "title_visibility",
+  "title_color",
+  "background",
+  "background_mask",
+  "measurement_background",
+  "measurement_color",
+  "legend",
+  // "legend_label_color",
+  // "chart_type",
+]);
+const knobProperties = new Set([
+  "title_visibility",
+  "title_color",
+  "background",
+  "background_mask",
+  "measurement_background",
+  "measurement_color",
+  "knob_color",
+  "icon_visibility",
+  "icon",
+]);
+const multiKnobProperties = new Set([
+  "title_visibility",
+  "title_color",
+  "background",
+  "background_mask",
+  "measurement_background",
+  "measurement_color",
+  "measurement_list",
+  "legend",
+  "icon_visibility",
+  "item_icon_visibility",
+  "icon",
+]);
+const doughnutProperties = new Set([
+  "title_visibility",
+  "title_color",
+  "background",
+  "background_mask",
+  "measurement_background",
+  "measurement_color",
+  "legend",
+  "icon_visibility",
+  "icon",
+]);
+const listProperties = new Set([
+  "title_visibility",
+  "title_color",
+  "background",
+  "background_mask",
+  "icon_visibility",
+  "item_icon_visibility",
+  "icon",
+]);
+const singleProperties = new Set([
+  "title_visibility",
+  "title_color",
+  "background",
+  "background_mask",
+  "icon_visibility",
+  "measurement_background",
+  "measurement_color",
+  "icon",
+  "template",
+]);
+const qrCodeProperties = new Set(["title_visibility", "title_color", "background", "qrcode_content"]);
+const imageProperties = new Set(["title_visibility", "title_color", "background", "img_url"]);
+
+export function getTileProperties(tileType) {
+  let propertiesWhiteFilter = null;
+  switch (tileType) {
+    case "chart":
+      propertiesWhiteFilter = chartProperties;
+      break;
+    case "knob":
+      propertiesWhiteFilter = knobProperties;
+      break;
+    case "multi_knob":
+      propertiesWhiteFilter = multiKnobProperties;
+      break;
+    case "doughnut":
+      propertiesWhiteFilter = doughnutProperties;
+      break;
+    case "list":
+      propertiesWhiteFilter = listProperties;
+      break;
+    case "single":
+      propertiesWhiteFilter = singleProperties;
+      break;
+    case "image":
+      propertiesWhiteFilter = imageProperties;
+      break;
+    case "qrcode":
+      propertiesWhiteFilter = qrCodeProperties;
+      break;
+    default:
+      return tileProperties;
+    // "panel": "Panel", -> TODO:
+    // "multi_doughnut": "Multi doughnut chart",  -> TODO:
+  }
+  return tileProperties.filter((it) => propertiesWhiteFilter.has(it.key));
+  // TODO:
+  // title_color: tile.props.title_color != null ? tile.props.title_color : null,
+  // fontSize: panelSettings.fontSize,
+  // background_mask: tile.props.mask,
+  // background: tile.props.background,
+  // template: tile.props.template,
+  // legend: tile.props.legend != null ? tile.props.legend : panelSettings.legend,
+}

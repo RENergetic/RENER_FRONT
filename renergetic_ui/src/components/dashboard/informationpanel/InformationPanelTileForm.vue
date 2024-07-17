@@ -31,7 +31,6 @@
         :invalid="v$.mModel.type.$invalid"
         :errors="v$.mModel.type.$silentErrors"
       />
-
       <ren-input-wrapper :text-label="'model.information_panel.tile.props'">
         <template #content>
           <!-- <InfoIcon :floating="true">
@@ -190,12 +189,7 @@
   <Dialog v-model:visible="propertiesDialog" :dismissable-mask="true" :style="{ maxHeight: '100%' }" :modal="true">
     <Card class="ren-page-content" style="width: max-content; max-width: 40rem">
       <template #content>
-        <Settings
-          v-if="tilePropertiesSchema"
-          :schema="tilePropertiesSchema"
-          :settings="tileProperties"
-          @update:settings="onPropertiesChange"
-        ></Settings>
+        <Settings v-if="propertiesSchema" :schema="propertiesSchema" :settings="tileProperties" @update:settings="onPropertiesChange"></Settings>
         <Button :label="$t('view.button.close')" class="flex-grow-0 ren-button" style="width: 100%" @click="propertiesDialog = false" />
         <!-- <ul>
           <li v-for="p in tileProperties.filter((it) => !it.hidden)" :key="p.key">
@@ -269,8 +263,10 @@ import MeasurementSelect from "@/components/management/infrastructure/measuremen
 import MeasurementDetails from "@/components/management/infrastructure/measurement/MeasurementDetails.vue";
 import Settings from "@/components/miscellaneous/settings/Settings.vue";
 import MeasurementTileForm from "./MeasurementTileForm.vue";
-import icons from "./informationtile/icons.js";
-import tilePropertiesSchema from "./informationtile/properties.js";
+import icons from "./informationtile/components/icons.js";
+// import tilePropertiesSchema from "./informationtile/components/properties.js";
+import { getTileProperties } from "./informationtile/components/properties.js";
+
 export default {
   name: "InformationPanelTileForm",
   components: { MeasurementDialog, MeasurementSelect, MeasurementTileForm, MeasurementDetails, Settings },
@@ -294,7 +290,7 @@ export default {
       mActiveTab: this.activeTab,
       icons: icons,
       propertiesDialog: false,
-      tilePropertiesSchema: tilePropertiesSchema,
+      // tilePropertiesSchema: tilePropertiesSchema,
       tileProperties: tileStructure.props,
       aggregations: MeasurementAggregation.keys(),
       addMeasurementDialog: false,
@@ -318,6 +314,11 @@ export default {
         type: { required: required },
       },
     };
+  },
+  computed: {
+    propertiesSchema: function () {
+      return getTileProperties(this.mModel.type);
+    },
   },
   watch: {
     propsJSON: {
