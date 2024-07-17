@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width: 100%">
     <InformationTileItem
       v-for="(m, idx) in mTile.measurements"
       :key="m.id"

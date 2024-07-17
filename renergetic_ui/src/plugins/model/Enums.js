@@ -64,6 +64,7 @@ const TileTypes = Object.freeze({
   panel: "panel",
   multi_doughnut: "multi_doughnut",
   multi_knob: "multi_knob",
+  empty: "empty",
   single: "single",
   image: "image",
   qrcode: "qrcode",

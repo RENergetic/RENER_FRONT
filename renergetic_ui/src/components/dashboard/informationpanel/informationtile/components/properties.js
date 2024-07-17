@@ -209,7 +209,9 @@ const singleProperties = new Set([
   "icon",
   "template",
 ]);
-const qrCodeProperties = new Set(["title_visibility", "title_color", "background", "qrcode_content"]);
+const emptyProperties = new Set(["title_visibility", "title_color", "background", "background_mask", "icon_visibility", "icon", "template"]);
+const qrCodeProperties = new Set(["background", "qrcode_content"]);
+//"title_visibility", "title_color",
 const imageProperties = new Set(["title_visibility", "title_color", "background", "img_url"]);
 
 export function getTileProperties(tileType) {
@@ -238,6 +240,9 @@ export function getTileProperties(tileType) {
       break;
     case "qrcode":
       propertiesWhiteFilter = qrCodeProperties;
+      break;
+    case "empty":
+      propertiesWhiteFilter = emptyProperties;
       break;
     default:
       return tileProperties;

@@ -6,7 +6,7 @@
     >
       <font-awesome-icon :icon="mSettings.tile.icon" />
     </div>
-    <div v-if="mSettings.tile.template" class="flex flex-column align-items-center justify-content-center tilecontent">
+    <div class="flex flex-column align-items-center justify-content-center tilecontent" style="padding: 0 0.5rem">
       <InformationTileMeasurementList
         :tile="tile"
         :pdata="pdata"

@@ -69,7 +69,12 @@ export default {
       //todo: default
 
       let icon = this.measurement.domain ? this.measurement.domain : this.measurement.type.metric_type;
-      if (this.measurement.measurement_details.icon != null) icon = this.measurement.measurement_details.icon;
+
+      if (!this.measurement.measurement_details) {
+        console.warn("no measurement details ");
+        console.warn(this.measurement);
+      }
+      if (this.measurement.measurement_details && this.measurement.measurement_details.icon != null) icon = this.measurement.measurement_details.icon;
       else if (this.measurement.type.icon != null) icon = this.measurement.type.icon;
       return icons[icon] != null ? icons[icon] : icons.default;
     },

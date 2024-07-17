@@ -76,7 +76,8 @@
     "out": "OUT",
     "none": "N/A"
   },
-  "tile_type": {
+  "tile_type": {    
+    "empty":"Empty",
     "chart": "Chart",
     "knob": "Knob chart",
     "multi_knob": "Multi knob chart",

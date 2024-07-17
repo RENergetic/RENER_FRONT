@@ -5,31 +5,12 @@
     </div>
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
     <div class="flex flex-grow-1 flex-column align-items-center justify-content-center" :style="mStyle">
-      <Image
-        v-if="loaded"
-        src="https://put.poznan.pl/sites/default/files/2021-03/pp_logo.svg"
-        alt="Image"
-        :width="dimensions.w"
-        :height="dimensions.h"
-        preview
-      />
+      <Image v-if="loaded" :src="imgUrl" alt="Image" :width="dimensions.w" :height="dimensions.h" preview />
     </div>
   </div>
 
-  <!-- <Knob
-      v-if="valuetemplate"
-      id="knob_component"
-      v-model="value"
-      :range-color="rangeColor"
-      :min="minV"
-      :text-color="color"
-      :value-color="color"
-      :value-template="valuetemplate"
-      :max="maxV"
-      :stroke-width="strokeWidth"
-      class="flex flex-grow-1 flex-column align-items-center justify-content-center"
-      :style="{ textAlign: 'center', maxHeight: '80%', overflow: 'hidden' }"
-      :size="1000"
+  <!--
+  https://put.poznan.pl/sites/default/files/2021-03/pp_logo.svg
     /> -->
 </template>
 <script>
@@ -54,7 +35,15 @@ export default {
       mStyle: "max-width: 100rem;max-height:60rem; margin: auto;height:100%;width:100%",
     };
   },
-  computed: {},
+  computed: {
+    imgUrl: function () {
+      try {
+        return this.mSettings.tile.img_url;
+      } catch {
+        return null;
+      }
+    },
+  },
   mounted() {
     console.debug("mounted " + this.tile.id);
     let dimensions = this.tileContentSize2D();

@@ -5,7 +5,7 @@
     </div> -->
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
     <div class="flex flex-grow-1 flex-column align-items-center justify-content-center" :style="mStyle">
-      <QRCode v-if="loaded" :size="dimension" />
+      <QRCode v-if="loaded && qrcodeContent" v-model="qrcodeContent" :size="dimension" />
     </div>
   </div>
 </template>
@@ -36,16 +36,12 @@ export default {
     };
   },
   computed: {
-    // unit: function () {
-    //   return this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings);
-    // },
-    color: function () {
-      let color = this.measurementColor; // this.$ren.utils.measurementColor(this.measurement, this.value);
-      return color.color;
-    },
-
-    tileStyle: function () {
-      return `height: 100%;background:${this.tileMeasurementBackgroundColor} `;
+    qrcodeContent: function () {
+      try {
+        return this.mSettings.tile.qrcode_content;
+      } catch {
+        return null;
+      }
     },
   },
 

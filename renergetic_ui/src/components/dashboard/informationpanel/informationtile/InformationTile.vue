@@ -5,11 +5,9 @@
       <i v-if="tileDataPreview" v-tooltip="$t('view.measurements')" class="pi pi-chart-line data-preview tile-icon" @click="viewMeasurements()" />
       <i v-if="edit" v-tooltip="$t('view.edit')" class="pi pi-pencil tile-icon" @click="$emit('edit')" />
     </div>
-    <div
-      v-if="(titleVisible || tile.measurements.length == 0) && tile.label && tile.type != 'image' && tile.type != 'qrcode'"
-      class="flex flex-column justify-content-center"
-      style="height: 100%; width: 100%"
-    >
+    <!-- TODO: make propert empty tile
+     titleVisible &&  || (titleVisible && tile.measurements.length == 0) && tile.type=='empty' && tile.label && tile.type != 'image' && tile.type != 'qrcode') -->
+    <div v-if="tile.type == 'empty'" class="flex flex-column justify-content-center" style="height: 100%; width: 100%">
       <h3 :style="`margin: 0; text-align: center;color:${titleColor}`">{{ tile.label }}</h3>
     </div>
     <!--  register new tile  in enums  -->
@@ -95,7 +93,7 @@
       :pdata="pdata"
       :settings="mSettings"
       :conversion-settings="conversionSettings"
-    />
+    ></InformationTileList>
     <div v-else style="width: 100%">{{ $t("view.no_panel_measurements") }}</div>
   </div>
 </template>
@@ -137,6 +135,8 @@ function validateTileSettings(tile, panelSettings, ctx) {
       background: tile.props.background,
       template: tile.props.template,
       knob_color: tile.props.knob_color,
+      qrcode_content: tile.props.qrcode_content,
+      img_url: tile.props.img_url,
       measurement_color: tile.props.measurement_color,
       // asset_id: settings.asset_id,
     };

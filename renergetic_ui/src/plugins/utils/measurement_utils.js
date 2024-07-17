@@ -14,6 +14,11 @@ export default {
       return { alpha: 1.0, color: "#94ba39" };
     }
     let alpha = value ? 1.0 : 1.0 - value / 2;
+    if (!measurement.measurement_details) {
+      console.warn("no measurement details return default measurementColor");
+      console.warn(measurement);
+      return { alpha: 1.0, color: "#94ba39" };
+    }
     let color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
 
     return { alpha: alpha, color: color ? color : this._getRandomColor() }; //"#94ba39"

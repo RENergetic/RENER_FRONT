@@ -19,6 +19,7 @@
         v-model="mModel.type"
         :text-label="'model.information_panel.tile.type'"
         :options="[
+          { label: $t('enums.tile_type.empty'), value: 'empty' },
           { label: $t('enums.tile_type.list'), value: 'list' },
           { label: $t('enums.tile_type.single'), value: 'single' },
           { label: $t('enums.tile_type.doughnut'), value: 'doughnut' },
