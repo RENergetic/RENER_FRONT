@@ -134,14 +134,15 @@ export default {
     }
   }
 }
-
+.vertical-tile {
+  flex-direction: column !important;
+}
 .vertical-tile {
   span {
     float: left;
     width: 100%;
     text-align: center;
   }
-  flex-direction: column !important;
 
   #tilecontent {
     flex-grow: 0;

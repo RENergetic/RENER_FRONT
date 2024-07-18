@@ -77,7 +77,7 @@ export default function (Vue) {
       var path;
       if (!keycloak.authenticated) {
         const basePath = window.location.origin.toString();
-        let pathTo = to.path.startsWith("/") ? to.path.slice(1) : pathTo;
+        let pathTo = to.path.startsWith("/") ? to.path.slice(1) : to.path;
         if (basePath.endsWith("/")) {
           path = `${basePath}${pathTo}`;
         } else {

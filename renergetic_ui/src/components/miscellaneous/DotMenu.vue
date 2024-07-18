@@ -86,5 +86,14 @@ export default {
   .bottom {
     bottom: 0.25rem;
   }
+  Button,
+  button {
+    background-color: transparent;
+    border-color: transparent;
+    &:enabled:hover {
+      background-color: $ren-primary-color !important;
+      color: $ren-primary-font-color;
+    }
+  }
 }
 </style>

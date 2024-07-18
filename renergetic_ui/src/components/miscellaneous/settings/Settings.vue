@@ -274,6 +274,7 @@ export default {
     .p-button {
       width: auto !important;
     }
+    width: fit-content;
   }
 }
 </style>

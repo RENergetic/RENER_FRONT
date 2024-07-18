@@ -28,7 +28,7 @@ let initOptions = {
 //   clientId: undefined,
 // };
 export default function (Vue) {
-  let keycloak = Keycloak(initOptions);
+  let keycloak = new Keycloak(initOptions);
   keycloak
     .init({
       // onLoad: "login-required",
@@ -81,10 +81,11 @@ export default function (Vue) {
   // Vue.component("keycloak", keycloak);
   return {
     logout() {
-      keycloak.logout({ redirectUri: window.location.origin });
       localStorage.setItem("data", null);
       sessionStorage.clear();
       localStorage.clear();
+
+      keycloak.logout({ redirectUri: window.location.origin });
     },
     // instance: keycloak,
     // initialized: initialized,

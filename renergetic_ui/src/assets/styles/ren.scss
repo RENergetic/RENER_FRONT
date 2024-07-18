@@ -92,7 +92,7 @@ body {
   background-color: $ren-primary-color-tr !important;
   opacity: 0.8 !important;
 }
-.ren {
+.ren,.ren-page-content {
   li div {
     display: flex;
     align-items: center;
@@ -173,6 +173,7 @@ body {
     background-color: $ren-state-color-ok;
   }
 
+  .p-button-danger,
   .state.error,
   .cell.error,
   .cell-state.error {
