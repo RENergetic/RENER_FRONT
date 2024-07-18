@@ -2,7 +2,7 @@
   <!-- TODO: unslect row event responsive-layout="scroll"-->
 
   <DataTable
-    class="asset-list"
+    class="sticky-header"
     :value="assetList"
     :lazy="true"
     data-key="id"

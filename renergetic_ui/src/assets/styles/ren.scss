@@ -13,10 +13,11 @@
 //       &[gs-min-w='#{$i}'] { min-width: (100% / $gridstack-columns) * $i; }
 //       &[gs-max-w='#{$i}'] { max-width: (100% / $gridstack-columns) * $i; }
 //     }
-//   }
+//   } 
 html {
   background: transparent;
 }
+
 body {
   // background-color: lightgrey;
   // background: linear-gradient(to right, #232526, #414345);
@@ -25,27 +26,34 @@ body {
   color: $ren-primary-font-color;
   margin: 0;
 }
+
 .p-component {
   background: $ren-secondary-bg;
   border-color: $ren-secondary-border-color;
   color: $ren-secondary-font-color;
 }
+
 .p-card.p-component {
   background: $ren-secondary-bg;
 }
+
 .p-dialog-content .p-card.p-component {
   //TODO: set some color
   background: #ffffff;
+
   h3 {
     color: $ren-secondary-font-color;
   }
 }
+
 .p-dialog h3 {
   color: $ren-secondary-font-color;
 }
+
 .p-datatable .p-datatable-footer {
   padding: 0;
 }
+
 .p-button,
 .p-selectbutton .p-button.p-highlight {
   background-color: $ren-primary-color;
@@ -54,10 +62,12 @@ body {
   color: $ren-primary-font-color;
   min-height: 2.5rem;
 }
+
 .grid {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
 }
+
 .p-inputnumber-button {
   background-color: $ren-primary-color;
   background: $ren-primary-color;
@@ -67,11 +77,14 @@ body {
 }
 
 .p-selectbutton.p-buttonset.p-component {
-  background: none; /*remove background for empty space*/
+  background: none;
+  /*remove background for empty space*/
 }
+
 .p-button:hover {
   background-color: $ren-primary-color-tr !important;
 }
+
 .p-button.p-button-text {
   color: $ren-primary-color;
 }
@@ -79,27 +92,34 @@ body {
 .ren-pointer {
   cursor: pointer;
 }
+
 .p-button-rounded {
   margin: 0.25rem 0.25rem;
 }
+
 .disabled {
   color: rgba(144, 144, 144, 0.75) !important;
   font-style: italic !important;
   opacity: 0.6;
 }
+
 .selected {
   // TODO: use
   background-color: $ren-primary-color-tr !important;
   opacity: 0.8 !important;
 }
-.ren,.ren-page-content {
+
+// .ren-page-content
+.ren {
   li div {
     display: flex;
     align-items: center;
   }
+
   .ren-label {
     min-width: 15rem;
   }
+
   .tile {
     margin: 0.15rem;
   }
@@ -108,10 +128,12 @@ body {
     width: $inputwidth;
     max-width: $maxInputwidth;
   }
+
   input {
     width: $inputwidth;
     max-width: $maxInputwidth;
   }
+
   .ren-inputwrapper {
     .p-slider-horizontal {
       width: $inputwidth;
@@ -119,29 +141,38 @@ body {
     }
 
   }
-  .ren-inputwrapper > * {
+
+  .ren-inputwrapper>* {
     width: $inputwidth;
     max-width: $maxInputwidth;
   }
-  .ren-inputwrapper > i {
+
+  .ren-inputwrapper>i {
     width: fit-content
   }
-  .col-12.ren-inputwrapper > * {
+
+  .col-12.ren-inputwrapper>* {
     // max-width: 80vw;
-    max-width: $maxInputwidth; 
+    max-width: $maxInputwidth;
   }
-  .ren-inputwrapper  .field.grid, .ren-inputwrapper   div.col-12{
-    margin:0 ;padding: 0;
+
+  .ren-inputwrapper .field.grid,
+  .ren-inputwrapper div.col-12 {
+    margin: 0;
+    padding: 0;
   }
+
   .p-inputwrapper.p-dropdown,
   .p-inputwrapper.p-autocomplete {
     width: $inputwidth !important;
     max-width: $maxInputwidth;
   }
+
   .p-inputwrapper {
     width: $inputwidth !important;
     max-width: $maxInputwidth;
   }
+
   // .p-inputtextarea {
   //     max-width: initial;
   // }
@@ -149,6 +180,7 @@ body {
     margin: 0;
     padding: 0 !important;
   }
+
   .cell-state {
     padding: 0.3rem;
     height: 100%;
@@ -163,7 +195,8 @@ body {
     height: 100%;
     width: 100%;
   }
-  .cell-state > div {
+
+  .cell-state>div {
     margin: auto;
   }
 
@@ -179,28 +212,40 @@ body {
   .cell-state.error {
     background-color: $ren-state-color-error;
   }
+
   .state.warning,
   .cell.warning,
   .cell-state.warning {
     background-color: $ren-state-color-warning;
   }
+
+  .hl-warning {
+    background-color: rgba(255, 255, 0, 0.318);
+  }
+
   .hl-warning {
     .p-panelmenu-header-content {
       background-color: rgba(255, 255, 0, 0.318);
     }
-    background-color: rgba(255, 255, 0, 0.318);
+
   }
+
+  .hl-menu {
+    background-color: $ren-primary-color-tr;
+  }
+
   .hl-menu {
     .p-panelmenu-header-content {
       background-color: $ren-primary-color-tr;
     }
-    background-color: $ren-primary-color-tr;
   }
+
   .state.unknown,
   .cell.unknown,
   .cell-state.unknown {
     background-color: #82fab4aa;
   }
+
   .row.unknown {
     opacity: 0.65;
     background: $ren-state-color-unknown;
@@ -221,6 +266,7 @@ body {
     //     background-color: lightgray;
     // }
   }
+
   .badge {
     text-align: center;
     width: 1.5rem;
@@ -230,6 +276,7 @@ body {
     margin-right: 0.25rem;
     display: inline-block;
   }
+
   .badge-sm {
     text-align: center;
     width: 1rem;
@@ -281,6 +328,7 @@ body {
   //     margin-left: ($sidemenu-button-width + 0.5rem);
   // }
 }
+
 .ren-page-content {
   margin: 0.5% auto;
   max-width: 95vw;
@@ -288,9 +336,11 @@ body {
   padding-left: 0.5%;
   padding-right: 0.5%;
   overflow: auto;
+
   .p-datatable {
     width: max-content;
   }
+
   .p-datatable-header {
     position: sticky;
     top: 0;
@@ -298,10 +348,12 @@ body {
     height: 4rem;
     z-index: 4000;
   }
+
   .p-datatable-header {
     position: initial;
   }
-  .p-datatable-header ~ .p-datatable-wrapper .p-datatable-thead,
+
+  .p-datatable-header~.p-datatable-wrapper .p-datatable-thead,
   .p-datatable-thead {
     position: sticky;
     top: 0rem;
@@ -314,46 +366,55 @@ body {
       top: 0;
       z-index: 4000;
     }
-    .p-datatable-header ~ .p-datatable-wrapper .p-datatable-thead {
+
+    .p-datatable-header~.p-datatable-wrapper .p-datatable-thead {
       position: sticky;
       top: 4rem;
       z-index: 4000;
     }
   }
 }
+
 .ren-sidebar.p-sidebar {
   padding: 0;
-  background-color: $ren-secondary-color//seagreen;
+  background-color: $ren-secondary-color //seagreen;
 }
+
 .ren-sidebar {
   .p-sidebar {
     padding: 0;
   }
+
   .p-sidebar-content {
     height: 100%;
     padding: 0;
   }
+
   .p-sidebar-close {
     margin-right: 0.5rem;
     // bottom: 0;
     // top: initial;
   }
+
   .p-sidebar-header {
     height: 0;
     padding: 0;
     margin-top: 1rem;
   }
 }
+
 .ren-chart.p-dialog {
   .p-dialog-content {
     display: flex;
     flex-flow: column;
   }
+
   canvas.chartjs-render-monitor {
     height: 100% !important;
     position: relative;
     display: block;
   }
+
   .p-chart {
     flex: 1;
     position: relative;
@@ -366,24 +427,29 @@ body {
   .card {
     margin-top: 1rem;
   }
+
   .field {
     margin-bottom: 0;
   }
+
   .col {
     flex-basis: unset;
     flex-grow: unset;
   }
 }
+
 .ren-tab-content {
   .p-dialog-content {
     display: flex;
     flex-flow: column;
   }
+
   canvas.chartjs-render-monitor {
     height: 100% !important;
     position: relative;
     display: block;
   }
+
   .p-chart {
     flex: 1;
     position: relative;
@@ -397,9 +463,11 @@ body {
   .card {
     margin-top: 1rem;
   }
+
   .field {
     margin-bottom: 0;
   }
+
   .col {
     flex-basis: unset;
     flex-grow: unset;
@@ -413,6 +481,7 @@ body {
   margin-left: 3rem;
   z-index: 1001;
 }
+
 .ren.p-menu-overlay {
   min-width: 15rem !important;
 }
@@ -422,35 +491,44 @@ body {
   color: $ren-primary-color;
   border-radius: 2rem;
 }
+
 .ren.add-button:hover {
   color: rgba(255, 255, 255, 0.5);
   background: $ren-primary-color;
   cursor: pointer;
 }
+
 .ren-card {
   width: 90%;
   margin: auto;
   margin-top: 1rem;
 }
+
 .ren-control-bg {
   background: linear-gradient(to bottom, #190a05, #870000);
   color: $ren-secondary-color;
 }
+
 #pagefooter {
   background-color: $ren-secondary-color;
 }
+
 #panel-box {
   height: 100%;
   overflow: auto;
-  background: #232526; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #232526, #414345); /* Chrome 10-25, Safari 5.1-6 */
+  background: #232526;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #232526, #414345);
+  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #232526, #414345);
 }
+
 .active {
   background-color: rgba(100, 225, 100, 0.5);
   border-radius: 100%;
   padding: 0.4rem;
 }
+
 #panel-box,
 .ren-page-content div,
 .standard div {
@@ -458,17 +536,20 @@ body {
   scrollbar-color: $ren-primary-color-tr $ren-primary-border-color-tr;
   scrollbar-width: thin;
 }
+
 #panel-box::-webkit-scrollbar,
 .ren-page-content div::-webkit-scrollbar,
 .standard div::-webkit-scrollbar {
   width: 8px;
   background: none;
 }
+
 #panel-box::-webkit-scrollbar,
 .ren-page-content div::-webkit-scrollbar-thumb,
 .standard div::-webkit-scrollbar-thumb {
   background: $ren-primary-color-tr;
 }
+
 #panel-box::-webkit-scrollbar-track:hover,
 .ren-page-content div::-webkit-scrollbar-track:hover,
 .standard div::-webkit-scrollbar-track:hover,
@@ -488,15 +569,18 @@ body {
   scrollbar-color: $ren-primary-color-tr $ren-secondary-border-color-tr;
   scrollbar-width: thin;
 }
+
 .p-dialog div::-webkit-scrollbar,
 .p-sidebar-content::-webkit-scrollbar {
   width: 8px;
   background: none;
 }
+
 .p-dialog div::-webkit-scrollbar-thumb,
 .p-sidebar-content::-webkit-scrollbar-thumb {
   background: $ren-primary-color-tr;
 }
+
 .p-dialog div::-webkit-scrollbar-track:hover,
 .p-sidebar-content::-webkit-scrollbar-track:hover,
 .p-dialog div::-webkit-scrollbar:hover,
@@ -512,13 +596,16 @@ body {
   z-index: inherit;
   // background: none;
 }
+
 .ren-sticky.ren-toolbar {
   position: relative;
   width: 100%;
+
   .p-toolbar-group-left {
     left: 1rem;
     position: sticky;
   }
+
   .p-toolbar-group-right {
     right: 1rem;
     position: sticky;

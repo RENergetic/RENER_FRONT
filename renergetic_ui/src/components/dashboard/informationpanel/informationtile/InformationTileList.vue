@@ -54,14 +54,15 @@ export default {
     height: 100%;
   }
 }
-
+.horizontal-tile {
+  flex-direction: row !important;
+}
 .horizontal-tile {
   span {
     float: left;
     margin-right: 0.5rem;
     text-align: center;
   }
-  flex-direction: row !important;
 
   .tilecontent {
     flex-grow: 1;
