@@ -203,8 +203,8 @@
     </template>
   </Toolbar>
 
-  <Dialog v-model:visible="assetAdd" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <AssetForm @update:model-value="onCreate($event, 0)" @cancel="assetAdd = false"> </AssetForm>
+  <Dialog v-model:visible="assetAddDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <AssetForm @update:model-value="onCreate($event, 0)" @cancel="assetAddDialog = false"> </AssetForm>
   </Dialog>
   <AssetSelectDialog ref="assetSelectDialog" @submit="onParentChange" />
   <AssetConnectionManagementDialog ref="assetConnectionManagementDialog" />
@@ -328,7 +328,7 @@ export default {
   data() {
     return {
       mOffset: this.offset,
-      assetAdd: false,
+      assetAddDialog: false,
       mFilters: this.filters ? this.filters : initFilter(),
       // selectedRow: null,
 
@@ -496,9 +496,7 @@ export default {
     async onCreate(o) {
       await this.$ren.managementApi.addAsset(o).then((assetId) => {
         console.debug("add asset:" + assetId);
-        this.addAsset = false;
-        // o.id = assetId;
-        // this.assetList.push(o);
+        this.assetAddDialog = false;
       });
       await this.reload();
     },
