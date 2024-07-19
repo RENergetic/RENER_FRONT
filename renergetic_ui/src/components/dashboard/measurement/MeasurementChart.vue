@@ -224,8 +224,7 @@ export default {
         let timeseriesData;
         if (this.tile) {
           timeseriesData = await this.$ren.dataApi.getTimeseries(null, this.tile.id, this.assetId, this.filter);
-        }
-        if (this.mMeasurements) {
+        } else if (this.mMeasurements) {
           timeseriesData = await this.$ren.dataApi.getMeasurementTimeseries(this.mMeasurements, this.filter);
         }
 
