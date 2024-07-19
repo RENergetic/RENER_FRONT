@@ -53,7 +53,7 @@ export default class LoopRunner {
     this.start();
   }
   async loop() {
-    var id = this.id; // in case we toggle rinning state it prevents from running many instances forever
+    var id = this.id; // in case we toggle running state it prevents from running many instances forever
     while (this.running && id == this.id) {
       console.debug(`loop(${id}) : ${this.interval} `);
       let t = Date.now();

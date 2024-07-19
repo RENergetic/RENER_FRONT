@@ -121,7 +121,7 @@ export default {
   },
   data() {
     return {
-      schema: panelSchema,
+      schema: panelSchema(),
       panel: null,
       panelReload: false,
       editMode: false,

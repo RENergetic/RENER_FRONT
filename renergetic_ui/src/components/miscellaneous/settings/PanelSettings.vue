@@ -58,7 +58,7 @@ export default {
     getSchema() {
       // console.error(panelSchema);
       // alert(JSON.stringify(panelSchema));
-      var schema = JSON.parse(JSON.stringify(userPanelSchema));
+      var schema = userPanelSchema();
       let r = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
       if (r & this.$store.getters["auth/renRole"]) {
         schema.push({

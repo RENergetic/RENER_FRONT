@@ -188,7 +188,7 @@ export default {
     mModel.props = mModel.props ? mModel.props : {};
     let panelStructure = getCleanPanelStructure(mModel, false);
     return {
-      schema: panelSchema,
+      schema: panelSchema(),
       inferMeasurements: "default",
       mModel: mModel,
       addMode: this.modelValue == null || this.modelValue.name == null,

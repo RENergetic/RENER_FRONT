@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-column justify-content-center" style="height: 100%">
-    <div class="flex flex-none flex-column justify-content-center">
+    <div v-if="settings.tile.title_visibility" class="flex flex-none flex-column justify-content-center">
       <h3 :style="`text-align: center;color:${tileTitleColor}`">{{ settings.tile.label }}</h3>
     </div>
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->

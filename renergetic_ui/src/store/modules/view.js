@@ -45,6 +45,21 @@ export default {
     locationList: ["en-EN"],
   },
   mutations: {
+    reset(state) {
+      console.info("reset view");
+      state.dashboards = [];
+      state.dashboardMap = {};
+      state.informationPanels = [];
+      state.featuredPanels = [];
+      state.informationPanelsMap = {};
+      state.assets = [];
+      state.assetsMap = {};
+      state.assetPanels = [];
+      state.assetPanelsMap = {};
+      state.demands = [];
+      state.data = [];
+      state.locationList = ["en-EN"];
+    },
     setPanel(state, panel) {
       console.debug("Set Panel");
       if (!panel || !panel.id) return;
