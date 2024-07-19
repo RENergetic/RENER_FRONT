@@ -96,7 +96,7 @@ export default {
         label: selectedAsset.label,
         description: selectedAsset.description ? selectedAsset.description : null,
         geo_location: selectedAsset.geo_location,
-        parent: selectedAsset.parent ? selectedAsset.parent.id : null,
+        parent: selectedAsset.parent ? selectedAsset.parent : null,
         user: selectedAsset.user ? selectedAsset.user : null,
         asset_category: selectedAsset.category ? selectedAsset.category : null,
         dashboards: selectedAsset.dashboards ? selectedAsset.dashboards : null,
