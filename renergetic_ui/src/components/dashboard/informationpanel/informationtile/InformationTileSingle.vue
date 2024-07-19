@@ -53,13 +53,15 @@ export default {
   },
 
   data() {
+    let measurement = this.getTileMeasurement();
     return {
       mSettings: this.settings,
-      measurement: this.getTileMeasurement(),
+      measurement: measurement,
     };
   },
   computed: {
     unit: function () {
+      if (this.measurement == null) return "";
       return this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings);
     },
     color: function () {
@@ -74,6 +76,7 @@ export default {
       return `height: 100%;background:${color} `;
     },
     value: function () {
+      if (this.measurement == null) return "";
       return this.$ren.utils.getConvertedValue(this.measurement, this.pdata, this.mSettings);
       // try {
       //   if (this.mSettings.panel.relativeValues && this.measurement.type.base_unit != "%") {

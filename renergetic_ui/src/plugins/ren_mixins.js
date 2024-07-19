@@ -191,7 +191,11 @@ export default {
       if (this.tile == null) return null;
       if (this.tile.measurements && this.tile.measurements.length > 1)
         console.warn("Length of measurement list is greater than one. ")
-      return this.tile.measurements && this.tile.measurements.length > 0 ? this.tile.measurements[0] : null;
+      let measurement = this.tile.measurements && this.tile.measurements.length > 0 ? this.tile.measurements[0] : null;
+      if (measurement == null) {
+        console.warn("no measurement for tile: " + JSON.stringify(this.tile));
+      }
+      return measurement
     },
     async deleteConfirm({ message, header = null, action }) {
       await this.$confirm.require({
