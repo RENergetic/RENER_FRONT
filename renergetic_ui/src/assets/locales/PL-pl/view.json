@@ -134,6 +134,7 @@
   "no_value": "No asset",
   "no_values_added": "No values added",
   "no_timestamp": "No timestamp",
+  "all_configured_abstract_meter":"Wszyskie wirtualne szeregi czasowe sa skonfigurowane",
   "not_configured_abstract_meters":"Brakujące konfiguracje wirtualnych szeregów czasowych",
   "notification_history": "Historia powiadomień",
   "notification_list": "Powiadomienia",

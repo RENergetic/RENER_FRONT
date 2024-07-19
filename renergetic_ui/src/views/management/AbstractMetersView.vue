@@ -16,13 +16,14 @@
   <Dialog v-model:visible="notConfiguredDialog" :style="{ width: '90vw', height: '90vh', maxHeight: '100%' }" :modal="true">
     <Card class="ren-page-content">
       <template #content>
-        <div>
+        <div v-if="notConfigured">
           <ol>
             <li v-for="m in notConfigured" :key="m.name + m.domain + m.custom_name">
               {{ m.name }}:{{ m.domain }}<span v-if="m.custom_name">({{ m.custom_name }})</span>
             </li>
           </ol>
         </div>
+        <div v-else>{{ $t("view.all_configured_abstract_meter") }}</div>
       </template>
     </Card>
   </Dialog>
