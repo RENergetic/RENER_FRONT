@@ -110,11 +110,13 @@ export default {
   max-width: 20rem;
   margin-bottom: 2rem;
 }
+
 .properties-form div {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
+
 .property-form {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -122,6 +124,7 @@ export default {
   margin-bottom: 1rem;
   margin-top: 1rem;
 }
+
 .property-form-error {
   color: red;
 }
