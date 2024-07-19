@@ -196,7 +196,7 @@
 
   <Toolbar v-if="!basic" class="ren-toolbar ren-sticky">
     <template #end>
-      <Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="assetAdd = true" />
+      <Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="assetAddDialog = true" />
 
       <Button style="margin-left: 0.5rem" icon="pi pi-list" :label="$t('view.button.manage_asset_types')" @click="manageTypes" />
       <Button style="margin-left: 0.5rem" icon="pi pi-list" :label="$t('view.button.manage_asset_categories')" @click="manageCategories" />
