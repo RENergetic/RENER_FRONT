@@ -75,7 +75,8 @@ export default {
         //   key: "feedbackVisibility",
         // },
         {
-          label: this.$t("settings.notification"),
+          label: this.$t("settings.notification_visibility"),
+          description: this.$t("settings.notification_visibility_description"),
           ext: {
             true: this.$t("settings.visible"),
             false: this.$t("settings.hidden"),
@@ -84,7 +85,8 @@ export default {
           key: "notificationVisibility",
         },
         {
-          label: this.$t("settings.request_demand"),
+          label: this.$t("settings.request_demand_visibility"),
+          description: this.$t("settings.request_demand_visibility_description"),
           ext: {
             true: this.$t("settings.visible"),
             false: this.$t("settings.hidden"),

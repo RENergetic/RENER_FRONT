@@ -62,8 +62,8 @@ var panelSchema = function () {
       key: "legend",
     },
     {
-      label: $t("settings.request_demand"),
-      description: $t("settings.request_demand_description"),
+      label: $t("settings.request_demand_visibility"),
+      description: $t("settings.request_demand_visibility_description"),
       ext: {
         true: $t("settings.visible"),
         false: $t("settings.hidden"),
@@ -72,7 +72,8 @@ var panelSchema = function () {
       key: "demandVisibility",
     },
     {
-      label: $t("settings.notification"),
+      label: $t("settings.notification_visibility"),
+      description: $t("settings.notification_visibility_description"),
       ext: {
         true: $t("settings.visible"),
         false: $t("settings.hidden"),
@@ -182,8 +183,8 @@ var userPanelSchema = function () {
       key: "legend",
     },
     {
-      label: $t("settings.request_demand"),
-      description: $t("settings.request_demand_description"),
+      label: $t("settings.request_demand_visibility"),
+      description: $t("settings.request_demand_visibility_description"),
       ext: {
         true: $t("settings.visible"),
         false: $t("settings.hidden"),
@@ -192,7 +193,8 @@ var userPanelSchema = function () {
       key: "demandVisibility",
     },
     {
-      label: $t("settings.notification"),
+      label: $t("settings.notification_visibility"),
+      description: $t("settings.notification_visibility_description"),
       ext: {
         true: $t("settings.visible"),
         false: $t("settings.hidden"),
