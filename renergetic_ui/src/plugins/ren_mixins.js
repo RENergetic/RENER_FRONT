@@ -96,7 +96,7 @@ export default {
       return color;
     },
     tileMeasurementBackgroundColor: function () {
-      let alpha = this.bgAlpha ? this.bgAlpha : null
+      let alpha = 'bgAlpha' in this && this.bgAlpha ? this.bgAlpha : null
       console.warn("TODO: set tile background alpha")
 
       let measurement = 'measurement' in this ? this.measurement : null;

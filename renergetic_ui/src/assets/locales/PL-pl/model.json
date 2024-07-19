@@ -112,6 +112,8 @@
       "h": "h",
       "w": "w",
       "properties": {
+        "chart_type":"Chart type",        
+        "chart_type_description":"chart.js chart type",
         "icon": "icon",
         "icon_description": "Tile's icon",
         "icon_visibility": "Icon visibility",

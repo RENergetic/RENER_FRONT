@@ -46,6 +46,7 @@
   "panel_qr_code": "QR code text content",
   "panel_qr_code_description": "Text which will be encoded into QR code graphics",
   "panel_qr_code_position": "QR code position on the visible site area",
+  "panel_qr_code_position_description": "QR code position on the visible site area",
   "panel_qr_code_size":"QR code size [px]",
   "panel_qr_code_size_description":"Size of the QR code picture in pixels",
   "panel_qr_code_positions": {

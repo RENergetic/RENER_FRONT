@@ -46,6 +46,7 @@
   "panel_qr_code":"Zawartość kou QR",
   "panel_qr_code_description":"Zawartość kou QR",
   "panel_qr_code_position":"Położenie kody QR na stronie",
+  "panel_qr_code_position_description":"Położenie kody QR na stronie",
   "panel_qr_code_size":"Rozmiar kodu QR",
   "panel_qr_code_size_description":"Rozmiar kodu QR w pixelach",
   "panel_qr_code_positions": {

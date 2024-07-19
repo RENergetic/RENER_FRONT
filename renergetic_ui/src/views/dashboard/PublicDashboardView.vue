@@ -6,7 +6,6 @@
     <InformationPanelWrapper
       ref="panel"
       :key="panelReload"
-      :locked="locked"
       :panel="panel"
       :edit-mode="editMode"
       :panel-settings="settings"
@@ -16,61 +15,60 @@
     <div style="margin-left: 1rem; margin-top: 2rem">
       <ParsedDateFilter :key="parsedFilterRefresh" :filter="effectiveFilterSettings" />
     </div>
-  </div>
-  <RenSettingsDialog ref="settingsDialog">
-    <template #settings>
-      <Card class="ren-settings">
-        <template #title>
-          <span> {{ $t("view.panel_effective_settings") }}:</span>
-        </template>
-        <template #content>
-          <Settings :schema="schema" :settings="computePanelSettings(settings, panel)" :disabled="true" />
-        </template>
-      </Card>
-      <Card class="ren-settings">
-        <template #title>
-          <span> {{ $t("view.panel_settings") }}:</span>
-        </template>
-        <template #content>
-          <Settings :schema="schema" :settings="panel.props" :disabled="true" />
-        </template>
-      </Card>
-      <Card class="ren-settings">
-        <template #title>
-          <span> {{ $t("view.panel_user_settings") }}:</span>
-        </template>
-        <template #content>
-          <PanelSettings @update="reloadSettings()"> </PanelSettings>
-        </template>
-      </Card>
-    </template>
-  </RenSettingsDialog>
-  <RenSettingsDialog ref="conversionSettingsDialog">
-    <template #settings>
-      <ConversionSettings @update="reloadSettings()"></ConversionSettings>
-    </template>
-  </RenSettingsDialog>
-  <RenSettingsDialog ref="filterSettingsDialog" :save="false">
-    <template #settings>
-      <Panel v-if="panel" toggleable class="ren-settings">
-        <template #header>
-          <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
-        </template>
-        <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
-      </Panel>
-      <Panel v-if="panel" toggleable class="ren-settings">
-        <template #header>
-          <span> {{ $t("view.panel_filter_settings") }}:</span>
-        </template>
-        <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
-      </Panel>
-      <Panel v-if="panel" toggleable class="ren-settings">
-        <template #header>
-          <span> {{ $t("view.user_filter_settings") }}:</span>
-        </template>
-        <BasicFilterSettings :setting-key="'public'" @update="updateFilter()" />
-      </Panel>
-      <!-- <Card class="ren-settings">
+    <RenSettingsDialog ref="settingsDialog">
+      <template #settings>
+        <Card class="ren-settings">
+          <template #title>
+            <span> {{ $t("view.panel_effective_settings") }}:</span>
+          </template>
+          <template #content>
+            <Settings :schema="schema" :settings="computePanelSettings(settings, panel)" :disabled="true" />
+          </template>
+        </Card>
+        <Card class="ren-settings">
+          <template #title>
+            <span> {{ $t("view.panel_settings") }}:</span>
+          </template>
+          <template #content>
+            <Settings :schema="schema" :settings="panel.props" :disabled="true" />
+          </template>
+        </Card>
+        <Card class="ren-settings">
+          <template #title>
+            <span> {{ $t("view.panel_user_settings") }}:</span>
+          </template>
+          <template #content>
+            <PanelSettings @update="reloadSettings()"> </PanelSettings>
+          </template>
+        </Card>
+      </template>
+    </RenSettingsDialog>
+    <RenSettingsDialog ref="conversionSettingsDialog">
+      <template #settings>
+        <ConversionSettings @update="reloadSettings()"></ConversionSettings>
+      </template>
+    </RenSettingsDialog>
+    <RenSettingsDialog ref="filterSettingsDialog" :save="false">
+      <template #settings>
+        <Panel v-if="panel" toggleable class="ren-settings">
+          <template #header>
+            <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
+          </template>
+          <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
+        </Panel>
+        <Panel v-if="panel" toggleable class="ren-settings">
+          <template #header>
+            <span> {{ $t("view.panel_filter_settings") }}:</span>
+          </template>
+          <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
+        </Panel>
+        <Panel v-if="panel" toggleable class="ren-settings">
+          <template #header>
+            <span> {{ $t("view.user_filter_settings") }}:</span>
+          </template>
+          <BasicFilterSettings :setting-key="'public'" @update="updateFilter()" />
+        </Panel>
+        <!-- <Card class="ren-settings">
         <template #title>
           <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
         </template>
@@ -94,8 +92,9 @@
           <BasicFilterSettings :setting-key="'public'" @update="updateFilter()" />
         </template>
       </Card> -->
-    </template>
-  </RenSettingsDialog>
+      </template>
+    </RenSettingsDialog>
+  </div>
 </template>
 <script>
 import { getCleanPanelStructure } from "@/components/dashboard/informationpanel/InformationPanelForm.vue";
@@ -125,7 +124,6 @@ export default {
       panel: null,
       panelReload: false,
       editMode: false,
-      // locked: false,
       notifications: [],
       settings: this.$store.getters["settings/panel"],
       settingsDialog: false,
