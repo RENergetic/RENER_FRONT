@@ -8,6 +8,7 @@
       <div class="flex flex-none flex-column align-items-center justify-content-center" style="height: 85%">
         <MeasurementChart
           ref="chart"
+          :pdata="pdata"
           :filter="filter"
           :height="height"
           :width="width"

@@ -214,18 +214,38 @@ export default {
       console.error("onTimeseriesUpdate TODO:");
       console.error(evt);
     },
+    async mSetChartData(measurements, panelData) {
+      console.error(measurements);
+      panelData["timeseries"] = await this.$ren.dataApi.getMeasurementTimeseries(measurements, this.filter);
+
+      return panelData;
+    },
     async loadData() {
       if (this.panel.id != null && this.$refs.spinner) {
         // console.info("panel load data: " + this.panel.id);
         this.$refs.spinner.run(async () => {
           console.info("wait for panel data: " + this.panel.id + " " + this.panel.is_template);
-          await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, this.mFilter).then((resp) => {
+
+          await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, this.mFilter).then(async (resp) => {
             console.debug(resp);
-            this.panelData = resp.data;
+            var panelData = resp.data;
             if (this.panel.is_template) this.mPanel = resp.panel;
             else {
               this.mPanel = this.panel;
             }
+            var mDict = {};
+            for (let tile of this.mPanel.tiles) {
+              if (tile.type == TileTypes.chart) {
+                for (let m of tile.measurements) {
+                  mDict[m.id] = m;
+                }
+              }
+            }
+            let measurements = Object.values(mDict);
+            if (measurements.length > 0) panelData = await this.mSetChartData(measurements, panelData);
+
+            this.panelData = panelData;
+            // timeseriesData = await this.$ren.dataApi.getTimeseries(null, this.tile.id, this.assetId, this.filter);
             console.info("Panel data loaded");
           });
         });

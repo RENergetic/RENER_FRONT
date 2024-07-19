@@ -201,7 +201,7 @@ export default {
         let mPanelData = JSON.parse(JSON.stringify(panelData));
         mPanelData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, mPanelData, this.settings);
         mPanelData = this.$ren.utils.convertPanelData(this.mPanel, mPanelData, this.$store.getters["settings/conversion"]);
-        // console.error(mPanelData);
+        console.error(mPanelData);
         this.mPanelData = mPanelData;
         this.loaded = true;
         // this.reload = !this.reload;
