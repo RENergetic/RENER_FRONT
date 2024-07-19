@@ -41,6 +41,9 @@ export default {
   async mounted() {
     await this.$refs.spinner.run(async () => {
       this.abstractMeterTypes = await this.$ren.kpiApi.getAbstracMeterList();
+      if (this.abstractMeterTypes) {
+        this.abstractMeterTypes = this.abstractMeterTypes.filter((it) => it.meter != "Custom");
+      }
     });
   },
   methods: {

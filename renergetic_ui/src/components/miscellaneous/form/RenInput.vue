@@ -51,14 +51,21 @@
 
     <div v-if="textLabel != null && !readOnly" class="col-12 md:col-10">
       <InputText :id="mId" v-model="mValue" :disabled="disabled" :style="inputStyle" @update:model-value="onInput($event)" />
+
+      <i v-if="showClear && !disabled" v-tooltip="$t('view.clear')" class="pi pi-times" @click="clearInput" />
     </div>
     <div v-else-if="!readOnly" class="col-12">
       <InputText :id="mId" v-model="mValue" :disabled="disabled" :style="inputStyle" @update:model-value="onInput($event)" />
+      <i v-if="showClear && !disabled" v-tooltip="$t('view.clear')" class="pi pi-times" @click="clearInput" />
     </div>
     <div v-else-if="textLabel != null && readOnly" class="col-12 md:col-10">
       <InputText :id="mId" v-model="mValue" :disabled="disabled" :style="inputStyle" />
+      <i v-if="showClear && !disabled" v-tooltip="$t('view.clear')" class="pi pi-times" @click="clearInput" />
     </div>
-    <div v-else class="col-12"><InputText :id="mId" v-model="mValue" :disabled="disabled" :style="inputStyle" /></div>
+    <div v-else class="col-12">
+      <InputText :id="mId" v-model="mValue" :disabled="disabled" :style="inputStyle" />
+      <i v-if="showClear && !disabled" v-tooltip="$t('view.clear')" class="pi pi-times" @click="clearInput" />
+    </div>
     <span v-if="invalid">
       <span v-for="(error, index) of errors" id="name-error" :key="index">
         <small class="p-error">{{ error.$message }}</small>
@@ -82,6 +89,7 @@ export default {
     modelValue: { type: [String, Number], default: null }, //Object,
     disabled: { type: Boolean, default: false },
     readOnly: { type: Boolean, default: false },
+    showClear: { type: Boolean, default: false },
   },
   emits: ["update:modelValue", "submit"],
   data() {
@@ -112,6 +120,10 @@ export default {
     },
   },
   methods: {
+    clearInput() {
+      this.mValue = null;
+      this.$emit("update:modelValue", null);
+    },
     focus() {
       try {
         document.getElementById(this.mId).focus();

@@ -4,7 +4,6 @@
   <div v-if="homeSettings.panelVisibility" style="position: relative">
     <!-- {{ $store.getters["view/featuredPanels"] }}  -->
     <!-- {{ panelSettings }} -->
-
     <InformationPanelWrapper
       v-if="panel"
       ref="panel"

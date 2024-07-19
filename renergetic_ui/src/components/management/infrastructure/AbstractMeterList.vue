@@ -38,7 +38,7 @@
               <Button v-else :label="$t('view.add_measurement')" @click="selectFormulaMeasurement()" />
             </template>
           </ren-input-wrapper>
-          <ren-switch v-model="conditionMeterShown" :text-label="'view.activated_condition'" />
+          <ren-switch v-model="conditionMeterShown" :disabled="hasCondition" :text-label="'view.activated_condition'" />
 
           <ren-input
             v-if="conditionMeterShown"
@@ -46,6 +46,7 @@
             v-model="abstractMeter.condition"
             :invalid="!isValidCondition"
             :errors="conditionError"
+            :show-clear="true"
             :placeholder="$t('view.condition_meter_placeholder')"
             :disabled="!conditionMeterShown"
           />
@@ -151,6 +152,10 @@ export default {
     };
   },
   computed: {
+    hasCondition: function () {
+      console.info(this.abstractMeter.condition);
+      return this.abstractMeter && this.abstractMeter.condition ? this.abstractMeter.condition.replace(/\s/g, "") != "" : false;
+    },
     isValidMeter: function () {
       return this.isValidFormula && this.isValidCondition && this.abstractMeter && this.abstractMeter.formula;
     },
@@ -176,11 +181,16 @@ export default {
     },
     "abstractMeter.formula": function (newValue) {
       console.error("watch test1");
-      if (!newValue || newValue.trim() == "") {
+      if (!newValue) {
         this.isValidFormula = true;
         return;
       }
-      this.isValidFormula = this.validateMeasurementFormula(newValue);
+      var trimmed = newValue.replace(/\s/g, "");
+      if (trimmed == "") {
+        this.isValidFormula = true;
+        return;
+      }
+      this.isValidFormula = this.validateMeasurementFormula(trimmed);
       if (this.isValidFormula) this.meterMeasurements = this.listMeasurements();
     },
     "abstractMeter.condition": function (newValue) {
@@ -189,7 +199,8 @@ export default {
         this.isValidCondition = true;
         return;
       }
-      this.isValidCondition = this.validateMeasurementCondition(newValue);
+      var trimmed = newValue.replace(/\s/g, "");
+      this.isValidCondition = this.validateMeasurementCondition(trimmed);
       if (this.isValidCondition) this.meterMeasurements = this.listMeasurements();
     },
     meterMeasurements: function (newVal) {
@@ -275,15 +286,16 @@ export default {
       this.measurementHandler(m);
     },
     validateMeasurementCondition(measurementCondition) {
+      console.error(measurementCondition);
       if (!measurementCondition) {
         return false;
       }
       const operators = />=|<=|<|>|=|!=/g;
-      let matches = measurementCondition.match(operators);
-
+      var condition = measurementCondition.replace(/\s/g, "");
+      let matches = condition.match(operators);
+      console.error(matches);
       if (matches && matches.length == 1) {
-        const formulas = measurementCondition.split(matches);
-
+        const formulas = condition.split(matches);
         return this.validateMeasurementFormula(formulas[0]) && this.validateMeasurementFormula(formulas[1]);
       }
       return false;
