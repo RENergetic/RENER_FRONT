@@ -229,7 +229,9 @@ class RenUtils {
     let isAuthenticated = this.app.$store.getters["auth/isAuthenticated"];
     if (!isAuthenticated) {
       // console.error("TODO: handle not logged in user");
-      throw new Error({ isAuthenticated: isAuthenticated });
+      // let q = new QueryBuilder();TODO: maybe load here homepage data
+
+      throw new Error("NOT_AUTHENTICATED");
     }
     var currentRole = this.app.$store.getters["auth/renRole"];
 

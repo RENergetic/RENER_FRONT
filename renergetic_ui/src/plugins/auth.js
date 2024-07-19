@@ -71,6 +71,7 @@ export default function (Vue) {
       } else {
         //clear stored data
         Vue.config.globalProperties.$store.commit("auth/reset");
+        Vue.config.globalProperties.$store.commit("view/reset");
       }
       keycloak.initialized = true;
     })

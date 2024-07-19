@@ -4,6 +4,7 @@ import view from "./modules/view";
 import slideshow from "./modules/slideshow";
 import settings, { DefaultSettings } from "./modules/settings";
 import createPersistedState from "vuex-persistedstate";
+
 export default createStore({
   state: {},
   mutations: {
