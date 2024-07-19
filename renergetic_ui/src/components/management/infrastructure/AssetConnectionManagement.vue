@@ -45,7 +45,7 @@
                 <template #content>
                   <span v-if="selectedAsset">{{ selectedAsset.label ? selectedAsset.label : selectedAsset.name }}</span>
                 </template>
-              </ren-input-wrapper> -->
+    </ren-input-wrapper> -->
               <!-- <ren-input-wrapper>
                 <template #content> -->
               <Button v-if="!selectedAsset" @click="selectAsset">{{ $t("view.select_asset") }}</Button>
@@ -148,12 +148,6 @@ export default {
       this.selectedAsset = selectedAsset;
     },
     async deleteConnection(assetConnection) {
-      //
-      console.error(
-        `TODO: confirm dialog, TODO: delete by connection type ?, can two assets can have more than 1 connection (different type)? connection type: ${
-          assetConnection.type.id
-        }, connected asset : ${assetConnection.id}:${assetConnection.name}(${assetConnection.label ? assetConnection.label : "no label"}) `,
-      );
       await this.$confirm.require({
         message: this.$t("view.asset_connection_delete_body", {
           label: assetConnection.label ? assetConnection.label : assetConnection.name,
@@ -169,19 +163,21 @@ export default {
       });
     },
 
-    async deleteAssetConnection(assetConnection) {
+    async deleteAssetConnection(assetId, connectedAssetId, connectionType) {
       let res = false;
-      this.$refs.spinner.run(async () => {
-        await this.$ren.managementApi.deleteAssetConnection(this.asset.id, assetConnection.id);
-        this.connectedAssets = await this.$ren.managementApi.listConnectedAssets(this.asset.id, 0, 200);
-        res = true;
+      await this.$refs.spinner.run(async () => {
+        await this.$ren.managementApi
+          .deleteAssetConnection(assetId, connectedAssetId, connectionType)
+          .then(() => {
+            res = true;
+            this.$emitter.emit("information", { message: this.$t("information.asset_connection_deleted") });
+          })
+          .catch(() => {
+            this.$emitter.emit("error", { message: this.$t("information.asset_connection_not_deleted") });
+          });
+        alert(res);
+        if (res) await this.reload();
       });
-      if (res) {
-        this.$emitter.emit("information", { message: this.$t("information.asset_connection_deleted") });
-      } else {
-        this.$emitter.emit("error", { message: this.$t("information.asset_connection_not_deleted") });
-      }
-      return res;
     },
     async submitAssetConnection() {
       await this.$ren.managementApi.submitAssetConnection(this.asset.id, this.selectedAsset.id, this.connectionType.name, this.twoDirection);
