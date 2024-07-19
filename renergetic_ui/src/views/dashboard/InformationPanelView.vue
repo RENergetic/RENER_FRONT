@@ -144,7 +144,7 @@ export default {
   components: { ConversionSettings, Settings, InformationPanelWrapper, DotMenu, PanelSettings, ParsedDateFilter, BasicFilterSettings },
   data() {
     return {
-      schema: panelSchema,
+      schema: panelSchema(),
       panel: null,
       locked: false,
       editMode: false,

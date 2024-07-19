@@ -215,7 +215,7 @@ export default {
       console.error(evt);
     },
     async loadData() {
-      if (this.panel.id != null) {
+      if (this.panel.id != null && this.$refs.spinner) {
         // console.info("panel load data: " + this.panel.id);
         this.$refs.spinner.run(async () => {
           console.info("wait for panel data: " + this.panel.id + " " + this.panel.is_template);

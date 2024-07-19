@@ -4,7 +4,8 @@
   </Dialog>
   <Dialog v-model:visible="mDemandDialog" :maximizable="false" :modal="true" :dismissable-mask="true">
     <div style="padding: 0 2rem">
-      <DemandList style="width: 50rem; margin: auto" @update="onDemandUpdate($event)"></DemandList>
+      <DemandList style="width: 50rem; margin: auto"></DemandList>
+      <!-- @update="onDemandUpdate($event)" -->
     </div>
   </Dialog>
 

@@ -108,7 +108,7 @@ export default {
           this.menuModel = menu;
         })
         .catch((error) => {
-          if (error == null || error.isAuthenticated != false) {
+          if (error == null || error.message == "NOT_AUTHENTICATED") {
             console.error(error);
           }
         });

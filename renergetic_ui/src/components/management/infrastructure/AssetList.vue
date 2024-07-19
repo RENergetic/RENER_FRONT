@@ -2,7 +2,7 @@
   <!-- TODO: unslect row event responsive-layout="scroll"-->
 
   <DataTable
-    class="asset-list"
+    class="sticky-header"
     :value="assetList"
     :lazy="true"
     data-key="id"
@@ -53,11 +53,17 @@
         />
         <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
         <Button
+          v-if="!(slotProps.data.type.name == 'user' || (slotProps.data.measurements && slotProps.data.measurements.length > 0))"
           v-tooltip="$t('view.delete') + hasMeasurementsTooltip(slotProps.data)"
-          :disabled="slotProps.data.type.name == 'user' || (slotProps.data.measurements && slotProps.data.measurements.length > 0)"
           icon="pi pi-trash"
           class="p-button-rounded p-button-danger"
           @click="deleteAsset(slotProps.data)"
+        />
+
+        <i
+          v-else
+          v-tooltip="$t('view.delete') + hasMeasurementsTooltip(slotProps.data)"
+          class="p-button p-component p-button-icon-only p-button-rounded p-disabled p-button-danger pi icon-button pi-trash"
         />
       </template>
     </Column>
@@ -551,5 +557,12 @@ export default {
 }
 .asset-list .p-datatable-tbody td:last-child {
   padding-right: 0.75rem !important;
+}
+.icon-button {
+  border-radius: 50%;
+  height: 2.357rem;
+  font-size: 1rem;
+  line-height: 1;
+  display: inline-flex;
 }
 </style>

@@ -175,7 +175,7 @@ export default {
   data() {
     console.debug(this.$store.getters["settings/home"]);
     return {
-      schema: panelSchema,
+      schema: panelSchema(),
       loaded: false,
       grid: null,
       locked: true,
