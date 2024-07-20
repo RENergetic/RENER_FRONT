@@ -53,6 +53,7 @@ export default {
     //watch only without submit button
     settingsObj: {
       handler: function (newVal) {
+        // console.debug("refresh");
         let mSettings = this.copyDateObj(newVal);
         // console.debug(newVal);
         // console.debug(new Date(newVal.date_to));

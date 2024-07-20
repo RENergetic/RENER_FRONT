@@ -39,6 +39,7 @@
     "update_success":"Update success",
     "delete_success":"Object deleted",
     "information": "Information",
+    "information_panel_sctructure_submitted":"Structure submitted",
     "dashboard_created": "Dashboard has been created",
     "dashboard_updated": "Dashboard has been updated",
     "dashboard_delete_success": "Dashboard has been deleted.",

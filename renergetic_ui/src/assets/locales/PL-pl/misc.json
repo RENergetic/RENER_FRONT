@@ -39,6 +39,7 @@
     "update_success":"Zapisano pomyślnie",
     "delete_success":"Usunięto pomyślnie",
     "information": "Information",
+    "information_panel_sctructure_submitted":"Structura widoku zaktualizowana",
     "dashboard_created": "Dashboard has been created",
     "dashboard_updated": "Dashboard has been updated",
     "dashboard_delete_success": "Dashboard has been deleted.",

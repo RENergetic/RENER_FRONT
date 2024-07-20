@@ -46,21 +46,29 @@
         <AccordionTab :header="$t('model.information_panel.structure')">
           <ren-input-wrapper v-if="mPanelStructureJSON" :text-label="null">
             <template #content>
-              <Textarea v-model="mPanelStructureJSON" style="width: 100%" :maxlength="20000" rows="15" :cols="80"></Textarea>
+              <Textarea v-model="mPanelStructureJSON" style="width: 100%; max-width: 100rem" :maxlength="20000" rows="15" :cols="80"></Textarea>
             </template>
           </ren-input-wrapper>
           <ren-input-wrapper v-if="modelValue" :text-label="null">
             <template #content>
               <!-- <span v-if="!selectedAsset">{{ $t("view.asset_not_selected") }}</span> -->
-              <div>
-                <Button style="margin-left: 0.5rem" @click="importPanelDialog = true">
-                  {{ $t("view.information_panel_submit_file_structure") }}
-                </Button>
-                <Button style="margin-left: 0.5rem" @click="submitStructure">
-                  {{ $t("view.information_panel_submit_structure") }}
-                </Button>
-              </div>
+
+              <Button
+                v-tooltip="$t('view.information_panel_submit_structure_description')"
+                :label="$t('view.information_panel_submit_structure')"
+                @click="submitStructure"
+              />
+
               <!-- <span v-if="submittedPanelJSON">{{ $t("view.file_submitted") }}</span> -->
+            </template>
+          </ren-input-wrapper>
+          <ren-input-wrapper v-if="modelValue" :text-label="null">
+            <template #content>
+              <Button
+                v-tooltip="$t('view.information_panel_submit_file_structure_description')"
+                :label="$t('view.information_panel_submit_file_structure')"
+                @click="importPanelDialog = true"
+              />
             </template>
           </ren-input-wrapper>
         </AccordionTab>
@@ -263,6 +271,7 @@ export default {
       this.panelStructure = getCleanPanelStructure(submittedPanel, this.inferMeasurements == "override");
       this.updateModel(this.panelStructure);
       this.refreshTiles = !this.refreshTiles;
+      this.$emitter.emit("information", { message: this.$t("information.panel_sctructure_submitted") });
     },
     onSelect() {
       //on file select
@@ -348,6 +357,7 @@ export default {
     padding-bottom: 0 !important;
   }
 }
+
 .p-dialog {
   max-height: 99%;
 }
@@ -360,6 +370,7 @@ export default {
     // padding-top: 0 !important;
   }
 }
+
 #panelForm > .p-accordion .p-accordion-content {
   max-height: 70vh;
   overflow: auto;
