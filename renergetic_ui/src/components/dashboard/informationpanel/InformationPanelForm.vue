@@ -76,7 +76,7 @@
       <!-- </ScrollPanel> -->
     </div>
     <div class="flex-grow-0">
-      <ren-submit :cancel-button="true" :disabled="v$.$invalid" @cancel="cancel" @submit="submit" />
+      <ren-submit :cancel-button="true" :submit-label="$t('view.button.save')" :disabled="v$.$invalid" @cancel="cancel" @submit="submit" />
     </div>
   </div>
   <Dialog v-model:visible="importPanelDialog" :style="{ width: '60vw', height: '80vh' }" :maximizable="true" :modal="true" :dismissable-mask="true">
