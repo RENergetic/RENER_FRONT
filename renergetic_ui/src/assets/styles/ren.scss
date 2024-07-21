@@ -213,6 +213,8 @@ body {
     background-color: $ren-state-color-error;
   }
 
+  label.state.error {   color: $ren-state-color-error;  background-color: inherit}
+
   .state.warning,
   .cell.warning,
   .cell-state.warning {
@@ -598,8 +600,9 @@ body {
 }
 
 .ren-sticky.ren-toolbar {
-  position: relative;
+  // position: relative;
   width: 100%;
+  height: 5rem;
 
   .p-toolbar-group-left {
     left: 1rem;
@@ -610,6 +613,11 @@ body {
     right: 1rem;
     position: sticky;
   }
+}
+
+.bottom {
+
+  bottom: 0;
 }
 
 @import "./ren-components.scss";

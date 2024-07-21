@@ -1,14 +1,8 @@
 <template>
-  <InfoIcon :show-icon="false">
-    <template #content>
-      <!-- some info -->
-    </template>
-  </InfoIcon>
-  <!-- {{ mModel }} -->
-  <Card v-if="mModel">
+  <Card v-if="mModel" class="ren">
     <!-- <template #title> </template> -->
     <template #content>
-      <div class="ren">
+      <div>
         <ren-input-wrapper :text-label="'model.tag.key'" :invalid="v$.mModel.key.$invalid" :errors="v$.mModel.key.$silentErrors">
           <template #content>
             <AutoComplete v-model="mModel.key" dropdown dropdown-mode="current" :suggestions="filteredTags" @complete="filterTag" />
@@ -23,10 +17,10 @@
           :errors="v$.mModel.value.$silentErrors"
         />
       </div>
+      <ren-submit :cancel-button="true" :disabled="v$.$invalid" @cancel="cancel" @submit="submit" />
+      <label v-if="tagExists" class="state error" width="10rem">{{ $t("error.tag_exists") }}</label>
     </template>
   </Card>
-
-  <ren-submit :cancel-button="true" :disabled="v$.$invalid" @cancel="cancel" @submit="submit" />
 </template>
 
 <script>
@@ -34,35 +28,45 @@
 import { useVuelidate } from "@vuelidate/core";
 import { maxLength, required, minLength } from "@/plugins/validators.js"; //required,
 
-import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 export default {
   name: "TagForm",
-  components: { InfoIcon },
+  components: {},
   props: {
     modelValue: {
       type: Object,
-      default: () => ({ measurements: [] }),
+      default: () => ({}),
     },
     tags: {
       type: Array,
       default: () => [],
     },
+    edit: {
+      type: Boolean,
+      default: false,
+    },
   },
-  emits: ["update:modelValue", "cancel"],
+  emits: ["update:modelValue", "cancel", "submit"],
   setup: () => ({ v$: useVuelidate() }),
   data() {
     return {
-      mModel: this.modelValue ? this.modelValue : { measurements: [] },
+      mModel: this.modelValue ? this.modelValue : {},
       filteredTags: [],
-      // assetTypes: this.$store.getters["view/assetTypes"],
-      // assetTypes: [
-      //   { value: "room", label: this.$t("model.asset.asset_types.room") },
-      //   { value: "pv", label: this.$t("model.asset.asset_types.pv") },
-      // ],
+      tagExists: false,
     };
   },
   validationConfig: {
     $lazy: true,
+  },
+  computed: {},
+  watch: {
+    mModel: {
+      handler: function (/*newVal*/) {
+        if (this.tagExists) {
+          this.tagExists = false;
+        }
+      },
+      deep: true,
+    },
   },
   validations() {
     return {
@@ -72,7 +76,6 @@ export default {
       },
     };
   },
-  computed: {},
   methods: {
     filterTag(evt) {
       this.filteredTags = [];
@@ -82,8 +85,20 @@ export default {
         this.filteredTags = [...this.tags];
       }
     },
-    submit() {
-      this.$emit("update:modelValue", this.mModel);
+    onTagKeySelect() {
+      // this.$emit("update:modelValue", this.mModel);
+    },
+    async submit() {
+      if (!this.edit) {
+        let tag = await this.$ren.managementApi.getTag(this.mModel.key, this.mModel.value);
+        if (tag) {
+          this.tagExists = true;
+        }
+      }
+      if (!this.tagExists) {
+        this.$emit("update:modelValue", this.mModel);
+        this.$emit("submit", this.mModel);
+      }
     },
     cancel() {
       this.$emit("cancel", this.model);

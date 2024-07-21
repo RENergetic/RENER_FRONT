@@ -79,7 +79,8 @@
     "asset_panel_assigned": "Asset not assigned to the panel",
     "visibility_changed": "Visibility not changed",
     "worflowrun_start": "{label} - błąd przy próbie uruchomienia",
-    "worflow_stop": "{label} - błąd przy próbie zatrzymania"
+    "worflow_stop": "{label} - błąd przy próbie zatrzymania",    
+    "tag_exists":"Tag już istnieje"
   },
   "message": {
     "anomaly": {
