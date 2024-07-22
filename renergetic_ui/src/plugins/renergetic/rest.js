@@ -26,7 +26,7 @@ import axios from "axios";
 //   USE_DUMMY = false;
 // }
 export var BASE_URL_HDR_API = process.env.VUE_APP_API_URL_HDR_API; // "http://localhost:7982";
-export var BASE_URL_BASE_API = "http://localhost:7981"; //process.env.VUE_APP_API_URL_BASE_API; //;
+export var BASE_URL_BASE_API = process.env.VUE_APP_API_URL_BASE_API; // "http://localhost:7981"; //process.env.VUE_APP_API_URL_BASE_API; //;
 export var BASE_URL_DATA_API = process.env.VUE_APP_API_URL_DATA_API; // "http://localhost:7983"; //; // " //
 export var BASE_URL_USER_API = process.env.VUE_APP_API_URL_USER_API; //"http://localhost:7985"; //
 export var BASE_URL_WRAPPER_API = process.env.VUE_APP_API_URL_WRAPPER_API; // ""; //

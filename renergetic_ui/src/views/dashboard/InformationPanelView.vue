@@ -1,8 +1,7 @@
 <template>
   <!-- PRIVATE DASHBOARD -->
 
-  <div v-if="panel" id="panel-box">
-    <!-- {{ $store.getters["settings/parsedFilter"]("private") }} -->
+  <div v-if="panel" id="panel-box"> 
     <DotMenu :model="menuModel" />
     <BasicFilterSettings
       v-if="!panelTitle"
