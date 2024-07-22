@@ -12,7 +12,7 @@
       </RenSpinner>
     </template>
   </Card>
-  <Dialog v-model:visible="tagListDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+  <Dialog v-model:visible="tagListDialog" :style="{ width: '75vw', height: '90vh' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <!-- {{ availableTags }}
     {{ availableTagsValues }} -->
     <TagManagement />

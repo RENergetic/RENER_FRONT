@@ -52,8 +52,6 @@
         <div class="flex align-items-center" style="flex-grow: 0">
           <!-- <i class="pi pi-search" /> -->
           <InputText v-model="filters['global'].value" :placeholder="$t('view.search')" />
-          <!-- <i v-if="filters.state" class="pi pi-filter active" :label="$t('view.button.filter')" @click="setFilter" /> -->
-          <!-- <i v-else class="pi pi-filter" :label="$t('view.button.filter')" @click="setFilter" /> -->
           <i v-if="filters.state" class="pi pi-filter-slash" :label="$t('view.button.clear_filter')" @click="clearFilter" />
         </div>
       </div>
@@ -183,10 +181,6 @@ export default {
       this.mOffset = 0;
       this.$emit("reload", { q: this.filters.global.value, limit: this.limit, offset: this.mOffset });
     },
-    async setFilter() {
-      this.filters.state = true;
-      this.filter();
-    },
     filter() {
       if (!this.filters.state) {
         this.onPagination();
@@ -202,7 +196,7 @@ export default {
     },
     clearFilter() {
       this.mOffset = 0;
-      this.paginatedDashboards = this.mDashboards.slice(this.mOffset, this.mOffset + PAGE_SIZE);
+      this.paginatedDashboards = this.dashboards.slice(this.mOffset, this.mOffset + PAGE_SIZE);
       this.filters = this.initFilter();
       this.mDashboards = this.dashboards;
     },

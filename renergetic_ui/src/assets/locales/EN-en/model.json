@@ -165,6 +165,7 @@
     "description": "Description"
   },
   "tag": {
+    "id":"ID",
     "key": "Tag's name (key)",
     "value": "Tag's value"
   },
