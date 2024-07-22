@@ -32,11 +32,16 @@
     </Column>
     <Column field="manage_asset_assignment" :header="$t('view.manage_asset_assignment')">
       <template #body="item">
-        <span v-if="item.data.is_template" class="ren-pointer" @click="manageAssets(item.data)">
-          {{ $t("view.manage_asset_assignment") }}
+        <span
+          v-if="item.data.is_template"
+          v-tooltip="$t('view.manage_panel_asset_assignment_description')"
+          class="ren-pointer"
+          @click="manageAssets(item.data)"
+        >
+          {{ $t("view.manage_panel_asset_assignment") }}
         </span>
-        <span v-else>
-          {{ $t("view.asset_management_only_template") }}
+        <span v-else v-tooltip="$t('view.panel_asset_management_only_template')" class="disabled">
+          {{ $t("view.na") }}
         </span>
       </template>
     </Column>
@@ -49,16 +54,22 @@
     </Column>
     <Column field="edit">
       <template #body="item">
-        <!--  :header="$t('view.edit')" -->
         <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editPanel(item.data)" />
       </template>
     </Column>
     <Column field="export">
       <template #body="item">
-        <!--  :header="$t('view.export_json')" pi-file-export-->
-        <Button v-tooltip="$t('view.export_json_template')" icon="pi pi-file" class="p-button-rounded" @click="exportJSON(item.data, true)" />
-      </template> </Column
-    ><Column field="delete">
+        <Button v-tooltip="$t('view.export_json_template')" icon="pi pi-file" class="p-button-rounded" @click="exportPanelTemplate(item.data)" />
+        <Button
+          v-if="!item.data.is_template"
+          v-tooltip="$t('view.export_json')"
+          icon="pi pi-download"
+          class="p-button-rounded"
+          @click="exportPanel(item.data)"
+        />
+      </template>
+    </Column>
+    <Column field="delete">
       <template #body="item">
         <!-- :header="$t('view.button.delete')" -->
         <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDelete(item.data)" />
@@ -72,36 +83,48 @@
   <RenSpinner ref="spinner" />
   <RenSpinner ref="assetSpinner" :lock="true" style="margin: auto; max-width: 95%">
     <template #content>
-      <Dialog v-model:visible="assetManagementDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-        <div v-if="selectedAsset">
-          <div class="ren">
-            <ren-input-wrapper :text-label="null">
-              <template #content>
+      <Dialog
+        id="asset-panel-dialog"
+        v-model:visible="assetManagementDialog"
+        :style="{ width: '75vw', height: '90vh' }"
+        :maximizable="true"
+        :modal="true"
+        :dismissable-mask="true"
+      >
+        <Card class="ren-page-content">
+          <template #content>
+            <div class="asset-panel-list">
+              <asset-list :basic="true" :asset-list="assetList" hidden-filters="true" @on-select="(evt) => (selectedAsset = evt)" />
+            </div>
+            <Toolbar class="ren-toolbar ren-sticky bottom">
+              <template #end>
+                <ren-input-wrapper :text-label="null">
+                  <template #content>
+                    <Button :label="$t('view.add_asset_panel')" @click="$refs.assetSelectDialog.open()" />
+                  </template>
+                </ren-input-wrapper>
+              </template>
+              <template v-if="selectedAsset" #start>
+                <span style="font-size: 1.2rem; margin-right: 0.75rem">
+                  <b>{{ `${selectedAsset.label}(${selectedAsset.name}):` }}</b>
+                </span>
                 <Button
-                  icon="pi pi-trash"
-                  style="max-width: 45%"
-                  :label="$t('view.button.revoke_asset_assignment', [`${selectedAsset.label}(${selectedAsset.name})`])"
-                  @click="revoke"
-                />
-                <Button
-                  style="max-width: 45%; margin-left: 5%"
-                  icon="pi pi-sign-in"
-                  :label="$t('view.button.asset_go_to_panel', [`${selectedAsset.label}(${selectedAsset.name})`])"
+                  v-tooltip="$t('view.button.asset_go_to_panel', [`${selectedAsset.label}(${selectedAsset.name})`])"
+                  class="p-button-rounded"
+                  icon="pi pi-chevron-circle-right"
                   @click="openAssetPanel"
                 />
+                <Button
+                  v-tooltip="$t('view.button.revoke_asset_assignment', [`${selectedAsset.label}(${selectedAsset.name})`])"
+                  icon="pi pi-trash"
+                  class="p-button-rounded p-button-danger"
+                  @click="revoke"
+                />
+                <Button v-tooltip="$t('view.export_json')" class="p-button-rounded" icon="pi pi-download" @click="exportAssetPanel" />
               </template>
-            </ren-input-wrapper>
-          </div>
-        </div>
-        <asset-list :basic="true" :asset-list="assetList" hidden-filters="true" @on-select="(evt) => (selectedAsset = evt)" />
-        <div>
-          <!-- <ren-input-wrapper :text-label="`${selectedAsset.label}(${selectedAsset.name})`"> -->
-          <ren-input-wrapper :text-label="null">
-            <template #content>
-              <Button :label="$t('view.select_asset')" @click="$refs.assetSelectDialog.open()" />
-            </template>
-          </ren-input-wrapper>
-        </div>
+            </Toolbar>
+          </template>
+        </Card>
       </Dialog>
     </template>
   </RenSpinner>
@@ -179,7 +202,6 @@ export default {
       this.assetManagementDialog = true;
       this.selectedRow = item;
       this.loadAssets();
-      // console.info(item);
     },
     async onAssetSelect(asset) {
       await this.$refs.assetSpinner.run(async () => {
@@ -201,8 +223,6 @@ export default {
           } else this.$emitter.emit("error", { message: this.$t("information.visibility_changed") });
         });
       });
-      // console.info(selectedPanel);
-      // console.info(state);
     },
     async revoke() {
       await this.$refs.assetSpinner.run(async () => {
@@ -219,8 +239,6 @@ export default {
     //   this.deferredEmitFilter.run();
     // },
     openPanel(panel) {
-      // let to = `/panel/view/${selected.id}`;
-      // this.$router.push(to);
       this.$ren.utils.openNewTab(`/panel/view/${panel.id}`);
     },
 
@@ -237,15 +255,33 @@ export default {
       });
       this.panelEdit = true;
     },
-    async exportJSON(o, template) {
+    async exportAssetPanel() {
       await this.$refs.spinner.run(async () => {
-        await this.$ren.dashboardApi.getInformationPanel(o.id).then(async (panel) => {
-          let panelTemplate = getCleanPanelStructure(panel, template);
-          let filename = template ? `template_${panel.name}` : `${panel.id}_${panel.name}`;
-          this.$ren.utils.downloadJSON(panelTemplate, filename, true);
+        await this.$ren.dashboardApi.getInformationPanel(this.selectedRow.id, this.selectedAsset.id).then(async (panel) => {
+          this.mExportJSON(panel, false);
         });
       });
     },
+    mExportJSON(panel, asTemplate) {
+      let panelTemplate = getCleanPanelStructure(panel, asTemplate);
+
+      let filename = asTemplate ? `template_${panel.name}` : `${panel.id}_${panel.name}`;
+      this.$ren.utils.downloadJSON(panelTemplate, filename, true);
+    },
+    async mExportPanel(panelId, asTemplate) {
+      await this.$refs.spinner.run(async () => {
+        await this.$ren.dashboardApi.getInformationPanel(panelId).then(async (panel) => {
+          this.mExportJSON(panel, asTemplate);
+        });
+      });
+    },
+    async exportPanel(o) {
+      await this.mExportJSON(o.id, false);
+    },
+    async exportPanelTemplate(o) {
+      await this.mExportJSON(o.id, true);
+    },
+
     reload() {
       this.$emit("reload");
     },
@@ -297,10 +333,24 @@ export default {
 </script>
 
 <style lang="scss">
-// i.pi {
-//   margin-left: 0.25rem;
-// }
-// .flex > div {
-//   flex-grow: 1;
-// }
+#asset-panel-dialog {
+  .p-card-body {
+    height: 100%;
+  }
+
+  .ren-page-content {
+    height: 100%;
+  }
+
+  .p-card-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .asset-panel-list {
+    // flex-grow: 1;
+    overflow: auto;
+  }
+}
 </style>
