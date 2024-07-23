@@ -30,17 +30,17 @@
         </div>
       </template>
     </Column>
-    <Column field="manage_asset_assignment" :header="$t('view.manage_asset_assignment')">
+    <Column field="manage_asset_assignment" :header="$t('view.manage_asset_panel_assignment')">
       <template #body="item">
         <span
           v-if="item.data.is_template"
-          v-tooltip="$t('view.manage_panel_asset_assignment_description')"
+          v-tooltip="$t('view.manage_asset_panel_assignment_description')"
           class="ren-pointer"
           @click="manageAssets(item.data)"
         >
-          {{ $t("view.manage_panel_asset_assignment") }}
+          {{ $t("view.manage_asset_panel_assignment") }}
         </span>
-        <span v-else v-tooltip="$t('view.panel_asset_management_only_template')" class="disabled">
+        <span v-else v-tooltip="$t('view.asset_panel_management_only_template')" class="disabled">
           {{ $t("view.na") }}
         </span>
       </template>
@@ -225,13 +225,26 @@ export default {
       });
     },
     async revoke() {
-      await this.$refs.assetSpinner.run(async () => {
-        await this.$ren.dashboardApi.revokeAsset(this.selectedRow.id, this.selectedAsset.id).then(async (res) => {
-          if (res) {
-            this.$emitter.emit("information", { message: this.$t("information.asset_panel_revoked") });
-            await this.loadAssets();
-          } else this.$emitter.emit("error", { message: this.$t("information.asset_panel_revoked") });
-        });
+      let panel = this.selectedRow.label ? this.selectedRow.label : this.selectedRow.name;
+      let asset = this.selectedAsset.label ? this.selectedAsset.label : this.selectedAsset.name;
+      this.$confirm.require({
+        message: this.$t("view.confirm_asset_panel_revoke_message", {
+          panel: panel,
+          asset: asset,
+        }),
+        header: this.$t("view.button.revoke_asset_assignment"),
+        icon: "pi pi-exclamation-triangle",
+        accept: async () => {
+          await this.$refs.assetSpinner.run(async () => {
+            await this.$ren.dashboardApi.revokeAsset(this.selectedRow.id, this.selectedAsset.id).then(async (res) => {
+              if (res) {
+                this.$emitter.emit("information", { message: this.$t("information.asset_panel_revoked") });
+                await this.loadAssets();
+              } else this.$emitter.emit("error", { message: this.$t("information.asset_panel_revoked") });
+            });
+          });
+        },
+        reject: () => this.$confirm.close(),
       });
     },
     // onFilter(ev) {

@@ -1,10 +1,4 @@
 <template>
-  <!-- :filters="filters"
-    filter-display="row"
-    :global-filter-fields="['name', 'label','url']" 
-    :paginator="true"
-    responsive-layout="scroll"
-    :rows="10" -->
   <DataTable v-if="paginatedDashboards" class="sticky-header" :value="paginatedDashboards" data-key="name">
     <Column name="name" :header="$t('model.dashboard.name')">
       <template #body="slotProps">
@@ -21,7 +15,7 @@
       </template>
     </Column>
     <Column field="grafana_id" :header="$t('model.dashboard.grafana_id')"> </Column>
-    <Column field="user" :header="$t('model.dashboard.user')">
+    <!-- <Column field="user" :header="$t('model.dashboard.user')">
       <template #body="slotProps">
         <span v-if="slotProps.data.user">
           {{ slotProps.data.user }}
@@ -30,7 +24,7 @@
           {{ $t("view.na") }}
         </span>
       </template>
-    </Column>
+    </Column> -->
 
     <Column v-if="canEdit" name="edit" :header="$t('view.edit')">
       <template #body="slotProps">
@@ -50,24 +44,12 @@
           <i v-tooltip="$t('view.edit_locked')" class="pi pi-lock" />
         </div>
         <div class="flex align-items-center" style="flex-grow: 0">
-          <!-- <i class="pi pi-search" /> -->
           <InputText v-model="filters['global'].value" :placeholder="$t('view.search')" />
           <i v-if="filters.state" class="pi pi-filter-slash" :label="$t('view.button.clear_filter')" @click="clearFilter" />
         </div>
       </div>
       <div class="flex justify-content-between"></div>
     </template>
-    <!-- <template #footer>
-      <div class="flex justify-content-between">
-        <RenPaginator ref="pag" v-model:offset="mOffset" :total-rows="mDashboards.length" @update="searchAsset" />
-
-        <div class="flex justify-content-between">
-          <div v-if="canEdit" style="text-align: end">
-            <Button icon="pi pi-plus-circle" :label="$t('view.button.add')" @click="addDialog = true" />
-          </div>
-        </div>
-      </div>
-    </template> -->
   </DataTable>
   <ren-paginator
     v-if="mDashboards"
@@ -167,7 +149,6 @@ export default {
       });
     },
     async onCreate(o) {
-      // console.log(o);
       await this.$ren.dashboardApi.add(o).then((dashboard) => {
         console.info("add dashboard:" + dashboard.name);
         this.$emitter.emit("information", { message: this.$t("information.dashboard_created") });
@@ -179,6 +160,8 @@ export default {
     async reload() {
       this.filters = this.initFilter();
       this.mOffset = 0;
+      this.mDashboards = this.dashboards;
+      this.paginatedDashboards = this.mDashboards ? this.mDashboards.slice(0, PAGE_SIZE) : null;
       this.$emit("reload", { q: this.filters.global.value, limit: this.limit, offset: this.mOffset });
     },
     filter() {
@@ -196,9 +179,9 @@ export default {
     },
     clearFilter() {
       this.mOffset = 0;
-      this.paginatedDashboards = this.dashboards.slice(this.mOffset, this.mOffset + PAGE_SIZE);
-      this.filters = this.initFilter();
       this.mDashboards = this.dashboards;
+      this.paginatedDashboards = this.mDashboards.slice(this.mOffset, this.mOffset + PAGE_SIZE);
+      this.filters = this.initFilter();
     },
     deleteConfirm(o) {
       this.selectedRow = o;
@@ -212,7 +195,7 @@ export default {
     initFilter() {
       return {
         state: false,
-        global: { value: null }, //, matchMode: FilterMatchMode.CONTAINS
+        global: { value: null },
       };
     },
   },

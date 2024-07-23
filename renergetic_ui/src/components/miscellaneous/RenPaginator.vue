@@ -61,6 +61,13 @@ export default {
       },
       immediate: false,
     },
+    offset: {
+      handler(newVal) {
+        this.mOffset = newVal;
+      },
+      immediate: false,
+    },
+
     // page: function (newVal, oldValue) {
     //   if (newVal != oldValue) {
     //     this.init();
