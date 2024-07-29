@@ -167,7 +167,9 @@ export default {
         return;
       }
       if (this.abstractMeterDomain != null) {
-        await this.setAbstractMeter(newValue.meter, this.abstractMeterDomain);
+        //tODO: backward compatibility - use just name
+        var name = newValue.name ? newValue.name : newValue.meter;
+        await this.setAbstractMeter(name, this.abstractMeterDomain);
       }
     },
     abstractMeterDomain: async function (newValue) {
@@ -176,7 +178,8 @@ export default {
         return;
       }
       if (this.abstractMeterType != null) {
-        await this.setAbstractMeter(this.abstractMeterType.meter, newValue);
+        var name = this.abstractMeterType.name ? this.abstractMeterType.name : this.abstractMeterType.meter;
+        await this.setAbstractMeter(name, newValue);
       }
     },
     "abstractMeter.formula": function (newValue) {

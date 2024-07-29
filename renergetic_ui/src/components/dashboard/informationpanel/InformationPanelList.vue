@@ -302,7 +302,7 @@ export default {
       this.$emit("reload", ev);
     },
     async deletePanel(panel) {
-      await this.exportJSON(panel, false); //export full panel
+      await this.mExportJSON(panel, false); //export full panel
       await this.$refs.spinner.run(async () => {
         await this.$ren.dashboardApi.deleteInformationPanel(panel.id);
       });
