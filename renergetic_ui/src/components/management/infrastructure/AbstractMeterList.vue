@@ -306,10 +306,10 @@ export default {
     validateMeasurementFormula(text) {
       //match numbers(floats) or ids in square brackets, any amount of round brackets, math operiations between numbers or square brackets
       // eslint-disable-next-line no-useless-escape
-      // const expressionRegex = /^\(*((\d+(\.\d+)?)|(\[\d+\]))([+*^\/-]\(*((\d+(\.\d+)?)|(\[\d+\]))\)*)*$/;
+      const expressionRegex = /^\(*((\d+(\.\d+)?)|(\[\d+\]))([+*^\/-]\(*((\d+(\.\d+)?)|(\[\d+\]))\)*)*$/;
 
       // const expressionRegex = /^((\d+(\.\d+)?)|(\[\d+\]))([+-]((\d+(\.\d+)?)|(\[\d+\])))*$/;
-      const expressionRegex = /^\(*((\d+(\.\d+)?)|(\[\d+\]))([+-]\(*((\d+(\.\d+)?)|(\[\d+\]))\)*)*$/;
+      // const expressionRegex = /^\(*((\d+(\.\d+)?)|(\[\d+\]))([+-]\(*((\d+(\.\d+)?)|(\[\d+\]))\)*)*$/;
       let isValidInput = expressionRegex.test(text);
       return isValidInput;
     },
