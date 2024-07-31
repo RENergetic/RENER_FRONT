@@ -333,7 +333,11 @@ export default {
       this.reload();
     },
     typeUnitLabel(mType) {
-      return `(${mType.id}) ${this.$t("enums.metric_type." + mType.physical_name)} [${mType.unit}] `;
+      if (mType.unit) {
+        return `(${mType.id}) ${this.$t("enums.metric_type." + mType.physical_name)} [${mType.unit}]`;
+      } else {
+        return `(${mType.id}) ${this.$t("enums.metric_type." + mType.physical_name)}`;
+      }
     },
     async exportJSON() {
       var sm = await Promise.all(

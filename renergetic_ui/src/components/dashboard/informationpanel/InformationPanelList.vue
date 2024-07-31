@@ -289,10 +289,11 @@ export default {
       });
     },
     async exportPanel(o) {
-      await this.mExportJSON(o.id, false);
+      // await this.mExportJSON(o, false);
+      await this.mExportPanel(o.id, false);
     },
     async exportPanelTemplate(o) {
-      await this.mExportJSON(o.id, true);
+      await this.mExportPanel(o.id, true);
     },
 
     reload() {

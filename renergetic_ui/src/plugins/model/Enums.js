@@ -18,10 +18,10 @@ const Colors = Object.freeze({
   SELECTED: "#0a0fc9",
   DEFAULT: "#eaeef5",
 });
-const HeatMapType = Object.freeze({
-  OSM: "osm",
-  DEFAULT: "default",
-});
+// const HeatMapType = Object.freeze({
+//   OSM: "osm",
+//   DEFAULT: "default",
+// });
 //TODO: load it from  backennd
 // const AssetTypes = Object.freeze({
 //   BUILDING: "building",
@@ -178,7 +178,6 @@ export {
   TileTypes,
   NotificationContext,
   AssetConnectionType,
-  HeatMapType,
   RenRoles,
   RenRolesStr,
   RenFeatures,

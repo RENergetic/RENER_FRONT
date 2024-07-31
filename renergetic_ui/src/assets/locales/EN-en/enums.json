@@ -18,6 +18,7 @@
     "percentage": "Percentage",
     "power": "Power",
     "ratio": "Ratio",
+    "ratio_norm": "Ratio",
     "value": "Value",
     "voltage": "Voltage"
   },
