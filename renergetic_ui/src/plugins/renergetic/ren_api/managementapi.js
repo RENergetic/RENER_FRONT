@@ -251,6 +251,12 @@ export default class ManagementApi extends RestComponent {
   async updateMeasurementType(type) {
     return this.put(`/api/measurements/type/${type.id}`, type);
   }
+  async deleteMeasurementType(type) {
+    return this.delete(`/api/measurements/type/${type.id}`);
+  }
+  async addMeasurementType(type) {
+    return this.post(`/api/measurements/type`, type);
+  }
   async setMeasurementTypeVisibility(id, visibility) {
     if (visibility) return this.post(`/api/measurements/type/${id}/dashboard/true`);
     else return this.post(`/api/measurements/type/${id}/dashboard/false`);

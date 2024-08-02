@@ -1,7 +1,7 @@
 <template>
   <div :style="pageStyle">
     <Toast />
-    <ConfirmDialog></ConfirmDialog>
+    <ConfirmDialog />
     <SideMenu v-if="!tvMode && keycloakState == 1" :key="`menu_${refresh}`" ref="sideMenu" @refresh="onRefresh" />
     <div v-if="keycloakState == 1" :key="`content_${refresh}`" :class="layout() + ' flex flex-column card-container '">
       <!-- <div style="color: white; margin-top: 10rem">{{ $route.path }}  style="min-height: 95vh"</div>

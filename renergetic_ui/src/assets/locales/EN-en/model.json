@@ -188,7 +188,7 @@
       "abstract_nonres":"Non Renewable energy storage",
       "abstract_storage":"Energy storage",
       "abstract_ens": "External Non Renewable Sources",
-      "abstract_ers": "ERS",
+      "abstract_ers": "External Renewable Sources",
       "abstract_lrs": "Local renewable sources",
       "abstract_lns": "Local Non Renewable Sources",
       "abstract_losses": "Losses",

@@ -1,5 +1,22 @@
 import { RenRoles } from "@/plugins/model/Enums.js";
 // RenMixins
+class AppDialog {
+  $emitter;
+  level = "information";
+  logLevel;
+  
+  constructor(logLevel = "information", message) {
+    if (logLevel) {
+      this.logLevel = logLevel;
+    }
+    this.message = message;
+
+  }
+  show() {
+    this.$emitter.emit(this.logLevel, { message: this.message });
+  }
+}
+
 export default {
   props: {
     componentId: {
@@ -108,6 +125,13 @@ export default {
   },
 
   methods: {
+
+    infoDialog(message = null) {
+      let dialog = new AppDialog("information", message)
+      dialog.$emitter = this.$emitter
+      return dialog
+
+    },
 
     parseDateFilter: function (filter) {
       let f = filter ? filter : {};
