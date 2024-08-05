@@ -1,151 +1,196 @@
 {
-  "label": "Island consumption",
-  "tiles": [
-    {
-      "name": "island_consumption",
-      "label": "Island consumption",
-      "type": "single",
-      "featured": null,
-      "measurements": [],
-      "props": {
-        "template": true,
-        "ignore_grouping": true,
-        "icon_visibility": false,
-        "background": "none"
-      },
-      "layout": {
-        "w": 10,
-        "x": 1,
-        "h": 1,
-        "y": 0
-      }
-    },
-    {
-      "name": "office",
-      "label": "Office",
-      "type": "multi_knob",
-      "featured": null,
-      "measurements": [
-        {
-          "name": "current_power",
-          "domain": "heat",
-          "direction": "in",
-          "sensor_name": "heat_meter",
-          "aggregation_function": "mean"
-        },
-        {
-          "name": "current_power",
-          "domain": "electricity",
-          "direction": "in",
-          "sensor_name": "energy_meter",
-          "aggregation_function": "mean"
-        }
-      ],
-      "props": {
-        "icon": "office"
-      },
-      "layout": {
-        "w": 3,
-        "x": 0,
-        "h": 8,
-        "y": 1
-      }
-    },
-    {
-      "name": "ev_chargers",
-      "label": "EV Chargers",
-      "type": "multi_knob",
-      "featured": null,
-      "measurements": [
-        {
-          "name": "current_power",
-          "domain": "heat",
-          "direction": "in",
-          "sensor_name": "heat_meter",
-          "aggregation_function": "mean"
-        },
-        {
-          "name": "current_power",
-          "domain": "electricity",
-          "direction": "in",
-          "sensor_name": "energy_meter",
-          "aggregation_function": "mean"
-        }
-      ],
-      "props": {
-        "icon": "office"
-      },
-      "layout": {
-        "w": 3,
-        "x": 3,
-        "h": 8,
-        "y": 1
-      }
-    },
-    {
-      "name": "datacenter",
-      "label": "Datacenter",
-      "type": "multi_knob",
-      "featured": null,
-      "measurements": [
-        {
-          "name": "current_power",
-          "domain": "heat",
-          "direction": "in",
-          "sensor_name": "heat_meter",
-          "aggregation_function": "mean"
-        },
-        {
-          "name": "current_power",
-          "domain": "electricity",
-          "direction": "in",
-          "sensor_name": "energy_meter",
-          "aggregation_function": "mean"
-        }
-      ],
-      "props": {
-        "icon": "supercomputer"
-      },
-      "layout": {
-        "w": 3,
-        "x": 6,
-        "h": 8,
-        "y": 1
-      }
-    },
-    {
-      "name": "dormitories",
-      "label": "Dormitories",
-      "type": "multi_knob",
-      "featured": null,
-      "measurements": [
-        {
-          "name": "current_power",
-          "domain": "heat",
-          "direction": "in",
-          "sensor_name": "heat_meter",
-          "aggregation_function": "mean"
-        },
-        {
-          "name": "current_power",
-          "domain": "electricity",
-          "direction": "in",
-          "sensor_name": "energy_meter",
-          "aggregation_function": "mean"
-        }
-      ],
-      "props": {
-        "icon": "dormitory"
-      },
-      "layout": {
-        "w": 3,
-        "x": 9,
-        "h": 8,
-        "y": 1
-      }
-    }
-  ],
-  "is_template": false,
-  "featured": false,
-  "props": {}
+	"label": "Island consumption",
+	"tiles": [
+		{
+			"name": "island_consumption",
+			"label": "Island consumption",
+			"type": "empty",
+			"featured": null,
+			"measurements": [],
+			"props": {
+				"template": true,
+				"ignore_grouping": true,
+				"icon_visibility": false,
+				"background": "none"
+			},
+			"layout": {
+				"w": 10,
+				"x": 1,
+				"h": 1,
+				"y": 0
+			},
+			"tempId": 1852467912275
+		},
+		{
+			"name": "office",
+			"label": "Office",
+			"type": "multi_knob",
+			"featured": null,
+			"measurements": [
+				{
+					"name": "current_power",
+					"domain": "heat",
+					"direction": "in",
+					"sensor_name": "heat_meter",
+					"aggregation_function": "mean",
+					"tempId": 2108998334086
+				},
+				{
+					"name": "current_power",
+					"domain": "electricity",
+					"direction": "in",
+					"sensor_name": "energy_meter",
+					"aggregation_function": "mean",
+					"tempId": 2380478865335
+				}
+			],
+			"props": {
+				"icon": "office"
+			},
+			"layout": {
+				"w": 3,
+				"x": 0,
+				"h": 8,
+				"y": 2
+			},
+			"tempId": 2315144489123
+		},
+		{
+			"name": "ev_chargers",
+			"label": "EV Chargers",
+			"type": "multi_knob",
+			"featured": null,
+			"measurements": [
+				{
+					"name": "current_power",
+					"domain": "heat",
+					"direction": "in",
+					"sensor_name": "heat_meter",
+					"aggregation_function": "mean",
+					"tempId": 2573993299839
+				},
+				{
+					"name": "current_power",
+					"domain": "electricity",
+					"direction": "in",
+					"sensor_name": "energy_meter",
+					"aggregation_function": "mean",
+					"tempId": 1813607937849
+				}
+			],
+			"props": {
+				"icon": "office"
+			},
+			"layout": {
+				"w": 3,
+				"x": 3,
+				"h": 8,
+				"y": 2
+			},
+			"tempId": 2792364140072
+		},
+		{
+			"name": "datacenter",
+			"label": "Datacenter",
+			"type": "multi_knob",
+			"featured": null,
+			"measurements": [
+				{
+					"name": "current_power",
+					"domain": "heat",
+					"direction": "in",
+					"sensor_name": "heat_meter",
+					"aggregation_function": "mean",
+					"tempId": 1991852399800
+				},
+				{
+					"name": "current_power",
+					"domain": "electricity",
+					"direction": "in",
+					"sensor_name": "energy_meter",
+					"aggregation_function": "mean",
+					"tempId": 3017561445806
+				}
+			],
+			"props": {
+				"icon": "supercomputer"
+			},
+			"layout": {
+				"w": 3,
+				"x": 6,
+				"h": 8,
+				"y": 2
+			},
+			"tempId": 3092881171400
+		},
+		{
+			"name": "dormitories",
+			"label": "Dormitories",
+			"type": "multi_knob",
+			"featured": null,
+			"measurements": [
+				{
+					"name": "current_power",
+					"domain": "heat",
+					"direction": "in",
+					"sensor_name": "heat_meter",
+					"aggregation_function": "mean",
+					"tempId": 2197614968979
+				},
+				{
+					"name": "current_power",
+					"domain": "electricity",
+					"direction": "in",
+					"sensor_name": "energy_meter",
+					"aggregation_function": "mean",
+					"tempId": 2343035660707
+				}
+			],
+			"props": {
+				"icon": "dormitory"
+			},
+			"layout": {
+				"w": 3,
+				"x": 9,
+				"h": 8,
+				"y": 2
+			},
+			"tempId": 2781229388877
+		},
+		{
+			"name": "self_consumption",
+			"label": "Self consumption",
+			"type": "single",
+			"featured": null,
+			"measurements": [
+				{
+					"name": "esc",
+					"domain": "none",
+					"sensor_name": "kpi",
+					"aggregation_function": "last",
+					"type": {
+						"physical_name": "ratio",
+						"name": "ratio",
+						"unit": null
+					},
+					"tempId": 3170544341567
+				}
+			],
+			"props": {},
+			"layout": {
+				"w": 10,
+				"x": 1,
+				"h": 1,
+				"y": 1
+			},
+			"tempId": 3101529251673
+		}
+	],
+	"is_template": false,
+	"featured": false,
+	"priority": null,
+	"props": {
+		"qrcodeSize": 200,
+		"qrcodePosition": "top_right"
+	}
 }

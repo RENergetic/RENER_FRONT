@@ -175,7 +175,7 @@ export default {
           .catch(() => {
             this.$emitter.emit("error", { message: this.$t("information.asset_connection_not_deleted") });
           });
-        alert(res);
+        // alert(res);
         if (res) await this.reload();
       });
     },
