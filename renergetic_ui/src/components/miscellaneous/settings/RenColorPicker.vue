@@ -46,14 +46,15 @@ export default {
   data() {
     let c;
     let mAlpha = 1.0;
+    let alphaHex = "FF";
     if (this.modelValue && this.modelValue.length > 7) {
       c = this.modelValue.substring(0, 7);
-      let alphaHex = this.modelValue.substring(7, Math.min(9, this.modelValue.length));
+      alphaHex = this.modelValue.substring(7, Math.min(9, this.modelValue.length));
       mAlpha = parseInt(alphaHex, 16) / 255.0;
     } else {
       c = this.modelValue;
     }
-    return { mValue: this.modelValue, mColor: c ? c : "#ffffff", hexAlpha: "FF", mAlpha: mAlpha };
+    return { mValue: this.modelValue, mColor: c ? c : "#ffffff", hexAlpha: alphaHex, mAlpha: mAlpha };
   },
   computed: {
     colorPickerClass: function () {
