@@ -253,6 +253,7 @@
     "experiment_id": "Experiment id",
     "pipeline_id": "Pipeline id",
     "parameters": "Run parameters",
+    "pipelines": "Pipelines",
     "current_run": "Current run",
     "visibility": "Visibility",
     "visible": "Visibility"
