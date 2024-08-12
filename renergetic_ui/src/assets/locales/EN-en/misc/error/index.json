@@ -1,0 +1,19 @@
+{
+  "error": "Error",
+  "dashboard_not_updated": "Dashboard has not been updated",
+  "dashboard_delete_fail": "Dashboard has not been deleted.",
+  "measurement_not_updated": "Measurement has not been updated",
+  "measurement_delete_fail": "Measurement has not been deleted.",
+  "rest_title": "API Error",
+  "panel_not_found": "Panel: {0} not found.",
+  "panel_update": "Panel {0} update failed.",
+  "user_not_found": "User: {0} not found ",
+  "user_not_updated": "User not updated",
+  "asset_connection_not_deleted": "There was an issue while deleting asset connection",
+  "asset_panel_revoked": "Asset not revoked from the dashboard",
+  "asset_panel_assigned": "Asset not assigned to the panel",
+  "visibility_changed": "Visibility not changed",
+  "worflowrun_start": "{label} failed to start",
+  "worflow_stop": "{label} failed to stop",
+  "tag_exists": "Tag already exists"
+}

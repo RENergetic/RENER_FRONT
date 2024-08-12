@@ -1,0 +1,12 @@
+{
+  "room": "Habitación",
+  "pv": "PV",
+  "pv_plant": null,
+  "bulding": null,
+  "flat": null,
+  "heat_exchange": null,
+  "heat_exchanger": null,
+  "heat_source": null,
+  "island": null,
+  "dormitory": null
+}

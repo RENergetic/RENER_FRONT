@@ -1,0 +1,9 @@
+{
+  "increase_temperature": "Increase temp",
+  "decrease_temperature": "Decrease temp",
+  "increase_power": "Increase electrical power",
+  "decrease_power": "Decrease electrical power",
+  "increase_heat": "Increase heat",
+  "decrease_heat": "Decrease heat",
+  "charge_ev": "Charge Electric Vehicle"
+}

@@ -1,0 +1,8 @@
+{
+  "running": "Uruchomiony",
+  "finished": "Skończony",
+  "error": "Błąd",
+  "failed": "Niepowodzenie",
+  "not_running": "Brak",
+  "terminating": "Zatrzymywanie"
+}

@@ -1,0 +1,5 @@
+{
+  "rest_title": "Error en API",
+  "user_not_found": "Usuario: {0}  no encontrado ",
+  "user_not_updated": "Usuario no modificado"
+}

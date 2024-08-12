@@ -1,0 +1,8 @@
+{
+  "key": "Klucz",
+  "label": "Etykieta",
+  "description": "Opis",
+  "type": "Typ",
+  "defaultValue": "Domyślna wartość",
+  "visibility": "Widoczność"
+}

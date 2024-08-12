@@ -1,0 +1,22 @@
+{
+  "heat": "Heat",
+  "heat_energy": "Heat energy",
+  "electricity": "Electricity",
+  "electricity_energy": "Electricity energy",
+  "renewability": "Renewability",
+  "renewables": "Renewables",
+  "external": "External",
+  "non_renewables": "Fossil fuels",
+  "import": "External",
+  "office": "Offices",
+  "heat_exchanged": "Heat Exchangers",
+  "supercomputer": "Supercomputers",
+  "datacenter": "Datacenter",
+  "hvac": "HVACs",
+  "waste": "Waste",
+  "fossil_fuels": "Fossil fuels",
+  "electricity_renewability": "Renewable electricity",
+  "heat_renewability": "Renewable heat",
+  "co2_reduction": "CO₂ emissions reduction",
+  "current_power": "Current power"
+}

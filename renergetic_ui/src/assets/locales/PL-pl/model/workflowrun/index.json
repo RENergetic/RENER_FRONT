@@ -1,0 +1,10 @@
+{
+  "run_id": "Id startu",
+  "start_time": "Czas startu",
+  "init_time": "Czas utworzenia",
+  "start_time_formatted": "Czas rozpoczęcia: {start_time}",
+  "end_time": "Czas zakończenia",
+  "parameters": "Parametry",
+  "pipeline": "Pipeline",
+  "state": "Status"
+}

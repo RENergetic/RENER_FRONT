@@ -1,0 +1,11 @@
+{
+  "login": "Login",
+  "password": "Password",
+  "password_repeat": "Repeat password",
+  "email": null,
+  "firstname": null,
+  "lastname": null,
+  "username": null,
+  "temp_password": null,
+  "roles": null
+}

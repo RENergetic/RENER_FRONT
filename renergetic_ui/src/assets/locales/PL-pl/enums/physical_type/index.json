@@ -1,0 +1,16 @@
+{
+  "energy": "Energia",
+  "power": "Moc",
+  "temperature": "Temperatura",
+  "percentage": "Procent",
+  "voltage": "Napięcia",
+  "co2eq": "Emisja CO₂",
+  "flow": "Przepływ",
+  "mass": "Masa",
+  "speed": "Prędkość",
+  "moisture": "Wilgotność",
+  "pressure": "Ciśnienie",
+  "ratio": "Współczynnik",
+  "value": "Liczba",
+  "precipation": "Precipation"
+}

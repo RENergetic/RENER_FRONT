@@ -1,0 +1,19 @@
+{
+  "error": "Error",
+  "dashboard_not_updated": "Dashboard has not been updated",
+  "dashboard_delete_fail": "Dashboard has not been deleted.",
+  "measurement_not_updated": "Measurement has not been updated",
+  "measurement_delete_fail": "Measurement has not been deleted.",
+  "rest_title": "API Error",
+  "panel_not_found": "Nie odnaleziono widoku: {0}.",
+  "panel_update": "Aktualizacja widoku {0} nie powiadła się.",
+  "user_not_found": "Brak użytkownika: {0}.",
+  "user_not_updated": "Aktualizacja użytkownika nie powidła się.",
+  "asset_connection_not_deleted": "Usuwanie relacji nie powiodło się",
+  "asset_panel_revoked": "Asset not revoked from the dashboard",
+  "asset_panel_assigned": "Asset not assigned to the panel",
+  "visibility_changed": "Visibility not changed",
+  "worflowrun_start": "{label} - błąd przy próbie uruchomienia",
+  "worflow_stop": "{label} - błąd przy próbie zatrzymania",
+  "tag_exists": "Tag już istnieje"
+}

@@ -1,0 +1,10 @@
+{
+  "name": "Name",
+  "url": "URL",
+  "label": "Label",
+  "model": null,
+  "measurement_type": null,
+  "unit": null,
+  "user": null,
+  "grafana_id": null
+}

@@ -1,0 +1,11 @@
+{
+  "login": "Login",
+  "password": "Hasło",
+  "email": "Email",
+  "firstname": "Imię",
+  "lastname": "Nazwisko",
+  "username": "Nazwa użytkownika",
+  "password_repeat": "Powtórz hasło",
+  "temp_password": "Tymczasowe hasło",
+  "roles": "Role"
+}

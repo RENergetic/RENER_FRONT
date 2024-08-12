@@ -1,0 +1,22 @@
+{
+  "heat": "Ciepło",
+  "heat_energy": "Ciepło",
+  "electricity": "Elektryczność",
+  "electricity_energy": "Elektryczność",
+  "renewability": "Energia  z odnawialnych źródeł",
+  "renewables": "Odnawialne źródło energia",
+  "external": "Zewnętrzny",
+  "non_renewables": "Nieodnawialne źródło energia",
+  "import": "Zewnętrzne źródło",
+  "office": "Biura",
+  "heat_exchanged": "Wymiennik ciepła",
+  "supercomputer": "Super komputer",
+  "datacenter": "Centrum danych",
+  "hvac": "HVACs",
+  "waste": "Odpad",
+  "fossil_fuels": "Fossil fuels",
+  "electricity_renewability": "Energia elektryczna z odnawialnych źródeł",
+  "heat_renewability": "Ciepło z odnawialnych źródeł",
+  "co2_reduction": "Redukcja emisji CO₂",
+  "current_power": "Actualna moc"
+}

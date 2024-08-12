@@ -1,0 +1,10 @@
+{
+  "date_from": "Data od",
+  "date_to": "Data do",
+  "interval_length": "Request length [min]",
+  "physical_type": "Value's physical type",
+  "unit": "Jednostka",
+  "change_or_limit": "Request's value relative change/limit",
+  "max_value": "Value's max",
+  "delta_value": "Value's relative change"
+}

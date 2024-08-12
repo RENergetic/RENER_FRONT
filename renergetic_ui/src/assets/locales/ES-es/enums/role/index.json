@@ -1,0 +1,10 @@
+{
+  "ren-staff": "Staff",
+  "ren-guest": "Guest",
+  "ren-visitor": "Visitante",
+  "ren-user": "Usuario",
+  "ren-manager": "Manager",
+  "ren-technical-manager": "Technical manager",
+  "ren-admin": "Administrador",
+  "ren-dev": "Desarrollador"
+}

@@ -1,0 +1,13 @@
+{
+  "name": "Nombre",
+  "label": "Etiqueta",
+  "areas": "Áreas",
+  "attributes": "Atributos",
+  "recommendations": "Recomendaciones",
+  "notifications": "Notificaciones",
+  "dashboard": "Panel",
+  "heatmap": "Mapa de calor",
+  "imgUrl": "URL de imagen",
+  "description": "Descripción",
+  "id": "Id"
+}

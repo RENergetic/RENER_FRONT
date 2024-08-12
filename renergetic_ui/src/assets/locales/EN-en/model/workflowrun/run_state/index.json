@@ -1,0 +1,8 @@
+{
+  "running": "Running",
+  "finished": "Finished",
+  "error": "Error",
+  "failed": "Failed",
+  "not_running": "Not running",
+  "terminating": "Terminating"
+}

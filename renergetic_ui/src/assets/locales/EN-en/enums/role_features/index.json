@@ -1,0 +1,12 @@
+{
+  "public_reports": "Public reports/view",
+  "grafana_access": "Access to Grafana dashbboards",
+  "grafana_management": "Access to Grafana dashbboards managements",
+  "user_management": "User management",
+  "role_management": "User role management",
+  "report": "Access to reports",
+  "manage_asset": "Manage assets",
+  "owner": "Can be owner of an asset",
+  "notification": "Access Notification",
+  "read": "Can receive read privilages to asset or dashboard"
+}

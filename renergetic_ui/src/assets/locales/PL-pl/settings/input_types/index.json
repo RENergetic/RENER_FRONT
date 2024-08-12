@@ -1,0 +1,9 @@
+{
+  "boolean": "Prawda/Fałsz (True/False)",
+  "number": "Liczba",
+  "array": "Tablica elementów",
+  "list": "Lista elementów",
+  "color": "Kolor",
+  "datetime": "Data",
+  "string": "Tekst"
+}

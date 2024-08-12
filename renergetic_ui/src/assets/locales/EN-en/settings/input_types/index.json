@@ -1,0 +1,9 @@
+{
+  "boolean": "Boolean",
+  "number": "Number",
+  "array": "Array",
+  "list": "List",
+  "color": "Color",
+  "datetime": "Datetime",
+  "string": "String"
+}
