@@ -83,8 +83,6 @@
   "fileupload": "Subida de archivo",
   "from_config": "desde la configuración",
   "formula_meter_placeholder": "Fórmula para calcular el medidor",
-  "heatmap_area_delete": "Eliminar mapa de calor",
-  "heatmap_area_delete_confirm": "¿Seguro que quieres eliminar el mapa de calor: {label}?",
   "hdr_request_limit": "Límite {property} a: {value} ",
   "hdr_request_change": "Cambiar {property} por: {value} ",
   "go_to_dashboard": "Ir al panel de control",

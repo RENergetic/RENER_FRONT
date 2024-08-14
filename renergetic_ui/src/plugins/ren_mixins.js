@@ -95,8 +95,8 @@ export default {
           colorObj = this.$ren.utils.measurementColor(null, null);
         }
       }
-      else {
-        colorObj = { color: this.mSettings.tile.measurement_color, alpha: this.value ? 1.0 : 1.0 - this.value / 2 }
+      else { 
+        colorObj = { color: this.$ren.utils._hexExtractColor( this.mSettings.tile.measurement_color), alpha: this.value ? 1.0 : 1.0 - this.value / 2 }
       }
       return colorObj;
     },

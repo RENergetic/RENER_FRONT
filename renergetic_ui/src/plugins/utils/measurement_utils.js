@@ -20,7 +20,7 @@ export default {
       return { alpha: 1.0, color: "#94ba39" };
     }
     let color = measurement.measurement_details.color ? measurement.measurement_details.color : measurement.type.color;
-
+    color = this._hexExtractColor(color);
     return { alpha: alpha, color: color ? color : this._getRandomColor() }; //"#94ba39"
   },
   measurementBackgroundColor(measurement, tileSettings, alphaValue) {
@@ -43,12 +43,16 @@ export default {
         if (alphaValue > 0.75) alphaHex = Math.round(0.75 * 255).toString(16);
       }
     }
+    // color = this._hexExtractColor(color);
     if (color.length == 7) {
       return `#${color.slice(1)}${alphaHex}`;
     }
     return `#${color.slice(1, color.length - 2)}${alphaHex}`;
   },
-
+  _hexExtractColor(colorHex) {
+    if (!colorHex) return colorHex;
+    return colorHex.length > 7 ? colorHex.substring(0, 7) : colorHex.substring(0, Math.min(colorHex.length, 9));
+  },
   _componentToHex(c) {
     var hex = (Math.round(c) % 255).toString(16);
     return hex.length == 1 ? "0" + hex : hex;
