@@ -1,6 +1,6 @@
 import { createI18n } from "vue-i18n";
 
-import en from "../assets/locales/EN-en";
+import en from "../assets/locales/EN-en/index.js";
 
 export const allowedLocales = {
   pl: "PL-pl",
@@ -10,6 +10,7 @@ export const allowedLocales = {
   be: "BE-be",
   //TODO: make this list dynamic - based on server response
 };
+console.error(en);
 const loadedLocales = new Set();
 loadedLocales.add("en");
 

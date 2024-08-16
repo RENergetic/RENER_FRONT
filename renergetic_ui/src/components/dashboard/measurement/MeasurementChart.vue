@@ -6,6 +6,10 @@
       <!-- <div style="max-width: 20rem; overflow: hidden; max-height: 15rem">{{ chartData }}</div> -->
       <!-- {{ pdata["timeseries_labels"] }} -->
       <!-- {{ width }} -->
+      <!-- {{ options }}
+      {{ chartData }} -->
+      <!-- {{ options }}
+      {{ chartData }} -->
       <Chart
         v-if="!titleVisible && height && width && loaded"
         :style="mStyle"
@@ -246,6 +250,8 @@ export default {
 
         let unitLabel = m.type.unit != "any" ? `: ${this.$t("enums.physical_type." + m.type.physical_name)} [${m.type.unit}]` : "";
         let label = this.measurementLabel(m);
+        let mfill = m.measurement_details && m.measurement_details["fill_chart"] != null ? m.measurement_details["fill_chart"] : "true";
+        let fill = mfill?.toLowerCase?.() === "true";
         datasets.push({
           data: data[m.id],
           label: `${label}(${aggFunc})${unitLabel}`,
@@ -253,7 +259,7 @@ export default {
           backgroundColor: color + "30",
           borderColor: color + "FF",
           showLine: true,
-          fill: m.measurement_details && m.measurement_details["fill_chart"] != null ? m.measurement_details["fill_chart"] : true,
+          fill: fill,
         });
       }
       // console.error(datasets);
