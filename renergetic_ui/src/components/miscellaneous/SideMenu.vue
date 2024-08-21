@@ -257,9 +257,18 @@ export default {
             this.$router.push({ name: "AdminWorkflows" });
           },
         },
+        {
+          class: this.checkPath({ name: "HDRPipeline" }) ? "hl-menu" : "",
+          label: this.$t("menu.manage_hdr_pipeline"),
+          icon: "pi pi-fw pi-cog",
+          command: () => {
+            this.$router.push({ name: "HDRPipeline" });
+          },
+        },
       ];
       return items;
     },
+
     _logsListItems() {
       let items = [
         {

@@ -16,7 +16,7 @@
         @filter="onFilter"
       >
         <template #header>
-          <ren-switch v-model="mFilters.visible.value" :text-label="'model.workflow.visibility'" />
+          <ren-switch v-model="mFilters.hdr_pipeline.value" :text-label="'model.workflow.property.hdr_pipeline'" />
           <!-- <span class="p-input-icon-left" style="margin-left: 1rem">
         <i class="pi pi-search" /> -->
           <!-- <Dropdown v-model="mFilters.visible.value" show-clear :options="tagsKeys" :placeholder="$t('view.tag_filter')" /> -->
@@ -50,42 +50,13 @@
             </li>
           </ul>
           <span v-else> {{ $t("view.na") }} </span>
-          <h3 v-if="Object.keys(slotProps.data.properties).length === 0">{{ $t("model.workflow.no_properties") }}</h3>
-          <h3 v-if="Object.keys(slotProps.data.properties).length !== 0">{{ $t("model.workflow.properties") }}</h3>
-
-          <ul v-if="Object.keys(slotProps.data.properties).length !== 0" class="ren">
-            <li v-for="key in Object.keys(slotProps.data.properties)" :key="key">
-              {{ key }}
-              <!-- <Button
-                v-if="slotProps.data.parameters[key].visible"
-                v-tooltip="$t('view.edit')"
-                icon="pi pi-pencil"
-                class="p-button-rounded"
-                @click="editParameter(slotProps.data, slotProps.data.parameters[key])"
-              />
-              <Button
-                v-else
-                v-tooltip="$t('view.edit')"
-                icon="pi pi-pencil"
-                class="p-button-rounded state error"
-                @click="editParameter(slotProps.data, slotProps.data.parameters[key])"
-              /> -->
-            </li>
-          </ul>
-          <span v-else> {{ $t("view.na") }} </span>
         </template>
-        <Column field="parameters" :header="$t('model.workflow.parameters')" :show-filter-menu="false">
+        <!-- <Column field="parameters" :header="$t('model.workflow.parameters')" :show-filter-menu="false">
           <template #body="slotProps">
             <div v-if="slotProps.data.parameters">{{ Object.keys(slotProps.data.parameters).length }}</div>
             <span v-else> {{ $t("view.na") }} </span>
           </template>
-        </Column>
-        <!-- <Column field="pipelines" :header="$t('model.workflow.pipelines')" :show-filter-menu="false">
-          <template #body="slotProps">
-            <span v-if="slotProps.data.pipelines"> {{ $t("model.workflow.pipelines", { length: slotProps.data.pipelines.length }) }}</span>
-            <span v-else> {{ $t("view.na") }} </span>
-          </template>
-        </Column> -->
+        </Column>  -->
         <Column field="current_run" :header="$t('model.workflow.current_run')" :show-filter-menu="false">
           <template #body="slotProps">
             <div v-if="isTaskRunning(slotProps.data.current_run)" @click="showRunDetails(slotProps.data.current_run)">
@@ -104,15 +75,24 @@
             <span v-else> {{ $t("model.workflowrun.run_state.not_running") }} </span>
           </template>
         </Column>
-        <Column field="visible" :header="$t('model.workflow.visible')" :show-filter-menu="false">
+        <Column field="visible" :header="$t('model.workflow.property.hdr_pipeline')" :show-filter-menu="false">
           <template #body="slotProps">
-            <span v-if="!isTaskRunning(slotProps.data.current_run)">
-              <i v-if="slotProps.data.visible" class="pi pi-eye" style="font-size: 1.5rem" @click="setPipelineVisibility(slotProps.data, false)" />
-              <i v-else class="pi pi-eye-slash" style="font-size: 1.5rem" @click="setPipelineVisibility(slotProps.data, true)" />
+            <span>
+              <i
+                v-if="!isHDREnabled(slotProps.data)"
+                style="font-size: 1.5rem"
+                class="pi pi-eye-slash"
+                @click="setHDRPipeline(slotProps.data, true)"
+              />
+              <i v-else style="font-size: 1.5rem" class="pi pi-eye" @click="setHDRPipeline(slotProps.data, false)" />
             </span>
-            <span v-else>
-              <i v-if="slotProps.data.visible" style="font-size: 1.5rem" class="pi pi-eye disabled" />
-              <i v-else style="font-size: 1.5rem" class="pi pi-eye-slash" @click="setPipelineVisibility(slotProps.data, true)" />
+          </template>
+        </Column>
+        <Column field="default" :header="$t('model.workflow.default')" :show-filter-menu="false">
+          <template #body="slotProps">
+            <span>
+              <i v-if="!isHDRDefault(slotProps.data)" style="font-size: 1.5rem" class="pi pi-star" @click="setDefaultHDRPipeline(slotProps.data)" />
+              <i v-else style="font-size: 1.5rem" class="pi pi-star-fill" />
             </span>
           </template>
         </Column>
@@ -176,12 +156,14 @@
 </template>
 
 <script>
-// import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
+// TODO: move constant values to other file
+const HDR_KUBEFLOW_PIPELINE = "hdr_pipeline";
+const HDR_KUBEFLOW_DEFAULT_PIPELINE = "hdr_default_pipeline";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 import WorkflowParameterForm from "./WorkflowParameterForm.vue";
 import WorkflowRunDetails from "./WorkflowRunDetails.vue";
 export default {
-  name: "WorkflowList",
+  name: "HDRPipelineList",
   components: { WorkflowParameterForm, WorkflowRunDetails },
   props: {
     workflowList: { type: Array, default: () => [] },
@@ -204,7 +186,6 @@ export default {
       runlogDialog: false,
     };
   },
-  computed: {},
   watch: {
     selectedWorkflow: function (v) {
       this.$emit("select", v);
@@ -236,18 +217,29 @@ export default {
       this.selectedWorkflowRunDetails = workflowRun;
       this.workflowRunDetailsDialog = true;
     },
-    async onParameterUpdate(evt) {
-      this.selectedWorkflow.parameters[evt.key] = evt;
-      this.editParameterDialog = false;
-      await this.$refs.spinner.run(async () => {
-        let res = await this.$ren.kubeflowApi.setParameters(this.selectedWorkflow.pipeline_id, this.selectedWorkflow.parameters);
-        if (res != null) this.selectedWorkflow.parameters = res;
-      });
+    // async onParameterUpdate(evt) {
+    //   this.selectedWorkflow.parameters[evt.key] = evt;
+    //   this.editParameterDialog = false;
+    //   await this.$refs.spinner.run(async () => {
+    //     let res = await this.$ren.kubeflowApi.setParameters(this.selectedWorkflow.pipeline_id, this.selectedWorkflow.parameters);
+    //     if (res != null) this.selectedWorkflow.parameters = res;
+    //   });
+    // },
+    // editParameter(workflow, selectedParameter) {
+    //   this.selectedParameter = selectedParameter;
+    //   this.selectedWorkflow = workflow;
+    //   this.editParameterDialog = true;
+    // },
+    isHDREnabled: function (pipeline) {
+      console.error(pipeline.properties[HDR_KUBEFLOW_PIPELINE]);
+      return pipeline.properties && pipeline.properties[HDR_KUBEFLOW_PIPELINE] && pipeline.properties[HDR_KUBEFLOW_PIPELINE].value == "true";
     },
-    editParameter(workflow, selectedParameter) {
-      this.selectedParameter = selectedParameter;
-      this.selectedWorkflow = workflow;
-      this.editParameterDialog = true;
+    isHDRDefault: function (pipeline) {
+      return (
+        pipeline.properties &&
+        pipeline.properties[HDR_KUBEFLOW_DEFAULT_PIPELINE] &&
+        pipeline.properties[HDR_KUBEFLOW_DEFAULT_PIPELINE].value == "true"
+      );
     },
     isTaskRunning(workflowRun) {
       return workflowRun && workflowRun.start_time && (workflowRun.end_time == null || workflowRun.end_time < 0);
@@ -275,24 +267,34 @@ export default {
       alert("task scheduled");
       this.reload();
     },
-    async setPipelineVisibility(selectedExperiment, state) {
+    async setHDRPipeline(pipeline, state) {
+      if (!state && this.isHDRDefault(pipeline)) {
+        this.$emitter.emit("error", { message: this.$t("information.hdr_cannot_disable_default") });
+        return;
+      }
       await this.$refs.spinner.run(async () => {
-        let res;
-        if (state) {
-          res = await this.$ren.kubeflowApi.showExperiment(selectedExperiment.pipeline_id);
-        } else {
-          res = await this.$ren.kubeflowApi.hideExperiment(selectedExperiment.pipeline_id);
-        }
-        if (res == state) {
-          this.$emitter.emit("information", { message: this.$t("information.visibility_changed") });
-          selectedExperiment.visible = state;
+        let res = await this.$ren.kubeflowApi.setHDRPipeline(pipeline.pipeline_id, state);
+        if (res.value == state.toString()) {
+          this.$emitter.emit("information", { message: this.$t("information.pipeline_property_changed") });
           this.$emit("reload");
-        } else this.$emitter.emit("error", { message: this.$t("information.visibility_not_changed") });
+        } else this.$emitter.emit("error", { message: this.$t("information.pipeline_property_not_changed") });
+      });
+    },
+    async setDefaultHDRPipeline(pipeline) {
+      if (!this.isHDREnabled(pipeline)) {
+        await this.setHDRPipeline(pipeline, true);
+      }
+      await this.$refs.spinner.run(async () => {
+        let res = await this.$ren.kubeflowApi.setDefaultHDRPipeline(pipeline.pipeline_id);
+        if (res.value == "true") {
+          this.$emitter.emit("information", { message: this.$t("information.pipeline_property_changed") });
+          this.$emit("reload");
+        } else this.$emitter.emit("error", { message: this.$t("information.pipeline_property_not_changed") });
       });
     },
     initFilters() {
       let pf = this.$ren.utils.toPrimeFilter(this.filters);
-      return { ...{ visible: { value: null } }, ...pf };
+      return { ...{ hdr_pipeline: { value: null } }, ...pf };
     },
     _emitFilter() {
       this.$emit("update:filters", this.$ren.utils.fromPrimeFilter(this.mFilters));
