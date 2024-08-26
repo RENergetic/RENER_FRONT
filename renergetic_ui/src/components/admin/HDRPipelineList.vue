@@ -88,7 +88,7 @@
             </span>
           </template>
         </Column>
-        <Column field="default" :header="$t('model.workflow.default')" :show-filter-menu="false">
+        <Column field="default" :header="$t('model.workflow.property.hdr_default_pipeline')" :show-filter-menu="false">
           <template #body="slotProps">
             <span>
               <i v-if="!isHDRDefault(slotProps.data)" style="font-size: 1.5rem" class="pi pi-star" @click="setDefaultHDRPipeline(slotProps.data)" />
