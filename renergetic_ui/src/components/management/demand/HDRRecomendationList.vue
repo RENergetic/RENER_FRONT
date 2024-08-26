@@ -1,27 +1,33 @@
 <template>
   <Panel :header="$t('view.current_request')" toggleable>
-    <InfoIcon :show-icon="true">
+    <RenSpinner ref="requestSpinner" :lock="true" style="width: 100%">
       <template #content>
-        <HDRRequestForm v-if="currentRequest" v-model="currentRequest" :disabled="true" />
+        <InfoIcon :show-icon="true">
+          <template #content>
+            <HDRRequestForm v-if="currentRequest" v-model="currentRequest" :disabled="true" />
+            <span v-else> {{ $t("view.current_request_null") }}</span>
+          </template>
+        </InfoIcon>
+        <Card v-if="currentRequest" :key="currentRequest" class="ren">
+          <template #content>
+            <ren-input-wrapper :text-label="'model.hdrrequest.date_from'">
+              <template #content> <Calendar v-model="currentRequest.dateFrom" :disabled="true" :show-time="true" /> </template>
+            </ren-input-wrapper>
+            <ren-input-wrapper :text-label="'model.hdrrequest.date_to'">
+              <template #content> <Calendar v-model="currentRequest.dateTo" :disabled="true" :show-time="true" /> </template>
+            </ren-input-wrapper>
+            <ren-input v-model="currentRequest.msg" :disabled="true" />
+          </template>
+        </Card>
         <span v-else> {{ $t("view.current_request_null") }}</span>
+        <div class="flex flex-wrap">
+          <!-- {{ currentRequest }} -->
+          <Button class="flex" :label="$t('view.button.set_hdr')" style="margin: 2.5%; flex-basis: 45%" @click="hdrRequestDialog = true" />
+          <Button v-if="currentRequest" class="flex" :label="$t('view.button.run_hdr')" style="margin: 2.5%; flex-basis: 45%" @click="startConfirm" />
+          <Button :label="$t('view.button.hdr_settings')" style="margin: 2.5%; flex-basis: 45%" @click="hdrSettingsDialog = true" />
+        </div>
       </template>
-    </InfoIcon>
-    <Card v-if="currentRequest" :key="currentRequest" class="ren">
-      <template #content>
-        <ren-input-wrapper :text-label="'model.hdrrequest.date_from'">
-          <template #content> <Calendar v-model="currentRequest.dateFrom" :disabled="true" :show-time="true" /> </template>
-        </ren-input-wrapper>
-        <ren-input-wrapper :text-label="'model.hdrrequest.date_to'">
-          <template #content> <Calendar v-model="currentRequest.dateTo" :disabled="true" :show-time="true" /> </template>
-        </ren-input-wrapper>
-        <ren-input v-model="currentRequest.msg" :disabled="true" />
-      </template>
-    </Card>
-    <span v-else> {{ $t("view.current_request_null") }}</span>
-
-    <!-- {{ currentRequest }} -->
-    <Button :label="$t('view.button.set_hdr')" style="margin-right: 0.25rem" @click="hdrRequestDialog = true" />
-    <Button :label="$t('view.button.hdr_settings')" @click="hdrSettingsDialog = true" />
+    </RenSpinner>
   </Panel>
   <Panel :header="$t('view.select_base_recommendation')" toggleable>
     <Dropdown
@@ -72,7 +78,7 @@ export default {
 
     recommendationList: { type: Array, default: () => [] },
   },
-  emits: ["update:modelValue", "select", "update:comparewith", "update:hdrRequest"], //"reload",
+  emits: ["update:modelValue", "select", "update:comparewith", "update:hdrRequest", "onStart"], //"reload",
   data() {
     return {
       currentRequest: this.hdrRequest,
@@ -103,9 +109,58 @@ export default {
     }
   },
   methods: {
-    // reload() {
-    //   this.$emit("reload");
-    // },
+    async start(pipeline) {
+      let experimentId = pipeline.pipeline_id;
+      let parameters = {};
+      let res = null;
+      await this.$refs.requestSpinner.run(
+        async () => {
+          res = await this.$ren.kubeflowApi.startExperiment(experimentId, parameters);
+        },
+        500,
+        5000,
+      );
+
+      if (res && res.run_id) {
+        this.$emitter.emit("information", { message: this.$t("information.worflowrun_start", { run_id: res.run_id }) });
+        this.$emit("onStart", res);
+      } else {
+        this.$emitter.emit("error", { message: this.$t("error.worflowrun_start", { label: pipeline.name ? pipeline.name : pipeline.pipeline_id }) });
+      }
+    },
+    async startConfirm() {
+      if (this.currentRequest) {
+        var pipeline = null;
+        await this.$refs.requestSpinner.run(async () => {
+          pipeline = await this.$ren.kubeflowApi.getDefaultHDRPipeline();
+        });
+        var runObj = null;
+        await this.$refs.requestSpinner.run(async () => {
+          runObj = await this.$ren.kubeflowApi.getExperimentRun(pipeline.pipeline_id);
+        });
+        if (!pipeline) {
+          this.$emitter.emit("error", { message: this.$t("error.default_hdr_pipeline_not_set") });
+          return;
+        }
+        if (runObj) {
+          this.$emitter.emit("error", { message: this.$t("error.hdr_task_is_running") });
+          return;
+        }
+        await this.$confirm.require({
+          message: this.$t("view.start_run_confirm_body", {
+            label: this.workflowLabel,
+          }),
+          header: this.$t("view.start_run_confirm"),
+          icon: "pi pi-exclamation-triangle",
+          accept: async () => {
+            await this.start(pipeline);
+          },
+          reject: () => {
+            this.$confirm.close();
+          },
+        });
+      }
+    },
     onSelect(v) {
       this.$emit("select", v);
       this.$emit("update:modelValue", v);
@@ -121,6 +176,7 @@ export default {
       // });
       // console.error(hdr);
     },
+
     async getRequest() {
       let requests = await this.$ren.hdrApi.getCurrentRequest();
       let request = null;

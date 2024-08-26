@@ -176,6 +176,7 @@
 </template>
 
 <script>
+// TODO: move constant values to other file
 // import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 import WorkflowParameterForm from "./WorkflowParameterForm.vue";

@@ -33,7 +33,7 @@
               <!-- {{ slotProps.data.parameters[key] }} -->
 
               {{ key }}
-              <Button
+              <!-- <Button
                 v-if="slotProps.data.parameters[key].visible"
                 v-tooltip="$t('view.edit')"
                 icon="pi pi-pencil"
@@ -46,7 +46,7 @@
                 icon="pi pi-pencil"
                 class="p-button-rounded state error"
                 @click="editParameter(slotProps.data, slotProps.data.parameters[key])"
-              />
+              /> -->
             </li>
           </ul>
           <span v-else> {{ $t("view.na") }} </span>
@@ -156,9 +156,6 @@
 </template>
 
 <script>
-// TODO: move constant values to other file
-const HDR_KUBEFLOW_PIPELINE = "hdr_pipeline";
-const HDR_KUBEFLOW_DEFAULT_PIPELINE = "hdr_default_pipeline";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 import WorkflowParameterForm from "./WorkflowParameterForm.vue";
 import WorkflowRunDetails from "./WorkflowRunDetails.vue";
@@ -231,14 +228,15 @@ export default {
     //   this.editParameterDialog = true;
     // },
     isHDREnabled: function (pipeline) {
-      console.error(pipeline.properties[HDR_KUBEFLOW_PIPELINE]);
-      return pipeline.properties && pipeline.properties[HDR_KUBEFLOW_PIPELINE] && pipeline.properties[HDR_KUBEFLOW_PIPELINE].value == "true";
+      return (
+        pipeline.properties && pipeline.properties[this.HDR_KUBEFLOW_PIPELINE] && pipeline.properties[this.HDR_KUBEFLOW_PIPELINE].value == "true"
+      );
     },
     isHDRDefault: function (pipeline) {
       return (
         pipeline.properties &&
-        pipeline.properties[HDR_KUBEFLOW_DEFAULT_PIPELINE] &&
-        pipeline.properties[HDR_KUBEFLOW_DEFAULT_PIPELINE].value == "true"
+        pipeline.properties[this.HDR_KUBEFLOW_DEFAULT_PIPELINE] &&
+        pipeline.properties[this.HDR_KUBEFLOW_DEFAULT_PIPELINE].value == "true"
       );
     },
     isTaskRunning(workflowRun) {
@@ -253,20 +251,6 @@ export default {
       });
     },
 
-    async runTask(selectedExperiment) {
-      console.error("remove this option in the admin menu");
-      console.warn(selectedExperiment);
-      console.error(" TODO: check if task hasn't already been running");
-      await this.$refs.spinner_temp.run(
-        async () => {
-          await this.$ren.kubeflowApi.startExperiment(selectedExperiment.pipeline_id, {});
-        },
-        500,
-        5000,
-      );
-      alert("task scheduled");
-      this.reload();
-    },
     async setHDRPipeline(pipeline, state) {
       if (!state && this.isHDRDefault(pipeline)) {
         this.$emitter.emit("error", { message: this.$t("information.hdr_cannot_disable_default") });

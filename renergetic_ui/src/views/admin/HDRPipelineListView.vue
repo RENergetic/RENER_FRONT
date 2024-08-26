@@ -5,7 +5,6 @@
     <template #content>
       <RenSpinner ref="spinner" :lock="true" style="width: 100%">
         <template #content>
-          TODO:
           <pipeline-list v-model:pagination="pagination" v-model:filters="filters" :workflow-list="workflowList" @reload="reload" />
         </template>
       </RenSpinner>
@@ -41,7 +40,7 @@ export default {
         });
       } else {
         await this.$refs.spinner.run(async () => {
-          this.workflowList = await this.$ren.kubeflowApi.adminList(f);
+          this.workflowList = await this.$ren.kubeflowApi.list();
         });
       }
     },

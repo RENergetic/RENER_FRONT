@@ -32,6 +32,27 @@
       </RenSpinner>
     </template>
   </Card>
+  <Card>
+    <template #title>{{ $t("view.hdr_pipelines") }} </template>
+    <template #content>
+      {{ $t("view.set_default_hdr_pipeline") }}
+      <RenSpinner ref="spinner" :lock="true" style="width: 100%">
+        <template #content>
+          <ul>
+            <li v-for="pipeline in hdrPipelineList" :key="pipeline.id">
+              <span style="line-height: 2.5rem; font-size: 1.25rem">
+                <span v-tooltip="`${pipeline.description} (version: ${pipeline.version})`"> {{ `${pipeline.name} (${pipeline.pipeline_id})` }}</span>
+                <span>
+                  <i v-if="!isHDRDefault(pipeline)" style="font-size: 1.5rem" class="pi pi-star" @click="setDefaultHDRPipeline(pipeline)" />
+                  <i v-else style="font-size: 1.5rem" class="pi pi-star-fill" />
+                </span>
+              </span>
+            </li>
+          </ul>
+        </template>
+      </RenSpinner>
+    </template>
+  </Card>
   <!-- <ren-submit :cancel-button="true" @cancel="cancel" @submit="submit" /> -->
 
   <!-- <Button :label="$t('view.button.submit')" @click="submit" />
@@ -62,17 +83,23 @@ export default {
   data() {
     return {
       assetList: [],
-      // measurementList: [],
-      // measurementSelectDialog: false,
+      hdrPipelineList: [],
     };
   },
   computed: {},
   watch: {},
   updated() {},
   async mounted() {
-    await this.loadAssets();
+    await this.loadData();
   },
   methods: {
+    isHDRDefault: function (pipeline) {
+      return (
+        pipeline.properties &&
+        pipeline.properties[this.HDR_KUBEFLOW_DEFAULT_PIPELINE] &&
+        pipeline.properties[this.HDR_KUBEFLOW_DEFAULT_PIPELINE].value == "true"
+      );
+    },
     assetLabel(asset) {
       if (asset != null && asset != null) return asset.label ? asset.label : asset.name;
       return null;
@@ -81,47 +108,37 @@ export default {
       this.$refs.assetSelectDialog.open();
     },
 
-    async loadAssets() {
+    async loadData() {
       this.assetList = await this.$ren.managementApi.listByDetail("hdr_state", "true");
+      this.hdrPipelineList = await this.$ren.kubeflowApi.listHDRPipelines();
     },
     async showMeasurements(asset) {
       this.measurementSelectDialog = true;
       await this.loadMeasurements(asset);
     },
-    // async loadMeasurements(asset) {
-    //   let offset = 0;
-    //   let limit = 100;
-
-    //   let params = { asset_name: asset.name };
-    //   await this.$refs.spinner.run(async () => {
-    //     await this.$ren.managementApi.listMeasurement({ params: params, offset: offset, limit: limit }).then((data) => {
-    //       for (let m of data) {
-    //         this.$ren.utils.setMeasurementLabel(m);
-    //       }
-    //       // console.error(this.mSelectedMeasurements);
-    //       let d = {}
-    //       for (let m of data) {
-
-    //         m._key = `${m.name}_${m.type.id}_${m.domain}_${m.direction}_${m.sensor_name}`
-    //         if( d[m._key]===undefined){
-    //            d[m._key]={measurements:[],"hdr_state":false}
-    //         }
-
-    //       }
-
-    //       this.measurementList = data;
-    //     });
-    //   });
-    // },
+    async setDefaultHDRPipeline(pipeline) {
+      // var hdrEnabled =
+      //   pipeline.properties && pipeline.properties[this.HDR_KUBEFLOW_PIPELINE] && pipeline.properties[this.HDR_KUBEFLOW_PIPELINE].value == "true";
+      // if (!hdrEnabled) {
+      //   await this.setHDRPipeline(pipeline, true);
+      // }
+      await this.$refs.spinner.run(async () => {
+        let res = await this.$ren.kubeflowApi.setDefaultHDRPipeline(pipeline.pipeline_id);
+        if (res.value == "true") {
+          this.$emitter.emit("information", { message: this.$t("information.pipeline_property_changed") });
+          this.hdrPipelineList = await this.$ren.kubeflowApi.listHDRPipelines();
+        } else this.$emitter.emit("error", { message: this.$t("information.pipeline_property_not_changed") });
+      });
+    },
     async deleteAsset(asset) {
       await this.$ren.managementApi.deleteAssetDetail(asset.id, "hdr_state");
       // this.$refs.assetSelectDialog.close();
-      await this.loadAssets();
+      this.assetList = await this.$ren.managementApi.listByDetail("hdr_state", "true");
     },
     async onAssetSelect(selectedAsset) {
       await this.$ren.managementApi.updateAssetDetail(selectedAsset.id, "hdr_state", "true");
       // this.$refs.assetSelectDialog.close();
-      await this.loadAssets();
+      this.assetList = await this.$ren.managementApi.listByDetail("hdr_state", "true");
     },
     submit() {},
     cancel() {
