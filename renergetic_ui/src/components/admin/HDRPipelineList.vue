@@ -270,7 +270,7 @@ export default {
       }
       await this.$refs.spinner.run(async () => {
         let res = await this.$ren.kubeflowApi.setDefaultHDRPipeline(pipeline.pipeline_id);
-        if (res.value == "true") {
+        if (res && res.value == "true") {
           this.$emitter.emit("information", { message: this.$t("information.pipeline_property_changed") });
           this.$emit("reload");
         } else this.$emitter.emit("error", { message: this.$t("information.pipeline_property_not_changed") });

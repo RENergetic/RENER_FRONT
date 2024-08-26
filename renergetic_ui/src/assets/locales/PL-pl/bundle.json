@@ -1,4 +1,5 @@
 {
+  "anomaly": {},
   "enums": {
     "asset_connection": {
       "owner": "Właściciel",
@@ -155,6 +156,59 @@
       "single": "Pojedyncza wartość"
     }
   },
+  "error": {
+    "asset_connection_not_deleted": "Usuwanie relacji nie powiodło się",
+    "asset_panel_assigned": "Asset not assigned to the panel",
+    "asset_panel_revoked": "Asset not revoked from the dashboard",
+    "dashboard_delete_fail": "Dashboard has not been deleted.",
+    "dashboard_not_updated": "Dashboard has not been updated",
+    "default_hdr_pipeline_not_set": "Domyślne zadanie nie zostało zdefiniowane",
+    "error": "Error",
+    "hdr_cannot_disable_default": "Wartość nie może być zmieniona dla domyślnego zadania",
+    "hdr_task_is_running": "Zadanie już uruchomione",
+    "measurement_delete_fail": "Measurement has not been deleted.",
+    "measurement_not_updated": "Measurement has not been updated",
+    "panel_not_found": "Nie odnaleziono widoku: {0}.",
+    "panel_update": "Aktualizacja widoku {0} nie powiadła się.",
+    "rest_title": "API Error",
+    "tag_exists": "Tag już istnieje",
+    "user_not_found": "Brak użytkownika: {0}.",
+    "user_not_updated": "Aktualizacja użytkownika nie powidła się.",
+    "visibility_changed": "Visibility not changed",
+    "worflow_stop": "{label} - błąd przy próbie zatrzymania",
+    "worflowrun_start": "{label} - błąd przy próbie uruchomienia"
+  },
+  "information": {
+    "asset_connection_deleted": "Relacja obiektów usunięta",
+    "asset_panel_assigned": "Asset assigned to the panel",
+    "asset_panel_revoked": "Asset revoked from the dashboard",
+    "asset_type_delete": "Asset type deleted",
+    "create_success": "Zapisano pomyślnie",
+    "dashboard_created": "Dashboard has been created",
+    "dashboard_delete_success": "Dashboard has been deleted.",
+    "dashboard_not_updated": "Dashboard has not been updated",
+    "dashboard_updated": "Dashboard has been updated",
+    "delete_success": "Usunięto pomyślnie",
+    "information": "Information",
+    "information_panel_sctructure_submitted": "Structura widoku zaktualizowana",
+    "measurement_created": "Measurement has been created",
+    "measurement_delete_success": "Measurement has been deleted.",
+    "measurement_not_updated": "Measurement has not been updated",
+    "measurement_updated": "Measurement has been updated",
+    "measurements_created": "Pomyślnie dodano nowe szeregi czasowe",
+    "new_asset_type": "Nowy typ obiektu: {label}({name})",
+    "panel_update": "Panel {0} update success.",
+    "pipeline_property_changed": "Właściwość pomyślnie zmieniona",
+    "pipeline_property_not_changed": "Właściwość nie została zmieniona",
+    "settings_saved": "Settings saved",
+    "tag_deleted": "Tag usunięty",
+    "update_success": "Zapisano pomyślnie",
+    "user_created": "User has been created",
+    "user_updated": "User has been updated",
+    "visibility_changed": "Visibility changed",
+    "worflow_stop": "{label} - zatrzymany",
+    "worflowrun_start": "{run_id} - rozpoczęty"
+  },
   "menu": {
     "abstract_meter": "Wirtualne liczniki",
     "add_asset": "Dodaj obiekt",
@@ -224,99 +278,9 @@
     "users": "Użytkownicy",
     "view": "Widok"
   },
-  "misc": {
-    "error": {
-      "asset_connection_not_deleted": "Usuwanie relacji nie powiodło się",
-      "asset_panel_assigned": "Asset not assigned to the panel",
-      "asset_panel_revoked": "Asset not revoked from the dashboard",
-      "dashboard_delete_fail": "Dashboard has not been deleted.",
-      "dashboard_not_updated": "Dashboard has not been updated",
-      "default_hdr_pipeline_not_set": "Domyślne zadanie nie zostało zdefiniowane",
-      "error": "Error",
-      "hdr_cannot_disable_default": "Wartość nie może być zmieniona dla domyślnego zadania",
-      "hdr_task_is_running": "Zadanie już uruchomione",
-      "measurement_delete_fail": "Measurement has not been deleted.",
-      "measurement_not_updated": "Measurement has not been updated",
-      "panel_not_found": "Nie odnaleziono widoku: {0}.",
-      "panel_update": "Aktualizacja widoku {0} nie powiadła się.",
-      "rest_title": "API Error",
-      "tag_exists": "Tag już istnieje",
-      "user_not_found": "Brak użytkownika: {0}.",
-      "user_not_updated": "Aktualizacja użytkownika nie powidła się.",
-      "visibility_changed": "Visibility not changed",
-      "worflow_stop": "{label} - błąd przy próbie zatrzymania",
-      "worflowrun_start": "{label} - błąd przy próbie uruchomienia"
-    },
-    "information": {
-      "asset_connection_deleted": "Relacja obiektów usunięta",
-      "asset_panel_assigned": "Asset assigned to the panel",
-      "asset_panel_revoked": "Asset revoked from the dashboard",
-      "asset_type_delete": "Asset type deleted",
-      "create_success": "Zapisano pomyślnie",
-      "dashboard_created": "Dashboard has been created",
-      "dashboard_delete_success": "Dashboard has been deleted.",
-      "dashboard_not_updated": "Dashboard has not been updated",
-      "dashboard_updated": "Dashboard has been updated",
-      "delete_success": "Usunięto pomyślnie",
-      "information": "Information",
-      "information_panel_sctructure_submitted": "Structura widoku zaktualizowana",
-      "measurement_created": "Measurement has been created",
-      "measurement_delete_success": "Measurement has been deleted.",
-      "measurement_not_updated": "Measurement has not been updated",
-      "measurement_updated": "Measurement has been updated",
-      "measurements_created": "Pomyślnie dodano nowe szeregi czasowe",
-      "new_asset_type": "Nowy typ obiektu: {label}({name})",
-      "panel_update": "Panel {0} update success.",
-      "pipeline_property_changed": "Właściwość pomyślnie zmieniona",
-      "pipeline_property_not_changed": "Właściwość nie została zmieniona",
-      "settings_saved": "Settings saved",
-      "tag_deleted": "Tag usunięty",
-      "update_success": "Zapisano pomyślnie",
-      "user_created": "User has been created",
-      "user_updated": "User has been updated",
-      "visibility_changed": "Visibility changed",
-      "worflow_stop": "{label} - zatrzymany",
-      "worflowrun_start": "{run_id} - rozpoczęty"
-    },
-    "message": {
-      "anomaly": {
-        "high": "Anomaly - high"
-      }
-    },
-    "validations": {
-      "email": "'{model}' is not valid email.",
-      "fields": {
-        "connectedAsset": "Connected asset",
-        "connectionType": "Connection type",
-        "custom": {
-          "asset": {
-            "type": "asset type"
-          }
-        },
-        "date_from": "Data od",
-        "domain": "domain",
-        "email": "email",
-        "key": "key",
-        "label": "label",
-        "name": "name",
-        "password": "password",
-        "passwordRepeat": "repeat password",
-        "physical_type": "physical type",
-        "requestValue": "Request's value",
-        "selectedAsset": "Selected asset",
-        "sensor_name": "sensor name",
-        "unit": "Jednostka",
-        "url": "url",
-        "username": "username",
-        "value": "value"
-      },
-      "maxLength": "The '{property}' field has a value of '{model}', but it must have a max length of {max}.",
-      "minLength": "The '{property}' field has a value of '{model}', but it must have a min length of {min}.",
-      "passMaxLength": "The '{property}', but it must have a max length of {max}.",
-      "passMinLength": "The '{property}', but it must have a min length of {min}.",
-      "required": "Pole: '{property}' jest wymagane.",
-      "sameAs": "The '{property}' is not same as {same_as_property}.",
-      "url": "'{model}' is not valid url."
+  "message": {
+    "anomaly": {
+      "high": "Anomaly - high"
     }
   },
   "model": {
@@ -846,6 +810,41 @@
     "power_compare_month": "Konsumpcja PCSS zmieniła się o {value} w stosunku do zeszłego miesiąca.",
     "power_compare_week": "Konsumpcja PCSS zmieniła się o {value} w stosunku do zeszłego tygodnia."
   },
+  "validations": {
+    "email": "'{model}' is not valid email.",
+    "fields": {
+      "connectedAsset": "Connected asset",
+      "connectionType": "Connection type",
+      "custom": {
+        "asset": {
+          "type": "asset type"
+        }
+      },
+      "date_from": "Data od",
+      "domain": "domain",
+      "email": "email",
+      "key": "key",
+      "label": "label",
+      "name": "name",
+      "password": "password",
+      "passwordRepeat": "repeat password",
+      "physical_type": "physical type",
+      "requestValue": "Request's value",
+      "selectedAsset": "Selected asset",
+      "sensor_name": "sensor name",
+      "unit": "Jednostka",
+      "url": "url",
+      "username": "username",
+      "value": "value"
+    },
+    "maxLength": "The '{property}' field has a value of '{model}', but it must have a max length of {max}.",
+    "minLength": "The '{property}' field has a value of '{model}', but it must have a min length of {min}.",
+    "passMaxLength": "The '{property}', but it must have a max length of {max}.",
+    "passMinLength": "The '{property}', but it must have a min length of {min}.",
+    "required": "Pole: '{property}' jest wymagane.",
+    "sameAs": "The '{property}' is not same as {same_as_property}.",
+    "url": "'{model}' is not valid url."
+  },
   "view": {
     "abstract_meter_administration": "Abstract meter administration",
     "abstract_meter_list": "Abstract meter list",
@@ -916,6 +915,7 @@
       "previous": "Poprzedni",
       "revoke_asset_assignment": "Revoke assignment for: {0}",
       "revoke_assignment": "Revoke assignment",
+      "run_hdr": "Run HDR pipeline",
       "save": "Save",
       "set_hdr": "Ustaw HDR",
       "show_available_tile_icons": "Dostępne ikony",
@@ -994,6 +994,7 @@
     "go_to_notification_history": "Przejdź do historii powiadomień",
     "go_to_panel": "Go to panel",
     "hdr_asset_list": "Lista obiektów użyta do rekomendacji",
+    "hdr_pipelines": "HDR pipelines",
     "hdr_request_change": "Zmień {property} o: {value} ",
     "hdr_request_limit": "Ogranicz {property} do: {value} ",
     "heatmap_list": "Heatmap List",

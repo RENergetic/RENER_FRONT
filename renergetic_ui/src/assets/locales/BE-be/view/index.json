@@ -260,5 +260,6 @@
   "rules_saving": null,
   "rules_saved": null,
   "rules_not_saved": null,
-  "set_default_hdr_pipeline": null
+  "set_default_hdr_pipeline": null,
+  "hdr_pipelines": null
 }

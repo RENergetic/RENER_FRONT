@@ -100,6 +100,7 @@
   "hdr_asset_list": "Asset list used in the HDR recommendations",
   "hdr_request_limit": "Limit {property} to: {value} ",
   "hdr_request_change": "Change {property} by: {value} ",
+  "hdr_pipelines": "HDR pipelines",
   "go_to_dashboard": "Go to dashboard",
   "go_to_heatmap": "Go inside",
   "information_panel_form": "Information panel form",

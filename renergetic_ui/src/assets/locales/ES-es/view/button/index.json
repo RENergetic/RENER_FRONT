@@ -41,5 +41,6 @@
   "manage_asset_types": null,
   "start": null,
   "stop": null,
-  "save": null
+  "save": null,
+  "run_hdr": null
 }

@@ -41,5 +41,6 @@
   "revoke_asset_assignment": "Revoke assignment for: {0}",
   "asset_go_to_panel": "Go to panel for asset: {0}",
   "yes": "Tak",
-  "no": "Nie"
+  "no": "Nie",
+  "run_hdr": null
 }
