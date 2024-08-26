@@ -261,5 +261,5 @@
   "rules_saved": "Rules saved",
   "rules_not_saved": "There was an error, rules not saved",
   "set_default_hdr_pipeline": "Ustaw domyślne zadanie ",
-  "hdr_pipelines": null
+  "hdr_pipelines": "Dostępne zadania"
 }
