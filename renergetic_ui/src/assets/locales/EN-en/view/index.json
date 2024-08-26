@@ -192,6 +192,7 @@
   "select_measurement_type": "Select the type",
   "select_recommendation": "Select recommendation",
   "select_parameter_type": "Select parameter type",
+  "set_default_hdr_pipeline": "Set default hdr pipeline",
   "show": "Show",
   "tags": "Tags",
   "tag_filter": "Tag filter",

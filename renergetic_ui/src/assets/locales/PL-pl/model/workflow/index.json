@@ -6,5 +6,8 @@
   "pipelines": "Pipelines",
   "current_run": "Aktuanie uruchomiony eksperyment",
   "visibility": "Widoczność",
-  "visible": "Dostępność"
+  "visible": "Dostępność",
+  "properties": "Własciwości",
+  "no_properties": "Brak własciwości",
+  "no_parameters": "Brak parametrów"
 }

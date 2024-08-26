@@ -3,7 +3,6 @@
   "admin": "Administrator",
   "add_asset": "Dodaj obiekt",
   "add_dashboard": "Dodaj panel",
-  "add_heatmap": "Dodatej heatMap",
   "add_information_panel": "Dodaj widok ",
   "add_user": "Dodaj użytkwonika",
   "administration": "Zarządzanie",
@@ -38,7 +37,6 @@
   "manage_grafana_dashboard": "Panel Grafana",
   "manage_information_panels": "Zarządzaj widokami",
   "manage_measurements": "Zarządzaj czujnikami",
-  "manage_categories": "Kategorie",
   "manage_users": "Użytkownicy",
   "manage_workflows": "Zarządzaj zadaniami",
   "measurements": "Czujniki",
@@ -66,5 +64,6 @@
   "tv_view_mode": "Widok prezentacji",
   "toggle_edit_mode": "Przełącz tryb edycji",
   "normal_view_mode": "Widok normalny",
-  "manage_rules": "Zarządzaj regułami"
+  "manage_rules": "Zarządzaj regułami",
+  "manage_hdr_pipeline": "Zarządzaj zadaniami HDR"
 }

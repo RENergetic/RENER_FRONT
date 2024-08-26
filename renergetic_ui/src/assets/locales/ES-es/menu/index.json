@@ -2,7 +2,6 @@
   "home": "Página de inicio",
   "add_asset": "Crear activo",
   "add_dashboard": "Añadir panel de Grafana",
-  "add_heatmap": "Crear mapa de calor",
   "add_information_panel": " Crear panel informativo",
   "add_user": "Crear usuario",
   "administration": "Administración",
@@ -61,10 +60,10 @@
   "export": null,
   "export_template": null,
   "hdr_view": null,
-  "manage_categories": null,
   "manage_workflows": null,
   "manage_notifications": null,
   "tv_view_mode": null,
   "toggle_edit_mode": null,
-  "normal_view_mode": null
+  "normal_view_mode": null,
+  "manage_hdr_pipeline": null
 }

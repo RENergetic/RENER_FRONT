@@ -259,5 +259,6 @@
   "panel_effective_settings": null,
   "panel_effective_filter_settings": null,
   "panel_filter_settings": null,
-  "panel_user_settings": null
+  "panel_user_settings": null,
+  "set_default_hdr_pipeline": null
 }

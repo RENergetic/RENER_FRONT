@@ -63,6 +63,7 @@
   "measurement_delete_confirm": "Are you sure you want to remove measurement: {label}",
   "no_tag": "Tag not used",
   "data_date_from": "Dane od: {date}.",
+  "data_date_to": "Dane do: {date}.",
   "date_from": "Data od: {date}.",
   "date_to": "Data do: {date}.",
   "delete": "Delete",
@@ -259,5 +260,5 @@
   "rules_saving": "Saving rules",
   "rules_saved": "Rules saved",
   "rules_not_saved": "There was an error, rules not saved",
-  "data_date_to": null
+  "set_default_hdr_pipeline": "Ustaw domyślne zadanie "
 }

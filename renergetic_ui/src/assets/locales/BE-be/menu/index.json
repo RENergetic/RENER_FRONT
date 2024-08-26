@@ -5,7 +5,6 @@
   "admin": null,
   "add_asset": null,
   "add_dashboard": null,
-  "add_heatmap": null,
   "add_information_panel": null,
   "add_user": null,
   "administration": null,
@@ -39,7 +38,6 @@
   "manage_grafana_dashboard": null,
   "manage_information_panels": null,
   "manage_measurements": null,
-  "manage_categories": null,
   "manage_users": null,
   "manage_workflows": null,
   "measurements": null,
@@ -66,5 +64,6 @@
   "tv_view_mode": null,
   "toggle_edit_mode": null,
   "normal_view_mode": null,
-  "manage_rules": null
+  "manage_rules": null,
+  "manage_hdr_pipeline": null
 }

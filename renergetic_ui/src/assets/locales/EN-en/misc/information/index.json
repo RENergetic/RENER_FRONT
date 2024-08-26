@@ -21,6 +21,8 @@
   "panel_update": "Panel {0} update success.",
   "asset_type_delete": "Asset type deleted",
   "new_asset_type": "New asset type: {label}({name})",
+  "pipeline_property_changed": "Pipeline propery has been changed",
+  "pipeline_property_not_changed": "Pipeline propery has not been changed",
   "settings_saved": "Settings saved",
   "visibility_changed": "Visibility changed",
   "tag_deleted": "Tag deleted",

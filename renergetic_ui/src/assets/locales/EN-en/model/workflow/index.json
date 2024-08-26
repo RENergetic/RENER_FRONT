@@ -6,5 +6,8 @@
   "pipelines": "Pipelines",
   "current_run": "Current run",
   "visibility": "Visibility",
-  "visible": "Visibility"
+  "visible": "Visibility",
+  "properties": "Properties",
+  "no_properties": "No properties",
+  "no_parameters": "No paremeters"
 }

@@ -15,5 +15,8 @@
   "visibility_changed": null,
   "worflowrun_start": null,
   "worflow_stop": null,
-  "tag_exists": null
+  "tag_exists": null,
+  "hdr_task_is_running": null,
+  "default_hdr_pipeline_not_set": null,
+  "hdr_cannot_disable_default": null
 }
