@@ -19,7 +19,7 @@
         <div v-if="notConfigured">
           <ol>
             <li v-for="m in notConfigured" :key="m.name + m.domain + m.custom_name">
-              {{ m.name }}:{{ m.domain }}<span v-if="m.custom_name">({{ m.custom_name }})</span>
+              {{ m.label ? m.label : m.name }}:{{ m.domain }}<span v-if="m.custom_name">({{ m.custom_name }})</span>
             </li>
           </ol>
         </div>

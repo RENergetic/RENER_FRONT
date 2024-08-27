@@ -9,7 +9,7 @@
           <template #content>
             <Dropdown
               v-model="abstractMeterType"
-              :option-label="(it) => `${it.description} (${it.meter})`"
+              :option-label="(it) => `${it.description} (${it.label ? it.label : it.name})`"
               :options="abstractMeterTypes"
               style="flex-grow: 1"
               @change="validateButton"
@@ -121,7 +121,7 @@
 <script>
 import MeasurementSelect from "@/components/management/infrastructure/measurement/MeasurementSelect.vue";
 export default {
-  name: "AbstracMetersView",
+  name: "AbstractMeterList",
   components: {
     MeasurementSelect,
   },
