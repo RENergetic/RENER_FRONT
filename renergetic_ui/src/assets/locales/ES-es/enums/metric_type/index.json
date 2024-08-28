@@ -1,0 +1,19 @@
+{
+  "electricity": "electricidad",
+  "heat": "calor",
+  "temperature": "temperatura",
+  "co2eq": null,
+  "flow": null,
+  "energy": null,
+  "energy_kwh": null,
+  "energy_wh": null,
+  "power_w": null,
+  "heat_energy_gj": null,
+  "energy_gj": null,
+  "percentage": null,
+  "power": null,
+  "ratio": null,
+  "ratio_norm": null,
+  "value": null,
+  "voltage": null
+}

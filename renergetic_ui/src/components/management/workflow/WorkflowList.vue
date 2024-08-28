@@ -67,7 +67,7 @@
         <Button
           :label="$t('view.button.start')"
           icon="pi pi-play"
-          :disabled="false && isTaskRunning(slotProps.data)"
+          :disabled="isTaskRunning(slotProps.data.current_run)"
           @click="showStartDialog(slotProps.data)"
         />
       </template>

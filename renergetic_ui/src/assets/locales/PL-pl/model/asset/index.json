@@ -1,0 +1,15 @@
+{
+  "asset_connections": "Asset connections",
+  "connection_type": "Connection type",
+  "name": "Name",
+  "id": "Id",
+  "child": "Sub assets",
+  "asset_type": "Asset type",
+  "asset_category": "Asset category",
+  "label": "Label",
+  "measurements": "Measurements",
+  "description": "Description",
+  "geo_location": "Geo location",
+  "owner": "Owner",
+  "parent": "Parent"
+}

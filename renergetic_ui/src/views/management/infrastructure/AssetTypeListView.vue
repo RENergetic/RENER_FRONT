@@ -38,16 +38,19 @@ export default {
     async createType(assetType) {
       await this.$refs.spinner.run(async () => {
         let newType = await this.$ren.managementApi.addAssetType(assetType);
-        console.warn("TODO: inform user update the update");
-        console.warn(newType);
+        this.$emitter.emit("information", {
+          message: this.$t("information.new_asset_type", { name: newType.name, label: newType.label ? newType.label : newType.name }),
+        });
       });
       await this.loadTypes();
     },
     async deleteType(assetType) {
       await this.$refs.spinner.run(async () => {
         let result = await this.$ren.managementApi.deleteAssetType(assetType);
-        console.warn("TODO: inform user update the update");
-        console.warn(result);
+        console.warn(result); //check what's in the result
+        this.$emitter.emit("information", {
+          message: this.$t("information.asset_type_delete"),
+        });
       });
       await this.loadTypes();
     },

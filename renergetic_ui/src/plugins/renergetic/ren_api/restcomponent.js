@@ -79,9 +79,12 @@ export default class RestComponent {
             return response.data;
           })
           .catch(function (error) {
-            let defaultErrorHandler = (error) => _this.emitError(`DELETE: ${path}: ${error.message}`);
+            let defaultErrorHandler = (error) => {
+              _this.emitError(`DELETE: ${path}: ${error.message}`);
+              return false;
+            };
             if (onError == null || !onError(error)) {
-              defaultErrorHandler(error);
+              return defaultErrorHandler(error);
             }
           })
       );

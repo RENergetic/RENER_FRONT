@@ -139,7 +139,7 @@ import ListBox from "primevue/listbox";
 // import Calendar from "primevue/calendar";
 import UnixCalendar from "./UnixCalendar.vue";
 import RenColorPicker from "./RenColorPicker.vue";
-import icons from "@/components/dashboard/informationpanel/informationtile/icons.js";
+import icons from "@/components/dashboard/informationpanel/informationtile/components/icons.js";
 export default {
   name: "Settings",
   components: {
@@ -274,6 +274,7 @@ export default {
     .p-button {
       width: auto !important;
     }
+    width: fit-content;
   }
 }
 </style>

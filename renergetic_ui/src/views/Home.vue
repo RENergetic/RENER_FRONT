@@ -4,7 +4,6 @@
   <div v-if="homeSettings.panelVisibility" style="position: relative">
     <!-- {{ $store.getters["view/featuredPanels"] }}  -->
     <!-- {{ panelSettings }} -->
-
     <InformationPanelWrapper
       v-if="panel"
       ref="panel"
@@ -25,11 +24,9 @@
       <ParsedDateFilter :key="parsedFilterRefresh" :filter="effectiveFilterSettings" />
     </div>
   </div>
-  <div v-if="homeSettings.demandVisibility && loggedIn" style="position: relative">
-    <DemandList id="demand-list" />
-  </div>
-  <div v-if="homeSettings.notificationVisibility && loggedIn" style="position: relative">
-    <NotificationList id="notification-list" />
+  <div v-if="homeSettings.demandVisibility && loggedIn"><DemandList id="demand-list" /></div>
+  <div v-if="homeSettings.notificationVisibility && loggedIn">
+    <UserNotificationList id="notification-list" />
   </div>
   <RoleMatrix v-if="false" />
   <RenSettingsDialog ref="homeSettingsDialog">
@@ -94,32 +91,48 @@
   </RenSettingsDialog>
   <RenSettingsDialog ref="filterSettingsDialog" :save="false">
     <template #settings>
-      <Card v-if="panel" class="ren-settings">
+      <Panel v-if="panel" toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
+        </template>
+        <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
+      </Panel>
+      <Panel v-if="panel" toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.panel_filter_settings") }}:</span>
+        </template>
+        <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
+      </Panel>
+      <Panel v-if="panel" toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.user_filter_settings") }}:</span>
+        </template>
+        <BasicFilterSettings @update="updateFilter()" />
+      </Panel>
+      <!-- <Card v-if="panel" class="ren-settings">
         <template #title>
           <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
         </template>
         <template #content>
           <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
-          <!-- <Settings :schema="schema" :settings="effectiveFilterSettings" :disabled="true" /> -->
-        </template>
-      </Card>
-      <Card v-if="panel" class="ren-settings">
+           </template>
+      </Card> -->
+      <!-- <Card v-if="panel" class="ren-settings">
         <template #title>
           <span> {{ $t("view.panel_filter_settings") }}:</span>
         </template>
         <template #content>
-          <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
-          <!-- <Settings :schema="schema" :settings="panel.props" :disabled="true" /> -->
+          <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" /> 
         </template>
-      </Card>
-      <Card class="ren-settings">
+      </Card> -->
+      <!-- <Card class="ren-settings">
         <template #title>
           <span> {{ $t("view.user_filter_settings") }}:</span>
         </template>
         <template #content>
           <BasicFilterSettings @update="updateFilter()" />
         </template>
-      </Card>
+      </Card> -->
     </template>
   </RenSettingsDialog>
   <div v-if="$refs.panelSettingsDialog">{{ $refs.panelSettingsDialog.settingsDialog }}</div>
@@ -128,7 +141,7 @@
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import HomeSettings from "@/components/miscellaneous/settings/HomeSettings.vue";
 import RoleMatrix from "@/components/miscellaneous/settings/RoleMatrix.vue";
-import NotificationList from "@/components/user/NotificationList.vue";
+import UserNotificationList from "@/components/user/NotificationList.vue";
 // import SettingsDialog from "@/components/miscellaneous/settings/SettingsDialog.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 import InformationPanelWrapper from "@/components/dashboard/informationpanel/InformationPanelWrapper.vue";
@@ -152,7 +165,7 @@ export default {
     DemandList,
     HomeSettings,
     PanelSettings,
-    NotificationList,
+    UserNotificationList,
     InformationPanelWrapper,
     ParsedDateFilter,
     BasicFilterSettings,
@@ -161,7 +174,7 @@ export default {
   data() {
     console.debug(this.$store.getters["settings/home"]);
     return {
-      schema: panelSchema,
+      schema: panelSchema(),
       loaded: false,
       grid: null,
       locked: true,
@@ -286,6 +299,7 @@ export default {
         }
       };
       if (this.homeSettings.slideshowLoopInterval > 0) {
+        console.info(`init slide show:  ${this.homeSettings.slideshowLoopInterval}`);
         this.slideshow = LoopRunner.init(f, this.homeSettings.slideshowLoopInterval);
         this.slideshow.start();
       } else {
@@ -318,16 +332,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+#notification-list,
 #demand-list {
-  width: 50rem;
-  max-width: 95vw;
+  width: 60rem;
+  max-width: 90vw;
   margin: auto;
-  color: #3182ce;
-}
-
-#notification-list {
-  width: 50rem;
-  max-width: 95vw;
-  margin: auto;
+  position: relative;
 }
 </style>

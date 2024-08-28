@@ -51,24 +51,29 @@ export default {
     // if (this.tile.measurements) {
     //   measurement = this.tile.measurements[0];
     // }
+    let maxV = 0;
+    let minV = 0;
+    let unit = "";
     let measurement = this.getTileMeasurement();
-    // console.error(this.pdata);
-    let maxV =
-      !this.settings.panel.relativeValues &&
-      this.pdata.max &&
-      this.pdata.max[measurement.aggregation_function] &&
-      this.pdata.max[measurement.aggregation_function][measurement.id]
-        ? this.pdata.max[measurement.aggregation_function][measurement.id]
-        : this.defaultMax(measurement);
-    // console.error(measurement.id);
-    let minV =
-      !this.settings.panel.relativeValues &&
-      this.pdata.min &&
-      this.pdata.min[measurement.aggregation_function] &&
-      this.pdata.min[measurement.aggregation_function][measurement.id]
-        ? this.pdata.min[measurement.aggregation_function][measurement.id]
-        : 0.0;
-    let unit = this.$ren.utils.getUnit(measurement, this.settings.panel, this.conversionSettings);
+    if (measurement != null) {
+      // console.error(this.pdata);
+      maxV =
+        !this.settings.panel.relativeValues &&
+        this.pdata.max &&
+        this.pdata.max[measurement.aggregation_function] &&
+        this.pdata.max[measurement.aggregation_function][measurement.id]
+          ? this.pdata.max[measurement.aggregation_function][measurement.id]
+          : this.defaultMax(measurement);
+      // console.error(measurement.id);
+      minV =
+        !this.settings.panel.relativeValues &&
+        this.pdata.min &&
+        this.pdata.min[measurement.aggregation_function] &&
+        this.pdata.min[measurement.aggregation_function][measurement.id]
+          ? this.pdata.min[measurement.aggregation_function][measurement.id]
+          : 0.0;
+      this.$ren.utils.getUnit(measurement, this.settings.panel, this.conversionSettings);
+    }
     return {
       unit: unit,
       mSettings: this.settings,
@@ -94,7 +99,8 @@ export default {
     },
 
     mlabel: function () {
-      return this.measurementLabel(this.measurement);
+      if (this.measurement != null) return this.measurementLabel(this.measurement);
+      return "N/A";
     },
 
     strokeWidth: function () {
@@ -128,6 +134,9 @@ export default {
   mounted() {},
   methods: {
     defaultMax(measurement) {
+      if (measurement == null) {
+        return 1.0;
+      }
       switch (measurement.type.base_unit) {
         case "%":
       }

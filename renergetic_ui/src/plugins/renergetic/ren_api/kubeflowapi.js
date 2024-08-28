@@ -1,4 +1,6 @@
 import RestComponent from "./restcomponent";
+const HDR_KUBEFLOW_PIPELINE = "hdr_pipeline";
+const HDR_KUBEFLOW_DEFAULT_PIPELINE = "hdr_default_pipeline";
 export default class KubeflowApi extends RestComponent {
   BASE_URL = "/api/kubeflow";
   constructor(axiosInstance, vueInstance) {
@@ -8,8 +10,13 @@ export default class KubeflowApi extends RestComponent {
   list() {
     return this.get(`${this.BASE_URL}/pipeline`);
   }
+  listHDRPipelines() {
+    let value = "true";
+    //Get by property
+    return this.get(`${this.BASE_URL}/pipeline/property/${HDR_KUBEFLOW_PIPELINE}/value/${value}`);
+  }
   adminList({ visible = null }) {
-    console.info(visible);
+    // console.info(visible);
     let args = this.parseArgs({ visible: visible });
     return this.get(`${this.BASE_URL}/admin/pipeline?${args}`);
   }
@@ -21,6 +28,33 @@ export default class KubeflowApi extends RestComponent {
   }
   setParameters(pipelineId, parameters) {
     return this.put(`${this.BASE_URL}/admin/pipeline/${pipelineId}/parameters`, parameters);
+  }
+
+  setHDRPipeline(pipelineId, isEnabled) {
+    var prop = { key: HDR_KUBEFLOW_PIPELINE, value: isEnabled ? "true" : "false", type: "boolean" };
+    return this.post(`${this.BASE_URL}/admin/pipeline/${pipelineId}/property`, prop);
+  }
+
+  setDefaultHDRPipeline(pipelineId) {
+    let value = "true";
+    var prop = { key: HDR_KUBEFLOW_DEFAULT_PIPELINE, value: value, type: "boolean" };
+    let args = this.parseArgs({ unique: true });
+    // return this.put(`${this.BASE_URL}/pipeline/${pipelineId}/property/${HDR_KUBEFLOW_DEFAULT_PIPELINE}/value/${vłalue}?${args}`);
+    return this.post(`${this.BASE_URL}/admin/pipeline/${pipelineId}/property?${args}`, prop);
+  }
+
+  getHDRPipeline() {
+    let value = "true";
+    return this.get(`${this.BASE_URL}/pipeline/property/${HDR_KUBEFLOW_PIPELINE}/value/${value}`);
+  }
+
+  async getDefaultHDRPipeline() {
+    let value = "true";
+    var resp = await this.get(`${this.BASE_URL}/pipeline/property/${HDR_KUBEFLOW_DEFAULT_PIPELINE}/value/${value}`);
+    if (resp) {
+      return resp[0];
+    }
+    return null;
   }
   getExperimentRun(pipelineId) {
     return this.get(`${this.BASE_URL}/pipeline/${pipelineId}/run`);

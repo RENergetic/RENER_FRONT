@@ -1,0 +1,6 @@
+{
+  "color": "Color",
+  "cumulative": "Is timeseries cumulative",
+  "background": "Background color",
+  "fill_chart": "Color the chart area"
+}

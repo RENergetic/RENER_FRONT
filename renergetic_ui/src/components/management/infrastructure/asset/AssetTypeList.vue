@@ -71,6 +71,7 @@ export default {
     },
     onTypeAdd(assetType) {
       this.$emit("create", assetType);
+      this.typeAddDialog = false;
     },
     editType(assetType) {
       this.selectedType = assetType;

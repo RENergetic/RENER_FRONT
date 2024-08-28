@@ -1,0 +1,11 @@
+{
+  "id": "Id",
+  "label": "Label",
+  "name": "Name",
+  "tiles": null,
+  "featured": null,
+  "is_template": null,
+  "is_template_new_panel": null,
+  "structure": null,
+  "priority": null
+}

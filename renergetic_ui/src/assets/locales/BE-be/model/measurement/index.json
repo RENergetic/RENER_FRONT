@@ -1,0 +1,22 @@
+{
+  "name": "Name",
+  "label": "Label",
+  "measurement_type": "Measurement type",
+  "location_name": "Location",
+  "type": "Measurement type",
+  "id": "Id",
+  "details": "Details",
+  "direction": "Direction",
+  "direction_out": "Out",
+  "direction_in": "In",
+  "direction_null": "N/A",
+  "measurement_aggregation": null,
+  "panel_count": null,
+  "domain": null,
+  "sensor_name": null,
+  "asset_category": null,
+  "physical_name": null,
+  "physical_type": null,
+  "asset": null,
+  "temp_id": null
+}

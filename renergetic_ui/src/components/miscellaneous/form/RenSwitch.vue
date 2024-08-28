@@ -1,11 +1,11 @@
 <template>
   <div class="field grid">
-    <label v-if="textLabel" for="ren-input" class="col-12 mb-2 md:col-2 md:mb-0 ren-label"> {{ $t(textLabel) }} </label>
+    <label v-if="textLabel" :for="mId" class="col-12 mb-2 md:col-2 md:mb-0 ren-label"> {{ $t(textLabel) }} </label>
     <div class="col-12 md:col-10 ren-inputwrapper">
-      <SelectButton id="ren-input" v-model="mValue" :disabled="disabled" option-label="label" option-value="value" :options="mOptions" />
+      <SelectButton :id="mId" v-model="mValue" :disabled="disabled" option-label="label" option-value="value" :options="mOptions" />
     </div>
     <span v-if="invalid">
-      <span v-for="(error, index) of errors" id="name-error" :key="index">
+      <span v-for="(error, index) of errors" :key="index">
         <small class="p-error">{{ error.$message }}</small>
       </span>
     </span>

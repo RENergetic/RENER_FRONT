@@ -46,21 +46,29 @@
         <AccordionTab :header="$t('model.information_panel.structure')">
           <ren-input-wrapper v-if="mPanelStructureJSON" :text-label="null">
             <template #content>
-              <Textarea v-model="mPanelStructureJSON" style="width: 100%" :maxlength="20000" rows="15" :cols="80"></Textarea>
+              <Textarea v-model="mPanelStructureJSON" style="width: 100%; max-width: 100rem" :maxlength="20000" rows="15" :cols="80"></Textarea>
             </template>
           </ren-input-wrapper>
           <ren-input-wrapper v-if="modelValue" :text-label="null">
             <template #content>
               <!-- <span v-if="!selectedAsset">{{ $t("view.asset_not_selected") }}</span> -->
-              <div>
-                <Button style="margin-left: 0.5rem" @click="importPanelDialog = true">
-                  {{ $t("view.information_panel_submit_file_structure") }}
-                </Button>
-                <Button style="margin-left: 0.5rem" @click="submitStructure">
-                  {{ $t("view.information_panel_submit_structure") }}
-                </Button>
-              </div>
+
+              <Button
+                v-tooltip="$t('view.information_panel_submit_structure_description')"
+                :label="$t('view.information_panel_submit_structure')"
+                @click="submitStructure"
+              />
+
               <!-- <span v-if="submittedPanelJSON">{{ $t("view.file_submitted") }}</span> -->
+            </template>
+          </ren-input-wrapper>
+          <ren-input-wrapper v-if="modelValue" :text-label="null">
+            <template #content>
+              <Button
+                v-tooltip="$t('view.information_panel_submit_file_structure_description')"
+                :label="$t('view.information_panel_submit_file_structure')"
+                @click="importPanelDialog = true"
+              />
             </template>
           </ren-input-wrapper>
         </AccordionTab>
@@ -68,13 +76,22 @@
       <!-- </ScrollPanel> -->
     </div>
     <div class="flex-grow-0">
-      <ren-submit :cancel-button="true" :disabled="v$.$invalid" @cancel="cancel" @submit="submit" />
+      <ren-submit :cancel-button="true" :submit-label="$t('view.button.save')" :disabled="v$.$invalid" @cancel="cancel" @submit="submit" />
     </div>
   </div>
   <Dialog v-model:visible="importPanelDialog" :style="{ width: '60vw', height: '80vh' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <ren-input-wrapper :text-label="null">
       <template #content>
-        <Accordion :active-index="0">
+        <Accordion :active-index="submitStructureIndex">
+          <AccordionTab :header="$t('view.new_panel_structure')">
+            <!-- <ren-input-text v-if="submittedPanel" v-model="submittedPanel" :text-label="null" :cols="50" :maxlength="10000" /> -->
+            <ren-input-wrapper v-if="submittedPanelJSON" :text-label="null">
+              <template #content>
+                <Textarea v-model="submittedPanelJSON" style="width: 100%" :maxlength="20000" rows="15" :cols="80"></Textarea>
+              </template>
+            </ren-input-wrapper>
+            <div v-else>{{ $t("view.submit_structure") }}</div>
+          </AccordionTab>
           <AccordionTab :header="$t('view.fileupload')">
             <FileUpload
               ref="FileUpload"
@@ -94,12 +111,13 @@
               <!-- @upload="onUpload" -->
               <template #empty>
                 <!-- <ren-input-text v-if="submittedPanel" v-model="submittedPanel" :text-label="null" :cols="50" :maxlength="10000" /> -->
-                <ren-input-wrapper v-if="submittedPanelJSON" :text-label="null">
+                <!-- <ren-input-wrapper v-if="submittedPanelJSON" :text-label="null">
                   <template #content>
                     <Textarea v-model="submittedPanelJSON" style="width: 100%" :maxlength="20000" rows="15" :cols="80"></Textarea>
                   </template>
-                </ren-input-wrapper>
-                <p v-if="!submittedPanelJSON">{{ $t("view.file_drag_drop") }}</p>
+                </ren-input-wrapper> -->
+                <!-- <p v-if="!submittedPanelJSON">{{ $t("view.file_drag_drop") }}</p> -->
+                <p>{{ $t("view.file_drag_drop") }}</p>
               </template>
             </FileUpload>
           </AccordionTab>
@@ -108,7 +126,7 @@
               <template #content>
                 <Listbox
                   id="panelDefaultTemplates"
-                  v-model="submittedPanelJSON"
+                  v-model="selectedTemplate"
                   :option-label="(opt) => $t(`model.panel_templates.${opt.name}`)"
                   :option-value="'template'"
                   :options="panelTemplates"
@@ -188,7 +206,9 @@ export default {
     mModel.props = mModel.props ? mModel.props : {};
     let panelStructure = getCleanPanelStructure(mModel, false);
     return {
-      schema: panelSchema,
+      submitStructureIndex: 1,
+      selectedTemplate: null,
+      schema: panelSchema(),
       inferMeasurements: "default",
       mModel: mModel,
       addMode: this.modelValue == null || this.modelValue.name == null,
@@ -251,8 +271,13 @@ export default {
   },
   async mounted() {},
   methods: {
-    onTemplateSelect() {
-      this.inferMeasurements = "refill";
+    onTemplateSelect(ev) {
+      console.error(ev.value);
+      if (ev.value != null) {
+        this.submittedPanelJSON = JSON.stringify(JSON.parse(ev.value), null, "\t");
+        this.inferMeasurements = "refill";
+        this.submitStructureIndex = 0;
+      }
     },
     updateModel(submittedPanel) {
       if (submittedPanel.label) this.mModel.label = submittedPanel.label;
@@ -263,6 +288,7 @@ export default {
       this.panelStructure = getCleanPanelStructure(submittedPanel, this.inferMeasurements == "override");
       this.updateModel(this.panelStructure);
       this.refreshTiles = !this.refreshTiles;
+      this.$emitter.emit("information", { message: this.$t("information.panel_sctructure_submitted") });
     },
     onSelect() {
       //on file select
@@ -272,6 +298,7 @@ export default {
     onFileClear() {
       this.panelStructure = getCleanPanelStructure(this.mModel, false);
       this.submittedPanelJSON = null;
+      this.submitStructureIndex = 1;
     },
     async fileSubmit() {
       let submittedPanel = JSON.parse(this.submittedPanelJSON);
@@ -308,6 +335,7 @@ export default {
         this.updateModel(submittedPanel);
 
         this.submittedPanelJSON = JSON.stringify(submittedPanel, null, "\t");
+        this.submitStructureIndex = 0;
       }
       // await this._submit(event.files);
     },
@@ -348,6 +376,7 @@ export default {
     padding-bottom: 0 !important;
   }
 }
+
 .p-dialog {
   max-height: 99%;
 }
@@ -360,6 +389,7 @@ export default {
     // padding-top: 0 !important;
   }
 }
+
 #panelForm > .p-accordion .p-accordion-content {
   max-height: 70vh;
   overflow: auto;

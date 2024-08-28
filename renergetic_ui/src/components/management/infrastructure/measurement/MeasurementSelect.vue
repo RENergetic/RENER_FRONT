@@ -2,6 +2,7 @@
   <RenSpinner ref="spinner" :lock="true" style="min-width: 100%">
     <template #content>
       <div style="z-index: 1001">
+        <!-- {{ mFilters }} -->
         <measurement-list
           v-model:filters="mFilters"
           :measurement-list="measurementList"
@@ -24,18 +25,22 @@ export default {
     MeasurementList,
   },
   props: {
-    selectedMeasurements: { type: Array, default: null },
+    filters: { type: Object, default: null },
+    selectedMeasurements: { type: [Array, Object], default: null },
     asset: { type: Object, default: null },
   },
   emits: ["select"],
   data() {
     //tODO: filter tempId or match dynamic measurements here ?
-    let mSelectedMeasurements = this.selectedMeasurements
-      ? Object.fromEntries(this.selectedMeasurements.map((m) => [m.id ? m.id : m.tempId, m]))
-      : [];
+    let mSelectedMeasurements;
+    if (typeof this.selectedMeasurements == Array)
+      mSelectedMeasurements = this.selectedMeasurements ? Object.fromEntries(this.selectedMeasurements.map((m) => [m.id ? m.id : m.tempId, m])) : [];
+    else {
+      mSelectedMeasurements = this.selectedMeasurements;
+    }
     return {
       mSelectedMeasurements: mSelectedMeasurements,
-      mFilters: null,
+      mFilters: this.filters ? JSON.parse(JSON.stringify(this.filters)) : null,
       measurementList: [],
       selectedMeasurement: null,
     };
@@ -50,9 +55,13 @@ export default {
     },
   },
   mounted() {
-    this.mSelectedMeasurements = this.selectedMeasurements
-      ? Object.fromEntries(this.selectedMeasurements.map((m) => [m.id ? m.id : m.tempId, m]))
-      : [];
+    if (typeof this.selectedMeasurements == Array)
+      this.mSelectedMeasurements = this.selectedMeasurements
+        ? Object.fromEntries(this.selectedMeasurements.map((m) => [m.id ? m.id : m.tempId, m]))
+        : [];
+    else {
+      this.mSelectedMeasurements = this.selectedMeasurements;
+    }
     this.loadMeasurements();
   },
   methods: {
@@ -73,14 +82,14 @@ export default {
       //  { "global": { "value": null },
       if (this.mFilters)
         params = {
-          name: this.mFilters.name.value,
-          type_id: this.mFilters["type.id"].value,
-          type_physical_name: this.mFilters["type.physical_name"].value,
-          asset_name: this.mFilters["asset.name"].value,
-          domain: this.mFilters.domain.value,
-          direction: this.mFilters.direction.value,
-          sensor_name: this.mFilters.sensor_name.value,
-          tag_key: this.mFilters.tag_key.value,
+          name: this.mFilters.name ? this.mFilters.name.value : null,
+          type_id: this.mFilters["type.id"] ? this.mFilters["type.id"].value : null,
+          type_physical_name: this.mFilters["type.physical_name"] ? this.mFilters["type.physical_name"].value : null,
+          asset_name: this.mFilters["asset.name"] ? this.mFilters["asset.name"].value : null,
+          domain: this.mFilters.domain ? this.mFilters.domain.value : null,
+          direction: this.mFilters.direction ? this.mFilters.direction.value : null,
+          sensor_name: this.mFilters.sensor_name ? this.mFilters.sensor_name.value : null,
+          tag_key: this.mFilters.tag_key ? this.mFilters.tag_key.value : null,
         };
       if (this.asset) {
         params.asset_name = this.asset.name;
@@ -90,9 +99,9 @@ export default {
           for (let m of data) {
             this.$ren.utils.setMeasurementLabel(m);
           }
-          console.error(this.mSelectedMeasurements);
+          // console.error(this.mSelectedMeasurements);
           for (let m of data) {
-            console.error(m);
+            // console.error(m);
             m._selected = this.mSelectedMeasurements[m.id] ? true : false;
           }
           this.measurementList = data;

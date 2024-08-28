@@ -1,0 +1,11 @@
+{
+  "id": "Id",
+  "label": "Label",
+  "name": "Name",
+  "tiles": "Tiles",
+  "featured": "Visibility",
+  "is_template": "Is template",
+  "is_template_new_panel": "Is panel a template for private dashboards view (Can't be changed later)",
+  "structure": "Structure",
+  "priority": "Priority"
+}

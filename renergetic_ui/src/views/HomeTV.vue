@@ -21,16 +21,16 @@
       <h4 style="width: 100%; margin: auto">{{ $t("view.empty_home_dashboard") }}</h4>
     </div>
   </div>
-  <div v-if="homeSettings.demandVisibility && loggedIn" style="position: relative">
+  <div v-if="homeSettings.demandVisibility && loggedIn">
     <DemandList id="demand-list" />
   </div>
-  <div v-if="homeSettings.notificationVisibility && loggedIn" style="position: relative">
-    <NotificationList id="notification-list" />
+  <div v-if="homeSettings.notificationVisibility && loggedIn">
+    <UserNotificationList id="notification-list" />
   </div>
 </template>
 <script>
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
-import NotificationList from "@/components/user/NotificationList.vue";
+import UserNotificationList from "@/components/user/NotificationList.vue";
 // import SettingsDialog from "@/components/miscellaneous/settings/SettingsDialog.vue";
 import InformationPanelWrapper from "@/components/dashboard/informationpanel/InformationPanelWrapper.vue";
 import DemandList from "@/components/user/demand/DemandList.vue";
@@ -43,7 +43,7 @@ export default {
   components: {
     DotMenu,
     DemandList,
-    NotificationList,
+    UserNotificationList,
     InformationPanelWrapper,
   },
   data() {
@@ -88,7 +88,6 @@ export default {
       return model;
     },
   },
-  watch: {},
   async created() {
     this.loaded = false;
   },
@@ -148,27 +147,11 @@ export default {
 </script>
 
 <style lang="scss">
+#notification-list,
 #demand-list {
-  width: 50rem;
-  max-width: 95vw;
+  width: 60rem;
+  max-width: 90vw;
   margin: auto;
-  color: #3182ce;
+  position: relative;
 }
-#notification-list {
-  width: 50rem;
-  max-width: 95vw;
-  margin: auto;
-}
-// .grid-stack-item {
-//   margin: 0;
-// }
-// .grid-stack-item-content {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   color: #3182ce;
-//   background-color: #bee3f8;
-//   font-weight: 600;
-//   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-// }
 </style>

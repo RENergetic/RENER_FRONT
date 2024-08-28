@@ -1,0 +1,15 @@
+{
+  "asset_connections": "Conexiones entre activos",
+  "name": "Nombre",
+  "id": "Id",
+  "child": "Sub activos",
+  "asset_type": "Tipo de activo",
+  "asset_category": "Categoría de activo",
+  "label": "Etiqueta",
+  "measurements": "Mediciones",
+  "geo_location": "Geoposicionamiento",
+  "owner": "Propietario",
+  "parent": "Padre",
+  "connection_type": null,
+  "description": null
+}

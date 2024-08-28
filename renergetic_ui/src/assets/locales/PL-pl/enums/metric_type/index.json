@@ -1,0 +1,19 @@
+{
+  "co2eq": "Ekwiwalent CO₂",
+  "electricity": "Elektryczność",
+  "flow": "Przepływ",
+  "heat": "Ciepło",
+  "energy": "Energia",
+  "temperature": "Temperatura",
+  "energy_kwh": "Energia",
+  "energy_wh": "Energia",
+  "power_w": "Moc",
+  "heat_energy_gj": "Energia Cieplna",
+  "energy_gj": "Energia Cieplna",
+  "percentage": "Procent",
+  "power": "Moc",
+  "ratio": "Współczynnik",
+  "ratio_norm": "Współczynnik",
+  "value": "Wartość",
+  "voltage": "Napięcie"
+}

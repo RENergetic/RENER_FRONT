@@ -1,0 +1,13 @@
+{
+  "name": "Name",
+  "experiment_id": "Experiment id",
+  "pipeline_id": "Pipeline id",
+  "parameters": "Run parameters",
+  "pipelines": "Pipelines",
+  "current_run": "Current run",
+  "visibility": "Visibility",
+  "visible": "Visibility",
+  "properties": "Properties",
+  "no_properties": "No properties",
+  "no_parameters": "No paremeters"
+}

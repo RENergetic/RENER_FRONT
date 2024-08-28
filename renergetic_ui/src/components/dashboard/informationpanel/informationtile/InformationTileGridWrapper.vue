@@ -1,29 +1,13 @@
 <template>
   <div v-if="slotProps" :class="'grid-stack-item ren'" v-bind="gridStackAttributes">
     <div :class="'grid-stack-item-content ' + state" :style="background">
-      <div class="tile-bar">
-        <Button
-          v-if="edit"
-          id="menu-toggle"
-          :class="'p-button-rounded p-button-text edit-button'"
-          aria-haspopup="true"
-          icon="pi pi-pencil"
-          @click="$emit('edit', slotProps)"
-        />
-        <!-- <Button notifications for tile
-          v-if="notificationVisible"
-          id="notification"
-          :class="'p-button-rounded p-button-text bell-button '"
-          aria-haspopup="true"
-          icon="pi pi-bell"
-          @click="$emit('notification', slotProps)"
-        /> -->
-      </div>
       <InformationTile
         :tile="tile"
+        :edit="edit"
         :pdata="tileData"
         :filter="filter"
         :settings="mSettings"
+        @edit="$emit('edit', slotProps)"
         @preview-tile="onPreview"
         @timeseries-update="onTimeseriesUpdate"
       />

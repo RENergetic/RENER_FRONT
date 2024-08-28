@@ -1,7 +1,11 @@
 <template>
   <OverlayPanel v-if="!floating" ref="InfoPanel" style="max-width: 25rem" append-to="body" :show-close-icon="showCloseIcon">
-    <h3 v-if="header" class="info-header"><slot ref="header" name="header" /></h3>
-    <div class="info-content"><slot name="content" /></div>
+    <h3 v-if="header" class="info-header">
+      <slot ref="header" name="header" />
+    </h3>
+    <div class="info-content">
+      <slot name="content" />
+    </div>
   </OverlayPanel>
   <Dialog v-else v-model:visible="helpDialog" :dismissable-mask="true" :style="{ maxHeight: '100%' }" :modal="true">
     <Card class="ren-page-content" style="width: max-content">
@@ -14,15 +18,13 @@
     <slot name="body" />
     <slot name="infoicon" />
   </div>
-
   <i
     v-if="showIcon"
-    id="infoicon"
-    class="pi pi-info-circle"
+    class="pi pi-info-circle infoicon"
     style="font-size: 1.5rem"
-    @mouseleave="!floating ? $refs.InfoPanel.toggle : empty"
-    @mouseover="!floating ? $refs.InfoPanel.toggle : empty"
-    @click="!floating ? $refs.InfoPanel.toggle : show()"
+    @click="(evt) => show(evt)"
+    @mouseleave="(evt) => toggle(evt)"
+    @mouseover="(evt) => toggle(evt)"
   />
 </template>
 
@@ -58,18 +60,28 @@ export default {
   },
   methods: {
     empty() {},
-    show() {
-      this.helpDialog = true;
+    show(evt) {
+      if (!this.floating) {
+        this.$refs.InfoPanel.toggle(evt);
+      } else {
+        this.helpDialog = true;
+      }
+    },
+    toggle(evt) {
+      if (!this.floating) {
+        this.$refs.InfoPanel.toggle(evt);
+      }
     },
   },
 };
 </script>
 
 <style scoped lang="scss">
-#infoicon {
+.infoicon {
   vertical-align: top;
   margin-left: 0.2rem;
 }
+
 // .info-header {
 // }
 // .info-content {

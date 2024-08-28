@@ -2,6 +2,7 @@
   <Dialog v-model:visible="measurementTagsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <!-- {{ availableTags }}
     {{ availableTagsValues }} -->
+
     <div v-if="availableTags" :key="updateKey" class="ren">
       <div v-for="tag in availableTags" :key="tag" class="property-form">
         <!-- <ren-input v-model="tag.value" :text-label="tag.key" />
@@ -32,7 +33,7 @@
     {{ availableTagsValues }} -->
     <tag-form :tags="availableTags" @update:model-value="onTagSave" @cancel="tagCancel" />
   </Dialog>
-  <Dialog v-model:visible="tagListDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+  <Dialog v-model:visible="tagListDialog" :style="{ width: '75vw', height: '90vh' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <!-- {{ availableTags }}
     {{ availableTagsValues }} -->
     <TagManagement @on-delete="tagOnDelete" @on-create="onNewTag" />
@@ -129,8 +130,17 @@ export default {
     },
     async submit() {
       //TODO: yes no
-      console.info(this.tags);
-      await this.$ren.managementApi.updateMeasurementTags(this.measurement, this.tags);
+      console.info(this.measurement);
+      let tags = {};
+      for (let tagKey in this.tags) {
+        if (this.tags[tagKey] != null) {
+          tags[tagKey] = this.tags[tagKey];
+        }
+      }
+      console.info(tags);
+      // odfiltrować puste tagi
+      // TODO;
+      await this.$ren.managementApi.updateMeasurementTags(this.measurement, tags);
 
       this.$emit("update", this.tags);
 

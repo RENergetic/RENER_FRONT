@@ -1,13 +1,14 @@
 <template>
   <!-- TODO: unslect row event responsive-layout="scroll"-->
+
   <DataTable
-    class="asset-list"
+    class="sticky-header"
     :value="assetList"
     :lazy="true"
     data-key="id"
     :filters="mFilters"
     :filter-display="hiddenFilters ? null : 'row'"
-    :global-filter-fields="['name', 'label', 'type.name', 'category.label']"
+    :global-filter-fields="['name', 'label', 'type.name']"
     selection-mode="single"
     :meta-key-selection="false"
     :selection="selectedRow"
@@ -52,11 +53,17 @@
         />
         <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
         <Button
+          v-if="!(slotProps.data.type.name == 'user' || (slotProps.data.measurements && slotProps.data.measurements.length > 0))"
           v-tooltip="$t('view.delete') + hasMeasurementsTooltip(slotProps.data)"
-          :disabled="slotProps.data.type.name == 'user' || (slotProps.data.measurements && slotProps.data.measurements.length > 0)"
           icon="pi pi-trash"
           class="p-button-rounded p-button-danger"
           @click="deleteAsset(slotProps.data)"
+        />
+
+        <i
+          v-else
+          v-tooltip="$t('view.delete') + hasMeasurementsTooltip(slotProps.data)"
+          class="p-button p-component p-button-icon-only p-button-rounded p-disabled p-button-danger pi icon-button pi-trash"
         />
       </template>
     </Column>
@@ -98,7 +105,7 @@
         </Dropdown>
       </template>
     </Column>
-    <Column field="asset_category.label" :header="$t('model.asset.asset_category')" :show-filter-menu="false">
+    <!-- <Column field="asset_category.label" :header="$t('model.asset.asset_category')" :show-filter-menu="false">
       <template #filter="{ filterModel, filterCallback }">
         <Dropdown
           v-if="filterModel"
@@ -134,7 +141,7 @@
           {{ $t("view.asset_category") }}
         </span>
       </template>
-    </Column>
+    </Column> -->
     <Column field="child" :header="$t('model.asset.child')" :hidden="basic">
       <template #body="slotProps">
         <span v-if="slotProps.data.child && slotProps.data.child.length > 0" class="ren-pointer" @click="viewChildren(slotProps.data)">
@@ -189,19 +196,19 @@
 
   <Toolbar v-if="!basic" class="ren-toolbar ren-sticky">
     <template #end>
-      <Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="assetAdd = true" />
+      <Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="assetAddDialog = true" />
 
       <Button style="margin-left: 0.5rem" icon="pi pi-list" :label="$t('view.button.manage_asset_types')" @click="manageTypes" />
-      <Button style="margin-left: 0.5rem" icon="pi pi-list" :label="$t('view.button.manage_asset_categories')" @click="manageCategories" />
+      <!-- <Button style="margin-left: 0.5rem" icon="pi pi-list" :label="$t('view.button.manage_asset_categories')" @click="manageCategories" /> -->
     </template>
   </Toolbar>
 
-  <Dialog v-model:visible="assetAdd" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <AssetForm @update:model-value="onCreate($event, 0)" @cancel="assetAdd = false"> </AssetForm>
+  <Dialog v-model:visible="assetAddDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <AssetForm @update:model-value="onCreate($event, 0)" @cancel="assetAddDialog = false"> </AssetForm>
   </Dialog>
   <AssetSelectDialog ref="assetSelectDialog" @submit="onParentChange" />
   <AssetConnectionManagementDialog ref="assetConnectionManagementDialog" />
-  <AssetCategorySelection ref="assetCategorySelection" />
+  <!-- <AssetCategorySelection ref="assetCategorySelection" /> -->
   <AssetProperties ref="assetPropertiesDialog" @submit="updateDetails" />
   <AssetAggregationProperties ref="assetAggregationPropertiesDialog" />
   <AssetEdit ref="assetEditDialog" @submit="updateAsset" />
@@ -284,7 +291,7 @@ import AssetForm from "./AssetForm.vue";
 import AssetSelectDialog from "./AssetSelectDialog.vue";
 import MeasurementSelect from "./MeasurementSelect.vue";
 import AssetConnectionManagementDialog from "./AssetConnectionManagementDialog.vue";
-import AssetCategorySelection from "./AssetCategorySelection.vue";
+// import AssetCategorySelection from "./AssetCategorySelection.vue";
 import AssetProperties from "@/components/management/infrastructure/AssetProperties.vue";
 import AssetAggregationProperties from "@/components/management/infrastructure/AssetAggregationProperties.vue";
 import AssetEdit from "@/components/management/infrastructure/AssetEdit.vue";
@@ -294,7 +301,7 @@ function initFilter() {
     label: { value: null },
     name: { value: null },
     "type.label": { value: null },
-    "category.label": { value: null },
+    // "category.label": { value: null },
   };
 }
 export default {
@@ -307,7 +314,7 @@ export default {
     AssetSelectDialog,
     MeasurementSelect,
     AssetConnectionManagementDialog,
-    AssetCategorySelection,
+    // AssetCategorySelection,
   },
   props: {
     assetList: { type: Array, default: () => [] },
@@ -321,9 +328,10 @@ export default {
   data() {
     return {
       mOffset: this.offset,
-      assetAdd: false,
+      assetAddDialog: false,
       mFilters: this.filters ? this.filters : initFilter(),
       // selectedRow: null,
+
       childDialog: false,
       measurementDialog: false,
       deferredEmitFilter: null,
@@ -372,9 +380,9 @@ export default {
       this.$refs.assetAggregationPropertiesDialog.open(row);
     },
     ////
-    manageAssetCategories(row) {
-      this.$refs.assetCategorySelection.open(row);
-    },
+    // manageAssetCategories(row) {
+    //   this.$refs.assetCategorySelection.open(row);
+    // },
     ////
     editAsset(row) {
       this.$refs.assetEditDialog.open(row);
@@ -414,9 +422,9 @@ export default {
     addMeasurement() {
       this.$refs.measurementSelectDialog.open();
     },
-    manageCategories() {
-      this.$router.push({ name: "AssetCategoryList" });
-    },
+    // manageCategories() {
+    //   this.$router.push({ name: "AssetCategoryList" });
+    // },
 
     manageTypes() {
       this.$router.push({ name: "AssetTypeList" });
@@ -486,12 +494,9 @@ export default {
     },
 
     async onCreate(o) {
-      console.log(o);
       await this.$ren.managementApi.addAsset(o).then((assetId) => {
-        console.info("add asset:" + assetId);
-
-        // o.id = assetId;
-        // this.assetList.push(o);
+        console.debug("add asset:" + assetId);
+        this.assetAddDialog = false;
       });
       await this.reload();
     },
@@ -550,5 +555,12 @@ export default {
 }
 .asset-list .p-datatable-tbody td:last-child {
   padding-right: 0.75rem !important;
+}
+.icon-button {
+  border-radius: 50%;
+  height: 2.357rem;
+  font-size: 1rem;
+  line-height: 1;
+  display: inline-flex;
 }
 </style>

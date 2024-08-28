@@ -1,0 +1,5 @@
+{
+  "name_description": "Object's name, code name used in RENergetic system to interact with other components, code used for automatic translations",
+  "label_description": "Object's human readable name, name used in RENergetic - `name` field is used if label is null",
+  "description": "Description"
+}

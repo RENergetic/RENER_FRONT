@@ -1,7 +1,7 @@
 <template>
   <div v-if="inline" class="field grid">
     <div v-if="!editMode" class="flex">
-      <label class="flex flex-1">
+      <label :for="mId" class="flex flex-1">
         {{ modelValue }}
       </label>
       <div class="flex flex-0" style="margin: auto; margin-left: 0.25rem">
@@ -10,9 +10,9 @@
     </div>
     <div v-else class="flex">
       <div class="flex flex-1">
-        <slot id="ren-input" name="content" />
+        <slot :id="mId" name="content" />
         <span v-if="invalid">
-          <span v-for="(error, index) of errors" id="name-error" :key="index">
+          <span v-for="(error, index) of errors" :key="index">
             <small class="p-error">{{ error.$message }}</small>
           </span>
         </span>
@@ -23,20 +23,20 @@
     </div>
   </div>
   <div v-else class="field grid">
-    <label v-if="textLabel" for="ren-input" class="col-12 mb-2 md:col-2 md:mb-0 ren-label">
+    <label v-if="textLabel" :for="mId" class="col-12 mb-2 md:col-2 md:mb-0 ren-label">
       <div v-if="$te(textLabel)">
         {{ $t(textLabel) }}
       </div>
       <div v-else>{{ textLabel }}</div>
     </label>
     <div v-if="!textLabel" class="col-12 ren-inputwrapper" :style="wrapperStyle">
-      <slot id="ren-input" name="content" />
+      <slot :id="mId" name="content" />
     </div>
     <div v-else class="col-12 md:col-10 ren-inputwrapper" :style="wrapperStyle">
-      <slot id="ren-input" name="content" />
+      <slot :id="mId" name="content" />
     </div>
     <span v-if="invalid">
-      <span v-for="(error, index) of errors" id="name-error" :key="index">
+      <span v-for="(error, index) of errors" :key="index">
         <small class="p-error">{{ error.$message }}</small>
       </span>
     </span>

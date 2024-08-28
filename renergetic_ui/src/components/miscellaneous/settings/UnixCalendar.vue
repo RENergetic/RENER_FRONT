@@ -7,7 +7,7 @@
 
 import Calendar from "primevue/calendar";
 export default {
-  name: "RenInput",
+  name: "UnixCalendar",
   components: { Calendar },
   props: {
     modelValue: {

@@ -2,7 +2,6 @@
   <!-- PRIVATE DASHBOARD -->
 
   <div v-if="panel" id="panel-box">
-    <!-- {{ $store.getters["settings/parsedFilter"]("private") }} -->
     <DotMenu :model="menuModel" />
     <BasicFilterSettings
       v-if="!panelTitle"
@@ -18,12 +17,14 @@
 
     <InformationPanelWrapper
       ref="panel"
+      :key="panelReload"
       :asset-id="$route.params.asset_id"
       :locked="locked"
       :panel="panel"
       :edit-mode="editMode"
       :filter="effectiveFilterSettings"
       :panel-settings="settings"
+      @update:tile="onTileUpdate"
     />
     <div style="margin-left: 1rem; margin-top: 2rem">
       <ParsedDateFilter :key="parsedFilterRefresh" :filter="effectiveFilterSettings" />
@@ -81,13 +82,30 @@
   </RenSettingsDialog>
   <RenSettingsDialog ref="filterSettingsDialog" :save="false">
     <template #settings>
-      <Card class="ren-settings">
+      <Panel v-if="panel" toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
+        </template>
+        <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
+      </Panel>
+      <Panel v-if="panel" toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.panel_filter_settings") }}:</span>
+        </template>
+        <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
+      </Panel>
+      <Panel v-if="panel" toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.user_filter_settings") }}:</span>
+        </template>
+        <BasicFilterSettings :setting-key="'private'" @update="updateFilter()" />
+      </Panel>
+      <!-- <Card class="ren-settings">
         <template #title>
           <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
         </template>
         <template #content>
-          <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
-          <!-- <Settings :schema="schema" :settings="effectiveFilterSettings" :disabled="true" /> -->
+          <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" /> 
         </template>
       </Card>
       <Card class="ren-settings">
@@ -95,8 +113,7 @@
           <span> {{ $t("view.panel_filter_settings") }}:</span>
         </template>
         <template #content>
-          <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
-          <!-- <Settings :schema="schema" :settings="panel.props" :disabled="true" /> -->
+          <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" /> 
         </template>
       </Card>
       <Card class="ren-settings">
@@ -104,11 +121,10 @@
           <span> {{ $t("view.user_filter_settings") }}:</span>
         </template>
         <template #content>
-          <!-- {{ $store.getters["settings/filters"]("private") }} -->
-          <BasicFilterSettings :setting-key="'private'" @update="reloadSettings()" />
-          <!-- <PanelSettings @update="reloadPanelSettings()"> </PanelSettings> -->
+            {{ $store.getters["settings/filters"]("private") }}  
+          <BasicFilterSettings :setting-key="'private'" @update="reloadSettings()" /> 
         </template>
-      </Card>
+      </Card> -->
     </template>
   </RenSettingsDialog>
 </template>
@@ -127,10 +143,11 @@ export default {
   components: { ConversionSettings, Settings, InformationPanelWrapper, DotMenu, PanelSettings, ParsedDateFilter, BasicFilterSettings },
   data() {
     return {
-      schema: panelSchema,
+      schema: panelSchema(),
       panel: null,
       locked: false,
       editMode: false,
+      panelReload: false,
       settings: this.$store.getters["settings/panel"],
       // filter: this.$store.getters["settings/parsedFilter"]("private"),
       settingsDialog: false,
@@ -176,19 +193,24 @@ export default {
     //   return { label: this.$t("menu.save_panel_grid"), icon: "pi pi-fw pi-save", command: () => this.saveGrid() };
     // },
 
-    menuModel() {
-      return [
-        /*this.toggleButton*/ this.settingsButton,
-        this.conversionSettingsButton,
-        this.filterSettingsButton,
-        this.exportTemplateButton,
-        this.exportStructureButton,
-      ];
+    editModeButton: function () {
+      return { label: this.$t("menu.toggle_edit_mode"), icon: "pi pi-pencil", command: () => (this.editMode = !this.editMode) };
     },
-    // editModelButton: function () {
-    //   let label = this.editMode ? this.$t("menu.panel_grid_edit_on") : this.$t("menu.panel_grid_edit_off");
-    //   return { label: label, icon: "pi pi-fw pi-lock", command: () => this.toggleEditMode() };
-    // },
+    menuModel() {
+      let menu = [];
+      menu.push(this.settingsButton);
+      menu.push(this.conversionSettingsButton);
+      menu.push(this.filterSettingsButton);
+      if (this.hasRole(this.RenRoles.REN_ADMIN | this.RenRoles.REN_MANAGER | this.RenRoles.REN_TECHNICAL_MANAGER)) {
+        menu.push(this.exportTemplateButton);
+        menu.push(this.exportStructureButton);
+        //Hidden, because dynamic measurement of the panel structure object is replaced by measurements
+        // menu.push(this.editModeButton);
+      }
+
+      return menu;
+    },
+
     // addButton: function () {
     //   return { label: this.$t("menu.panel_grid_add_tile"), icon: "pi pi-fw pi-plus", command: () => this.addTile() };
     // },
@@ -219,6 +241,15 @@ export default {
       let panelStructure = getCleanPanelStructure(this.panel, template);
       let filename = template ? `template_${this.panel.name}` : `${this.panel.id}_${this.panel.name}`;
       this.$ren.utils.downloadJSON(panelStructure, filename, true);
+    },
+    async onTileUpdate(ev) {
+      this.panel.tiles[ev.index] = ev.tile;
+      await this.$ren.dashboardApi.updateInformationPanel(this.panel).then(async () => {
+        // console.debug(this.panel);
+        await this.loadStructure();
+        this.panelReload = !this.panelReload;
+        console.debug(this.panel);
+      });
     },
     async loadStructure() {
       this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id, false);

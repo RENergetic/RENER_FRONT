@@ -1,0 +1,13 @@
+{
+  "name": "Nazwa",
+  "experiment_id": "Id eksperymentu",
+  "pipeline_id": "Id Pipeline",
+  "parameters": "Parametry eksperymentu",
+  "pipelines": "Pipelines",
+  "current_run": "Aktuanie uruchomiony eksperyment",
+  "visibility": "Widoczność",
+  "visible": "Dostępność",
+  "properties": "Własciwości",
+  "no_properties": "Brak własciwości",
+  "no_parameters": "Brak parametrów"
+}

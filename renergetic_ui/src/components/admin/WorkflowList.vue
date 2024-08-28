@@ -26,8 +26,9 @@
         <Column field="name" :header="$t('model.workflow.name')" :show-filter-menu="false" />
         <Column field="pipeline_id" :header="$t('model.workflow.pipeline_id')" :show-filter-menu="false" />
         <template #expansion="slotProps">
-          <h3 v-if="slotProps.data.parameters">{{ $t("model.workflow.parameters") }}</h3>
-          <ul v-if="slotProps.data.parameters" class="ren">
+          <h3 v-if="Object.keys(slotProps.data.parameters).length === 0">{{ $t("model.workflow.no_parameters") }}</h3>
+          <h3 v-if="Object.keys(slotProps.data.parameters).length !== 0">{{ $t("model.workflow.parameters") }}</h3>
+          <ul v-if="Object.keys(slotProps.data.parameters).length !== 0" class="ren">
             <li v-for="key in Object.keys(slotProps.data.parameters)" :key="key">
               <!-- {{ slotProps.data.parameters[key] }} -->
 
@@ -46,6 +47,29 @@
                 class="p-button-rounded state error"
                 @click="editParameter(slotProps.data, slotProps.data.parameters[key])"
               />
+            </li>
+          </ul>
+          <span v-else> {{ $t("view.na") }} </span>
+          <h3 v-if="Object.keys(slotProps.data.properties).length === 0">{{ $t("model.workflow.no_properties") }}</h3>
+          <h3 v-if="Object.keys(slotProps.data.properties).length !== 0">{{ $t("model.workflow.properties") }}</h3>
+
+          <ul v-if="Object.keys(slotProps.data.properties).length !== 0" class="ren">
+            <li v-for="key in Object.keys(slotProps.data.properties)" :key="key">
+              {{ key }}
+              <!-- <Button
+                v-if="slotProps.data.parameters[key].visible"
+                v-tooltip="$t('view.edit')"
+                icon="pi pi-pencil"
+                class="p-button-rounded"
+                @click="editParameter(slotProps.data, slotProps.data.parameters[key])"
+              />
+              <Button
+                v-else
+                v-tooltip="$t('view.edit')"
+                icon="pi pi-pencil"
+                class="p-button-rounded state error"
+                @click="editParameter(slotProps.data, slotProps.data.parameters[key])"
+              /> -->
             </li>
           </ul>
           <span v-else> {{ $t("view.na") }} </span>
@@ -152,6 +176,7 @@
 </template>
 
 <script>
+// TODO: move constant values to other file
 // import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 import WorkflowParameterForm from "./WorkflowParameterForm.vue";

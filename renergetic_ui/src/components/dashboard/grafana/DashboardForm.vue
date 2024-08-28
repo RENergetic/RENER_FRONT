@@ -79,7 +79,7 @@
 </template>
 <script>
 import { useVuelidate } from "@vuelidate/core";
-import { required, requiredTr, minLength, url, maxLength, maxLengthTr } from "@/plugins/validators.js";
+import { required, minLength, url, maxLength, maxLengthTr } from "@/plugins/validators.js";
 import { DashboardMeasurementTypes } from "@/plugins/model/Enums.js";
 export default {
   name: "DashboardForm",
@@ -129,7 +129,7 @@ export default {
     return {
       mDashboard: {
         grafana_id: {
-          required: requiredTr("model.dashboard."),
+          // required: requiredTr("model.dashboard."),
           maxLength: maxLengthTr("model.dashboard.", null)(30),
         },
         name: {

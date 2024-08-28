@@ -20,14 +20,13 @@
       class="flex flex-column flex-grow-1 knob-component"
       style="position: relative; width: 100%; padding: 0rem 0.5rem"
     >
-      <information-list-tile
+      <InformationTileMeasurementList
         :tile="tile"
         :pdata="pdata"
         :settings="mSettings"
         :conversion-settings="conversionSettings"
         @select="onMeasurementSelect"
-      >
-      </information-list-tile>
+      />
     </div>
   </div>
 </template>
@@ -37,10 +36,10 @@
  *  summarized inside componen or outside (provided min,max values for each measurement )
  */
 import Chart from "primevue/chart";
-import InformationListTile from "./InformationListTile.vue";
+import InformationTileMeasurementList from "./components/InformationTileMeasurementList.vue";
 export default {
   name: "MultiKnobTile",
-  components: { Chart, InformationListTile },
+  components: { Chart, InformationTileMeasurementList },
   props: {
     // legend: { type: Boolean, default: true },
     settings: { type: Object, default: () => ({}) },
@@ -211,6 +210,7 @@ export default {
   text-align: center;
   svg {
     height: 100%;
+    width: 100%;
   }
 }
 

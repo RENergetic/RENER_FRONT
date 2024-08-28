@@ -1,0 +1,13 @@
+{
+  "empty": "Pusty",
+  "chart": "Wykres",
+  "knob": "Wykres zegarowy",
+  "multi_knob": "Multi wykres zegarowy",
+  "doughnut": "Wykres pierścieniowy",
+  "list": "Lista",
+  "single": "Pojedyncza wartość",
+  "panel": "Panel",
+  "multi_doughnut": "Multi doughnut chart",
+  "image": "Obrazek",
+  "qrcode": "Kod QR"
+}

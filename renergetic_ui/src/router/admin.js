@@ -21,6 +21,12 @@ var adminRoutes = [
     component: () => import("../views/admin/WorkflowListView.vue"),
   },
   {
+    path: "/admin/hdr/pipeline",
+    name: "HDRPipeline",
+    meta: { isAuthenticated: true, roles: ["ren-admin", "ren-dev"], roleFlag: RenRoles.REN_ADMIN },
+    component: () => import("../views/admin/HDRPipelineListView.vue"),
+  },
+  {
     path: "/admin/logs",
     name: "AdminLogs",
     meta: { isAuthenticated: true, roles: ["ren-admin", "ren-dev"], roleFlag: RenRoles.REN_ADMIN },

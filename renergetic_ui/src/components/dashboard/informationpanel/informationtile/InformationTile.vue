@@ -1,18 +1,16 @@
 <template>
-  <div v-if="mSettings" :class="tileClass" :style="background">
-    <i v-if="tileDataPreview" v-tooltip="$t('view.measurements')" class="pi pi-chart-line data-preview" @click="viewMeasurements()" />
-
-    <!-- {{ tile.measurements.map((it) => it.measurement_details) }}
-    {{ tile.measurements.map((it) => it.type.color) }} -->
-    <!-- {{ filter }} -->
-
-    <div
-      v-if="(titleVisible || tile.measurements.length == 0) && tile.label"
-      class="flex flex-column justify-content-center"
-      style="height: 100%; width: 100%"
-    >
+  <div v-if="mSettings" :class="tileClass">
+    <!-- :style="background" -->
+    <div class="tile-bar">
+      <i v-if="tileDataPreview" v-tooltip="$t('view.measurements')" class="pi pi-chart-line data-preview tile-icon" @click="viewMeasurements()" />
+      <i v-if="edit" v-tooltip="$t('view.edit')" class="pi pi-pencil tile-icon" @click="$emit('edit')" />
+    </div>
+    <!-- TODO: make propert empty tile
+     titleVisible &&  || (titleVisible && tile.measurements.length == 0) && tile.type=='empty' && tile.label && tile.type != 'image' && tile.type != 'qrcode') -->
+    <div v-if="tile.type == 'empty'" class="flex flex-column justify-content-center" style="height: 100%; width: 100%">
       <h3 :style="`margin: 0; text-align: center;color:${titleColor}`">{{ tile.label }}</h3>
     </div>
+    <!--  register new tile  in enums  -->
 
     <KnobTile
       v-else-if="tile.type == 'knob'"
@@ -22,7 +20,22 @@
       :settings="mSettings"
       :conversion-settings="conversionSettings"
     ></KnobTile>
-
+    <ImageTile
+      v-else-if="tile.type == 'image'"
+      :style="'width:100%'"
+      :tile="tile"
+      :pdata="pdata"
+      :settings="mSettings"
+      :conversion-settings="conversionSettings"
+    />
+    <QRCodeTile
+      v-else-if="tile.type == 'qrcode'"
+      :style="'width:100%'"
+      :tile="tile"
+      :pdata="pdata"
+      :settings="mSettings"
+      :conversion-settings="conversionSettings"
+    />
     <ChartTile
       v-else-if="tile.type == 'chart'"
       :style="'width:100%'"
@@ -73,26 +86,28 @@
       :settings="mSettings"
       :conversion-settings="conversionSettings"
     ></InformationTileSingle>
-    <InformationListTile
+    <InformationTileList
       v-else-if="tile.measurements && tile.measurements.length > 0"
       :style="'width:100%'"
       :tile="tile"
       :pdata="pdata"
       :settings="mSettings"
       :conversion-settings="conversionSettings"
-    />
+    ></InformationTileList>
     <div v-else style="width: 100%">{{ $t("view.no_panel_measurements") }}</div>
   </div>
 </template>
 <script>
-import InformationListTile from "./InformationListTile.vue";
+import InformationTileList from "./InformationTileList.vue";
 import KnobTile from "./KnobTile.vue";
 import DoughnutTile from "./DoughnutTile.vue";
 import ChartTile from "./ChartTile.vue";
 import InformationTileSingle from "./InformationTileSingle.vue";
 import MultiKnobTile from "./MultiKnobTile.vue";
 import { TileTypes } from "@/plugins/model/Enums.js";
-import icons from "./icons";
+import icons from "./components/icons";
+import ImageTile from "./ImageTile.vue";
+import QRCodeTile from "./QRCodeTile.vue";
 // import MultiDoughnutTile from "./MultiDoughnutTile.vue";
 
 function validateTileSettings(tile, panelSettings, ctx) {
@@ -101,6 +116,7 @@ function validateTileSettings(tile, panelSettings, ctx) {
       label: ctx.$te(`enums.measurement_name.${tile.name}`) ? ctx.$t(`enums.measurement_name.${tile.name}`) : tile.label,
       icon: icons[tile.props.icon],
       icon_visibility: tile.props.icon_visibility != null ? tile.props.icon_visibility : true,
+      item_icon_visibility: tile.props.item_icon_visibility != null ? tile.props.item_icon_visibility : true,
       legend: tile.props.legend != null ? tile.props.legend : panelSettings.legend,
       legend_label_color: tile.props.legend_label_color != null ? tile.props.legend_label_color : "#495057",
       chart_type: tile.props.chart_type != null ? tile.props.chart_type : panelSettings.chart_type,
@@ -119,6 +135,8 @@ function validateTileSettings(tile, panelSettings, ctx) {
       background: tile.props.background,
       template: tile.props.template,
       knob_color: tile.props.knob_color,
+      qrcode_content: tile.props.qrcode_content,
+      img_url: tile.props.img_url,
       measurement_color: tile.props.measurement_color,
       // asset_id: settings.asset_id,
     };
@@ -129,8 +147,10 @@ function validateTileSettings(tile, panelSettings, ctx) {
 export default {
   name: "InformationTile",
   components: {
-    InformationListTile,
+    InformationTileList,
     KnobTile,
+    ImageTile,
+    QRCodeTile,
     DoughnutTile,
     InformationTileSingle,
     ChartTile,
@@ -164,7 +184,6 @@ export default {
   },
   emits: ["edit", "notification", "timeseries-update", "preview-tile"],
   data() {
-    // console.info(this.settings);
     return {
       conversionSettings: this.$store.getters["settings/conversion"],
       mSettings: { tile: validateTileSettings(this.tile, this.settings, this), panel: this.settings },
@@ -254,10 +273,39 @@ export default {
   stroke-linejoin: round;
 }
 .data-preview {
-  font-size: 1.5rem;
+  // font-size: 1.5rem;
+  // position: absolute;
+  // top: 0.5rem;
+  // right: 0.5rem;
+}
+.tile-icon {
+  margin-left: 0.25rem;
+}
+.tile-bar {
+  i {
+    font-size: 0.75rem;
+  }
+  font-size: 0.75rem;
+  min-width: 5rem;
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 0.25rem;
+  right: 0.25rem;
+  width: max-content;
+  display: flex;
+  flex-direction: row-reverse;
+  opacity: 0.4;
+}
+
+.tile-bar:hover {
+  i {
+    font-size: 1.5rem;
+  }
+  // background: red;
+  opacity: 1;
+  z-index: 4444444;
+}
+.presentation-view .tile-bar {
+  display: none;
 }
 .presentation-view .data-preview {
   display: none;

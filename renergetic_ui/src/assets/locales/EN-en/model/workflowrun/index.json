@@ -1,0 +1,10 @@
+{
+  "run_id": "Run id",
+  "start_time": "Start time",
+  "init_time": "Init time",
+  "start_time_formatted": "Task started at {start_time}",
+  "end_time": "End time",
+  "parameters": "Parameters",
+  "pipeline": "Pipeline",
+  "state": "State"
+}

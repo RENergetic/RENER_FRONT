@@ -13,13 +13,16 @@ import PrimeImport from "./plugins/primevue_import";
 import RenImport from "./plugins/ren_import";
 import Fonts from "./plugins/fonts";
 import "primevue/resources/themes/saga-green/theme.css";
+
+// import Aura from "@primevue/themes/aura";
+
 // theme showcase: https://www.primefaces.org/primevue/showcase/
+// import "primevue/resources/themes/aura-light-green/theme.css";
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
 //https://www.primefaces.org/primevue/showcase/#/primeflex
 import "primeflex/primeflex.css";
 import "./assets/styles/ren.scss";
-import VueKonva from "vue-konva";
 
 import Tooltip from "primevue/tooltip";
 import ToastService from "primevue/toastservice";
@@ -31,9 +34,12 @@ import ConfirmationService from "primevue/confirmationservice";
 
 //initialize app
 
-const app = createApp(App);
+const app = createApp(App, {
+  // theme: {
+  //   preset: Aura,
+  // },
+});
 app.use(i18n);
-app.use(VueKonva);
 // app.use(PrimeVue, { locale: PrimeLocale });
 app.use(PrimeVue);
 app.use(PrimeImport);

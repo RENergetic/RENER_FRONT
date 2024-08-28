@@ -87,7 +87,7 @@ var management = [
       roles: ["ren-admin", "ren-technical-manager"],
       roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
     },
-    component: () => import("../views/management/abstract/AbstractMetersView.vue"),
+    component: () => import("../views/management/AbstractMetersView.vue"),
   },
   /*
   {

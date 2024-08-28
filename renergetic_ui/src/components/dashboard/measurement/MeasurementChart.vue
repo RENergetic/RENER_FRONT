@@ -4,8 +4,12 @@
       <!-- {{ mMeasurements.length }} -->
       <!-- {{ annotations }} -->
       <!-- <div style="max-width: 20rem; overflow: hidden; max-height: 15rem">{{ chartData }}</div> -->
-      <!-- {{ pData["timeseries_labels"] }} -->
+      <!-- {{ pdata["timeseries_labels"] }} -->
       <!-- {{ width }} -->
+      <!-- {{ options }}
+      {{ chartData }} -->
+      <!-- {{ options }}
+      {{ chartData }} -->
       <Chart
         v-if="!titleVisible && height && width && loaded"
         :style="mStyle"
@@ -43,7 +47,7 @@ export default {
   name: "MeasurementChart",
   components: { Chart },
   props: {
-    pData: { type: Object, default: () => ({}) },
+    pdata: { type: Object, default: () => ({}) },
     measurements: { type: Array, default: null },
     tile: { type: Object, default: null },
     width: { type: Number, default: 1600 },
@@ -79,7 +83,7 @@ export default {
       yAxisTitle = `${this.$t("enums.physical_type." + mMeasurements[0].type.physical_name)}${unit}`;
     }
     return {
-      labels: this.pData["timeseries_labels"] ? this.pData["timeseries_labels"] : [],
+      labels: this.pdata["timeseries_labels"] ? this.pdata["timeseries_labels"] : [],
       datasets: [],
       loaded: false,
       plugins: [chartjsMoment, chartjsPluginAnnotation],
@@ -179,7 +183,7 @@ export default {
       },
       deep: true,
     },
-    pData: {
+    pdata: {
       handler: async function (newV) {
         if (newV != null && !this.immediate) {
           await this.setLocalData();
@@ -198,34 +202,33 @@ export default {
   methods: {
     localData() {
       let hasAllData = false;
-      if (this.pData["timeseries"] && this.pData["timeseries"]["current"]) {
+      if (this.pdata["timeseries"] && this.pdata["timeseries"]["current"]) {
         hasAllData = true;
         this.mMeasurements.forEach((m) => {
+          //all data should have the same amount of points
           hasAllData &=
-            this.pData["timeseries"]["current"][m.id] &&
-            this.pData["timeseries"]["current"][m.id].length == this.pData["timeseries"]["timestamps"].length;
+            this.pdata["timeseries"]["current"][m.id] &&
+            this.pdata["timeseries"]["current"][m.id].length == this.pdata["timeseries"]["timestamps"].length;
         });
       }
-
       console.debug(`has all data ${hasAllData}`);
       if (hasAllData) {
-        this.labels = this.pData["timeseries"]["timestamps"];
-        return this.pData["timeseries"]["current"];
+        this.labels = this.pdata["timeseries"]["timestamps"];
+        return this.pdata["timeseries"]["current"];
       }
       return null;
     },
 
     async loadTimeseriesData() {
       //TODO: make it comgigurable in tile / args prediction & aggregation func
-      // let data = this.tile.measurements.map((m) => this.pData.current[m.aggregation_function][m.id]);
+      // let data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
       // let measurementIds = this.tile.measurements.map((m) => m.id);
       let data = this.localData();
       if (data == null) {
         let timeseriesData;
         if (this.tile) {
           timeseriesData = await this.$ren.dataApi.getTimeseries(null, this.tile.id, this.assetId, this.filter);
-        }
-        if (this.mMeasurements) {
+        } else if (this.mMeasurements) {
           timeseriesData = await this.$ren.dataApi.getMeasurementTimeseries(this.mMeasurements, this.filter);
         }
 
@@ -247,6 +250,8 @@ export default {
 
         let unitLabel = m.type.unit != "any" ? `: ${this.$t("enums.physical_type." + m.type.physical_name)} [${m.type.unit}]` : "";
         let label = this.measurementLabel(m);
+        let mfill = m.measurement_details && m.measurement_details["fill_chart"] != null ? m.measurement_details["fill_chart"] : "true";
+        let fill = mfill?.toLowerCase?.() === "true";
         datasets.push({
           data: data[m.id],
           label: `${label}(${aggFunc})${unitLabel}`,
@@ -254,7 +259,7 @@ export default {
           backgroundColor: color + "30",
           borderColor: color + "FF",
           showLine: true,
-          fill: m.measurement_details && m.measurement_details["fill_chart"] != null ? m.measurement_details["fill_chart"] : true,
+          fill: fill,
         });
       }
       // console.error(datasets);
@@ -265,16 +270,16 @@ export default {
       let run = this.$refs.spinner.run;
       await run(async () => {
         // await new Promise((r) => setTimeout(r, 250));
-        var pData = await this.loadTimeseriesData();
-        this.setDataset(pData);
+        var pdata = await this.loadTimeseriesData();
+        this.setDataset(pdata);
         this.loaded = true;
         this.refreshDate = new Date();
       });
     },
     async setLocalData() {
-      var pData = await this.localData();
-      if (pData !== null) {
-        this.setDataset(pData);
+      var pdata = await this.localData();
+      if (pdata !== null) {
+        this.setDataset(pdata);
         this.loaded = true;
         this.refreshDate = null;
       }

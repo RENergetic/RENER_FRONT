@@ -24,3 +24,5 @@ pnpm-debug.log*
 
 #other files
 .vscode/settings.json
+renergetic_ui/src/assets/app.js
+renergetic_ui/src/assets/scripts/

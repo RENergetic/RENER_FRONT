@@ -9,12 +9,26 @@
       :pdata="mPanelData"
       :settings="mSettings"
       :filter="filter"
-      @edit="$emit('editTile', { tile: tile, index: index })"
+      @edit="editTile(tile, index)"
       @preview-tile="onPreview"
       @timeseries-update="onTimeseriesUpdate"
       @notification="viewNotification"
     />
   </div>
+  <Dialog v-model:visible="tileEditDialog" :maximizable="true" :style="{ height: '90%' }" :modal="true" :dismissable-mask="true">
+    <div style="display: flex; height: 100%; flex-direction: column">
+      <div style="height: 100%; flex-grow: 1; overflow: auto">
+        <InformationPanelTileForm
+          v-if="(selectedTileIndex || selectedTileIndex == 0) && selectedTile"
+          style="flex-grow: 1; overflow: auto"
+          :model-value="selectedTile"
+          @update:modelValue="onTileEdit"
+        />
+      </div>
+      <ren-submit style="width: 100%" :cancel-button="true" @submit="submitTile" @cancel="onTileEditCancel" />
+    </div>
+    <!-- {{ selectedTile }} -->
+  </Dialog>
   <TileMeasurementPreview ref="dataPreview" />
   <Dialog v-model:visible="notificationDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <notification-list v-if="selectedItem" :context="notificationContext" :object-id="selectedItem.tile.id" />
@@ -22,6 +36,7 @@
 </template>
 <script>
 import InformationTileGridWrapper from "./informationtile/InformationTileGridWrapper.vue";
+import InformationPanelTileForm from "./InformationPanelTileForm.vue";
 import NotificationList from "../../management/notification/NotificationList.vue";
 
 import TileMeasurementPreview from "./informationtile/TileMeasurementPreview.vue";
@@ -37,6 +52,7 @@ export default {
     InformationTileGridWrapper,
     NotificationList,
     TileMeasurementPreview,
+    InformationPanelTileForm,
   },
   props: {
     panelData: {
@@ -78,7 +94,7 @@ export default {
       default: false,
     },
   },
-  emits: ["editTile", "update", "timeseries-update"],
+  emits: ["update:tile", "update", "timeseries-update"],
   data() {
     return {
       loaded: false,
@@ -90,7 +106,9 @@ export default {
       mPanel: this.panel,
       mPanelData: null,
       notificationContext: NotificationContext.TILE,
+      tileEditDialog: false,
       selectedTile: null,
+      selectedTileIndex: null,
     };
   },
   computed: {
@@ -151,6 +169,22 @@ export default {
     }
   },
   methods: {
+    editTile(tile, index) {
+      this.selectedTile = tile;
+      this.selectedTileIndex = index;
+      this.tileEditDialog = true;
+    },
+    onTileEdit(tile) {
+      this.selectedTile = tile;
+    },
+    onTileEditCancel() {
+      this.selectedTile = null;
+      this.selectedTileIndex = null;
+      this.tileEditDialog = false;
+    },
+    submitTile() {
+      this.$emit("update:tile", { tile: this.selectedTile, index: this.selectedTileIndex });
+    },
     setMeasurementLabels(panel) {
       if (panel) {
         for (let t in panel.tiles) {
@@ -167,7 +201,7 @@ export default {
         let mPanelData = JSON.parse(JSON.stringify(panelData));
         mPanelData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, mPanelData, this.settings);
         mPanelData = this.$ren.utils.convertPanelData(this.mPanel, mPanelData, this.$store.getters["settings/conversion"]);
-        // console.error(mPanelData);
+        console.error(mPanelData);
         this.mPanelData = mPanelData;
         this.loaded = true;
         // this.reload = !this.reload;

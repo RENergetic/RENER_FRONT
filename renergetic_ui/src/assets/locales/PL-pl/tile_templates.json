@@ -1,6 +1,0 @@
-{
-    "energy_island_production": "Dzisiaj wyprodukowano {value} dziennego zapotrzebowania.",
-    "energy_island_import": "Import energi elektrycznej: {value}.",
-    "power_compare_week": "Konsumpcja PCSS zmieniła się o {value} w stosunku do zeszłego tygodnia.",
-    "power_compare_month": "Konsumpcja PCSS zmieniła się o {value} w stosunku do zeszłego miesiąca."
-}

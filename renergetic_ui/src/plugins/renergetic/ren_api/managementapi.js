@@ -251,6 +251,12 @@ export default class ManagementApi extends RestComponent {
   async updateMeasurementType(type) {
     return this.put(`/api/measurements/type/${type.id}`, type);
   }
+  async deleteMeasurementType(type) {
+    return this.delete(`/api/measurements/type/${type.id}`);
+  }
+  async addMeasurementType(type) {
+    return this.post(`/api/measurements/type`, type);
+  }
   async setMeasurementTypeVisibility(id, visibility) {
     if (visibility) return this.post(`/api/measurements/type/${id}/dashboard/true`);
     else return this.post(`/api/measurements/type/${id}/dashboard/false`);
@@ -291,6 +297,9 @@ export default class ManagementApi extends RestComponent {
     return this.get(`/tags/key/${tagKey}/values`);
   }
 
+  async getTag(key, value) {
+    return this.get(`/api/measurements/tags/key/${key}/value/${value}`);
+  }
   async createNewTag(tag) {
     // return this.put(`/api/measurements/tags/key/${tag.key}/value/${tag.value}`);
     return this.post(`/api/measurements/tags`, tag);

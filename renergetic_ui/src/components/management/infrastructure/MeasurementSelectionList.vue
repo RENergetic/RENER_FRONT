@@ -56,7 +56,7 @@ export default {
     };
   },
   async created() {
-    this.measurementListAbstracMeter = await this.$ren.managementApi.listMeasurement();
+    this.measurementListAbstracMeter = await this.$ren.managementApi.listMeasurement({});
   },
   methods: {
     async handlePageChange(event) {

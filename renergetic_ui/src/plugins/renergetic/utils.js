@@ -169,15 +169,14 @@ class RenUtils {
     this.app.$store.commit("settings", settings);
   }
 
-  async getPanelStructure(panelId, assetId, storePanel = false) {
+  async getPanelStructure(panelId, assetId, storePanel = false, forceReload = false) {
     let informationPanel = null;
-    if (assetId == null) {
+    if (assetId == null && !forceReload) {
       let index = this.app.$store.getters["view/informationPanelsMap"][panelId];
       if (index != null) {
         informationPanel = this.app.$store.getters["view/informationPanels"][index];
       }
     }
-
     if (informationPanel == null) {
       informationPanel = await this.app.$ren.dashboardApi.getInformationPanel(panelId, assetId);
       if (informationPanel != null && storePanel) {
@@ -191,6 +190,7 @@ class RenUtils {
         }
       }
     }
+    console.warn("measurement types hotfix");
     for (let tile of informationPanel.tiles) {
       for (let m of tile.measurements) {
         if ((m.name == "ess" || m.name == "ep") && m.type && m.type.name == "value") {
@@ -198,7 +198,7 @@ class RenUtils {
           // m.type.factor = 1;
           m.type.unit = "ratio";
           m.type.label = "ratio";
-          m.type.name = "Ratio";
+          m.type.name = "ratio";
           m.type.physical_name = "ratio";
           m.type.id = -1;
         }
@@ -229,7 +229,9 @@ class RenUtils {
     let isAuthenticated = this.app.$store.getters["auth/isAuthenticated"];
     if (!isAuthenticated) {
       // console.error("TODO: handle not logged in user");
-      throw new Error({ isAuthenticated: isAuthenticated });
+      // let q = new QueryBuilder();TODO: maybe load here homepage data
+
+      throw new Error("NOT_AUTHENTICATED");
     }
     var currentRole = this.app.$store.getters["auth/renRole"];
 

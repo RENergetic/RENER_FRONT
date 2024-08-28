@@ -30,26 +30,32 @@
             <i v-else class="pi pi-eye-slash" style="font-size: 1.5rem" @click="setDashboardVisibility(item.data, true)" />
           </template>
         </Column>
-        <!-- <Column field="edit" :header="$t('view.edit')"> <template #body>todo:</template></Column> -->
+        <Column field="delete" :header="$t('view.delete')">
+          <template #body="item">
+            <Button v-tooltip="$t('view.delete')" icon="pi pi-trash" class="p-button-rounded" @click="deleteType(item.data)" />
+          </template>
+        </Column>
       </DataTable>
+      <Button v-tooltip="$t('view.add')" icon="pi pi-plus-circle" class="p-button-rounded" @click="addDialog = true" />
+      <Dialog v-model:visible="addDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+        <MeasurementTypeForm @update="onTypeSubmit($event)" @cancel="addDialog = false" />
+      </Dialog>
     </template>
   </RenSpinner>
 </template>
 
 <script>
 import InfoIcon from "../../../miscellaneous/InfoIcon.vue";
+import MeasurementTypeForm from "./MeasurementTypeForm.vue";
 export default {
   name: "MeasurementTypeList",
-  components: { InfoIcon },
+  components: { InfoIcon, MeasurementTypeForm },
   props: {},
   data() {
     return {
-      // measurementAdd: false,
+      addDialog: false,
       typeList: [],
       columns: [],
-      selectedRow: null,
-      // measurementEditDialog: false,
-      // measurementDetailsDialog: false,
     };
   },
   computed: {},
@@ -58,6 +64,9 @@ export default {
     await this.loadData();
   },
   methods: {
+    measurementTypeLabel(type) {
+      return this.$te("enums.metric_type." + type.name) ? this.$t("enums.metric_type." + type.name) : type.label ? type.label : type.name;
+    },
     async setDashboardVisibility(measurementType, state) {
       await this.$refs.spinner.run(async () => {
         await this.$ren.managementApi.setMeasurementTypeVisibility(measurementType.id, state).then(async (res) => {
@@ -68,8 +77,29 @@ export default {
           } else this.$emitter.emit("error", { message: this.$t("information.visibility_changed") });
         });
       });
-      // console.info(selectedPanel);
-      // console.info(state);
+    },
+    async deleteType(type) {
+      this.$confirm.require({
+        message: this.$t("view.measurement_type_delete_description", {
+          role: this.measurementTypeLabel(type),
+        }),
+        header: this.$t("view.measurement_type_delete"),
+        icon: "pi pi-exclamation-triangle",
+        accept: async () =>
+          await this.$ren.managementApi.deleteMeasurementType(type).then(async () => {
+            // if (resp) this.infoDialog(this.$t("view.measurement_type_deleted")).show();
+            await this.loadData();
+          }),
+        reject: () => this.$confirm.close(),
+      });
+    },
+
+    async onTypeSubmit(type) {
+      await this.$ren.managementApi.addMeasurementType(type).then((resp) => {
+        this.infoDialog(this.$t("view.measurement_type_added", { name: resp.name })).show();
+        this.addDialog = false;
+      });
+      await this.loadData();
     },
     async updateType(type, key, value) {
       //updateMeasurementType
@@ -79,6 +109,7 @@ export default {
           type[key] = resp[key];
         });
       }
+      await this.loadData();
     },
     async loadData() {
       await this.$refs.spinner.run(async () => {

@@ -12,6 +12,8 @@ plugin.install = function (Vue /*, options*/) {
     ...new RestClient(Vue),
   };
   // Vue.config.globalProperties.$pluginLoaded = true;
+  Vue.config.globalProperties.HDR_KUBEFLOW_DEFAULT_PIPELINE = "hdr_default_pipeline";
+  Vue.config.globalProperties.HDR_KUBEFLOW_PIPELINE = "hdr_pipeline";
 };
 
 export default plugin;

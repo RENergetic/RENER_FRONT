@@ -16,9 +16,14 @@
         :asset-id="assetId"
         :filter="mFilter"
         @timeseries-update="onTimeseriesUpdate"
+        @update:tile="onTileUpdate"
       />
     </template>
   </RenSpinner>
+  <div v-if="mPanel && mPanel.props.qrcode">
+    <QRCode v-model="mPanel.props.qrcode" :position="mPanel.props.qrcodePosition" :size="mPanel.props.qrcodeSize" />
+  </div>
+
   <!-- <Dialog v-model:visible="editDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <div class="field grid">
       <label for="assetType" class="col-fixed" style="width: 5rem">
@@ -53,6 +58,7 @@ import InformationPanel from "./InformationPanel.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 // import { GridStack } from "gridstack";
 import LoopRunner from "@/plugins/utils/loop_runner.js";
+import QRCode from "@/components/miscellaneous/QRCode.vue";
 import { TileTypes, NotificationContext } from "@/plugins/model/Enums.js";
 // THEN to get HTML5 drag&drop
 // import "gridstack/dist/h5/gridstack-dd-native";
@@ -61,6 +67,7 @@ export default {
   name: "InformationPanelWrapper",
   components: {
     InformationPanel,
+    QRCode,
     // ManageSensors,
     // NotificationList,
   },
@@ -107,7 +114,7 @@ export default {
       default: false,
     },
   },
-  emits: ["update"],
+  emits: ["update", "update:tile"],
   data() {
     return {
       mNotifications: [],
@@ -132,9 +139,9 @@ export default {
       // return this.panel != null ? this.panel.tiles : [];
       return this.mPanel != null ? this.mPanel.tiles : [];
     },
-    gridItems: function () {
-      return this.grid != null ? this.grid.getGridItems() : [];
-    },
+    // gridItems: function () {
+    //   return this.grid != null ? this.grid.getGridItems() : [];
+    // },
   },
   watch: {
     manageSensorsDialog: function (newValue) {
@@ -172,6 +179,7 @@ export default {
     if (this.loopRunner) {
       this.loopRunner.stop();
     }
+    this.mPanel = null;
   },
   async mounted() {
     var _this = this;
@@ -199,22 +207,45 @@ export default {
     }
   },
   methods: {
+    onTileUpdate(ev) {
+      this.$emit("update:tile", ev);
+    },
     onTimeseriesUpdate(evt) {
       console.error("onTimeseriesUpdate TODO:");
       console.error(evt);
     },
+    async mSetChartData(measurements, panelData) {
+      console.error(measurements);
+      panelData["timeseries"] = await this.$ren.dataApi.getMeasurementTimeseries(measurements, this.filter);
+
+      return panelData;
+    },
     async loadData() {
-      if (this.panel.id != null) {
+      if (this.panel.id != null && this.$refs.spinner) {
         // console.info("panel load data: " + this.panel.id);
         this.$refs.spinner.run(async () => {
           console.info("wait for panel data: " + this.panel.id + " " + this.panel.is_template);
-          await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, this.mFilter).then((resp) => {
+
+          await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, this.mFilter).then(async (resp) => {
             console.debug(resp);
-            this.panelData = resp.data;
+            var panelData = resp.data;
             if (this.panel.is_template) this.mPanel = resp.panel;
             else {
               this.mPanel = this.panel;
             }
+            var mDict = {};
+            for (let tile of this.mPanel.tiles) {
+              if (tile.type == TileTypes.chart) {
+                for (let m of tile.measurements) {
+                  mDict[m.id] = m;
+                }
+              }
+            }
+            let measurements = Object.values(mDict);
+            if (measurements.length > 0) panelData = await this.mSetChartData(measurements, panelData);
+
+            this.panelData = panelData;
+            // timeseriesData = await this.$ren.dataApi.getTimeseries(null, this.tile.id, this.assetId, this.filter);
             console.info("Panel data loaded");
           });
         });

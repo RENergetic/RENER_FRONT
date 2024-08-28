@@ -1,6 +1,7 @@
 <template>
   <div class="flex flex-wrap">
     <Card class="main_menu_card" style="margin: 5%">
+      <!-- {{ getAbstracMeterList }} -->
       <template #title>
         {{ $t("view.abstract_meter_administration") }}
       </template>
@@ -147,6 +148,7 @@ export default {
   },
   async created() {
     let abstractMeterList = await this.$ren.kpiApi.getAbstracMeterList();
+    console.error(abstractMeterList);
     let claves = Object.keys(abstractMeterList);
     for (let i = 0; i < claves.length; i++) {
       let clave = claves[i];
@@ -273,10 +275,7 @@ export default {
       //this.variableExistanceChecker();
     },
     async variableExistanceChecker() {
-      let abstractValue = await this.$ren.kpiApi.getAnAbstracMeterConfiguration(
-        this.splitAbstractMeters(this.abstractMeterGlobal),
-        this.domainGlobal,
-      );
+      let abstractValue = await this.$ren.kpiApi.getAbstractMeterConfiguration(this.splitAbstractMeters(this.abstractMeterGlobal), this.domainGlobal);
       if (abstractValue != null) {
         this.abstracMeterExists = true;
         this.abstractValueId = abstractValue.id;

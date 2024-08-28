@@ -1,0 +1,6 @@
+{
+  "energy_island_production": "La isla produce {value} de su consumo total.",
+  "energy_island_import": "La isla importa {value} de energía.",
+  "power_compare_week": null,
+  "power_compare_month": null
+}

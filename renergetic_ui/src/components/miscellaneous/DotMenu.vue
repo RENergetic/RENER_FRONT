@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="dot-menu">
     <Menu id="overlay_menu" ref="menu" :model="model" :popup="true" />
     <Button
       id="menu-toggle"
@@ -76,11 +76,24 @@ export default {
 .absolute {
   position: absolute;
 }
-
-.top {
-  top: 1rem;
-}
-.right {
-  right: 1rem;
+.dot-menu {
+  .top {
+    top: 0.25rem;
+  }
+  .right {
+    right: 0.25rem;
+  }
+  .bottom {
+    bottom: 0.25rem;
+  }
+  Button,
+  button {
+    background-color: transparent;
+    border-color: transparent;
+    &:enabled:hover {
+      background-color: $ren-primary-color !important;
+      color: $ren-primary-font-color;
+    }
+  }
 }
 </style>

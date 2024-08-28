@@ -1,13 +1,43 @@
 import { RenRoles } from "@/plugins/model/Enums.js";
 // RenMixins
+class AppDialog {
+  $emitter;
+  level = "information";
+  logLevel;
+  
+  constructor(logLevel = "information", message) {
+    if (logLevel) {
+      this.logLevel = logLevel;
+    }
+    this.message = message;
+
+  }
+  show() {
+    this.$emitter.emit(this.logLevel, { message: this.message });
+  }
+}
+
 export default {
+  props: {
+    componentId: {
+      type: String,
+      default: null,
+    },
+  },
   data() {
     return {
       RenRoles: RenRoles,
     }
   },
   computed: {
-
+    mId: function () {
+      let id = 'componentId' in this && this.componentId ? this.componentId : null
+      if (id == null) {
+        id = 'id' in this && this.id ? this.id : null
+      }
+      return id ? id : Math.random().toString(36)
+        .replace("0.", (this.$options.name ? this.$options.name.toLowerCase() + "-" : "component-") || "")
+    },
     unitLabel: function () {
       let measurement = 'measurement' in this ? this.measurement : null;
       return this.$ren.utils.unitLabel(measurement, this.settings.panel, this.conversionSettings);
@@ -38,6 +68,24 @@ export default {
       return this.isTileHorizontal ? 'horizontal-tile' : 'vertical-tile'
     },
 
+    measurementlabel: function () {
+      if ('measurement' in this && this.measurement != null) {
+        let labelKey = `model.measurement.labels.${this.measurement.label}`;
+        if (this.measurement.label != null && this.$te(labelKey)) {
+          return this.$t(labelKey);
+        }
+        let nameKey = `enums.measurement_name.${this.measurement.name}`;
+        if (this.$te(nameKey)) {
+          return this.$t(nameKey);
+        }
+        if (this.measurement.label != null) {
+          return this.measurement.label;
+        }
+        return this.measurement.name;
+      }
+      return null
+    },
+
     measurementColor: function () {
       let colorObj;
       if (!this.mSettings.tile.measurement_color) {
@@ -47,8 +95,8 @@ export default {
           colorObj = this.$ren.utils.measurementColor(null, null);
         }
       }
-      else {
-        colorObj = { color: this.mSettings.tile.measurement_color, alpha: this.value ? 1.0 : 1.0 - this.value / 2 }
+      else { 
+        colorObj = { color: this.$ren.utils._hexExtractColor( this.mSettings.tile.measurement_color), alpha: this.value ? 1.0 : 1.0 - this.value / 2 }
       }
       return colorObj;
     },
@@ -58,14 +106,14 @@ export default {
         if (('measurement' in this && this.measurement != null)) {
           color = this.$ren.utils.measurementColor(this.measurement, this.value).color;
         }
-        else{
+        else {
           color = "#d6ebff";
         }
-      } 
+      }
       return color;
     },
     tileMeasurementBackgroundColor: function () {
-      let alpha = this.bgAlpha ? this.bgAlpha : null
+      let alpha = 'bgAlpha' in this && this.bgAlpha ? this.bgAlpha : null
       console.warn("TODO: set tile background alpha")
 
       let measurement = 'measurement' in this ? this.measurement : null;
@@ -77,6 +125,14 @@ export default {
   },
 
   methods: {
+
+    infoDialog(message = null) {
+      let dialog = new AppDialog("information", message)
+      dialog.$emitter = this.$emitter
+      return dialog
+
+    },
+
     parseDateFilter: function (filter) {
       let f = filter ? filter : {};
       let from = f.date_from;
@@ -159,7 +215,11 @@ export default {
       if (this.tile == null) return null;
       if (this.tile.measurements && this.tile.measurements.length > 1)
         console.warn("Length of measurement list is greater than one. ")
-      return this.tile.measurements && this.tile.measurements.length > 0 ? this.tile.measurements[0] : null;
+      let measurement = this.tile.measurements && this.tile.measurements.length > 0 ? this.tile.measurements[0] : null;
+      if (measurement == null) {
+        console.warn("no measurement for tile: " + JSON.stringify(this.tile));
+      }
+      return measurement
     },
     async deleteConfirm({ message, header = null, action }) {
       await this.$confirm.require({
@@ -176,6 +236,13 @@ export default {
     },
 
     tileContentSize1D() {
+      let d = this.tileContentSize2D()
+      let minD = Math.min(d.w, d.h);
+      console.debug("cell height: " + this.settings.panel.cellHeight + ":  " + d.w + "," + d.h)
+      console.debug(this.settings.panel)
+      return minD
+    },
+    tileContentSize2D() {
       let w =
         this.settings.panel && this.settings.panel.cellWidth
           ? this.settings.panel.cellWidth * this.tile.layout.w
@@ -190,10 +257,7 @@ export default {
       if (!w) {
         w = window.innerWidth * 0.95 / 12 * this.tile.layout.w;
       }
-      let minD = Math.min(w, h);
-      console.debug("cell height: " + this.settings.panel.cellHeight + ":  " + w + "," + h)
-      console.debug(this.settings.panel)
-      return minD
+      return { w: w, h: h }
     },
     /**
      * 
@@ -283,6 +347,9 @@ export default {
       }
 
       return overrideMode;
+    },
+    hasRole(flags) {
+      return flags & this.$store.getters["auth/renRole"]
     },
     /**
      * 

@@ -1,0 +1,9 @@
+{
+  "increase_temperature": "Aumenta temperatura",
+  "decrease_temperature": "Reduce temperatura",
+  "increase_power": "Aumenta la potencia eléctrica",
+  "decrease_power": "Reduce la potencia eléctrica",
+  "increase_heat": "Aumenta la temperatura",
+  "decrease_heat": "Reduce la temperatura",
+  "charge_ev": null
+}

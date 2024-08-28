@@ -1,0 +1,22 @@
+{
+  "measurement_aggregation": "Funkcja agregująca",
+  "name": "Name",
+  "label": "Label",
+  "panel_count": "Wystąpień w widokach.",
+  "measurement_type": "Typ ",
+  "location_name": "Lokalizacja",
+  "type": "Jednostka",
+  "id": "Id",
+  "details": "Szczegóły",
+  "direction": "Kierunek",
+  "direction_out": "'z'",
+  "direction_in": "'do'",
+  "direction_null": "N/A",
+  "domain": "Domena",
+  "sensor_name": "Nazwa czujnika",
+  "asset_category": "Asset category",
+  "physical_name": "Znaczenie fizyczne",
+  "physical_type": "Nazwa jednostki fizycznej",
+  "asset": "Obiekt",
+  "temp_id": "Id tymczasowe"
+}

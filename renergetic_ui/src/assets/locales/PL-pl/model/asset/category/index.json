@@ -1,0 +1,11 @@
+{
+  "name": "Name",
+  "label": "Label",
+  "description": "Description",
+  "id": "ID",
+  "delete_prompt": "Do you really want to delete the category?",
+  "affected_assets": "These Assets are affected",
+  "no_assets_found": "No assets found for this category.",
+  "delete": "Delete",
+  "cancel": "Cancel"
+}

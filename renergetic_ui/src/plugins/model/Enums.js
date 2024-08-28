@@ -18,10 +18,10 @@ const Colors = Object.freeze({
   SELECTED: "#0a0fc9",
   DEFAULT: "#eaeef5",
 });
-const HeatMapType = Object.freeze({
-  OSM: "osm",
-  DEFAULT: "default",
-});
+// const HeatMapType = Object.freeze({
+//   OSM: "osm",
+//   DEFAULT: "default",
+// });
 //TODO: load it from  backennd
 // const AssetTypes = Object.freeze({
 //   BUILDING: "building",
@@ -64,7 +64,11 @@ const TileTypes = Object.freeze({
   panel: "panel",
   multi_doughnut: "multi_doughnut",
   multi_knob: "multi_knob",
+  empty: "empty",
+  chart: "chart",
   single: "single",
+  image: "image",
+  qrcode: "qrcode",
 });
 
 const NotificationContext = Object.freeze({
@@ -174,7 +178,6 @@ export {
   TileTypes,
   NotificationContext,
   AssetConnectionType,
-  HeatMapType,
   RenRoles,
   RenRolesStr,
   RenFeatures,
