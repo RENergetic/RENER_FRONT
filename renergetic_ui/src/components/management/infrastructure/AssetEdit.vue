@@ -98,7 +98,7 @@ export default {
         geo_location: selectedAsset.geo_location,
         parent: selectedAsset.parent ? selectedAsset.parent : null,
         user: selectedAsset.user ? selectedAsset.user : null,
-        asset_category: selectedAsset.category ? selectedAsset.category : null,
+        // asset_category: selectedAsset.category ? selectedAsset.category : null,
         dashboards: selectedAsset.dashboards ? selectedAsset.dashboards : null,
       };
       this.dialog = true;

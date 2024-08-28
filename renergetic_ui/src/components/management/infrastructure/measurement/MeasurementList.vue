@@ -63,7 +63,7 @@
     </Column>
     <Column field="asset" filter-field="asset.name" :header="$t('model.measurement.asset')">
       <template #body="slotProps">
-        <span> {{ slotProps.data.asset ? slotProps.data.asset.name : slotProps.data.asset_category }} </span>
+        <span> {{ slotProps.data.asset ? slotProps.data.asset.name : null }} </span>
       </template>
       <template #filter="{ filterModel, filterCallback }">
         <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />

@@ -16,7 +16,7 @@
         filter-display="row"
         :loading="isLoading"
         responsive-layout="scroll"
-        :global-filter-fields="['name', 'label', 'type.name', 'category.label']"
+        :global-filter-fields="['name', 'label', 'type.name']"
         @row-dblclick="submit"
       >
         <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false">
@@ -57,7 +57,7 @@
             </Dropdown>
           </template>
         </Column>
-        <Column field="category.label" :header="$t('model.asset.asset_category')" :show-filter-menu="false">
+        <!-- <Column field="category.label" :header="$t('model.asset.asset_category')" :show-filter-menu="false">
           <template #filter="{ filterModel, filterCallback }">
             <Dropdown
               v-model="filterModel.value"
@@ -84,9 +84,8 @@
               </template>
             </Dropdown>
           </template>
-        </Column>
+        </Column> -->
 
-        <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
         <!-- <template #header>
           <div class="flex justify-content-between">
             <Button type="button" icon="pi pi-filter" :label="$t('view.button.filter')" class="p-button-outlined" @click="searchAsset" />
@@ -166,7 +165,7 @@ export default {
           label: this.filters.label.value,
           name: this.filters.name.value,
           type: this.filters["type.label"] && this.filters["type.label"].value ? this.filters["type.label"].value.name : null,
-          category: this.filters["category.label"] && this.filters["category.label"].value ? this.filters["category.label"].value.name : null,
+          // category: this.filters["category.label"] && this.filters["category.label"].value ? this.filters["category.label"].value.name : null,
         };
       this.$refs.spinner.run(async () => {
         await this.$ren.managementApi.listAsset(params, this.mOffset, this.limit).then((assetList) => {
@@ -182,7 +181,7 @@ export default {
         label: { value: null },
         name: { value: null },
         "type.label": { value: null },
-        "category.label": { value: null },
+        // "category.label": { value: null },
       };
     },
     cancel() {
