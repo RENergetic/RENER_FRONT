@@ -7,6 +7,7 @@
 
   <Card v-if="mModel">
     <!-- <template #title> </template> -->
+
     <template #content>
       <!-- {{ mModel }}  -->
       <div class="ren">
