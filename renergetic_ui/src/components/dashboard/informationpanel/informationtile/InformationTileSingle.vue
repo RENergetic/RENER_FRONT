@@ -76,6 +76,14 @@ export default {
       return `height: 100%;background:${color} `;
     },
     value: function () {
+      if (this.mSettings.tile.aggregate_values) {
+        let accu = 0.0;
+        for (let m of this.tile.measurements) {
+          accu += this.$ren.utils.getConvertedValue(m, this.pdata, this.mSettings);
+        }
+        return accu;
+      }
+
       if (this.measurement == null) return "";
       return this.$ren.utils.getConvertedValue(this.measurement, this.pdata, this.mSettings);
       // try {
