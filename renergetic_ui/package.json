@@ -1,6 +1,6 @@
 {
   "name": "renergetic_ui",
-  "version": "0.13.3-0",
+  "version": "0.13.4-0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
