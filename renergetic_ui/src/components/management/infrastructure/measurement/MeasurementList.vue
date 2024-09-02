@@ -28,15 +28,18 @@
       <measurement-extension :measurement="slotProps.data" @reload="reload()" />
     </template>
     <!-- <Column field="id" :header="$t('model.measurement.id')"></Column> -->
-    <Column field="name" :header="$t('model.measurement.name')" :show-filter-menu="false">
+    <Column field="name" filter-field="name" :header="$t('model.measurement.name')" :show-filter-menu="false">
       <template #body="slotProps">
-        <span v-if="slotProps.data._label"> {{ slotProps.data.label }} ({{ slotProps.data._label }})</span>
+        <span v-if="slotProps.data._label"> {{ slotProps.data.label }} ({{ slotProps.data._label }} , {{ slotProps.data.id }})</span>
         <span v-else> {{ slotProps.data.label }} </span>
         <div>
           <span v-if="slotProps.data.measurementTags">
             <li v-for="tag in slotProps.data.measurementTags" :key="tag.id">{{ tag.key }}={{ tag.value }}</li>
           </span>
         </div>
+      </template>
+      <template #filter="{ filterModel, filterCallback }">
+        <InputText v-model="filterModel.value" type="text" class="p-column-filter" @input="filterCallback()" />
       </template>
     </Column>
     <Column field="physical_name" filter-field="type.physical_name" :header="$t('model.measurement.physical_name')" :show-filter-menu="false">
@@ -117,6 +120,19 @@
       <!-- <template #filter="{ filterModel, filterCallback }">
         <TriStateCheckbox v-model="filterModel.value" @change="filterCallback()" />
       </template> -->
+      <template #filter="{ filterModel, filterCallback }">
+        <Dropdown
+          v-model="filterModel.value"
+          style="min-width: 12rem"
+          class="p-column-filter"
+          :options="directions"
+          :option-label="(opt) => $t(`enums.direction.${opt}`)"
+          :placeholder="$t('view.select_measurement_direction')"
+          :show-clear="true"
+          @change="filterCallback()"
+        >
+        </Dropdown>
+      </template>
     </Column>
     <Column field="sensor_name" :header="$t('model.measurement.sensor_name')" :show-filter-menu="false">
       <template #filter="{ filterModel, filterCallback }">
