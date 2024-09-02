@@ -1,5 +1,4 @@
 {
-  "anomaly": {},
   "enums": {
     "asset_connection": {
       "owner": "Właściciel",
@@ -28,6 +27,11 @@
       "increase": "Zwiększ",
       "start": "Start",
       "stop": "Stop"
+    },
+    "direction": {
+      "in": "In",
+      "none": "N/A",
+      "out": "Out"
     },
     "domain": {
       "electricity": "Elektryczność",
@@ -290,7 +294,6 @@
       "linked_no_measurement": "Brak przypisanego szeregu czasowego"
     },
     "asset": {
-      "asset_category": "Asset category",
       "asset_connections": "Asset connections",
       "asset_type": "Asset type",
       "category": {
@@ -437,7 +440,6 @@
     "label_description": "Object's human readable name, name used in RENergetic - `name` field is used if label is null",
     "measurement": {
       "asset": "Obiekt",
-      "asset_category": "Asset category",
       "details": "Szczegóły",
       "direction": "Kierunek",
       "direction_in": "'do'",
@@ -850,7 +852,6 @@
     "abstract_meter_list": "Abstract meter list",
     "activated_condition": "Activated condition",
     "add_asset": "Dodaj obiekt",
-    "add_asset_category": "Przypisz kategorię",
     "add_asset_connection": "Połącz obiekty",
     "add_asset_panel": "Add asset",
     "add_asset_rule": "Dodaj regułę",
@@ -861,7 +862,6 @@
     "all_configured_abstract_meter": "Wszyskie wirtualne szeregi czasowe sa skonfigurowane",
     "app_version": "Wersja klienta: {0}",
     "asset": "Obiekt",
-    "asset_category": "Brak przypisanych kategorii",
     "asset_child_empty": "Brak obiektów zależnych",
     "asset_connection_delete_body": "Czy chcesz usunąć relacje z {label}?",
     "asset_connection_delete_header": "Usuwanie relacji",
@@ -905,7 +905,6 @@
       "edit_tiles": "Edytuj pola widoku",
       "filter": "Filter",
       "hdr_settings": "Ustawienia HDR",
-      "manage_asset_categories": "Zarządzaj kategoriami",
       "manage_asset_types": "Zarządzaj typami",
       "manage_measurement": "Set measurements",
       "manage_tags": "Manage tags",
@@ -915,7 +914,7 @@
       "previous": "Poprzedni",
       "revoke_asset_assignment": "Revoke assignment for: {0}",
       "revoke_assignment": "Revoke assignment",
-      "run_hdr": "Run HDR pipeline",
+      "run_hdr": "Wyznacz rekomendacje",
       "save": "Save",
       "set_hdr": "Ustaw HDR",
       "show_available_tile_icons": "Dostępne ikony",
@@ -994,7 +993,7 @@
     "go_to_notification_history": "Przejdź do historii powiadomień",
     "go_to_panel": "Go to panel",
     "hdr_asset_list": "Lista obiektów użyta do rekomendacji",
-    "hdr_pipelines": "HDR pipelines",
+    "hdr_pipelines": "Dostępne zadania",
     "hdr_request_change": "Zmień {property} o: {value} ",
     "hdr_request_limit": "Ogranicz {property} do: {value} ",
     "heatmap_list": "Heatmap List",
@@ -1013,7 +1012,6 @@
     "loading": "Loading",
     "locale_settings": "Ustawienia języka",
     "logged_in_as": "Zalogowany jako: {username} ",
-    "manage_asset_categories": "Manage asset categories",
     "manage_asset_connections": "Manage asset connection",
     "manage_asset_panel_assignment": "Przypisz obiekty",
     "manage_asset_panel_assignment_description": "Assign assets to the infromation panels",
@@ -1103,7 +1101,6 @@
     "rules_true_label": "True",
     "save_asset_rules": "Save asset rules",
     "search": "Search",
-    "select_asset_category": "Select asset category",
     "select_asset_type": "Select asset type",
     "select_base_recommendation": "Wybierz rekomendację porównawczą",
     "select_dashboard": "Select dashboard",
@@ -1111,9 +1108,8 @@
     "select_dashboard_model": "Select model",
     "select_dashboard_unit": "Select unit",
     "select_direction": "Select direction",
-    "select_heatmap": "Select heatmap",
-    "select_heatmap_image": "Select heatmap background",
     "select_measurement_aggregation": "Wybierz funkcję agregującą",
+    "select_measurement_direction": "Select direction",
     "select_measurement_domain": "Select domain",
     "select_measurement_type": "Wybierz typ",
     "select_measurement_unit": "Wybierz jednostkę",
