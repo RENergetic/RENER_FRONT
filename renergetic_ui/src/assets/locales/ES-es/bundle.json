@@ -1,5 +1,4 @@
 {
-  "anomaly": {},
   "enums": {
     "asset_connection": {
       "owner": "Owner",
@@ -28,6 +27,11 @@
       "increase": "Aumentar",
       "start": "Iniciar",
       "stop": "Parar"
+    },
+    "direction": {
+      "in": "In",
+      "none": "N/A",
+      "out": "Out"
     },
     "domain": {
       "electricity": "Electricity",
@@ -290,7 +294,6 @@
       "linked_no_measurement": "No measurement is linked"
     },
     "asset": {
-      "asset_category": "Categoría de activo",
       "asset_connections": "Conexiones entre activos",
       "asset_type": "Tipo de activo",
       "category": {
@@ -437,7 +440,6 @@
     "label_description": "Object's human readable name, name used in RENergetic - `name` field is used if label is null",
     "measurement": {
       "asset": "Asset",
-      "asset_category": "Asset category",
       "details": "Detalles",
       "direction": "Direcición",
       "direction_in": "Entrada",
@@ -850,7 +852,6 @@
     "abstract_meter_list": "Lista de medidores abstractos",
     "activated_condition": "Condición activada",
     "add_asset": "Agregar activo",
-    "add_asset_category": "Conectar activo a categoría",
     "add_asset_connection": "Conectar activo",
     "add_asset_panel": "Seleccionar activo",
     "add_asset_rule": "Agregar regla de activo",
@@ -861,7 +862,6 @@
     "all_configured_abstract_meter": "All abstract meters are configured",
     "app_version": "Client version: {0}",
     "asset": "Activo",
-    "asset_category": "No se ha asignado categoría de activo",
     "asset_child_empty": "Sin sub-activos",
     "asset_connection_delete_body": "Do you want to delete asset connection with {label}?",
     "asset_connection_delete_header": "Delete asset connection?",
@@ -905,7 +905,6 @@
       "edit_tiles": "Edit panel tiles",
       "filter": "Filtrar",
       "hdr_settings": "HDR settings",
-      "manage_asset_categories": "Gestionar categorías de activos",
       "manage_asset_types": "Manage asset types",
       "manage_measurement": "Configurar medidas",
       "manage_tags": "Gestionar etiquetas",
@@ -1013,7 +1012,6 @@
     "loading": "Cargando",
     "locale_settings": "Idioma",
     "logged_in_as": "Conectado como: {username} ",
-    "manage_asset_categories": "Gestionar categorías de activos",
     "manage_asset_connections": "Gestionar conexión de activo",
     "manage_asset_panel_assignment": "Gestionar asignaciones de activos",
     "manage_asset_panel_assignment_description": "Assign assets to the infromation panels",
@@ -1103,7 +1101,6 @@
     "rules_true_label": "True",
     "save_asset_rules": "Guardar reglas de activo",
     "search": "Buscar",
-    "select_asset_category": "Seleccionar categoría de activo",
     "select_asset_type": "Seleccionar tipo de activo",
     "select_base_recommendation": "Seleccionar recomendación base",
     "select_dashboard": "Seleccionar panel de control",
@@ -1111,9 +1108,8 @@
     "select_dashboard_model": "Seleccionar modelo",
     "select_dashboard_unit": "Seleccionar unidad",
     "select_direction": "Seleccionar dirección",
-    "select_heatmap": "Seleccionar mapa de calor",
-    "select_heatmap_image": "Seleccionar fondo de mapa de calor",
     "select_measurement_aggregation": "Select_measurement's aggregation function",
+    "select_measurement_direction": "Select direction",
     "select_measurement_domain": "Seleccionar dominio",
     "select_measurement_type": "Seleccionar el tipo",
     "select_measurement_unit": "Seleccionar la unidad",

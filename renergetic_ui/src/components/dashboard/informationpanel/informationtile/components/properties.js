@@ -19,6 +19,17 @@ const tileProperties = [
     key: "title_visibility",
   },
   {
+    label: $t(`model.information_panel.tile.properties.aggregate_values`),
+    description: $t(`model.information_panel.tile.properties.aggregate_values_description`),
+    type: "Boolean",
+    ext: {
+      true: $t("settings.yes"),
+      false: $t("settings.no"),
+    },
+    key: "aggregate_values",
+  },
+
+  {
     label: $t(`model.information_panel.tile.properties.icon_visibility`),
     description: $t(`model.information_panel.tile.properties.icon_visibility_description`),
     type: "Boolean",
@@ -207,6 +218,7 @@ const singleProperties = new Set([
   "measurement_background",
   "measurement_color",
   "icon",
+  "aggregate_values",
   "template",
 ]);
 const emptyProperties = new Set(["title_visibility", "title_color", "background", "background_mask", "icon_visibility", "icon", "template"]);

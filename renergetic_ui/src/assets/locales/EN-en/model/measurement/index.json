@@ -13,7 +13,7 @@
   "direction_in": "In",
   "direction_null": "N/A",
   "domain": "Domain",
-  "sensor_name": "Sensor name", 
+  "sensor_name": "Sensor name",
   "physical_name": "Physical meaning",
   "physical_type": "Physical unit type",
   "asset": "Asset",

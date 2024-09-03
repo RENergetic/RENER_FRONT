@@ -4,7 +4,7 @@
   "name": "Name",
   "id": "Id",
   "child": "Sub assets",
-  "asset_type": "Asset type", 
+  "asset_type": "Asset type",
   "label": "Label",
   "measurements": "Measurements",
   "description": "Description",

@@ -1,5 +1,4 @@
 {
-  "anomaly": {},
   "enums": {
     "asset_connection": {
       "owner": "Owner",
@@ -28,6 +27,11 @@
       "increase": "Increase",
       "start": "Start",
       "stop": "Stop"
+    },
+    "direction": {
+      "in": "In",
+      "none": "N/A",
+      "out": "Out"
     },
     "domain": {
       "electricity": "Electricity",
@@ -290,7 +294,6 @@
       "linked_no_measurement": "No measurement is linked"
     },
     "asset": {
-      "asset_category": "Asset category",
       "asset_connections": "Asset connections",
       "asset_type": "Asset type",
       "category": {
@@ -437,7 +440,6 @@
     "label_description": "Object's human readable name, name used in RENergetic - `name` field is used if label is null",
     "measurement": {
       "asset": "Asset",
-      "asset_category": "Asset category",
       "details": "Details",
       "direction": "Direction",
       "direction_in": "In",
@@ -850,7 +852,6 @@
     "abstract_meter_list": "Abstract meter list",
     "activated_condition": "Activated condition",
     "add_asset": "Add Asset",
-    "add_asset_category": "Connect asset to category",
     "add_asset_connection": "Connect asset ",
     "add_asset_panel": "Add asset",
     "add_asset_rule": "Add asset rule",
@@ -861,7 +862,6 @@
     "all_configured_abstract_meter": "All abstract meters are configured",
     "app_version": "Client version: {0}",
     "asset": "Asset",
-    "asset_category": "No asset category assigned",
     "asset_child_empty": "No sub assets",
     "asset_connection_delete_body": "Do you want to delete asset connection with {label}?",
     "asset_connection_delete_header": "Delete asset connection?",
@@ -905,7 +905,6 @@
       "edit_tiles": "Edit panel tiles",
       "filter": "Filter",
       "hdr_settings": "HDR settings",
-      "manage_asset_categories": "Manage Asset Categories",
       "manage_asset_types": "Manage asset types",
       "manage_measurement": "Set measurements",
       "manage_tags": "Manage tags",
@@ -1013,7 +1012,6 @@
     "loading": "Loading",
     "locale_settings": "Language",
     "logged_in_as": "Logged in as: {username} ",
-    "manage_asset_categories": "Manage asset categories",
     "manage_asset_connections": "Manage asset connection",
     "manage_asset_panel_assignment": "Manage asset assignments",
     "manage_asset_panel_assignment_description": "Assign assets to the infromation panels",
@@ -1103,7 +1101,6 @@
     "rules_true_label": "True",
     "save_asset_rules": "Save asset rules",
     "search": "Search",
-    "select_asset_category": "Select asset category",
     "select_asset_type": "Select asset type",
     "select_base_recommendation": "Select comparison recommendation",
     "select_dashboard": "Select dashboard",
@@ -1111,9 +1108,8 @@
     "select_dashboard_model": "Select model",
     "select_dashboard_unit": "Select unit",
     "select_direction": "Select direction",
-    "select_heatmap": "Select heatmap",
-    "select_heatmap_image": "Select heatmap background",
     "select_measurement_aggregation": "Select_measurement's aggregation function",
+    "select_measurement_direction": "Select direction",
     "select_measurement_domain": "Select domain",
     "select_measurement_type": "Select the type",
     "select_measurement_unit": "Select the unit",

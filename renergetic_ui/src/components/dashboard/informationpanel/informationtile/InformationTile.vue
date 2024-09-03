@@ -138,6 +138,7 @@ function validateTileSettings(tile, panelSettings, ctx) {
       qrcode_content: tile.props.qrcode_content,
       img_url: tile.props.img_url,
       measurement_color: tile.props.measurement_color,
+      aggregate_values: tile.props.aggregate_values,
       // asset_id: settings.asset_id,
     };
   }
