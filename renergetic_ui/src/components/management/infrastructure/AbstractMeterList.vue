@@ -100,7 +100,7 @@
               <p>{{ $t("model.measurement.name") }} : {{ measurement.name }}</p>
               <p>{{ $t("model.measurement.label") }} : {{ measurement.label }}</p>
               <p>{{ $t("model.measurement.domain") }} : {{ measurement.domain }}</p>
-              <p>{{ $t("view.asset") }} {{ $t("model.asset.name") }} : {{ measurement.asset.name }}</p>
+              <p v-if="measurement.asset">{{ $t("view.asset") }} {{ $t("model.asset.name") }} : {{ measurement.asset.name }}</p>
               <p>{{ $t("model.measurement.type") }} : {{ measurement.type.name }}</p>
               <p>{{ $t("model.measurement_type.unit") }} : {{ measurement.type.unit }}</p>
               <p>{{ $t("model.measurement.direction") }} : {{ measurement.direction }}</p>

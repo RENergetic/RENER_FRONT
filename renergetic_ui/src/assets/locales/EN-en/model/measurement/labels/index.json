@@ -14,8 +14,10 @@
   "abstract_storage": "Energy storage",
   "abstract_ens": "External Non Renewable Sources",
   "abstract_ers": "External Renewable Sources",
-  "abstract_lrs": "Local renewable sources",
-  "abstract_lns": "Local Non Renewable Sources",
+  "abstract_lrs": "Local renewable consumption",
+  "abstract_lns": "Local Non Renewable consumption",
+  "abstract_plrs": "Local renewable production",
+  "abstract_plns": "Local Non Renewable production",
   "abstract_losses": "Losses",
   "abstract_load": "Load"
 }
