@@ -141,6 +141,16 @@
     </Column>
 
     <Column v-if="!basic" selection-mode="multiple" header-style="width: 3rem"></Column>
+    <Column v-if="basic">
+      <template #body="slotProps">
+        <Button
+          v-tooltip="$t('view.view_data')"
+          icon="pi pi-chart-line"
+          class="p-button-rounded"
+          @click="$refs.measurementChart.showMeasurement(slotProps.data)"
+        />
+      </template>
+    </Column>
   </DataTable>
   <ren-paginator v-if="measurementList" v-model:offset="mOffset" style="left: 0" sticky :current-rows="measurementList.length" @update="reload" />
   <Toolbar v-if="!basic" class="ren-toolbar ren-sticky">
@@ -196,6 +206,7 @@
     </Card>
   </Dialog>
   <DeleteMeasurement ref="deleteMeasurement" @delete="onDelete" />
+  <MeasurementChartDialog ref="measurementChart" />
 </template>
 
 <script>
@@ -250,12 +261,13 @@ import MeasurementForm from "./MeasurementForm.vue";
 import MeasurementTypeList from "./MeasurementTypeList.vue";
 import MeasurementExtension from "./MeasurementExtension.vue";
 import DeleteMeasurement from "./DeleteMeasurement.vue";
+import MeasurementChartDialog from "@/components/dashboard/measurement/MeasurementChartDialog.vue";
 import { MeasurementDomains, MeasurementDirection } from "@/plugins/model/Enums.js";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 
 export default {
   name: "MeasurementList",
-  components: { MeasurementForm, MeasurementTypeList, MeasurementExtension, DeleteMeasurement },
+  components: { MeasurementForm, MeasurementTypeList, MeasurementExtension, DeleteMeasurement, MeasurementChartDialog },
   props: {
     measurementList: { type: Array, default: () => [] },
     basic: { type: Boolean, default: false },
