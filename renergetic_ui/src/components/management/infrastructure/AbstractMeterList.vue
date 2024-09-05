@@ -106,35 +106,21 @@
               <p>{{ $t("model.measurement.direction") }} : {{ measurement.direction }}</p>
               <p>{{ $t("model.measurement.sensor_name") }} : {{ measurement.sensor_name }}</p>
               <p>{{ $t("model.measurement_type.physical_name") }} : {{ measurement.type.physical_name }}</p>
-              <Button v-tooltip="$t('view.view_data')" icon="pi pi-chart-line" class="p-button-rounded" @click="showData(measurement)" />
+              <Button
+                v-tooltip="$t('view.view_data')"
+                icon="pi pi-chart-line"
+                class="p-button-rounded"
+                @click="$refs.measurementChart.showMeasurement(measurement)"
+              />
             </span>
           </AccordionTab>
         </Accordion>
       </div>
     </template>
   </Card>
-  <Dialog v-model:visible="dataDialog" :style="{ width: '90vw' }" :modal="true" :dismissable-mask="true">
-    <div v-if="selectedMeasurement">
-      <MeasurementChart
-        :key="selectedMeasurement.id"
-        ref="chart"
-        :filter="filter"
-        :style="'margin:auto;max-width: 90%;'"
-        :width="1200"
-        :height="500"
-        :measurements="[selectedMeasurement]"
-      />
-      <BasicFilterSettings
-        style="width: 100%; margin: auto; margin-top: 1rem"
-        class="ren-card"
-        :setting-key="'measurement'"
-        :submit-button="false"
-        :columns="3"
-        :labels="false"
-        @update="reloadSettings()"
-      />
-    </div>
-  </Dialog>
+  <MeasurementChartDialog ref="measurementChart" />
+  <!-- <MeasurementChartDialog v-model:measurement="selectedMeasurement"  /> -->
+
   <MeasurementDialog v-model:visible="jsonDialog" v-model="mMeasurement" />
   <Dialog v-model:visible="measurementDialog" :style="{ width: '90vw', height: '90vh', maxHeight: '100%' }" :modal="true">
     <Card class="ren-page-content">
@@ -146,14 +132,12 @@
 </template>
 <script>
 import MeasurementSelect from "@/components/management/infrastructure/measurement/MeasurementSelect.vue";
-import MeasurementChart from "@/components/dashboard/measurement/MeasurementChart.vue";
-import BasicFilterSettings from "@/components/miscellaneous/settings/BasicFilterSettings.vue";
+import MeasurementChartDialog from "@/components/dashboard/measurement/MeasurementChartDialog.vue";
 export default {
   name: "AbstractMeterList",
   components: {
     MeasurementSelect,
-    MeasurementChart,
-    BasicFilterSettings,
+    MeasurementChartDialog,
   },
   props: {
     abstractMeterTypes: {
@@ -179,9 +163,6 @@ export default {
       selectedMeasurements: {},
       activeAccordion: null,
       measurementHandler: null,
-      dataDialog: false,
-      selectedMeasurement: null,
-      filter: null,
     };
   },
   computed: {
@@ -244,17 +225,6 @@ export default {
     },
   },
   methods: {
-    reloadSettings() {
-      this.filter = this.$store.getters["settings/parsedFilter"]("measurement");
-      // this.conversionSettings = this.$store.getters["settings/conversion"];
-    },
-    async showData(measurement) {
-      await this.$ren.managementApi.getMeasurementProperties(measurement.id).then((details) => {
-        measurement.measurement_details = details;
-      });
-      this.selectedMeasurement = measurement;
-      this.dataDialog = true;
-    },
     async setAbstractMeter(name, domain) {
       let abstractMeter = await this.$ren.kpiApi.getAbstractMeterConfiguration(name, domain);
       if (abstractMeter == null) {
