@@ -1,7 +1,17 @@
 <template>
   <!-- Admin workflows -->
   <Card class="ren-page-content">
-    <template #title>{{ $t("menu.manage_hdr_pipeline") }}</template>
+    <template #title>{{ $t("menu.manage_wasteheat_pipeline") }}</template>
+    <template #content>
+      <RenSpinner ref="spinner" :lock="true" style="width: 100%">
+        <template #content>
+          <pipeline-list v-model:pagination="pagination" v-model:filters="filters" :workflow-list="workflowList" @reload="reload" />
+        </template>
+      </RenSpinner>
+    </template>
+  </Card>
+  <Card class="ren-page-content">
+    <template #title>{{ $t("menu.manage_wasteheat_dashboards") }}</template>
     <template #content>
       <RenSpinner ref="spinner" :lock="true" style="width: 100%">
         <template #content>
@@ -12,9 +22,9 @@
   </Card>
 </template>
 <script>
-import PipelineList from "@/components/admin/HDRPipelineList.vue";
+import PipelineList from "@/components/admin/WasteHeatPipelineList.vue";
 export default {
-  name: "HDRPipelineListView",
+  name: "WasteHeatConfigurationView",
   components: { PipelineList },
   data() {
     return { workflowList: [], filters: null };
@@ -34,9 +44,9 @@ export default {
   methods: {
     async loadWorkflows() {
       let f = this.filters ? this.filters : {};
-      if (f.hdr_pipeline) {
+      if (f.wasteheat_pipeline) {
         await this.$refs.spinner.run(async () => {
-          this.workflowList = await this.$ren.kubeflowApi.listHDRPipelines();
+          this.workflowList = await this.$ren.kubeflowApi.getPipelineByProperty(this.WASTEHEAT_KUBEFLOW_PIPELINE, "true");
         });
       } else {
         await this.$refs.spinner.run(async () => {

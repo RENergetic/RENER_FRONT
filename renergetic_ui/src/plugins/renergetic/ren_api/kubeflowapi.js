@@ -56,6 +56,18 @@ export default class KubeflowApi extends RestComponent {
     }
     return null;
   }
+
+  setPipelineProperty(pipelineId, property, value, unique = false) {
+    var prop = { key: property, value: value ? "true" : "false", type: "boolean" };
+    let args = this.parseArgs({ unique: unique });
+    return this.post(`${this.BASE_URL}/admin/pipeline/${pipelineId}/property?${args}`, prop);
+  }
+
+  getPipelineByProperty(property, value) {
+    // let value = "true";
+    return this.get(`${this.BASE_URL}/pipeline/property/${property}/value/${value}`);
+  }
+
   getExperimentRun(pipelineId) {
     return this.get(`${this.BASE_URL}/pipeline/${pipelineId}/run`);
   }

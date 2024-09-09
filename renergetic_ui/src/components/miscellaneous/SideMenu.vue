@@ -265,6 +265,14 @@ export default {
             this.$router.push({ name: "HDRPipeline" });
           },
         },
+        {
+          class: this.checkPath({ name: "WasteHeatConfiguration" }) ? "hl-menu" : "",
+          label: this.$t("menu.manage_wasteheat"),
+          icon: "pi pi-fw pi-cog",
+          command: () => {
+            this.$router.push({ name: "WasteHeatConfiguration" });
+          },
+        },
       ];
       return items;
     },
