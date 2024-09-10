@@ -10,7 +10,7 @@
       </RenSpinner>
     </template>
   </Card>
-  <Card class="ren-page-content">
+  <!-- <Card class="ren-page-content">
     <template #title>{{ $t("menu.manage_wasteheat_dashboards") }}</template>
     <template #content>
       <RenSpinner ref="spinner" :lock="true" style="width: 100%">
@@ -19,7 +19,7 @@
         </template>
       </RenSpinner>
     </template>
-  </Card>
+  </Card> -->
 </template>
 <script>
 import PipelineList from "@/components/admin/WasteHeatPipelineList.vue";

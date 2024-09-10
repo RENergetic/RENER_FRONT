@@ -136,7 +136,7 @@ export default {
         });
         var runObj = null;
         await this.$refs.requestSpinner.run(async () => {
-          runObj = await this.$ren.kubeflowApi.getExperimentRun(pipeline.pipeline_id);
+          runObj = await this.$ren.kubeflowApi.getWorkflowRun(pipeline.pipeline_id);
         });
         if (!pipeline) {
           this.$emitter.emit("error", { message: this.$t("error.default_hdr_pipeline_not_set") });

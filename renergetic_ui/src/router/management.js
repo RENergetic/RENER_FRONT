@@ -24,6 +24,18 @@ var management = [
     component: () => import("../views/management/demand/HDRView.vue"),
   },
   {
+    path: "/management/wasteheat",
+    name: "WasteHeatView",
+    props: {},
+    meta: {
+      isAuthenticated: true,
+      roles: ["ren-admin", "ren-technical-manager", "ren-manager"],
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN | RenRoles.REN_MANAGER,
+    },
+    component: () => import("../views/management/WasteHeatView.vue"),
+  },
+
+  {
     path: "/management/workflow",
     name: "Workflows",
     meta: {

@@ -26,6 +26,12 @@ export default class KubeflowApi extends RestComponent {
   hideExperiment(pipelineId) {
     return this.delete(`${this.BASE_URL}/admin/pipeline/${pipelineId}/visibility`);
   }
+  setPanel(pipelineId, panelId) {
+    return this.put(`${this.BASE_URL}/admin/pipeline/${pipelineId}/panel/${panelId}`);
+  }
+  revokePanel(pipelineId) {
+    return this.delete(`${this.BASE_URL}/admin/pipeline/${pipelineId}/panel`);
+  }
   setParameters(pipelineId, parameters) {
     return this.put(`${this.BASE_URL}/admin/pipeline/${pipelineId}/parameters`, parameters);
   }
@@ -68,7 +74,7 @@ export default class KubeflowApi extends RestComponent {
     return this.get(`${this.BASE_URL}/pipeline/property/${property}/value/${value}`);
   }
 
-  getExperimentRun(pipelineId) {
+  getWorkflowRun(pipelineId) {
     return this.get(`${this.BASE_URL}/pipeline/${pipelineId}/run`);
   }
 

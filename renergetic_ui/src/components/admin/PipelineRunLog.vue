@@ -36,12 +36,16 @@
       </RenSpinner>
     </template>
   </Card>
+  <Dialog v-model:visible="workflowRunDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <WorkflowRunDetails :workflow-run="selectedWorkflowRunDetails" @on-stop="onWorkflowStop" />
+  </Dialog>
 </template>
 
 <script>
+import WorkflowRunDetails from "./WorkflowRunDetails.vue";
 export default {
   name: "PipelineRunLog",
-  components: {},
+  components: { WorkflowRunDetails },
   props: {
     workflow: { type: Object, default: null },
   },
@@ -49,6 +53,8 @@ export default {
   data() {
     return {
       runLogList: null,
+      selectedWorkflowRunDetails: null,
+      workflowRunDetailsDialog: false,
     };
   },
   computed: {},
@@ -63,10 +69,14 @@ export default {
     }
   },
   methods: {
+    showRunDetails(workflowRun) {
+      this.selectedWorkflowRunDetails = workflowRun;
+      this.workflowRunDetailsDialog = true;
+    },
     async loaddata(workflow) {
-      var lastWeek = this.$ren.utils.currentTimestamp() - 1000 * 3600 * 24 * 7;
+      var last30days = this.$ren.utils.currentTimestamp() - 1000 * 3600 * 24 * 30;
       await this.$refs.renspinner.run(async () => {
-        this.runLogList = await this.$ren.kubeflowApi.listRuns({ pipelineId: workflow.pipeline_id, from: lastWeek });
+        this.runLogList = await this.$ren.kubeflowApi.listRuns({ pipelineId: workflow.pipeline_id, from: last30days });
         this.runlogDialog = true;
       });
     },

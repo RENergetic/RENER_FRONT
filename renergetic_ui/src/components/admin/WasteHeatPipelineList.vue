@@ -1,6 +1,4 @@
 <template>
-  <!-- workflows: {{ workflowList }} -->
-  todo
   <RenSpinner ref="spinner_temp" :lock="true" style="width: 100%">
     <template #content>
       <DataTable
