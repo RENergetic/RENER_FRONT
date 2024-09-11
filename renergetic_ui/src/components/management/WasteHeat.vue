@@ -1,13 +1,29 @@
 <template>
-  <Card class="ren-page-content" style="width: 100%; overflow: unset">
+  <Toolbar class="ren-toolbar ren-page-content ren-sticky top" style="z-index: 2000">
+    <template #start>
+      <!-- <h3>{{ $t("menu.wasteheat_view") }}</h3> -->
+      <Button :label="$t('view.button.start_new_task')" :disabled="isTaskRunning" @click="showStartDialog" />
+    </template>
+    <template #end>
+      <Button :disabled="isTaskRunning" icon="pi pi-list" @click="showRunLog" />
+    </template>
+  </Toolbar>
+
+  <InformationPanelWrapper
+    v-if="informationPanel && !isTaskRunning"
+    ref="panel"
+    :panel="informationPanel"
+    :edit-mode="false"
+    :panel-settings="panelSettings"
+    :filter="panelFilter"
+    @update:tile="onTileUpdate"
+  ></InformationPanelWrapper>
+  <Card v-if="isTaskRunning" class="ren-page-content" style="width: 100%; overflow: unset">
     <template #title>
       {{ $t("menu.wasteheat_view") }}
-      <!-- <WasteHeat v-if="workflow" :workflow="workflow" :workflow-run="workflowRun" @reload="reload" />
-      <div v-else>{{ $t("view.wasteheat_workflow_undefined") }}</div> -->
     </template>
     <template #content>
-      <Button :label="$t('view.button.start')" :disabled="isTaskRunning" icon="pi pi-plus-circle" @click="showStartDialog()" />
-      <div v-if="isTaskRunning" @click="showRunDetails()">
+      <div @click="showRunDetails()">
         <div>
           {{ workflowRun.name ? `${workflowRun.name} (${workflowRun.run_id})` : workflowRun.run_id }}
         </div>
@@ -17,18 +33,8 @@
       </div>
     </template>
   </Card>
-  <div v-if="informationPanel && !isTaskRunning" id="panel-box">
-    <InformationPanelWrapper
-      ref="panel"
-      :panel="informationPanel"
-      :edit-mode="false"
-      :panel-settings="panelSettings"
-      :filter="panelFilter"
-      @update:tile="onTileUpdate"
-    ></InformationPanelWrapper>
-    <div style="margin-left: 1rem; margin-top: 2rem">
-      <ParsedDateFilter :key="parsedFilterRefresh" :filter="panelFilter" />
-    </div>
+  <div v-if="informationPanel && !isTaskRunning" style="margin-left: 1rem; margin-top: 2rem">
+    <ParsedDateFilter :key="parsedFilterRefresh" :filter="panelFilter" />
   </div>
   <Dialog v-model:visible="workflowRunStartDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <WorkflowRun :workflow="workflow" @on-start="onWorkflowStart" />
@@ -36,15 +42,15 @@
   <Dialog v-model:visible="workflowRunDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <WorkflowRunDetails :workflow-run="workflowRun" @on-stop="onWorkflowStop" />
   </Dialog>
-  <!-- 
 
   <Dialog v-model:visible="runlogDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <PipelineRunLog :workflow="selectedWorkflow" />
-  </Dialog> -->
+    <PipelineRunLog :workflow="workflow" />
+  </Dialog>
 </template>
 
 <script>
 import WorkflowRunDetails from "@/components/management/workflow/WorkflowRunDetails.vue";
+import PipelineRunLog from "@/components/admin/PipelineRunLog.vue";
 // import PipelineRunLog from "./PipelineRunLog.vue";
 import WorkflowRun from "@/components/management/workflow/WorkflowRun.vue";
 import InformationPanelWrapper from "@/components/dashboard/informationpanel/InformationPanelWrapper.vue";
@@ -52,7 +58,7 @@ import ParsedDateFilter from "@/components/miscellaneous/settings/ParsedDateFilt
 
 export default {
   name: "WasteHeatPipelineList",
-  components: { WorkflowRun, WorkflowRunDetails, InformationPanelWrapper, ParsedDateFilter },
+  components: { WorkflowRun, WorkflowRunDetails, InformationPanelWrapper, ParsedDateFilter, PipelineRunLog },
   props: {
     workflow: { type: Object, default: null },
     workflowRun: { type: Object, default: null },

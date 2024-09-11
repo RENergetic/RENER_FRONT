@@ -2,7 +2,7 @@
   <!-- Admin workflows -->
 
   <DotMenu v-if="panel" :model="menuModel" />
-  <RenSpinner ref="spinner" :lock="true" style="width: 100%">
+  <RenSpinner ref="spinner" :lock="true" style="width: 100%; overflow: auto">
     <template #content>
       <WasteHeat
         v-if="workflow"
