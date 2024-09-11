@@ -37,11 +37,18 @@ export default {
       if (!(this.pdata && this.pdata.current)) {
         return {};
       }
-      let labels = this.tile.measurements.map((m) => (m.label ? m.label : m.name));
-
+      let data;
+      let labels;
       // let data = this.tile.measurements.map((m) => this.pdata[m.id]);
       //TODO: make it comgigurable in tile / args prediction & aggregation func
-      let data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
+      if (this.mSettings.tile.group_by_asset || this.mSettings.tile.group_by_domain) {
+        let groupedValues = this.$ren.utils.groupValues(this.tile.measurements, this.pdata, this.mSettings);
+        data = Object.values(groupedValues).map((g) => g.value);
+        labels = Object.values(groupedValues).map((g) => g.label);
+      } else {
+        data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
+        labels = this.tile.measurements.map((m) => (m.label ? m.label : m.name));
+      }
 
       // console.info(this.tile.measurements);
       let backgroundColor = this.tile.measurements.map((m) => (m.measurement_details.color ? m.measurement_details.color : "#90A4AE"));

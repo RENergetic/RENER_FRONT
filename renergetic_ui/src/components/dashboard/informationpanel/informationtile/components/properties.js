@@ -119,6 +119,26 @@ const tileProperties = [
     key: "template",
   },
   {
+    label: $t(`model.information_panel.tile.properties.group_by_asset`),
+    description: $t(`model.information_panel.tile.properties.group_by_asset_description`),
+    type: "Boolean",
+    ext: {
+      true: $t("settings.yes"),
+      false: $t("settings.no"),
+    },
+    key: "group_by_asset",
+  },
+  {
+    label: $t(`model.information_panel.tile.properties.group_by_domain`),
+    description: $t(`model.information_panel.tile.properties.group_by_domain_description`),
+    type: "Boolean",
+    ext: {
+      true: $t("settings.yes"),
+      false: $t("settings.no"),
+    },
+    key: "group_by_domain",
+  },
+  {
     label: $t(`model.information_panel.tile.properties.measurement_color`),
     description: $t(`model.information_panel.tile.properties.measurement_color_description`),
     type: "Color",
@@ -199,6 +219,8 @@ const doughnutProperties = new Set([
   "legend",
   "icon_visibility",
   "icon",
+  "group_by_asset",
+  "group_by_domain",
 ]);
 const listProperties = new Set([
   "title_visibility",
@@ -208,6 +230,8 @@ const listProperties = new Set([
   "icon_visibility",
   "item_icon_visibility",
   "icon",
+  "group_by_asset",
+  "group_by_domain",
 ]);
 const singleProperties = new Set([
   "title_visibility",

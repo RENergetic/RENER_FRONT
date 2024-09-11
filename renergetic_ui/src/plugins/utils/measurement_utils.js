@@ -1,4 +1,25 @@
 export default {
+  //#region private
+  _hexExtractColor(colorHex) {
+    if (!colorHex) return colorHex;
+    return colorHex.length > 7 ? colorHex.substring(0, 7) : colorHex.substring(0, Math.min(colorHex.length, 9));
+  },
+  _componentToHex(c) {
+    var hex = (Math.round(c) % 255).toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+  },
+
+  _rgbToHex(r, g, b) {
+    return "#" + this._componentToHex(r) + this._componentToHex(g) + this._componentToHex(b);
+  },
+  _getRandomColor() {
+    //primary color alternatives
+    let r = 148 + Math.random() * 60 - 30;
+    let g = 186 + Math.random() * 60 - 30;
+    let b = 57 + Math.random() * 60 - 30;
+    return this._rgbToHex(r, g, b);
+  },
+  //#endregion
   knobColors(measurement) {
     // if (measurement.type.color) {
     let color = this.measurementColor(measurement).color;
@@ -49,25 +70,6 @@ export default {
     }
     return `#${color.slice(1, color.length - 2)}${alphaHex}`;
   },
-  _hexExtractColor(colorHex) {
-    if (!colorHex) return colorHex;
-    return colorHex.length > 7 ? colorHex.substring(0, 7) : colorHex.substring(0, Math.min(colorHex.length, 9));
-  },
-  _componentToHex(c) {
-    var hex = (Math.round(c) % 255).toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
-  },
-
-  _rgbToHex(r, g, b) {
-    return "#" + this._componentToHex(r) + this._componentToHex(g) + this._componentToHex(b);
-  },
-  _getRandomColor() {
-    //primary color alternatives
-    let r = 148 + Math.random() * 60 - 30;
-    let g = 186 + Math.random() * 60 - 30;
-    let b = 57 + Math.random() * 60 - 30;
-    return this._rgbToHex(r, g, b);
-  },
 
   setMeasurementLabel(measurement) {
     if (measurement.label) {
@@ -90,6 +92,20 @@ export default {
     if (u == null) u = "";
 
     return u && u != "any" && u != "ratio" ? `[${u}]` : ``;
+  },
+  measurementLabel(measurement) {
+    let labelKey = `model.measurement.labels.${measurement.label}`;
+    if (measurement.label != null && this.app.$te(labelKey)) {
+      return this.$t(labelKey);
+    }
+    let nameKey = `enums.measurement_name.${measurement.name}`;
+    if (this.app.$te(nameKey)) {
+      return this.app.$t(nameKey);
+    }
+    if (measurement.label != null) {
+      return measurement.label;
+    }
+    return measurement.name;
   },
 };
 // valueAgg(key, value, baseUnit, dict) {

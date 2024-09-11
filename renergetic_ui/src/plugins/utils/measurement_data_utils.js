@@ -183,7 +183,58 @@ export default {
     }
     return dict;
   },
+  _aggMeasurement(measurement, data, tileSettings) {
+    let k = "";
+    let labelAcc = [];
+    let v = this.getConvertedValue(measurement, data, tileSettings);
+    if (tileSettings.tile.group_by_asset) {
+      if (measurement.asset) {
+        labelAcc.push(measurement.asset.label ? measurement.asset.label : measurement.asset.name);
+        k += measurement.asset.id + "_";
+      } else {
+        labelAcc.push("{no_asset}");
+        k += "{no_asset}_";
+      }
+    }
+    if (tileSettings.tile.group_by_domain) {
+      labelAcc.push(measurement.domain);
+      k += measurement.domain;
+    }
+    // labelAcc.push(this.measurementLabel(measurement))
+    if (k == "") {
+      return {
+        color: this.measurementColor(measurement).color,
+        key: measurement.id,
+        label: measurement.label ? measurement.label : measurement.name,
+        value: v,
+      };
+    } else {
+      return {
+        color: this.measurementColor(measurement).color,
+        key: k,
+        label: labelAcc.join(" - "),
+        value: v,
+      };
+    }
+  },
+
+  groupValues(measurements, data, tileSettings) {
+    var groupedValues = {};
+    for (let m of measurements) {
+      let groupedValue = this._aggMeasurement(m, data, tileSettings);
+      if (groupedValue.key in groupedValues) {
+        groupedValues[groupedValue.key].value += groupedValue.value;
+      } else {
+        groupedValues[groupedValue.key] = groupedValue;
+      }
+    }
+    return groupedValues;
+    // if ( "group_by_asset",
+    //   "group_by_domain",)
+  },
+
   getConvertedValue(measurement, data, tileSettings) {
+    //TODO: make it comfigurable in tile / args prediction & aggregation func
     try {
       if (tileSettings.panel.relativeValues && measurement.type.base_unit != "%") {
         return (data.current[measurement.aggregation_function][measurement.id] / data.max[measurement.aggregation_function][measurement.id]) * 100.0;

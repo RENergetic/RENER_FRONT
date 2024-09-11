@@ -61,30 +61,50 @@ export default {
       if (!(this.pdata && this.pdata.current)) {
         return {};
       }
-      let labels = this.tile.measurements.map((m) => this.measurementLabel(m));
+      let data;
+      let labels;
+      let backgroundColors;
 
-      // let data = this.tile.measurements.map((m) => this.pdata[m.id]);
-      //TODO: make it comfigurable in tile / args prediction & aggregation func
-      let data = null;
-      let backgroundColor = this.tile.measurements.map((m) => this.$ren.utils.measurementColor(m).color);
-
-      if (!this.mSettings.panel.relativeValues) {
-        data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
+      alert("grouped by asset: " + this.mSettings.tile.group_by_asset);
+      if (this.mSettings.tile.group_by_asset || this.mSettings.tile.group_by_domain) {
+        let groupedValues = this.$ren.utils.groupValues(this.tile.measurements, this.pdata, this.mSettings);
+        console.error(groupedValues);
+        data = Object.values(groupedValues).map((g) => g.value);
+        labels = Object.values(groupedValues).map((g) => g.label);
+        backgroundColors = Object.values(groupedValues).map((g) => g.color);
+        console.error(data);
+        console.error(labels);
+        console.error(backgroundColors);
       } else {
-        //console.info("use relative values");
-        //todo include min offset
-        // console.info(this.pdata.current);
-        data = this.tile.measurements.map((m) =>
-          m.type.base_unit != "%"
-            ? this.pdata.current[m.aggregation_function][m.id] / this.pdata.max[m.aggregation_function][m.id]
-            : this.pdata.current[m.aggregation_function][m.id],
-        );
+        data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
+        labels = this.tile.measurements.map((m) => this.measurementLabel(m));
+        backgroundColors = this.tile.measurements.map((m) => this.$ren.utils.measurementColor(m).color);
+      }
+
+      // if (!this.mSettings.panel.relativeValues) {
+      //   data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
+      // } else {
+      //   //console.info("use relative values");
+      //   //todo include min offset
+      //   data = this.tile.measurements.map((m) =>
+      //     m.type.base_unit != "%"
+      //       ? this.pdata.current[m.aggregation_function][m.id] / this.pdata.max[m.aggregation_function][m.id]
+      //       : this.pdata.current[m.aggregation_function][m.id],
+      //   );
+      //   let sum = data.reduce((partialSum, a) => partialSum + a, 0);
+      //   if (sum < 0.99999) {
+      //     data.push(1.0 - sum);
+      //     backgroundColor.push("#90A4AE");
+      //     labels.push("");
+      //   }
+      // }
+
+      //fill the pie to 100%
+      if (this.mSettings.panel.relativeValues) {
         let sum = data.reduce((partialSum, a) => partialSum + a, 0);
-        // console.info(1.0 - sum);
-        // console.info(sum);
         if (sum < 0.99999) {
           data.push(1.0 - sum);
-          backgroundColor.push("#90A4AE");
+          backgroundColors.push("#90A4AE");
           labels.push("");
         }
       }
@@ -94,7 +114,7 @@ export default {
         datasets: [
           {
             data: data,
-            backgroundColor: backgroundColor,
+            backgroundColor: backgroundColors,
           },
         ],
       };

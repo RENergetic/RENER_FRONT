@@ -70,18 +70,7 @@ export default {
 
     measurementlabel: function () {
       if ('measurement' in this && this.measurement != null) {
-        let labelKey = `model.measurement.labels.${this.measurement.label}`;
-        if (this.measurement.label != null && this.$te(labelKey)) {
-          return this.$t(labelKey);
-        }
-        let nameKey = `enums.measurement_name.${this.measurement.name}`;
-        if (this.$te(nameKey)) {
-          return this.$t(nameKey);
-        }
-        if (this.measurement.label != null) {
-          return this.measurement.label;
-        }
-        return this.measurement.name;
+        return this.$ren.utils.measurementLabel( this.measurement) ;
       }
       return null
     },

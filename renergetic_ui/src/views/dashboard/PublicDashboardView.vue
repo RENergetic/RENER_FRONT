@@ -3,7 +3,6 @@
   <div v-if="panel" id="panel-box">
     <DotMenu :model="menuModel" />
     <!-- :asset-id="$route.params.asset_id" -->
-
     <InformationPanelWrapper
       ref="panel"
       :key="panelReload"
@@ -128,6 +127,7 @@ export default {
       filterSettingsDialog: false,
       conversionSettingsDialog: false,
       parsedFilterRefresh: false,
+      editMode: false,
     };
   },
   computed: {
