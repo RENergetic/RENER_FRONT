@@ -8,7 +8,8 @@
     </div>
     <div class="flex flex-column align-items-center justify-content-center tilecontent" style="padding: 0 0.5rem">
       <InformationTileMeasurementList
-        :tile="tile"
+        v-if="mData != null"
+        :tile="mTile"
         :pdata="pdata"
         :settings="mSettings"
         :conversion-settings="conversionSettings"
@@ -31,11 +32,33 @@ export default {
   emits: ["select"],
   data() {
     return {
+      mData: null,
       mSettings: this.settings,
       mTile: this.tile,
     };
   },
+  beforeMount() {
+    this.aggregate();
+  },
   methods: {
+    aggregate: function () {
+      if (this.mSettings.tile.group_by_asset || this.mSettings.tile.group_by_domain || this.mSettings.tile.group_by_direction) {
+        let groupedMeasurements = this.$ren.utils.groupValues(this.tile.measurements, this.pdata, this.mSettings);
+        groupedMeasurements = Object.values(groupedMeasurements);
+        console.debug(groupedMeasurements);
+
+        console.warn("TODO: set local labels and colors");
+        this.mData = this.pdata;
+        for (let gm of groupedMeasurements) {
+          this.mData.current[gm.aggregation_function][gm.id] = gm.value;
+        }
+        this.mTile = JSON.parse(JSON.stringify(this.mTile));
+        this.mTile.measurements = groupedMeasurements;
+      } else {
+        this.mData = this.pdata;
+        this.mTile = this.tile;
+      }
+    },
     iconVisibility: function () {
       return (this.mSettings && this.mSettings.tile ? this.mSettings.tile.icon_visibility : true) && this.mSettings.tile.icon;
     },

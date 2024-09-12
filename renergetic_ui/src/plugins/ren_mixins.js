@@ -1,4 +1,5 @@
 import { RenRoles } from "@/plugins/model/Enums.js";
+import { Exception } from "sass";
 // RenMixins
 class AppDialog {
   $emitter;
@@ -45,7 +46,7 @@ export default {
     tvMode: function () {
       return this.$route.meta.tvMode ? true : false;
     },
-    isTileHorizontal: function () {
+    tileDim:function(){
       try {
         let w =
           this.settings.panel && this.settings.panel.cellWidth
@@ -55,7 +56,23 @@ export default {
           this.settings.panel && this.settings.panel.cellHeight
             ? this.settings.panel.cellHeight * this.tile.layout.h
             : this.$parent.$el.parentElement.clientHeight * 0.9;
-        return w > h;
+         
+       return {width: w ,height: h};
+      } catch (ex) {
+        if (this.$parent.$el == null) {
+          return null
+        }
+        console.error(ex)
+        return   null;
+      }
+    },
+    isTileHorizontal: function () {
+      try {
+       let dim= this.tileDim(); 
+           if(dim == null){
+            throw new Exception("null tile dimensions")
+           }
+        return dim.width > dim.height;
       } catch (ex) {
         if (this.$parent.$el == null) {
           return false

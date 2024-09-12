@@ -65,22 +65,21 @@ export default {
       let labels;
       let backgroundColors;
 
-      alert("grouped by asset: " + this.mSettings.tile.group_by_asset);
-      if (this.mSettings.tile.group_by_asset || this.mSettings.tile.group_by_domain) {
+      // alert("grouped by asset: " + this.mSettings.tile.group_by_asset);
+      if (this.mSettings.tile.group_by_asset || this.mSettings.tile.group_by_domain || this.mSettings.tile.group_by_direction) {
         let groupedValues = this.$ren.utils.groupValues(this.tile.measurements, this.pdata, this.mSettings);
-        console.error(groupedValues);
+        console.debug(groupedValues);
         data = Object.values(groupedValues).map((g) => g.value);
         labels = Object.values(groupedValues).map((g) => g.label);
         backgroundColors = Object.values(groupedValues).map((g) => g.color);
-        console.error(data);
-        console.error(labels);
-        console.error(backgroundColors);
+        console.warn("TODO: set local labels and colors");
+        console.warn(labels);
+        console.warn(backgroundColors);
       } else {
         data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
         labels = this.tile.measurements.map((m) => this.measurementLabel(m));
         backgroundColors = this.tile.measurements.map((m) => this.$ren.utils.measurementColor(m).color);
       }
-
       // if (!this.mSettings.panel.relativeValues) {
       //   data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
       // } else {

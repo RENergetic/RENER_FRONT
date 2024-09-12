@@ -27,6 +27,7 @@ export default {
   name: "InformationTileItem",
   components: {},
   props: {
+    height: { type: Number, default: null },
     settings: { type: Object, default: () => ({}) },
     conversionSettings: { type: Object, default: () => ({}) },
     measurement: {
@@ -54,7 +55,8 @@ export default {
     },
     style: function () {
       let color = this.measurementColor; //this.$ren.utils.measurementColor(this.measurement, this.value);
-      return `background:${color.color};opacity:${color.alpha};color: set-text-color(${color.color});`;
+      let height = this.height ? `height: ${this.height}%;` : "";
+      return `background:${color.color};opacity:${color.alpha};color: set-text-color(${color.color});` + height;
     },
     state: function () {
       let state;

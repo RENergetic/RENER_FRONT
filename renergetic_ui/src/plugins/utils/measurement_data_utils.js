@@ -190,7 +190,7 @@ export default {
     if (tileSettings.tile.group_by_asset) {
       if (measurement.asset) {
         labelAcc.push(measurement.asset.label ? measurement.asset.label : measurement.asset.name);
-        k += measurement.asset.id + "_";
+        k += "asset:" + measurement.asset.id + "_";
       } else {
         labelAcc.push("{no_asset}");
         k += "{no_asset}_";
@@ -198,20 +198,28 @@ export default {
     }
     if (tileSettings.tile.group_by_domain) {
       labelAcc.push(measurement.domain);
-      k += measurement.domain;
+      k += measurement.domain + "_";
+    }
+    if (tileSettings.tile.group_by_direction) {
+      labelAcc.push(measurement.direction);
+      k += measurement.direction + "_";
     }
     // labelAcc.push(this.measurementLabel(measurement))
     if (k == "") {
       return {
+        ...measurement,
         color: this.measurementColor(measurement).color,
         key: measurement.id,
+        id: measurement.id,
         label: measurement.label ? measurement.label : measurement.name,
         value: v,
       };
     } else {
       return {
+        ...measurement,
         color: this.measurementColor(measurement).color,
         key: k,
+        id: k,
         label: labelAcc.join(" - "),
         value: v,
       };

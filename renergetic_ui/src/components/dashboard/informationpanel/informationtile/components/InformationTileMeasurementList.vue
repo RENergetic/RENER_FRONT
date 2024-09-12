@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%">
+  <div style="width: 100%; height: 100%">
     <InformationTileItem
       v-for="(m, idx) in mTile.measurements"
       :key="m.id"
@@ -8,6 +8,7 @@
       :settings="mSettings"
       :conversion-settings="conversionSettings"
       :pdata="pdata"
+      :height="itemHeight"
       @click="onItemClick({ index: idx, item: m })"
     ></InformationTileItem>
   </div>
@@ -25,7 +26,10 @@ export default {
   },
   emits: ["select"],
   data() {
+    let measurementLength = this.tile.measurements && this.tile.measurements.length ? this.tile.measurements.length : 1;
+    let heightScale = (50.0 / (this.tileDim ? this.tileDim.height : 300)) * 92.0;
     return {
+      itemHeight: Math.max(heightScale, 92.0 / measurementLength),
       mSettings: this.settings,
       mTile: this.tile,
     };

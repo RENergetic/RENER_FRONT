@@ -129,6 +129,16 @@ const tileProperties = [
     key: "group_by_asset",
   },
   {
+    label: $t(`model.information_panel.tile.properties.group_by_direction`),
+    description: $t(`model.information_panel.tile.properties.group_by_direction_description`),
+    type: "Boolean",
+    ext: {
+      true: $t("settings.yes"),
+      false: $t("settings.no"),
+    },
+    key: "group_by_direction",
+  },
+  {
     label: $t(`model.information_panel.tile.properties.group_by_domain`),
     description: $t(`model.information_panel.tile.properties.group_by_domain_description`),
     type: "Boolean",
@@ -221,6 +231,7 @@ const doughnutProperties = new Set([
   "icon",
   "group_by_asset",
   "group_by_domain",
+  "group_by_direction",
 ]);
 const listProperties = new Set([
   "title_visibility",
@@ -232,6 +243,7 @@ const listProperties = new Set([
   "icon",
   "group_by_asset",
   "group_by_domain",
+  "group_by_direction",
 ]);
 const singleProperties = new Set([
   "title_visibility",
