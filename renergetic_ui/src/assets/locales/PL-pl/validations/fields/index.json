@@ -1,4 +1,9 @@
 {
+  "custom": {
+    "asset": {
+      "type": "asset type"
+    }
+  },
   "key": "key",
   "value": "value",
   "domain": "domain",

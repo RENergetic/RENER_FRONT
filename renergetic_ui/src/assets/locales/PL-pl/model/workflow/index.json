@@ -9,5 +9,9 @@
   "visible": "Dostępność",
   "properties": "Własciwości",
   "no_properties": "Brak własciwości",
-  "no_parameters": "Brak parametrów"
+  "no_parameters": "Brak parametrów",
+  "property": {
+    "hdr_pipeline": "Zadanie HDR",
+    "hdr_default_pipeline": "Domyślne zadanie HDR"
+  }
 }

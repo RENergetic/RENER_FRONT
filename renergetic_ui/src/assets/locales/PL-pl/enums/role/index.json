@@ -1,4 +1,14 @@
 {
+  "description": {
+    "ren-staff": "Obsługa",
+    "ren-guest": "Gość",
+    "ren-visitor": "Odwiedzający",
+    "ren-user": "Użytkownik",
+    "ren-manager": "Menadżer",
+    "ren-technical-manager": "Menadżer techniczny",
+    "ren-admin": "Admin",
+    "ren-dev": "Developer"
+  },
   "ren-staff": "Obsługa",
   "ren-guest": "Gość",
   "ren-visitor": "Odwiedzający",

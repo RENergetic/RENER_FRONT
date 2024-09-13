@@ -6,5 +6,13 @@
   "end_time": "Czas zakończenia",
   "parameters": "Parametry",
   "pipeline": "Pipeline",
-  "state": "Status"
+  "state": "Status",
+  "run_state": {
+    "running": "Uruchomiony",
+    "finished": "Skończony",
+    "error": "Błąd",
+    "failed": "Niepowodzenie",
+    "not_running": "Brak",
+    "terminating": "Zatrzymywanie"
+  }
 }

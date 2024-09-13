@@ -1,4 +1,15 @@
 {
+  "category": {
+    "name": null,
+    "label": null,
+    "description": null,
+    "id": null,
+    "delete_prompt": null,
+    "affected_assets": null,
+    "no_assets_found": null,
+    "delete": null,
+    "cancel": null
+  },
   "asset_connections": "Conexiones entre activos",
   "name": "Nombre",
   "id": "Id",
@@ -10,5 +21,17 @@
   "owner": "Propietario",
   "parent": "Padre",
   "connection_type": null,
-  "description": null
+  "description": null,
+  "types": {
+    "room": "Habitación",
+    "pv": "PV",
+    "pv_plant": null,
+    "bulding": null,
+    "flat": null,
+    "heat_exchange": null,
+    "heat_exchanger": null,
+    "heat_source": null,
+    "island": null,
+    "dormitory": null
+  }
 }
