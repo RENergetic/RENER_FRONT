@@ -9,5 +9,9 @@
   "visible": "Visibility",
   "properties": "Properties",
   "no_properties": "No properties",
-  "no_parameters": "No paremeters"
+  "no_parameters": "No paremeters",
+  "property": {
+    "hdr_pipeline": "HDR pipeline",
+    "hdr_default_pipeline": "HDR default pipeline"
+  }
 }

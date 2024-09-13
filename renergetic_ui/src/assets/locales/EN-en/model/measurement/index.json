@@ -17,5 +17,28 @@
   "physical_name": "Physical meaning",
   "physical_type": "Physical unit type",
   "asset": "Asset",
-  "temp_id": "Temporary id"
+  "temp_id": "Temporary id",
+  "labels": {
+    "kpi_peak": "Peak Value",
+    "kpi_sres": "Share of RES",
+    "kpi_snes": "Share of Non-RES",
+    "kpi_ess": "Energy Self-Sufficiency",
+    "kpi_esc": "Energy Self-Consumption",
+    "kpi_ep": "Energy potency",
+    "kpi_co2": "CO₂ intensity",
+    "kpi_ee": "Energy efficency",
+    "kpi_es": "Energy savings",
+    "abstract_excess ": "Excess",
+    "abstract_res": "Renewable energy storage",
+    "abstract_nonres": "Non Renewable energy storage",
+    "abstract_storage": "Energy storage",
+    "abstract_ens": "External Non Renewable Sources",
+    "abstract_ers": "External Renewable Sources",
+    "abstract_lrs": "Local renewable consumption",
+    "abstract_lns": "Local Non Renewable consumption",
+    "abstract_plrs": "Local renewable production",
+    "abstract_plns": "Local Non Renewable production",
+    "abstract_losses": "Losses",
+    "abstract_load": "Load"
+  }
 }

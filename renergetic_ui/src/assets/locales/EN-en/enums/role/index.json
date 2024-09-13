@@ -1,4 +1,14 @@
 {
+  "description": {
+    "ren-staff": "Staff",
+    "ren-guest": "Guest",
+    "ren-visitor": "Visitor",
+    "ren-user": "User",
+    "ren-manager": "Manager",
+    "ren-technical-manager": "Technical manager",
+    "ren-admin": "Admin",
+    "ren-dev": "Developer"
+  },
   "ren-staff": "Staff",
   "ren-guest": "Guest",
   "ren-visitor": "Visitor",
