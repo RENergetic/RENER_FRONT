@@ -1,12 +1,12 @@
 {
-  "description": {
-    "color": "GŁówny kolor szeregu czasowego (np. kolor czcionki dla wartości chwilowej lub kolor linii na wykresie) ",
-    "cumulative": "Is timeseries cumulative",
-    "background": "Domyślny kolor tła",
-    "fill_chart": "Wypełnij pole wykresu"
-  },
+  "background": "Kolor tła",
   "color": "Kolor",
   "cumulative": "Is timeseries cumulative",
-  "background": "Kolor tła",
+  "description": {
+    "background": "Domyślny kolor tła",
+    "color": "GŁówny kolor szeregu czasowego (np. kolor czcionki dla wartości chwilowej lub kolor linii na wykresie) ",
+    "cumulative": "Is timeseries cumulative",
+    "fill_chart": "Wypełnij pole wykresu"
+  },
   "fill_chart": "Wypełnij pole wykresu"
 }

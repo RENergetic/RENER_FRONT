@@ -1,6 +1,6 @@
 {
-  "fixed": "Fixed",
-  "override": "Override",
   "default": "Use other settings",
-  "merge": "Merge"
+  "fixed": "Fixed",
+  "merge": "Merge",
+  "override": "Override"
 }

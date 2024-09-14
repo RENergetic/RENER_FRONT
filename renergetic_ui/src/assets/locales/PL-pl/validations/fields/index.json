@@ -1,25 +1,25 @@
 {
+  "connectedAsset": "Connected asset",
+  "connectionType": "Connection type",
   "custom": {
     "asset": {
       "type": "asset type"
     }
   },
-  "key": "key",
-  "value": "value",
+  "date_from": "Data od",
   "domain": "domain",
-  "physical_type": "physical type",
-  "sensor_name": "sensor name",
-  "username": "username",
   "email": "email",
-  "name": "name",
-  "url": "url",
-  "unit": "Jednostka",
+  "key": "key",
   "label": "label",
+  "name": "name",
   "password": "password",
   "passwordRepeat": "repeat password",
+  "physical_type": "physical type",
+  "requestValue": "Request's value",
   "selectedAsset": "Selected asset",
-  "connectedAsset": "Connected asset",
-  "connectionType": "Connection type",
-  "date_from": "Data od",
-  "requestValue": "Request's value"
+  "sensor_name": "sensor name",
+  "unit": "Jednostka",
+  "url": "url",
+  "username": "username",
+  "value": "value"
 }

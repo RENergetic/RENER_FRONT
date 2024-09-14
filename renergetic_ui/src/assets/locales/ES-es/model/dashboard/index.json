@@ -1,10 +1,10 @@
 {
-  "name": "Nombre",
-  "url": "URL",
+  "grafana_id": null,
   "label": "Etiqueta",
-  "model": "Modelo",
   "measurement_type": "Tipo de medición",
+  "model": "Modelo",
+  "name": "Nombre",
   "unit": "Unidad",
-  "user": "Usuario",
-  "grafana_id": null
+  "url": "URL",
+  "user": "Usuario"
 }

@@ -1,25 +1,25 @@
 {
+  "asset_connections": "Asset connections",
+  "asset_type": "Asset type",
   "category": {
-    "name": "Name",
-    "label": "Label",
+    "affected_assets": "These Assets are affected",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "delete_prompt": "Do you really want to delete the category?",
     "description": "Description",
     "id": "ID",
-    "delete_prompt": "Do you really want to delete the category?",
-    "affected_assets": "These Assets are affected",
-    "no_assets_found": "No assets found for this category.",
-    "delete": "Delete",
-    "cancel": "Cancel"
+    "label": "Label",
+    "name": "Name",
+    "no_assets_found": "No assets found for this category."
   },
-  "asset_connections": "Asset connections",
-  "connection_type": "Connection type",
-  "name": "Name",
-  "id": "Id",
   "child": "Sub assets",
-  "asset_type": "Asset type",
-  "label": "Label",
-  "measurements": "Measurements",
+  "connection_type": "Connection type",
   "description": "Description",
   "geo_location": "Geo location",
+  "id": "Id",
+  "label": "Label",
+  "measurements": "Measurements",
+  "name": "Name",
   "owner": "Owner",
   "parent": "Parent",
   "type": {
@@ -28,15 +28,15 @@
     "name": "Nazwa"
   },
   "types": {
-    "room": "Room",
-    "pv": "Panel PV",
-    "pv_plant": "Panel PV",
     "bulding": "Budynek",
+    "dormitory": "Akademik",
     "flat": "Mieszkanie",
     "heat_exchange": "Wymiennik ciepła",
     "heat_exchanger": "Wymiennik ciepła",
     "heat_source": "Źródło ciepła",
     "island": "Wyspa energertyczna",
-    "dormitory": "Akademik"
+    "pv": "Panel PV",
+    "pv_plant": "Panel PV",
+    "room": "Room"
   }
 }

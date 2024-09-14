@@ -1,13 +1,13 @@
 {
-  "knob": "knob",
-  "doughnut": "doughnut",
-  "list": "list",
-  "empty": null,
   "chart": null,
-  "multi_knob": null,
-  "single": null,
-  "panel": null,
-  "multi_doughnut": null,
+  "doughnut": "doughnut",
+  "empty": null,
   "image": null,
-  "qrcode": null
+  "knob": "knob",
+  "list": "list",
+  "multi_doughnut": null,
+  "multi_knob": null,
+  "panel": null,
+  "qrcode": null,
+  "single": null
 }

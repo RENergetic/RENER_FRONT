@@ -1,5 +1,5 @@
 {
-  "heat": "Ciepło",
   "default": "Inna",
-  "electricity": "Elektryczność"
+  "electricity": "Elektryczność",
+  "heat": "Ciepło"
 }

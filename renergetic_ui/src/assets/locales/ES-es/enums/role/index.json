@@ -1,20 +1,20 @@
 {
   "description": {
-    "ren-staff": "Staff",
-    "ren-guest": "Guest",
-    "ren-visitor": "Visitante",
-    "ren-user": "Usuario",
-    "ren-manager": "Gestor",
-    "ren-technical-manager": "Gestor técnico",
     "ren-admin": "Administrador",
-    "ren-dev": "Desarrollador"
+    "ren-dev": "Desarrollador",
+    "ren-guest": "Guest",
+    "ren-manager": "Gestor",
+    "ren-staff": "Staff",
+    "ren-technical-manager": "Gestor técnico",
+    "ren-user": "Usuario",
+    "ren-visitor": "Visitante"
   },
-  "ren-staff": "Staff",
-  "ren-guest": "Guest",
-  "ren-visitor": "Visitante",
-  "ren-user": "Usuario",
-  "ren-manager": "Manager",
-  "ren-technical-manager": "Technical manager",
   "ren-admin": "Administrador",
-  "ren-dev": "Desarrollador"
+  "ren-dev": "Desarrollador",
+  "ren-guest": "Guest",
+  "ren-manager": "Manager",
+  "ren-staff": "Staff",
+  "ren-technical-manager": "Technical manager",
+  "ren-user": "Usuario",
+  "ren-visitor": "Visitante"
 }

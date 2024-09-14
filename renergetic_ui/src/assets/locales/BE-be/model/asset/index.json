@@ -1,14 +1,14 @@
 {
-  "name": "Name",
-  "id": "Id",
-  "child": "Sub assets",
+  "asset_connections": null,
   "asset_type": "Asset type",
+  "child": "Sub assets",
+  "connection_type": null,
+  "description": null,
+  "geo_location": "Geo location",
+  "id": "Id",
   "label": "Label",
   "measurements": "Measurements",
-  "geo_location": "Geo location",
+  "name": "Name",
   "owner": "Owner",
-  "parent": "Parent",
-  "asset_connections": null,
-  "connection_type": null,
-  "description": null
+  "parent": "Parent"
 }

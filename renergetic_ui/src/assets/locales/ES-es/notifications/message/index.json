@@ -3,6 +3,6 @@
     "high": "El consumo de energía es anormalmente alto",
     "low": "El consumo de energía es anormalmente bajo"
   },
-  "renewability": "Reduce tu consumo, por favor, poca producción de energía renovable",
-  "code_high": null
+  "code_high": null,
+  "renewability": "Reduce tu consumo, por favor, poca producción de energía renovable"
 }

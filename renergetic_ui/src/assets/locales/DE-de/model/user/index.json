@@ -1,11 +1,11 @@
 {
-  "login": "Login",
-  "password": "Password",
   "email": null,
   "firstname": null,
   "lastname": null,
-  "username": null,
+  "login": "Login",
+  "password": "Password",
   "password_repeat": null,
+  "roles": null,
   "temp_password": null,
-  "roles": null
+  "username": null
 }
