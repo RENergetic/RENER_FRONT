@@ -258,6 +258,7 @@
   "view_asset_measurements": null,
   "view_data": null,
   "view_json": null,
+  "wasteheat_workflow_undefined": null,
   "workflowrun_param_format": null,
   "workflowrun_preview": null
 }

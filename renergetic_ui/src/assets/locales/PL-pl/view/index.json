@@ -258,6 +258,7 @@
   "view_asset_measurements": "Pokaż dostępne dane",
   "view_data": "View data",
   "view_json": "Podejrzyj strukturę JSON",
+  "wasteheat_workflow_undefined": null,
   "workflowrun_param_format": "Parametr: {parameter}",
   "workflowrun_preview": "Widok {label}"
 }

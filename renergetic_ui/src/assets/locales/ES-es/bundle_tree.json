@@ -399,6 +399,12 @@
           "background_mask_description": "Tile's background mask (hex color) - background with transparency , where transparency value is dependant to the measurment value (only single tile measurements)",
           "chart_type": "Chart type",
           "chart_type_description": "chart.js chart type",
+          "group_by_asset": "Group by asset",
+          "group_by_asset_description": "Sum measurements values by assets",
+          "group_by_direction": "Group by domain",
+          "group_by_direction_description": "Sum measurements values by direction",
+          "group_by_domain": "Group by domain",
+          "group_by_domain_description": "Sum measurements values by domains",
           "icon": "icon",
           "icon_description": "Tile's icon",
           "icon_visibility": "Icon visibility",
@@ -1164,6 +1170,7 @@
     "view_asset_measurements": "Mostrar medidas",
     "view_data": "Ver datos",
     "view_json": "View json",
+    "wasteheat_workflow_undefined": "Wasteheat task is not configured",
     "workflowrun_param_format": "Parameter: {parameter}",
     "workflowrun_preview": "Run preview for {label}"
   }

@@ -329,6 +329,12 @@
 	"model.information_panel.tile.properties.background_mask_description":  "Tile's background mask (hex color) - background with transparency , where transparency value is dependant to the measurment value (only single tile measurements)",
 	"model.information_panel.tile.properties.chart_type":  "Chart type",
 	"model.information_panel.tile.properties.chart_type_description":  "chart.js chart type",
+	"model.information_panel.tile.properties.group_by_asset":  "Group by asset",
+	"model.information_panel.tile.properties.group_by_asset_description":  "Sum measurements values by assets",
+	"model.information_panel.tile.properties.group_by_direction":  "Group by domain",
+	"model.information_panel.tile.properties.group_by_direction_description":  "Sum measurements values by direction",
+	"model.information_panel.tile.properties.group_by_domain":  "Group by domain",
+	"model.information_panel.tile.properties.group_by_domain_description":  "Sum measurements values by domains",
 	"model.information_panel.tile.properties.icon":  "icon",
 	"model.information_panel.tile.properties.icon_description":  "Tile's icon",
 	"model.information_panel.tile.properties.icon_visibility":  "Icon visibility",
@@ -1005,6 +1011,7 @@
 	"view.view_asset_measurements":  "Show measurements",
 	"view.view_data":  "View data",
 	"view.view_json":  "View json",
+	"view.wasteheat_workflow_undefined":  "Wasteheat task is not configured",
 	"view.workflowrun_param_format":  "Parameter: {parameter}",
 	"view.workflowrun_preview":  "Run preview for {label}"
 }
