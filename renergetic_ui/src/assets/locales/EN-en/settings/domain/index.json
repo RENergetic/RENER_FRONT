@@ -1,5 +1,5 @@
 {
-  "heat": "Heat",
   "default": "Default",
-  "electricity": "Electricity"
+  "electricity": "Electricity",
+  "heat": "Heat"
 }

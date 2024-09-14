@@ -41,5 +41,6 @@
   "asset_go_to_panel": "Go to panel for asset: {0}",
   "yes": "Tak",
   "no": "Nie",
-  "run_hdr": "Wyznacz rekomendacje"
+  "run_hdr": "Wyznacz rekomendacje",
+  "start_new_task": null
 }

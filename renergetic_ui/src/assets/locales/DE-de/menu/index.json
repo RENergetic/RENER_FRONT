@@ -65,5 +65,6 @@
   "toggle_edit_mode": null,
   "normal_view_mode": null,
   "manage_rules": null,
-  "manage_hdr_pipeline": null
+  "manage_hdr_pipeline": null,
+  "manage_wasteheat": null
 }

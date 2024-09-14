@@ -1,13 +1,13 @@
 {
-  "name": "Name",
-  "label": "Label",
   "areas": "Areas",
   "attributes": "Attributes",
-  "recommendations": "Recommendations",
-  "notifications": "Notifications",
   "dashboard": "Dashboard",
-  "heatmap": "Heatmap",
-  "imgUrl": "Image URL",
   "description": "Description",
-  "id": "Id"
+  "heatmap": "Heatmap",
+  "id": "Id",
+  "imgUrl": "Image URL",
+  "label": "Label",
+  "name": "Name",
+  "notifications": "Notifications",
+  "recommendations": "Recommendations"
 }

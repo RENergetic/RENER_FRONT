@@ -23,14 +23,39 @@
           <!-- </span> -->
         </template>
         <Column :expander="true" header-style="width: 3rem" />
-        <Column field="name" :header="$t('model.workflow.name')" :show-filter-menu="false" />
-        <Column field="pipeline_id" :header="$t('model.workflow.pipeline_id')" :show-filter-menu="false" />
+        <Column field="name" :header="$t('model.workflow.name')" :show-filter-menu="false">
+          <template #body="slotProps">
+            <div>
+              {{ slotProps.data.label ? slotProps.data.label : slotProps.data.name }}
+              <ren-input v-model="slotProps.data.label" :inline="true" @submit="(evt) => updateType(item.data, col, evt)" />
+            </div>
+            <div v-tooltip="$t('model.workflow.pipeline_id')" class="disabled" @click="copyPipelineId(slotProps.data.pipeline_id)">
+              {{ slotProps.data.pipeline_id }}
+            </div>
+
+            <div v-if="slotProps.data.update_date" class="disabled">
+              <span v-tooltip="$t('model.workflow.version')"> {{ slotProps.data.version }}</span>
+              (
+              <span v-tooltip="$t('model.workflow.update_date')"> {{ $ren.utils.parseUnixTimestamp(slotProps.data.update_date) }} </span>
+              )
+            </div>
+            <div v-else class="disabled">
+              <span v-tooltip="$t('model.workflow.version')"> {{ slotProps.data.version }}</span>
+            </div>
+          </template>
+        </Column>
+        <Column field="description" :header="$t('model.workflow.description')" :show-filter-menu="false">
+          <template #body="slotProps">
+            <div style="max-width: 20rem; max-height: 15rem; word-wrap: break-word">{{ slotProps.data.description }}</div>
+          </template>
+        </Column>
         <template #expansion="slotProps">
           <span v-if="slotProps.data.information_panel">
-            {{ $t("view.assigned_panel") }}:
-            {{ slotProps.data.information_panel.label ? slotProps.data.information_panel.label : slotProps.data.information_panel.name }}({{
-              slotProps.data.information_panel.id
-            }})
+            {{
+              $t("view.assigned_information_panel", {
+                label: slotProps.data.information_panel.label ? slotProps.data.information_panel.label : slotProps.data.information_panel.name,
+              })
+            }}: ({{ slotProps.data.information_panel.id }})
             <i class="pi pi-chevron-circle-right" style="fontsize: 2rem" @click="openPanel(slotProps.data.information_panel)" />
             <i class="pi pi-pencil" style="fontsize: 2rem" @click="showPanelDialog(slotProps.data)" />
             <i class="pi pi-trash" style="fontsize: 2rem" @click="revokePanel(slotProps.data)" />
@@ -222,6 +247,11 @@ export default {
     this.tagsKeys = await this.$ren.managementApi.listTagKeys();
   },
   methods: {
+    async copyPipelineId(pipelineId) {
+      await navigator.clipboard
+        .writeText(pipelineId)
+        .then(() => this.$emitter.emit("information", { message: this.$t("information.copied_to_clipboard") }));
+    },
     async assignPanel(selectedWorkflow, panel) {
       await this.$ren.kubeflowApi.setPanel(selectedWorkflow.pipeline_id, panel.id).then((workflow) => {
         if (workflow.information_panel && workflow.information_panel.id == panel.id) {

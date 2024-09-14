@@ -12,6 +12,13 @@
   "no_parameters": "Brak parametrów",
   "property": {
     "hdr_pipeline": "Zadanie HDR",
-    "hdr_default_pipeline": "Domyślne zadanie HDR"
-  }
+    "hdr_default_pipeline": "Domyślne zadanie HDR",
+    "wasteheat_default_pipeline": null,
+    "wasteheat_pipeline": null
+  },
+  "label": null,
+  "description": null,
+  "version": null,
+  "pipeline": null,
+  "update_date": null
 }

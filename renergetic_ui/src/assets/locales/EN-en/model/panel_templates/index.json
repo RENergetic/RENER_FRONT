@@ -1,8 +1,8 @@
 {
-  "kpi_electricity": "Electricity KPI ",
-  "kpi_heat": "Heat KPI",
   "island_consumption": "Energy island consumption view",
   "island_production": "Energy island production view",
   "island_production_overview": "Energy island generic production view",
+  "kpi_electricity": "Electricity KPI ",
+  "kpi_heat": "Heat KPI",
   "private_dashboard_consumption": "Private dashboard consumption"
 }

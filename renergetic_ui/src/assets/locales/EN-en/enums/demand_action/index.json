@@ -1,9 +1,9 @@
 {
-  "increase_temperature": "Increase temp",
-  "decrease_temperature": "Decrease temp",
-  "increase_power": "Increase electrical power",
-  "decrease_power": "Decrease electrical power",
-  "increase_heat": "Increase heat",
+  "charge_ev": "Charge Electric Vehicle",
   "decrease_heat": "Decrease heat",
-  "charge_ev": "Charge Electric Vehicle"
+  "decrease_power": "Decrease electrical power",
+  "decrease_temperature": "Decrease temp",
+  "increase_heat": "Increase heat",
+  "increase_power": "Increase electrical power",
+  "increase_temperature": "Increase temp"
 }

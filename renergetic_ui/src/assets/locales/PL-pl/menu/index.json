@@ -65,5 +65,6 @@
   "toggle_edit_mode": "Przełącz tryb edycji",
   "normal_view_mode": "Widok normalny",
   "manage_rules": "Zarządzaj regułami",
-  "manage_hdr_pipeline": "Zarządzaj zadaniami HDR"
+  "manage_hdr_pipeline": "Zarządzaj zadaniami HDR",
+  "manage_wasteheat": null
 }

@@ -1,9 +1,9 @@
 {
   "current_day": "Current day",
   "current_month": "Current month",
+  "current_year": "Current year",
+  "custom_interval": "Custom interval",
   "last_24h": "Last 24h",
   "last_week": "Last week",
-  "current_year": "Current year",
-  "previous_year": "Previous year",
-  "custom_interval": "Custom interval"
+  "previous_year": "Previous year"
 }

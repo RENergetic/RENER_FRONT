@@ -1,10 +1,10 @@
 {
-  "name": "Name",
-  "url": "URL",
+  "grafana_id": "Grafana id",
   "label": "Label",
-  "model": "Model",
   "measurement_type": "Measurement type",
+  "model": "Model",
+  "name": "Name",
   "unit": "Unit",
-  "user": "User",
-  "grafana_id": "Grafana id"
+  "url": "URL",
+  "user": "User"
 }

@@ -190,18 +190,19 @@ export default {
     if (tileSettings.tile.group_by_asset) {
       if (measurement.asset) {
         labelAcc.push(measurement.asset.label ? measurement.asset.label : measurement.asset.name);
-        k += "asset:" + measurement.asset.id + "_";
+        k += `asset:${measurement.asset.id}_`;
       } else {
         labelAcc.push("{no_asset}");
         k += "{no_asset}_";
       }
     }
     if (tileSettings.tile.group_by_domain) {
-      labelAcc.push(measurement.domain);
+      labelAcc.push(this.app.$t("enums.domain." + measurement.domain));
       k += measurement.domain + "_";
     }
     if (tileSettings.tile.group_by_direction) {
-      labelAcc.push(measurement.direction);
+      labelAcc.push(this.app.$t("enums.direction." + measurement.direction));
+
       k += measurement.direction + "_";
     }
     // labelAcc.push(this.measurementLabel(measurement))

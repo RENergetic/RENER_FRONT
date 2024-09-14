@@ -256,5 +256,8 @@
   "panel_user_settings": null,
   "set_default_hdr_pipeline": null,
   "hdr_pipelines": null,
-  "select_measurement_direction": null
+  "select_measurement_direction": null,
+  "assign_information_panel": null,
+  "assigned_information_panel": null,
+  "no_asset_key": null
 }

@@ -41,5 +41,6 @@
   "start": null,
   "stop": null,
   "save": null,
-  "run_hdr": null
+  "run_hdr": null,
+  "start_new_task": null
 }

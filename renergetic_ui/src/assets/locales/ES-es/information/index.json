@@ -27,5 +27,6 @@
   "worflowrun_start": null,
   "worflow_stop": null,
   "pipeline_property_changed": null,
-  "pipeline_property_not_changed": null
+  "pipeline_property_not_changed": null,
+  "copied_to_clipboard": null
 }
