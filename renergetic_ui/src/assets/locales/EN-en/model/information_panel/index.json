@@ -48,7 +48,13 @@
       "title_color": "Tile's title color",
       "title_color_description": "Override tile's default title color.",
       "title_visibility": "Title visibility",
-      "title_visibility_description": "Set tile's title visibility."
+      "title_visibility_description": "Set tile's title visibility.",
+      "group_by_asset":"Group by asset",
+      "group_by_asset_description":"Sum measurements values by assets",
+      "group_by_domain":"Group by domain",
+      "group_by_domain_description":"Sum measurements values by domains" ,
+      "group_by_direction":"Group by domain",
+      "group_by_direction_description":"Sum measurements values by direction" 
     },
     "props": "Properties",
     "type": "Type",

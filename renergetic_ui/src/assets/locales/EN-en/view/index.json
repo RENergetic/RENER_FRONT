@@ -258,6 +258,7 @@
   "view_asset_measurements": "Show measurements",
   "view_data": "View data",
   "view_json": "View json",
+  "wasteheat_workflow_undefined":"Wasteheat task is not configured",
   "workflowrun_param_format": "Parameter: {parameter}",
   "workflowrun_preview": "Run preview for {label}"
 }
