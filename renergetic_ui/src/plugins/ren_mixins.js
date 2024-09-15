@@ -1,11 +1,13 @@
 import { RenRoles } from "@/plugins/model/Enums.js";
 import { Exception } from "sass";
 // RenMixins
+const TIME_24_H = 3600 * 24 * 1000
+const TIME_7_D = 3600 * 24 * 1000 * 7
 class AppDialog {
   $emitter;
   level = "information";
   logLevel;
-  
+
   constructor(logLevel = "information", message) {
     if (logLevel) {
       this.logLevel = logLevel;
@@ -46,7 +48,7 @@ export default {
     tvMode: function () {
       return this.$route.meta.tvMode ? true : false;
     },
-    tileDim:function(){
+    tileDim: function () {
       try {
         let w =
           this.settings.panel && this.settings.panel.cellWidth
@@ -56,22 +58,22 @@ export default {
           this.settings.panel && this.settings.panel.cellHeight
             ? this.settings.panel.cellHeight * this.tile.layout.h
             : this.$parent.$el.parentElement.clientHeight * 0.9;
-         
-       return {width: w ,height: h};
+
+        return { width: w, height: h };
       } catch (ex) {
         if (this.$parent.$el == null) {
           return null
         }
         console.error(ex)
-        return   null;
+        return null;
       }
     },
     isTileHorizontal: function () {
       try {
-       let dim= this.tileDim(); 
-           if(dim == null){
-            throw new Exception("null tile dimensions")
-           }
+        let dim = this.tileDim;
+        if (dim == null) {
+          throw new Exception("null tile dimensions")
+        }
         return dim.width > dim.height;
       } catch (ex) {
         if (this.$parent.$el == null) {
@@ -87,7 +89,7 @@ export default {
 
     measurementlabel: function () {
       if ('measurement' in this && this.measurement != null) {
-        return this.$ren.utils.measurementLabel( this.measurement) ;
+        return this.$ren.utils.measurementLabel(this.measurement);
       }
       return null
     },
@@ -101,8 +103,8 @@ export default {
           colorObj = this.$ren.utils.measurementColor(null, null);
         }
       }
-      else { 
-        colorObj = { color: this.$ren.utils._hexExtractColor( this.mSettings.tile.measurement_color), alpha: this.value ? 1.0 : 1.0 - this.value / 2 }
+      else {
+        colorObj = { color: this.$ren.utils._hexExtractColor(this.mSettings.tile.measurement_color), alpha: this.value ? 1.0 : 1.0 - this.value / 2 }
       }
       return colorObj;
     },
@@ -139,46 +141,102 @@ export default {
 
     },
 
-    parseDateFilter: function (filter) {
+    parseDateFilter: function (filter, initialDate = null) {
       let f = filter ? filter : {};
       let from = f.date_from;
       let to = f.date_to;
-      var date = new Date();
+      var currentDate = initialDate == null ? new Date() : initialDate;
       switch (f.timeIntervalType) {
         case "current_day":
           from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
           to = null;
           break;
         case "last_24h":
-          from = new Date().getTime() - 3600 * 24 * 1000;
-          to = null;
+          to = currentDate.getTime();
+          from = to - TIME_24_H;
+          // to = null;
           break;
         case "last_week":
-          from = new Date().getTime() - 3600 * 24 * 1000 * 7;
-          to = null;
+          to = currentDate.getTime();
+          from = to - TIME_7_D;
           break;
         case "current_month":
-          from = new Date(date.getFullYear(), date.getMonth(), 1).getTime();
+          from = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getTime();
           to = null;
           break;
         case "previous_month":
-          from = new Date(date.getFullYear(), date.getMonth() - 1, 1).getTime();
-          to = new Date(date.getFullYear(), date.getMonth(), 1).getTime();
+          from = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1).getTime();
+          to = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getTime();
           break;
         case "current_year":
-          from = new Date(date.getFullYear(), 0, 1).getTime();
+          from = new Date(currentDate.getFullYear(), 0, 1).getTime();
           to = null;
           break;
         case "previous_year":
-          from = new Date(date.getFullYear() - 1, 0, 1).getTime();
-          to = new Date(date.getFullYear(), 0, 1).getTime();
+          from = new Date(currentDate.getFullYear() - 1, 0, 1).getTime();
+          to = new Date(currentDate.getFullYear(), 0, 1).getTime();
           break;
         default:
+          //Setting custom interval automatically sets 'from' 
           if (from == null) from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
           break;
       }
       filter.from = from;
       filter.to = to;
+      return { from: from, to: to, predictionIntervalms: filter.predictionIntervalms }
+    },
+    previousIntercalDateFilter: function (filter, initialDate = null) {
+      let f = filter ? filter : {};
+      let from = f.date_from ? f.date_from : f.from;
+      let to = f.date_to ? f.date_to : f.to;
+      var currentDate = initialDate == null ? new Date() : initialDate;
+      let diff;
+      switch (f.timeIntervalType) {
+        case "current_day":
+          from = new Date(new Date().setHours(0, 0, 0, 0)).getTime() - TIME_24_H;
+          to = new Date(from).setHours(currentDate.getHours(), currentDate.getMinutes(), currentDate.getSeconds(), currentDate.getMilliseconds())
+          break;
+        case "last_24h":
+          to = currentDate.getTime() - TIME_24_H;
+          from = to - TIME_24_H;
+          break;
+        case "last_week":
+          to = currentDate.getTime() - TIME_7_D;
+          from = to - TIME_7_D;
+          break;
+        case "current_month":
+          to = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate()).getTime();
+          from = new Date(currentDate.getFullYear(), currentDate.getMonth() - 2, 1).getTime();
+          break;
+        case "previous_month":
+          from = new Date(currentDate.getFullYear(), currentDate.getMonth() - 2, 1).getTime();
+          to = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1).getTime();
+          break;
+        case "current_year":
+          from = new Date(currentDate.getFullYear() - 1, 0, 1).getTime();
+          to = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate()).getTime();
+          break;
+        case "previous_year":
+          from = new Date(currentDate.getFullYear() - 2, 0, 1).getTime();
+          to = new Date(currentDate.getFullYear() - 1, 0, 1).getTime();
+          break;
+        case "custom_interval":
+          if (from == null) from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+          diff = (to ? to : currentDate.getTime()) - from;
+          to = from;
+          from = from - diff;
+
+          break;
+        default:
+          if (from == null) from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+          diff = (to ? to : currentDate.getTime()) - from;
+          to = from;
+          from = from - diff;
+          break;
+      }
+
+      // filter.from = from;
+      // filter.to = to;
       return { from: from, to: to, predictionIntervalms: filter.predictionIntervalms }
     },
 

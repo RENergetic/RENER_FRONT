@@ -149,6 +149,16 @@ const tileProperties = [
     key: "group_by_domain",
   },
   {
+    label: $t(`model.information_panel.tile.properties.compare_with_previous`),
+    description: $t(`model.information_panel.tile.properties.compare_with_previous_description`),
+    type: "Boolean",
+    ext: {
+      true: $t("settings.yes"),
+      false: $t("settings.no"),
+    },
+    key: "compare_with_previous",
+  },
+  {
     label: $t(`model.information_panel.tile.properties.measurement_color`),
     description: $t(`model.information_panel.tile.properties.measurement_color_description`),
     type: "Color",
@@ -192,6 +202,7 @@ const chartProperties = new Set([
   "measurement_background",
   "measurement_color",
   "legend",
+  "compare_with_previous",
   // "legend_label_color",
   // "chart_type",
 ]);
@@ -205,6 +216,7 @@ const knobProperties = new Set([
   "knob_color",
   "icon_visibility",
   "icon",
+  "compare_with_previous",
 ]);
 const multiKnobProperties = new Set([
   "title_visibility",
@@ -218,6 +230,7 @@ const multiKnobProperties = new Set([
   "icon_visibility",
   "item_icon_visibility",
   "icon",
+  "compare_with_previous",
 ]);
 const doughnutProperties = new Set([
   "title_visibility",
@@ -232,6 +245,7 @@ const doughnutProperties = new Set([
   "group_by_asset",
   "group_by_domain",
   "group_by_direction",
+  "compare_with_previous",
 ]);
 const listProperties = new Set([
   "title_visibility",
@@ -244,6 +258,7 @@ const listProperties = new Set([
   "group_by_asset",
   "group_by_domain",
   "group_by_direction",
+  "compare_with_previous",
 ]);
 const singleProperties = new Set([
   "title_visibility",
@@ -255,6 +270,7 @@ const singleProperties = new Set([
   "measurement_color",
   "icon",
   "aggregate_values",
+  "compare_with_previous",
   "template",
 ]);
 const emptyProperties = new Set(["title_visibility", "title_color", "background", "background_mask", "icon_visibility", "icon", "template"]);
