@@ -99,7 +99,7 @@ export default {
         }
         return this.value - accu;
       }
-      if (this.measurement == null) return "";
+      if (this.measurement == null) return null;
       return this.value - this.$ren.utils.getValue(this.measurement, this.pdata.previous);
     },
   },
