@@ -230,7 +230,7 @@ const multiKnobProperties = new Set([
   "icon_visibility",
   "item_icon_visibility",
   "icon",
-  "compare_with_previous",
+  // "compare_with_previous",
 ]);
 const doughnutProperties = new Set([
   "title_visibility",

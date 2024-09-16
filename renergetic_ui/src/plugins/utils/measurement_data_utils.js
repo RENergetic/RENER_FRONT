@@ -158,7 +158,7 @@ export default {
     return pData;
   },
   valueAccu(key, value, baseUnit, dict) {
-    if (baseUnit == "ratio") {
+    if (baseUnit == "0-1") {
       dict[key] = { accu: 1.0, counter: 1 };
       return dict;
     }
@@ -171,9 +171,10 @@ export default {
       case "W":
       case "Wh":
       case "any":
+      case "ratio":
         dict[key].accu += value;
         break;
-      case "ratio":
+      case "0-1":
         dict[key].accu = 1.0;
         break;
       default:

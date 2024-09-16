@@ -52,5 +52,6 @@ export default {
 <style scoped>
 i {
   margin: 0.12em;
+  font-size: max(0.5em, 1.5rem);
 }
 </style>

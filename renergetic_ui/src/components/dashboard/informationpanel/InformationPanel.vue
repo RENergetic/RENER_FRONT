@@ -202,6 +202,7 @@ export default {
         mPanelData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, mPanelData, this.settings);
         mPanelData = this.$ren.utils.convertPanelData(this.mPanel, mPanelData, this.$store.getters["settings/conversion"]);
         if (mPanelData.previous) {
+          mPanelData.previous = this.$ren.utils.calcPanelRelativeValues(this.mPanel, mPanelData.previous, this.settings);
           mPanelData.previous = this.$ren.utils.convertPanelData(this.mPanel, mPanelData.previous, this.$store.getters["settings/conversion"]);
         }
         console.debug(mPanelData);

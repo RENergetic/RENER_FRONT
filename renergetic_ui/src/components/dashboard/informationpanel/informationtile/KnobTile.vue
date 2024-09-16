@@ -55,26 +55,28 @@ export default {
     let minV = 0;
     let unit = "";
     let measurement = this.getTileMeasurement();
+    let pdata = this.settings.tile.compare_with_previous && this.pdata ? this.pdata.previous : this.pdata;
+
     if (measurement != null) {
-      // console.error(this.pdata);
       maxV =
         !this.settings.panel.relativeValues &&
-        this.pdata.max &&
-        this.pdata.max[measurement.aggregation_function] &&
-        this.pdata.max[measurement.aggregation_function][measurement.id]
-          ? this.pdata.max[measurement.aggregation_function][measurement.id]
+        pdata.max &&
+        pdata.max[measurement.aggregation_function] &&
+        pdata.max[measurement.aggregation_function][measurement.id]
+          ? pdata.max[measurement.aggregation_function][measurement.id]
           : this.defaultMax(measurement);
       // console.error(measurement.id);
       minV =
         !this.settings.panel.relativeValues &&
-        this.pdata.min &&
-        this.pdata.min[measurement.aggregation_function] &&
-        this.pdata.min[measurement.aggregation_function][measurement.id]
-          ? this.pdata.min[measurement.aggregation_function][measurement.id]
+        pdata.min &&
+        pdata.min[measurement.aggregation_function] &&
+        pdata.min[measurement.aggregation_function][measurement.id]
+          ? pdata.min[measurement.aggregation_function][measurement.id]
           : 0.0;
       this.$ren.utils.getUnit(measurement, this.settings.panel, this.conversionSettings);
     }
     return {
+      mData: pdata,
       unit: unit,
       mSettings: this.settings,
       measurement: measurement,
@@ -111,9 +113,9 @@ export default {
       try {
         let v;
         if (this.mSettings.panel.relativeValues && this.measurement.type.base_unit != "%") {
-          v = (this.pdata.current[this.measurement.aggregation_function][this.measurement.id] / this.maxV) * 100.0;
+          v = (this.mData.current[this.measurement.aggregation_function][this.measurement.id] / this.maxV) * 100.0;
         } else {
-          v = this.pdata.current[this.measurement.aggregation_function][this.measurement.id];
+          v = this.mData.current[this.measurement.aggregation_function][this.measurement.id];
         }
         if (v > this.maxV) {
           console.debug(this.getTileMeasurement());
@@ -139,8 +141,11 @@ export default {
       }
       switch (measurement.type.base_unit) {
         case "%":
+          return 100.0;
+        case "0-1":
+          return 1.0;
       }
-      return measurement.type.base_unit == "%" || this.settings.panel.relativeValues ? 100.0 : 1.0;
+      return this.settings.panel.relativeValues ? 100.0 : 1.0;
     },
   },
 };
