@@ -58,16 +58,18 @@ export default {
   },
   computed: {
     chartData: function () {
-      if (!(this.pdata && this.pdata.current)) {
+      let pdata = this.mSettings.tile.compare_with_previous && this.pdata ? this.pdata.previous : this.pdata;
+      if (!(pdata && pdata.current)) {
         return {};
       }
+
       let data;
       let labels;
       let backgroundColors;
 
       // alert("grouped by asset: " + this.mSettings.tile.group_by_asset);
       if (this.mSettings.tile.group_by_asset || this.mSettings.tile.group_by_domain || this.mSettings.tile.group_by_direction) {
-        let groupedValues = this.$ren.utils.groupValues(this.tile.measurements, this.pdata, this.mSettings);
+        let groupedValues = this.$ren.utils.groupValues(this.tile.measurements, pdata, this.mSettings);
         console.debug(groupedValues);
         data = Object.values(groupedValues).map((g) => g.value);
         labels = Object.values(groupedValues).map((g) => g.label);
@@ -76,10 +78,11 @@ export default {
         console.warn(labels);
         console.warn(backgroundColors);
       } else {
-        data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
+        data = this.tile.measurements.map((m) => pdata.current[m.aggregation_function][m.id]);
         labels = this.tile.measurements.map((m) => this.measurementLabel(m));
         backgroundColors = this.tile.measurements.map((m) => this.$ren.utils.measurementColor(m).color);
       }
+      console.error(data);
       // if (!this.mSettings.panel.relativeValues) {
       //   data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
       // } else {
