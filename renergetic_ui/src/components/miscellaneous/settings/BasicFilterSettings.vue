@@ -1,7 +1,6 @@
 <template>
   <!-- {{ settingsObj }} -->
   <Settings :key="refresh" v-model:settings="settingsObj" :schema="schema" :columns="columns" :labels="labels" :disabled="disabled" />
-  <!-- {{ $store.getters["settings/all"].filters }} -->
 </template>
 
 <script>

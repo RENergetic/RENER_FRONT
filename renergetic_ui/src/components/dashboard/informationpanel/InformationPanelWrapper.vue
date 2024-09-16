@@ -228,21 +228,42 @@ export default {
 
           await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, this.mFilter).then(async (resp) => {
             console.debug(resp);
-            var panelData = resp.data;
+            var panelData = resp.data ? resp.data : {};
             if (this.panel.is_template) this.mPanel = resp.panel;
             else {
               this.mPanel = this.panel;
             }
-            var mDict = {};
+            var chartDict = {};
+
             for (let tile of this.mPanel.tiles) {
               if (tile.type == TileTypes.chart) {
                 for (let m of tile.measurements) {
-                  mDict[m.id] = m;
+                  chartDict[m.id] = m;
                 }
               }
+              console.info(tile);
             }
-            let measurements = Object.values(mDict);
-            if (measurements.length > 0) panelData = await this.mSetChartData(measurements, panelData);
+
+            let chartMeasurements = Object.values(chartDict);
+            if (chartMeasurements.length > 0) panelData = await this.mSetChartData(chartMeasurements, panelData);
+
+            let getPrevData = false;
+            for (let tile of this.mPanel.tiles) {
+              if (tile.props.compare_with_previous) {
+                getPrevData = true;
+                break;
+              }
+            }
+            if (getPrevData) {
+              var prevFilter = this.previousIntercalDateFilter(this.mFilter);
+              await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, prevFilter).then(async (resp) => {
+                panelData.previous = resp.data;
+                // var panelData = resp.data;
+                console.debug("current vs prev, TODO: remove this logs");
+                console.debug(this.mFilter);
+                console.debug(prevFilter);
+              });
+            }
 
             this.panelData = panelData;
             // timeseriesData = await this.$ren.dataApi.getTimeseries(null, this.tile.id, this.assetId, this.filter);
