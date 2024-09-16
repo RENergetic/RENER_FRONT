@@ -33,12 +33,11 @@ export default {
     }
     let domainKey = measurement.domain + "_" + measurement.type.physical_name;
     let mt;
-    let defaultKey = "default_" + measurement.type.physical_name;
+    let defaultKey = measurement.type.physical_name;
     if (conversionSettings) mt = conversionSettings[domainKey] ? conversionSettings[domainKey] : conversionSettings[defaultKey];
     else mt = null;
-    // console.info(conversionSettings);
     let unit = mt ? mt : measurement.type.unit;
-    if (unit == "any" || unit == "ratio") {
+    if (unit == "any" || unit == "ratio" || unit == "0-1") {
       return null;
     }
     return unit;
@@ -248,6 +247,14 @@ export default {
       if (tileSettings.panel.relativeValues && measurement.type.base_unit != "%") {
         return (data.current[measurement.aggregation_function][measurement.id] / data.max[measurement.aggregation_function][measurement.id]) * 100.0;
       }
+      return data.current[measurement.aggregation_function][measurement.id];
+    } catch (e) {
+      return null;
+    }
+  },
+  getValue(measurement, data) {
+    //TODO: make it comfigurable in tile / args prediction & aggregation func
+    try {
       return data.current[measurement.aggregation_function][measurement.id];
     } catch (e) {
       return null;
