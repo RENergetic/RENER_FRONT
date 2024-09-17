@@ -205,6 +205,7 @@
   "upload_structure": "Upload panel structure",
   "edit_area": "Edit area",
   "edit": "Edit",
+  "edit_aggregation": "Edit Aggregation",
   "properties": "Properties",
   "start_run_confirm": "Start run",
   "start_run_confirm_body": "Do you want to start task {label}?",

@@ -202,6 +202,7 @@
   "upload_structure": "Wgraj strukturę widoky",
   "edit_area": "Edit area",
   "edit": "Edytuj",
+  "edit_aggregation": "Edycja Agregacji",
   "properties": "Własciwości",
   "start_run_confirm": "Start eksperymentu",
   "start_run_confirm_body": "Czy chcesz rozpocząć eksperyment: {label}?",
