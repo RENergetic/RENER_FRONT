@@ -214,9 +214,9 @@ export default {
       console.error("onTimeseriesUpdate TODO:");
       console.error(evt);
     },
-    async mSetChartData(measurements, panelData) {
+    async mSetChartData(measurements, panelData, filter) {
       console.error(measurements);
-      panelData["timeseries"] = await this.$ren.dataApi.getMeasurementTimeseries(measurements, this.filter);
+      panelData["timeseries"] = await this.$ren.dataApi.getMeasurementTimeseries(measurements, filter);
 
       return panelData;
     },
@@ -245,7 +245,7 @@ export default {
             }
 
             let chartMeasurements = Object.values(chartDict);
-            if (chartMeasurements.length > 0) panelData = await this.mSetChartData(chartMeasurements, panelData);
+            if (chartMeasurements.length > 0) panelData = await this.mSetChartData(chartMeasurements, panelData, this.filter);
 
             let getPrevData = false;
             for (let tile of this.mPanel.tiles) {
@@ -255,19 +255,28 @@ export default {
               }
             }
             if (getPrevData) {
-              var prevFilter = this.previousIntercalDateFilter(this.mFilter);
+              // console.info(this.panelSettings);
+              // alert(this.panelSettings.compare_interval_type);
+              var prevFilter = this.compareIntervalDateFilter(
+                this.mFilter,
+                this.panelSettings.compare_interval_type,
+                this.panelSettings.compare_interval_number ? this.panelSettings.compare_interval_number : 1,
+              );
               await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, prevFilter).then(async (resp) => {
                 panelData.previous = resp.data;
                 // var panelData = resp.data;
-                console.debug("current vs prev, TODO: remove this logs");
+                console.debug("current vs prev, TODO: remove this logs: " + this.panelSettings.compare_interval_type);
                 console.debug(this.mFilter);
                 console.debug(prevFilter);
               });
+
+              if (chartMeasurements.length > 0) panelData.previous = await this.mSetChartData(chartMeasurements, panelData.previous, prevFilter);
             }
 
             this.panelData = panelData;
             // timeseriesData = await this.$ren.dataApi.getTimeseries(null, this.tile.id, this.assetId, this.filter);
             console.info("Panel data loaded");
+            console.debug(panelData);
           });
         });
       }

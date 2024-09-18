@@ -159,6 +159,38 @@ const tileProperties = [
     key: "compare_with_previous",
   },
   {
+    label: $t(`model.information_panel.tile.properties.compare_interval_type`),
+    description: $t(`model.information_panel.tile.properties.compare_interval_type_description`),
+    type: Array,
+    ext: {
+      options: [
+        { id: "previous", label: $t("enums.interval_type.previous") },
+        { id: "year", label: $t("enums.interval_type.year") },
+        { id: "month", label: $t("enums.interval_type.month") },
+        { id: "day", label: $t("enums.interval_type.day") },
+        { id: "week", label: $t("enums.interval_type.week") },
+      ],
+      optionLabel: "label",
+      optionValue: "id",
+    },
+    key: "compare_interval_type",
+    disabled: true,
+  },
+
+  {
+    label: $t(`model.information_panel.tile.properties.compare_interval_number`),
+    description: $t(`model.information_panel.tile.properties.compare_interval_number_description`),
+    type: Number,
+    // mode: "slider",
+    // ext: {
+    //   max: 48,
+    //   unit: "h",
+    // },
+    key: "compare_interval_number",
+    disabled: true,
+  },
+
+  {
     label: $t(`model.information_panel.tile.properties.measurement_color`),
     description: $t(`model.information_panel.tile.properties.measurement_color_description`),
     type: "Color",
@@ -203,6 +235,8 @@ const chartProperties = new Set([
   "measurement_color",
   "legend",
   "compare_with_previous",
+  "compare_interval_type",
+  "compare_interval_number",
   // "legend_label_color",
   // "chart_type",
 ]);
@@ -217,6 +251,8 @@ const knobProperties = new Set([
   "icon_visibility",
   "icon",
   "compare_with_previous",
+  "compare_interval_type",
+  "compare_interval_number",
 ]);
 const multiKnobProperties = new Set([
   "title_visibility",
@@ -231,6 +267,8 @@ const multiKnobProperties = new Set([
   "item_icon_visibility",
   "icon",
   // "compare_with_previous",
+  // "compare_interval_type",
+  // "compare_interval_number",
 ]);
 const doughnutProperties = new Set([
   "title_visibility",
@@ -246,6 +284,8 @@ const doughnutProperties = new Set([
   "group_by_domain",
   "group_by_direction",
   "compare_with_previous",
+  "compare_interval_type",
+  "compare_interval_number",
 ]);
 const listProperties = new Set([
   "title_visibility",
@@ -259,6 +299,8 @@ const listProperties = new Set([
   "group_by_domain",
   "group_by_direction",
   "compare_with_previous",
+  "compare_interval_type",
+  "compare_interval_number",
 ]);
 const singleProperties = new Set([
   "title_visibility",
@@ -271,6 +313,8 @@ const singleProperties = new Set([
   "icon",
   "aggregate_values",
   "compare_with_previous",
+  "compare_interval_type",
+  "compare_interval_number",
   "template",
 ]);
 const emptyProperties = new Set(["title_visibility", "title_color", "background", "background_mask", "icon_visibility", "icon", "template"]);

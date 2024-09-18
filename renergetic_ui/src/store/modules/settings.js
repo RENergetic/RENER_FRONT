@@ -43,7 +43,7 @@ function parseDateFilter(filter) {
       }
       break;
   }
-  return { from: from, to: to };
+  return { from: from, to: to, timeIntervalType: f.timeIntervalType };
 }
 
 export var DefaultSettings = {

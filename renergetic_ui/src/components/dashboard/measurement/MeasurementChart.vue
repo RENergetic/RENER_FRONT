@@ -10,6 +10,7 @@
       {{ chartData }} -->
       <!-- {{ options }}
       {{ chartData }} -->
+      {{ comparePrevious }}ddd
       <Chart
         v-if="!titleVisible && height && width && loaded"
         :style="mStyle"
@@ -59,6 +60,7 @@ export default {
     immediate: { type: Boolean, default: true }, //immediately reload data if not present locally
     titleVisible: { type: Boolean, default: false },
     title: { type: String, default: null },
+    comparePrevious: { type: Boolean, default: null },
     // loadData: { type: Boolean, default: true },
     annotations: {
       type: [Object, Array],
@@ -83,7 +85,8 @@ export default {
       yAxisTitle = `${this.$t("enums.physical_type." + mMeasurements[0].type.physical_name)}${unit}`;
     }
     return {
-      labels: this.pdata["timeseries_labels"] ? this.pdata["timeseries_labels"] : [],
+      labels: this.pdata["timeseries"] && this.pdata["timeseries"]["timestamps"] ? this.pdata["timeseries"]["timestamps"] : [],
+      previousLabels: [],
       datasets: [],
       loaded: false,
       plugins: [chartjsMoment, chartjsPluginAnnotation],
@@ -157,6 +160,11 @@ export default {
             // type: "timeseries", //keep Equidistant  between points (labels are squished)
             type: "time",
           },
+          x_prev: {
+            position: "top",
+            type: "time",
+            labels: this.previousLabels,
+          },
           y: {
             title: {
               display: this.yAxisTitle != null,
@@ -214,7 +222,15 @@ export default {
       console.debug(`has all data ${hasAllData}`);
       if (hasAllData) {
         this.labels = this.pdata["timeseries"]["timestamps"];
-        return this.pdata["timeseries"]["current"];
+
+        let mData = this.pdata["timeseries"]["current"];
+        console.error("TODO: load previous data - check if everything is available ");
+        if (this.comparePrevious) {
+          mData.previous = this.pdata.previous["timeseries"]["current"];
+          mData.previousLabels = this.pdata.previous["timeseries"]["timestamps"];
+          this.previousLabels = mData.previousLabels;
+        }
+        return mData;
       }
       return null;
     },
@@ -224,7 +240,11 @@ export default {
       // let data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
       // let measurementIds = this.tile.measurements.map((m) => m.id);
       let data = this.localData();
+
       if (data == null) {
+        //if previous ==null
+        console.error("TODO: load previous data - check if everything is available ");
+
         let timeseriesData;
         if (this.tile) {
           timeseriesData = await this.$ren.dataApi.getTimeseries(null, this.tile.id, this.assetId, this.filter);
@@ -238,6 +258,7 @@ export default {
           this.$emit("timeseries-update", timeseriesData);
         }
       }
+      console.info(data);
       return data;
     },
     setDataset(data) {
@@ -253,6 +274,7 @@ export default {
         let mfill = m.measurement_details && m.measurement_details["fill_chart"] != null ? m.measurement_details["fill_chart"] : "true";
         let fill = mfill?.toLowerCase?.() === "true";
         datasets.push({
+          xAxisID: "x",
           data: data[m.id],
           label: `${label}(${aggFunc})${unitLabel}`,
           // label: `${label}(${m.id}) ${unitLabel}`,
@@ -261,6 +283,18 @@ export default {
           showLine: true,
           fill: fill,
         });
+        if (this.comparePrevious)
+          datasets.push({
+            xAxisID: "x_prev",
+            data: data.previous[m.id],
+            label: `${label}(${aggFunc})${unitLabel}`,
+            labels: data.previousLabels,
+            // label: `${label}(${m.id}) ${unitLabel}`,
+            backgroundColor: color + "30",
+            borderColor: color + "FF",
+            showLine: true,
+            fill: fill,
+          });
       }
       // console.error(datasets);
       this.datasets = datasets;
@@ -278,7 +312,12 @@ export default {
     },
     async setLocalData() {
       var pdata = await this.localData();
+      //TODO:
+
       if (pdata !== null) {
+        //temporary
+
+        alert(this.comparePrevious);
         this.setDataset(pdata);
         this.loaded = true;
         this.refreshDate = null;

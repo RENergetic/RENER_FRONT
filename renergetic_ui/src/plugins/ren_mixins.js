@@ -180,64 +180,86 @@ export default {
           //Setting custom interval automatically sets 'from' 
           if (from == null) from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
           break;
-      }
+      } 
       filter.from = from;
-      filter.to = to;
-      return { from: from, to: to, predictionIntervalms: filter.predictionIntervalms }
+      filter.to = to; 
+      return { from: from, to: to, predictionIntervalms: filter.predictionIntervalms, timeIntervalType: f.timeIntervalType }
     },
-    previousIntercalDateFilter: function (filter, initialDate = null) {
-      let f = filter ? filter : {};
+    compareIntervalDateFilter: function (currentFilter, intervalType = "previous", intervalNumber = 1, initialDate = null) {
+      let f = currentFilter ? currentFilter : {};
+      intervalNumber = Math.max(1, intervalNumber);
       let from = f.date_from ? f.date_from : f.from;
       let to = f.date_to ? f.date_to : f.to;
-      var currentDate = initialDate == null ? new Date() : initialDate;
-      let diff;
-      switch (f.timeIntervalType) {
-        case "current_day":
-          from = new Date(new Date().setHours(0, 0, 0, 0)).getTime() - TIME_24_H;
-          to = new Date(from).setHours(currentDate.getHours(), currentDate.getMinutes(), currentDate.getSeconds(), currentDate.getMilliseconds())
-          break;
-        case "last_24h":
-          to = currentDate.getTime() - TIME_24_H;
-          from = to - TIME_24_H;
-          break;
-        case "last_week":
-          to = currentDate.getTime() - TIME_7_D;
-          from = to - TIME_7_D;
-          break;
-        case "current_month":
-          to = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate()).getTime();
-          from = new Date(currentDate.getFullYear(), currentDate.getMonth() - 2, 1).getTime();
-          break;
-        case "previous_month":
-          from = new Date(currentDate.getFullYear(), currentDate.getMonth() - 2, 1).getTime();
-          to = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1).getTime();
-          break;
-        case "current_year":
-          from = new Date(currentDate.getFullYear() - 1, 0, 1).getTime();
-          to = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate()).getTime();
-          break;
-        case "previous_year":
-          from = new Date(currentDate.getFullYear() - 2, 0, 1).getTime();
-          to = new Date(currentDate.getFullYear() - 1, 0, 1).getTime();
-          break;
-        case "custom_interval":
-          if (from == null) from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
-          diff = (to ? to : currentDate.getTime()) - from;
-          to = from;
-          from = from - diff;
-
-          break;
-        default:
-          if (from == null) from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
-          diff = (to ? to : currentDate.getTime()) - from;
-          to = from;
-          from = from - diff;
-          break;
+      if(!to){
+        to=new Date().getTime();
       }
+      var curDate = initialDate == null ? new Date() : initialDate;
+      let diff;
+      if (intervalType != "previous") {
+        f = this.parseDateFilter(f, curDate);
+        var getPreviousDate = (ts) => {
+          var dt = new Date(ts);
+          switch (intervalType) {
+            case "none": return null;
+            case "year": return dt.setFullYear(dt.getFullYear() - intervalNumber);
+            case "month": return dt.setMonth(dt.getMonth() - intervalNumber);
+            case "day": return dt.setDate(dt.getDate() - intervalNumber);
+            case "week": return new Date(ts - TIME_7_D * intervalNumber).getTime();
+            default: return dt.setDate(dt.getDate() - intervalNumber);
+          }
+        } 
+        to = getPreviousDate(to);
+        from = getPreviousDate(from); 
+      }
+      else{ 
+        switch (f.timeIntervalType) {
+          case "current_day":
+            from = new Date(new Date().setHours(0, 0, 0, 0)).getTime() - TIME_24_H * intervalNumber;
+            to = new Date(from).setHours(curDate.getHours(), curDate.getMinutes(), curDate.getSeconds(), curDate.getMilliseconds()).getTime();
+            break;
+          case "last_24h":
+            to = curDate.getTime() - TIME_24_H * intervalNumber;
+            from = to - TIME_24_H;
+            break;
+          case "last_week":
+            to = curDate.getTime() - TIME_7_D * intervalNumber;
+            from = to - TIME_7_D;
+            break;
+          case "current_month":
+            to = new Date(curDate.getFullYear(), curDate.getMonth() - intervalNumber, curDate.getDate()).getTime();
+            from = new Date(curDate.getFullYear(), curDate.getMonth() - intervalNumber - 1, 1).getTime();
+            break;
+          case "previous_month":
+            from = new Date(curDate.getFullYear(), curDate.getMonth() - intervalNumber - 1, 1).getTime();
+            to = new Date(curDate.getFullYear(), curDate.getMonth() - intervalNumber, 1).getTime();
+            break;
+          case "current_year":
+            from = new Date(curDate.getFullYear() - intervalNumber, 0, 1).getTime();
+            to = new Date(curDate.getFullYear() - intervalNumber, curDate.getMonth(), curDate.getDate()).getTime();
+            break;
+          case "previous_year":
+            from = new Date(curDate.getFullYear() - intervalNumber - 1, 0, 1).getTime();
+            to = new Date(curDate.getFullYear() - intervalNumber, 0, 1).getTime();
+            break;
+          case "custom_interval":
+            if (from == null) from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+            diff = (to ? to : curDate.getTime()) - from;
+            to = from - (diff * intervalNumber);
+            from = from - diff;
 
+            break;
+          default:
+            //dont multiply the interval
+            if (from == null) from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+            diff = (to ? to : curDate.getTime()) - from;
+            to = from;
+            from = from - diff;
+            break;
+        }
+      }
       // filter.from = from;
       // filter.to = to;
-      return { from: from, to: to, predictionIntervalms: filter.predictionIntervalms }
+      return { from: from, to: to, predictionIntervalms: f.predictionIntervalms }
     },
 
 
@@ -274,8 +296,7 @@ export default {
     fieldLabel: function (field, tKey) {
       return field != null && this.$te(`${tKey}.${field}`) ? this.$t(`${tKey}.${field}`) : field
     },
-    getTileMeasurement: function () {
-      // console.error(this.tile)
+    getTileMeasurement: function () { 
       if (this.tile == null) return null;
       if (this.tile.measurements && this.tile.measurements.length > 1)
         console.warn("Length of measurement list is greater than one. ")
