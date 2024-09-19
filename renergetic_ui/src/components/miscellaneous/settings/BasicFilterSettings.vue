@@ -1,5 +1,4 @@
 <template>
-  <!-- {{ settingsObj }} -->
   <Settings :key="refresh" v-model:settings="settingsObj" :schema="schema" :columns="columns" :labels="labels" :disabled="disabled" />
 </template>
 
@@ -43,19 +42,12 @@ export default {
       schema: {},
     };
   },
-  computed: {
-    // computedObjectToBeWatched () { to get oldValue in watcher
-    //     return Object.assign({}, this.exampleObject)
-    // }
-  },
   watch: {
     //watch only without submit button
     settingsObj: {
       handler: function (newVal) {
         // console.debug("refresh");
         let mSettings = this.copyDateObj(newVal);
-        // console.debug(newVal);
-        // console.debug(new Date(newVal.date_to));
         var modified = validateDateInterval(mSettings);
 
         if (newVal["timeIntervalType"] != this.timeIntervalType) {
@@ -65,12 +57,11 @@ export default {
         }
         if (modified) {
           this.refresh = !this.refresh;
-          // this.mSettings = newVal;
+          newVal.date_from = mSettings.date_from;
+          newVal.date_to = mSettings.date_to;
         }
         if (this.submitButton) return;
         mSettings["predictionIntervalms"] = mSettings.predictionInterval * 3600;
-        // console.info(newVal.date_from);
-        // console.info(newVal.date_from instanceof Date);
         if (mSettings.date_from && mSettings.date_from instanceof Date) mSettings.date_from = mSettings.date_from.getTime();
         if (mSettings.date_to && mSettings.date_to instanceof Date) mSettings.date_to = mSettings.date_to.getTime();
         this.parseDateFilter(mSettings);
@@ -188,4 +179,3 @@ export default {
   },
 };
 </script>
-<style scoped lang="scss"></style>
