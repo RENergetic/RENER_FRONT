@@ -140,6 +140,20 @@ export default {
       return dialog
 
     },
+    dateFilterToString(f) {
+
+      var filterArr =[]
+      if (f.from) {
+        let d = new Date(f.from).toLocaleString();
+        filterArr.push( this.$t("view.data_date_from", { date: d }));
+      }  
+      if (f.to) {
+        let d = new Date(f.to).toLocaleString();
+        filterArr.push( this.$t("view.data_date_to", { date: d }));
+      }
+      return filterArr.join(",")
+
+    },
 
     parseDateFilter: function (filter, initialDate = null) {
       let f = filter ? filter : {};
@@ -180,9 +194,9 @@ export default {
           //Setting custom interval automatically sets 'from' 
           if (from == null) from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
           break;
-      } 
+      }
       filter.from = from;
-      filter.to = to; 
+      filter.to = to;
       return { from: from, to: to, predictionIntervalms: filter.predictionIntervalms, timeIntervalType: f.timeIntervalType }
     },
     compareIntervalDateFilter: function (currentFilter, intervalType = "previous", intervalNumber = 1, initialDate = null) {
@@ -190,8 +204,8 @@ export default {
       intervalNumber = Math.max(1, intervalNumber);
       let from = f.date_from ? f.date_from : f.from;
       let to = f.date_to ? f.date_to : f.to;
-      if(!to){
-        to=new Date().getTime();
+      if (!to) {
+        to = new Date().getTime();
       }
       var curDate = initialDate == null ? new Date() : initialDate;
       let diff;
@@ -207,27 +221,27 @@ export default {
             case "week": return new Date(ts - TIME_7_D * intervalNumber).getTime();
             default: return dt.setDate(dt.getDate() - intervalNumber);
           }
-        } 
+        }
         to = getPreviousDate(to);
-        from = getPreviousDate(from); 
+        from = getPreviousDate(from);
       }
-      else{ 
+      else {
         switch (f.timeIntervalType) {
           case "current_day":
-            from = new Date(new Date().setHours(0, 0, 0, 0)).getTime() - TIME_24_H * intervalNumber;
-            to = new Date(from).setHours(curDate.getHours(), curDate.getMinutes(), curDate.getSeconds(), curDate.getMilliseconds()).getTime();
+            from = new Date().setHours(0, 0, 0, 0) - TIME_24_H * intervalNumber;
+            to = new Date(from).setHours(curDate.getHours(), curDate.getMinutes(), curDate.getSeconds(), curDate.getMilliseconds());
             break;
           case "last_24h":
-            to = curDate.getTime() - TIME_24_H * intervalNumber;
             from = to - TIME_24_H;
+            to = curDate.getTime() - TIME_24_H * intervalNumber;
             break;
           case "last_week":
-            to = curDate.getTime() - TIME_7_D * intervalNumber;
             from = to - TIME_7_D;
+            to = curDate.getTime() - TIME_7_D * intervalNumber;
             break;
           case "current_month":
+            from = new Date(curDate.getFullYear(), curDate.getMonth() - intervalNumber, 1).getTime();
             to = new Date(curDate.getFullYear(), curDate.getMonth() - intervalNumber, curDate.getDate()).getTime();
-            from = new Date(curDate.getFullYear(), curDate.getMonth() - intervalNumber - 1, 1).getTime();
             break;
           case "previous_month":
             from = new Date(curDate.getFullYear(), curDate.getMonth() - intervalNumber - 1, 1).getTime();
@@ -244,9 +258,8 @@ export default {
           case "custom_interval":
             if (from == null) from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
             diff = (to ? to : curDate.getTime()) - from;
-            to = from - (diff * intervalNumber);
+            to = from - (diff * intervalNumber - diff);
             from = from - diff;
-
             break;
           default:
             //dont multiply the interval
@@ -296,7 +309,7 @@ export default {
     fieldLabel: function (field, tKey) {
       return field != null && this.$te(`${tKey}.${field}`) ? this.$t(`${tKey}.${field}`) : field
     },
-    getTileMeasurement: function () { 
+    getTileMeasurement: function () {
       if (this.tile == null) return null;
       if (this.tile.measurements && this.tile.measurements.length > 1)
         console.warn("Length of measurement list is greater than one. ")

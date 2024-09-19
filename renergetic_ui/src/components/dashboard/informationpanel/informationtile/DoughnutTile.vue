@@ -9,7 +9,6 @@
     <div class="flex flex-grow-1 flex-column align-items-center justify-content-center" style="position: relative">
       <div v-if="loaded" class="flex flex-none flex-column align-items-center justify-content-center">
         <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
-        <!-- <Chart type="doughnut" :data="chartData" :options="options" /> -->
       </div>
       <span
         v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
@@ -67,7 +66,6 @@ export default {
       let labels;
       let backgroundColors;
 
-      // alert("grouped by asset: " + this.mSettings.tile.group_by_asset);
       if (this.mSettings.tile.group_by_asset || this.mSettings.tile.group_by_domain || this.mSettings.tile.group_by_direction) {
         let groupedValues = this.$ren.utils.groupValues(this.tile.measurements, pdata, this.mSettings);
         console.debug(groupedValues);
@@ -82,7 +80,7 @@ export default {
         labels = this.tile.measurements.map((m) => this.measurementLabel(m));
         backgroundColors = this.tile.measurements.map((m) => this.$ren.utils.measurementColor(m).color);
       }
-      console.error(data);
+      // console.error(data);
       // if (!this.mSettings.panel.relativeValues) {
       //   data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
       // } else {
@@ -122,20 +120,9 @@ export default {
       };
     },
   },
-  // created() {
-  //   console.debug("created " + this.loaded + " " + this.tile.id);
-  // },
-  // updated() {
-  //   console.debug("updated  " + this.loaded + " " + this.tile.id);
-  //   console.debug(this.chartData);
-  //   console.debug(this.options);
-  // },
   mounted() {
-    // console.debug("mounted " + this.tile.id);
     let minD = this.tileContentSize1D();
     console.debug(this.tile.id + ": minD=" + minD);
-    // var size = this.mSettings.tile.measurement_list ? 0.5 : 0.7;
-    // let minD = Math.min(this.settings.panel.cellWidth * this.tile.layout.w, this.settings.panel.cellHeight * this.tile.layout.h);
     this.mStyle = `max-width: 25rem; margin: auto;width:${minD * 0.65}px`;
     this.loaded = true;
   },

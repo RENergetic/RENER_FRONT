@@ -1,16 +1,12 @@
 <template>
   <RenSpinner ref="spinner" :lock="true">
     <template #content>
-      <!-- {{ mMeasurements.length }} -->
       <!-- {{ annotations }} -->
       <!-- <div style="max-width: 20rem; overflow: hidden; max-height: 15rem">{{ chartData }}</div> -->
       <!-- {{ pdata["timeseries_labels"] }} -->
       <!-- {{ width }} -->
-      <!-- {{ options }}
+      <!-- {{ options }}  
       {{ chartData }} -->
-      <!-- {{ options }}
-      {{ chartData }} -->
-      {{ comparePrevious }}ddd
       <Chart
         v-if="!titleVisible && height && width && loaded"
         :style="mStyle"
@@ -125,7 +121,7 @@ export default {
       let annotations = this.annotations;
       // console.info(annotations);
 
-      let position = this.mMeasurements.length > 4 ? "top" : "chartArea";
+      let position = this.mMeasurements.length > 4 || this.comparePrevious ? "bottom" /*top*/ : "chartArea";
       return {
         responsive: true,
         maintainAspectRatio: false,
@@ -287,11 +283,11 @@ export default {
           datasets.push({
             xAxisID: "x_prev",
             data: data.previous[m.id],
-            label: `${label}(${aggFunc})${unitLabel}`,
+            label: `${label}(${aggFunc})${unitLabel} -  ${this.dateFilterToString(this.tile.props.compare_with_previous_filter_obj)}`,
             labels: data.previousLabels,
             // label: `${label}(${m.id}) ${unitLabel}`,
-            backgroundColor: color + "30",
-            borderColor: color + "FF",
+            backgroundColor: color + "00",
+            borderColor: color + "AA",
             showLine: true,
             fill: fill,
           });
