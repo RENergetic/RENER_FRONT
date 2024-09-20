@@ -46,7 +46,7 @@
             (slotProps.data.type !== undefined || slotProps.data.type !== null) &&
             (slotProps.data.type.name === 'pv_virtual_asset_group' || slotProps.data.type.name === 'virtual_asset_group')
           "
-          v-tooltip="$t('view.edit')"
+          v-tooltip="$t('view.edit_aggregation')"
           icon="pi pi-copy"
           class="p-button-rounded"
           @click="manageAssetAggregrationProperties(slotProps.data)"
