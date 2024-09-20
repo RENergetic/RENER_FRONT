@@ -28,5 +28,6 @@
   "user_updated": "User has been updated",
   "visibility_changed": "Visibility changed",
   "worflow_stop": "{label} - stopped",
-  "worflowrun_start": "{run_id} - started"
+  "worflowrun_start": "{run_id} - started", 
+  "label_changed":"Label updated"
 }

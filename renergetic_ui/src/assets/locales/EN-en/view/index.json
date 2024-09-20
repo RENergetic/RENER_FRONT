@@ -153,6 +153,7 @@
   "no_demand_list": "No recommendations",
   "no_heatmap": "No heatmap",
   "no_infer_measurements": "Don't infer missing measurements IDs",
+  "no_label":"Label not defined",
   "no_notification_list": "Currently there are no notifications",
   "no_notification_measurement": "No measurement",
   "no_panel_measurements": "No measurements",

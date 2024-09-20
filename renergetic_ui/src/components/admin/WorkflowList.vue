@@ -39,17 +39,20 @@
                 @submit="(evt) => updateLabel(slotProps.data, evt)"
               />
             </div>
-            <div v-tooltip="$t('model.workflow.pipeline_id')" class="disabled" @click="copyPipelineId(slotProps.data.pipeline_id)">
+            <div
+              v-tooltip="$t('model.workflow.pipeline_id')"
+              class="disabled"
+              @click="toClipboard(slotProps.data.pipeline_id, $t('model.workflow.pipeline_id'))"
+            >
               {{ slotProps.data.pipeline_id }}
             </div>
-
-            <div v-if="slotProps.data.update_date" class="disabled">
+            <div v-if="slotProps.data.update_date" class="disabled" @click="toClipboard(slotProps.data.version, $t('model.workflow.version'))">
               <span v-tooltip="$t('model.workflow.version')"> {{ slotProps.data.version }}</span>
               (
               <span v-tooltip="$t('model.workflow.update_date')"> {{ $ren.utils.parseUnixTimestamp(slotProps.data.update_date) }} </span>
               )
             </div>
-            <div v-else class="disabled">
+            <div v-else class="disabled" @click="toClipboard(slotProps.data.version, $t('model.workflow.version'))">
               <span v-tooltip="$t('model.workflow.version')"> {{ slotProps.data.version }}</span>
             </div>
           </template>
@@ -207,7 +210,7 @@ import WorkflowParameterForm from "./WorkflowParameterForm.vue";
 import PipelineRunLog from "./PipelineRunLog.vue";
 import WorkflowRunDetails from "./WorkflowRunDetails.vue";
 export default {
-  name: "WorkflowList",
+  name: "AdminWorkflowList",
   components: { WorkflowParameterForm, WorkflowRunDetails, PipelineRunLog, InformationPanelList },
   props: {
     workflowList: { type: Array, default: () => [] },
@@ -255,11 +258,6 @@ export default {
     this.tagsKeys = await this.$ren.managementApi.listTagKeys();
   },
   methods: {
-    async copyPipelineId(pipelineId) {
-      await navigator.clipboard
-        .writeText(pipelineId)
-        .then(() => this.$emitter.emit("information", { message: this.$t("information.copied_to_clipboard") }));
-    },
     async assignPanel(selectedWorkflow, panel) {
       await this.$ren.kubeflowApi.setPanel(selectedWorkflow.pipeline_id, panel.id).then((workflow) => {
         if (workflow.information_panel && workflow.information_panel.id == panel.id) {
@@ -288,7 +286,7 @@ export default {
         if (resp == label) {
           this.$emitter.emit("information", { message: this.$t("information.label_changed") });
         } else {
-          this.$emitter.emit("information", { message: this.$t("information.label_not_changed") });
+          this.$emitter.emit("error", { message: this.$t("information.label_not_changed") });
         }
         selectedWorkflow.label = label;
       });

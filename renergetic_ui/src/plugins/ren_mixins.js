@@ -133,7 +133,17 @@ export default {
   },
 
   methods: {
+    async toClipboard(objStr, labelStr = null) {
+      if (labelStr) {
+        await navigator.clipboard
+          .writeText(objStr)
+          .then(() => this.$emitter.emit("information", { message: `${labelStr} - ${this.$t("information.copied_to_clipboard")}` }));
+      } else
+        await navigator.clipboard
+          .writeText(objStr)
+          .then(() => this.$emitter.emit("information", { message: this.$t("information.copied_to_clipboard") }));
 
+    },
     infoDialog(message = null) {
       let dialog = new AppDialog("information", message)
       dialog.$emitter = this.$emitter
@@ -142,14 +152,14 @@ export default {
     },
     dateFilterToString(f) {
 
-      var filterArr =[]
+      var filterArr = []
       if (f.from) {
         let d = new Date(f.from).toLocaleString();
-        filterArr.push( this.$t("view.data_date_from", { date: d }));
-      }  
+        filterArr.push(this.$t("view.data_date_from", { date: d }));
+      }
       if (f.to) {
         let d = new Date(f.to).toLocaleString();
-        filterArr.push( this.$t("view.data_date_to", { date: d }));
+        filterArr.push(this.$t("view.data_date_to", { date: d }));
       }
       return filterArr.join(",")
 
