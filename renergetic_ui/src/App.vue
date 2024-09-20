@@ -107,7 +107,7 @@ export default {
         severity: "error",
         summary: title,
         detail: msg,
-        life: 3000,
+        life: 6000,
       });
     });
     this.$emitter.on("information", (evt) => {
