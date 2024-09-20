@@ -32,6 +32,10 @@ export default class KubeflowApi extends RestComponent {
   revokePanel(pipelineId) {
     return this.delete(`${this.BASE_URL}/admin/pipeline/${pipelineId}/panel`);
   }
+  setLabel(pipelineId, label) {
+    return this.put(`${this.BASE_URL}/admin/pipeline/${pipelineId}/label/${label}`);
+  }
+
   setParameters(pipelineId, parameters) {
     return this.put(`${this.BASE_URL}/admin/pipeline/${pipelineId}/parameters`, parameters);
   }

@@ -20,6 +20,7 @@
   "asset_delete_confirm": "Do you want to delete asset {label}?",
   "asset_deleted": "Asset deleted",
   "asset_details_dont_exist": "No details for this asset",
+  "asset_has_subassets":"Asset has assigned sub assets",
   "asset_has_assigned_measurements": "Asset has assigned measurements",
   "asset_list": "Asset list",
   "asset_measurement_assign": "Assign measurement to the asset",

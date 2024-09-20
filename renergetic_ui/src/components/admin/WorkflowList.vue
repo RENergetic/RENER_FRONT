@@ -25,9 +25,19 @@
         <Column :expander="true" header-style="width: 3rem" />
         <Column field="name" :header="$t('model.workflow.name')" :show-filter-menu="false">
           <template #body="slotProps">
-            <div>
-              {{ slotProps.data.label ? slotProps.data.label : slotProps.data.name }}
-              <ren-input v-model="slotProps.data.label" :inline="true" @submit="(evt) => updateType(item.data, col, evt)" />
+            <div v-if="slotProps.data.label">
+              <h4><ren-input v-model="slotProps.data.label" :inline="true" @submit="(evt) => updateLabel(slotProps.data, evt)" /></h4>
+              ( {{ slotProps.data.name }})
+            </div>
+
+            <div v-else>
+              <h4>{{ slotProps.data.name }}</h4>
+              <ren-input
+                v-model="slotProps.data.label"
+                :text-label="$t('view.no_label')"
+                :inline="true"
+                @submit="(evt) => updateLabel(slotProps.data, evt)"
+              />
             </div>
             <div v-tooltip="$t('model.workflow.pipeline_id')" class="disabled" @click="copyPipelineId(slotProps.data.pipeline_id)">
               {{ slotProps.data.pipeline_id }}
@@ -160,8 +170,6 @@
         <Column :show-filter-menu="false">
           <template #body="item">
             <i v-tooltip="$t('view.run_log')" class="pi pi-list" @click="showRunLog(item.data)" />
-
-            <!-- <Button :label="$t('view.button.start')" icon="pi pi-cog" @click="runTask(item.data)" /> -->
           </template>
         </Column>
         <!-- <Column v-if="!basic" selection-mode="multiple" header-style="width: 3rem"></Column> -->
@@ -273,6 +281,18 @@ export default {
         }
       });
     },
+    async updateLabel(selectedWorkflow, label) {
+      //updateMeasurementType
+      selectedWorkflow.label = label;
+      await this.$ren.kubeflowApi.setLabel(selectedWorkflow.pipeline_id, label).then((resp) => {
+        if (resp == label) {
+          this.$emitter.emit("information", { message: this.$t("information.label_changed") });
+        } else {
+          this.$emitter.emit("information", { message: this.$t("information.label_not_changed") });
+        }
+        selectedWorkflow.label = label;
+      });
+    },
     openPanel(panel) {
       this.$ren.utils.openNewTab(`/panel/view/${panel.id}`);
     },
@@ -330,20 +350,20 @@ export default {
       this.runlogDialog = true;
     },
 
-    async runTask(selectedExperiment) {
-      console.error("remove this option in the admin menu");
-      console.warn(selectedExperiment);
-      console.error(" TODO: check if task hasn't already been running");
-      await this.$refs.spinner_temp.run(
-        async () => {
-          await this.$ren.kubeflowApi.startExperiment(selectedExperiment.pipeline_id, {});
-        },
-        500,
-        5000,
-      );
-      alert("task scheduled");
-      this.reload();
-    },
+    // async runTask(selectedExperiment) {
+    //   console.error("remove this option in the admin menu");
+    //   console.warn(selectedExperiment);
+    //   console.error(" TODO: check if task hasn't already been running");
+    //   await this.$refs.spinner_temp.run(
+    //     async () => {
+    //       await this.$ren.kubeflowApi.startExperiment(selectedExperiment.pipeline_id, {});
+    //     },
+    //     500,
+    //     5000,
+    //   );
+    //   alert("task scheduled");
+    //   this.reload();
+    // },
     async setPipelineVisibility(selectedExperiment, state) {
       await this.$refs.spinner.run(async () => {
         let res;

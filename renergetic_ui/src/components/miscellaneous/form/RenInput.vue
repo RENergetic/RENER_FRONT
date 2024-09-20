@@ -2,7 +2,7 @@
   <div v-if="inline" class="field grid" style="border: red">
     <div v-if="!editMode" class="flex">
       <label class="flex flex-1" :for="mId">
-        {{ mValue }}
+        {{ textLabel ? textLabel : mValue }}
         <InfoIcon v-if="textInfo" :show-icon="true">
           <template #content>
             <div v-if="$te(textInfo)">

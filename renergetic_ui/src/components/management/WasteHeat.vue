@@ -2,6 +2,7 @@
   <Toolbar class="ren-toolbar ren-page-content ren-sticky top" style="z-index: 2000">
     <template #start>
       <!-- <h3>{{ $t("menu.wasteheat_view") }}</h3> -->
+
       <Button :label="$t('view.button.start_new_task')" :disabled="isTaskRunning" @click="showStartDialog" />
     </template>
     <template #end>
@@ -78,7 +79,7 @@ export default {
   },
   computed: {
     isTaskRunning() {
-      return this.workflowRun && this.workflowRun.start_time && (this.workflowRun.end_time == null || this.workflowRun.end_time < 0);
+      return this.workflowRun != null && this.workflowRun.start_time && (this.workflowRun.end_time == null || this.workflowRun.end_time < 0);
     },
   },
   watch: {},
