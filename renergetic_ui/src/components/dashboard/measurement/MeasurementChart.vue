@@ -76,7 +76,6 @@ export default {
     let mMeasurements = this.tile ? this.tile.measurements : this.measurements;
     let yAxisTitle = null;
     if (mMeasurements && mMeasurements.length == 1) {
-      console.error("TODO: convert timeseries unit");
       let unit = mMeasurements[0].type.unit != "any" ? ` [${mMeasurements[0].type.unit}]` : "";
       yAxisTitle = `${this.$t("enums.physical_type." + mMeasurements[0].type.physical_name)}${unit}`;
     }
@@ -262,7 +261,6 @@ export default {
       for (let idx in this.mMeasurements) {
         let m = this.mMeasurements[idx];
         let color = this.$ren.utils.measurementColor(m).color;
-        console.error("TODO: convert timeseries unit");
         let aggFunc = this.$t("enums.measurement_aggregation." + m.aggregation_function);
 
         let unitLabel = m.type.unit != "any" ? `: ${this.$t("enums.physical_type." + m.type.physical_name)} [${m.type.unit}]` : "";

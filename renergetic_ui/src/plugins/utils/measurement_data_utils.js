@@ -1,3 +1,4 @@
+import { TileTypes } from "@/plugins/model/Enums.js";
 export default {
   aggKey(measurement, settings) {
     let key = `${measurement.type.base_unit}_${measurement.aggregation_function}`;
@@ -100,6 +101,27 @@ export default {
       }
     }
     return cp;
+  },
+  convertTimeSeriesData(panel, pdata, settings) {
+    var timeseries = pdata["timeseries"]["current"];
+    var chartDict = {};
+    panel.tiles.filter((tile) => tile.type == TileTypes.chart).forEach((tile) => tile.measurements.forEach((m) => (chartDict[m.id] = m)));
+
+    let chartMeasurements = Object.values(chartDict);
+    var converted = [];
+    for (let m of chartMeasurements) {
+      var newUnit = this.getUnit(m, null, settings); // settings[m.type.physical_name];
+      if (newUnit) {
+        for (let value of timeseries[m.id]) {
+          let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
+          converted.push(newV);
+        }
+        timeseries[m.id] = converted;
+      }
+    }
+    return pdata;
+
+    // console.info(m.type.physical_name + " " + newUnit);
   },
   calcPanelRelativeValues(panel, pData, settings) {
     var accuDict = {};
