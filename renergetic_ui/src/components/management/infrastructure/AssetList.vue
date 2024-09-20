@@ -52,19 +52,29 @@
           @click="manageAssetAggregrationProperties(slotProps.data)"
         />
         <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editAsset(slotProps.data)" />
+
         <Button
-          v-if="!(slotProps.data.type.name == 'user' || (slotProps.data.measurements && slotProps.data.measurements.length > 0))"
-          v-tooltip="$t('view.delete') + hasMeasurementsTooltip(slotProps.data)"
+          v-if="
+            (!slotProps.data.child || slotProps.data.child.length == 0) &&
+            !(slotProps.data.type.name == 'user' || (slotProps.data.measurements && slotProps.data.measurements.length > 0))
+          "
+          v-tooltip="$t('view.delete')"
           icon="pi pi-trash"
           class="p-button-rounded p-button-danger"
           @click="deleteAsset(slotProps.data)"
         />
-
-        <i
+        <Button
           v-else
-          v-tooltip="$t('view.delete') + hasMeasurementsTooltip(slotProps.data)"
-          class="p-button p-component p-button-icon-only p-button-rounded p-disabled p-button-danger pi icon-button pi-trash"
+          v-tooltip="$t('view.delete') + hasMeasurementsTooltip(slotProps.data) + hasChildrenTooltip(slotProps.data)"
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-danger disabled"
         />
+        <!-- <i
+          v-else
+          v-tooltip="$t('view.delete') + hasMeasurementsTooltip(slotProps.data) + hasChildrenTooltip(slotProps.data)"
+          class="p-button p-component p-button-icon-only p-button-rounded p-disabled p-button-danger pi icon-button pi-trash"
+        /> -->
+        <!-- {{ $t("view.delete") + hasMeasurementsTooltip(slotProps.data) + hasChildrenTooltip(slotProps.data) }} -->
       </template>
     </Column>
     <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false">
@@ -364,6 +374,12 @@ export default {
       }
       return "";
     },
+    hasChildrenTooltip(asset) {
+      if (asset.child && asset.child.length > 0) {
+        return ` (${this.$t("view.asset_has_subassets")})`;
+      }
+      return "";
+    },
     setParent(row) {
       console.info(row);
       this.selectedAsset = row;
@@ -512,7 +528,7 @@ export default {
       this.mFilters = initFilter();
       this.$emit("update:filters", this.mFilters);
     },
-    deleteAsset(asset) {
+    async deleteAsset(asset) {
       let label = asset.label ? asset.label : asset.name;
       this.$confirm.require({
         message: this.$t("view.asset_delete_confirm", {
@@ -521,10 +537,12 @@ export default {
         header: this.$t("view.asset_delete"),
         icon: "pi pi-exclamation-triangle",
         accept: () => {
-          this.$ren.managementApi.deleteAsset(asset.id).then(() => {
-            this.$emitter.emit("information", { message: this.$t("information.asset_deleted") });
+          this.$ren.managementApi.deleteAsset(asset.id).then((res) => {
+            if (res) {
+              this.$emitter.emit("information", { message: this.$t("information.asset_deleted") });
+              this.reload();
+            }
           });
-          this.reload();
         },
         reject: () => {
           this.$confirm.close();
