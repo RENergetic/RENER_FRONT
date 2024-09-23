@@ -78,6 +78,11 @@ export default class KubeflowApi extends RestComponent {
     return this.get(`${this.BASE_URL}/pipeline/property/${property}/value/${value}`);
   }
 
+  getAdminPipelineByProperty(property, value) {
+    // let value = "true";
+    return this.get(`${this.BASE_URL}/admin/pipeline/property/${property}/value/${value}`);
+  }
+
   getWorkflowRun(pipelineId) {
     return this.get(`${this.BASE_URL}/pipeline/${pipelineId}/run`);
   }

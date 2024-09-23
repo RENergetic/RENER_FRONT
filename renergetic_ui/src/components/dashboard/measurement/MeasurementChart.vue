@@ -235,24 +235,45 @@ export default {
       // let data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
       // let measurementIds = this.tile.measurements.map((m) => m.id);
       let data = this.localData();
-
+      var getPrevious = false;
       if (data == null) {
         //if previous ==null
         console.error("TODO: load previous data - check if everything is available ");
 
         let timeseriesData;
+
+        if (this.tile.props.compare_with_previous && this.tile.props.compare_with_previous_filter_obj) {
+          getPrevious = true;
+        }
         if (this.tile) {
           timeseriesData = await this.$ren.dataApi.getTimeseries(null, this.tile.id, this.assetId, this.filter);
+          if (getPrevious) {
+            timeseriesData.previous = await this.$ren.dataApi.getTimeseries(
+              null,
+              this.tile.id,
+              this.assetId,
+              this.tile.props.compare_with_previous_filter_obj,
+            );
+          }
         } else if (this.mMeasurements) {
           timeseriesData = await this.$ren.dataApi.getMeasurementTimeseries(this.mMeasurements, this.filter);
+          if (getPrevious) {
+            timeseriesData.previous = await this.$ren.dataApi.getMeasurementTimeseries(
+              this.mMeasurements,
+              this.tile.props.compare_with_previous_filter_obj,
+            );
+          }
         }
 
         this.labels = timeseriesData["timestamps"];
         data = timeseriesData["current"];
+        if (getPrevious && timeseriesData.previous) data.previous = timeseriesData.previous["current"];
         if (timeseriesData) {
           this.$emit("timeseries-update", timeseriesData);
         }
       }
+      console.info(this.comparePrevious);
+      console.info(getPrevious);
       console.info(data);
       return data;
     },
@@ -277,6 +298,9 @@ export default {
           showLine: true,
           fill: fill,
         });
+        console.debug(this.comparePrevious);
+        console.debug(data);
+        console.debug(this.pdata);
         if (this.comparePrevious)
           datasets.push({
             xAxisID: "x_prev",
@@ -299,6 +323,7 @@ export default {
       await run(async () => {
         // await new Promise((r) => setTimeout(r, 250));
         var pdata = await this.loadTimeseriesData();
+        console.debug(pdata);
         this.setDataset(pdata);
         this.loaded = true;
         this.refreshDate = new Date();

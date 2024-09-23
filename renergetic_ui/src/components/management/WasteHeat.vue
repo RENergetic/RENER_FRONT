@@ -58,7 +58,7 @@ import InformationPanelWrapper from "@/components/dashboard/informationpanel/Inf
 import ParsedDateFilter from "@/components/miscellaneous/settings/ParsedDateFilter.vue";
 
 export default {
-  name: "WasteHeatPipelineList",
+  name: "WasteHeat",
   components: { WorkflowRun, WorkflowRunDetails, InformationPanelWrapper, ParsedDateFilter, PipelineRunLog },
   props: {
     workflow: { type: Object, default: null },

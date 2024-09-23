@@ -1,4 +1,4 @@
-import { TileTypes } from "@/plugins/model/Enums.js";
+// import { TileTypes } from "@/plugins/model/Enums.js";
 export default {
   aggKey(measurement, settings) {
     let key = `${measurement.type.base_unit}_${measurement.aggregation_function}`;
@@ -103,9 +103,12 @@ export default {
     return cp;
   },
   convertTimeSeriesData(panel, pdata, settings) {
+    if (!pdata.timeseries) return pdata;
     var timeseries = pdata["timeseries"]["current"];
     var chartDict = {};
-    panel.tiles.filter((tile) => tile.type == TileTypes.chart).forEach((tile) => tile.measurements.forEach((m) => (chartDict[m.id] = m)));
+    // panel.tiles.filter((tile) => tile.type == TileTypes.chart).forEach((tile) => tile.measurements.forEach((m) => (chartDict[m.id] = m)));
+
+    panel.tiles.forEach((tile) => tile.measurements.filter((m) => m.id in timeseries).forEach((m) => (chartDict[m.id] = m)));
 
     let chartMeasurements = Object.values(chartDict);
     var converted = [];
