@@ -13,6 +13,7 @@
     "no_assets_found": null
   },
   "child": "Sub activos",
+  "child_description": null,
   "connection_type": null,
   "description": null,
   "geo_location": "Geoposicionamiento",
@@ -22,6 +23,7 @@
   "name": "Nombre",
   "owner": "Propietario",
   "parent": "Padre",
+  "parent_description": null,
   "types": {
     "bulding": null,
     "dormitory": null,

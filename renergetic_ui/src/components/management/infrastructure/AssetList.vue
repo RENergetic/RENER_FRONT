@@ -77,14 +77,20 @@
         <!-- {{ $t("view.delete") + hasMeasurementsTooltip(slotProps.data) + hasChildrenTooltip(slotProps.data) }} -->
       </template>
     </Column>
-    <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false">
+    <Column field="name" :show-filter-menu="false">
       <template #filter="{ filterModel, filterCallback }">
         <InputText v-model="filterModel.value" type="text" class="p-column-filter" :placeholder="$t('view.search')" @input="filterCallback()" />
       </template>
+      <template #header>
+        <span v-tooltip="$t('model.name_description')">{{ $t("model.asset.name") }}</span>
+      </template>
     </Column>
-    <Column field="label" :header="$t('model.asset.label')" :show-filter-menu="false">
+    <Column field="label" :show-filter-menu="false">
       <template #filter="{ filterModel, filterCallback }">
         <InputText v-model="filterModel.value" type="text" class="p-column-filter" :placeholder="$t('view.search')" @input="filterCallback()" />
+      </template>
+      <template #header>
+        <span v-tooltip="$t('model.label_description')">{{ $t("model.asset.label") }}</span>
       </template>
     </Column>
     <Column field="type.label" :header="$t('model.asset.asset_type')" :show-filter-menu="false">
@@ -152,7 +158,7 @@
         </span>
       </template>
     </Column> -->
-    <Column field="child" :header="$t('model.asset.child')" :hidden="basic">
+    <Column field="child" :hidden="basic">
       <template #body="slotProps">
         <span v-if="slotProps.data.child && slotProps.data.child.length > 0" class="ren-pointer" @click="viewChildren(slotProps.data)">
           {{ $t("view.view_asset_children") }}
@@ -161,9 +167,12 @@
           {{ $t("view.no_asset_children") }}
         </span>
       </template>
+      <template #header>
+        <span v-tooltip="$t('model.child_description')">{{ $t("model.asset.child") }}</span>
+      </template>
     </Column>
 
-    <Column field="parent" :header="$t('model.asset.parent')">
+    <Column field="parent">
       <template #body="slotProps">
         <span v-if="slotProps.data.parent" class="ren-pointer">
           <span @click="setParent(slotProps.data)"> {{ slotProps.data.parent.label }}</span>
@@ -173,22 +182,10 @@
           {{ $t("view.no_parent") }}
         </span>
       </template>
-    </Column>
-    <!-- <Column field="measurements" :header="$t('model.asset.measurements')" :hidden="basic">
-      <template #body="slotProps">
-        <span
-          v-if="slotProps.data.measurements && slotProps.data.measurements.length > 0"
-          class="ren-pointer"
-          @click="viewMeasurements(slotProps.data)"
-        >
-          {{ $t("view.view_asset_measurements") }}
-        </span>
-        <span v-else class="ren-pointer disabled" @click="viewMeasurements(slotProps.data)">
-          {{ $t("view.no_asset_measurements") }}
-        </span>
+      <template #header>
+        <span v-tooltip="$t('model.asset.parent_description')">{{ $t("model.asset.parent") }}</span>
       </template>
-    </Column> -->
-    <!-- <Column field="geo_location" :header="$t('model.asset.geo_location')"> </Column> -->
+    </Column>
     <template #header>
       <div v-if="!hiddenFilters" class="flex justify-content-between">
         <Button
@@ -229,7 +226,7 @@
       <template #content>
         <DataTable v-if="selectedAsset" :value="selectedAsset.child">
           <!-- <Column v-for="col of columns" :key="col" :field="col" :header="$t('model.asset.' + col)"></Column> -->
-          <Column field="name" :header="$t('model.asset.name')" />
+          <Column v-tooltip="'ddd'" field="name" :header="$t('model.asset.name')" />
           <Column field="label" :header="$t('model.asset.label')" />
           <Column field="type" :header="$t('model.asset.asset_type')">
             <template #body="slotProps">
@@ -565,15 +562,19 @@ export default {
   padding: 0.5rem 0.5rem !important;
   max-width: 15rem;
 }
+
 .asset-list .p-datatable-tbody button {
   margin: 0.25rem 0.25rem;
 }
+
 .asset-list .p-datatable-tbody td:first-child {
   padding-left: 0.75rem !important;
 }
+
 .asset-list .p-datatable-tbody td:last-child {
   padding-right: 0.75rem !important;
 }
+
 .icon-button {
   border-radius: 50%;
   height: 2.357rem;

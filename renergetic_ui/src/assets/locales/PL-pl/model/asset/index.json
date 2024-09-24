@@ -13,6 +13,7 @@
     "no_assets_found": "No assets found for this category."
   },
   "child": "Sub assets",
+  "child_description": null,
   "connection_type": "Connection type",
   "description": "Description",
   "geo_location": "Geo location",
@@ -22,6 +23,7 @@
   "name": "Name",
   "owner": "Owner",
   "parent": "Parent",
+  "parent_description": null,
   "type": {
     "id": "Id",
     "label": "Etykieta",

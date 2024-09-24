@@ -321,6 +321,7 @@
         "no_assets_found": "No assets found for this category."
       },
       "child": "Sub activos",
+      "child_description": "Assets which belong to the current one",
       "connection_type": "Connection type",
       "description": "Description",
       "geo_location": "Geoposicionamiento",
@@ -330,6 +331,7 @@
       "name": "Nombre",
       "owner": "Propietario",
       "parent": "Padre",
+      "parent_description": "Asset to which current asset belongs to",
       "type": {
         "id": "Id",
         "label": "Label",
