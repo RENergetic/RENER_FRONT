@@ -1,7 +1,7 @@
 {
-  "increase": "Increase",
   "decrease": "Decrease",
-  "stop": "Stop",
+  "default": "Other",
+  "increase": "Increase",
   "start": "Start",
-  "default": "Other"
+  "stop": "Stop"
 }

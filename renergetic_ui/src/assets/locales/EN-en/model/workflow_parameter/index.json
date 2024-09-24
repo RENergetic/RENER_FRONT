@@ -1,8 +1,8 @@
 {
+  "defaultValue": "Default value",
+  "description": "Description",
   "key": "Key",
   "label": "Label",
-  "description": "Description",
   "type": "Type",
-  "defaultValue": "Default value",
   "visibility": "Visibility"
 }

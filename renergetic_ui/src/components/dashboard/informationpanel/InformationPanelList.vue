@@ -1,7 +1,7 @@
 <template>
   <!-- todo:  confirm buttons -->
 
-  <DataTable :key="headers" :value="panelList">
+  <DataTable :key="headers" v-model:selection="selectedRow" :value="panelList" selection-mode="single" @row-select="$emit('select', selectedRow)">
     <!-- <Column v-for="h of headers" :key="h" :field="h" :header="$t('model.information_panel.' + h)"></Column> -->
 
     <Column field="id" :header="$t('model.information_panel.id')" :show-filter-menu="false"> </Column>
@@ -17,8 +17,8 @@
     </Column>
     <Column field="featured" :header="$t('model.information_panel.featured')" :show-filter-menu="false">
       <template #body="item">
-        <i v-if="item.data.featured" class="pi pi-eye" style="font-size: 1.5rem" @click="setFeatured(item.data, false)" />
-        <i v-else class="pi pi-eye-slash" style="font-size: 1.5rem" @click="setFeatured(item.data, true)" />
+        <i v-if="item.data.featured" class="pi pi-eye" style="font-size: 1.5rem" @click="() => (!basic ? setFeatured(item.data, false) : null)" />
+        <i v-else class="pi pi-eye-slash" style="font-size: 1.5rem" @click="() => (!basic ? setFeatured(item.data, true) : null)" />
       </template>
     </Column>
 
@@ -30,13 +30,13 @@
         </div>
       </template>
     </Column>
-    <Column field="manage_asset_assignment" :header="$t('view.manage_asset_panel_assignment')">
+    <Column v-if="!basic" field="manage_asset_assignment" :header="$t('view.manage_asset_panel_assignment')">
       <template #body="item">
         <span
           v-if="item.data.is_template"
           v-tooltip="$t('view.manage_asset_panel_assignment_description')"
           class="ren-pointer"
-          @click="manageAssets(item.data)"
+          @click="() => (!basic ? manageAssets(item.data) : null)"
         >
           {{ $t("view.manage_asset_panel_assignment") }}
         </span>
@@ -52,7 +52,7 @@
         <i v-else class="pi pi-chevron-circle-right disabled" style="fontsize: 2rem" />
       </template>
     </Column>
-    <Column field="edit">
+    <Column v-if="!basic" field="edit">
       <template #body="item">
         <Button v-tooltip="$t('view.edit')" icon="pi pi-pencil" class="p-button-rounded" @click="editPanel(item.data)" />
       </template>
@@ -69,7 +69,7 @@
         />
       </template>
     </Column>
-    <Column field="delete">
+    <Column v-if="!basic" field="delete">
       <template #body="item">
         <!-- :header="$t('view.button.delete')" -->
         <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDelete(item.data)" />
@@ -77,7 +77,7 @@
     </Column>
   </DataTable>
   <ren-paginator v-model:offset="mOffset" style="left: 0" sticky :limit="limit" :current-rows="panelList.length" @update="onPagination" />
-  <Toolbar class="ren-toolbar ren-sticky">
+  <Toolbar v-if="!basic" class="ren-toolbar ren-sticky">
     <template #end><Button :label="$t('view.button.add')" icon="pi pi-plus-circle" @click="panelAdd = true" /> </template>
   </Toolbar>
   <RenSpinner ref="spinner" />
@@ -170,8 +170,9 @@ export default {
     filters: { type: Array, default: () => initFilter() },
     page: { type: Number, default: 0 },
     offset: { type: Number, default: 0 },
+    basic: { type: Boolean, default: false },
   },
-  emits: ["update:filters", "reload"],
+  emits: ["update:filters", "reload", "select"],
   data() {
     return {
       headers: [],

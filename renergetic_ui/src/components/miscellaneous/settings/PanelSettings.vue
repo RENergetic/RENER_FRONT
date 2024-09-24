@@ -13,7 +13,6 @@ export default {
   components: {
     Settings,
   },
-
   props: { submit: { type: Boolean, default: false } },
   emits: ["update"],
   data() {
@@ -70,6 +69,25 @@ export default {
           },
           type: Boolean,
           key: "ignoreOverrideMode",
+        });
+        schema.push({
+          label: this.$t(`settings.compare_interval_type`),
+          description: this.$t(`settings.compare_interval_type_description`),
+          type: Array,
+          ext: {
+            options: [
+              { id: "none", label: this.$t("enums.interval_type.none") },
+              { id: "previous", label: this.$t("enums.interval_type.previous") },
+              { id: "year", label: this.$t("enums.interval_type.year") },
+              { id: "month", label: this.$t("enums.interval_type.month") },
+              { id: "day", label: this.$t("enums.interval_type.day") },
+              { id: "week", label: this.$t("enums.interval_type.week") },
+            ],
+            optionLabel: "label",
+            optionValue: "id",
+          },
+          key: "compare_interval_type",
+          default: "none",
         });
       }
 

@@ -1,13 +1,24 @@
 {
-  "name": "Name",
-  "experiment_id": "Experiment id",
-  "pipeline_id": "Pipeline id",
-  "parameters": "Run parameters",
-  "pipelines": "Pipelines",
   "current_run": "Current run",
-  "visibility": "Visibility",
-  "visible": "Visibility",
-  "properties": "Properties",
+  "description": "Description",
+  "experiment_id": "Experiment id",
+  "label": "Label",
+  "name": "Name",
+  "no_parameters": "No paremeters",
   "no_properties": "No properties",
-  "no_parameters": "No paremeters"
+  "parameters": "Run parameters",
+  "pipeline": "Pipeline",
+  "pipeline_id": "Pipeline id",
+  "pipelines": "Pipelines",
+  "properties": "Properties",
+  "property": {
+    "hdr_default_pipeline": "HDR default pipeline",
+    "hdr_pipeline": "HDR pipeline",
+    "wasteheat_default_pipeline": "Wasteheat default pipeline",
+    "wasteheat_pipeline": "Wasteheat Pipeline"
+  },
+  "update_date": "Update date",
+  "version": "Version",
+  "visibility": "Visibility",
+  "visible": "Visibility"
 }

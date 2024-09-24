@@ -1,12 +1,12 @@
 {
-  "public_reports": "Informes/Vistas públicas",
   "grafana_access": "Acceso a Grafana",
   "grafana_management": "Gestión de paneles de Grafana",
-  "user_management": "Gestión de usuarios",
-  "role_management": "Gestión de roles de usuarios",
-  "report": "Acceso a informes",
   "manage_asset": "Administrar activos",
-  "owner": "Puede ser propietario de un asset",
   "notification": "Acceso a notificaciones",
-  "read": "Puede recibir permisos de lectura para un panel o asset"
+  "owner": "Puede ser propietario de un asset",
+  "public_reports": "Informes/Vistas públicas",
+  "read": "Puede recibir permisos de lectura para un panel o asset",
+  "report": "Acceso a informes",
+  "role_management": "Gestión de roles de usuarios",
+  "user_management": "Gestión de usuarios"
 }

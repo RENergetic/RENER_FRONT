@@ -1,13 +1,24 @@
 {
-  "name": "Nazwa",
-  "experiment_id": "Id eksperymentu",
-  "pipeline_id": "Id Pipeline",
-  "parameters": "Parametry eksperymentu",
-  "pipelines": "Pipelines",
   "current_run": "Aktuanie uruchomiony eksperyment",
-  "visibility": "Widoczność",
-  "visible": "Dostępność",
-  "properties": "Własciwości",
+  "description": "Opis",
+  "experiment_id": "Id eksperymentu",
+  "label": "Etykieta",
+  "name": "Nazwa",
+  "no_parameters": "Brak parametrów",
   "no_properties": "Brak własciwości",
-  "no_parameters": "Brak parametrów"
+  "parameters": "Parametry eksperymentu",
+  "pipeline": "Pipeline",
+  "pipeline_id": "Id Pipeline",
+  "pipelines": "Pipelines",
+  "properties": "Własciwości",
+  "property": {
+    "hdr_default_pipeline": "Domyślne zadanie HDR",
+    "hdr_pipeline": "Zadanie HDR",
+    "wasteheat_default_pipeline": "Zadanie WasteHeat",
+    "wasteheat_pipeline": "Domyślne zadanie WasteHeat"
+  },
+  "update_date": "Data ostatniej aktualizacji",
+  "version": "Wersja",
+  "visibility": "Widoczność",
+  "visible": "Dostępność"
 }

@@ -9,7 +9,6 @@
     <div class="flex flex-grow-1 flex-column align-items-center justify-content-center" style="position: relative">
       <div v-if="loaded" class="flex flex-none flex-column align-items-center justify-content-center">
         <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
-        <!-- <Chart type="doughnut" :data="chartData" :options="options" /> -->
       </div>
       <span
         v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
@@ -58,33 +57,54 @@ export default {
   },
   computed: {
     chartData: function () {
-      if (!(this.pdata && this.pdata.current)) {
+      let pdata = this.mSettings.tile.compare_with_previous && this.pdata ? this.pdata.previous : this.pdata;
+      if (!(pdata && pdata.current)) {
         return {};
       }
-      let labels = this.tile.measurements.map((m) => this.measurementLabel(m));
 
-      // let data = this.tile.measurements.map((m) => this.pdata[m.id]);
-      //TODO: make it comfigurable in tile / args prediction & aggregation func
-      let data = null;
-      let backgroundColor = this.tile.measurements.map((m) => this.$ren.utils.measurementColor(m).color);
+      let data;
+      let labels;
+      let backgroundColors;
 
-      if (!this.mSettings.panel.relativeValues) {
-        data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
+      if (this.mSettings.tile.group_by_asset || this.mSettings.tile.group_by_domain || this.mSettings.tile.group_by_direction) {
+        let groupedValues = this.$ren.utils.groupValues(this.tile.measurements, pdata, this.mSettings);
+        console.debug(groupedValues);
+        data = Object.values(groupedValues).map((g) => g.value);
+        labels = Object.values(groupedValues).map((g) => g.label);
+        backgroundColors = Object.values(groupedValues).map((g) => g.color);
+        console.warn("TODO: set local labels and colors");
+        console.warn(labels);
+        console.warn(backgroundColors);
       } else {
-        //console.info("use relative values");
-        //todo include min offset
-        // console.info(this.pdata.current);
-        data = this.tile.measurements.map((m) =>
-          m.type.base_unit != "%"
-            ? this.pdata.current[m.aggregation_function][m.id] / this.pdata.max[m.aggregation_function][m.id]
-            : this.pdata.current[m.aggregation_function][m.id],
-        );
+        data = this.tile.measurements.map((m) => pdata.current[m.aggregation_function][m.id]);
+        labels = this.tile.measurements.map((m) => this.measurementLabel(m));
+        backgroundColors = this.tile.measurements.map((m) => this.$ren.utils.measurementColor(m).color);
+      }
+      // console.error(data);
+      // if (!this.mSettings.panel.relativeValues) {
+      //   data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
+      // } else {
+      //   //console.info("use relative values");
+      //   //todo include min offset
+      //   data = this.tile.measurements.map((m) =>
+      //     m.type.base_unit != "%"
+      //       ? this.pdata.current[m.aggregation_function][m.id] / this.pdata.max[m.aggregation_function][m.id]
+      //       : this.pdata.current[m.aggregation_function][m.id],
+      //   );
+      //   let sum = data.reduce((partialSum, a) => partialSum + a, 0);
+      //   if (sum < 0.99999) {
+      //     data.push(1.0 - sum);
+      //     backgroundColor.push("#90A4AE");
+      //     labels.push("");
+      //   }
+      // }
+
+      //fill the pie to 100%
+      if (this.mSettings.panel.relativeValues) {
         let sum = data.reduce((partialSum, a) => partialSum + a, 0);
-        // console.info(1.0 - sum);
-        // console.info(sum);
         if (sum < 0.99999) {
           data.push(1.0 - sum);
-          backgroundColor.push("#90A4AE");
+          backgroundColors.push("#90A4AE");
           labels.push("");
         }
       }
@@ -94,26 +114,15 @@ export default {
         datasets: [
           {
             data: data,
-            backgroundColor: backgroundColor,
+            backgroundColor: backgroundColors,
           },
         ],
       };
     },
   },
-  // created() {
-  //   console.debug("created " + this.loaded + " " + this.tile.id);
-  // },
-  // updated() {
-  //   console.debug("updated  " + this.loaded + " " + this.tile.id);
-  //   console.debug(this.chartData);
-  //   console.debug(this.options);
-  // },
   mounted() {
-    // console.debug("mounted " + this.tile.id);
     let minD = this.tileContentSize1D();
     console.debug(this.tile.id + ": minD=" + minD);
-    // var size = this.mSettings.tile.measurement_list ? 0.5 : 0.7;
-    // let minD = Math.min(this.settings.panel.cellWidth * this.tile.layout.w, this.settings.panel.cellHeight * this.tile.layout.h);
     this.mStyle = `max-width: 25rem; margin: auto;width:${minD * 0.65}px`;
     this.loaded = true;
   },

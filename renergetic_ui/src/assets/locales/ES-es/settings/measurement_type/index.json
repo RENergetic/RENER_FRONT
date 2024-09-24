@@ -1,9 +1,9 @@
 {
-  "power": "Power",
-  "energy": "Energy",
-  "temperature": "Temperature",
-  "percentage": "Percentage",
-  "voltage": "Voltage",
   "co2eq": "CO2 eq",
-  "flow": "Flow"
+  "energy": "Energy",
+  "flow": "Flow",
+  "percentage": "Percentage",
+  "power": "Power",
+  "temperature": "Temperature",
+  "voltage": "Voltage"
 }

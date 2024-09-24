@@ -1,10 +1,18 @@
 {
-  "run_id": "Id startu",
-  "start_time": "Czas startu",
-  "init_time": "Czas utworzenia",
-  "start_time_formatted": "Czas rozpoczęcia: {start_time}",
   "end_time": "Czas zakończenia",
+  "init_time": "Czas utworzenia",
   "parameters": "Parametry",
   "pipeline": "Pipeline",
+  "run_id": "Id startu",
+  "run_state": {
+    "error": "Błąd",
+    "failed": "Niepowodzenie",
+    "finished": "Skończony",
+    "not_running": "Brak",
+    "running": "Uruchomiony",
+    "terminating": "Zatrzymywanie"
+  },
+  "start_time": "Czas startu",
+  "start_time_formatted": "Czas rozpoczęcia: {start_time}",
   "state": "Status"
 }

@@ -75,7 +75,7 @@ export default {
           });
           if (mtList.length > 1) {
             schema.push({
-              label: this.$t("settings.measurement_type." + mtKey),
+              label: this.$te("settings.measurement_type." + mtKey) ? this.$t("settings.measurement_type." + mtKey) : mtKey,
               ext: {
                 options: mtList,
                 optionLabel: "label",

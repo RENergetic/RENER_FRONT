@@ -1,3 +1,4 @@
+// import { TileTypes } from "@/plugins/model/Enums.js";
 export default {
   aggKey(measurement, settings) {
     let key = `${measurement.type.base_unit}_${measurement.aggregation_function}`;
@@ -33,12 +34,11 @@ export default {
     }
     let domainKey = measurement.domain + "_" + measurement.type.physical_name;
     let mt;
-    let defaultKey = "default_" + measurement.type.physical_name;
+    let defaultKey = measurement.type.physical_name;
     if (conversionSettings) mt = conversionSettings[domainKey] ? conversionSettings[domainKey] : conversionSettings[defaultKey];
     else mt = null;
-    // console.info(conversionSettings);
     let unit = mt ? mt : measurement.type.unit;
-    if (unit == "any" || unit == "ratio") {
+    if (unit == "any" || unit == "ratio" || unit == "0-1") {
       return null;
     }
     return unit;
@@ -102,6 +102,30 @@ export default {
     }
     return cp;
   },
+  convertTimeSeriesData(panel, pdata, settings) {
+    if (!pdata.timeseries) return pdata;
+    var timeseries = pdata["timeseries"]["current"];
+    var chartDict = {};
+    // panel.tiles.filter((tile) => tile.type == TileTypes.chart).forEach((tile) => tile.measurements.forEach((m) => (chartDict[m.id] = m)));
+
+    panel.tiles.forEach((tile) => tile.measurements.filter((m) => m.id in timeseries).forEach((m) => (chartDict[m.id] = m)));
+
+    let chartMeasurements = Object.values(chartDict);
+    var converted = [];
+    for (let m of chartMeasurements) {
+      var newUnit = this.getUnit(m, null, settings); // settings[m.type.physical_name];
+      if (newUnit) {
+        for (let value of timeseries[m.id]) {
+          let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
+          converted.push(newV);
+        }
+        timeseries[m.id] = converted;
+      }
+    }
+    return pdata;
+
+    // console.info(m.type.physical_name + " " + newUnit);
+  },
   calcPanelRelativeValues(panel, pData, settings) {
     var accuDict = {};
     // var aggDict = { current: { last: {} }, predictions: pData.predictions };
@@ -159,7 +183,7 @@ export default {
     return pData;
   },
   valueAccu(key, value, baseUnit, dict) {
-    if (baseUnit == "ratio") {
+    if (baseUnit == "0-1") {
       dict[key] = { accu: 1.0, counter: 1 };
       return dict;
     }
@@ -172,9 +196,10 @@ export default {
       case "W":
       case "Wh":
       case "any":
+      case "ratio":
         dict[key].accu += value;
         break;
-      case "ratio":
+      case "0-1":
         dict[key].accu = 1.0;
         break;
       default:
@@ -183,11 +208,79 @@ export default {
     }
     return dict;
   },
+  _aggMeasurement(measurement, data, tileSettings) {
+    let k = "";
+    let labelAcc = [];
+    let v = this.getConvertedValue(measurement, data, tileSettings);
+    if (tileSettings.tile.group_by_asset) {
+      if (measurement.asset) {
+        labelAcc.push(measurement.asset.label ? measurement.asset.label : measurement.asset.name);
+        k += `asset:${measurement.asset.id}_`;
+      } else {
+        labelAcc.push("{no_asset}");
+        k += "{no_asset}_";
+      }
+    }
+    if (tileSettings.tile.group_by_domain) {
+      labelAcc.push(this.app.$t("enums.domain." + measurement.domain));
+      k += measurement.domain + "_";
+    }
+    if (tileSettings.tile.group_by_direction) {
+      labelAcc.push(this.app.$t("enums.direction." + measurement.direction));
+
+      k += measurement.direction + "_";
+    }
+    // labelAcc.push(this.measurementLabel(measurement))
+    if (k == "") {
+      return {
+        ...measurement,
+        color: this.measurementColor(measurement).color,
+        key: measurement.id,
+        id: measurement.id,
+        label: measurement.label ? measurement.label : measurement.name,
+        value: v,
+      };
+    } else {
+      return {
+        ...measurement,
+        color: this.measurementColor(measurement).color,
+        key: k,
+        id: k,
+        label: labelAcc.join(" - "),
+        value: v,
+      };
+    }
+  },
+
+  groupValues(measurements, data, tileSettings) {
+    var groupedValues = {};
+    for (let m of measurements) {
+      let groupedValue = this._aggMeasurement(m, data, tileSettings);
+      if (groupedValue.key in groupedValues) {
+        groupedValues[groupedValue.key].value += groupedValue.value;
+      } else {
+        groupedValues[groupedValue.key] = groupedValue;
+      }
+    }
+    return groupedValues;
+    // if ( "group_by_asset",
+    //   "group_by_domain",)
+  },
+
   getConvertedValue(measurement, data, tileSettings) {
+    //TODO: make it comfigurable in tile / args prediction & aggregation func
     try {
       if (tileSettings.panel.relativeValues && measurement.type.base_unit != "%") {
         return (data.current[measurement.aggregation_function][measurement.id] / data.max[measurement.aggregation_function][measurement.id]) * 100.0;
       }
+      return data.current[measurement.aggregation_function][measurement.id];
+    } catch (e) {
+      return null;
+    }
+  },
+  getValue(measurement, data) {
+    //TODO: make it comfigurable in tile / args prediction & aggregation func
+    try {
       return data.current[measurement.aggregation_function][measurement.id];
     } catch (e) {
       return null;

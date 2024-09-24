@@ -1,5 +1,5 @@
 {
   "in": "Konsumpcja",
-  "out": "Emisja",
-  "none": "Inne"
+  "none": "Inne",
+  "out": "Emisja"
 }

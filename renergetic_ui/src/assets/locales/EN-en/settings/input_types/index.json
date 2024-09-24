@@ -1,9 +1,9 @@
 {
-  "boolean": "Boolean",
-  "number": "Number",
   "array": "Array",
-  "list": "List",
+  "boolean": "Boolean",
   "color": "Color",
   "datetime": "Datetime",
+  "list": "List",
+  "number": "Number",
   "string": "String"
 }

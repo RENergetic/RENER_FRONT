@@ -1,6 +1,6 @@
 {
-  "top_right": "Top right",
-  "top_left": "Top left",
+  "bottom_left": "Bottom left",
   "bottom_right": "Bottom right",
-  "bottom_left": "Bottom left"
+  "top_left": "Top left",
+  "top_right": "Top right"
 }

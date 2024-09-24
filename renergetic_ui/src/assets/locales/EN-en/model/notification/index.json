@@ -1,14 +1,14 @@
 {
-  "id": "Id",
-  "type": "Type",
-  "notification_code": "Code",
   "asset": "Asset",
   "dashboard": "Dashboard",
   "date_from": "From",
   "date_to": "To",
-  "notification_timestamp": "Generation time",
-  "value": "Value",
-  "no_dashboard": "undefined",
+  "id": "Id",
   "measurement": "Measurement",
-  "message": "Message"
+  "message": "Message",
+  "no_dashboard": "undefined",
+  "notification_code": "Code",
+  "notification_timestamp": "Generation time",
+  "type": "Type",
+  "value": "Value"
 }

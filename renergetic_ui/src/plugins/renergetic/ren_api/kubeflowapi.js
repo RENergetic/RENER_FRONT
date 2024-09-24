@@ -26,6 +26,16 @@ export default class KubeflowApi extends RestComponent {
   hideExperiment(pipelineId) {
     return this.delete(`${this.BASE_URL}/admin/pipeline/${pipelineId}/visibility`);
   }
+  setPanel(pipelineId, panelId) {
+    return this.put(`${this.BASE_URL}/admin/pipeline/${pipelineId}/panel/${panelId}`);
+  }
+  revokePanel(pipelineId) {
+    return this.delete(`${this.BASE_URL}/admin/pipeline/${pipelineId}/panel`);
+  }
+  setLabel(pipelineId, label) {
+    return this.put(`${this.BASE_URL}/admin/pipeline/${pipelineId}/label/${label}`);
+  }
+
   setParameters(pipelineId, parameters) {
     return this.put(`${this.BASE_URL}/admin/pipeline/${pipelineId}/parameters`, parameters);
   }
@@ -56,7 +66,24 @@ export default class KubeflowApi extends RestComponent {
     }
     return null;
   }
-  getExperimentRun(pipelineId) {
+
+  setPipelineProperty(pipelineId, property, value, unique = false) {
+    var prop = { key: property, value: value ? "true" : "false", type: "boolean" };
+    let args = this.parseArgs({ unique: unique });
+    return this.post(`${this.BASE_URL}/admin/pipeline/${pipelineId}/property?${args}`, prop);
+  }
+
+  getPipelineByProperty(property, value) {
+    // let value = "true";
+    return this.get(`${this.BASE_URL}/pipeline/property/${property}/value/${value}`);
+  }
+
+  getAdminPipelineByProperty(property, value) {
+    // let value = "true";
+    return this.get(`${this.BASE_URL}/admin/pipeline/property/${property}/value/${value}`);
+  }
+
+  getWorkflowRun(pipelineId) {
     return this.get(`${this.BASE_URL}/pipeline/${pipelineId}/run`);
   }
 

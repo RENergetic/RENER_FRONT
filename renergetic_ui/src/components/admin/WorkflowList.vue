@@ -23,9 +23,63 @@
           <!-- </span> -->
         </template>
         <Column :expander="true" header-style="width: 3rem" />
-        <Column field="name" :header="$t('model.workflow.name')" :show-filter-menu="false" />
-        <Column field="pipeline_id" :header="$t('model.workflow.pipeline_id')" :show-filter-menu="false" />
+        <Column field="name" :header="$t('model.workflow.name')" :show-filter-menu="false">
+          <template #body="slotProps">
+            <div v-if="slotProps.data.label">
+              <h4><ren-input v-model="slotProps.data.label" :inline="true" @submit="(evt) => updateLabel(slotProps.data, evt)" /></h4>
+              ( {{ slotProps.data.name }})
+            </div>
+
+            <div v-else>
+              <h4>{{ slotProps.data.name }}</h4>
+              <ren-input
+                v-model="slotProps.data.label"
+                :text-label="$t('view.no_label')"
+                :inline="true"
+                @submit="(evt) => updateLabel(slotProps.data, evt)"
+              />
+            </div>
+            <div
+              v-tooltip="$t('model.workflow.pipeline_id')"
+              class="disabled"
+              @click="toClipboard(slotProps.data.pipeline_id, $t('model.workflow.pipeline_id'))"
+            >
+              {{ slotProps.data.pipeline_id }}
+            </div>
+            <div v-if="slotProps.data.update_date" class="disabled" @click="toClipboard(slotProps.data.version, $t('model.workflow.version'))">
+              <span v-tooltip="$t('model.workflow.version')"> {{ slotProps.data.version }}</span>
+              (
+              <span v-tooltip="$t('model.workflow.update_date')"> {{ $ren.utils.parseUnixTimestamp(slotProps.data.update_date) }} </span>
+              )
+            </div>
+            <div v-else class="disabled" @click="toClipboard(slotProps.data.version, $t('model.workflow.version'))">
+              <span v-tooltip="$t('model.workflow.version')"> {{ slotProps.data.version }}</span>
+            </div>
+          </template>
+        </Column>
+        <Column field="description" :header="$t('model.workflow.description')" :show-filter-menu="false">
+          <template #body="slotProps">
+            <div style="max-width: 20rem; max-height: 15rem; word-wrap: break-word">{{ slotProps.data.description }}</div>
+          </template>
+        </Column>
         <template #expansion="slotProps">
+          <span v-if="slotProps.data.information_panel">
+            {{
+              $t("view.assigned_information_panel", {
+                label: slotProps.data.information_panel.label ? slotProps.data.information_panel.label : slotProps.data.information_panel.name,
+              })
+            }}: ({{ slotProps.data.information_panel.id }})
+            <i class="pi pi-chevron-circle-right" style="fontsize: 2rem" @click="openPanel(slotProps.data.information_panel)" />
+            <i class="pi pi-pencil" style="fontsize: 2rem" @click="showPanelDialog(slotProps.data)" />
+            <i class="pi pi-trash" style="fontsize: 2rem" @click="revokePanel(slotProps.data)" />
+          </span>
+          <span v-else>
+            {{ $t("view.information_panel_not_assigned") }}
+            <i class="pi pi-chevron-circle-right disabled" style="fontsize: 2rem" />
+            <i class="pi pi-pencil disabled" style="fontsize: 2rem" />
+            <i class="pi pi-plus-circle" style="fontsize: 2rem" @click="showPanelDialog(slotProps.data)" />
+          </span>
+
           <h3 v-if="Object.keys(slotProps.data.parameters).length === 0">{{ $t("model.workflow.no_parameters") }}</h3>
           <h3 v-if="Object.keys(slotProps.data.parameters).length !== 0">{{ $t("model.workflow.parameters") }}</h3>
           <ul v-if="Object.keys(slotProps.data.parameters).length !== 0" class="ren">
@@ -119,8 +173,6 @@
         <Column :show-filter-menu="false">
           <template #body="item">
             <i v-tooltip="$t('view.run_log')" class="pi pi-list" @click="showRunLog(item.data)" />
-
-            <!-- <Button :label="$t('view.button.start')" icon="pi pi-cog" @click="runTask(item.data)" /> -->
           </template>
         </Column>
         <!-- <Column v-if="!basic" selection-mode="multiple" header-style="width: 3rem"></Column> -->
@@ -142,48 +194,24 @@
     <WorkflowRunDetails :workflow-run="selectedWorkflowRunDetails" @on-stop="onWorkflowStop" />
   </Dialog>
   <Dialog v-model:visible="runlogDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <DataTable v-if="runLogList" :lazy="true" data-key="run_id" :value="runLogList" class="sticky-header">
-      <Column field="run_id" :header="$t('model.workflowrun.run_id')" />
-
-      <Column field="pipeline" :header="$t('model.workflowrun.pipeline')">
-        <template #body="slotProps">
-          <!-- {{ slotProps.data.pipeline.name }} :  -->
-          {{ slotProps.data.pipeline.pipeline_id }}
-        </template>
-      </Column>
-      <Column field="start_time" :header="$t('model.workflowrun.start_time')">
-        <template #body="slotProps">
-          {{ $ren.utils.dateString(slotProps.data.start_time) }}
-        </template>
-      </Column>
-      <Column field="end_time" :header="$t('model.workflowrun.end_time')">
-        <template #body="slotProps">
-          {{ $ren.utils.dateString(slotProps.data.end_time) }}
-        </template>
-      </Column>
-      <Column field="state" :header="$t('model.workflowrun.state')">
-        <template #body="slotProps">
-          {{ slotProps.data.state }}
-        </template>
-      </Column>
-      <Column>
-        <template #body="slotProps">
-          <i class="pi pi-chevron-circle-right" @click="showRunDetails(slotProps.data)" />
-        </template>
-      </Column>
-    </DataTable>
+    <PipelineRunLog :workflow="selectedWorkflow" />
+  </Dialog>
+  <Dialog v-model:visible="panelSelectDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <ren-submit :disabled="!selectedPanel" @submit="assignPanel(selectedWorkflow, selectedPanel)" />
+    <InformationPanelList :panel-list="panelList" :basic="true" @reload="loadData" @select="(panel) => (selectedPanel = panel)" />
   </Dialog>
 </template>
 
 <script>
-// TODO: move constant values to other file
-// import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
+import InformationPanelList from "@/components/dashboard/informationpanel/InformationPanelList.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 import WorkflowParameterForm from "./WorkflowParameterForm.vue";
+
+import PipelineRunLog from "./PipelineRunLog.vue";
 import WorkflowRunDetails from "./WorkflowRunDetails.vue";
 export default {
-  name: "WorkflowList",
-  components: { WorkflowParameterForm, WorkflowRunDetails },
+  name: "AdminWorkflowList",
+  components: { WorkflowParameterForm, WorkflowRunDetails, PipelineRunLog, InformationPanelList },
   props: {
     workflowList: { type: Array, default: () => [] },
     basic: { type: Boolean, default: false },
@@ -196,13 +224,15 @@ export default {
       mOffset: 0,
       columns: [],
       expanded: [],
-      runLogList: [],
+      panelSelectDialog: false,
       mFilters: this.initFilters(),
       selectedWorkflow: null,
       deferredEmitFilter: null,
       selectedWorkflowRunDetails: null,
       workflowRunDetailsDialog: false,
       runlogDialog: false,
+      selectedPanel: null,
+      panelList: [],
     };
   },
   computed: {},
@@ -228,6 +258,65 @@ export default {
     this.tagsKeys = await this.$ren.managementApi.listTagKeys();
   },
   methods: {
+    async assignPanel(selectedWorkflow, panel) {
+      await this.$ren.kubeflowApi.setPanel(selectedWorkflow.pipeline_id, panel.id).then((workflow) => {
+        if (workflow.information_panel && workflow.information_panel.id == panel.id) {
+          this.$emitter.emit("information", { code: "update_success" });
+          selectedWorkflow.information_panel = workflow.information_panel;
+          this.panelSelectDialog = false;
+        } else {
+          this.$emitter.emit("error", { message: this.$t("error.set_worflow_panel_failed") });
+        }
+      });
+    },
+    async revokePanel(selectedWorkflow) {
+      return await this.$ren.kubeflowApi.revokePanel(selectedWorkflow.pipeline_id).then((workflow) => {
+        if (workflow.information_panel) {
+          this.$emitter.emit("error", { message: this.$t("error.set_worflow_panel_failed") });
+        } else {
+          this.$emitter.emit("information", { code: "update_success" });
+          selectedWorkflow.information_panel = null;
+        }
+      });
+    },
+    async updateLabel(selectedWorkflow, label) {
+      //updateMeasurementType
+      selectedWorkflow.label = label;
+      await this.$ren.kubeflowApi.setLabel(selectedWorkflow.pipeline_id, label).then((resp) => {
+        if (resp == label) {
+          this.$emitter.emit("information", { message: this.$t("information.label_changed") });
+        } else {
+          this.$emitter.emit("error", { message: this.$t("information.label_not_changed") });
+        }
+        selectedWorkflow.label = label;
+      });
+    },
+    openPanel(panel) {
+      this.$ren.utils.openNewTab(`/panel/view/${panel.id}`);
+    },
+    onSelect(panel) {
+      this.selectedPanel = panel;
+    },
+    showPanelDialog(workflow) {
+      this.selectedWorkflow = workflow;
+      this.panelSelectDialog = true;
+      this.loadPanels();
+    },
+    async loadPanels(evt) {
+      //todo: add some filters
+      let offset = 0;
+      let limit = 25;
+      if (evt) {
+        offset = evt.offset;
+        limit = evt.limit;
+      }
+      this.$refs.spinner.run(async () => {
+        await this.$ren.dashboardApi.listInformationPanel(offset, limit).then((list) => {
+          this.panelList = list;
+        });
+      });
+    },
+
     onWorkflowStop(state) {
       console.debug(`Stop state ${state}`);
       this.workflowRunDetailsDialog = false;
@@ -255,27 +344,24 @@ export default {
     },
 
     async showRunLog(workflow) {
-      var lastWeek = this.$ren.utils.currentTimestamp() - 1000 * 3600 * 24 * 7;
-      await this.$refs.spinner_temp.run(async () => {
-        this.runLogList = await this.$ren.kubeflowApi.listRuns({ pipelineId: workflow.pipeline_id, from: lastWeek });
-        this.runlogDialog = true;
-      });
+      this.selectedWorkflow = workflow;
+      this.runlogDialog = true;
     },
 
-    async runTask(selectedExperiment) {
-      console.error("remove this option in the admin menu");
-      console.warn(selectedExperiment);
-      console.error(" TODO: check if task hasn't already been running");
-      await this.$refs.spinner_temp.run(
-        async () => {
-          await this.$ren.kubeflowApi.startExperiment(selectedExperiment.pipeline_id, {});
-        },
-        500,
-        5000,
-      );
-      alert("task scheduled");
-      this.reload();
-    },
+    // async runTask(selectedExperiment) {
+    //   console.error("remove this option in the admin menu");
+    //   console.warn(selectedExperiment);
+    //   console.error(" TODO: check if task hasn't already been running");
+    //   await this.$refs.spinner_temp.run(
+    //     async () => {
+    //       await this.$ren.kubeflowApi.startExperiment(selectedExperiment.pipeline_id, {});
+    //     },
+    //     500,
+    //     5000,
+    //   );
+    //   alert("task scheduled");
+    //   this.reload();
+    // },
     async setPipelineVisibility(selectedExperiment, state) {
       await this.$refs.spinner.run(async () => {
         let res;

@@ -134,14 +134,14 @@ export default {
         await this.$refs.requestSpinner.run(async () => {
           pipeline = await this.$ren.kubeflowApi.getDefaultHDRPipeline();
         });
-        var runObj = null;
-        await this.$refs.requestSpinner.run(async () => {
-          runObj = await this.$ren.kubeflowApi.getExperimentRun(pipeline.pipeline_id);
-        });
         if (!pipeline) {
           this.$emitter.emit("error", { message: this.$t("error.default_hdr_pipeline_not_set") });
           return;
         }
+        var runObj = null;
+        await this.$refs.requestSpinner.run(async () => {
+          runObj = await this.$ren.kubeflowApi.getWorkflowRun(pipeline.pipeline_id);
+        });
         if (runObj) {
           this.$emitter.emit("error", { message: this.$t("error.hdr_task_is_running") });
           return;

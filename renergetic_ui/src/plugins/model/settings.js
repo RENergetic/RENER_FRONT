@@ -121,6 +121,25 @@ var panelSchema = function () {
       key: "qrcodeSize",
       defaultValue: 200,
     },
+    {
+      label: $t(`settings.compare_interval_type`),
+      description: $t(`settings.compare_interval_type_description`),
+      type: Array,
+      ext: {
+        options: [
+          { id: "none", label: $t("enums.interval_type.none") },
+          { id: "previous", label: $t("enums.interval_type.previous") },
+          { id: "year", label: $t("enums.interval_type.year") },
+          { id: "month", label: $t("enums.interval_type.month") },
+          { id: "day", label: $t("enums.interval_type.day") },
+          { id: "week", label: $t("enums.interval_type.week") },
+        ],
+        optionLabel: "label",
+        optionValue: "id",
+      },
+      key: "compare_interval_type",
+      default: "none",
+    },
   ];
 };
 var userPanelSchema = function () {

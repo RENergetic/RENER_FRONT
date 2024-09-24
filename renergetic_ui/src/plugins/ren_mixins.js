@@ -1,10 +1,13 @@
 import { RenRoles } from "@/plugins/model/Enums.js";
+import { Exception } from "sass";
 // RenMixins
+const TIME_24_H = 3600 * 24 * 1000
+const TIME_7_D = 3600 * 24 * 1000 * 7
 class AppDialog {
   $emitter;
   level = "information";
   logLevel;
-  
+
   constructor(logLevel = "information", message) {
     if (logLevel) {
       this.logLevel = logLevel;
@@ -45,7 +48,7 @@ export default {
     tvMode: function () {
       return this.$route.meta.tvMode ? true : false;
     },
-    isTileHorizontal: function () {
+    tileDim: function () {
       try {
         let w =
           this.settings.panel && this.settings.panel.cellWidth
@@ -55,7 +58,23 @@ export default {
           this.settings.panel && this.settings.panel.cellHeight
             ? this.settings.panel.cellHeight * this.tile.layout.h
             : this.$parent.$el.parentElement.clientHeight * 0.9;
-        return w > h;
+
+        return { width: w, height: h };
+      } catch (ex) {
+        if (this.$parent.$el == null) {
+          return null
+        }
+        console.error(ex)
+        return null;
+      }
+    },
+    isTileHorizontal: function () {
+      try {
+        let dim = this.tileDim;
+        if (dim == null) {
+          throw new Exception("null tile dimensions")
+        }
+        return dim.width > dim.height;
       } catch (ex) {
         if (this.$parent.$el == null) {
           return false
@@ -70,18 +89,7 @@ export default {
 
     measurementlabel: function () {
       if ('measurement' in this && this.measurement != null) {
-        let labelKey = `model.measurement.labels.${this.measurement.label}`;
-        if (this.measurement.label != null && this.$te(labelKey)) {
-          return this.$t(labelKey);
-        }
-        let nameKey = `enums.measurement_name.${this.measurement.name}`;
-        if (this.$te(nameKey)) {
-          return this.$t(nameKey);
-        }
-        if (this.measurement.label != null) {
-          return this.measurement.label;
-        }
-        return this.measurement.name;
+        return this.$ren.utils.measurementLabel(this.measurement);
       }
       return null
     },
@@ -95,8 +103,8 @@ export default {
           colorObj = this.$ren.utils.measurementColor(null, null);
         }
       }
-      else { 
-        colorObj = { color: this.$ren.utils._hexExtractColor( this.mSettings.tile.measurement_color), alpha: this.value ? 1.0 : 1.0 - this.value / 2 }
+      else {
+        colorObj = { color: this.$ren.utils._hexExtractColor(this.mSettings.tile.measurement_color), alpha: this.value ? 1.0 : 1.0 - this.value / 2 }
       }
       return colorObj;
     },
@@ -125,55 +133,156 @@ export default {
   },
 
   methods: {
+    async toClipboard(objStr, labelStr = null) {
+      if (labelStr) {
+        await navigator.clipboard
+          .writeText(objStr)
+          .then(() => this.$emitter.emit("information", { message: `${labelStr} - ${this.$t("information.copied_to_clipboard")}` }));
+      } else
+        await navigator.clipboard
+          .writeText(objStr)
+          .then(() => this.$emitter.emit("information", { message: this.$t("information.copied_to_clipboard") }));
 
+    },
     infoDialog(message = null) {
       let dialog = new AppDialog("information", message)
       dialog.$emitter = this.$emitter
       return dialog
 
     },
+    dateFilterToString(f) {
 
-    parseDateFilter: function (filter) {
+      var filterArr = []
+      if (f.from) {
+        let d = new Date(f.from).toLocaleString();
+        filterArr.push(this.$t("view.data_date_from", { date: d }));
+      }
+      if (f.to) {
+        let d = new Date(f.to).toLocaleString();
+        filterArr.push(this.$t("view.data_date_to", { date: d }));
+      }
+      return filterArr.join(",")
+
+    },
+
+    parseDateFilter: function (filter, initialDate = null) {
       let f = filter ? filter : {};
       let from = f.date_from;
       let to = f.date_to;
-      var date = new Date();
+      var currentDate = initialDate == null ? new Date() : initialDate;
       switch (f.timeIntervalType) {
         case "current_day":
           from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
           to = null;
           break;
         case "last_24h":
-          from = new Date().getTime() - 3600 * 24 * 1000;
-          to = null;
+          to = currentDate.getTime();
+          from = to - TIME_24_H;
+          // to = null;
           break;
         case "last_week":
-          from = new Date().getTime() - 3600 * 24 * 1000 * 7;
-          to = null;
+          to = currentDate.getTime();
+          from = to - TIME_7_D;
           break;
         case "current_month":
-          from = new Date(date.getFullYear(), date.getMonth(), 1).getTime();
+          from = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getTime();
           to = null;
           break;
         case "previous_month":
-          from = new Date(date.getFullYear(), date.getMonth() - 1, 1).getTime();
-          to = new Date(date.getFullYear(), date.getMonth(), 1).getTime();
+          from = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1).getTime();
+          to = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getTime();
           break;
         case "current_year":
-          from = new Date(date.getFullYear(), 0, 1).getTime();
+          from = new Date(currentDate.getFullYear(), 0, 1).getTime();
           to = null;
           break;
         case "previous_year":
-          from = new Date(date.getFullYear() - 1, 0, 1).getTime();
-          to = new Date(date.getFullYear(), 0, 1).getTime();
+          from = new Date(currentDate.getFullYear() - 1, 0, 1).getTime();
+          to = new Date(currentDate.getFullYear(), 0, 1).getTime();
           break;
         default:
+          //Setting custom interval automatically sets 'from' 
           if (from == null) from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
           break;
       }
       filter.from = from;
       filter.to = to;
-      return { from: from, to: to, predictionIntervalms: filter.predictionIntervalms }
+      return { from: from, to: to, predictionIntervalms: filter.predictionIntervalms, timeIntervalType: f.timeIntervalType }
+    },
+    compareIntervalDateFilter: function (currentFilter, intervalType = "previous", intervalNumber = 1, initialDate = null) {
+      let f = currentFilter ? currentFilter : {};
+      intervalNumber = Math.max(1, intervalNumber);
+      let from = f.date_from ? f.date_from : f.from;
+      let to = f.date_to ? f.date_to : f.to;
+      if (!to) {
+        to = new Date().getTime();
+      }
+      var curDate = initialDate == null ? new Date() : initialDate;
+      let diff;
+      if (intervalType != "previous") {
+        f = this.parseDateFilter(f, curDate);
+        var getPreviousDate = (ts) => {
+          var dt = new Date(ts);
+          switch (intervalType) {
+            case "none": return null;
+            case "year": return dt.setFullYear(dt.getFullYear() - intervalNumber);
+            case "month": return dt.setMonth(dt.getMonth() - intervalNumber);
+            case "day": return dt.setDate(dt.getDate() - intervalNumber);
+            case "week": return new Date(ts - TIME_7_D * intervalNumber).getTime();
+            default: return dt.setDate(dt.getDate() - intervalNumber);
+          }
+        }
+        to = getPreviousDate(to);
+        from = getPreviousDate(from);
+      }
+      else {
+        switch (f.timeIntervalType) {
+          case "current_day":
+            from = new Date().setHours(0, 0, 0, 0) - TIME_24_H * intervalNumber;
+            to = new Date(from).setHours(curDate.getHours(), curDate.getMinutes(), curDate.getSeconds(), curDate.getMilliseconds());
+            break;
+          case "last_24h":
+            from = to - TIME_24_H;
+            to = curDate.getTime() - TIME_24_H * intervalNumber;
+            break;
+          case "last_week":
+            from = to - TIME_7_D;
+            to = curDate.getTime() - TIME_7_D * intervalNumber;
+            break;
+          case "current_month":
+            from = new Date(curDate.getFullYear(), curDate.getMonth() - intervalNumber, 1).getTime();
+            to = new Date(curDate.getFullYear(), curDate.getMonth() - intervalNumber, curDate.getDate()).getTime();
+            break;
+          case "previous_month":
+            from = new Date(curDate.getFullYear(), curDate.getMonth() - intervalNumber - 1, 1).getTime();
+            to = new Date(curDate.getFullYear(), curDate.getMonth() - intervalNumber, 1).getTime();
+            break;
+          case "current_year":
+            from = new Date(curDate.getFullYear() - intervalNumber, 0, 1).getTime();
+            to = new Date(curDate.getFullYear() - intervalNumber, curDate.getMonth(), curDate.getDate()).getTime();
+            break;
+          case "previous_year":
+            from = new Date(curDate.getFullYear() - intervalNumber - 1, 0, 1).getTime();
+            to = new Date(curDate.getFullYear() - intervalNumber, 0, 1).getTime();
+            break;
+          case "custom_interval":
+            if (from == null) from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+            diff = (to ? to : curDate.getTime()) - from;
+            to = from - (diff * intervalNumber - diff);
+            from = from - diff;
+            break;
+          default:
+            //dont multiply the interval
+            if (from == null) from = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+            diff = (to ? to : curDate.getTime()) - from;
+            to = from;
+            from = from - diff;
+            break;
+        }
+      }
+      // filter.from = from;
+      // filter.to = to;
+      return { from: from, to: to, predictionIntervalms: f.predictionIntervalms }
     },
 
 
@@ -211,7 +320,6 @@ export default {
       return field != null && this.$te(`${tKey}.${field}`) ? this.$t(`${tKey}.${field}`) : field
     },
     getTileMeasurement: function () {
-      // console.error(this.tile)
       if (this.tile == null) return null;
       if (this.tile.measurements && this.tile.measurements.length > 1)
         console.warn("Length of measurement list is greater than one. ")

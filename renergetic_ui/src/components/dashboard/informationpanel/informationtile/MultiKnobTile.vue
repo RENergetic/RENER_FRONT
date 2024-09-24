@@ -110,20 +110,18 @@ export default {
       return (this.mSettings.tile ? this.mSettings.tile.icon_visibility : true) && this.mSettings.tile.icon;
     },
     chartData: function () {
-      if (!(this.pdata && this.pdata.current)) {
+      let pdata = this.mSettings.tile.compare_with_previous && this.pdata ? this.pdata.previous : this.pdata;
+      if (!(pdata && pdata.current)) {
         return {};
       }
-      // console.info(this.pdata);
       let data = null;
       data = this.tile.measurements.map((m) => {
         let maxV =
-          this.pdata.max && this.pdata.max[m.aggregation_function][m.id]
-            ? this.pdata.max[m.aggregation_function][m.id]
-            : this.pdata.current[m.aggregation_function][m.id];
-        return m.type.base_unit != "%" ? this.pdata.current[m.aggregation_function][m.id] / maxV : this.pdata.current[m.aggregation_function][m.id];
+          pdata.max && pdata.max[m.aggregation_function][m.id]
+            ? pdata.max[m.aggregation_function][m.id]
+            : pdata.current[m.aggregation_function][m.id];
+        return m.type.base_unit != "%" ? pdata.current[m.aggregation_function][m.id] / maxV : pdata.current[m.aggregation_function][m.id];
       });
-      // console.info(this.pdata);
-      // console.info(data);
       let labels = []; // this.tile.measurements.map((m) => m.label);
       //todo remove labels ?
       for (let idx in this.tile.measurements) {

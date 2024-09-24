@@ -6,9 +6,9 @@
       </h3>
     </div>
     <div v-else class="flex flex-none flex-column align-items-center justify-content-center">
-      <span
-        ><h3 id="label" :style="`color:${tileTitleColor}`">{{ mSettings.tile.label ? mSettings.tile.label : mlabel }} {{ unitLabel }}</h3></span
-      >
+      <span>
+        <h3 id="label" :style="`color:${tileTitleColor}`">{{ mSettings.tile.label ? mSettings.tile.label : mlabel }} {{ unitLabel }}</h3>
+      </span>
     </div>
     <Knob
       v-if="valuetemplate"
@@ -55,26 +55,35 @@ export default {
     let minV = 0;
     let unit = "";
     let measurement = this.getTileMeasurement();
+
+    // let pdata = this.settings.tile.compare_with_previous && this.pdata ? this.pdata.previous : this.pdata;
+    let pdata = this.pdata;
     if (measurement != null) {
-      // console.error(this.pdata);
       maxV =
         !this.settings.panel.relativeValues &&
-        this.pdata.max &&
-        this.pdata.max[measurement.aggregation_function] &&
-        this.pdata.max[measurement.aggregation_function][measurement.id]
-          ? this.pdata.max[measurement.aggregation_function][measurement.id]
+        pdata.max &&
+        pdata.max[measurement.aggregation_function] &&
+        pdata.max[measurement.aggregation_function][measurement.id]
+          ? pdata.max[measurement.aggregation_function][measurement.id]
           : this.defaultMax(measurement);
       // console.error(measurement.id);
       minV =
         !this.settings.panel.relativeValues &&
-        this.pdata.min &&
-        this.pdata.min[measurement.aggregation_function] &&
-        this.pdata.min[measurement.aggregation_function][measurement.id]
-          ? this.pdata.min[measurement.aggregation_function][measurement.id]
+        pdata.min &&
+        pdata.min[measurement.aggregation_function] &&
+        pdata.min[measurement.aggregation_function][measurement.id]
+          ? pdata.min[measurement.aggregation_function][measurement.id]
           : 0.0;
       this.$ren.utils.getUnit(measurement, this.settings.panel, this.conversionSettings);
     }
+    if (this.settings.tile.compare_with_previous && this.pdata) {
+      unit = "%";
+      maxV = 100.0;
+      minV = 0.0;
+    }
+
     return {
+      mData: pdata,
       unit: unit,
       mSettings: this.settings,
       measurement: measurement,
@@ -110,10 +119,17 @@ export default {
       //todo support  min max
       try {
         let v;
+        if (this.settings.tile.compare_with_previous && this.pdata) {
+          var curr = this.mData.current[this.measurement.aggregation_function][this.measurement.id];
+          var prev = this.mData.previous.current[this.measurement.aggregation_function][this.measurement.id];
+          v = (curr / (curr + prev)) * 100.0;
+          return this.$ren.utils.roundValue(v);
+        }
+
         if (this.mSettings.panel.relativeValues && this.measurement.type.base_unit != "%") {
-          v = (this.pdata.current[this.measurement.aggregation_function][this.measurement.id] / this.maxV) * 100.0;
+          v = (this.mData.current[this.measurement.aggregation_function][this.measurement.id] / this.maxV) * 100.0;
         } else {
-          v = this.pdata.current[this.measurement.aggregation_function][this.measurement.id];
+          v = this.mData.current[this.measurement.aggregation_function][this.measurement.id];
         }
         if (v > this.maxV) {
           console.debug(this.getTileMeasurement());
@@ -139,8 +155,11 @@ export default {
       }
       switch (measurement.type.base_unit) {
         case "%":
+          return 100.0;
+        case "0-1":
+          return 1.0;
       }
-      return measurement.type.base_unit == "%" || this.settings.panel.relativeValues ? 100.0 : 1.0;
+      return this.settings.panel.relativeValues ? 100.0 : 1.0;
     },
   },
 };
@@ -160,13 +179,16 @@ export default {
   width: 100%;
   // height: 4.5rem;
   height: 75%;
+
   .p-knob-text {
     font-size: 1rem;
   }
+
   // svg {
   //   height: 100%;
   // }
 }
+
 // h2 {
 //   margin: 0;
 // }

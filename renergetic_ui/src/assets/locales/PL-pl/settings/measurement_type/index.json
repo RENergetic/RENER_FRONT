@@ -1,9 +1,9 @@
 {
-  "power": "Moc",
-  "energy": "Energia",
-  "temperature": "Temperatura",
-  "percentage": "Procent",
-  "voltage": "Napięcie",
   "co2eq": "Ekw. CO₂",
-  "flow": "Przepływ"
+  "energy": "Energia",
+  "flow": "Przepływ",
+  "percentage": "Procent",
+  "power": "Moc",
+  "temperature": "Temperatura",
+  "voltage": "Napięcie"
 }

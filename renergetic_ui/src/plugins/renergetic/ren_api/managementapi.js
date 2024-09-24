@@ -196,6 +196,11 @@ export default class ManagementApi extends RestComponent {
         this.emitError(`Asset ${id} not found: ${e.message}`, { code: "asset_not_found", args: [id] });
         return true;
       }
+      if (e.response.status == 500) {
+        this.emitError(`Asset: ${id} - check asset connections: ${e.message}`);
+        return false;
+      }
+      return false;
     });
   }
   async assignAssetMeasurement(id, measurementId) {

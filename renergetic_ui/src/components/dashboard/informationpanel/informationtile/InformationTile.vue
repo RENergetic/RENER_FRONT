@@ -113,32 +113,35 @@ import QRCodeTile from "./QRCodeTile.vue";
 function validateTileSettings(tile, panelSettings, ctx) {
   if (tile != null && tile.props) {
     return {
-      label: ctx.$te(`enums.measurement_name.${tile.name}`) ? ctx.$t(`enums.measurement_name.${tile.name}`) : tile.label,
-      icon: icons[tile.props.icon],
-      icon_visibility: tile.props.icon_visibility != null ? tile.props.icon_visibility : true,
-      item_icon_visibility: tile.props.item_icon_visibility != null ? tile.props.item_icon_visibility : true,
-      legend: tile.props.legend != null ? tile.props.legend : panelSettings.legend,
-      legend_label_color: tile.props.legend_label_color != null ? tile.props.legend_label_color : "#495057",
-      chart_type: tile.props.chart_type != null ? tile.props.chart_type : panelSettings.chart_type,
-      title_visibility:
-        !ctx.demand &&
-        (tile.props.title_visibility != null
-          ? tile.props.title_visibility
-          : panelSettings.title_visibility != null
-          ? panelSettings.title_visibility
-          : false),
-      measurement_list: tile.props.measurement_list != null ? tile.props.measurement_list : true,
-      measurement_background: tile.props.measurement_background != null ? tile.props.measurement_background : false,
-      title_color: tile.props.title_color != null ? tile.props.title_color : null,
-      fontSize: panelSettings.fontSize,
-      background_mask: tile.props.background_mask ? tile.props.background_mask : tile.props.mask,
-      background: tile.props.background,
-      template: tile.props.template,
-      knob_color: tile.props.knob_color,
-      qrcode_content: tile.props.qrcode_content,
-      img_url: tile.props.img_url,
-      measurement_color: tile.props.measurement_color,
-      aggregate_values: tile.props.aggregate_values,
+      ...tile.props,
+      ...{
+        label: ctx.$te(`enums.measurement_name.${tile.name}`) ? ctx.$t(`enums.measurement_name.${tile.name}`) : tile.label,
+        icon: icons[tile.props.icon],
+        icon_visibility: tile.props.icon_visibility != null ? tile.props.icon_visibility : true,
+        item_icon_visibility: tile.props.item_icon_visibility != null ? tile.props.item_icon_visibility : true,
+        legend: tile.props.legend != null ? tile.props.legend : panelSettings.legend,
+        legend_label_color: tile.props.legend_label_color != null ? tile.props.legend_label_color : "#495057",
+        chart_type: tile.props.chart_type != null ? tile.props.chart_type : panelSettings.chart_type,
+        title_visibility:
+          !ctx.demand &&
+          (tile.props.title_visibility != null
+            ? tile.props.title_visibility
+            : panelSettings.title_visibility != null
+            ? panelSettings.title_visibility
+            : false),
+        measurement_list: tile.props.measurement_list != null ? tile.props.measurement_list : true,
+        measurement_background: tile.props.measurement_background != null ? tile.props.measurement_background : false,
+        // title_color: tile.props.title_color != null ? tile.props.title_color : null,
+        fontSize: panelSettings.fontSize,
+        background_mask: tile.props.background_mask ? tile.props.background_mask : tile.props.mask,
+        // background: tile.props.background,
+        // template: tile.props.template,
+        // knob_color: tile.props.knob_color,
+        // qrcode_content: tile.props.qrcode_content,
+        // img_url: tile.props.img_url,
+        // measurement_color: tile.props.measurement_color,
+        // aggregate_values: tile.props.aggregate_values,
+      },
       // asset_id: settings.asset_id,
     };
   }

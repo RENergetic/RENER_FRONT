@@ -1,19 +1,18 @@
 <template>
   <div :class="state" :style="style">
-    <div class="flex flex-none flex-row align-items-center justify-content-center">
-      <!-- <span v-if="icon != null" id="tileicon" :style="'background-image: url(' + icon + ')'"></span> -->
-      <!-- {{ settings }}fff -->
-
-      <span v-if="iconVisibility" id="tileicon" class="flex flex-none flex-column align-items-center justify-content-center">
-        <!-- {{ settings.tile.icon }} -->
-        <!-- :style="'background-image: url(' + settings.icon + ')'" -->
+    <div v-if="iconVisibility" class="flex flex-none flex-row align-items-center justify-content-center">
+      <span id="tileicon" class="flex flex-none flex-column align-items-center justify-content-center">
         <font-awesome-icon :icon="icon" />
       </span>
     </div>
-    <div class="flex flex-grow-1 flex-column align-items-start justify-content-center message" style="font-size: 0.85rem; padding: 0.33rem">
-      <div class="flex flex-grow-1 align-items-center justify-content-center" style="width: 100%">
-        <div v-tooltip="labelTooltip" class="flex flex-grow-1 message align-items-start">{{ label }}</div>
-        <div class="flex flex-none message align-items-end">{{ $ren.utils.roundValue(value) }} {{ unit }}</div>
+    <div class="flex flex-grow-1 flex-column justify-content-center" style="font-size: 0.85rem; padding: 0.33rem">
+      <div class="flex flex-grow-1 align-items-center justify-content-center flex-row">
+        <!-- .align-items-start -->
+        <div v-tooltip="labelTooltip" class="flex-grow-1">{{ label }}</div>
+        <!-- .align-items-end -->
+        <div class="flex">
+          <span class="flex-grow-1"> {{ $ren.utils.roundValue(value) }} {{ unit }}</span> <RenValueCompare :value-diff="prevDiff" />
+        </div>
       </div>
       <div v-if="measurement.description" class="flex">
         <div class="flex align-items-center justify-content-center">{{ measurement.description }}</div>
@@ -27,6 +26,7 @@ export default {
   name: "InformationTileItem",
   components: {},
   props: {
+    height: { type: Number, default: null },
     settings: { type: Object, default: () => ({}) },
     conversionSettings: { type: Object, default: () => ({}) },
     measurement: {
@@ -54,16 +54,17 @@ export default {
     },
     style: function () {
       let color = this.measurementColor; //this.$ren.utils.measurementColor(this.measurement, this.value);
-      return `background:${color.color};opacity:${color.alpha};color: set-text-color(${color.color});`;
+      let height = this.height ? `height: ${this.height}%;` : "";
+      return `background:${color.color};opacity:${color.alpha};color: set-text-color(${color.color});` + height;
     },
     state: function () {
       let state;
       if (this.measurement.visible == null) state = true;
       else state = this.measurement.visible;
       if (state) {
-        return "tileitem flex-grow-0 flex flex-row justify-content-start flex-wrap";
+        return "tileitem flex-grow-0 flex flex-row justify-content-start "; // flex-wrap
       }
-      return "tileitem tileitem-hidden flex-grow-0 flex flex-row justify-content-start flex-wrap";
+      return "tileitem tileitem-hidden flex-grow-0 flex flex-row justify-content-start"; // flex-wrap
     },
     icon: function () {
       //todo: default
@@ -84,18 +85,13 @@ export default {
 
     value: function () {
       return this.$ren.utils.getConvertedValue(this.measurement, this.pdata, this.mSettings);
-      // try {
-      //   if (this.mSettings.panel.relativeValues && this.measurement.type.base_unit != "%") {
-      //     return (
-      //       (.current[this.measurement.aggregation_function][this.measurement.id] /
-      //         this.pdata.max[this.measurement.aggregation_function][this.measurement.id]) *
-      //       100.0
-      //     );
-      //   }
-      //   return this.pdata.current[this.measurement.aggregation_function][this.measurement.id];
-      // } catch (e) {
-      //   return null;
-      // }
+    },
+    prevDiff: function () {
+      if (!this.mSettings.tile.compare_with_previous) {
+        return null;
+      }
+      if (this.measurement == null) return null;
+      return this.value - this.$ren.utils.getValue(this.measurement, this.pdata.previous);
     },
     assetStr: function () {
       let m = this.measurement;

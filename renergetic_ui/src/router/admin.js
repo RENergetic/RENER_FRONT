@@ -27,6 +27,13 @@ var adminRoutes = [
     component: () => import("../views/admin/HDRPipelineListView.vue"),
   },
   {
+    path: "/admin/wasteheat/configuration",
+    name: "WasteHeatConfiguration",
+    meta: { isAuthenticated: true, roles: ["ren-admin", "ren-dev"], roleFlag: RenRoles.REN_ADMIN },
+    component: () => import("../views/admin/WasteHeatConfigurationView.vue"),
+  },
+
+  {
     path: "/admin/logs",
     name: "AdminLogs",
     meta: { isAuthenticated: true, roles: ["ren-admin", "ren-dev"], roleFlag: RenRoles.REN_ADMIN },

@@ -40,7 +40,8 @@ export default {
         });
       } else {
         await this.$refs.spinner.run(async () => {
-          this.workflowList = await this.$ren.kubeflowApi.list();
+          //list only visible
+          this.workflowList = await this.$ren.kubeflowApi.list({});
         });
       }
     },

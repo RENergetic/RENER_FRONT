@@ -1,13 +1,13 @@
 {
-  "empty": "Empty",
   "chart": "Chart",
-  "knob": "Knob chart",
-  "multi_knob": "Multi knob chart",
   "doughnut": "Doughnut chart",
-  "list": "List",
-  "single": "Single",
-  "panel": "Panel",
-  "multi_doughnut": "Multi doughnut chart",
+  "empty": "Empty",
   "image": "Image",
-  "qrcode": "QR code"
+  "knob": "Knob chart",
+  "list": "List",
+  "multi_doughnut": "Multi doughnut chart",
+  "multi_knob": "Multi knob chart",
+  "panel": "Panel",
+  "qrcode": "QR code",
+  "single": "Single"
 }

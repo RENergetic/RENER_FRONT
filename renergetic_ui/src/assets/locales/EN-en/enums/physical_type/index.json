@@ -1,16 +1,16 @@
 {
-  "energy": "Energy",
-  "power": "Power",
-  "temperature": "Temperature",
-  "percentage": "Percentage",
-  "voltage": "Voltage",
   "co2eq": "CO₂ emissions",
+  "energy": "Energy",
   "flow": "Flow",
   "mass": "Mass",
-  "speed": "Speed",
   "moisture": "Moisture",
+  "percentage": "Percentage",
+  "power": "Power",
+  "precipation": "Precipation",
   "pressure": "Pressure",
   "ratio": "Ratio",
+  "speed": "Speed",
+  "temperature": "Temperature",
   "value": "Value",
-  "precipation": "Precipation"
+  "voltage": "Voltage"
 }

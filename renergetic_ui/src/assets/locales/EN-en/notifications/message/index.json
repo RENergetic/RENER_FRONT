@@ -1,4 +1,8 @@
 {
+  "anomaly": {
+    "high": "The energy consumption is abnormally high",
+    "low": "The energy consumption is abnormally low"
+  },
   "code_high": "High value ({value}) of {measurement_label} for {asset_name}",
   "renewability": "Please reduce your consumption, there isn't enough renewable energy"
 }

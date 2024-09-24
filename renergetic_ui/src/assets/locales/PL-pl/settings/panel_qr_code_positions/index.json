@@ -1,6 +1,6 @@
 {
-  "top_right": "Prawy górny",
-  "top_left": "Lewy górny",
+  "bottom_left": "Lewy dolny",
   "bottom_right": "Prawy dolny",
-  "bottom_left": "Lewy dolny"
+  "top_left": "Lewy górny",
+  "top_right": "Prawy górny"
 }

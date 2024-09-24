@@ -10,6 +10,7 @@
       <!-- {{ mSettings.tile.icon }} -->
       <font-awesome-icon :icon="mSettings.tile.icon" />
     </div>
+
     <div v-if="mSettings.tile.template" class="flex flex-column align-items-center justify-content-center tilecontent">
       <span id="value" :style="color">
         <h3>{{ $t(`tile_templates.${tile.name}`, { value: `${$ren.utils.roundValue(value)} ${unit} ` }) }}</h3>
@@ -21,7 +22,7 @@
     >
       <span id="label" :style="color"> {{ mSettings.tile.label ? mSettings.tile.label : `${measurementlabel}: ` }} </span>
       <span id="value" :style="color">
-        <h2>{{ $ren.utils.roundValue(value) }} {{ unit }}</h2>
+        <h2>{{ $ren.utils.roundValue(value) }} {{ unit }}<RenValueCompare :value-diff="prevDiff" /></h2>
       </span>
     </div>
     <div v-else :class="'flex flex-column align-items-center justify-content-center tilecontent' + tileOrientationClass">
@@ -86,18 +87,20 @@ export default {
 
       if (this.measurement == null) return "";
       return this.$ren.utils.getConvertedValue(this.measurement, this.pdata, this.mSettings);
-      // try {
-      //   if (this.mSettings.panel.relativeValues && this.measurement.type.base_unit != "%") {
-      //     return (
-      //       (this.pdata.current[this.measurement.aggregation_function][this.measurement.id] /
-      //         this.pdata.max[this.measurement.aggregation_function][this.measurement.id]) *
-      //       100.0
-      //     );
-      //   }
-      //   return this.pdata.current[this.measurement.aggregation_function][this.measurement.id];
-      // } catch (e) {
-      //   return null;
-      // }
+    },
+    prevDiff: function () {
+      if (!this.mSettings.tile.compare_with_previous && this.pdata.previous) {
+        return null;
+      }
+      if (this.mSettings.tile.aggregate_values) {
+        let accu = 0.0;
+        for (let m of this.tile.measurements) {
+          accu += this.$ren.utils.getValue(m, this.pdata.previous);
+        }
+        return this.value - accu;
+      }
+      if (this.measurement == null) return null;
+      return this.value - this.$ren.utils.getValue(this.measurement, this.pdata.previous);
     },
   },
 
@@ -177,5 +180,6 @@ export default {
 
 h2 {
   margin: 0;
+  display: flex;
 }
 </style>

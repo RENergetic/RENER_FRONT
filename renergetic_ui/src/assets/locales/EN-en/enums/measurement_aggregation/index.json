@@ -1,7 +1,7 @@
 {
-  "sum": "Sum",
+  "last": "Current",
+  "max": "Max",
   "mean": "Mean",
   "min": "Min",
-  "max": "Max",
-  "last": "Current"
+  "sum": "Sum"
 }

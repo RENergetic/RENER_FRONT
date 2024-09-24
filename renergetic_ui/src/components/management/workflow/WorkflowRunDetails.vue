@@ -50,7 +50,7 @@ export default {
   },
   async mounted() {
     if (!this.mModel.endTime) {
-      this.mModel = await this.$ren.kubeflowApi.getExperimentRun(this.workflowRun.pipeline.pipeline_id);
+      this.mModel = await this.$ren.kubeflowApi.getWorkflowRun(this.workflowRun.pipeline.pipeline_id);
 
       this.state = this.mModel.state
         ? this.$t("model.workflowrun.run_state." + this.mModel.state.toLowerCase())

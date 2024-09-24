@@ -14,6 +14,7 @@ import RenSwitch from "@/components/miscellaneous/form/RenSwitch.vue";
 import RenPassword from "@/components/miscellaneous/form/RenPassword.vue";
 import RenInputWrapper from "@/components/miscellaneous/form/RenInputWrapper.vue";
 import RenSubmit from "@/components/miscellaneous/form/RenSubmit.vue";
+import RenValueCompare from "@/components/miscellaneous/data/RenValueCompare.vue";
 
 const plugin = {};
 
@@ -29,5 +30,6 @@ plugin.install = function (Vue) {
   Vue.component("RenPassword", RenPassword);
   Vue.component("RenInputWrapper", RenInputWrapper);
   Vue.component("RenSubmit", RenSubmit);
+  Vue.component("RenValueCompare", RenValueCompare);
 }; // installc
 export default plugin;

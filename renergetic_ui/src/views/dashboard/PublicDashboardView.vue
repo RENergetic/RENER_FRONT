@@ -3,7 +3,6 @@
   <div v-if="panel" id="panel-box">
     <DotMenu :model="menuModel" />
     <!-- :asset-id="$route.params.asset_id" -->
-
     <InformationPanelWrapper
       ref="panel"
       :key="panelReload"
@@ -98,14 +97,14 @@
   </div>
 </template>
 <script>
+import { panelSchema } from "@/plugins/model/settings.js";
 import { getCleanPanelStructure } from "@/components/dashboard/informationpanel/InformationPanelForm.vue";
 import InformationPanelWrapper from "@/components/dashboard/informationpanel/InformationPanelWrapper.vue";
-import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
+import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
 import Settings from "@/components/miscellaneous/settings/Settings.vue";
 import ParsedDateFilter from "@/components/miscellaneous/settings/ParsedDateFilter.vue";
-import { panelSchema } from "@/plugins/model/settings.js";
 import BasicFilterSettings from "@/components/miscellaneous/settings/BasicFilterSettings.vue";
 export default {
   name: "PublicDashboardView",
@@ -116,7 +115,6 @@ export default {
     DotMenu,
     PanelSettings,
     Settings,
-    // NotificationList,
     ConversionSettings,
   },
   data() {
@@ -124,13 +122,12 @@ export default {
       schema: panelSchema(),
       panel: null,
       panelReload: false,
-      editMode: false,
-      notifications: [],
       settings: this.$store.getters["settings/panel"],
       settingsDialog: false,
       filterSettingsDialog: false,
       conversionSettingsDialog: false,
       parsedFilterRefresh: false,
+      editMode: false,
     };
   },
   computed: {

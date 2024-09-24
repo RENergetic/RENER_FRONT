@@ -223,6 +223,7 @@ export default {
         ...this._measurementItems(),
         // ...this._notificationItems(),
         ...this._hdrItems(),
+        ...this._wasteHeatItems(),
         ...this._workflowItems(),
         ...this._abstractMeters(),
       ];
@@ -263,6 +264,14 @@ export default {
           icon: "pi pi-fw pi-cog",
           command: () => {
             this.$router.push({ name: "HDRPipeline" });
+          },
+        },
+        {
+          class: this.checkPath({ name: "WasteHeatConfiguration" }) ? "hl-menu" : "",
+          label: this.$t("menu.manage_wasteheat"),
+          icon: "pi pi-fw pi-cog",
+          command: () => {
+            this.$router.push({ name: "WasteHeatConfiguration" });
           },
         },
       ];
@@ -388,11 +397,24 @@ export default {
           label: this.$t("menu.hdr_view"),
           icon: "pi pi-fw pi-sliders-h",
           command: () => {
-            this.$router.push({ name: "HDRView", path: "/management/demand/hdr" });
+            this.$router.push({ name: "HDRView", path: "/management/hdr" });
           },
         },
       ];
     },
+    _wasteHeatItems() {
+      return [
+        {
+          class: this.checkPath({ name: "WasteHeatView" }) ? "hl-menu" : "",
+          label: this.$t("menu.wasteheat_view"),
+          icon: "pi pi-fw pi-sliders-h",
+          command: () => {
+            this.$router.push({ name: "WasteHeatView", path: "/management/wasteheat" });
+          },
+        },
+      ];
+    },
+
     _workflowItems() {
       return [
         {

@@ -1,14 +1,39 @@
 {
   "asset_connections": "Conexiones entre activos",
-  "name": "Nombre",
-  "id": "Id",
-  "child": "Sub activos",
   "asset_type": "Tipo de activo",
+  "category": {
+    "affected_assets": null,
+    "cancel": null,
+    "delete": null,
+    "delete_prompt": null,
+    "description": null,
+    "id": null,
+    "label": null,
+    "name": null,
+    "no_assets_found": null
+  },
+  "child": "Sub activos",
+  "child_description": null,
+  "connection_type": null,
+  "description": null,
+  "geo_location": "Geoposicionamiento",
+  "id": "Id",
   "label": "Etiqueta",
   "measurements": "Mediciones",
-  "geo_location": "Geoposicionamiento",
+  "name": "Nombre",
   "owner": "Propietario",
   "parent": "Padre",
-  "connection_type": null,
-  "description": null
+  "parent_description": null,
+  "types": {
+    "bulding": null,
+    "dormitory": null,
+    "flat": null,
+    "heat_exchange": null,
+    "heat_exchanger": null,
+    "heat_source": null,
+    "island": null,
+    "pv": "PV",
+    "pv_plant": null,
+    "room": "Habitación"
+  }
 }

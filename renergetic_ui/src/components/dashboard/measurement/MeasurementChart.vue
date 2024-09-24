@@ -1,14 +1,11 @@
 <template>
   <RenSpinner ref="spinner" :lock="true">
     <template #content>
-      <!-- {{ mMeasurements.length }} -->
       <!-- {{ annotations }} -->
       <!-- <div style="max-width: 20rem; overflow: hidden; max-height: 15rem">{{ chartData }}</div> -->
       <!-- {{ pdata["timeseries_labels"] }} -->
       <!-- {{ width }} -->
-      <!-- {{ options }}
-      {{ chartData }} -->
-      <!-- {{ options }}
+      <!-- {{ options }}  
       {{ chartData }} -->
       <Chart
         v-if="!titleVisible && height && width && loaded"
@@ -59,6 +56,7 @@ export default {
     immediate: { type: Boolean, default: true }, //immediately reload data if not present locally
     titleVisible: { type: Boolean, default: false },
     title: { type: String, default: null },
+    comparePrevious: { type: Boolean, default: null },
     // loadData: { type: Boolean, default: true },
     annotations: {
       type: [Object, Array],
@@ -78,12 +76,12 @@ export default {
     let mMeasurements = this.tile ? this.tile.measurements : this.measurements;
     let yAxisTitle = null;
     if (mMeasurements && mMeasurements.length == 1) {
-      console.error("TODO: convert timeseries unit");
       let unit = mMeasurements[0].type.unit != "any" ? ` [${mMeasurements[0].type.unit}]` : "";
       yAxisTitle = `${this.$t("enums.physical_type." + mMeasurements[0].type.physical_name)}${unit}`;
     }
     return {
-      labels: this.pdata["timeseries_labels"] ? this.pdata["timeseries_labels"] : [],
+      labels: this.pdata["timeseries"] && this.pdata["timeseries"]["timestamps"] ? this.pdata["timeseries"]["timestamps"] : [],
+      previousLabels: [],
       datasets: [],
       loaded: false,
       plugins: [chartjsMoment, chartjsPluginAnnotation],
@@ -122,7 +120,7 @@ export default {
       let annotations = this.annotations;
       // console.info(annotations);
 
-      let position = this.mMeasurements.length > 4 ? "top" : "chartArea";
+      let position = this.mMeasurements.length > 4 || this.comparePrevious ? "bottom" /*top*/ : "chartArea";
       return {
         responsive: true,
         maintainAspectRatio: false,
@@ -156,6 +154,11 @@ export default {
           x: {
             // type: "timeseries", //keep Equidistant  between points (labels are squished)
             type: "time",
+          },
+          x_prev: {
+            position: "top",
+            type: "time",
+            labels: this.previousLabels,
           },
           y: {
             title: {
@@ -214,7 +217,15 @@ export default {
       console.debug(`has all data ${hasAllData}`);
       if (hasAllData) {
         this.labels = this.pdata["timeseries"]["timestamps"];
-        return this.pdata["timeseries"]["current"];
+
+        let mData = this.pdata["timeseries"]["current"];
+        console.error("TODO: load previous data - check if everything is available ");
+        if (this.comparePrevious) {
+          mData.previous = this.pdata.previous["timeseries"]["current"];
+          mData.previousLabels = this.pdata.previous["timeseries"]["timestamps"];
+          this.previousLabels = mData.previousLabels;
+        }
+        return mData;
       }
       return null;
     },
@@ -224,20 +235,46 @@ export default {
       // let data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
       // let measurementIds = this.tile.measurements.map((m) => m.id);
       let data = this.localData();
+      var getPrevious = false;
       if (data == null) {
+        //if previous ==null
+        console.error("TODO: load previous data - check if everything is available ");
+
         let timeseriesData;
+
+        if (this.tile.props.compare_with_previous && this.tile.props.compare_with_previous_filter_obj) {
+          getPrevious = true;
+        }
         if (this.tile) {
           timeseriesData = await this.$ren.dataApi.getTimeseries(null, this.tile.id, this.assetId, this.filter);
+          if (getPrevious) {
+            timeseriesData.previous = await this.$ren.dataApi.getTimeseries(
+              null,
+              this.tile.id,
+              this.assetId,
+              this.tile.props.compare_with_previous_filter_obj,
+            );
+          }
         } else if (this.mMeasurements) {
           timeseriesData = await this.$ren.dataApi.getMeasurementTimeseries(this.mMeasurements, this.filter);
+          if (getPrevious) {
+            timeseriesData.previous = await this.$ren.dataApi.getMeasurementTimeseries(
+              this.mMeasurements,
+              this.tile.props.compare_with_previous_filter_obj,
+            );
+          }
         }
 
         this.labels = timeseriesData["timestamps"];
         data = timeseriesData["current"];
+        if (getPrevious && timeseriesData.previous) data.previous = timeseriesData.previous["current"];
         if (timeseriesData) {
           this.$emit("timeseries-update", timeseriesData);
         }
       }
+      console.info(this.comparePrevious);
+      console.info(getPrevious);
+      console.info(data);
       return data;
     },
     setDataset(data) {
@@ -245,7 +282,6 @@ export default {
       for (let idx in this.mMeasurements) {
         let m = this.mMeasurements[idx];
         let color = this.$ren.utils.measurementColor(m).color;
-        console.error("TODO: convert timeseries unit");
         let aggFunc = this.$t("enums.measurement_aggregation." + m.aggregation_function);
 
         let unitLabel = m.type.unit != "any" ? `: ${this.$t("enums.physical_type." + m.type.physical_name)} [${m.type.unit}]` : "";
@@ -253,6 +289,7 @@ export default {
         let mfill = m.measurement_details && m.measurement_details["fill_chart"] != null ? m.measurement_details["fill_chart"] : "true";
         let fill = mfill?.toLowerCase?.() === "true";
         datasets.push({
+          xAxisID: "x",
           data: data[m.id],
           label: `${label}(${aggFunc})${unitLabel}`,
           // label: `${label}(${m.id}) ${unitLabel}`,
@@ -261,6 +298,21 @@ export default {
           showLine: true,
           fill: fill,
         });
+        console.debug(this.comparePrevious);
+        console.debug(data);
+        console.debug(this.pdata);
+        if (this.comparePrevious)
+          datasets.push({
+            xAxisID: "x_prev",
+            data: data.previous[m.id],
+            label: `${label}(${aggFunc})${unitLabel} -  ${this.dateFilterToString(this.tile.props.compare_with_previous_filter_obj)}`,
+            labels: data.previousLabels,
+            // label: `${label}(${m.id}) ${unitLabel}`,
+            backgroundColor: color + "00",
+            borderColor: color + "AA",
+            showLine: true,
+            fill: fill,
+          });
       }
       // console.error(datasets);
       this.datasets = datasets;
@@ -271,6 +323,7 @@ export default {
       await run(async () => {
         // await new Promise((r) => setTimeout(r, 250));
         var pdata = await this.loadTimeseriesData();
+        console.debug(pdata);
         this.setDataset(pdata);
         this.loaded = true;
         this.refreshDate = new Date();
@@ -278,7 +331,12 @@ export default {
     },
     async setLocalData() {
       var pdata = await this.localData();
+      //TODO:
+
       if (pdata !== null) {
+        //temporary
+
+        alert(this.comparePrevious);
         this.setDataset(pdata);
         this.loaded = true;
         this.refreshDate = null;

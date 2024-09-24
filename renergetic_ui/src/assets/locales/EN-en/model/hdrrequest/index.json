@@ -1,10 +1,10 @@
 {
+  "change_or_limit": "Request's value relative change/limit",
   "date_from": "Date from",
   "date_to": "To",
+  "delta_value": "Value's relative change",
   "interval_length": "Request length [min]",
-  "physical_type": "Value's physical type",
-  "unit": "Unit",
-  "change_or_limit": "Request's value relative change/limit",
   "max_value": "Value's max",
-  "delta_value": "Value's relative change"
+  "physical_type": "Value's physical type",
+  "unit": "Unit"
 }

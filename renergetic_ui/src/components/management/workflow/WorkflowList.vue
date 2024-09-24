@@ -17,8 +17,31 @@
     </template> -->
 
     <Column :expander="true" header-style="width: 3rem" />
-    <Column field="name" :header="$t('model.workflow.name')" :show-filter-menu="false" />
-    <Column field="pipeline_id" :header="$t('model.workflow.pipeline_id')" :show-filter-menu="false" />
+    <Column field="name" :header="$t('model.workflow.name')" :show-filter-menu="false">
+      <template #body="slotProps">
+        <h4 v-if="slotProps.data.label">{{ slotProps.data.label }} ( {{ slotProps.data.name }})</h4>
+
+        <h4 v-else>{{ slotProps.data.name }}</h4>
+
+        <div
+          v-tooltip="$t('model.workflow.pipeline_id')"
+          class="disabled"
+          @click="toClipboard(slotProps.data.pipeline_id, $t('model.workflow.pipeline_id'))"
+        >
+          {{ slotProps.data.pipeline_id }}
+        </div>
+        <div v-if="slotProps.data.update_date" class="disabled" @click="toClipboard(slotProps.data.version, $t('model.workflow.version'))">
+          <span v-tooltip="$t('model.workflow.version')"> {{ slotProps.data.version }}</span>
+          (
+          <span v-tooltip="$t('model.workflow.update_date')"> {{ $ren.utils.parseUnixTimestamp(slotProps.data.update_date) }} </span>
+          )
+        </div>
+        <div v-else class="disabled" @click="toClipboard(slotProps.data.version, $t('model.workflow.version'))">
+          <span v-tooltip="$t('model.workflow.version')"> {{ slotProps.data.version }}</span>
+        </div>
+      </template>
+    </Column>
+    <!-- <Column field="pipeline_id" :header="$t('model.workflow.pipeline_id')" :show-filter-menu="false" /> -->
     <template #expansion="slotProps">
       <ul v-if="slotProps.data.parameters">
         <li v-for="key in Object.keys(slotProps.data.parameters)" :key="key">{{ key }}</li>
