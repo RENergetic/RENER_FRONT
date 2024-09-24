@@ -242,10 +242,10 @@ export default {
 
         let timeseriesData;
 
-        if (this.tile.props.compare_with_previous && this.tile.props.compare_with_previous_filter_obj) {
-          getPrevious = true;
-        }
         if (this.tile) {
+          if (this.tile.props.compare_with_previous && this.tile.props.compare_with_previous_filter_obj) {
+            getPrevious = true;
+          }
           timeseriesData = await this.$ren.dataApi.getTimeseries(null, this.tile.id, this.assetId, this.filter);
           if (getPrevious) {
             timeseriesData.previous = await this.$ren.dataApi.getTimeseries(
