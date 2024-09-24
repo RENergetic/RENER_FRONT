@@ -10,7 +10,7 @@ export const allowedLocales = {
   be: "BE-be",
   //TODO: make this list dynamic - based on server response
 };
-console.error(en);
+console.debug(en);
 const loadedLocales = new Set();
 loadedLocales.add("en");
 
@@ -76,7 +76,5 @@ export async function setLocale(localeCode) {
     }
   }
 }
-// console.info(i18n.global);
 await setLocale(localeCode);
-// console.info(i18n.global);
 export default i18n;

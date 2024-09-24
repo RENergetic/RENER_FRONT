@@ -8,6 +8,7 @@
   "error": "Error",
   "hdr_cannot_disable_default": "Cannot disable default HDR pipeline",
   "hdr_task_is_running": "HDR pipeline is runnning",
+  "label_not_changed": "Label not updated",
   "measurement_delete_fail": "Measurement has not been deleted.",
   "measurement_not_updated": "Measurement has not been updated",
   "panel_not_found": "Panel: {0} not found.",
@@ -18,6 +19,5 @@
   "user_not_updated": "User not updated",
   "visibility_changed": "Visibility not changed",
   "worflow_stop": "{label} failed to stop",
-  "worflowrun_start": "{label} failed to start",
-  "label_not_changed":"Label not updated"
+  "worflowrun_start": "{label} failed to start"
 }

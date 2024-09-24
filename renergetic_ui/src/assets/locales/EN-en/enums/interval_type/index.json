@@ -1,8 +1,8 @@
 {
+  "day": "Day",
+  "month": "Month",
   "none": "none",
   "previous": "Previous",
-  "year": "Year",
-  "month": "Month",
-  "day": "Day",
-  "week": "Week"
+  "week": "Week",
+  "year": "Year"
 }

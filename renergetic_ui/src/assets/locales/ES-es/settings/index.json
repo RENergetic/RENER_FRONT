@@ -6,6 +6,8 @@
   "agg_by_measurement": "Aggregate by measurement name",
   "agg_by_measurement_description": "Aggregate by measurement name, for instance: current_power, energy, inlet_temperature, air_temperature",
   "chart": "Chart",
+  "compare_interval_type": null,
+  "compare_interval_type_description": null,
   "date_from": null,
   "date_to": null,
   "disabled": "Disabled",

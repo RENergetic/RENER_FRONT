@@ -12,6 +12,7 @@
   "delete_success": "Object deleted",
   "information": "Information",
   "information_panel_sctructure_submitted": "Structure submitted",
+  "label_changed": "Label updated",
   "measurement_created": "Measurement has been created",
   "measurement_delete_success": "Measurement has been deleted.",
   "measurement_not_updated": "Measurement has not been updated",
@@ -28,6 +29,5 @@
   "user_updated": "User has been updated",
   "visibility_changed": "Visibility changed",
   "worflow_stop": "{label} - stopped",
-  "worflowrun_start": "{run_id} - started", 
-  "label_changed":"Label updated"
+  "worflowrun_start": "{run_id} - started"
 }

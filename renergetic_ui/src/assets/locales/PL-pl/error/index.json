@@ -8,6 +8,7 @@
   "error": "Error",
   "hdr_cannot_disable_default": "Wartość nie może być zmieniona dla domyślnego zadania",
   "hdr_task_is_running": "Zadanie już uruchomione",
+  "label_not_changed": "Błąd zapisu etykiety",
   "measurement_delete_fail": "Measurement has not been deleted.",
   "measurement_not_updated": "Measurement has not been updated",
   "panel_not_found": "Nie odnaleziono widoku: {0}.",

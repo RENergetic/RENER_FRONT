@@ -6,6 +6,8 @@
   "agg_by_measurement": null,
   "agg_by_measurement_description": null,
   "chart": null,
+  "compare_interval_type": null,
+  "compare_interval_type_description": null,
   "date_from": null,
   "date_to": null,
   "disabled": null,

@@ -8,6 +8,7 @@
   "error": "Error",
   "hdr_cannot_disable_default": null,
   "hdr_task_is_running": null,
+  "label_not_changed": null,
   "measurement_delete_fail": null,
   "measurement_not_updated": null,
   "panel_not_found": null,

@@ -6,6 +6,8 @@
   "agg_by_measurement": "Agreguj po nazwie parametru",
   "agg_by_measurement_description": "Agreguj po nazwie parametru, np: current_power, energy, inlet_temperature, air_temperature",
   "chart": "Wykres",
+  "compare_interval_type": "Długość okresu",
+  "compare_interval_type_description": "Długość okresu porównawczego",
   "date_from": "Od",
   "date_to": "Do",
   "disabled": "Wyłączony",

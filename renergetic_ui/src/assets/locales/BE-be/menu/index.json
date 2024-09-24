@@ -42,6 +42,7 @@
   "manage_rules": null,
   "manage_users": null,
   "manage_wasteheat": null,
+  "manage_wasteheat_pipeline": null,
   "manage_workflows": null,
   "management": null,
   "measurements": null,
