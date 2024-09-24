@@ -89,7 +89,7 @@ export default {
       return this.$ren.utils.getConvertedValue(this.measurement, this.pdata, this.mSettings);
     },
     prevDiff: function () {
-      if (!this.mSettings.tile.compare_with_previous && this.pdata.previous) {
+      if (!this.mSettings.tile.compare_with_previous || !this.pdata.previous) {
         return null;
       }
       if (this.mSettings.tile.aggregate_values) {
