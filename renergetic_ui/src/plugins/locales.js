@@ -39,9 +39,21 @@ const i18n = createI18n({
   locale: localeCode,
   fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || "en",
   defaultLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || "en",
+  globalInjection: true,
   messages: { en: en },
 });
-
+//hotfix!!!
+/////////////////////////// $te returns false if the key contains dot #1521
+//https://github.com/kazupon/vue-i18n/issues/1521
+i18n.global.te = (key, locale = null) => {
+  if (key == null || key === undefined) {
+    console.warn("Provided key is null");
+    return false;
+  }
+  const effectiveLocale = locale && locale.length ? locale : i18n.global.locale;
+  const messages = i18n.global.messages[effectiveLocale];
+  return Object.hasOwn(messages, key);
+};
 export async function setLocale(localeCode) {
   if (loadedLocales.has(localeCode)) {
     i18n.global.locale = localeCode;
