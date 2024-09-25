@@ -46,7 +46,7 @@
         <AccordionTab :header="$t('model.information_panel.structure')">
           <ren-input-wrapper v-if="mPanelStructureJSON" :text-label="null">
             <template #content>
-              <Textarea v-model="mPanelStructureJSON" style="width: 100%; max-width: 100rem" :maxlength="20000" rows="15" :cols="80"></Textarea>
+              <Textarea v-model="mPanelStructureJSON" style="width: 100%; max-width: 100rem" :maxlength="40000" rows="15" :cols="80"></Textarea>
             </template>
           </ren-input-wrapper>
           <ren-input-wrapper v-if="modelValue" :text-label="null">
@@ -87,7 +87,7 @@
             <!-- <ren-input-text v-if="submittedPanel" v-model="submittedPanel" :text-label="null" :cols="50" :maxlength="10000" /> -->
             <ren-input-wrapper v-if="submittedPanelJSON" :text-label="null">
               <template #content>
-                <Textarea v-model="submittedPanelJSON" style="width: 100%" :maxlength="20000" rows="15" :cols="80"></Textarea>
+                <Textarea v-model="submittedPanelJSON" style="width: 100%" :maxlength="40000" rows="15" :cols="80"></Textarea>
               </template>
             </ren-input-wrapper>
             <div v-else>{{ $t("view.submit_structure") }}</div>
@@ -113,7 +113,7 @@
                 <!-- <ren-input-text v-if="submittedPanel" v-model="submittedPanel" :text-label="null" :cols="50" :maxlength="10000" /> -->
                 <!-- <ren-input-wrapper v-if="submittedPanelJSON" :text-label="null">
                   <template #content>
-                    <Textarea v-model="submittedPanelJSON" style="width: 100%" :maxlength="20000" rows="15" :cols="80"></Textarea>
+                    <Textarea v-model="submittedPanelJSON" style="width: 100%" :maxlength="40000" rows="15" :cols="80"></Textarea>
                   </template>
                 </ren-input-wrapper> -->
                 <!-- <p v-if="!submittedPanelJSON">{{ $t("view.file_drag_drop") }}</p> -->

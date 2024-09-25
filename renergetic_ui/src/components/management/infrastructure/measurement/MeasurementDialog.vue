@@ -10,7 +10,7 @@
     <Textarea
       v-model="modelJSON"
       style="width: 100%; height: 70vh; max-width: 100%; min-height: 20rem; min-width: 20rem"
-      :maxlength="20000"
+      :maxlength="40000"
       :cols="120"
       disabled
     ></Textarea>
