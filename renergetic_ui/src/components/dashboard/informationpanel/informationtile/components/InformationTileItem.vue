@@ -54,7 +54,7 @@ export default {
     },
     style: function () {
       let color = this.measurementColor; //this.$ren.utils.measurementColor(this.measurement, this.value);
-      let height = this.height ? `height: ${this.height}%;` : "";
+      let height = this.height ? `height: max-content;max-height: ${this.height}%;` : "";
       return `background:${color.color};opacity:${color.alpha};color: set-text-color(${color.color});` + height;
     },
     state: function () {
