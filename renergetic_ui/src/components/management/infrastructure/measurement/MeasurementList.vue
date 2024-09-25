@@ -194,7 +194,7 @@
             <!-- <ren-input-text v-if="submittedPanel" v-model="submittedPanel" :text-label="null" :cols="50" :maxlength="10000" /> -->
             <ren-input-wrapper v-if="submittedMeasurements" :text-label="null">
               <template #content>
-                <Textarea v-model="submittedMeasurementsJSON" style="width: 100%" :maxlength="20000" rows="15" :cols="80"></Textarea>
+                <Textarea v-model="submittedMeasurementsJSON" style="width: 100%" :maxlength="40000" rows="15" :cols="80"></Textarea>
               </template>
             </ren-input-wrapper>
             <p v-if="!submittedMeasurements">{{ $t("view.file_drag_drop") }}</p>
