@@ -87,6 +87,7 @@ export default {
       plugins: [chartjsMoment, chartjsPluginAnnotation],
       mStyle: "max-width: 100rem;max-height:60rem; margin: auto;height:100%;width:100%",
       mMeasurements: mMeasurements,
+      mPrevious: this.tile ? this.tile.props.compare_with_previous : this.comparePrevious,
       yAxisTitle: yAxisTitle,
     };
   },
@@ -119,8 +120,7 @@ export default {
     options: function () {
       let annotations = this.annotations;
       // console.info(annotations);
-
-      let position = this.mMeasurements.length > 4 || this.comparePrevious ? "bottom" /*top*/ : "chartArea";
+      let position = this.mMeasurements.length > 4 || this.mPrevious ? "bottom" /*top*/ : "chartArea";
       return {
         responsive: true,
         maintainAspectRatio: false,
@@ -151,20 +151,11 @@ export default {
           // },
         },
         scales: {
-          x: {
-            // type: "timeseries", //keep Equidistant  between points (labels are squished)
-            type: "time",
-          },
-          x_prev: {
-            position: "top",
-            type: "time",
-            labels: this.previousLabels,
-          },
+          // type: "timeseries", //keep Equidistant  between points (labels are squished)
+          x: { type: "time" },
+          x_prev: { display: this.mPrevious, position: "top", type: "time", labels: this.previousLabels },
           y: {
-            title: {
-              display: this.yAxisTitle != null,
-              text: this.yAxisTitle,
-            },
+            title: { display: this.yAxisTitle != null, text: this.yAxisTitle },
           },
         },
       };
@@ -220,7 +211,7 @@ export default {
 
         let mData = this.pdata["timeseries"]["current"];
         console.error("TODO: load previous data - check if everything is available ");
-        if (this.comparePrevious) {
+        if (this.mPrevious) {
           mData.previous = this.pdata.previous["timeseries"]["current"];
           mData.previousLabels = this.pdata.previous["timeseries"]["timestamps"];
           this.previousLabels = mData.previousLabels;
@@ -242,10 +233,10 @@ export default {
 
         let timeseriesData;
 
-        if (this.tile.props.compare_with_previous && this.tile.props.compare_with_previous_filter_obj) {
-          getPrevious = true;
-        }
         if (this.tile) {
+          if (this.tile.props.compare_with_previous && this.tile.props.compare_with_previous_filter_obj) {
+            getPrevious = true;
+          }
           timeseriesData = await this.$ren.dataApi.getTimeseries(null, this.tile.id, this.assetId, this.filter);
           if (getPrevious) {
             timeseriesData.previous = await this.$ren.dataApi.getTimeseries(
@@ -272,7 +263,7 @@ export default {
           this.$emit("timeseries-update", timeseriesData);
         }
       }
-      console.info(this.comparePrevious);
+      console.info(this.mPrevious);
       console.info(getPrevious);
       console.info(data);
       return data;
@@ -298,10 +289,10 @@ export default {
           showLine: true,
           fill: fill,
         });
-        console.debug(this.comparePrevious);
+        console.debug(this.mPrevious);
         console.debug(data);
         console.debug(this.pdata);
-        if (this.comparePrevious)
+        if (this.mPrevious)
           datasets.push({
             xAxisID: "x_prev",
             data: data.previous[m.id],
@@ -336,7 +327,6 @@ export default {
       if (pdata !== null) {
         //temporary
 
-        alert(this.comparePrevious);
         this.setDataset(pdata);
         this.loaded = true;
         this.refreshDate = null;
