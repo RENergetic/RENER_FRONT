@@ -111,10 +111,10 @@ export default {
     panel.tiles.forEach((tile) => tile.measurements.filter((m) => m.id in timeseries).forEach((m) => (chartDict[m.id] = m)));
 
     let chartMeasurements = Object.values(chartDict);
-    var converted = [];
     for (let m of chartMeasurements) {
       var newUnit = this.getUnit(m, null, settings); // settings[m.type.physical_name];
       if (newUnit) {
+        var converted = [];
         for (let value of timeseries[m.id]) {
           let newV = this.app.$store.getters["view/convertValue"](m.type, value, newUnit);
           converted.push(newV);
