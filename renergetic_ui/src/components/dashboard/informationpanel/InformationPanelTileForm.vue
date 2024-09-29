@@ -418,6 +418,7 @@ export default {
     },
     addMeasurementTemplate(mt) {
       mt.aggregation_function = MeasurementAggregation.last;
+      mt._inferred = false;
       this.mModel.measurements.push(mt);
       this.$emit("update:modelValue", this.mModel);
       this.addMeasurementTemplateDialog = false;
@@ -426,6 +427,7 @@ export default {
       var exists = this.mModel.measurements.filter((it) => it.id == m.id).length > 0;
       if (!exists) {
         m.aggregation_function = MeasurementAggregation.last;
+        m._inferred = false;
         this.mModel.measurements.push(m);
         this.$emit("update:modelValue", this.mModel);
       }

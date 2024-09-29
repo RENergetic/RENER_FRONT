@@ -170,9 +170,19 @@ export default {
   },
   methods: {
     editTile(tile, index) {
-      this.selectedTile = tile;
-      this.selectedTileIndex = index;
-      this.tileEditDialog = true;
+      if (this.mPanel._tiles && tile.id == this.mPanel._tiles[index].id) {
+        //dont update inferred measurements
+        let t = JSON.parse(JSON.stringify(tile));
+
+        t.measurements = this.mPanel._tiles[index].measurements; //replace with original templates/queries
+
+        this.selectedTile = t;
+        this.selectedTileIndex = index;
+        this.tileEditDialog = true;
+      } else {
+        console.error("panel tile order has changed: " + JSON.stringify(tile) + " " + index);
+        console.debug(this.mPanel);
+      }
     },
     onTileEdit(tile) {
       this.selectedTile = tile;
