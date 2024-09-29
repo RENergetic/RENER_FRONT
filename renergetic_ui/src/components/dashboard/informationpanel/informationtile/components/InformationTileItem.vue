@@ -113,8 +113,8 @@ export default {
     },
     label: function () {
       let assetStr = this.assetStr ? `: ${this.assetStr}` : "";
-      let aggFunc = this.$t("enums.measurement_aggregation." + this.measurement.aggregation_function);
-      let label = `${aggFunc}:${this.measurementlabel}${assetStr}`;
+
+      let label = `${this.measurementlabel}${assetStr}`;
 
       if (label.length < 36) {
         return label;
@@ -123,10 +123,11 @@ export default {
       // return label;
     },
     labelTooltip: function () {
+      let aggFunc = this.$t("enums.measurement_aggregation." + this.measurement.aggregation_function);
       let m = this.measurement;
       let directionStr = m.direction ? ` (${this.$t("enums.measurement_direction." + m.direction)})` : "";
-      let assetStr = m.asset ? (m.asset.label ? `- ${m.asset.label} (${m.asset.name})` : `- ${m.asset.name}}`) : "";
-      return `${this.measurementlabel}${assetStr}${directionStr}`;
+      let assetStr = m.asset ? (m.asset.label ? ` - ${m.asset.label} (${m.asset.name})` : ` - ${m.asset.name}}`) : "";
+      return `${aggFunc}:${this.measurementlabel}${assetStr}${directionStr}`;
     },
   },
   mounted() {},
