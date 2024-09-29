@@ -122,6 +122,20 @@ var panelSchema = function () {
       defaultValue: 200,
     },
     {
+      label: $t("settings.panel_tag_key"),
+      description: $t("settings.panel_tag_key_description"),
+      type: String,
+      key: "tag_key",
+      defaultValue: null,
+    },
+    {
+      label: $t("settings.panel_tag_value"),
+      description: $t("settings.panel_tag_value_description"),
+      type: String,
+      key: "tag_value",
+      defaultValue: null,
+    },
+    {
       label: $t(`settings.compare_interval_type`),
       description: $t(`settings.compare_interval_type_description`),
       type: Array,

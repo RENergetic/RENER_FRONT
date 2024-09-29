@@ -728,7 +728,7 @@
     "agg_by_measurement": "Aggregate by measurement name",
     "agg_by_measurement_description": "Aggregate by measurement name, for instance: current_power, energy, inlet_temperature, air_temperature",
     "chart": "Chart",
-    "compare_interval_type": "Compare with interval length.",
+    "compare_interval_type": "'Compare with' interval length.",
     "compare_interval_type_description": "Compare current period with period which happened in the past (date subtracted by chosen setting).",
     "date_from": "From",
     "date_to": "To",
