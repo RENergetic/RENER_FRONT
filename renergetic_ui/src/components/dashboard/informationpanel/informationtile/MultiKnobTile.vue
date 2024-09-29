@@ -110,7 +110,7 @@ export default {
       return (this.mSettings.tile ? this.mSettings.tile.icon_visibility : true) && this.mSettings.tile.icon;
     },
     chartData: function () {
-      let pdata = this.mSettings.tile.compare_with_previous && this.pdata ? this.pdata.previous : this.pdata;
+      let pdata = this.pdata; // this.mSettings.tile.compare_with_previous && this.pdata ? this.pdata.previous : this.pdata;
       if (!(pdata && pdata.current)) {
         return {};
       }

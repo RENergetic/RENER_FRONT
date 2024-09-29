@@ -79,6 +79,7 @@ export default {
       let unit = mMeasurements[0].type.unit != "any" ? ` [${mMeasurements[0].type.unit}]` : "";
       yAxisTitle = `${this.$t("enums.physical_type." + mMeasurements[0].type.physical_name)}${unit}`;
     }
+    var mPrevious = this.tile ? this.tile.props.compare_with_previous : this.comparePrevious;
     return {
       labels: this.pdata["timeseries"] && this.pdata["timeseries"]["timestamps"] ? this.pdata["timeseries"]["timestamps"] : [],
       previousLabels: [],
@@ -87,7 +88,7 @@ export default {
       plugins: [chartjsMoment, chartjsPluginAnnotation],
       mStyle: "max-width: 100rem;max-height:60rem; margin: auto;height:100%;width:100%",
       mMeasurements: mMeasurements,
-      mPrevious: this.tile ? this.tile.props.compare_with_previous : this.comparePrevious,
+      mPrevious: mPrevious != null ? mPrevious : false,
       yAxisTitle: yAxisTitle,
     };
   },
