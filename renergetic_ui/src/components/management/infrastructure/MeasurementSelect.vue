@@ -1,28 +1,39 @@
 <template>
-  <div>
-    <Dialog v-model:visible="measurementDialog" :maximizable="true" :modal="true" :dismissable-mask="true">
-      <Card>
-        <template #title> {{ $t("view.add_measurement") }} </template>
-        <template #content>
+  <Dialog v-model:visible="measurementDialog" :style="{ minWidth: '20rem' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <Card>
+      <template #title> {{ $t("view.add_measurement") }} </template>
+      <template #content>
+        <div class="field grid">
           <AutoComplete
             v-model="selectedMeasurement"
+            style="width: 100%"
             :placeholder="$t('view.find_measurement')"
             :suggestions="measurementList"
             field="name"
             @complete="searchMeasurement($event)"
-          />
-          <div v-if="selectedMeasurement" class="field grid">
-            <div class="col">
-              <Button :label="$t('view.button.submit')" @click="submit" />
-            </div>
-            <div class="col">
-              <Button :label="$t('view.button.cancel')" @click="cancel" />
-            </div>
+          >
+            <template #option="slotProps">
+              <div>
+                {{
+                  slotProps.option.label
+                    ? `${slotProps.option.label} (${slotProps.option.name}) - ${slotProps.option.domain}`
+                    : `${slotProps.option.name} - ${slotProps.option.domain}`
+                }}
+              </div>
+            </template>
+          </AutoComplete>
+        </div>
+        <div class="field grid">
+          <div class="col">
+            <Button :label="$t('view.button.submit')" :disabled="selectedMeasurement == null || !selectedMeasurement.name" @click="submit" />
           </div>
-        </template>
-      </Card>
-    </Dialog>
-  </div>
+          <div class="col">
+            <Button :label="$t('view.button.cancel')" @click="cancel" />
+          </div>
+        </div>
+      </template>
+    </Card>
+  </Dialog>
 </template>
 <script>
 export default {
@@ -61,8 +72,7 @@ export default {
     },
     async open(current = null) {
       this.measurementDialog = true;
-      if (current == null) this.selectedMeasurement = this.current;
-      else this.selectedMeasurement = current;
+      this.selectedMeasurement = current;
     },
     cancel() {
       this.measurementDialog = false;
@@ -71,11 +81,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-i.pi {
-  margin-left: 0.25rem;
-}
-.flex > div {
-  flex-grow: 1;
-}
-</style>
+<style lang="scss"></style>

@@ -1,26 +1,16 @@
 <template>
   <div v-if="slotProps" :class="'grid-stack-item ren'" v-bind="gridStackAttributes">
-    <!-- :style="mStyle" -->
     <div :class="'grid-stack-item-content ' + state" :style="background">
-      <div class="tile-bar">
-        <Button
-          v-if="edit"
-          id="menu-toggle"
-          :class="'p-button-rounded p-button-text edit-button'"
-          aria-haspopup="true"
-          icon="pi pi-pencil"
-          @click="$emit('edit', slotProps)"
-        />
-        <!-- <Button notifications for tile
-          v-if="notificationVisible"
-          id="notification"
-          :class="'p-button-rounded p-button-text bell-button '"
-          aria-haspopup="true"
-          icon="pi pi-bell"
-          @click="$emit('notification', slotProps)"
-        /> -->
-      </div>
-      <InformationTile :tile="tile" :pdata="tileData" :filter="filter" :settings="settings" @timeseries-update="onTimeseriesUpdate" />
+      <InformationTile
+        :tile="tile"
+        :edit="edit"
+        :pdata="tileData"
+        :filter="filter"
+        :settings="mSettings"
+        @edit="$emit('edit', slotProps)"
+        @preview-tile="onPreview"
+        @timeseries-update="onTimeseriesUpdate"
+      />
     </div>
   </div>
 </template>
@@ -51,15 +41,16 @@ export default {
       },
     },
   },
-  emits: ["edit", "notification", "timeseries-update"],
+  emits: ["edit", "notification", "timeseries-update", "preview-tile"],
   data() {
     return {
+      mSettings: this.settings,
       tileData: this.pdata, //&& this.pdata.data ? this.pdata.data : {},
     };
   },
   computed: {
     fontSize: function () {
-      let size = this.settings != null && this.settings.fontSize != null ? this.settings.fontSize : 2.0;
+      let size = this.mSettings != null && this.mSettings.fontSize != null ? this.mSettings.fontSize : 2.0;
       return `${size}rem`;
     },
     tile: function () {
@@ -79,7 +70,7 @@ export default {
     },
     notificationVisible: function () {
       //default visible
-      return !(this.settings != null && !this.settings.notificationVisibility);
+      return !(this.mSettings != null && !this.mSettings.notificationVisibility);
     },
     state: function () {
       // return state class
@@ -120,8 +111,17 @@ export default {
       },
       deep: true,
     },
+    // settings: {
+    //   handler: function (newValue) {
+    //     this.mSettings = newValue;
+    //   },
+    //   deep: true,
+    // },
   },
   methods: {
+    onPreview() {
+      this.$emit("preview-tile", this.tile);
+    },
     onTimeseriesUpdate(evt) {
       this.$emit("timeseries-update", evt);
     },
@@ -158,6 +158,7 @@ export default {
   background: linear-gradient(to bottom, #190a05, #870000);
   max-height: 100%;
   width: 100%;
+  text-shadow: 1px 1px 0 #333, -1px -1px 0 #333, 1px -1px 0 #333, -1px 1px 0 #333, 2px 2px 4px rgba(0, 0, 0, 0.15);
   // display: flex;
   // flex-direction: column;
   // align-items: flex-end;

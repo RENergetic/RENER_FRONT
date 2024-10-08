@@ -1,78 +1,34 @@
 <template>
   <div v-if="loaded" class="flex flex-column justify-content-center" style="height: 100%; width: 100%">
-    <!-- <div style="display: flex; flex-direction: column; align-items: flex-end"> -->
     <div class="flex flex-none flex-column justify-content-center">
-      <h2 style="text-align: center">{{ mSettings.tile.label }}</h2>
+      <h3 :style="`text-align: center;color:${tileTitleColor}`">{{ mSettings.tile.label }}</h3>
       <!-- v-if="legend"-->
     </div>
-    <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
-    <div class="flex flex-grow-0 flex-column align-items-center justify-content-center" style="height: 100%; width: 100%">
-      <div class="flex flex-grow-0 flex-column align-items-center justify-content-center">
-        <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
-      </div>
-      <span
-        v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
-        id="tileicon"
-        :style="iconSize"
-        class="flex flex-none flex-column align-items-center justify-content-center"
-      >
-        <font-awesome-icon :icon="mSettings.tile.icon" />
-      </span>
-    </div>
-    <!-- {{ conversionSettings }} -->
-    <div v-if="mSettings.tile.measurement_list" class="flex flex-column flex-grow-1 knob-component" style="position: relative; width: 100%">
-      <information-list-tile
-        :tile="tile"
-        :pdata="pdata"
-        :settings="mSettings"
-        :conversion-settings="conversionSettings"
-        @select="onMeasurementSelect"
-      >
-      </information-list-tile>
-    </div>
-  </div>
-
-  <!-- <div v-if="loaded && false" class="flex flex-column justify-content-start" style="height: 100%; width: 100%">
-    <div
-      v-if="mSettings.tile.title_visibility && mSettings.tile.label"
-      class="flex flex-none align-items-center justify-content-center knob-component"
-    >
-      <h2 style="text-align: center">{{ mSettings.tile.label }}</h2>
-    </div>
- 
-    <div
-      class="flex flex-none flex-column align-items-center justify-content-center knob-component"
-      style="position: relative; max-height: 100%; max-width: 100%"
-    >
-      <div
-        class="flex flex-none flex-column align-items-center justify-content-center"
-        style="position: relative; max-height: 100%; max-width: 100%"
-      >
-        <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
-      </div>
-      <span
-        v-if="iconVisibility"
-        id="tileicon"
-        class="flex flex-none flex-column align-items-center justify-content-center"
-      >
+    <!-- {{ chartData }} -->
+    <!-- style="height: 100%; width: 100%" -->
+    <div class="flex flex-grow-0 flex-column align-items-center justify-content-center">
+      <!-- <div class="flex flex-grow-0 flex-column align-items-center justify-content-center"> -->
+      <Chart :key="refreshChart" :style="mStyle" type="doughnut" :data="chartData" :options="options" />
+      <!-- </div> -->
+      <!-- class="flex flex-none flex-column align-items-center justify-content-center" -->
+      <span v-if="mSettings.tile.icon_visibility && mSettings.tile.icon" id="tileicon" :style="iconSize">
         <font-awesome-icon :icon="mSettings.tile.icon" />
       </span>
     </div>
     <div
       v-if="mSettings.tile.measurement_list"
-      class="flex flex-column flex-none knob-component"
-      style="position: relative; width: 100%"
+      class="flex flex-column flex-grow-1 knob-component"
+      style="position: relative; width: 100%; padding: 0rem 0.5rem"
     >
-      <information-list-tile
+      <InformationTileMeasurementList
         :tile="tile"
         :pdata="pdata"
         :settings="mSettings"
         :conversion-settings="conversionSettings"
         @select="onMeasurementSelect"
-      >
-      </information-list-tile>
+      />
     </div>
-  </div> -->
+  </div>
 </template>
 <script>
 /**
@@ -80,10 +36,10 @@
  *  summarized inside componen or outside (provided min,max values for each measurement )
  */
 import Chart from "primevue/chart";
-import InformationListTile from "./InformationListTile.vue";
+import InformationTileMeasurementList from "./components/InformationTileMeasurementList.vue";
 export default {
   name: "MultiKnobTile",
-  components: { Chart, InformationListTile },
+  components: { Chart, InformationTileMeasurementList },
   props: {
     // legend: { type: Boolean, default: true },
     settings: { type: Object, default: () => ({}) },
@@ -97,11 +53,12 @@ export default {
   data() {
     var _this = this;
     return {
-      mStyle: "width: 30rem; margin: auto;max-width: 100%;max-height:100%",
+      mStyle: "width: 25rem; margin: auto;max-width: 100%;max-height:100%",
       iconSize: `height: 10%;  width: 10%;`,
       relativeValues: false,
       mSettings: this.settings,
       tmpIndex: 0,
+      refreshChart: false,
       loaded: false,
       options: {
         display: false,
@@ -111,11 +68,11 @@ export default {
             callbacks: {
               label: function (context) {
                 const labelIndex = context.datasetIndex * 2 + context.dataIndex;
-                if (_this.tile.measurements[context.dataIndex] === undefined) {
+                if (_this.tile.measurements[context.datasetIndex] === undefined) {
                   return "";
                 }
-                var id = _this.tile.measurements[context.dataIndex].id;
-                var aggregation_function = _this.tile.measurements[context.dataIndex].aggregation_function;
+                var id = _this.tile.measurements[context.datasetIndex].id;
+                var aggregation_function = _this.tile.measurements[context.datasetIndex].aggregation_function;
                 var value;
                 try {
                   if (_this.mSettings.panel.relativeValues) {
@@ -127,8 +84,14 @@ export default {
                 } catch {
                   value = context.formattedValue;
                 }
+                value = _this.$ren.utils.roundValue(value);
                 // console.error(_this.pdata.current[aggregation_function][id]);
-                return context.chart.data.labels[labelIndex] + ": " + value + " .";
+                if (context.chart.data.labels[labelIndex]) return context.chart.data.labels[labelIndex] + ": " + value;
+                try {
+                  return context.chart.data.labels[labelIndex - 1] + ": " + value;
+                } catch {
+                  return value;
+                }
               },
             },
           },
@@ -147,41 +110,17 @@ export default {
       return (this.mSettings.tile ? this.mSettings.tile.icon_visibility : true) && this.mSettings.tile.icon;
     },
     chartData: function () {
-      if (!(this.pdata && this.pdata.current)) {
+      let pdata = this.mSettings.tile.compare_with_previous && this.pdata ? this.pdata.previous : this.pdata;
+      if (!(pdata && pdata.current)) {
         return {};
       }
-
       let data = null;
-      // console.info(this.pdata);
-      // if (!this.mSettings.panel.relativeValues) {
-      //   // console.info("use relative values");
-      //   // let data = this.tile.measurements.map((m) => this.pdata[m.id]);
-      //   //TODO: make it comgigurable in tile / args prediction & aggregation func
-      //   // data = this.tile.measurements.map((m) => this.pdata.current[m.aggregation_function][m.id]);
-      //   // let total = data.reduce((partialSum, a) => partialSum + a, 0);
-      //   // data = data.map((v) => v / total);
-      //   console.info(this.pdata);
-      //   data = this.tile.measurements.map((m) =>
-      //     m.type.base_unit != "%"
-      //       ? this.pdata.current[m.aggregation_function][m.id] / this.pdata.max[m.aggregation_function][m.id]
-      //       : this.pdata.current[m.aggregation_function][m.id],
-      //   );
-      // } else {
-      //   // console.info("use no relative values");
-      //   //todo include min offset
-      //   // console.info(this.pdata.current);
-      //   data = this.tile.measurements.map((m) =>
-      //     m.type.base_unit != "%"
-      //       ? this.pdata.current[m.aggregation_function][m.id] / this.pdata.max[m.aggregation_function][m.id]
-      //       : this.pdata.current[m.aggregation_function][m.id],
-      //   );
-      // }
       data = this.tile.measurements.map((m) => {
         let maxV =
-          this.pdata.max && this.pdata.max[m.aggregation_function][m.id]
-            ? this.pdata.max[m.aggregation_function][m.id]
-            : this.pdata.current[m.aggregation_function][m.id];
-        return m.type.base_unit != "%" ? this.pdata.current[m.aggregation_function][m.id] / maxV : this.pdata.current[m.aggregation_function][m.id];
+          pdata.max && pdata.max[m.aggregation_function][m.id]
+            ? pdata.max[m.aggregation_function][m.id]
+            : pdata.current[m.aggregation_function][m.id];
+        return m.type.base_unit != "%" ? pdata.current[m.aggregation_function][m.id] / maxV : pdata.current[m.aggregation_function][m.id];
       });
       let labels = []; // this.tile.measurements.map((m) => m.label);
       //todo remove labels ?
@@ -204,31 +143,39 @@ export default {
         labels.push("");
       }
 
-      // console.info(this.tile.measurements);
-
       return {
         labels: labels,
         datasets: datasets,
       };
     },
   },
+  watch: {
+    chartData: {
+      deep: true,
+      handler: function () {
+        if (this.loaded) {
+          this.setChartBox();
+          this.refreshChart = !this.refreshChart;
+        }
+      },
+    },
+  },
   mounted() {
-    // console.info(this.tile);
-    // console.info(this.tile.layout.w);
-
-    var size = this.mSettings.tile.measurement_list ? 0.5 : 0.75;
-    this.mStyle = `max-width: 100%;max-height:100%;margin: auto;width:${this.mSettings.panel.cellWidth * this.tile.layout.w * size}px`;
-    this.iconSize = this.mSettings.tile.measurement_list ? `height: 10%;  width: 10%;` : `height: 15%;  width: 15%;`;
+    this.setChartBox();
     this.loaded = true;
   },
   methods: {
+    setChartBox() {
+      let minD = this.tileContentSize1D();
+      var size = this.mSettings.tile.measurement_list ? 0.5 : 0.7;
+      this.mStyle = `max-width: 100%;max-height:100%;margin: auto;width:${minD * size}px`;
+      this.iconSize = this.mSettings.tile.measurement_list ? `height: 10%;  width: 10%;` : `height: 15%;  width: 15%;`;
+    },
     onMeasurementSelect(ctx) {
       console.info(ctx);
     },
     getDataset(value, index) {
       let state = this.tile.measurements[index].visible == null ? true : this.tile.measurements[index].visible;
-
-      // console.error(this.getColor(index));
       return {
         data: [value, 1.0 - value],
         backgroundColor: this.getColor(index),
@@ -237,22 +184,14 @@ export default {
     },
 
     getColor(index) {
-      try {
-        return this.$ren.utils.knobColors(this.tile.measurements[index]);
-        // if (this.tile.measurements[index].type.color) {
-        //   let color = this.tile.measurements[index].type.color;
-        //   if (color.length == 7) {
-        //     return [`#FF${color.slice(1)}`, `#40${color.slice(1)}`];
-        //   }
-        //   return [`#FF${color.slice(3)}`, `#40${color.slice(3)}`];
-        // }
-        // throw new Error();
-      } catch (error) {
-        console.error(error);
-        let c = ["rgba(255,0,0,1.0)", "rgba(255,0,0,0.25)", "rgba(0, 255,0,1.0)", "rgba(0, 255,0,0.25)", "rgba(0,0,255,1.0)", "rgba(0, 0,255,0.25)"];
-        let idx = this.tmpIndex++ % 3;
-        return [c[2 * idx], c[2 * idx + 1]];
-      }
+      // try {
+      return this.$ren.utils.knobColors(this.tile.measurements[index]);
+      // } catch (error) {
+      //   console.error(error);
+      //   let c = ["rgba(255,0,0,1.0)", "rgba(255,0,0,0.25)", "rgba(0, 255,0,1.0)", "rgba(0, 255,0,0.25)", "rgba(0,0,255,1.0)", "rgba(0, 0,255,0.25)"];
+      //   let idx = this.tmpIndex++ % 3;
+      //   return [c[2 * idx], c[2 * idx + 1]];
+      // }
     },
   },
 };
@@ -266,8 +205,10 @@ export default {
   // left: 40%;
   // top: 40%;
   position: absolute;
+  text-align: center;
   svg {
     height: 100%;
+    width: 100%;
   }
 }
 

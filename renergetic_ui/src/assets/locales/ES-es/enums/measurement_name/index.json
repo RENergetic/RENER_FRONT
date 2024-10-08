@@ -1,0 +1,22 @@
+{
+  "co2_reduction": null,
+  "current_power": null,
+  "datacenter": null,
+  "electricity": "Electricidad",
+  "electricity_energy": null,
+  "electricity_renewability": null,
+  "external": "Externo",
+  "fossil_fuels": "Combustibles fósiles",
+  "heat": "Calor",
+  "heat_energy": null,
+  "heat_exchanged": "Intercambiadores de calor",
+  "heat_renewability": "Renovalidad del calor",
+  "hvac": "HVACs",
+  "import": "Importado",
+  "non_renewables": "Combustibles fósiles",
+  "office": "Oficinas",
+  "renewability": "Renovabilidad",
+  "renewables": "Renovable",
+  "supercomputer": "Super ordenador",
+  "waste": "Desperdicio"
+}

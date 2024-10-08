@@ -1,0 +1,19 @@
+{
+  "co2eq": "CO₂ equivalent",
+  "electricity": "electricity",
+  "energy": "Energy",
+  "energy_gj": "Heat energy",
+  "energy_kwh": "Energy",
+  "energy_wh": "Energy",
+  "flow": "Flow",
+  "heat": "heat",
+  "heat_energy_gj": "Heat energy",
+  "percentage": "Percentage",
+  "power": "Power",
+  "power_w": "Power",
+  "ratio": "Ratio",
+  "ratio_norm": "Ratio",
+  "temperature": "temperature",
+  "value": "Value",
+  "voltage": "Voltage"
+}

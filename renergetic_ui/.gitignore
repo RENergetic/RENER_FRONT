@@ -15,9 +15,14 @@ pnpm-debug.log*
 
 # Editor directories and files
 .idea
-.vscode
+
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+#other files
+.vscode/settings.json
+renergetic_ui/src/assets/app.js
+renergetic_ui/src/assets/scripts/

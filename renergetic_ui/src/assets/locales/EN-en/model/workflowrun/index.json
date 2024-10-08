@@ -1,0 +1,18 @@
+{
+  "end_time": "End time",
+  "init_time": "Init time",
+  "parameters": "Parameters",
+  "pipeline": "Pipeline",
+  "run_id": "Run id",
+  "run_state": {
+    "error": "Error",
+    "failed": "Failed",
+    "finished": "Finished",
+    "not_running": "Not running",
+    "running": "Running",
+    "terminating": "Terminating"
+  },
+  "start_time": "Start time",
+  "start_time_formatted": "Task started at {start_time}",
+  "state": "State"
+}

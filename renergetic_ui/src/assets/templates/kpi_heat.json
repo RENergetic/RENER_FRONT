@@ -1,0 +1,407 @@
+{
+  "label": "KPI Heat",
+  "tiles": [
+    {
+      "name": "kpi_overview",
+      "label": "KPI - PCSS & PUT",
+      "type": "single",
+      "featured": null,
+      "measurements": [],
+      "props": {
+        "icon_visibility": false,
+        "background": "rgba(50,150,255,0.8)"
+      },
+      "layout": {
+        "w": 12,
+        "x": 0,
+        "h": 1,
+        "y": 0
+      }
+    },
+    {
+      "name": "Historical KPI",
+      "label": "Historical KPI",
+      "type": "single",
+      "featured": null,
+      "measurements": [],
+      "props": {
+        "icon_visibility": false,
+        "background": "rgba(50,150,255,0.8)"
+      },
+      "layout": {
+        "w": 6,
+        "x": 0,
+        "h": 1,
+        "y": 1
+      }
+    },
+    {
+      "name": "Real time KPIs",
+      "label": "Real time KPIs",
+      "type": "single",
+      "featured": null,
+      "measurements": [],
+      "props": {
+        "icon_visibility": false,
+        "background": "rgba(50,150,255,0.8)"
+      },
+      "layout": {
+        "w": 6,
+        "x": 7,
+        "h": 1,
+        "y": 1
+      }
+    },
+    {
+      "name": "History chart",
+      "label": null,
+      "type": "chart",
+      "featured": null,
+      "measurements": [
+        {
+          "name": "sres",
+          "domain": "heat",
+          "sensor_name": "kpi",
+          "aggregation_function": "last",
+          "type": {
+            "physical_name": "value",
+            "name": "value",
+            "unit": "any"
+          }
+        },
+        {
+          "name": "snes",
+          "domain": "heat",
+          "sensor_name": "kpi",
+          "aggregation_function": "last",
+          "type": {
+            "physical_name": "value",
+            "name": "value",
+            "unit": "any"
+          }
+        },
+        {
+          "name": "ess",
+          "domain": "heat",
+          "sensor_name": "kpi",
+          "aggregation_function": "last",
+          "type": {
+            "physical_name": "value",
+            "name": "value",
+            "unit": "any"
+          }
+        },
+        {
+          "name": "es",
+          "domain": "heat",
+          "sensor_name": "kpi",
+          "aggregation_function": "last",
+          "type": {
+            "physical_name": "value",
+            "name": "value",
+            "unit": "any"
+          }
+        },
+        {
+          "name": "ep",
+          "domain": "heat",
+          "sensor_name": "kpi",
+          "aggregation_function": "last",
+          "type": {
+            "physical_name": "value",
+            "name": "value",
+            "unit": "any"
+          }
+        },
+        {
+          "name": "ep",
+          "domain": "heat",
+          "sensor_name": "kpi",
+          "aggregation_function": "last",
+          "type": {
+            "physical_name": "value",
+            "name": "value",
+            "unit": "any"
+          }
+        },
+        {
+          "name": "ee",
+          "domain": "heat",
+          "sensor_name": "kpi",
+          "aggregation_function": "last",
+          "type": {
+            "physical_name": "value",
+            "name": "value",
+            "unit": "any"
+          }
+        },
+        {
+          "name": "co2",
+          "domain": "heat",
+          "sensor_name": "kpi",
+          "aggregation_function": "last",
+          "type": {
+            "physical_name": "value",
+            "name": "value",
+            "unit": "any"
+          }
+        }
+      ],
+      "props": {
+        "background": "rgba(255,255,255,0.9)"
+      },
+      "layout": {
+        "w": 6,
+        "x": 0,
+        "h": 8,
+        "y": 2
+      }
+    },
+    {
+      "name": "CO₂ Intensivity",
+      "label": "CO₂ Intensivity",
+      "type": "doughnut",
+      "featured": null,
+      "measurements": [
+        {
+          "name": "lrs",
+          "domain": "heat",
+          "sensor_name": "abstract_meter",
+          "aggregation_function": "last",
+          "type": {
+            "physical_name": "value",
+            "name": "value",
+            "unit": "any"
+          }
+        },
+        {
+          "name": "lns",
+          "domain": "heat",
+          "sensor_name": "abstract_meter",
+          "aggregation_function": "last",
+          "type": {
+            "physical_name": "value",
+            "name": "value",
+            "unit": "any"
+          }
+        },
+        {
+          "name": "co2",
+          "domain": "heat",
+          "sensor_name": "kpi",
+          "aggregation_function": "last",
+          "type": {
+            "physical_name": "value",
+            "name": "value",
+            "unit": "any"
+          }
+        }
+      ],
+      "props": {
+        "background": "rgba(255,255,255,0.9)",
+        "icon": "heat"
+      },
+      "layout": {
+        "w": 3,
+        "x": 6,
+        "h": 4,
+        "y": 2
+      }
+    },
+    {
+      "name": "Self Sufficiency ",
+      "label": "Self Sufficiency ",
+      "type": "knob",
+      "featured": null,
+      "measurements": [
+        {
+          "name": "ess",
+          "domain": "heat",
+          "sensor_name": "kpi",
+          "aggregation_function": "last",
+          "type": {
+            "physical_name": "value",
+            "name": "value",
+            "unit": "any"
+          }
+        }
+      ],
+      "props": {
+        "background": "rgba(255,255,255,0.9)"
+      },
+      "layout": {
+        "w": 3,
+        "x": 9,
+        "h": 3,
+        "y": 2
+      }
+    },
+    {
+      "name": "RES vs Non-RES",
+      "label": "RES vs Non-RES",
+      "type": "doughnut",
+      "featured": null,
+      "measurements": [
+        {
+          "name": "sres",
+          "domain": "heat",
+          "sensor_name": "kpi",
+          "aggregation_function": "last",
+          "type": {
+            "physical_name": "value",
+            "name": "value",
+            "unit": "any"
+          }
+        },
+        {
+          "name": "snes",
+          "domain": "heat",
+          "sensor_name": "kpi",
+          "aggregation_function": "last",
+          "type": {
+            "physical_name": "value",
+            "name": "value",
+            "unit": "any"
+          }
+        }
+      ],
+      "props": {
+        "background": "rgba(255,255,255,0.9)"
+      },
+      "layout": {
+        "w": 3,
+        "x": 6,
+        "h": 4,
+        "y": 6
+      }
+    },
+    {
+      "name": "Potency",
+      "label": "Potency",
+      "type": "knob",
+      "featured": null,
+      "measurements": [
+        {
+          "name": "ep",
+          "domain": "heat",
+          "sensor_name": "kpi",
+          "aggregation_function": "last",
+          "type": {
+            "physical_name": "value",
+            "name": "value",
+            "unit": "any"
+          }
+        }
+      ],
+      "props": {
+        "background": "rgba(255,255,255,0.9)"
+      },
+      "layout": {
+        "w": 3,
+        "x": 9,
+        "h": 3,
+        "y": 5
+      }
+    },
+    {
+      "name": "Peak",
+      "label": "Peak Value",
+      "type": "single",
+      "featured": null,
+      "measurements": [
+        {
+          "name": "peak",
+          "domain": "heat",
+          "sensor_name": "kpi",
+          "aggregation_function": "max",
+          "type": {
+            "physical_name": "value",
+            "name": "value",
+            "unit": "any"
+          }
+        }
+      ],
+      "props": {
+        "background": "rgba(255,255,255,0.9)"
+      },
+      "layout": {
+        "w": 2,
+        "x": 0,
+        "h": 2,
+        "y": 10
+      }
+    },
+    {
+      "name": "Efficiency",
+      "label": "Efficiency",
+      "type": "doughnut",
+      "featured": null,
+      "measurements": [
+        {
+          "name": "losses",
+          "domain": "heat",
+          "sensor_name": "abstract_meter",
+          "aggregation_function": "last",
+          "type": {
+            "physical_name": "value",
+            "name": "value",
+            "unit": "any"
+          }
+        },
+        {
+          "name": "load",
+          "domain": "heat",
+          "sensor_name": "abstract_meter",
+          "aggregation_function": "last",
+          "type": {
+            "physical_name": "value",
+            "name": "value",
+            "unit": "any"
+          }
+        }
+      ],
+      "props": {
+        "background": "rgba(255,255,255,0.9)"
+      },
+      "layout": {
+        "w": 3,
+        "x": 9,
+        "h": 3,
+        "y": 8
+      }
+    },
+    {
+      "name": "energy_savings",
+      "label": "Energy savings",
+      "type": "single",
+      "featured": null,
+      "measurements": [
+        {
+          "name": "es",
+          "domain": "heat",
+          "sensor_name": "kpi",
+          "aggregation_function": "last",
+          "type": {
+            "physical_name": "value",
+            "name": "value",
+            "unit": "any"
+          }
+        }
+      ],
+      "props": {
+        "background": "rgba(255,255,255,0.9)"
+      },
+      "layout": {
+        "w": 2,
+        "x": 2,
+        "h": 2,
+        "y": 10
+      }
+    }
+  ],
+  "is_template": false,
+  "featured": true,
+  "props": {
+    "refreshTime": 60000
+  }
+}

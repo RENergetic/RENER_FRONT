@@ -1,62 +1,33 @@
 <template>
-  <!-- {{ $store.getters["view/measurementTypes"] }}  -->
-  <!-- {{ $store.getters["settings/filter"] }} -->
-  <!-- {{ pdata }} -->
-  <!-- refreshTime: {{ $store.getters["settings/panel"].refreshTime }} -->
-  <!-- {{ $store.getters["settings/panel"] }} -->
-  <!-- panel: {{ panel.name }}{{ panel.id }} {{ assetId }} -->
-
+  <!-- {{ paneldata }} -->
+  <!-- {{ $store.getters["view/panelAsset"](panel.id, assetId) }} -->
+  <!-- ff{{ filter }}dd -->
   <RenSpinner ref="spinner" :lock="true" style="width: 100%; min-height: 15rem">
     <template #content>
       <InformationPanel
         v-if="mPanel"
         :edit="editMode"
-        :pdata="pdata"
+        :panel-data="panelData"
         :panel="mPanel"
         :locked="locked"
         :settings="panelSettings"
         :asset-id="assetId"
         :filter="mFilter"
-        @edit="onEdit"
         @timeseries-update="onTimeseriesUpdate"
+        @update:tile="onTileUpdate"
       />
     </template>
   </RenSpinner>
-  <Dialog v-model:visible="editDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <div class="field grid">
-      <label for="assetType" class="col-fixed" style="width: 5rem">
-        {{ $t("model.information_tile.type") }}
-      </label>
-      <div class="col">
-        <Dropdown
-          id="assetType"
-          v-model="selectedItem.tile.type"
-          :options="tileTypes"
-          option-label="label"
-          option-value="value"
-          :placeholder="$t('view.select_tile_type')"
-        />
-      </div>
-    </div>
-    <div class="field grid">
-      <Button :label="$t('view.button.manage_measurement')" icon="pi pi-plus" @click="() => (manageSensorsDialog = !manageSensorsDialog)" />
-    </div>
-    <div class="field grid">
-      <Button :label="$t('view.button.submit')" icon="pi pi-plus" @click="saveGrid" />
-    </div>
-    <Dialog v-model:visible="manageSensorsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-      <!-- {{ selectedTile.tile.measurements }} -->
-      <ManageSensors v-model="selectedItem.tile.measurements"></ManageSensors>
-    </Dialog>
-  </Dialog>
+  <div v-if="mPanel && mPanel.props.qrcode">
+    <QRCode v-model="mPanel.props.qrcode" :position="mPanel.props.qrcodePosition" :size="mPanel.props.qrcodeSize" />
+  </div>
 </template>
 <script>
-// import NotificationList from "@/components/management/notification/NotificationList.vue";
 import InformationPanel from "./InformationPanel.vue";
-import ManageSensors from "../measurements/ManageSensors.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 // import { GridStack } from "gridstack";
 import LoopRunner from "@/plugins/utils/loop_runner.js";
+import QRCode from "@/components/miscellaneous/QRCode.vue";
 import { TileTypes, NotificationContext } from "@/plugins/model/Enums.js";
 // THEN to get HTML5 drag&drop
 // import "gridstack/dist/h5/gridstack-dd-native";
@@ -65,7 +36,8 @@ export default {
   name: "InformationPanelWrapper",
   components: {
     InformationPanel,
-    ManageSensors,
+    QRCode,
+    // ManageSensors,
     // NotificationList,
   },
   props: {
@@ -111,18 +83,18 @@ export default {
       default: false,
     },
   },
-  emits: ["update"],
+  emits: ["update", "update:tile"],
   data() {
     return {
       mNotifications: [],
       mFilter: this.filter ? this.filter : this.$store.getters["settings/parsedFilter"](this.filterKey),
       grid: null,
       notificationDialog: false,
-      editDialog: false,
+      // editDialog: false,
       selectedItem: null,
       mPanel: null,
       manageSensorsDialog: false,
-      pdata: null,
+      panelData: null,
       deferredFilter: null,
       tileTypes: Object.entries(TileTypes).map((k) => {
         return { value: k[1], label: this.$t("enums.tile_type." + k[1]) };
@@ -136,9 +108,9 @@ export default {
       // return this.panel != null ? this.panel.tiles : [];
       return this.mPanel != null ? this.mPanel.tiles : [];
     },
-    gridItems: function () {
-      return this.grid != null ? this.grid.getGridItems() : [];
-    },
+    // gridItems: function () {
+    //   return this.grid != null ? this.grid.getGridItems() : [];
+    // },
   },
   watch: {
     manageSensorsDialog: function (newValue) {
@@ -151,8 +123,8 @@ export default {
 
         if (this.autoReload) {
           if (this.loopRunner != null) this.loopRunner.stop();
-          let refreshTime = this.$store.getters["settings/panel"].refreshTime ? this.$store.getters["settings/panel"].refreshTime : 60000;
-
+          // this.$store.getters["settings/panel"].refreshTime ? this.$store.getters["settings/panel"].refreshTime : 60000;
+          let refreshTime = Math.max(this.panelSettings.refreshTime ? this.panelSettings.refreshTime : 60000, 60000);
           this.loopRunner = LoopRunner.init(this.loadData, refreshTime);
           this.loopRunner.start();
         } else {
@@ -176,22 +148,23 @@ export default {
     if (this.loopRunner) {
       this.loopRunner.stop();
     }
+    this.mPanel = null;
   },
   async mounted() {
     var _this = this;
     var f = async () => {
-      console.error("deffererd");
-      console.error(_this.filter);
-      console.error(_this.filterKey);
-      console.error(_this.$store.getters["settings/parsedFilter"](_this.filterKey));
+      console.debug("deffered start");
       _this.mFilter = _this.filter ? _this.filter : _this.$store.getters["settings/parsedFilter"](_this.filterKey);
+
+      console.debug(_this.mFilter);
       if (_this.loopRunner) {
         _this.loopRunner.reset();
       }
       await _this.loadData();
     };
     this.deferredFilter = new DeferredFunction(f, 1000);
-    let refreshTime = this.$store.getters["settings/panel"].refreshTime ? this.$store.getters["settings/panel"].refreshTime : 60000;
+    // this.$store.getters["settings/panel"].refreshTime ? this.$store.getters["settings/panel"].refreshTime : 60000;
+    let refreshTime = this.panelSettings.refreshTime;
 
     if (refreshTime > 0 && this.autoReload) {
       this.loopRunner = LoopRunner.init(this.loadData, refreshTime);
@@ -199,43 +172,96 @@ export default {
     } else {
       this.loadData();
     }
-    // this.reloadGrid();
   },
   methods: {
-    // reloadGrid() {
-    //   if (this.grid != null) this.grid.destroy(false);
-    //   let grid = GridStack.init({ float: true }, "#panel-grid-stack");
-    //   if (this.locked) {
-    //     grid.disable();
-    //   } else {
-    //     grid.enable();
-    //   }
-    //   grid.disable();
-    //   this.grid = grid;
-    // },
+    onTileUpdate(ev) {
+      this.$emit("update:tile", ev);
+    },
     onTimeseriesUpdate(evt) {
       console.error("onTimeseriesUpdate TODO:");
       console.error(evt);
     },
+    async mSetChartData(measurements, panelData, filter) {
+      // console.error(measurements);
+      panelData["timeseries"] = await this.$ren.dataApi.getMeasurementTimeseries(measurements, filter);
+
+      return panelData;
+    },
     async loadData() {
-      if (this.panel.id != null) {
-        console.info("panel load data: " + this.panel.id);
+      if (this.panel.id != null && this.$refs.spinner) {
+        // console.info("panel load data: " + this.panel.id);
         this.$refs.spinner.run(async () => {
           console.info("wait for panel data: " + this.panel.id + " " + this.panel.is_template);
-          await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, this.mFilter).then((resp) => {
-            this.pdata = resp.data;
-            if (this.panel.is_template) this.mPanel = resp.panel;
-            else {
-              this.mPanel = this.panel;
+          await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, this.mFilter).then(async (resp) => {
+            console.debug(resp);
+            var panelData = resp.data ? resp.data : {};
+            this.mPanel = this.panel.is_template ? resp.panel : this.panel;
+
+            var chartDict = {};
+            this.mPanel.tiles
+              .filter((tile) => tile.type == TileTypes.chart)
+              .forEach((tile) => tile.measurements.forEach((m) => (chartDict[m.id] = m)));
+            // for (let tile of this.mPanel.tiles) {
+            //   if (tile.type == TileTypes.chart) {
+            //     for (let m of tile.measurements) {
+            //       chartDict[m.id] = m;
+            //     }
+            //   }
+            // }
+
+            let chartMeasurements = Object.values(chartDict);
+            //load chart data
+            if (chartMeasurements.length > 0) panelData = await this.mSetChartData(chartMeasurements, panelData, this.filter);
+            let getPrevData = false;
+            //TODO: add possibility to add multiple/different time ranges in the one dashboard
+
+            for (let tile of this.mPanel.tiles) {
+              //check if any tiles requires previous data
+              if (this.panelSettings.compare_interval_type == "none") {
+                tile.props.compare_with_previous = false;
+              } else if (tile.props.compare_with_previous) {
+                //feature? different intervals per tile? TODO:
+                let prevFilter = this.compareIntervalDateFilter(
+                  this.mFilter,
+                  this.panelSettings.compare_interval_type ? this.panelSettings.compare_interval_type : "previous",
+                  //tODO: add compare_interval_number to the ui, currently its always null and cant be changed
+                  this.panelSettings.compare_interval_number ? this.panelSettings.compare_interval_number : 1,
+                );
+                tile.props.compare_with_previous_filter_obj = prevFilter;
+                getPrevData = true;
+                // break;
+              }
             }
+
+            if (getPrevData && this.panelSettings.compare_interval_type != "none") {
+              console.info("Load Previous data ");
+              var prevFilter = this.compareIntervalDateFilter(
+                this.mFilter,
+                this.panelSettings.compare_interval_type ? this.panelSettings.compare_interval_type : "previous",
+                //tODO: add compare_interval_number to the ui, currently its always null and cant be changed
+                this.panelSettings.compare_interval_number ? this.panelSettings.compare_interval_number : 1,
+              );
+              await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, prevFilter).then(async (resp) => {
+                panelData.previous = resp.data;
+                // var panelData = resp.data;
+              });
+
+              chartDict = {};
+              this.mPanel.tiles
+                .filter((tile) => tile.type == TileTypes.chart && tile.props.compare_with_previous)
+                .forEach((tile) => tile.measurements.forEach((m) => (chartDict[m.id] = m)));
+              let chartMeasurements = Object.values(chartDict);
+              if (chartMeasurements.length > 0) panelData.previous = await this.mSetChartData(chartMeasurements, panelData.previous, prevFilter);
+            }
+
+            this.panelData = panelData;
+            // timeseriesData = await this.$ren.dataApi.getTimeseries(null, this.tile.id, this.assetId, this.filter);
+            console.info("Panel data loaded");
+            console.debug(panelData);
           });
         });
       }
-      console.info("Panel data loaded");
     },
-    // gridWidth(tile) {
-    //   return tile.col == null ? 2 : tile.col;
-    // },
     onEdit(evt) {
       //todo
       this.selectedItem = evt;
@@ -261,20 +287,8 @@ export default {
       this.mPanel.tiles = tiles;
       this.$emit("update", this.mPanel);
     },
-
-    // viewNotification(evt) {
-    //   //TODO: load here notifications for tile
-    //   this.selectedItem = evt;
-    //   this.notificationDialog = true;
-    // },
   },
 };
 </script>
 
-<style lang="scss">
-// #panel-grid-stack {
-//   width: 100%;
-//   position: absolute;
-//   top: 0;
-// }
-</style>
+<style lang="scss"></style>

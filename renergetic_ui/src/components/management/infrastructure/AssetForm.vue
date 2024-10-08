@@ -1,16 +1,28 @@
 <template>
-  <InfoIcon :show-icon="false">
+  <!-- <InfoIcon :show-icon="false">
     <template #content>
-      <!-- some info -->
+       
     </template>
-  </InfoIcon>
-  <!-- {{ mModel }} -->
+  </InfoIcon> -->
+
   <Card v-if="mModel">
     <!-- <template #title> </template> -->
     <template #content>
       <div class="ren">
-        <ren-input v-model="mModel.name" :text-label="'model.asset.name'" :invalid="v$.mModel.name.$invalid" :errors="v$.mModel.name.$silentErrors" />
-        <ren-input v-model="mModel.label" :text-label="'model.asset.label'" />
+        <ren-input
+          v-model="mModel.name"
+          :text-info="'model.name_description'"
+          :text-label="'model.asset.name'"
+          :invalid="v$.mModel.name.$invalid"
+          :errors="v$.mModel.name.$silentErrors"
+        />
+        <ren-input
+          v-model="mModel.label"
+          :text-info="'model.label_description'"
+          :text-label="'model.asset.label'"
+          :invalid="v$.mModel.label.$invalid"
+          :errors="v$.mModel.label.$silentErrors"
+        />
         <ren-input-wrapper :text-label="'model.asset.asset_type'" :invalid="v$.mModel.type.$invalid" :errors="v$.mModel.type.$silentErrors">
           <template #content>
             <Dropdown
@@ -29,12 +41,12 @@
             <span v-else @click="selectAsset">{{ $t("view.select_parent_asset") }}</span>
           </template>
         </ren-input-wrapper>
-        <ren-input-wrapper :text-label="'model.asset.owner'">
+        <!-- <ren-input-wrapper :text-label="'model.asset.owner'">
           <template #content>
             <span v-if="ownerLabel" @click="selectOwner">{{ ownerLabel }}</span>
             <span v-else @click="selectOwner">{{ $t("view.select_owner") }}</span>
           </template>
-        </ren-input-wrapper>
+        </ren-input-wrapper> -->
       </div>
     </template>
   </Card>
@@ -51,11 +63,10 @@
 //TODO: on owner select
 import { useVuelidate } from "@vuelidate/core";
 import { maxLength, required, requiredTr, minLength } from "@/plugins/validators.js"; //required,
-import InfoIcon from "../../miscellaneous/InfoIcon.vue";
 import AssetSelectDialog from "./AssetSelectDialog.vue";
 export default {
   name: "AssetForm",
-  components: { InfoIcon, AssetSelectDialog },
+  components: { AssetSelectDialog },
   props: {
     modelValue: {
       type: Object,
@@ -80,7 +91,9 @@ export default {
   validations() {
     return {
       mModel: {
-        name: { maxLength: maxLength(30), required: required, minLength: minLength(3) },
+        name: { maxLength: maxLength(70), required: required, minLength: minLength(3) },
+        label: { maxLength: maxLength(60), minLength: minLength(2) },
+
         type: { required: requiredTr("validations.fields.custom.asset.") },
       },
     };
@@ -99,7 +112,6 @@ export default {
       });
     },
   },
-  watch: {},
   async mounted() {},
   methods: {
     selectAsset() {

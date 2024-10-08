@@ -8,20 +8,20 @@
           <span v-if="connectedAssets.length === 0">{{ $t("view.no_connections_found") }}</span>
           <!-- <div v-if="!loading && connectedAssets.length > 0"> -->
           <DataTable :value="connectedAssets" :lazy="true" data-key="id">
-            <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false"></Column>
-            <Column field="label" :header="$t('model.asset.label')" :show-filter-menu="false"></Column>
-            <Column field="connection_type" :header="$t('model.asset.connection_type')" :show-filter-menu="false"></Column>
+            <Column field="name" :header="$t('model.asset.name')" :show-filter-menu="false" />
+            <Column field="label" :header="$t('model.asset.label')" :show-filter-menu="false" />
+            <Column field="connection_type" :header="$t('model.asset.connection_type')" :show-filter-menu="false">
+              <template #body="conn">
+                {{ fieldLabel(conn.data.connection_type, "enums.asset_connection") }}
+              </template>
+            </Column>
+
             <Column :exportable="false" style="min-width: 8rem">
               <template #body="conn">
-                <!--edit connection type? <Button
-                  icon="pi pi-pencil"                  class="p-button-rounded p-button-warning mr-2"
-                  @click="edit(conn.data)"
-                /> -->
                 <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="deleteConnection(conn.data)" />
               </template>
             </Column>
           </DataTable>
-          <!-- </div> -->
         </template>
       </RenSpinner>
     </template>
@@ -30,7 +30,7 @@
     </template>
   </Card>
 
-  <Dialog v-model:visible="addDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+  <Dialog v-model:visible="addDialog" :style="{ width: '30rem' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <Card>
       <template #title>{{ $t("view.add_asset_connection") }}</template>
       <template #content>
@@ -41,10 +41,19 @@
             :errors="v$.selectedAsset.$silentErrors"
           >
             <template #content>
-              <!-- <span v-if="!selectedAsset">{{ $t("view.asset_not_selected") }}</span> -->
-              <span v-if="selectedAsset">{{ selectedAsset.label ? selectedAsset.label : selectedAsset.name }}</span>
+              <!-- <ren-input-wrapper>
+                <template #content>
+                  <span v-if="selectedAsset">{{ selectedAsset.label ? selectedAsset.label : selectedAsset.name }}</span>
+                </template>
+    </ren-input-wrapper> -->
+              <!-- <ren-input-wrapper>
+                <template #content> -->
               <Button v-if="!selectedAsset" @click="selectAsset">{{ $t("view.select_asset") }}</Button>
-              <Button v-else style="margin-left: 0.5rem" @click="selectAsset">{{ $t("view.change_asset") }}</Button>
+              <Button v-else @click="selectAsset">{{
+                $t("view.change_asset", { asset: selectedAsset.label ? selectedAsset.label : selectedAsset.name })
+              }}</Button>
+              <!-- </template>
+              </ren-input-wrapper> -->
             </template>
           </ren-input-wrapper>
           <ren-switch v-model="twoDirection" :text-label="'model.asset_connection.bi_directional'" />
@@ -55,29 +64,26 @@
             :errors="v$.connectionType.$silentErrors"
           >
             <template #content>
-              <Dropdown v-model="connectionType" :placeholder="$t('view.connection_type')" :options="connectionTypes" />
+              <Dropdown v-model="connectionType" option-label="label" :placeholder="$t('view.connection_type')" :options="connectionTypes" />
             </template>
           </ren-input-wrapper>
         </div>
-
-        <!-- <div class="add-asset-connection-form">
-          <div class="select-asset-input">
-            <span v-if="!selectedAsset">No Asset Selected</span>
-            <span v-if="selectedAsset">{{ selectedAsset.label }}</span>
-            <Button v-if="!selectedAsset" @click="selectAsset">{{ $t("view.select_asset") }}</Button>
-            <Button v-if="selectedAsset" @click="selectAsset">{{ $t("view.change_asset") }}</Button>
-          </div>
-          <Dropdown
-            v-model="selectedAssetConnection"
-            style="height: fit-content"
-            :placeholder="$t('view.connection_type')"
-            :options="connectionTypes"
-          ></Dropdown>
-        </div> -->
       </template>
       <template #footer>
+        <div style="margin-bottom: 0.5rem">
+          <div v-if="!v$.$invalid && !twoDirection">
+            {{ asset.name }} <i class="pi pi-arrow-right" style="font-size: 1rem" /> {{ connectionType.label }}
+            <i class="pi pi-arrow-right" style="font-size: 1rem" /> {{ selectedAsset.name }}
+          </div>
+          <div v-else-if="!v$.$invalid && twoDirection">
+            {{ asset.name }} <i class="pi pi-arrow-right" style="font-size: 1rem" /> {{ connectionType.label }}
+            <i class="pi pi-arrow-right" style="font-size: 1rem" /> {{ selectedAsset.name }}
+            <br />
+            {{ selectedAsset.name }} <i class="pi pi-arrow-right" style="font-size: 1rem" /> {{ connectionType.label }}
+            <i class="pi pi-arrow-right" style="font-size: 1rem" /> {{ asset.name }}
+          </div>
+        </div>
         <ren-submit :disabled="v$.$invalid" @submit="submitAssetConnection" />
-        <!-- <Button @click="submitAssetConnection()">Submit</Button> -->
       </template>
     </Card>
   </Dialog>
@@ -98,9 +104,12 @@ export default {
   data() {
     return {
       addDialog: false,
+      twoDirection: false,
       selectedAsset: null,
       connectionType: null,
-      connectionTypes: Object.entries(AssetConnectionType).map((entry) => entry[1]),
+      connectionTypes: Object.entries(AssetConnectionType).map((entry) => {
+        return { name: entry[1], label: this.$t(`enums.asset_connection.${entry[1]}`) };
+      }),
       connectedAssets: [],
     };
   },
@@ -138,17 +147,40 @@ export default {
     onAssetSelect(selectedAsset) {
       this.selectedAsset = selectedAsset;
     },
-    async deleteConnection(conn) {
-      //TODO: confirm dialog, TODO: delete by connection type ?, can two assets can have more than 1 connection (different type)?
-      console.info(`connection type: ${conn.type.id}, connected asset : ${conn.id}:${conn.name}(${conn.label ? conn.label : "no label"}) `);
+    async deleteConnection(assetConnection) {
+      await this.$confirm.require({
+        message: this.$t("view.asset_connection_delete_body", {
+          label: assetConnection.label ? assetConnection.label : assetConnection.name,
+        }),
+        header: this.$t("view.asset_connection_delete_header"),
+        icon: "pi pi-exclamation-triangle",
+        accept: async () => {
+          await this.deleteAssetConnection(this.asset.id, assetConnection.id, assetConnection.connection_type);
+        },
+        reject: () => {
+          this.$confirm.close();
+        },
+      });
+    },
 
-      this.$refs.spinner.run(async () => {
-        await this.$ren.managementApi.deleteAssetConnection(this.asset.id, conn.id);
-        this.connectedAssets = await this.$ren.managementApi.listConnectedAssets(this.asset.id, 0, 200);
+    async deleteAssetConnection(assetId, connectedAssetId, connectionType) {
+      let res = false;
+      await this.$refs.spinner.run(async () => {
+        await this.$ren.managementApi
+          .deleteAssetConnection(assetId, connectedAssetId, connectionType)
+          .then(() => {
+            res = true;
+            this.$emitter.emit("information", { message: this.$t("information.asset_connection_deleted") });
+          })
+          .catch(() => {
+            this.$emitter.emit("error", { message: this.$t("information.asset_connection_not_deleted") });
+          });
+        // alert(res);
+        if (res) await this.reload();
       });
     },
     async submitAssetConnection() {
-      await this.$ren.managementApi.submitAssetConnection(this.asset.id, this.selectedAsset.id, this.connectionType);
+      await this.$ren.managementApi.submitAssetConnection(this.asset.id, this.selectedAsset.id, this.connectionType.name, this.twoDirection);
       this.addDialog = false;
       await this.reload();
     },

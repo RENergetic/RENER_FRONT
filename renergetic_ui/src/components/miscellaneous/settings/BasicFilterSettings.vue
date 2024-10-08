@@ -1,22 +1,20 @@
 <template>
-  <Settings :schema="schema" :settings="settings" :columns="columns" :labels="labels" />
-  <!-- {{ $store.getters["settings/all"].filters }} -->
-  <!-- {{ schema }}{{ settings }} -->
+  <Settings :key="refresh" v-model:settings="settingsObj" :schema="schema" :columns="columns" :labels="labels" :disabled="disabled" />
 </template>
 
 <script>
 import Settings from "./Settings.vue";
-function setSettings(s) {
-  if (s.date_from) s.date_from = new Date(s.date_from);
-  if (s.date_to) s.date_to = new Date(s.date_to);
-  return s;
-}
 function validateDateInterval(s) {
-  if (s.date_to && s.date_from && s.date_to.getTime() < s.date_from.getTime()) {
-    s.date_to = new Date(s.date_from.getTime() + 15 * 60000);
+  var modified = false;
+  if (s.date_to && s.date_from && s.date_to < s.date_from) {
+    s.date_to = new Date(s.date_from + 60 * 60000).getTime();
+    modified = true;
   }
-  return s;
-  // this.updateModel();
+  if (!s.date_from && s.date_to) {
+    s.date_from = new Date(s.date_to - 24 * 60 * 60000).getTime();
+    modified = true;
+  }
+  return modified;
 }
 export default {
   name: "BasicFilterSettings",
@@ -28,44 +26,60 @@ export default {
     settingKey: { type: String, default: "filter" },
     submitButton: { type: Boolean, default: true },
     labels: { type: Boolean, default: true },
+    settings: { type: Object, default: null },
+    disabled: { type: Boolean, default: false },
   },
-  emits: ["update"],
+  emits: ["update", "update:settings"],
   data() {
-    let settings = setSettings(this.$store.getters["settings/filters"](this.settingKey));
+    let settings = this.settings ? this.settings : this.$store.getters["settings/filters"](this.settingKey);
+
     return {
       //https://vueschool.io/lessons/dynamic-vuex-getters
-      settings: settings,
-
+      mSettings: settings,
+      settingsObj: settings,
+      refresh: false,
       timeIntervalType: settings.timeIntervalType,
       schema: {},
     };
   },
-  computed: {},
   watch: {
     //watch only without submit button
-    settings: {
+    settingsObj: {
       handler: function (newVal) {
-        validateDateInterval(newVal);
+        // console.debug("refresh");
+        let mSettings = this.copyDateObj(newVal);
+        var modified = validateDateInterval(mSettings);
+
         if (newVal["timeIntervalType"] != this.timeIntervalType) {
+          this.timeIntervalType = newVal["timeIntervalType"];
           this.schema = this.getSchema();
+          // modified = true;
+        }
+        if (modified) {
+          this.refresh = !this.refresh;
+          newVal.date_from = mSettings.date_from;
+          newVal.date_to = mSettings.date_to;
         }
         if (this.submitButton) return;
-        newVal["predictionIntervalms"] = newVal.predictionInterval * 3600;
-        this.$store.commit("settings/filters", { payload: newVal, key: this.settingKey });
-        this.$emit("update");
+        mSettings["predictionIntervalms"] = mSettings.predictionInterval * 3600;
+        if (mSettings.date_from && mSettings.date_from instanceof Date) mSettings.date_from = mSettings.date_from.getTime();
+        if (mSettings.date_to && mSettings.date_to instanceof Date) mSettings.date_to = mSettings.date_to.getTime();
+        this.parseDateFilter(mSettings);
+        if (this.settings) {
+          this.$emit("update:settings", mSettings);
+        } else {
+          this.$store.commit("settings/filters", { payload: mSettings, key: this.settingKey });
+          this.$emit("update");
+        }
       },
       deep: true,
     },
   },
   async mounted() {
-    this.settings = setSettings(this.$store.getters["settings/filters"](this.settingKey));
-    this.timeIntervalType = this.settings.timeIntervalType;
-    await this.$ren.dashboardApi.listInformationPanel().then((panels) => {
-      this.panels = panels;
-    });
-    // .then(() => {
-    //   this.schema = this.getSchema();
-    // });
+    this.mSettings = this.settings ? this.settings : this.$store.getters["settings/filters"](this.settingKey);
+    let settingsObj = this.copyDateObj(this.mSettings);
+    this.settingsObj = settingsObj;
+    this.timeIntervalType = this.mSettings.timeIntervalType;
     this.schema = this.getSchema();
   },
 
@@ -73,20 +87,29 @@ export default {
     this.schema = this.getSchema();
   },
   methods: {
-    async onClick() {
-      let mSettings = { ...this.settings };
-      mSettings["predictionIntervalms"] = mSettings.predictionInterval * 3600;
-      if (mSettings.date_from) mSettings.date_from = mSettings.date_from.getTime();
-      if (mSettings.date_to) mSettings.date_to = mSettings.date_to.getTime();
-      // this.settings["predictionIntervalms"] = this.settings.predictionInterval * 3600;
-      this.$store.commit("settings/filters", mSettings, this.settingKey);
-
-      await this.$ren.utils.saveSettings();
-
-      this.$emit("update");
+    copyDateObj(obj) {
+      let settingsObj = {
+        date_from: obj["date_from"],
+        date_to: obj["date_to"],
+        timeIntervalType: obj["timeIntervalType"],
+      };
+      return settingsObj;
     },
-    getTimeIntrvalSchema() {
-      var isCustomInterval = this.settings && this.settings["timeIntervalType"] == "custom_interval";
+    async onClick() {
+      let mSettings = { ...this.mSettings };
+      mSettings["predictionIntervalms"] = mSettings.predictionInterval * 3600;
+      validateDateInterval(mSettings);
+      this.parseDateFilter(mSettings);
+      if (this.settings) {
+        this.$emit("update:settings", mSettings);
+      } else {
+        this.$store.commit("settings/filters", { payload: mSettings, key: this.settingKey });
+        await this.$ren.utils.saveSettings();
+        this.$emit("update");
+      }
+    },
+    getTimeIntervalSchema() {
+      var isCustomInterval = this.mSettings && this.mSettings["timeIntervalType"] == "custom_interval";
       if (!isCustomInterval) return [];
       else {
         return [
@@ -125,18 +148,18 @@ export default {
           type: Array,
           key: "timeIntervalType",
         },
-        ...this.getTimeIntrvalSchema(),
-        {
-          label: this.$t("settings.prediction_interval"),
-          ext: {
-            valueTemplate: (v) => this.$t("settings.templates.prediction_interval", [v]),
-            max: 48,
-            unit: "h",
-          },
-          type: Number,
-          mode: "slider",
-          key: "predictionInterval",
-        },
+        ...this.getTimeIntervalSchema(),
+        // {
+        //   label: this.$t("settings.prediction_interval"),
+        //   ext: {
+        //     valueTemplate: (v) => this.$t("settings.templates.prediction_interval", [v]),
+        //     max: 48,
+        //     unit: "h",
+        //   },
+        //   type: Number,
+        //   mode: "slider",
+        //   key: "predictionInterval",
+        // },
       ];
       if (this.submitButton) {
         schema.push({
@@ -156,4 +179,3 @@ export default {
   },
 };
 </script>
-<style scoped lang="scss"></style>

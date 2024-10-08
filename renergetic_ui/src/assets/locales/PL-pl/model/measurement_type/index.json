@@ -1,0 +1,14 @@
+{
+  "base_unit": "Base unit",
+  "color": "Measurement default color",
+  "dashboardVisibility": "Grafana support.",
+  "dashboard_visibility": "Grafana support.",
+  "description": "Description",
+  "factor": "Base multiplier factor",
+  "id": "ID",
+  "label": "Label",
+  "name": "Name",
+  "physical_name": "Physical name",
+  "ratio": "Stosunek wartości",
+  "unit": "Unit"
+}

@@ -2,28 +2,36 @@
   <Dialog v-model:visible="mNotificationDialog" :style="{ width: '75vw' }" :maximizable="false" :modal="true" :dismissable-mask="true">
     <NotificationList @update="onNotificationUpdate($event)"></NotificationList>
   </Dialog>
-  <Dialog v-model:visible="mDemandDialog" :style="{ width: '75vw' }" :maximizable="false" :modal="true" :dismissable-mask="true">
-    <DemandList @update="onDemandUpdate($event)"></DemandList>
+  <Dialog v-model:visible="mDemandDialog" :maximizable="false" :modal="true" :dismissable-mask="true">
+    <div style="padding: 0 2rem">
+      <DemandList style="width: 50rem; margin: auto"></DemandList>
+      <!-- @update="onDemandUpdate($event)" -->
+    </div>
   </Dialog>
 
   <Dialog v-model:visible="mAddDashboard" :style="{ width: '50vw' }" :modal="true" :dismissable-mask="true">
     <DashboardForm @save="onSave" @cancel="mAddDashboard = false"></DashboardForm>
   </Dialog>
-  <Dialog v-model:visible="mAddUser" :style="{ width: '50vw' }" :modal="true" :dismissable-mask="true">
+  <!-- <Dialog v-model:visible="mAddUser" :style="{ width: '50vw' }" :modal="true" :dismissable-mask="true">
     <UserForm @save="onUserSave" @cancel="mAddUser = false" />
-  </Dialog>
+  </Dialog> -->
   <Dialog v-model:visible="mLocales" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <LocaleSettings></LocaleSettings>
+  </Dialog>
+  <Dialog v-model:visible="mVersionDialog" :style="{ width: '50vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <h3>{{ $t("view.app_version", [$ren.utils.version()]) }}</h3>
   </Dialog>
 </template>
 
 <script>
-import NotificationList from "../management/notification/NotificationList.vue";
+import NotificationList from "@/components/user/NotificationList.vue";
 import DemandList from "@/components/user/demand/DemandList.vue";
 import DashboardForm from "../dashboard/grafana/DashboardForm.vue";
 import LocaleSettings from "@/components/miscellaneous/settings/LocaleSettings.vue";
-import UserForm from "@/components/admin/UserForm.vue";
+import { RenRoles } from "@/plugins/model/Enums";
+// import UserForm from "@/components/admin/UserForm.vue";
 //TODO: add some spinner?
+
 export default {
   name: "MenuDialogs",
   components: {
@@ -31,7 +39,7 @@ export default {
     NotificationList,
     DashboardForm,
     LocaleSettings,
-    UserForm,
+    // UserForm,
   },
   props: {
     notificationDialog: {
@@ -55,15 +63,19 @@ export default {
       type: Boolean,
       default: false,
     },
+    versionDialog: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: [
     "update:dashboard",
     "update:notificationDialog",
     "update:demandDialog",
-    "UpdateMenu",
     "update:locales",
     "update:notifications",
     "update:user",
+    "update:versionDialog",
     // "update:demands",
   ],
   data() {
@@ -72,6 +84,7 @@ export default {
       mDemandDialog: this.demandDialog,
       mAddDashboard: this.addDashboard,
       mLocales: this.locales,
+      mVersionDialog: this.versionDialog,
       mAddUser: this.addUser,
       notifications: [],
     };
@@ -119,6 +132,16 @@ export default {
       },
       // immediate: true,
     },
+    mVersionDialog: {
+      handler(newVal, oldValue) {
+        if (oldValue == null && newVal == null) {
+          return;
+        }
+        this.$emit("update:versionDialog", newVal);
+      },
+      // immediate: true,
+    },
+
     mNotificationDialog: {
       handler(newVal, oldValue) {
         if (oldValue == null && newVal == null) {
@@ -155,26 +178,37 @@ export default {
       },
       immediate: true,
     },
+    versionDialog: {
+      handler(newVal) {
+        this.mVersionDialog = newVal;
+      },
+      immediate: true,
+    },
   },
   async created() {
-    this.onNotificationUpdate(await this.$ren.userApi.getNotifications());
+    if (
+      (RenRoles.REN_ADMIN | RenRoles.REN_USER | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_STAFF) &
+      this.$store.getters["auth/renRole"]
+    ) {
+      let notifications = await this.$ren.userApi.getNotifications();
+      this.onNotificationUpdate(notifications);
+    }
   },
   methods: {
     async onSave(dashboard) {
       await this.$ren.dashboardApi.add(dashboard).then((dashboardReq) => {
         this.mAddDashboard = false;
         this.$store.commit("view/dashboardsAdd", dashboardReq);
-        this.$emit("UpdateMenu", null);
+        this.$emitter.$emit("update-menu");
       });
     },
-    async onUserSave(o) {
-      await this.$ren.userApi.addUser(o).then((user) => {
-        console.info("add user:" + user.username);
-        this.$emitter.emit("information", { message: this.$t("information.user_created") });
-        this.mAddUser = false;
-        // this.$emit("UpdateMenu", null);
-      });
-    },
+    // async onUserSave(o) {
+    //   await this.$ren.userApi.addUser(o).then((user) => {
+    //     this.$emitter.emit("information", { message: this.$t("information.user_created", { user: user.username }) });
+    //     this.mAddUser = false;
+    //     // this.$emitter.$emit("update-menu")
+    //   });
+    // },
     onNotificationUpdate(notifications) {
       if (notifications) this.$emit("update:notifications", notifications);
       else this.$emit("update:notifications", []);

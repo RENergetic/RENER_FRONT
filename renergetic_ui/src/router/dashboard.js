@@ -44,7 +44,7 @@ var dashboardRoutes = [
     props: {},
     meta: {
       isAuthenticated: true,
-      layout: "fullscr",
+      // layout: "fullscr",
       roles: ["ren-admin", "ren-technical-manager"],
       roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
     },
@@ -97,17 +97,18 @@ var dashboardRoutes = [
     meta: {
       isAuthenticated: true,
       layout: "fullscr",
-      // roles: ["ren-admin", "ren-manager", "ren-user", "ren-visitor", "ren-staff", "ren-technical-manager"],
-
-      // roleFlag:
-      //   RenRoles.REN_USER |
-      //   RenRoles.REN_VISITOR |
-      //   RenRoles.REN_MANAGER |
-      //   RenRoles.REN_TECHNICAL_MANAGER |
-      //   RenRoles.REN_ADMIN |
-      //   RenRoles.REN_STAFF,
     },
     component: () => import("../views/dashboard/PublicDashboardView.vue"),
+  },
+  {
+    path: "/tv/public/dashboard/:id?",
+    name: "PublicDashboardViewTV",
+    meta: {
+      isAuthenticated: true,
+      layout: "fullscr",
+      tvMode: true,
+    },
+    component: () => import("../views/dashboard/PublicDashboardViewTV.vue"),
   },
   {
     path: "/panel/view/:id?",
@@ -115,15 +116,6 @@ var dashboardRoutes = [
     meta: {
       isAuthenticated: true,
       layout: "fullscr",
-      // roles: ["ren-admin", "ren-manager", "ren-user", "ren-visitor", "ren-staff", "ren-technical-manager"],
-
-      // roleFlag:
-      //   RenRoles.REN_USER |
-      //   RenRoles.REN_VISITOR |
-      //   RenRoles.REN_MANAGER |
-      //   RenRoles.REN_TECHNICAL_MANAGER |
-      //   RenRoles.REN_ADMIN |
-      //   RenRoles.REN_STAFF,
     },
     component: () => import("../views/dashboard/InformationPanelView.vue"),
   },

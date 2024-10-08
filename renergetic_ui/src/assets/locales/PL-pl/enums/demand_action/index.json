@@ -1,0 +1,9 @@
+{
+  "charge_ev": "Naładuj baterie.",
+  "decrease_heat": "Zmniejsz zużycie energii cieplnej",
+  "decrease_power": "Zmniejsz zużycie energii elektrycznej",
+  "decrease_temperature": "Zmniejsz temperature",
+  "increase_heat": "Zwiększ zużycie energii cieplnej",
+  "increase_power": "Zwiększ zużycie energii elektrycznej",
+  "increase_temperature": "Zwiększ temperature"
+}

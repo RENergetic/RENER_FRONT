@@ -13,6 +13,13 @@ const routes = [
     component: HomePage,
   },
   {
+    path: "/tv",
+    name: "HomeTV",
+    meta: { isAuthenticated: false, tvMode: true },
+    component: () => import("../views/HomeTV.vue"),
+  },
+
+  {
     path: "/about",
     name: "RenAbout",
     meta: { isAuthenticated: true },
@@ -67,9 +74,16 @@ export default function (Vue) {
       // console.info(keycloak.authenticated);
       // Get the actual url of the app, it's needed for Keycloak
       // const basePath = window.location.toString();
+      var path;
       if (!keycloak.authenticated) {
         const basePath = window.location.origin.toString();
-        var path = `${basePath}/${to.path}`;
+        let pathTo = to.path.startsWith("/") ? to.path.slice(1) : to.path;
+        if (basePath.endsWith("/")) {
+          path = `${basePath}${pathTo}`;
+        } else {
+          path = `${basePath}/${pathTo}`;
+        }
+
         // The page is protected and the user is not authenticated. Force a login.
         //"http://localhost:8080" + to.path
         keycloak.login({ redirectUri: path });

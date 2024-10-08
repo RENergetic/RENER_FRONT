@@ -1,0 +1,301 @@
+{
+	"label": "Production overview generic test",
+	"tiles": [
+		{
+			"name": "title",
+			"label": null,
+			"type": "empty",
+			"featured": null,
+			"measurements": [],
+			"props": {},
+			"layout": {
+				"w": 10,
+				"x": 1,
+				"h": 1,
+				"y": 0
+			},
+			"tempId": 2321860369851
+		},
+		{
+			"name": "electricity_production",
+			"label": "Electricity Production",
+			"type": "doughnut",
+			"featured": null,
+			"measurements": [
+				{
+					"name": "lrs",
+					"domain": "electricity",
+					"sensor_name": "abstract_meter",
+					"aggregation_function": "sum",
+					"type": {
+						"physical_name": "energy",
+						"name": "energy_kwh",
+						"unit": "kWh"
+					},
+					"tempId": 2210501216061
+				},
+				{
+					"name": "lns",
+					"domain": "electricity",
+					"sensor_name": "abstract_meter",
+					"aggregation_function": "sum",
+					"type": {
+						"physical_name": "energy",
+						"name": "energy_kwh",
+						"unit": "kWh"
+					},
+					"tempId": 2189201502043
+				},
+				{
+					"name": "ens",
+					"domain": "electricity",
+					"sensor_name": "abstract_meter",
+					"aggregation_function": "sum",
+					"type": {
+						"physical_name": "energy",
+						"name": "energy_kwh",
+						"unit": "kWh"
+					},
+					"tempId": 2942111818707
+				},
+				{
+					"name": "ers",
+					"domain": "electricity",
+					"sensor_name": "abstract_meter",
+					"aggregation_function": "sum",
+					"type": {
+						"physical_name": "energy",
+						"name": "energy_kwh",
+						"unit": "kWh"
+					},
+					"tempId": 2374956846522
+				}
+			],
+			"props": {},
+			"layout": {
+				"w": 4,
+				"x": 1,
+				"h": 9,
+				"y": 2
+			},
+			"tempId": 3423007683846
+		},
+		{
+			"name": "renewables",
+			"label": "Renewables",
+			"type": "single",
+			"featured": null,
+			"measurements": [
+				{
+					"name": "lrs",
+					"domain": "none",
+					"sensor_name": "abstract_meter",
+					"aggregation_function": "sum",
+					"type": {
+						"physical_name": "energy",
+						"name": "energy_kwh",
+						"unit": "kWh"
+					},
+					"tempId": 2510264994185
+				},
+				{
+					"name": "ers",
+					"domain": "none",
+					"sensor_name": "abstract_meter",
+					"aggregation_function": "sum",
+					"type": {
+						"physical_name": "energy",
+						"name": "energy_kwh",
+						"unit": "kWh"
+					},
+					"tempId": 3048463886450
+				}
+			],
+			"props": {},
+			"layout": {
+				"w": 2,
+				"x": 5,
+				"h": 3,
+				"y": 2
+			},
+			"tempId": 2341131507519
+		},
+		{
+			"name": "fossil_fuels",
+			"label": "Fossil fuels",
+			"type": "single",
+			"featured": null,
+			"measurements": [
+				{
+					"name": "lns",
+					"domain": "none",
+					"sensor_name": "abstract_meter",
+					"aggregation_function": "sum",
+					"type": {
+						"physical_name": "energy",
+						"name": "energy_kwh",
+						"unit": "kWh"
+					},
+					"tempId": 2348556690671
+				},
+				{
+					"name": "ens",
+					"domain": "none",
+					"sensor_name": "abstract_meter",
+					"aggregation_function": "sum",
+					"type": {
+						"physical_name": "energy",
+						"name": "energy_kwh",
+						"unit": "kWh"
+					},
+					"tempId": 3358892106335
+				}
+			],
+			"props": {
+				"icon": "fossil_fuels"
+			},
+			"layout": {
+				"w": 2,
+				"x": 5,
+				"h": 3,
+				"y": 5
+			},
+			"tempId": 2101770417513
+		},
+		{
+			"name": "import",
+			"label": "Import",
+			"type": "single",
+			"featured": null,
+			"measurements": [
+				{
+					"name": "ep",
+					"domain": "none",
+					"sensor_name": "kpi",
+					"aggregation_function": "sum",
+					"type": {
+						"physical_name": "ratio",
+						"name": "ratio",
+						"unit": null
+					},
+					"tempId": 2122345099783
+				}
+			],
+			"props": {
+				"icon": "import"
+			},
+			"layout": {
+				"w": 2,
+				"x": 5,
+				"h": 3,
+				"y": 8
+			},
+			"tempId": 2918774276310
+		},
+		{
+			"name": "heat_production",
+			"label": "Heat production",
+			"type": "doughnut",
+			"featured": null,
+			"measurements": [
+				{
+					"name": "lrs",
+					"domain": "heat",
+					"sensor_name": "abstract_meter",
+					"aggregation_function": "sum",
+					"type": {
+						"physical_name": "energy",
+						"name": "energy_kwh",
+						"unit": "kWh"
+					},
+					"tempId": 2010434160983
+				},
+				{
+					"name": "lns",
+					"domain": "heat",
+					"sensor_name": "abstract_meter",
+					"aggregation_function": "sum",
+					"type": {
+						"physical_name": "energy",
+						"name": "energy_kwh",
+						"unit": "kWh"
+					},
+					"tempId": 2712419242436
+				},
+				{
+					"name": "ers",
+					"domain": "heat",
+					"sensor_name": "abstract_meter",
+					"aggregation_function": "sum",
+					"type": {
+						"physical_name": "energy",
+						"name": "energy_kwh",
+						"unit": "kWh"
+					},
+					"tempId": 2199457142243
+				},
+				{
+					"name": "ens",
+					"domain": "heat",
+					"sensor_name": "abstract_meter",
+					"aggregation_function": "sum",
+					"type": {
+						"physical_name": "energy",
+						"name": "energy_kwh",
+						"unit": "kWh"
+					},
+					"tempId": 2183364450720
+				}
+			],
+			"props": {},
+			"layout": {
+				"w": 4,
+				"x": 7,
+				"h": 9,
+				"y": 2
+			},
+			"tempId": 3414303749713
+		},
+		{
+			"name": "Energy_self_production",
+			"label": "Energy self production",
+			"type": "single",
+			"featured": null,
+			"measurements": [
+				{
+					"name": "ess",
+					"domain": "none",
+					"sensor_name": "kpi",
+					"aggregation_function": "sum",
+					"type": {
+						"physical_name": "ratio",
+						"name": "ratio_norm",
+						"unit": "0-1"
+					},
+					"tempId": 2728066099532
+				}
+			],
+			"props": {},
+			"layout": {
+				"w": 10,
+				"x": 1,
+				"h": 1,
+				"y": 1
+			},
+			"tempId": 2586131597259
+		}
+	],
+	"is_template": false,
+	"featured": true,
+	"priority": null,
+	"props": {
+		"notificationVisibility": false,
+		"legend": true,
+		"qrcodeSize": 200,
+		"relativeValues": true,
+		"groupByDomain": true,
+		"timeIntervalType": "current_day",
+		"demandVisibility": false,
+		"qrcodePosition": "top_right"
+	}
+}

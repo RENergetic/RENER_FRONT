@@ -26,6 +26,12 @@ var userRoutes = [
     meta: { isAuthenticated: true },
     component: () => import("../views/user/Profile.vue"),
   },
+  {
+    path: "/profile/survey",
+    name: "Survey",
+    meta: { isAuthenticated: true },
+    component: () => import("../views/RenSurvey.vue"),
+  },
 ];
 
 export default userRoutes;

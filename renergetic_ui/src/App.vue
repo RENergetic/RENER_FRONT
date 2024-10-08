@@ -1,34 +1,39 @@
 <template>
-  <Toast />
-  <ConfirmDialog></ConfirmDialog>
-  <SideMenu v-if="keycloakState == 1" :key="`menu_${refresh}`" ref="sideMenu" @refresh="onRefresh" />
-  <div v-if="keycloakState == 1" :key="`content_${refresh}`" :class="layout() + ' flex flex-column card-container '">
-    <!-- <div style="color: white; margin-top: 10rem">{{ $route.path }}  style="min-height: 95vh"</div>
+  <div :style="pageStyle">
+    <Toast />
+    <ConfirmDialog />
+    <SideMenu v-if="!tvMode && keycloakState == 1" :key="`menu_${refresh}`" ref="sideMenu" @refresh="onRefresh" />
+    <div v-if="keycloakState == 1" :key="`content_${refresh}`" :class="layout() + ' flex flex-column card-container '">
+      <!-- <div style="color: white; margin-top: 10rem">{{ $route.path }}  style="min-height: 95vh"</div>
     <div style="color: white">{{ $keycloak && $keycloak.isInitialized() }}</div> -->
-    <div v-if="hasAccess" class="flex" style="display: initial !important; margin-bottom: 1rem">
-      <router-view :key="$route.path" @update-menu="updateMenu()" />
-    </div>
-    <div v-else :class="layout()">no access TODO:</div>
-
-    <div v-if="!$store.getters['auth/isAuthenticated'] || $store.getters['auth/tokenExpired']" class="grid flex flex-none" style="margin: 2rem 0">
-      <div class="col"></div>
-      <div class="col-fixed flex-none" style="width: 20rem; text-align: center">
-        <Button icon="pi pi-sign-in" style="width: 100%" :label="$t('view.button.sign_in')" @click="login" />
+      <!-- display: - initial !important; -->
+      <div v-if="hasAccess" class="flex" style="margin-bottom: 0rem; flex-grow: 1; overflow: auto; flex-direction: column">
+        <router-view :key="$route.path" :class="pageClass" />
+        <!-- @update-menu="updateMenu()" -->
       </div>
-      <div class="col"></div>
+      <div v-else :class="layout()">no access TODO:</div>
+
+      <div v-if="!$store.getters['auth/isAuthenticated'] || $store.getters['auth/tokenExpired']" class="grid flex flex-none" style="margin: 2rem 0">
+        <div class="col"></div>
+        <div class="col-fixed flex-none" style="width: 20rem; text-align: center">
+          <!-- {{ $store.getters["auth/tokenExpired"] }} -->
+
+          <Button icon="pi pi-sign-in" style="width: 100%" :label="$t('view.button.sign_in')" @click="login" />
+        </div>
+        <div class="col"></div>
+      </div>
+
+      <Footer>
+        <template #right> </template>
+      </Footer>
     </div>
-
-    <Footer>
-      <template #right> </template>
-    </Footer>
+    <div v-else-if="keycloakState == -1">
+      <h2 style="margin: 3rem">Loading....</h2>
+    </div>
+    <div v-else-if="keycloakState == 0">
+      <h2>Keycloak not initialized</h2>
+    </div>
   </div>
-  <div v-else-if="keycloakState == -1">
-    <h2>Keycloak not initialized</h2>
-  </div>
-  <div v-else-if="keycloakState == 0">
-    <h2>Keycloak not initialized</h2>
-  </div>
-
   <!-- TODO: v-else do something when keycloakState == -1 -->
 </template>
 <script>
@@ -57,6 +62,21 @@ export default {
       if (this.$route.meta.roleFlag == null || this.$route.meta.roleFlag == undefined) return true;
       return this.$ren.utils.checkAccess(this.$route.meta.roleFlag);
     },
+    pageStyle() {
+      if (this.tvMode) {
+        return "max-height:99.9vh;overflow:hidden";
+      }
+      return "";
+    },
+    tvMode() {
+      return !(this.$route.meta.tvMode == null || this.$route.meta.tvMode == undefined);
+    },
+    pageClass() {
+      if (this.tvMode) {
+        return "presentation-view";
+      }
+      return "normal-view";
+    },
     isLoading() {
       return this.$store.getters["spinner/isLoading"];
     },
@@ -64,6 +84,20 @@ export default {
   created() {
     this.$emitter.on("refresh", () => {
       this.onRefresh();
+    });
+    this.$emitter.on("menu-update", () => {
+      this.updateMenu();
+    });
+    this.$emitter.on("success", (evt) => {
+      // console.error(evt);
+      let title = evt.title;
+      let msg = evt.message;
+      this.$toast.add({
+        severity: "success",
+        summary: title,
+        detail: msg,
+        life: 3000,
+      });
     });
     this.$emitter.on("error", (evt) => {
       // console.error(evt);
@@ -73,7 +107,7 @@ export default {
         severity: "error",
         summary: title,
         detail: msg,
-        life: 3000,
+        life: 6000,
       });
     });
     this.$emitter.on("information", (evt) => {
@@ -91,7 +125,8 @@ export default {
     await this.$keycloak.get();
     if (this.$keycloak.isInitialized()) {
       this.keycloakState = 1;
-      let currentLocale = this.$store.getters["settings/locales"].locale;
+      let currentLocale = this.$store.getters["settings/locales"].selectedLocale;
+      console.info(`User's language  ${currentLocale}`);
       if (currentLocale) {
         setLocale(currentLocale);
         this.refresh = !this.refresh;
@@ -119,10 +154,12 @@ export default {
 <style lang="scss">
 .standard {
   margin-top: 3rem;
+  height: 100vh;
 }
 .fullscr {
   margin-top: 0rem;
   position: relative;
+  height: 100vh;
 }
 #app {
   min-height: 95vh;

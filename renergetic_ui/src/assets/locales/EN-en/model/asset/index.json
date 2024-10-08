@@ -1,0 +1,44 @@
+{
+  "asset_connections": "Asset connections",
+  "asset_type": "Asset type",
+  "category": {
+    "affected_assets": "These Assets are affected",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "delete_prompt": "Do you really want to delete the category?",
+    "description": "Description",
+    "id": "ID",
+    "label": "Label",
+    "name": "Name",
+    "no_assets_found": "No assets found for this category."
+  },
+  "child": "Sub assets",
+  "child_description": "Assets which belong to the current one",
+  "connection_type": "Connection type",
+  "description": "Description",
+  "geo_location": "Geo location",
+  "id": "Id",
+  "label": "Label",
+  "measurements": "Measurements",
+  "name": "Name",
+  "owner": "Owner",
+  "parent": "Parent",
+  "parent_description": "Asset to which current asset belongs to",
+  "type": {
+    "id": "Id",
+    "label": "Label",
+    "name": "Name"
+  },
+  "types": {
+    "bulding": "Bulding",
+    "dormitory": "Dormitory",
+    "flat": "Flat",
+    "heat_exchange": "Heat exchanger",
+    "heat_exchanger": "Heat exchanger",
+    "heat_source": "Heat Source",
+    "island": "Island",
+    "pv": "PV",
+    "pv_plant": "PV",
+    "room": "Room"
+  }
+}

@@ -1,11 +1,10 @@
-<template>
+<!-- <template>
   <Dialog v-model:visible="dialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <Card>
       <template #title>{{ $t("view.add_asset_category") }}</template>
       <template #content>
         <div class="ren">
           <p v-if="asset == null">Asset doesn´t exist</p>
-          <!-- <p v-if="asset != null">The actual id is {{ asset.id }}</p> -->
           <p v-else-if="asset.asset_category != null">The actual category is {{ asset.asset_category.name }}</p>
           <p v-else>This asset doesn´t have a category</p>
         </div>
@@ -16,7 +15,7 @@
         </ren-input-wrapper>
       </template>
       <template #footer>
-        <!-- TODO : Dejas bonitos los botones -->
+        TODO : Dejas bonitos los botones
         <Button @click="updateAssetCategory(assetCategoryName)">Save</Button>
         <Button @click="deleteAssetCategory()">Delete</Button>
       </template>
@@ -43,13 +42,10 @@ export default {
     async open(selectedAsset) {
       this.dialog = true;
       this.assetCategoriesList = await this.$ren.managementApi.getAllCategories();
-      //console.log(this.assetCategoriesList);
       this.assetCategoriesNamesList = this.assetCategoriesList.map((category) => category.name);
-      //console.log(this.assetCategoriesNamesList);
       if (selectedAsset != null) {
         this.assetId = selectedAsset.id;
         this.asset = selectedAsset;
-        //this.assetCategory = selectedAsset.category;
         console.log(this.asset.asset_category);
         if (this.asset.asset_category != null) {
           console.log(this.asset.asset_category.name);
@@ -63,14 +59,12 @@ export default {
       }
     },
     async updateAssetCategory(nameCategory) {
-      //this.assetCategory = this.assetCategoriesList.filter((category) => category.name === nameCategory);
       this.i = 0;
       this.assetCategory = this.assetCategoriesList[this.i];
       console.log(this.i + " : " + this.assetCategory.name + " : " + this.assetCategoriesList[this.i].name);
       while (this.assetCategoriesList[this.i].name != nameCategory && this.i < this.assetCategoriesList.length) {
         this.i++;
         this.assetCategory = this.assetCategoriesList[this.i];
-        //console.log(this.i + " : " + this.assetCategory.name + " : " + this.assetCategoriesList[this.i].name);
       }
       if (this.assetCategory.name == nameCategory) {
         console.log(this.asset.id + " : " + this.assetCategory.name);
@@ -89,5 +83,4 @@ export default {
     },
   },
 };
-</script>
-<style scoped lang="scss"></style>
+</script>  -->

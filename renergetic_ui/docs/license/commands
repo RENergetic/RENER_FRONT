@@ -1,0 +1,11 @@
+license-report --only=prod --output=html  --fields=name --fields=licenseType --fields=link --fields=installedVersion --fields=remoteVersion --fields=author > docs/license/out/license.html
+  
+
+license-checker --exclude 'MIT' --production --csv --customPath docs/license/config.json > docs/license/out/license_no_mit.csv
+
+
+license-checker --production --csv --customPath docs/license/config.json > docs/license/out/license_all.csv 
+
+
+license-checker --production  --summary > docs/license/out/license_report 
+ 

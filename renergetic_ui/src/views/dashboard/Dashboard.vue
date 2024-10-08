@@ -29,7 +29,6 @@ import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 export default {
   name: "Dashboard",
   components: { Dock, DotMenu, Grafana, DeleteDashboard, DashboardForm /* Carousel */ },
-  emits: ["UpdateMenu"],
   data() {
     return {
       dashboards: {},
@@ -53,7 +52,7 @@ export default {
             icon: "pi pi-fw pi-minus-circle",
             command: () => {
               this.$refs.deleteDashboard.delete();
-              this.$emit("UpdateMenu", null);
+              this.$emitter.$emit("update-menu");
             },
           },
           {
@@ -104,7 +103,7 @@ export default {
         console.log(dashboardReq);
         this.updateDialog = false;
         this.$store.commit("view/dashboardsUpdate", dashboardReq);
-        this.$emit("UpdateMenu", null);
+        this.$emitter.$emit("update-menu");
       });
     },
     getColor(item) {

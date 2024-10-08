@@ -1,0 +1,20 @@
+{
+  "connectedAsset": null,
+  "connectionType": null,
+  "date_from": null,
+  "domain": null,
+  "email": "Email",
+  "key": null,
+  "label": "Etiqueta",
+  "name": "Nombre",
+  "password": "Contraseña",
+  "passwordRepeat": "Repetir contraseña",
+  "physical_type": null,
+  "requestValue": null,
+  "selectedAsset": null,
+  "sensor_name": null,
+  "unit": null,
+  "url": "URL",
+  "username": "Nombre de usuario",
+  "value": null
+}

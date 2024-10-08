@@ -13,6 +13,40 @@ var management = [
     component: () => import("../views/management/infrastructure/AssetListView.vue"),
   },
   {
+    path: "/management/hdr",
+    name: "HDRView",
+    props: {},
+    meta: {
+      isAuthenticated: true,
+      roles: ["ren-admin", "ren-technical-manager", "ren-manager"],
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN | RenRoles.REN_MANAGER,
+    },
+    component: () => import("../views/management/demand/HDRView.vue"),
+  },
+  {
+    path: "/management/wasteheat",
+    name: "WasteHeatView",
+    props: {},
+    meta: {
+      isAuthenticated: true,
+      roles: ["ren-admin", "ren-technical-manager", "ren-manager"],
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN | RenRoles.REN_MANAGER,
+    },
+    component: () => import("../views/management/WasteHeatView.vue"),
+  },
+
+  {
+    path: "/management/workflow",
+    name: "Workflows",
+    meta: {
+      isAuthenticated: true,
+      roles: ["ren-admin", "ren-technical-manager", "ren-manager"],
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN | RenRoles.REN_MANAGER,
+    },
+    component: () => import("../views/management/workflow/WorkflowListView.vue"),
+  },
+
+  {
     path: "/management/measurement",
     name: "MeasurementList",
     props: {},
@@ -24,15 +58,26 @@ var management = [
     component: () => import("../views/management/infrastructure/MeasurementListView.vue"),
   },
   {
-    path: "/management/category",
-    name: "CategoryList",
+    path: "/management/assettype",
+    name: "AssetTypeList",
     props: {},
     meta: {
       isAuthenticated: true,
       roles: ["ren-admin", "ren-technical-manager"],
       roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
     },
-    component: () => import("../views/management/infrastructure/CategoryListView.vue"),
+    component: () => import("../views/management/infrastructure/AssetTypeListView.vue"),
+  },
+  {
+    path: "/management/assetcategory",
+    name: "AssetCategoryList",
+    props: {},
+    meta: {
+      isAuthenticated: true,
+      roles: ["ren-admin", "ren-technical-manager"],
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
+    },
+    component: () => import("../views/management/infrastructure/AssetCategoryListView.vue"),
   },
   {
     path: "/management/notification",
@@ -52,9 +97,33 @@ var management = [
     meta: {
       isAuthenticated: true,
       roles: ["ren-admin", "ren-technical-manager"],
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN,
+    },
+    component: () => import("../views/management/AbstractMetersView.vue"),
+  },
+  /*
+  {
+    path: "/management/abstractCalculation",
+    name: "MeasurementSelectionList",
+    props: {},
+    meta: {
+      isAuthenticated: true,
+      roles: ["ren-admin", "ren-technical-manager"],
       roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN | RenRoles.REN_MANAGER,
     },
-    component: () => import("../views/management/abstract/AbstractMetersView.vue"),
+    component: () => import("../views/management/abstract/MeasurementSelectionList.vue"),
+  },
+  */
+  {
+    path: "/management/rules",
+    name: "RulesList",
+    props: {},
+    meta: {
+      isAuthenticated: true,
+      roles: ["ren-admin", "ren-technical-manager"],
+      roleFlag: RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN | RenRoles.REN_MANAGER,
+    },
+    component: () => import("../views/management/rules/RulesListView.vue"),
   },
 ];
 

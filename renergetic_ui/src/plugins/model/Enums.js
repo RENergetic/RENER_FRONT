@@ -18,10 +18,10 @@ const Colors = Object.freeze({
   SELECTED: "#0a0fc9",
   DEFAULT: "#eaeef5",
 });
-const HeatMapType = Object.freeze({
-  OSM: "osm",
-  DEFAULT: "default",
-});
+// const HeatMapType = Object.freeze({
+//   OSM: "osm",
+//   DEFAULT: "default",
+// });
 //TODO: load it from  backennd
 // const AssetTypes = Object.freeze({
 //   BUILDING: "building",
@@ -43,6 +43,18 @@ const MeasurementDetailsKeys = Object.freeze({
 const DemandActionType = Object.freeze({
   INCREASE: "increase",
   DECREASE: "decrease",
+  STOP: "stop",
+  START: "start",
+});
+
+const DemandAction = Object.freeze({
+  INCREASE_TEMPERATURE: "increase_temperature",
+  DECREASE_TEMPERATURE: "decrease_temperature",
+  INCREASE_POWER: "increase_power",
+  DECREASE_POWER: "decrease_power",
+  INCREASE_HEAT: "increase_heat",
+  DECREASE_HEAT: "decrease_heat",
+  CHARGE_EV: "charge_ev",
 });
 
 const TileTypes = Object.freeze({
@@ -52,7 +64,11 @@ const TileTypes = Object.freeze({
   panel: "panel",
   multi_doughnut: "multi_doughnut",
   multi_knob: "multi_knob",
+  empty: "empty",
+  chart: "chart",
   single: "single",
+  image: "image",
+  qrcode: "qrcode",
 });
 
 const NotificationContext = Object.freeze({
@@ -77,11 +93,26 @@ const MeasurementDirection = init({
   out: "out",
   none: "none",
 });
+const MeasurementAggregation = init({
+  sum: "sum",
+  mean: "mean",
+  min: "min",
+  max: "max",
+  last: "last",
+});
 
 const AssetConnectionType = Object.freeze({
   OWNER: "owner",
   RESIDENT: "resident",
   VISITOR: "visitor",
+  VIRTUAL_ASSET_GROUPING: "va_grouping",
+  FIXED_GENERATION_IN: "fixed_generation_in",
+  FIXED_LOAD_IN: "fixed_load_in",
+  FLEXIBLE_GENERATION_IN: "flexible_generation_in",
+  FLEXIBLE_LOAD_IN: "flexible_load_in",
+  STORAGE_IN: "storage_in",
+  HEATPUMP_FROM: "heat_pump_from",
+  HEATPUMP_TO: "heat_pump_to",
 });
 
 const RenRoles = init({
@@ -147,13 +178,14 @@ export {
   TileTypes,
   NotificationContext,
   AssetConnectionType,
-  HeatMapType,
   RenRoles,
   RenRolesStr,
   RenFeatures,
   DemandActionType,
+  DemandAction,
   MeasurementDetailsKeys,
   DashboardMeasurementTypes,
   MeasurementDomains,
   MeasurementDirection,
+  MeasurementAggregation,
 };

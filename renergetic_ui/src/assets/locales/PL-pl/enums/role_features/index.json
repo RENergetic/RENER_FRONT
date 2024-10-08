@@ -1,0 +1,12 @@
+{
+  "grafana_access": "Dostęp to Grafany",
+  "grafana_management": "Zarządzanie Grafaną",
+  "manage_asset": "Zarządzanie obiektami",
+  "notification": "Dostęp do powiadomień",
+  "owner": "Może być włascicelem obiektu",
+  "public_reports": "Raporty/widoki",
+  "read": "Może posiadać uprawnienia do Grafany oraz Can receive read privilages to asset or dashboard",
+  "report": "Zarządzanie raportami",
+  "role_management": "Zarządzanie rolami",
+  "user_management": "Zarządzanie użytkownikami"
+}

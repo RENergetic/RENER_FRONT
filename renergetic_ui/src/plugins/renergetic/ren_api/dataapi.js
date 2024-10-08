@@ -1,78 +1,7 @@
 import RestComponent from "./restcomponent";
 
-// TEMPORAL CHANGES TO CONNECT WITH BACKEND
-import * as generator from "../../../assets/dummy/samples/data_generator.js";
 import ManagementApi from "./managementapi";
 import DashboardApi from "./dashboardapi";
-// END OF TEMPORAL CHANGES TO CONNECT WITH BACKEND
-// var measurementAttributes = [
-//   {
-//     key: "id4",
-//     label: "Predictors",
-//     name: "predictors",
-//     type: "group",
-//     children: [
-//       {
-//         key: "id5",
-//         name: "electrical",
-//         label: "Electrical",
-//         type: "measurement",
-//         children: [],
-//       },
-//       {
-//         key: "id6",
-//         name: "thermic",
-//         label: "Thermic",
-//         type: "measurement",
-//         children: [],
-//       },
-//     ],
-//   },
-//   {
-//     key: "id1",
-//     label: "Target",
-//     name: "target",
-//     type: "group",
-//     children: [
-//       {
-//         key: "id2",
-//         name: "electrical",
-//         label: "Electrical",
-//         type: "measurement",
-//         children: [],
-//       },
-//       {
-//         key: "id3",
-//         name: "thermic",
-//         label: "Thermic",
-//         type: "measurement",
-//         children: [],
-//       },
-//     ],
-//   },
-//   {
-//     key: "id7",
-//     label: "Prediction Interval",
-//     name: "prediction_interval",
-//     type: "group",
-//     children: [
-//       {
-//         key: "id8",
-//         name: "3h",
-//         label: "3 H",
-//         type: "measurement",
-//         children: [],
-//       },
-//       {
-//         key: "id9",
-//         name: "6h",
-//         label: "6 H",
-//         type: "measurement",
-//         children: [],
-//       },
-//     ],
-//   },
-// ];
 export default class DataApi extends RestComponent {
   constructor(axiosInstance, vueInstance) {
     super(axiosInstance, vueInstance);
@@ -93,14 +22,6 @@ export default class DataApi extends RestComponent {
   dashboardApi = new DashboardApi();
   managementApi = new ManagementApi();
 
-  async getDummyTimeseries(measurementIds, attributes = {}) {
-    //TODO: TOMEK
-    console.info(attributes);
-
-    let timeseries = generator.generateTimeseries(measurementIds);
-    console.info(JSON.stringify(timeseries));
-    return timeseries;
-  }
   async getTimeseries(panelId, tileId, assetId, filter) {
     let endpoint = "/api/data/timeseries";
     if (panelId) {
@@ -143,6 +64,67 @@ export default class DataApi extends RestComponent {
     // let args = "";
     let endpoint = assetId != null ? `/api/data/panel/${panelId}/asset/${assetId}?${args}` : `/api/data/panel/${panelId}?${args}`;
     return this.get(endpoint);
+  }
+  async getMeasurementAggregation(assetId) {
+    return this.get(`/api/measurementsAggregation/list/${assetId}`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Measurement aggregation not found`, {
+          code: "measurement_aggr_get_error",
+        });
+      }
+      return true;
+    });
+  }
+  async saveMeasurementAggregation(assetId, configuration) {
+    return this.post(`/api/measurementsAggregation/save/${assetId}`, configuration, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Measurement aggregation not saved`, {
+          code: "measurement_aggr_save_error",
+        });
+      }
+      return true;
+    });
+  }
+  async getOptimizerTypes() {
+    return this.get(`/api/measurementsAggregation/optimizerTypes`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Optimizer types not found`, {
+          code: "optimizer_type_get_error",
+        });
+      }
+      return true;
+    });
+  }
+  async getOptimizerParameters(assetId, optimizerType) {
+    return this.get(`/api/measurementsAggregation/optimizerParameters/${assetId}/${optimizerType}`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Optimizer parameters not found`, {
+          code: "optimizer_parameter_get_error",
+        });
+      }
+      return true;
+    });
+  }
+  async getMeasurementsFromConnectedAssets(assetId) {
+    return this.get(`/api/measurementsAggregation/measurements/${assetId}`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Measurements not found`, {
+          code: "measurements_connect_asset_get_error",
+        });
+      }
+      return true;
+    });
+  }
+  async getMeasurementsFromConnectedAssetsAndCompatibleWithSelectedMeasurement(assetId, measurementId) {
+    console.log("ok ?");
+    return this.get(`/api/measurementsAggregation/compatibleMeasurements/${assetId}/${measurementId}`, null, null, (e) => {
+      if (e.response.status != 404) {
+        this.emitError(`Compatible measurements not found`, {
+          code: "compatible_measurements_connect_asset_get_error",
+        });
+      }
+      return true;
+    });
   }
 
   // async getNotifications(objectIds) {

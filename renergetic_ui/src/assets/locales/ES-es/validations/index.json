@@ -1,0 +1,10 @@
+{
+  "email": "'{model}' no es un email válido.",
+  "maxLength": "El campo '{property}' tiene un valor de '{model}', pero debe tener una longitud máxima {max}.",
+  "minLength": "El campo '{property}' tiene un valor de '{model}', pero debe tener una longitud mínima {min}.",
+  "passMaxLength": null,
+  "passMinLength": null,
+  "required": "El campo '{property}' es necesario.",
+  "sameAs": "El campo '{property}' no es el mismo que {same_as_property}.",
+  "url": "'{model}' no es una URL válida."
+}

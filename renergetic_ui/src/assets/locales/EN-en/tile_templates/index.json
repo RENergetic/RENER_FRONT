@@ -1,0 +1,6 @@
+{
+  "energy_island_import": "Energy island imports {value} energy.",
+  "energy_island_production": "Today energy island produces {value} of the total  consumption.",
+  "power_compare_month": "PSNC consumption changed by {value} compared with the last month.",
+  "power_compare_week": "PSNC consumption changed by {value} compared with the last week."
+}

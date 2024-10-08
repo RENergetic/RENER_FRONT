@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import { RenRoles } from "@/plugins/model/Enums";
 import Settings from "./Settings.vue";
 export default {
   name: "HomeSettings",
@@ -64,17 +65,18 @@ export default {
           type: "Header",
           key: "homePageitems",
         },
+        // {
+        //   label: this.$t("settings.feedback"),
+        //   ext: {
+        //     true: this.$t("settings.visible"),
+        //     false: this.$t("settings.hidden"),
+        //   },
+        //   type: Boolean,
+        //   key: "feedbackVisibility",
+        // },
         {
-          label: this.$t("settings.feedback"),
-          ext: {
-            true: this.$t("settings.visible"),
-            false: this.$t("settings.hidden"),
-          },
-          type: Boolean,
-          key: "feedbackVisibility",
-        },
-        {
-          label: this.$t("settings.notification"),
+          label: this.$t("settings.notification_visibility"),
+          description: this.$t("settings.notification_visibility_description"),
           ext: {
             true: this.$t("settings.visible"),
             false: this.$t("settings.hidden"),
@@ -83,7 +85,8 @@ export default {
           key: "notificationVisibility",
         },
         {
-          label: this.$t("settings.request_demand"),
+          label: this.$t("settings.request_demand_visibility"),
+          description: this.$t("settings.request_demand_visibility_description"),
           ext: {
             true: this.$t("settings.visible"),
             false: this.$t("settings.hidden"),
@@ -131,6 +134,38 @@ export default {
           key: "slideshowLoopInterval",
         },
       ];
+
+      let r = RenRoles.REN_ADMIN | RenRoles.REN_MANAGER | RenRoles.REN_TECHNICAL_MANAGER;
+      // TODO: get list of public panel
+      if (r & this.$store.getters["auth/renRole"]) {
+        schema.push({
+          label: this.$t("settings.ignore_override_mode"),
+          description: this.$t("settings.ignore_override_mode_description"),
+          ext: {
+            true: this.$t("settings.enabled"),
+            false: this.$t("settings.disabled"),
+          },
+          type: Boolean,
+          key: "ignoreOverrideMode",
+        });
+      }
+
+      if (r & this.$store.getters["auth/renRole"]) {
+        var opts = this.$store.getters["view/informationPanels"];
+
+        schema.push({
+          label: this.$t("settings.home_panel"),
+          description: this.$t("settings.home_panel_description"),
+          type: Array,
+          ext: {
+            options: opts,
+            optionLabel: "label",
+            optionValue: "id",
+          },
+          defaultValue: null,
+          key: "homePanel",
+        });
+      }
       //TODO: get panel list from store
       // if (this.panels.length > 0) {
       //   schema.push({

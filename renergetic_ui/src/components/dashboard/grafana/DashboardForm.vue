@@ -6,11 +6,10 @@
     </template>
     <template #content>
       <div class="ren">
-        <!-- {{ $store.getters["view/dashboardUnits"] }} 
-        {{ measurementTypes }} -->
-        <!-- {{ mDashboard }} -->
+        <!-- {{ $store.getters["view/dashboardUnits"] }}   {{ measurementTypes }}  {{ mDashboard }} -->
         <ren-input
           v-model="mDashboard.name"
+          :text-info="'model.name_description'"
           :text-label="'model.dashboard.name'"
           :invalid="v$.mDashboard.name.$invalid"
           :errors="v$.mDashboard.name.$silentErrors"
@@ -32,6 +31,7 @@
 
         <ren-input
           v-model="mDashboard.label"
+          :text-info="'model.label_description'"
           :text-label="'model.dashboard.label'"
           :invalid="v$.mDashboard.label.$invalid"
           :errors="v$.mDashboard.label.$silentErrors"
@@ -79,7 +79,7 @@
 </template>
 <script>
 import { useVuelidate } from "@vuelidate/core";
-import { required, requiredTr, minLength, url, maxLength, maxLengthTr } from "@/plugins/validators.js";
+import { required, minLength, url, maxLength, maxLengthTr } from "@/plugins/validators.js";
 import { DashboardMeasurementTypes } from "@/plugins/model/Enums.js";
 export default {
   name: "DashboardForm",
@@ -129,7 +129,7 @@ export default {
     return {
       mDashboard: {
         grafana_id: {
-          required: requiredTr("model.dashboard."),
+          // required: requiredTr("model.dashboard."),
           maxLength: maxLengthTr("model.dashboard.", null)(30),
         },
         name: {

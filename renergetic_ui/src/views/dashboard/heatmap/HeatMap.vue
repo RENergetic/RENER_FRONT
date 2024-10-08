@@ -1,10 +1,10 @@
 <template>
   <div>
-    <HeatMapView v-if="heatmap" :heatmap="heatmap" :heatmap-state="heatmapState"></HeatMapView>
+    <!-- <HeatMapView v-if="heatmap" :heatmap="heatmap" :heatmap-state="heatmapState"></HeatMapView> -->
   </div>
 </template>
 <script>
-import HeatMapView from "@/components/dashboard/area/HeatMapView.vue";
+// import HeatMapView from "@/components/dashboard/area/HeatMapView.vue";
 
 //initial canvas size
 // const sceneWidth = 900;
@@ -12,7 +12,7 @@ import HeatMapView from "@/components/dashboard/area/HeatMapView.vue";
 
 export default {
   name: "HeatMap",
-  components: { HeatMapView },
+  // components: { HeatMapView },
   data() {
     return { heatmap: null, heatmapState: null, state: false };
   },

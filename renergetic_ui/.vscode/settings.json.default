@@ -1,0 +1,27 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "vue"
+    ],
+    "files.exclude": {
+        "**/dist": true,
+        "**/node_modules": true
+    },
+    "files.eol": "\n",
+    "[vue]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    },
+    "files.insertFinalNewline": false,
+    "i18n-ally.localesPaths": [
+        "src/assets/locales"
+    ],
+    "i18n-ally.keystyle": "nested",
+    // "i18n-ally.pathMatcher":  "src/assets/locale/{locale}/{namespace}.json",
+    "i18n-ally.namespace": true,
+    "i18n-ally.editor.preferEditor": true,
+    "vetur.ignoreProjectWarning": true,
+}

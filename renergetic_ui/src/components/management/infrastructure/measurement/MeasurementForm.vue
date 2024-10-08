@@ -7,16 +7,24 @@
 
   <Card v-if="mModel">
     <!-- <template #title> </template> -->
+
     <template #content>
       <!-- {{ mModel }}  -->
       <div class="ren">
         <ren-input
           v-model="mModel.name"
+          :text-info="'model.name_description'"
           :text-label="'model.measurement.name'"
           :invalid="v$.mModel.name.$invalid"
           :errors="v$.mModel.name.$silentErrors"
         />
-        <ren-input v-model="mModel.label" :text-label="'model.measurement.label'" />
+        <ren-input
+          v-model="mModel.label"
+          :text-info="'model.label_description'"
+          :text-label="'model.measurement.label'"
+          :invalid="v$.mModel.label.$invalid"
+          :errors="v$.mModel.label.$silentErrors"
+        />
         <!-- {{ mUnits }} -->
         <ren-input-wrapper :text-label="'model.measurement.domain'" :invalid="v$.mModel.domain.$invalid" :errors="v$.mModel.domain.$silentErrors">
           <template #content>
@@ -47,7 +55,7 @@
         </ren-input-wrapper>
         <ren-input-wrapper
           v-if="mModel.physical_type"
-          :text-label="'model.measurement.unit'"
+          :text-label="'model.measurement_type.unit'"
           :invalid="v$.mModel.unit.$invalid"
           :errors="v$.mModel.unit.$silentErrors"
         >
@@ -68,6 +76,7 @@
             <Dropdown
               id="measurementDirection"
               v-model="mModel.direction"
+              show-clear
               :options="directions"
               :option-label="(opt) => $t('enums.measurement_direction.' + opt)"
               :placeholder="$t('view.select_direction')"
@@ -82,7 +91,10 @@
         />
         <ren-input-wrapper :text-label="'model.measurement.asset'">
           <template #content>
-            <span v-if="assetLabel" @click="selectAsset">{{ assetLabel }}</span>
+            <span v-if="assetLabel">
+              <span @click="selectAsset">{{ assetLabel }}</span>
+              <i class="pi pi-times" style="font-size: 1rem; color: rgba(250, 30, 30, 0.9)" @click="revokeAsset" />
+            </span>
             <span v-else @click="selectAsset">{{ $t("view.select_asset") }}</span>
           </template>
         </ren-input-wrapper>
@@ -127,6 +139,7 @@ export default {
       m.physical_type = this.modelValue.type != null ? this.modelValue.type.physical_name : null;
       m.unit = this.modelValue.type != null ? this.modelValue.type.unit : null;
       mUnits = this.$store.getters["view/measurementTypes"][m.physical_type];
+      m.label = this.modelValue._label && this.modelValue._label != this.modelValue.name ? this.modelValue._label : this.modelValue.label;
     }
 
     return {
@@ -156,8 +169,8 @@ export default {
         // },
         name: {
           required,
-          minLength: minLength(5),
-          maxLength: maxLength(50),
+          minLength: minLength(2),
+          maxLength: maxLength(100),
         },
         domain: { required },
         // type: { required },
@@ -170,7 +183,7 @@ export default {
         //   url,
         //   // uri: or(url, ipAddress),
         // },
-        label: { minLength: minLength(3), maxLength: maxLength(50) },
+        label: { minLength: minLength(3), maxLength: maxLength(100) },
       },
     };
   },
@@ -191,6 +204,10 @@ export default {
     onAssetSelect(selectedAsset) {
       this.mModel.asset = selectedAsset;
     },
+    revokeAsset() {
+      this.mModel.asset = null;
+    },
+
     submit() {
       this.mModel.type = {
         id: this.mUnits.find((it) => it.unit == this.mModel.unit).id,

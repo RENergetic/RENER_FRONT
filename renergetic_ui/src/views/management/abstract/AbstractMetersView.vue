@@ -1,90 +1,125 @@
 <template>
-  <div class="container">
-    <div class="centered-card">
-      <Card style="width: 95%; margin: auto; margin-top: 1rem">
-        <template #title> Abstract meter administration </template>
-        <template #content>
-          <div class="template_container" style="text">
-            <AbstractMetersCalculation ref="abstractMetersCalculation" />
-            <h1>Abstract meters management</h1>
-            <!--
-            <p>Value from meter: {{ abstractMeterGlobal }}</p>
-            <p>Value from domain: {{ domainGlobal }}</p>
-            <p>Vale from existance: {{ abstracMeterExists }}</p>
-            -->
-            <div class="card flex flex-wrap gap-3 field grid box">
-              <p>Abstract meter list</p>
-              <ren-input-wrapper>
-                <template #content>
-                  <Dropdown
-                    v-model="abstractMeter"
-                    :placeholder="dropdownAbstractMeter[0]"
-                    :options="dropdownAbstractMeter"
-                    @change="validateButton"
-                  />
-                </template>
-              </ren-input-wrapper>
-            </div>
-            <div class="card flex flex-wrap gap-3 field grid box">
-              <p>Domain list</p>
-              <ren-input-wrapper>
-                <template #content>
-                  <Dropdown v-model="domain" :placeholder="dropdownDomain[0]" :options="dropdownDomain" @change="validateButton" />
-                </template>
-              </ren-input-wrapper>
-            </div>
-            <div class="card flex flex-wrap gap-3 field grid box">
-              <InputText
-                v-model="formulaMeter"
-                class="inputTextFormula"
-                type="text"
-                :placeholder="'Formula to calculate the meter'"
-                @input="validateFormula"
-              />
-              <Button label="+" @click="openCalculationsFormula()" />
-              <!-- <p v-if="isValidInputFormula">The input is valid.</p> -->
-            </div>
-            <div class="card flex flex-wrap gap-3 field grid box">
-              <!-- <InputText class="" v-model="conditionMeter" type="text" :placeholder="'Condition to calculate the meter'" @input="validateCondition" /> -->
-              <InputText
-                v-model="conditionMeter"
-                class="inputTextCondition"
-                type="text"
-                :placeholder="'Condition to calculate the meter'"
-                @input="validateCondition"
-              />
-              <Button label="+" @click="openCalculationsCondition()" />
-              <!-- <p v-if="isValidInputCondition">The input is valid.</p> -->
-            </div>
-            <div class="card flex justify-content-center">
-              <Checkbox v-model="checked" :binary="true" />
-            </div>
-            <div class="card flex flex-wrap gap-5 field grid box">
-              <Button :disabled="buttonDisabled" label="Save" @click="addAbstractMeter" />
-              <Button :disabled="!abstracMeterExists" label="Delete" @click="deleteAbstractMeterFunc" />
-            </div>
+  <div class="flex flex-wrap">
+    <Card class="main_menu_card" style="margin: 5%">
+      <!-- {{ getAbstracMeterList }} -->
+      <template #title>
+        {{ $t("view.abstract_meter_administration") }}
+      </template>
+      <template #content>
+        <div class="container">
+          <div class="card flex-wrap gap-3 field grid box">
+            <p>{{ $t("view.abstract_meter_list") }}</p>
+            <ren-input-wrapper>
+              <template #content>
+                <Dropdown
+                  v-model="abstractMeter"
+                  :placeholder="dropdownAbstractMeter[0]"
+                  :options="dropdownAbstractMeter"
+                  class="w-full md:w-14rem"
+                  @change="validateButton"
+                />
+              </template>
+            </ren-input-wrapper>
           </div>
-        </template>
-      </Card>
-    </div>
+          <div class="card flex-wrap gap-3 field grid box sub_container">
+            <p>{{ $t("view.domain_list") }}</p>
+            <ren-input-wrapper>
+              <template #content>
+                <Dropdown
+                  v-model="domain"
+                  :placeholder="dropdownDomain[0]"
+                  :options="dropdownDomain"
+                  class="w-full md:w-14rem"
+                  @change="validateButton"
+                />
+              </template>
+            </ren-input-wrapper>
+          </div>
+          <div class="card flex-wrap gap-3 field grid box sub_container">
+            <InputText
+              id="formula"
+              v-model="formulaMeter"
+              :class="{ valid: formulaMeter && isValidInputFormula == true, invalid: formulaMeter && isValidInputFormula == false }"
+              class="inputTextFormula"
+              type="text"
+              :placeholder="$t('view.formula_meter_placeholder')"
+              @input="validateFormula"
+            />
+            <Button :label="$t('view.add_measurement')" @click="openCalculationsFormula()" />
+            <!-- <p v-if="isValidInputFormula">The input is valid.</p> -->
+          </div>
+          <div class="card flex-wrap gap-3 field grid box sub_container">
+            <ToggleButton
+              v-model="conditionMeterShown"
+              :on-label="$t('view.activated_condition')"
+              :off-label="$t('view.deactivated_condition')"
+              class="condition_button"
+              icon-pos="right"
+              on-icon="pi pi-check"
+              off-icon="pi pi-times"
+              @change="conditionButtonCheck"
+            />
+            <!-- <p>{{ $t("view.activate_condition") }}</p>
+            <Checkbox v-model="conditionMeterShown" :binary="true" @change="conditionButtonCheck" /> -->
+          </div>
+          <div class="card flex-wrap gap-3 field grid box sub_container">
+            <!-- <InputText class="" v-model="conditionMeter" type="text" :placeholder="'Condition to calculate the meter'" @input="validateCondition" /> -->
+            <InputText
+              id="condition"
+              v-model="conditionMeter"
+              :class="{ valid: conditionMeter && isValidInputCondition == true, invalid: conditionMeter && isValidInputCondition == false }"
+              class="inputTextCondition"
+              type="text"
+              :placeholder="$t('view.condition_meter_placeholder')"
+              :disabled="!conditionMeterShown"
+              @input="validateCondition"
+            />
+            <Button :disabled="!conditionMeterShown" :label="$t('view.add_measurement')" @click="openCalculationsCondition()" />
+          </div>
+          <div class="gap-3 field grid">
+            <Button :disabled="saveButtonDisabled" label="Save" @click="addUpdateAbstractMeter" />
+            <Button icon="pi pi-trash" class="p-button-danger" :disabled="!abstracMeterExists" label="Delete" @click="deleteAbstractMeterFunc" />
+          </div>
+        </div>
+      </template>
+    </Card>
+    <Card class="measurement_guide_card" style="margin: 5%">
+      <template #title> {{ $t("view.measurement_guide") }} </template>
+      <template #content>
+        <div>
+          <Accordion v-model:activeIndex="activeAccordion">
+            <AccordionTab v-for="(valueFormula, index) in measurementList" :key="index" :header="valueFormula.id">
+              <p>{{ $t("model.measurement.name") }} : {{ valueFormula.name }}</p>
+              <p>{{ $t("model.measurement.label") }} : {{ valueFormula.label }}</p>
+              <p>{{ $t("model.measurement.domain") }} : {{ valueFormula.domain }}</p>
+              <p>{{ $t("model.asset.name") }} : {{ valueFormula.asset.name }}</p>
+              <p>{{ $t("model.measurement.type") }} : {{ valueFormula.type.name }}</p>
+            </AccordionTab>
+          </Accordion>
+        </div>
+      </template>
+    </Card>
   </div>
-  <AbstractMetersCalculation
-    ref="abstractMetersCalculation"
-    @selected-measurement-formula="handleMeasurementReturnFormula"
-    @selected-measurement-condition="handleMeasurementReturnCondition"
-  />
+  <MeasurementSelectionList ref="measurementsListFormula" @selected-measurement="handleMeasurementReturnFormula" />
+  <MeasurementSelectionList ref="measurementsListCondition" @selected-measurement="handleMeasurementReturnCondition" />
 </template>
 <script>
-//import AbstractMetersCalculation from "@/views/management/abstract/AbstractMetersCalculation.vue";
-import AbstractMetersCalculation from "@/components/management/infrastructure/AbstractMetersCalculation.vue";
-//import AbstractMetersCalculation from "./AbstractMetersCalculation.vue";
+import MeasurementSelectionList from "@/components/management/infrastructure/MeasurementSelectionList.vue";
+import Accordion from "primevue/accordion";
+import AccordionTab from "primevue/accordiontab";
+import ToggleButton from "primevue/togglebutton";
+
 export default {
   name: "AbstracMetersView",
   components: {
-    AbstractMetersCalculation,
+    MeasurementSelectionList,
+    Accordion,
+    AccordionTab,
+    ToggleButton,
   },
   data() {
     return {
+      dialog: true,
       abstractMeter: null,
       abstractMeterGlobal: null,
       domain: null,
@@ -95,65 +130,95 @@ export default {
       originalAbstractDomain: [],
       dropdownAbstractMeter: [],
       dropdownDomain: ["heat", "electricity"],
-      AbstractMetersCalculation,
+      MeasurementSelectionList,
       isValidInputFormula: false,
       isValidInputCondition: false,
-      buttonDisabled: true,
+      saveButtonDisabled: true,
       abstracMeterExists: false,
-      conditionCheckPressed: false,
-      abstractValudId: null,
-      elementTextFormula: null,
-      elementTextCondition: null,
+      abstractValueId: null,
+      conditionMeterShown: false,
+      conditionType: null,
+      toastMessage: null,
+      measurementIdList: [],
+      measurementList: [],
+      inputFormula: null,
+      inputCondition: null,
+      activeAccordion: null,
     };
   },
   async created() {
-    console.log("Created");
-    this.elementTextFormula = document.getElementById("inputTextFormula");
-    this.elementTextCondition = document.getElementById("inputTextCondition");
-    //console.error("I arrived here");
-    let abstractMeterList = await this.$ren.managementApi.getAbstracMeterList();
-    //console.log(this.dropdownMeasurementNames);
-    //let myMap = new Map().set("a", 1).set("b", 2);
+    let abstractMeterList = await this.$ren.kpiApi.getAbstracMeterList();
+    console.error(abstractMeterList);
     let claves = Object.keys(abstractMeterList);
     for (let i = 0; i < claves.length; i++) {
       let clave = claves[i];
-      //console.log(clave + " : " + abstractMeterList[clave]);
       this.dropdownAbstractMeter[i] = clave + " : " + abstractMeterList[clave];
     }
     this.abstractMeterGlobal = this.dropdownAbstractMeter[0];
     this.domainGlobal = this.dropdownDomain[0];
     this.variableExistanceChecker();
-    console.log(
-      "Initial globals 3->" + this.abstractMeterGlobal + ":" + this.domainGlobal + " F-> " + this.formulaMeter + " C-> " + this.conditionMeter,
-    );
-    console.log("Initial globals->" + this.abstractMeterGlobal + ":" + this.domainGlobal);
-    console.log("End of created");
-    //console.log(this.dropdownAbstractMeter);
+    this.inputFormula = document.querySelector("#formula");
+    this.inputCondition = document.querySelector("#condition");
+
+    this.inputFormula.addEventListener("click", (e) => {
+      this.measurementListener(e.target.selectionStart, 0, this.formulaMeter);
+    });
+    this.inputCondition.addEventListener("click", (e) => {
+      this.measurementListener(e.target.selectionStart, 1, this.conditionMeter);
+    });
   },
   methods: {
-    validateFormula() {
-      this.isValidInputFormula = this.validateText(this.formulaMeter);
-      console.log("Validate formula-> " + this.isValidInputFormula);
-      this.validateSave();
-    },
-    validateCondition() {
-      this.isValidInputCondition = this.validateText(this.conditionMeter);
-      /*if (this.isValidInputCondition) {
-        this.elementTextCondition.style.color = "black";
+    showToast(option) {
+      let msgType = "error";
+      if (option == 0) {
+        msgType = "information";
+        this.toastMessage = "Content saved";
+      } else if (option == 1) {
+        msgType = "information";
+        this.toastMessage = "Content deleted";
+      } else if (option == 2) {
+        msgType = "information";
+        this.toastMessage = "Content updated";
+      } else if (option == 3) {
+        this.toastMessage = "Addition error";
+        ///console.error("Option failed");
       } else {
-        this.elementTextCondition.style.color = "red";
-      }*/
-      console.log("Validate condition-> " + this.isValidInputCondition);
+        this.toastMessage = "Option error";
+        //console.error("No correct option");
+      }
+      this.$emitter.emit(msgType, { message: this.toastMessage });
+    },
+    validateFormula(testBool = true) {
+      this.isValidInputFormula = this.validateText(this.formulaMeter);
       this.validateSave();
+      if (this.isValidInputFormula && testBool) {
+        this.validateMeasurements();
+      }
+    },
+    validateCondition(measurementToValidate = true) {
+      const operadores = />=|<=|<|>|=|!=/g;
+      let matches = this.conditionMeter.match(operadores);
+      if (matches && matches.length == 1) {
+        const conditions = this.conditionMeter.split(matches);
+        if ((conditions[0] && conditions[1]) != "") {
+          this.isValidInputCondition = this.validateText(conditions[0]) && this.validateText(conditions[1]);
+        } else {
+          this.isValidInputCondition = false;
+        }
+      } else if (matches && matches.length != 1) {
+        this.isValidInputCondition = false;
+      } else {
+        this.isValidInputCondition = false;
+      }
+      this.validateSave();
+      if (this.isValidInputCondition && measurementToValidate) {
+        this.validateMeasurements();
+      }
     },
     validateText(text) {
-      //const pattern = /^[0-9[\]]+$/;
-      //const expressionRegex = /^(\d+(\s*[+\-\/*]\s*\[\d+\])*)$/;
       // eslint-disable-next-line no-useless-escape
       const expressionRegex = /^\(*((\d+(\.\d+)?)|(\[\d+\]))([+*^\/-]\(*((\d+(\.\d+)?)|(\[\d+\]))\)*)*$/;
-      console.log(text);
       let isValidInput = expressionRegex.test(text);
-      console.log(this.isValidInput);
       return isValidInput;
     },
     validateButton() {
@@ -164,122 +229,229 @@ export default {
       if (this.domain != null && this.domainGlobal != this.domain) {
         this.domainGlobal = this.domain;
       }
-      console.log("Check globals: " + this.abstractMeterGlobal + ":" + this.domainGlobal);
-      console.log((this.abstractMeter != null) + " " + (this.domain != null) + " " + this.isValidInputFormula + " " + this.isValidInputCondition);
+      //console.log("Check globals: " + this.abstractMeterGlobal + ":" + this.domainGlobal);
+      //console.log((this.abstractMeter != null) + " " + (this.domain != null) + " " + this.isValidInputFormula + " " + this.isValidInputCondition);
       this.variableExistanceChecker();
       this.validateSave();
     },
     validateSave() {
-      if (this.conditionCheckPressed) {
-        this.buttonDisabled = !(this.isValidInputFormula && this.isValidInputCondition);
+      if (this.conditionMeterShown) {
+        this.saveButtonDisabled = !(this.isValidInputFormula && this.isValidInputCondition);
       } else {
-        //this.buttonDisabled = !/*((this.abstractMeter != null) && (this.domain != null) &&*/ this.isValidInputFormula/*)*/;
-        console.log("mostrar-> " + this.buttonDisabled);
-        this.buttonDisabled = !this.isValidInputFormula;
+        this.saveButtonDisabled = !this.isValidInputFormula;
       }
-      console.log(this.buttonDisabled);
-      if (this.buttonDisabled) {
-        console.log("The button cannot be pressed");
-      } else {
-        console.log("The button can be pressed");
-      }
-      console.log(this.buttonDisabled);
     },
-    async addAbstractMeter() {
-      console.log(this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0]);
-      console.log("longitud" + this.conditionMeter);
-      // eslint-disable-next-line prettier/prettier
-      if (this.conditionMeter == '') {
-        // this won´t be neccessary when the checkbox exists, because the value will be changed to null when the checkbox is not with the tick
-        this.conditionMeter = null;
-      }
+    async addUpdateAbstractMeter() {
+      let returnValue = null;
       if (this.abstracMeterExists) {
         const jsonAbstractMeter = {
-          id: this.abstractValudId,
-          name: this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0],
+          id: this.abstractValueId,
+          name: this.splitAbstractMeters(this.abstractMeterGlobal),
           formula: this.formulaMeter,
           condition: this.conditionMeter,
           domain: this.domainGlobal,
         };
-        console.log(jsonAbstractMeter);
-        await this.$ren.managementApi.updateAbstractMeter(jsonAbstractMeter);
+        returnValue = await this.$ren.kpiApi.updateAbstractMeter(jsonAbstractMeter);
+        if (typeof returnValue == "object") {
+          this.showToast(2);
+        } else {
+          this.showToast(3);
+        }
       } else {
         const jsonAbstractMeter = {
-          name: this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0],
+          name: this.splitAbstractMeters(this.abstractMeterGlobal),
           formula: this.formulaMeter,
           condition: this.conditionMeter,
           domain: this.domainGlobal,
         };
-        console.log(jsonAbstractMeter);
-        await this.$ren.managementApi.addAbstractMeter(jsonAbstractMeter);
-        this.buttonDisabled = true;
+        returnValue = await this.$ren.kpiApi.addAbstractMeter(jsonAbstractMeter);
+        if (typeof returnValue == "object") {
+          this.showToast(0);
+        } else {
+          this.showToast(3);
+        }
+        this.saveButtonDisabled = true;
       }
+      //this.variableExistanceChecker();
     },
     async variableExistanceChecker() {
-      console.log("Initial globals 3->" + this.abstractMeterGlobal + ":" + this.domainGlobal);
-      console.log(this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0] + ":" + this.domainGlobal);
-      let abstractValue = await this.$ren.managementApi.getAnAbstracMeterConfiguration(
-        this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0],
-        this.domainGlobal,
-      );
+      let abstractValue = await this.$ren.kpiApi.getAbstractMeterConfiguration(this.splitAbstractMeters(this.abstractMeterGlobal), this.domainGlobal);
       if (abstractValue != null) {
         this.abstracMeterExists = true;
-        console.log("AbstractMeterExists-> " + this.abstracMeterExists);
-        this.abstractValudId = abstractValue.id;
+        this.abstractValueId = abstractValue.id;
         this.formulaMeter = abstractValue.formula;
-        this.conditionMeter = abstractValue.condition;
-        console.log(
-          "Variable existance checker -> " + this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0] + ":" + this.domainGlobal + "- Exists",
-        );
-        this.buttonDisabled = false;
+        if (abstractValue.condition != null) {
+          this.conditionMeter = abstractValue.condition;
+          this.conditionMeterShown = true;
+        } else {
+          this.conditionMeter = null;
+        }
+        this.saveButtonDisabled = false;
       } else {
         this.abstracMeterExists = false;
-        console.log("AbstractMeterExists-> " + this.abstracMeterExists);
-        this.abstractValudId = null;
-        console.log(this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0] + ":" + this.domainGlobal + "- Doesn´t exist");
+        this.abstractValueId = null;
+        this.resetData();
       }
-      this.validateFormula();
-      this.validateCondition();
+      this.validateFormula(false);
+      if (this.conditionMeter != null) {
+        this.validateCondition(false);
+      }
+      this.validateMeasurements();
     },
     async deleteAbstractMeterFunc() {
-      console.log(this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0], this.domainGlobal);
-      await this.$ren.managementApi.deleteAbstractMeter(this.abstractMeterGlobal.replace(/\s/g, "").split(":")[0], this.domainGlobal);
-      this.abstractMeterGlobal = this.dropdownAbstractMeter[0];
-      this.domainGlobal = this.dropdownDomain[0];
-      this.variableExistanceChecker();
+      const returnValue = await this.$ren.kpiApi.deleteAbstractMeter(this.splitAbstractMeters(this.abstractMeterGlobal), this.domainGlobal);
+      if (returnValue) {
+        this.showToast(1);
+      } else {
+        this.showToast(3);
+      }
+      this.abstracMeterExists = false;
+      this.abstractValueId = null;
+      this.resetData();
+      this.validateMeasurements();
     },
     openCalculationsFormula() {
-      let valueToAdd = this.openNewPage("formula");
-      console.log(valueToAdd);
+      this.$refs.measurementsListFormula.open();
+      console.log("depurando mlist #1 AbstractMetersView: ");
+      console.log(this.MeasurementSelectionList);
     },
     openCalculationsCondition() {
-      let valueToAdd = this.openNewPage("condition");
-      console.log(valueToAdd);
+      this.$refs.measurementsListCondition.open();
     },
-    openNewPage(conditionType) {
-      console.log(this.$refs.abstractMetersCalculation);
-      this.$refs.abstractMetersCalculation.open(conditionType);
-      //TODO: CHECK IF THIS RETURN IS NECESSARY -> I DON´T THINK SO
+    openNewPage() {
+      this.$refs.measurementSelectionList.open(this.conditionType);
     },
     handleMeasurementReturnFormula(value) {
-      console.log("AbstractMetersView: " + value);
-      console.log("Before: " + this.formulaMeter);
       if (this.formulaMeter == null) {
-        this.formulaMeter = "[" + value + "]";
+        this.formulaMeter = this.concatenateStrings("[" + value + "]", "");
       } else {
-        this.formulaMeter = this.formulaMeter + "[" + value + "]";
+        this.formulaMeter = this.concatenateStrings(this.formulaMeter, "[" + value + "]");
       }
-      console.log("After: " + this.formulaMeter);
+      this.validateFormula();
+      this.focusFormula();
     },
     handleMeasurementReturnCondition(value) {
-      console.log("AbstractMetersView: " + value);
-      console.log("Before: " + this.conditionMeter);
       if (this.conditionMeter == null) {
-        this.conditionMeter = "[" + value + "]";
+        this.conditionMeter = this.concatenateStrings("[" + value + "]", "");
       } else {
-        this.conditionMeter = this.conditionMeter + "[" + value + "]";
+        this.conditionMeter = this.concatenateStrings(this.conditionMeter, "[" + value + "]");
+        this.validateCondition();
       }
-      console.log("After: " + this.conditionMeter);
+      this.focusCondition();
+    },
+    concatenateStrings(string1, string2) {
+      let concatString = string1 + string2;
+      return concatString;
+    },
+    conditionButtonCheck() {
+      this.conditionMeter = null;
+      this.validateSave();
+    },
+    resetData() {
+      this.conditionMeter = null;
+      this.formulaMeter = null;
+      this.conditionMeterShown = false;
+      this.isValidInputCondition = false;
+      this.isValidInputFormula = false;
+    },
+    isObject(value) {
+      return typeof value == "object" && value !== null;
+    },
+    splitAbstractMeters(absMet) {
+      return absMet.split(":")[0].substring(0, absMet.split(":")[0].length - 1);
+    },
+    save() {
+      this.$toast.add({ severity: "success", summary: "Success", detail: "Data Saved", life: 3000 });
+    },
+    validateMeasurements() {
+      let aux = [];
+      let aux2 = [];
+      this.measurementIdList = [];
+      if (this.formulaMeter != null) {
+        aux = this.extractValues(this.formulaMeter);
+        console.log("1: " + aux);
+        if (this.conditionMeter != null) {
+          aux2 = this.extractValues(this.conditionMeter);
+          console.log("2: " + aux2);
+        }
+        if (aux != null && aux2 != null) {
+          this.measurementIdList = aux.concat(aux2);
+        } else if (aux != null) {
+          this.measurementIdList = aux;
+        } else if (aux2 != null) {
+          this.measurementIdList = aux2;
+        }
+      }
+      console.log(`Final ${this.measurementIdList}`);
+      this.updateGuide();
+    },
+    extractValues(string) {
+      const pattern = /\[(.*?)\]/g;
+      let values = null;
+      if (pattern.test(string)) {
+        values = string.match(pattern).map((value) => value.slice(1, -1));
+      }
+      if (values == null) {
+        return null;
+      } else {
+        return values;
+      }
+    },
+    updateGuide() {
+      this.measurementList.splice(0, this.measurementList.length);
+      this.measurementIdList = [...new Set(this.measurementIdList)];
+      console.log("Before: " + this.measurementIdList.length);
+      console.log(this.measurementIdList);
+      console.log(this.measurementList);
+      for (let i = 0; i < this.measurementIdList.length; i++) {
+        console.log("Test" + i + " -> " + this.measurementIdList[i]);
+        this.$ren.managementApi.getMeasurement(this.measurementIdList[i]).then((response) => {
+          this.measurementList.push(response);
+        });
+      }
+      console.log("Update guide: ");
+      console.log(this.measurementIdList);
+      console.log("After: " + this.measurementIdList.length);
+      console.log(this.measurementList);
+    },
+    focusFormula() {
+      document.getElementById("formula").focus();
+    },
+    focusCondition() {
+      document.getElementById("condition").focus();
+    },
+    measurementListener(position, operationType, meter) {
+      if (meter != null) {
+        let currentMeasurement = null;
+        if (operationType == 0) {
+          console.log("Formula " + position);
+        } else if (operationType == 1) {
+          console.log("Condition " + position);
+        }
+        let openings = [];
+        let closings = [];
+
+        // Finding indices of '[' and ']'
+        for (let i = 0; i < meter.length; i++) {
+          if (meter[i] === "[") {
+            openings.push(i);
+          } else if (meter[i] === "]") {
+            closings.push(i);
+          }
+        }
+        for (let i = 0; i < openings.length; i++) {
+          for (let j = 0; j < closings.length; j++) {
+            if (openings[i] < closings[j] && openings[i] < position && position <= closings[j]) {
+              currentMeasurement = meter.substring(openings[i] + 1, closings[i]);
+            }
+          }
+        }
+        for (let i = 0; i < this.measurementList.length; i++) {
+          if (this.measurementList[i].id == currentMeasurement) {
+            this.activeAccordion = i;
+          }
+        }
+      }
     },
   },
 };
@@ -290,14 +462,56 @@ export default {
   text-align: center;
 }
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  margin-left: 5%;
 }
-.box {
-  flex: 1;
-  //border: 1px white; /* Optional: Add borders for visualization */
-  text-align: center; /* Optional: Align text in the center */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  display: none;
+}
+
+.showing-toast {
+  display: block;
+}
+
+.toast_text {
+  text-align: center;
+}
+
+.main_menu_card {
+  flex: 1.25 0 auto;
+}
+
+.measurement_guide_card {
+  flex: 1 0 auto;
+}
+
+.check_param {
+  display: flex;
+  //justify-content: center;
+  align-items: center;
+  /* Set the desired height for the container */
+  height: 100%;
+  margin-left: 5px;
+}
+
+.valid {
+  background: url("/public/valid.png") no-repeat right;
+  background-size: auto 100%;
+}
+
+.invalid {
+  background: url("/public/notValid.png") no-repeat right;
+  background-size: auto 100%;
+}
+
+.condition_button.p-highlight {
+  background-color: #94ba39;
 }
 </style>

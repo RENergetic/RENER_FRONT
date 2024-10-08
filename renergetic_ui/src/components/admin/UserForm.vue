@@ -6,23 +6,12 @@
     </template>
     <template #content>
       <div class="ren">
-        <!-- {{ mUser }} -->
-        <!-- <div v-if="!user" class="field grid">
-          <label for="username" class="col-12 mb-2 md:col-2 md:mb-0"> {{ $t("model.user.username") }} </label>
-          <div class="col-12 md:col-10">
-            <InputText id="username" v-model="mUser.username" :disabled="user != null" />
-          </div>
-          <span v-if="v$.mUser.username.$invalid">
-            <span v-for="(error, index) of v$.mUser.username.$silentErrors" id="name-error" :key="index">
-              <small class="p-error">{{ error.$message }}</small>
-            </span>
-          </span>
-        </div> -->
         <ren-input
           v-model="mUser.username"
           :invalid="v$.mUser.username.$invalid"
           :errors="v$.mUser.username.$silentErrors"
           :text-label="'model.user.username'"
+          :disabled="user != null"
         />
         <ren-input
           v-model="mUser.firstName"
@@ -36,7 +25,13 @@
           :errors="v$.mUser.lastName.$silentErrors"
           :text-label="'model.user.lastname'"
         />
-        <ren-input v-model="mUser.email" :invalid="v$.mUser.email.$invalid" :errors="v$.mUser.email.$silentErrors" :text-label="'model.user.email'" />
+        <ren-input
+          v-model="mUser.email"
+          :disabled="user != null"
+          :invalid="v$.mUser.email.$invalid"
+          :errors="v$.mUser.email.$silentErrors"
+          :text-label="'model.user.email'"
+        />
         <ren-password
           v-if="!user"
           v-model="mUser.password"
@@ -51,6 +46,11 @@
           :errors="v$.mUser.passwordRepeat.$silentErrors"
           :text-label="'model.user.password_repeat'"
         />
+        <ren-input-wrapper v-if="!user" v-model="mUser.roles" :text-label="'model.user.roles'">
+          <template #content>
+            <UserRoleForm v-model="mUser.roles" />
+          </template>
+        </ren-input-wrapper>
         <ren-submit :disabled="v$.$invalid" @submit="submit" />
       </div>
     </template>
@@ -58,9 +58,12 @@
 </template>
 <script>
 import { useVuelidate } from "@vuelidate/core";
+import UserRoleForm from "@/components/admin/UserRoleForm.vue";
+
 import { required, minLength, email, maxLength, sameAs, minLengthTr, maxLengthTr } from "@/plugins/validators.js";
 export default {
   name: "UserForm",
+  components: { UserRoleForm },
   props: {
     user: {
       type: Object,
@@ -72,7 +75,6 @@ export default {
   data() {
     //TODO: copy dashboard object to mDashboard - otherwise we modife element  from the list and it hhas to be refreshed
     let mUser = this.user ? JSON.parse(JSON.stringify(this.user)) : {};
-
     return {
       mUser: mUser,
     };
@@ -107,11 +109,6 @@ export default {
           // uri: or(url, ipAddress),
         },
         ...pass,
-        // password: {
-        //   //
-
-        // },
-
         firstName: { minLength: minLength(3), maxLength: maxLength(20) },
         lastName: { minLength: minLength(3), maxLength: maxLength(20) },
       },

@@ -1,30 +1,41 @@
 // @import url('primevue/resources/themes/nova-vue/theme.css');
 $inputwidth: 100%;
-$maxInputwidth: 25rem;
-$primary-color: #94ba39; //#F1F2F2;//#0D89EC
-$primary-color-tr: #afde41be; //#F1F2F2;//#0D89EC
-$primary-font-color: #f0f0f0;
-$ren-primary-color: $primary-color;
-$ren-primary-color-tr: $primary-color-tr;
-$ren-primary-font-color: $primary-font-color;
-$ren-primary-border-color: #232526;    
-$ren-primary-bg: linear-gradient(to right, #232526, #414345); 
+$maxInputwidth: 30rem;
+$ren-primary-color: #94ba39; //#F1F2F2;//#0D89EC
+$ren-primary-color-tr: #afde41be; //#F1F2F2;//#0D89EC
+$ren-primary-font-color: #f0f0f0;
+$ren-primary-color: $ren-primary-color;
+$ren-primary-color-tr: $ren-primary-color-tr;
+$ren-primary-font-color: $ren-primary-font-color;
+$ren-primary-border-color: #232526;
+$ren-primary-border-color-tr: #23252650;
+$ren-primary-bg: linear-gradient(to right, #232526, #414345);
 
-$secondary-color: #ffffff; //#F1F2F2;//#0D89EC
-$ren-secondary-font-color: #0f0f0f;   
-$ren-secondary-border-color: #e9e8e8;    
-// $ren-secondary-bg: linear-gradient(to right, #e9e8e8, #f3f7fc); 
-$ren-secondary-bg: linear-gradient(to right, #efefef, #f3eeee); 
+$ren-secondary-color: #ffffff; //#F1F2F2;//#0D89EC
+$ren-secondary-color-tr: #ffffff90; //#F1F2F2;//#0D89EC
+// $ren-secondary-font-color: #0f0f0f;
+$ren-secondary-font-color: #495057;
 
-$sidemenu-button-width: 2rem; 
+$ren-secondary-border-color: #e9e8e8;
+$ren-secondary-border-color-tr: #f8f7f750;
+// $ren-secondary-bg: linear-gradient(to right, #e9e8e8, #f3f7fc);
+$ren-secondary-bg: linear-gradient(to right, #efefef, #f3eeee);
+
+$sidemenu-button-width: 2rem;
 $sidemenu-logo-height: 4rem;
-
 
 /*
  * State colours
 **/
-$ren-state-color-ok:#50b482; 
-$ren-state-color-error:crimson; 
-$ren-state-color-warning:sandybrown; 
-$ren-state-color-unknown:lightgray; 
- 
+$ren-state-color-ok: #50b482;
+$ren-state-color-error: crimson;
+$ren-state-color-warning: sandybrown;
+$ren-state-color-unknown: lightgray;
+
+@function set-text-color($color) {
+  @if (lightness($color) > 50) {
+    @return $ren-secondary-font-color;
+  } @else {
+    @return $ren-primary-font-color;
+  }
+}

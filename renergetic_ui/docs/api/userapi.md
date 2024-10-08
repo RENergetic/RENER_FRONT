@@ -1,7 +1,7 @@
 
 ### register ###
 TODO:
-* register user: POST `/api/users/register` 
+* register user: POST `/api/user/register` 
   
     *body*: User
 
@@ -14,7 +14,7 @@ TODO:
 
 ### Get user ###
 TODO:
-* get user: GET `/api/users/info/${keycloak_name}` 
+* get user: GET `/api/user/info/${keycloak_name}` 
   
     Return:
 
@@ -26,7 +26,7 @@ TODO:
 ```
 
 ### user data
-* get assets: GET `/api/user`
+* get assets: GET `/api/user/profile`
     description: get current user    
     Return: TODO:
 

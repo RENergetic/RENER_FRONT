@@ -1,20 +1,5 @@
 <template>
-  <!-- {{ mDashboards }} -->
-  <!-- :filters="filters"
-    filter-display="row"
-    :global-filter-fields="['name', 'label','url']" 
-    :paginator="true"
-    :rows="10" -->
-  <DataTable
-    v-if="mDashboards && limit != null"
-    :value="mDashboards"
-    :rows="limit"
-    :first="mOffset"
-    paginator-template=""
-    paginator
-    data-key="name"
-    responsive-layout="scroll"
-  >
+  <DataTable v-if="paginatedDashboards" class="sticky-header" :value="paginatedDashboards" data-key="name">
     <Column name="name" :header="$t('model.dashboard.name')">
       <template #body="slotProps">
         {{ slotProps.data.label ? slotProps.data.label + " (" + slotProps.data.name + ")" : slotProps.data.name }}
@@ -30,7 +15,7 @@
       </template>
     </Column>
     <Column field="grafana_id" :header="$t('model.dashboard.grafana_id')"> </Column>
-    <Column field="user" :header="$t('model.dashboard.user')">
+    <!-- <Column field="user" :header="$t('model.dashboard.user')">
       <template #body="slotProps">
         <span v-if="slotProps.data.user">
           {{ slotProps.data.user }}
@@ -39,7 +24,7 @@
           {{ $t("view.na") }}
         </span>
       </template>
-    </Column>
+    </Column> -->
 
     <Column v-if="canEdit" name="edit" :header="$t('view.edit')">
       <template #body="slotProps">
@@ -59,37 +44,28 @@
           <i v-tooltip="$t('view.edit_locked')" class="pi pi-lock" />
         </div>
         <div class="flex align-items-center" style="flex-grow: 0">
-          <!-- <i class="pi pi-search" /> -->
           <InputText v-model="filters['global'].value" :placeholder="$t('view.search')" />
-          <i v-if="filters.state" class="pi pi-filter active" :label="$t('view.button.filter')" @click="setFilter" />
-          <i v-else class="pi pi-filter" :label="$t('view.button.filter')" @click="setFilter" />
           <i v-if="filters.state" class="pi pi-filter-slash" :label="$t('view.button.clear_filter')" @click="clearFilter" />
         </div>
       </div>
       <div class="flex justify-content-between"></div>
     </template>
-    <!-- <template #footer>
-      <div class="flex justify-content-between">
-        <RenPaginator ref="pag" v-model:offset="mOffset" :total-rows="mDashboards.length" @update="searchAsset" />
-
-        <div class="flex justify-content-between">
-          <div v-if="canEdit" style="text-align: end">
-            <Button icon="pi pi-plus-circle" :label="$t('view.button.add')" @click="addDialog = true" />
-          </div>
-        </div>
-      </div>
-    </template> -->
   </DataTable>
-  <div>
-    <div class="flex justify-content-between">
-      <RenPaginator ref="pag" v-model:offset="mOffset" :total-rows="mDashboards.length" @update="searchAsset" />
-    </div>
-    <Toolbar>
-      <template #end>
-        <Button icon="pi pi-plus-circle" :label="$t('view.button.add')" class="mr-2" @click="addDialog = true" />
-      </template>
-    </Toolbar>
-  </div>
+  <ren-paginator
+    v-if="mDashboards"
+    v-model:offset="mOffset"
+    style="left: 0"
+    sticky
+    :limit="limit"
+    :current-rows="paginatedDashboards.length"
+    @update="onPagination"
+  />
+  <Toolbar class="ren-toolbar ren-sticky">
+    <template #end>
+      <Button icon="pi pi-plus-circle" :label="$t('view.button.add')" class="mr-2" @click="addDialog = true" />
+    </template>
+  </Toolbar>
+
   <Dialog v-model:visible="editDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <DashboardForm v-if="selectedRow" :dashboard="selectedRow" @save="onEdit" @cancel="editDialog = false" />
     <DashboardForm v-else @save="onCreate" @cancel="editDialog = false" />
@@ -104,7 +80,7 @@
 import { RenRoles } from "@/plugins/model/Enums";
 import DashboardForm from "./DashboardForm.vue";
 import DeleteDashboard from "@/components/dashboard/grafana/DeleteDashboard.vue";
-
+var PAGE_SIZE = 10;
 var flags = RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER;
 export default {
   name: "DashboardList",
@@ -115,7 +91,8 @@ export default {
     return {
       canEdit: flags & this.$store.getters["auth/renRole"],
       mDashboards: this.dashboards,
-      limit: null,
+      paginatedDashboards: this.dashboards ? this.dashboards.slice(0, PAGE_SIZE) : null,
+      limit: PAGE_SIZE,
       mOffset: 0,
       selectedRow: null,
       editDialog: false,
@@ -128,25 +105,38 @@ export default {
       this.mDashboards = v;
       this.filter();
     },
+    filters: {
+      handler: function (v) {
+        if (v != null && v.global != null && v.global.value) {
+          v.state = true;
+          this.filter();
+        } else {
+          v.state = false;
+          this.mOffset = 0;
+          this.mDashboards = this.dashboards;
+          this.onPagination();
+        }
+      },
+      deep: true,
+    },
   },
   mounted() {
-    this.limit = this.$refs && this.$refs.pag ? this.$refs.pag.limit : 10;
+    this.onPagination();
   },
   async created() {},
   methods: {
     navigate(url) {
       window.open(url, "_blank");
     },
-    // onFilter(ev) {
-    //   this.filters = ev.filters;
-    // },
 
     edit(row) {
       // console.info(row);
       this.selectedRow = row;
       this.editDialog = true;
     },
-
+    onPagination() {
+      this.paginatedDashboards = this.mDashboards.slice(this.mOffset, this.mOffset + PAGE_SIZE);
+    },
     async onEdit(o) {
       await this.$ren.dashboardApi.update(o).then((res) => {
         if (res) {
@@ -159,7 +149,6 @@ export default {
       });
     },
     async onCreate(o) {
-      // console.log(o);
       await this.$ren.dashboardApi.add(o).then((dashboard) => {
         console.info("add dashboard:" + dashboard.name);
         this.$emitter.emit("information", { message: this.$t("information.dashboard_created") });
@@ -169,15 +158,15 @@ export default {
     },
 
     async reload() {
-      //TODO: filter
+      this.filters = this.initFilter();
+      this.mOffset = 0;
+      this.mDashboards = this.dashboards;
+      this.paginatedDashboards = this.mDashboards ? this.mDashboards.slice(0, PAGE_SIZE) : null;
       this.$emit("reload", { q: this.filters.global.value, limit: this.limit, offset: this.mOffset });
-    },
-    async setFilter() {
-      this.filters.state = true;
-      this.filter();
     },
     filter() {
       if (!this.filters.state) {
+        this.onPagination();
         return;
       }
       let q = this.filters.global.value;
@@ -185,11 +174,14 @@ export default {
         return d.name.toLowerCase().includes(q) || d.url.includes(q) || (d.label != null && d.label.toLowerCase().includes(q));
       }
       this.mDashboards = this.dashboards.filter(f);
-      // this.reload()
+      this.mOffset = 0;
+      this.onPagination();
     },
     clearFilter() {
-      this.filters = this.initFilter();
+      this.mOffset = 0;
       this.mDashboards = this.dashboards;
+      this.paginatedDashboards = this.mDashboards.slice(this.mOffset, this.mOffset + PAGE_SIZE);
+      this.filters = this.initFilter();
     },
     deleteConfirm(o) {
       this.selectedRow = o;
@@ -203,7 +195,7 @@ export default {
     initFilter() {
       return {
         state: false,
-        global: { value: null }, //, matchMode: FilterMatchMode.CONTAINS
+        global: { value: null },
       };
     },
   },
@@ -211,10 +203,4 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-.active {
-  background-color: rgba(100, 225, 100, 0.5);
-  border-radius: 100%;
-  padding: 0.4rem;
-}
-</style>
+<style scoped lang="scss"></style>

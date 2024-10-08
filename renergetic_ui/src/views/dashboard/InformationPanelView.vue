@@ -1,7 +1,10 @@
 <template>
+  <!-- PRIVATE DASHBOARD -->
+
   <div v-if="panel" id="panel-box">
     <DotMenu :model="menuModel" />
     <BasicFilterSettings
+      v-if="!panelTitle"
       style="width: 90%; margin: auto; margin-top: 1rem"
       class="ren-card"
       :setting-key="'private'"
@@ -10,15 +13,22 @@
       :labels="false"
       @update="reloadSettings()"
     />
+    <h3 v-if="panelTitle" style="width: 90%; margin: auto; margin-top: 1rem">{{ panelTitle }}</h3>
+
     <InformationPanelWrapper
       ref="panel"
+      :key="panelReload"
       :asset-id="$route.params.asset_id"
       :locked="locked"
       :panel="panel"
       :edit-mode="editMode"
-      :filter="filter"
+      :filter="effectiveFilterSettings"
       :panel-settings="settings"
+      @update:tile="onTileUpdate"
     />
+    <div style="margin-left: 1rem; margin-top: 2rem">
+      <ParsedDateFilter :key="parsedFilterRefresh" :filter="effectiveFilterSettings" />
+    </div>
     <!-- <Card style="width: 90%; margin: auto; margin-top: 1rem">
       <template #content>
         todo make own card component -->
@@ -32,43 +42,133 @@
       @update="reloadSettings()"
     />
     <!-- </template>
-    </Card> -->
+</Card> -->
   </div>
   <RenSettingsDialog ref="settingsDialog">
-    <template #settings><PanelSettings @update="reloadSettings()"></PanelSettings></template>
+    <template #settings>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_effective_settings") }}:</span>
+        </template>
+        <template #content>
+          <Settings :schema="schema" :settings="computePanelSettings(settings, panel)" :disabled="true" />
+        </template>
+      </Card>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_settings") }}:</span>
+        </template>
+        <template #content>
+          <Settings :schema="schema" :settings="panel.props" :disabled="true" />
+        </template>
+      </Card>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_user_settings") }}:</span>
+        </template>
+        <template #content>
+          <PanelSettings @update="reloadSettings()"> </PanelSettings>
+        </template>
+      </Card>
+    </template>
   </RenSettingsDialog>
+  <!-- <RenSettingsDialog ref="settingsDialog">
+    <template #settings><PanelSettings @update="reloadSettings()"></PanelSettings></template>
+  </RenSettingsDialog> -->
   <RenSettingsDialog ref="conversionSettingsDialog">
-    <template #settings><ConversionSettings @update="reloadSettings()"></ConversionSettings></template>
+    <template #settings>
+      <ConversionSettings @update="reloadSettings()"></ConversionSettings>
+    </template>
   </RenSettingsDialog>
   <RenSettingsDialog ref="filterSettingsDialog" :save="false">
-    <template #settings><BasicFilterSettings :setting-key="'private'" @update="reloadSettings()" /></template>
+    <template #settings>
+      <Panel v-if="panel" toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
+        </template>
+        <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
+      </Panel>
+      <Panel v-if="panel" toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.panel_filter_settings") }}:</span>
+        </template>
+        <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
+      </Panel>
+      <Panel v-if="panel" toggleable class="ren-settings">
+        <template #header>
+          <span> {{ $t("view.user_filter_settings") }}:</span>
+        </template>
+        <BasicFilterSettings :setting-key="'private'" @update="updateFilter()" />
+      </Panel>
+      <!-- <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
+        </template>
+        <template #content>
+          <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" /> 
+        </template>
+      </Card>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.panel_filter_settings") }}:</span>
+        </template>
+        <template #content>
+          <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" /> 
+        </template>
+      </Card>
+      <Card class="ren-settings">
+        <template #title>
+          <span> {{ $t("view.user_filter_settings") }}:</span>
+        </template>
+        <template #content>
+            {{ $store.getters["settings/filters"]("private") }}  
+          <BasicFilterSettings :setting-key="'private'" @update="reloadSettings()" /> 
+        </template>
+      </Card> -->
+    </template>
   </RenSettingsDialog>
 </template>
 <script>
 import InformationPanelWrapper from "@/components/dashboard/informationpanel/InformationPanelWrapper.vue";
+import { getCleanPanelStructure } from "@/components/dashboard/informationpanel/InformationPanelForm.vue";
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 import BasicFilterSettings from "@/components/miscellaneous/settings/BasicFilterSettings.vue";
-
+import ParsedDateFilter from "@/components/miscellaneous/settings/ParsedDateFilter.vue";
+import { panelSchema } from "@/plugins/model/settings.js";
+import Settings from "@/components/miscellaneous/settings/Settings.vue";
+import ConversionSettings from "@/components/miscellaneous/settings/ConversionSettings.vue";
 export default {
   name: "InformationPanelView",
-  components: {
-    InformationPanelWrapper,
-    DotMenu,
-    PanelSettings,
-    BasicFilterSettings,
-  },
+  components: { ConversionSettings, Settings, InformationPanelWrapper, DotMenu, PanelSettings, ParsedDateFilter, BasicFilterSettings },
   data() {
     return {
+      schema: panelSchema(),
       panel: null,
       locked: false,
       editMode: false,
+      panelReload: false,
       settings: this.$store.getters["settings/panel"],
-      filter: this.$store.getters["settings/parsedFilter"]("private"),
+      // filter: this.$store.getters["settings/parsedFilter"]("private"),
       settingsDialog: false,
+      parsedFilterRefresh: false,
     };
   },
   computed: {
+    effectiveFilterSettings: function () {
+      let userFilter = this.$store.getters["settings/filters"]("private");
+      let overrideMode = this.effectiveOverrideMode(this.settings, this.panel.props);
+      let settings = this.mergeSettings(userFilter, this.panel.props, overrideMode);
+      return this.parseDateFilter(settings);
+    },
+    panelTitle: function () {
+      let asset = this.$store.getters["view/panelAsset"](this.panel.id, this.$route.params.asset_id);
+      if (asset) {
+        let name = asset.label ? asset.label : asset.name;
+        return this.$t("view.private_dashboard_title", { asset: name });
+      }
+      return this.panel.label;
+    },
     settingsButton: function () {
       return { label: this.$t("menu.panel_settings"), command: () => this.$refs.settingsDialog.open(), icon: "pi pi-fw pi-plus-circle" };
     },
@@ -78,6 +178,13 @@ export default {
     filterSettingsButton: function () {
       return { label: this.$t("menu.filter_settings"), icon: "pi pi-fw pi-filter", command: () => this.$refs.filterSettingsDialog.open() };
     },
+
+    exportStructureButton: function () {
+      return { label: this.$t("menu.export"), icon: "pi pi-file", command: () => this.exportPanel(false) };
+    },
+    exportTemplateButton: function () {
+      return { label: this.$t("menu.export_template"), icon: "pi pi-file", command: () => this.exportPanel(true) };
+    },
     // toggleButton: function () {
     //   let label = this.locked ? this.$t("menu.panel_grid_unlock") : this.$t("menu.panel_grid_lock");
     //   return { label: label, icon: "pi pi-fw pi-lock", command: () => this.toggleLock() };
@@ -86,13 +193,24 @@ export default {
     //   return { label: this.$t("menu.save_panel_grid"), icon: "pi pi-fw pi-save", command: () => this.saveGrid() };
     // },
 
-    menuModel() {
-      return [/*this.toggleButton*/ this.settingsButton, this.conversionSettingsButton, this.filterSettingsButton];
+    editModeButton: function () {
+      return { label: this.$t("menu.toggle_edit_mode"), icon: "pi pi-pencil", command: () => (this.editMode = !this.editMode) };
     },
-    // editModelButton: function () {
-    //   let label = this.editMode ? this.$t("menu.panel_grid_edit_on") : this.$t("menu.panel_grid_edit_off");
-    //   return { label: label, icon: "pi pi-fw pi-lock", command: () => this.toggleEditMode() };
-    // },
+    menuModel() {
+      let menu = [];
+      menu.push(this.settingsButton);
+      menu.push(this.conversionSettingsButton);
+      menu.push(this.filterSettingsButton);
+      if (this.hasRole(this.RenRoles.REN_ADMIN | this.RenRoles.REN_MANAGER | this.RenRoles.REN_TECHNICAL_MANAGER)) {
+        menu.push(this.exportTemplateButton);
+        menu.push(this.exportStructureButton);
+        //Hidden, because dynamic measurement of the panel structure object is replaced by measurements
+        // menu.push(this.editModeButton);
+      }
+
+      return menu;
+    },
+
     // addButton: function () {
     //   return { label: this.$t("menu.panel_grid_add_tile"), icon: "pi pi-fw pi-plus", command: () => this.addTile() };
     // },
@@ -117,13 +235,24 @@ export default {
   async mounted() {
     await this.loadStructure();
   },
-  // async updated() {
-  //   await this.loadStructure();
-  // },
 
   methods: {
+    exportPanel(template) {
+      let panelStructure = getCleanPanelStructure(this.panel, template);
+      let filename = template ? `template_${this.panel.name}` : `${this.panel.id}_${this.panel.name}`;
+      this.$ren.utils.downloadJSON(panelStructure, filename, true);
+    },
+    async onTileUpdate(ev) {
+      this.panel.tiles[ev.index] = ev.tile;
+      await this.$ren.dashboardApi.updateInformationPanel(this.panel).then(async () => {
+        // console.debug(this.panel);
+        await this.loadStructure();
+        this.panelReload = !this.panelReload;
+        console.debug(this.panel);
+      });
+    },
     async loadStructure() {
-      this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id);
+      this.panel = await this.$ren.utils.getPanelStructure(this.$route.params.id, this.$route.params.asset_id, false);
       // if (informationPanel == null) {
       //   this.$ren.dashboardApi.getInformationPanel(this.$route.params.id, this.$route.params.asset_id).then((panel) => {
       //     this.panel = panel;
@@ -133,11 +262,10 @@ export default {
       // }
     },
     reloadSettings() {
-      // console.info("reloadSettings");
-      // this.$store.getters["settings/filter"];
-      this.filter = this.$store.getters["settings/parsedFilter"]("private");
+      // this.filter = this.$store.getters["settings/parsedFilter"]("private");
       this.settings = this.$store.getters["settings/panel"];
       this.conversionSettings = this.$store.getters["settings/conversion"];
+      this.parsedFilterRefresh = !this.parsedFilterRefresh;
     },
 
     async toggleLock() {
@@ -165,8 +293,11 @@ export default {
 
 <style lang="scss">
 #panel-box {
-  background: #232526; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #232526, #414345); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #232526, #414345); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #232526;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #232526, #414345);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #232526, #414345);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 </style>

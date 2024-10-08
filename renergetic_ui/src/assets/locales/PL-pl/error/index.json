@@ -1,0 +1,23 @@
+{
+  "asset_connection_not_deleted": "Usuwanie relacji nie powiodło się",
+  "asset_panel_assigned": "Asset not assigned to the panel",
+  "asset_panel_revoked": "Asset not revoked from the dashboard",
+  "dashboard_delete_fail": "Dashboard has not been deleted.",
+  "dashboard_not_updated": "Dashboard has not been updated",
+  "default_hdr_pipeline_not_set": "Domyślne zadanie nie zostało zdefiniowane",
+  "error": "Error",
+  "hdr_cannot_disable_default": "Wartość nie może być zmieniona dla domyślnego zadania",
+  "hdr_task_is_running": "Zadanie już uruchomione",
+  "label_not_changed": "Błąd zapisu etykiety",
+  "measurement_delete_fail": "Measurement has not been deleted.",
+  "measurement_not_updated": "Measurement has not been updated",
+  "panel_not_found": "Nie odnaleziono widoku: {0}.",
+  "panel_update": "Aktualizacja widoku {0} nie powiadła się.",
+  "rest_title": "API Error",
+  "tag_exists": "Tag już istnieje",
+  "user_not_found": "Brak użytkownika: {0}.",
+  "user_not_updated": "Aktualizacja użytkownika nie powidła się.",
+  "visibility_changed": "Visibility not changed",
+  "worflow_stop": "{label} - błąd przy próbie zatrzymania",
+  "worflowrun_start": "{label} - błąd przy próbie uruchomienia"
+}

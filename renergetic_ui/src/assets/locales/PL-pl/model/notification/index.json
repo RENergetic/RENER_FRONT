@@ -1,0 +1,14 @@
+{
+  "asset": "Asset",
+  "dashboard": "Dashboard",
+  "date_from": "From",
+  "date_to": "To",
+  "id": "Id",
+  "measurement": "Measurement",
+  "message": "Message",
+  "no_dashboard": "undefined",
+  "notification_code": "Kod",
+  "notification_timestamp": "Generation time",
+  "type": "Type",
+  "value": "Value"
+}

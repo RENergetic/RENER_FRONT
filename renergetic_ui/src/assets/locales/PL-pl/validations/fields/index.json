@@ -1,0 +1,25 @@
+{
+  "connectedAsset": "Connected asset",
+  "connectionType": "Connection type",
+  "custom": {
+    "asset": {
+      "type": "asset type"
+    }
+  },
+  "date_from": "Data od",
+  "domain": "domain",
+  "email": "email",
+  "key": "key",
+  "label": "label",
+  "name": "name",
+  "password": "password",
+  "passwordRepeat": "repeat password",
+  "physical_type": "physical type",
+  "requestValue": "Request's value",
+  "selectedAsset": "Selected asset",
+  "sensor_name": "sensor name",
+  "unit": "Jednostka",
+  "url": "url",
+  "username": "username",
+  "value": "value"
+}

@@ -1,0 +1,16 @@
+{
+  "asset_connections": null,
+  "asset_type": "Asset type",
+  "child": "Sub assets",
+  "child_description": null,
+  "connection_type": null,
+  "description": null,
+  "geo_location": "Geo location",
+  "id": "Id",
+  "label": "Label",
+  "measurements": "Measurements",
+  "name": "Name",
+  "owner": "Owner",
+  "parent": "Parent",
+  "parent_description": null
+}

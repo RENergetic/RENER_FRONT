@@ -1,9 +1,11 @@
 export default class AxiosAPI {
-  constructor(axiosInstance, vueInstance, authApi) {
-    this.axios = axiosInstance;
+  constructor(axiosInstances, vueInstance, authApi) {
+    this.axiosInstances = axiosInstances;
     this.vueInstance = vueInstance;
     this.authApi = authApi;
-    this.init();
+    for (const element of this.axiosInstances) {
+      this.init(element);
+    }
   }
   //wrapper for store
   storeCommit(action) {
@@ -27,8 +29,8 @@ export default class AxiosAPI {
   /**
    * init axxios interceptors
    */
-  init() {
-    this.axios.interceptors.request.use(
+  init(axiosInstance) {
+    axiosInstance.interceptors.request.use(
       (req) => {
         if (req.spinner) {
           this.storeCommit("spinner/start");
@@ -56,7 +58,7 @@ export default class AxiosAPI {
       },
     );
 
-    this.axios.interceptors.response.use(
+    axiosInstance.interceptors.response.use(
       (res) => {
         if (res.config.spinner) {
           this.storeCommit("spinner/stop");
@@ -69,6 +71,7 @@ export default class AxiosAPI {
         if (error.response.status == 401) {
           if (this.vueInstance.config.globalProperties.$store.getters["auth/tokenExpired"]) {
             this.vueInstance.config.globalProperties.$store.commit("auth/token", { token: null, exp: 0 });
+            localStorage.setItem("data", null);
             console.error("TODO: better token expiry handler");
             //TODO:
             location.reload();
