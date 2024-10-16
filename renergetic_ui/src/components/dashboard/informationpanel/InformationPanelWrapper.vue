@@ -212,13 +212,15 @@ export default {
           console.info("wait for panel data: " + this.panel.id + " " + this.panel.is_template);
           await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, this.mFilter).then(async (resp) => {
             console.debug(resp);
-            var panelData = resp.data ? resp.data : {};
+            var panelData = resp && resp.data ? resp.data : {};
             if (resp.panel != null) {
               // console.error(this.panel);
               resp.panel._tiles = this.panel.tiles;
               this.mPanel = resp.panel;
               // this.mPanel = this.panel.is_template || resp.panel != null ? resp.panel : this.panel;
-            } else this.mPanel = this.panel;
+            } else {
+              this.mPanel = this.panel;
+            }
 
             var chartDict = {};
             this.mPanel.tiles

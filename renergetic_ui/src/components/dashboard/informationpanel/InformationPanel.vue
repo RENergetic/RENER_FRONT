@@ -170,7 +170,7 @@ export default {
   },
   methods: {
     editTile(tile, index) {
-      if (this.mPanel._tiles && tile.id == this.mPanel._tiles[index].id) {
+      if (this.mPanel._tiles && this.mPanel._tiles[index] && tile.id == this.mPanel._tiles[index].id) {
         //dont update inferred measurements
         let t = JSON.parse(JSON.stringify(tile));
 

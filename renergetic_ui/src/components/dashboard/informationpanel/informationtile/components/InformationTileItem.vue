@@ -5,7 +5,7 @@
         <font-awesome-icon :icon="icon" />
       </span>
     </div>
-    <div class="flex flex-grow-1 flex-column justify-content-center" style="font-size: 0.85rem; padding: 0.33rem">
+    <div class="flex flex-grow-1 flex-column justify-content-center" style="font-size: 0.9em; padding: 0.33rem">
       <div class="flex flex-grow-1 align-items-center justify-content-center flex-row">
         <!-- .align-items-start -->
         <div v-tooltip="labelTooltip" class="flex-grow-1">{{ label }}</div>
