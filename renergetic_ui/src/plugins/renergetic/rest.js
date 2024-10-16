@@ -31,7 +31,7 @@ export var BASE_URL_DATA_API = process.env.VUE_APP_API_URL_DATA_API; //"http://l
 export var BASE_URL_USER_API = process.env.VUE_APP_API_URL_USER_API; //"http://localhost:7985"; //
 export var BASE_URL_WRAPPER_API = process.env.VUE_APP_API_URL_WRAPPER_API; //"http://localhost:7984"; // //;"; //
 export var BASE_URL_KPI_API = process.env.VUE_APP_API_URL_KPI_API; //"http://localhost:7987"; // //
-export var BASE_URL_KUBEFLOW_API = process.env.VUE_APP_API_URL_KUBEFLOW_API; //"http://localhost:7986"; // // //  //; //
+export var BASE_URL_KUBEFLOW_API = process.env.VUE_APP_API_URL_KUBEFLOW_API; //; "http://localhost:7986"; // // //  //; //
 // export var KUBEFLOW_SERVICE_BASE_URL = process.env.VUE_APP_KUBEFLOW_SERVICE_BASE_URL ? process.env.VUE_APP_KUBEFLOW_SERVICE_BASE_URL : null;
 
 const axiosInstanceHdr = axios.create({ baseURL: BASE_URL_HDR_API });
