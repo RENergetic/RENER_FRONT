@@ -13,7 +13,7 @@
     "no_assets_found": "No assets found for this category."
   },
   "child": "Sub assets",
-  "child_description": null,
+  "child_description": "Obiekt podrzędny",
   "connection_type": "Connection type",
   "description": "Description",
   "geo_location": "Geo location",
@@ -23,7 +23,7 @@
   "name": "Name",
   "owner": "Owner",
   "parent": "Parent",
-  "parent_description": null,
+  "parent_description": "Obiekt nadrzędny",
   "type": {
     "id": "Id",
     "label": "Etykieta",

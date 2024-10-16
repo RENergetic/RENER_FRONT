@@ -110,6 +110,7 @@
   "home_settings": "Configuración de inicio",
   "ignore_measurements_ids": null,
   "infer_measurements": "Inferir IDs de medidas",
+  "inferred_measurements": null,
   "information_panel_form": "Formulario de panel de información",
   "information_panel_list": "Lista de paneles de información",
   "information_panel_props": null,

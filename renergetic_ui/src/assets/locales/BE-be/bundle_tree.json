@@ -38,6 +38,14 @@
       "heat": "Heat",
       "none": "N/A"
     },
+    "font_scale": {
+      "big": "Big (130%)",
+      "enourmous": "Enourmous (200%)",
+      "huge": "Huge  (150%)",
+      "normal": "Normal (100%)",
+      "small": "Small (90%)",
+      "tiny": "Tiny (80%)"
+    },
     "heatmap_type": {
       "default": "Normal",
       "osm": "OpenStreeMap"
@@ -406,6 +414,8 @@
         "properties": {
           "": "_description",
           "_description": "_description",
+          "aggregate_values": "Aggregate values",
+          "aggregate_values_description": "Aggregate values related with all assigned measurements ",
           "background": "Tile's wrapper background",
           "background_description": "Tile's default background, 'none'(inherits from panel) if not defined ",
           "background_mask": "Tile's background mask",
@@ -810,6 +820,8 @@
     "panel_qr_code_size_description": "Size of the QR code picture in pixels",
     "panel_reload_time_ms": "Data reload interval [ms]",
     "panel_reload_time_ms_description": "Data reload interval [ms]",
+    "panel_tag_key": "Tag key",
+    "panel_tag_value": "Tag value",
     "prediction_interval": "Prediction interval",
     "recommendations": "Recommendations",
     "relative_values": "Use relatives values",
@@ -1037,6 +1049,7 @@
     "home_settings": "Home Settings",
     "ignore_measurements_ids": "Ignore measurement IDs and infer them",
     "infer_measurements": "Infer measurements IDs",
+    "inferred_measurements": "Inferred measurements",
     "information_panel_form": "Information panel form",
     "information_panel_list": "Information panel list",
     "information_panel_props": "Information panel's properties",

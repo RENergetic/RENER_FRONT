@@ -110,6 +110,7 @@
   "home_settings": "Ustawienia strony domowej",
   "ignore_measurements_ids": "Uzupełnij identyfikatory szeregów czasowych",
   "infer_measurements": "Uzupełnij brakujące identyfikatory szeregów czasowych",
+  "inferred_measurements": "Lista prszeregów czaowych",
   "information_panel_form": "Definicja widoku",
   "information_panel_list": "Lista widoków",
   "information_panel_props": "Własciwości widoku",

@@ -41,6 +41,8 @@
   "panel_qr_code_size_description": "Size of the QR code picture in pixels",
   "panel_reload_time_ms": "Data reload interval [ms]",
   "panel_reload_time_ms_description": "Data reload interval [ms]",
+  "panel_tag_key": "Tag key",
+  "panel_tag_value": "Tag value",
   "prediction_interval": "Prediction interval",
   "recommendations": "Recommendations",
   "relative_values": "Use relatives values",

@@ -110,6 +110,7 @@
   "home_settings": "Home Settings",
   "ignore_measurements_ids": "Ignore measurement IDs and infer them",
   "infer_measurements": "Infer measurements IDs",
+  "inferred_measurements": "Inferred measurements",
   "information_panel_form": "Information panel form",
   "information_panel_list": "Information panel list",
   "information_panel_props": "Information panel's properties",

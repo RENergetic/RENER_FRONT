@@ -175,7 +175,7 @@ export default {
         let t = JSON.parse(JSON.stringify(tile));
 
         t.measurements = this.mPanel._tiles[index].measurements; //replace with original templates/queries
-
+        t._measurements = tile.measurements; //inferred measurements
         this.selectedTile = t;
         this.selectedTileIndex = index;
         this.tileEditDialog = true;

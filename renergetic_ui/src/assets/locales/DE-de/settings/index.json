@@ -41,6 +41,8 @@
   "panel_qr_code_size_description": null,
   "panel_reload_time_ms": null,
   "panel_reload_time_ms_description": null,
+  "panel_tag_key": null,
+  "panel_tag_value": null,
   "prediction_interval": null,
   "recommendations": null,
   "relative_values": null,

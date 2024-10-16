@@ -110,6 +110,7 @@
   "home_settings": null,
   "ignore_measurements_ids": null,
   "infer_measurements": null,
+  "inferred_measurements": null,
   "information_panel_form": null,
   "information_panel_list": null,
   "information_panel_props": null,

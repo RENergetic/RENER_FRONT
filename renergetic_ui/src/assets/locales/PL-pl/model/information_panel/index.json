@@ -1,12 +1,12 @@
 {
-  "featured": "Visibility",
+  "featured": "Widowczność",
   "id": "Id",
-  "is_template": "Is template",
+  "is_template": "Szablon",
   "is_template_new_panel": "Is panel a template for private dashboards view (Can't be changed later)",
   "label": "Etykieta",
   "name": "Nazwa",
   "priority": "Priorytet",
-  "structure": "Structure",
+  "structure": "Struktura",
   "tile": {
     "h": "h",
     "id": "Id",
@@ -15,6 +15,8 @@
     "properties": {
       "": "_description",
       "_description": "_description",
+      "aggregate_values": "Agreguj wartości",
+      "aggregate_values_description": "Agreguj wartości",
       "background": "Tile's wrapper background",
       "background_description": "Tile's default background, 'none'(inherits from panel) if not defined ",
       "background_mask": "Tile's background mask",

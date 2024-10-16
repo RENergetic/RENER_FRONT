@@ -41,6 +41,8 @@
   "panel_qr_code_size_description": "Rozmiar kodu QR w pixelach",
   "panel_reload_time_ms": "Czas na odświeżenie [ms]",
   "panel_reload_time_ms_description": "Czas oczekiwania na odświeżenie widoku [ms]",
+  "panel_tag_key": "Nazwa tagu",
+  "panel_tag_value": "Wartość tagu",
   "prediction_interval": "Okres przewidywania",
   "recommendations": "Rekomendacje",
   "relative_values": "Pokazuj wartości względne",

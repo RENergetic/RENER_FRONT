@@ -38,6 +38,14 @@
       "heat": "Ciepło",
       "none": "Inne"
     },
+    "font_scale": {
+      "big": "Big (130%)",
+      "enourmous": "Enourmous (200%)",
+      "huge": "Huge  (150%)",
+      "normal": "Normal (100%)",
+      "small": "Small (90%)",
+      "tiny": "Tiny (80%)"
+    },
     "heatmap_type": {
       "default": "Normal",
       "osm": "OpenStreeMap"
@@ -406,6 +414,8 @@
         "properties": {
           "": "_description",
           "_description": "_description",
+          "aggregate_values": "Aggregate values",
+          "aggregate_values_description": "Aggregate values related with all assigned measurements ",
           "background": "Tile's wrapper background",
           "background_description": "Tile's default background, 'none'(inherits from panel) if not defined ",
           "background_mask": "Tile's background mask",
@@ -810,6 +820,8 @@
     "panel_qr_code_size_description": "Rozmiar kodu QR w pixelach",
     "panel_reload_time_ms": "Czas na odświeżenie [ms]",
     "panel_reload_time_ms_description": "Czas oczekiwania na odświeżenie widoku [ms]",
+    "panel_tag_key": "Tag key",
+    "panel_tag_value": "Tag value",
     "prediction_interval": "Okres przewidywania",
     "recommendations": "Rekomendacje",
     "relative_values": "Pokazuj wartości względne",
@@ -1037,6 +1049,7 @@
     "home_settings": "Ustawienia strony domowej",
     "ignore_measurements_ids": "Uzupełnij identyfikatory szeregów czasowych",
     "infer_measurements": "Uzupełnij brakujące identyfikatory szeregów czasowych",
+    "inferred_measurements": "Inferred measurements",
     "information_panel_form": "Definicja widoku",
     "information_panel_list": "Lista widoków",
     "information_panel_props": "Własciwości widoku",
@@ -1185,8 +1198,8 @@
     "user_role_add_confirm": "Do you want do add role {role} to {username}?",
     "user_role_revoke": "Revoke role",
     "user_role_revoke_confirm": "Do you want do revoke role {role} from {username}?",
-    "value_decreased_by": "Wartość zmniejszyła się o",
-    "value_increased_by": "Wartość wzrosła o",
+    "value_decreased_by": "Wartość zmniejszyła się o {value}",
+    "value_increased_by": "Wartość wzrosła o {value}",
     "value_not_changed": "Wartość nie zmieniła się",
     "view_asset_children": "Show sub assets",
     "view_asset_measurements": "Pokaż dostępne dane",

@@ -154,6 +154,26 @@ var panelSchema = function () {
       key: "compare_interval_type",
       default: "none",
     },
+
+    {
+      label: $t(`settings.font_scale`),
+      description: $t(`settings.font_scale_description`),
+      type: Array,
+      ext: {
+        options: [
+          { value: 0.8, label: $t("enums.font_scale.tiny") },
+          { value: 0.9, label: $t("enums.font_scale.small") },
+          { value: 1.0, label: $t("enums.font_scale.normal") },
+          { value: 1.25, label: $t("enums.font_scale.big") },
+          { value: 1.5, label: $t("enums.font_scale.huge") },
+          { value: 2.0, label: $t("enums.font_scale.enourmous") },
+        ],
+        optionLabel: "label",
+        optionValue: "value",
+      },
+      key: "compare_interval_type",
+      default: "normal",
+    },
   ];
 };
 var userPanelSchema = function () {
