@@ -3,15 +3,18 @@
     <template #start>
       <!-- <h3>{{ $t("menu.wasteheat_view") }}</h3> -->
 
-      <Button :label="$t('view.button.start_new_task')" :disabled="isTaskRunning" @click="showStartDialog" />
+      <Button :label="$t('view.button.start_new_task')" :disabled="isTaskRunning" @click="showStartDialog(true)" />
+      <Button :label="$t('view.button.start_new_task')" :disabled="isTaskRunning" @click="showStartDialog(false)" />
     </template>
     <template #end>
       <Button :disabled="isTaskRunning" icon="pi pi-list" @click="showRunLog" />
     </template>
   </Toolbar>
-
+  <div v-if="!isTaskRunning && isOldResult && !showPrevious" style="display: flex">
+    <Button :label="$t('view.button.show_previous_results')" style="margin: auto" @click="showPrevious = true" />
+  </div>
   <InformationPanelWrapper
-    v-if="informationPanel && !isTaskRunning"
+    v-if="informationPanel && !isTaskRunning && (!isOldResult || showPrevious)"
     ref="panel"
     :panel="informationPanel"
     :edit-mode="false"
@@ -21,7 +24,7 @@
   ></InformationPanelWrapper>
   <Card v-if="isTaskRunning" class="ren-page-content" style="width: 100%; overflow: unset">
     <template #title>
-      {{ $t("menu.wasteheat_view") }}
+      {{ $t("menu.waste_heat") }}
     </template>
     <template #content>
       <div @click="showRunDetails()">
@@ -37,13 +40,12 @@
   <div v-if="informationPanel && !isTaskRunning" style="margin-left: 1rem; margin-top: 2rem">
     <ParsedDateFilter :key="parsedFilterRefresh" :filter="panelFilter" />
   </div>
-  <Dialog v-model:visible="workflowRunStartDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <WorkflowRun :workflow="workflow" @on-start="onWorkflowStart" />
+  <Dialog v-model:visible="workflowRunStartDialog" :style="{ width: '40rem' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <WorkflowRun :workflow="workflow" :multi-steps="multiSteps" @on-start="onWorkflowStart" />
   </Dialog>
-  <Dialog v-model:visible="workflowRunDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+  <Dialog v-model:visible="workflowRunDetailsDialog" :style="{ width: '40rem' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <WorkflowRunDetails :workflow-run="workflowRun" @on-stop="onWorkflowStop" />
   </Dialog>
-
   <Dialog v-model:visible="runlogDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <PipelineRunLog :workflow="workflow" />
   </Dialog>
@@ -70,6 +72,7 @@ export default {
   emits: ["reload", "update:filters", "select"],
   data() {
     return {
+      showPrevious: false,
       runLogList: [],
       selectedWorkflowRunDetails: null,
       workflowRunDetailsDialog: false,
@@ -81,12 +84,16 @@ export default {
     isTaskRunning() {
       return this.workflowRun != null && this.workflowRun.start_time && (this.workflowRun.end_time == null || this.workflowRun.end_time < 0);
     },
+    isOldResult() {
+      return this.workflowRun != null && this.workflowRun.start_time && Date.now() - this.workflowRun.end_time > 24 * 3600 * 1000;
+    },
   },
   watch: {},
   created() {},
   async mounted() {},
   methods: {
-    showStartDialog() {
+    showStartDialog(multiSteps) {
+      this.multiSteps = multiSteps == null ? false : multiSteps;
       this.workflowRunStartDialog = true;
     },
 

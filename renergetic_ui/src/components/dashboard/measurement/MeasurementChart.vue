@@ -2,9 +2,6 @@
   <RenSpinner ref="spinner" :lock="true">
     <template #content>
       <!-- {{ annotations }} -->
-      <!-- <div style="max-width: 20rem; overflow: hidden; max-height: 15rem">{{ chartData }}</div> -->
-      <!-- {{ pdata["timeseries_labels"] }} -->
-      <!-- {{ width }} -->
       <!-- {{ options }}  
       {{ chartData }} -->
       <Chart

@@ -348,20 +348,6 @@ export default {
       this.runlogDialog = true;
     },
 
-    // async runTask(selectedExperiment) {
-    //   console.error("remove this option in the admin menu");
-    //   console.warn(selectedExperiment);
-    //   console.error(" TODO: check if task hasn't already been running");
-    //   await this.$refs.spinner_temp.run(
-    //     async () => {
-    //       await this.$ren.kubeflowApi.startExperiment(selectedExperiment.pipeline_id, {});
-    //     },
-    //     500,
-    //     5000,
-    //   );
-    //   alert("task scheduled");
-    //   this.reload();
-    // },
     async setPipelineVisibility(selectedExperiment, state) {
       await this.$refs.spinner.run(async () => {
         let res;

@@ -406,7 +406,7 @@ export default {
       return [
         {
           class: this.checkPath({ name: "WasteHeatView" }) ? "hl-menu" : "",
-          label: this.$t("menu.wasteheat_view"),
+          label: this.$t("menu.waste_heat"),
           icon: "pi pi-fw pi-sliders-h",
           command: () => {
             this.$router.push({ name: "WasteHeatView", path: "/management/wasteheat" });
