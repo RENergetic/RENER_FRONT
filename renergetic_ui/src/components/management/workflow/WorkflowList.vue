@@ -1,9 +1,9 @@
 <template>
+  <!-- v-model:selection="selectedWorkflow"
+    :selection-mode="'single'" -->
   <DataTable
     v-if="workflowList"
     v-model:expandedRows="expanded"
-    v-model:selection="selectedWorkflow"
-    :selection-mode="'single'"
     :filters="mFilters"
     :lazy="true"
     data-key="pipeline_id"
