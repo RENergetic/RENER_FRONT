@@ -238,6 +238,8 @@
   "set_default_hdr_pipeline": null,
   "show": "Mostrar",
   "show_details": "Mostrar detalles",
+  "simulation_params": null,
+  "simulation_settings": null,
   "start": null,
   "start_run_confirm": null,
   "start_run_confirm_body": null,

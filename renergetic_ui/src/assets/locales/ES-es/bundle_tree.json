@@ -301,7 +301,8 @@
     "tv_view_mode": "TV View",
     "unit_settings": "Configurar unidades",
     "users": "Usuarios",
-    "view": "Vista"
+    "view": "Vista",
+    "waste_heat": "Waste heat"
   },
   "message": {
     "anomaly": {
@@ -587,6 +588,8 @@
         "wasteheat_default_pipeline": "Wasteheat default pipeline",
         "wasteheat_pipeline": "Wasteheat Pipeline"
       },
+      "simulation_index": "Simulation: {0}",
+      "simulation_label": "Simulation label",
       "update_date": "Update date",
       "version": "Version",
       "visibility": "Visibility",
@@ -967,11 +970,13 @@
       "show_available_tile_icons": "Show all icons",
       "show_available_tile_properties": "Show available properties",
       "show_details": "Mostrar detalles",
+      "show_previous_results": "Show previous results",
       "sign_in": "Iniciar sesión",
       "start": "Start",
       "start_new_task": "Start new task",
       "stop": "Stop",
       "submit": "Enviar",
+      "top": "Top",
       "view_data": "Ver datos",
       "yes": "Sí"
     },
@@ -1177,6 +1182,8 @@
     "set_default_hdr_pipeline": "Set default hdr pipeline",
     "show": "Mostrar",
     "show_details": "Mostrar detalles",
+    "simulation_params": "Simulation parameters",
+    "simulation_settings": "Simulation configuration",
     "start": "Start",
     "start_run_confirm": "Start run",
     "start_run_confirm_body": "Do you want to start task {label}?",

@@ -17,6 +17,8 @@
     "wasteheat_default_pipeline": "Zadanie WasteHeat",
     "wasteheat_pipeline": "Domyślne zadanie WasteHeat"
   },
+  "simulation_index": "Symulacja: {0}",
+  "simulation_label": "Nazwa symulacji",
   "update_date": "Data ostatniej aktualizacji",
   "version": "Wersja",
   "visibility": "Widoczność",

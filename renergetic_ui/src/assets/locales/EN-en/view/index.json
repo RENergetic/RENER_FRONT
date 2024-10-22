@@ -238,6 +238,8 @@
   "set_default_hdr_pipeline": "Set default hdr pipeline",
   "show": "Show",
   "show_details": "Show details",
+  "simulation_params": "Simulation parameters",
+  "simulation_settings": "Simulation configuration",
   "start": "Start",
   "start_run_confirm": "Start run",
   "start_run_confirm_body": "Do you want to start task {label}?",

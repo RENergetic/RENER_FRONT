@@ -36,11 +36,13 @@
   "show_available_tile_icons": "Show all icons",
   "show_available_tile_properties": "Show available properties",
   "show_details": "Mostrar detalles",
+  "show_previous_results": null,
   "sign_in": "Iniciar sesión",
   "start": null,
   "start_new_task": null,
   "stop": null,
   "submit": "Enviar",
+  "top": null,
   "view_data": "Ver datos",
   "yes": "Sí"
 }
