@@ -3,14 +3,18 @@
     <template #content>
       <!-- v-model:selection="selectedWorkflow"
         :selection-mode="'single'" -->
+
+      <!-- <template #header>
+           </template> -->
+
+      <!-- filter-display="row" -->
       <DataTable
         v-if="workflowList"
         v-model:expandedRows="expanded"
-        :filters="mFilters"
         :lazy="true"
+        :filters="mFilters"
         data-key="pipeline_id"
         :value="workflowList"
-        filter-display="row"
         class="sticky-header"
         @filter="onFilter"
       >
@@ -146,10 +150,9 @@ export default {
     this.deferredEmitFilter = new DeferredFunction(this._emitFilter);
   },
   async mounted() {
-    if (this.measurementList != null && this.measurementList.length > 0) {
-      this.columns = await Object.keys(this.measurementList[0]);
-    }
-    this.tagsKeys = await this.$ren.managementApi.listTagKeys();
+    // if (this.workflowList != null && this.workflowList.length > 0) {
+    //   this.columns = await Object.keys(this.workflowList[0]);
+    // }
   },
   methods: {
     onWorkflowStop(state) {
