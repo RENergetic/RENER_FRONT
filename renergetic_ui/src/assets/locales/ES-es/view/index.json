@@ -213,6 +213,7 @@
   "rules_threshold_label": "Threshold",
   "rules_to_label": "To",
   "rules_true_label": "True",
+  "run_log": null,
   "save_asset_rules": "Guardar reglas de activo",
   "search": "Buscar",
   "select_asset_type": "Seleccionar tipo de activo",

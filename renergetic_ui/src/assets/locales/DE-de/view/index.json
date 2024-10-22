@@ -213,6 +213,7 @@
   "rules_threshold_label": null,
   "rules_to_label": null,
   "rules_true_label": null,
+  "run_log": null,
   "save_asset_rules": null,
   "search": null,
   "select_asset_type": null,

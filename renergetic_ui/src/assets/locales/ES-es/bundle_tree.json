@@ -606,6 +606,8 @@
     "workflowrun": {
       "end_time": "End time",
       "init_time": "Init time",
+      "label": "Label",
+      "name": "Name",
       "parameters": "Parameters",
       "pipeline": "Pipeline",
       "run_id": "Run id",
@@ -1157,6 +1159,7 @@
     "rules_threshold_label": "Threshold",
     "rules_to_label": "To",
     "rules_true_label": "True",
+    "run_log": "List of all runs",
     "save_asset_rules": "Guardar reglas de activo",
     "search": "Buscar",
     "select_asset_type": "Seleccionar tipo de activo",

@@ -606,6 +606,8 @@
     "workflowrun": {
       "end_time": "Czas zakończenia",
       "init_time": "Czas utworzenia",
+      "label": "Label",
+      "name": "Name",
       "parameters": "Parametry",
       "pipeline": "Pipeline",
       "run_id": "Id startu",
@@ -1157,6 +1159,7 @@
     "rules_threshold_label": "Threshold",
     "rules_to_label": "To",
     "rules_true_label": "True",
+    "run_log": "Historia zadań",
     "save_asset_rules": "Save asset rules",
     "search": "Search",
     "select_asset_type": "Select asset type",

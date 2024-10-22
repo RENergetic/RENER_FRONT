@@ -213,6 +213,7 @@
   "rules_threshold_label": "Threshold",
   "rules_to_label": "To",
   "rules_true_label": "True",
+  "run_log": "List of all runs",
   "save_asset_rules": "Save asset rules",
   "search": "Search",
   "select_asset_type": "Select asset type",
