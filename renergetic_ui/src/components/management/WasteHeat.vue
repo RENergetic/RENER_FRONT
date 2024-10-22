@@ -4,7 +4,7 @@
       <!-- <h3>{{ $t("menu.wasteheat_view") }}</h3> -->
 
       <Button :label="$t('view.button.start_new_task')" :disabled="isTaskRunning" @click="showStartDialog(true)" />
-      <Button :label="$t('view.button.start_new_task')" :disabled="isTaskRunning" @click="showStartDialog(false)" />
+      <!-- <Button :label="$t('view.button.start_new_task')" :disabled="isTaskRunning" @click="showStartDialog(false)" /> -->
     </template>
     <template #end>
       <Button :disabled="isTaskRunning" icon="pi pi-list" @click="showRunLog" />
@@ -13,8 +13,11 @@
   <div v-if="!isTaskRunning && isOldResult && !showPrevious" style="display: flex">
     <Button :label="$t('view.button.show_previous_results')" style="margin: auto" @click="showPrevious = true" />
   </div>
+  <div v-if="workflowRun && workflowRun.state === 'Error'" style="display: flex">
+    <WorkflowRunDetails :workflow-run="workflowRun" style="margin: auto; max-width: 60rem" @on-stop="onWorkflowStop" @click="showPrevious = true" />
+  </div>
   <InformationPanelWrapper
-    v-if="informationPanel && !isTaskRunning && (!isOldResult || showPrevious)"
+    v-else-if="informationPanel && !isTaskRunning && (!isOldResult || showPrevious)"
     ref="panel"
     :panel="informationPanel"
     :edit-mode="false"

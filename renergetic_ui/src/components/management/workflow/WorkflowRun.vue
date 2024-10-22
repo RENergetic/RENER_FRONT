@@ -47,13 +47,14 @@
                 </template>
               </StepperPanel>
 
-              <StepperPanel v-for="(item, idx) in runParametersList" :key="idx" :header="$t('model.workflow.simulation_index', [index])">
+              <StepperPanel v-for="(item, idx) in runParametersList" :key="idx" :header="$t('model.workflow.simulation_index', [idx + 1])">
                 <!-- <template #header="{ index, clickCallback }">
                   <div v-if="index == active" style="width: 100%">{{ $t("model.workflow.simulation_index", [index]) }}</div>
                   <div v-else style="width: 100%" @click="clickCallback">{{ $t("model.workflow.simulation_index", [index]) }}</div>
                 </template> -->
                 <template #content="{ prevCallback, nextCallback }">
                   <ren-input-wrapper />
+
                   <ren-input-wrapper v-if="multiSteps">
                     <template #content>
                       <div style="display: flex; width: 100%; justify-content: space-between">
@@ -165,10 +166,13 @@ export default {
     async start() {
       let experimentId = this.workflow.pipeline_id;
       let parameters = this.runParameters;
-      if (this.multiSteps) {
-        parameters.simulations_parameters = this.simulations_parameters;
+      if (this.multiSteps && this.runParametersList.length > 1) {
+        parameters.simulations_parameters = this.runParametersList;
       }
-      parameters.simulation_name = this.simulationName;
+      if (this.multiSteps && this.runParametersList.length == 1) {
+        parameters = this.runParametersList[0];
+      }
+      // parameters.simulation_name = this.simulationName;
       let res = null;
       await this.$refs.runspinner.run(
         async () => {
