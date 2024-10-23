@@ -3,6 +3,7 @@ import { QueryBuilder } from "./ren_api/wrapper_api";
 import { RenRoles } from "../model/Enums";
 import MeasurementUtils from "../utils/measurement_utils";
 import MeasurementDataUtils from "../utils/measurement_data_utils";
+import WorkflowUtils from "../utils/workflow_utils";
 class DeferredFunction {
   timeoutInstance = null;
   timeout = null;
@@ -58,6 +59,7 @@ class RenUtils {
   host = document.location.origin;
   constructor(vueInstance) {
     this.vueInstance = vueInstance;
+    this.workflow = WorkflowUtils;
     Object.assign(this, MeasurementUtils);
     Object.assign(this, MeasurementDataUtils);
   }

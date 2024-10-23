@@ -142,7 +142,7 @@ export default {
         await this.$refs.requestSpinner.run(async () => {
           runObj = await this.$ren.kubeflowApi.getWorkflowRun(pipeline.pipeline_id);
         });
-        if (runObj) {
+        if (this.$ren.utils.workflow.isTaskRunning(runObj)) {
           this.$emitter.emit("error", { message: this.$t("error.hdr_task_is_running") });
           return;
         }
