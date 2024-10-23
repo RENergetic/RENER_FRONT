@@ -11,10 +11,14 @@
         <Card v-if="currentRequest" :key="currentRequest" class="ren">
           <template #content>
             <ren-input-wrapper :text-label="'model.hdrrequest.date_from'">
-              <template #content> <Calendar v-model="currentRequest.dateFrom" :disabled="true" :show-time="true" /> </template>
+              <template #content>
+                <Calendar v-model="currentRequest.dateFrom" :disabled="true" :show-time="true" />
+              </template>
             </ren-input-wrapper>
             <ren-input-wrapper :text-label="'model.hdrrequest.date_to'">
-              <template #content> <Calendar v-model="currentRequest.dateTo" :disabled="true" :show-time="true" /> </template>
+              <template #content>
+                <Calendar v-model="currentRequest.dateTo" :disabled="true" :show-time="true" />
+              </template>
             </ren-input-wrapper>
             <ren-input v-model="currentRequest.msg" :disabled="true" />
           </template>
@@ -25,6 +29,12 @@
           <Button class="flex" :label="$t('view.button.set_hdr')" style="margin: 2.5%; flex-basis: 45%" @click="hdrRequestDialog = true" />
           <Button v-if="currentRequest" class="flex" :label="$t('view.button.run_hdr')" style="margin: 2.5%; flex-basis: 45%" @click="startConfirm" />
           <Button :label="$t('view.button.hdr_settings')" style="margin: 2.5%; flex-basis: 45%" @click="hdrSettingsDialog = true" />
+          <Button
+            :disabled="!$ren.utils.workflow.isTaskRunning(hdrWorkflowRun)"
+            :label="$t('model.workflow.current_run')"
+            style="margin: 2.5%; flex-basis: 45%"
+            @click="workflowRunDetailsDialog = true"
+          />
         </div>
       </template>
     </RenSpinner>
@@ -54,14 +64,18 @@
   <Dialog v-model:visible="hdrSettingsDialog" :style="{ width: '50vw' }" :maximizable="false" :modal="true" :dismissable-mask="true">
     <HDRSettings @update="onHDR" @cancel="hdrSettingsDialog = false" />
   </Dialog>
+  <Dialog v-model:visible="workflowRunDetailsDialog" :maximizable="true" :modal="true" :dismissable-mask="true">
+    <WorkflowRunDetails :workflow-run="hdrWorkflowRun" @on-stop="onWorkflowStop" @update="onRunUpdate" />
+  </Dialog>
 </template>
 <script>
 import HDRRequestForm from "@/components/management/demand/HDRRequestForm.vue";
 import HDRSettings from "@/components/management/demand/HDRSettings.vue";
+import WorkflowRunDetails from "@/components/management/workflow/WorkflowRunDetails.vue";
 import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 export default {
   name: "HDRRecomendationList",
-  components: { HDRRequestForm, HDRSettings, InfoIcon },
+  components: { HDRRequestForm, HDRSettings, InfoIcon, WorkflowRunDetails },
   props: {
     modelValue: {
       type: Object,
@@ -84,6 +98,8 @@ export default {
       currentRequest: this.hdrRequest,
       hdrRequestDialog: false,
       hdrSettingsDialog: false,
+      workflowRunDetailsDialog: false,
+      hdrWorkflowRun: null,
       selectedRecommendation: this.modelValue,
       selectedCompareWith: this.comparewith ? this.comparewith : this.recommendationList ? this.recommendationList[0] : null,
     };
@@ -107,6 +123,15 @@ export default {
       this.currentRequest = await this.getRequest();
       this.$emit("update:hdrRequest", this.currentRequest);
     }
+
+    // await this.$refs.requestSpinner.run(async () => {
+    await this.$ren.kubeflowApi.getDefaultHDRPipeline().then(async (pipeline) => {
+      if (!pipeline) {
+        this.$emitter.emit("info", { message: this.$t("error.default_hdr_pipeline_not_set") });
+        return;
+      }
+      this.hdrWorkflowRun = await this.$ren.kubeflowApi.getWorkflowRun(pipeline.pipeline_id);
+    });
   },
   methods: {
     async start(pipeline) {
@@ -120,8 +145,8 @@ export default {
         500,
         5000,
       );
-
       if (res && res.run_id) {
+        this.hdrWorkflowRun = res;
         this.$emitter.emit("information", { message: this.$t("information.worflowrun_start", { run_id: res.run_id }) });
         this.$emit("onStart", res);
       } else {
