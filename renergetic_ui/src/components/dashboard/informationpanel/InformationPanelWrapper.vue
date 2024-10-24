@@ -2,6 +2,7 @@
   <!-- {{ paneldata }} -->
   <!-- {{ $store.getters["view/panelAsset"](panel.id, assetId) }} -->
   <!-- ff{{ filter }}dd -->
+
   <RenSpinner ref="spinner" :lock="true" style="width: 100%; min-height: 15rem">
     <template #content>
       <InformationPanel

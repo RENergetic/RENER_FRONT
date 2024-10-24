@@ -92,7 +92,15 @@ body {
 
 .p-selectbutton.p-buttonset.p-component {
   background: none;
+
   /*remove background for empty space*/
+}
+.p-selectbutton.p-button-group.p-component {
+  display: flex;
+  flex-wrap: wrap;
+}
+.p-selectbutton > .p-button {
+  flex-basis: fit-content;
 }
 
 .p-button:hover {

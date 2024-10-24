@@ -1,5 +1,5 @@
 <template>
-  <div v-if="mPanel && mPanelData && loaded" id="panel-grid-stack" :key="reload" class="grid-stack">
+  <div v-if="mPanel && mPanelData && loaded" id="panel-grid-stack" :key="reload" class="grid-stack" :style="mStyle">
     <InformationTileGridWrapper
       v-for="(tile, index) in tiles"
       :key="tile.id"
@@ -112,6 +112,12 @@ export default {
     };
   },
   computed: {
+    mStyle: function () {
+      if (this.mSettings && this.mSettings["font_scale"]) {
+        return `font-size: ${this.mSettings["font_scale"]}em`;
+      }
+      return "";
+    },
     tiles: function () {
       // return this.panel != null ? this.panel.tiles : [];
       return this.mPanel != null ? this.mPanel.tiles : [];

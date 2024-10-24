@@ -13,6 +13,8 @@
   "disabled": null,
   "enabled": null,
   "feedback": "Feedback",
+  "font_scale": null,
+  "font_scale_description": null,
   "hidden": "Hidden",
   "home_page_items": null,
   "home_panel": null,

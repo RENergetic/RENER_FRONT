@@ -13,6 +13,8 @@
   "disabled": "Wyłączony",
   "enabled": "Włączony",
   "feedback": "Opinia",
+  "font_scale": null,
+  "font_scale_description": null,
   "hidden": "Ukryty",
   "home_page_items": "Widoczność elementów na stronie domowej",
   "home_panel": "Domyślny panel na stronei domowej",

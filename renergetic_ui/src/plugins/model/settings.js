@@ -171,7 +171,7 @@ var panelSchema = function () {
         optionLabel: "label",
         optionValue: "value",
       },
-      key: "compare_interval_type",
+      key: "font_scale",
       default: "normal",
     },
   ];

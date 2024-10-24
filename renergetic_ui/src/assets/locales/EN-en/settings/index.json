@@ -13,6 +13,8 @@
   "disabled": "Disabled",
   "enabled": "Enabled",
   "feedback": "Feedback",
+  "font_scale": "Font scale",
+  "font_scale_description": "Adjust dashboard's font",
   "hidden": "Hidden",
   "home_page_items": "Home page items visibility",
   "home_panel": "Default panel on the homepage",
