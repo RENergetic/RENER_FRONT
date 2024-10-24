@@ -21,6 +21,9 @@ export default {
           key += "_none";
       }
     }
+    if (measurement.typeunit == "any" || measurement.typeunit == "%" || measurement.typeunit == "ratio" || measurement.typeunit == "0-1") {
+      return (key += `_${measurement.id}`);
+    }
     // console.debug(measurement.id + " " + key);
     return key;
   },
@@ -270,11 +273,12 @@ export default {
   getConvertedValue(measurement, data, tileSettings) {
     //TODO: make it comfigurable in tile / args prediction & aggregation func
     try {
-      if (tileSettings.panel.relativeValues && measurement.type.base_unit != "%") {
+      if (tileSettings.panel.relativeValues && measurement.type.unit != "%") {
         return (data.current[measurement.aggregation_function][measurement.id] / data.max[measurement.aggregation_function][measurement.id]) * 100.0;
       }
       return data.current[measurement.aggregation_function][measurement.id];
     } catch (e) {
+      console.error(`Conversion failed for ${measurement.id} `);
       return null;
     }
   },
