@@ -179,10 +179,15 @@ export default {
     // },
 
     submit() {
+      //TODO: sprawdzic czy typ ustawia sie bez jednostki
       if (this.mModel.unit != null)
         this.mModel.type = {
           id: this.mUnits.find((it) => it.unit == this.mModel.unit).id,
           unit: this.mModel.unit,
+          physical_name: this.mModel.physical_type,
+        };
+      else if (this.mModel.physical_type != null)
+        this.mModel.type = {
           physical_name: this.mModel.physical_type,
         };
       this.mModel.tempId = this.$ren.utils.currentTimestamp() + Math.round(Math.random() * this.$ren.utils.currentTimestamp());

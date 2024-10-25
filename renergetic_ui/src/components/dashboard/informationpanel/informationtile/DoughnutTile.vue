@@ -7,9 +7,6 @@
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
 
     <div class="flex flex-grow-1 flex-column align-items-center justify-content-center" style="position: relative">
-      <div v-if="loaded" class="flex flex-none flex-column align-items-center justify-content-center">
-        <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
-      </div>
       <span
         v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
         id="tileicon"
@@ -17,6 +14,9 @@
       >
         <font-awesome-icon :icon="mSettings.tile.icon" />
       </span>
+      <div v-if="loaded" class="flex flex-none flex-column align-items-center justify-content-center">
+        <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
+      </div>
     </div>
   </div>
 </template>

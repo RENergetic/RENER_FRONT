@@ -96,10 +96,6 @@
           <ul>
             <li v-for="(m, index) in mModel.measurements" :key="`${m.id}_${index}`">
               <div>
-                <!-- <span v-if="m.aggregation_function">{{ m.id }} ({{ $t("enums.measurement_aggregation." + m.aggregation_function) }})</span>
-              <span v-else>{{ m.id }} </span> -->
-                <!-- <span>{{ m.id }} </span> -->
-
                 <ren-input v-if="m.id" :model-value="$t('model.measurement.id') + ': ' + m.id" disabled :read-only="true" />
                 <ren-input v-else :model-value="$t('model.measurement.temp_id') + ': ' + m.tempId" disabled :read-only="true" />
                 <span style="width: 15rem">
@@ -145,6 +141,32 @@
                   @click="showMeasurementDetails(m)"
                 />
                 <!-- $t('view.view_json') click more details -->
+              </div>
+            </li>
+          </ul>
+          <h3 v-if="mModel._measurements">{{ $t("view.inferred_measurements") }}:</h3>
+          <ul v-if="mModel._measurements">
+            <li v-for="(m, index) in mModel._measurements" :key="`_${m.id}_${index}`">
+              <div>
+                <ren-input :model-value="$t('model.measurement.id') + ': ' + m.id" disabled :read-only="true" />
+                <span style="width: 15rem">
+                  {{ $t("model.measurement.measurement_aggregation") + ": " + $t("enums.measurement_aggregation." + m.aggregation_function) }}
+                </span>
+                <Button
+                  :key="m.tooltip"
+                  v-tooltip="m.tooltip"
+                  icon="pi pi-question-circle"
+                  class="p-button-rounded"
+                  @mouseover="downloadMeasurementDetails(m)"
+                  @click="showMeasurement(m)"
+                />
+                <Button
+                  v-if="m.id != null"
+                  v-tooltip="$t('view.show_details')"
+                  icon="pi pi-cog"
+                  class="p-button-rounded"
+                  @click="showMeasurementDetails(m)"
+                />
               </div>
             </li>
           </ul>
@@ -418,6 +440,7 @@ export default {
     },
     addMeasurementTemplate(mt) {
       mt.aggregation_function = MeasurementAggregation.last;
+      mt._inferred = false;
       this.mModel.measurements.push(mt);
       this.$emit("update:modelValue", this.mModel);
       this.addMeasurementTemplateDialog = false;
@@ -426,6 +449,7 @@ export default {
       var exists = this.mModel.measurements.filter((it) => it.id == m.id).length > 0;
       if (!exists) {
         m.aggregation_function = MeasurementAggregation.last;
+        m._inferred = false;
         this.mModel.measurements.push(m);
         this.$emit("update:modelValue", this.mModel);
       }

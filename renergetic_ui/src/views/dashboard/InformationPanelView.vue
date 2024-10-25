@@ -237,6 +237,12 @@ export default {
   },
 
   methods: {
+    updateFilter() {
+      this.parsedFilterRefresh = !this.parsedFilterRefresh;
+      if (this.slideshow) {
+        this.slideshow.reset();
+      }
+    },
     exportPanel(template) {
       let panelStructure = getCleanPanelStructure(this.panel, template);
       let filename = template ? `template_${this.panel.name}` : `${this.panel.id}_${this.panel.name}`;

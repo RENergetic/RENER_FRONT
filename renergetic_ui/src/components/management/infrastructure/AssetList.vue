@@ -168,7 +168,7 @@
         </span>
       </template>
       <template #header>
-        <span v-tooltip="$t('model.child_description')">{{ $t("model.asset.child") }}</span>
+        <span v-tooltip="$t('model.asset.child_description')">{{ $t("model.asset.child") }}</span>
       </template>
     </Column>
 

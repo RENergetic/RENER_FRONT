@@ -38,6 +38,14 @@
       "heat": "Heat",
       "none": "N/A"
     },
+    "font_scale": {
+      "big": "Big (130%)",
+      "enourmous": "Enourmous (200%)",
+      "huge": "Huge  (150%)",
+      "normal": "Normal (100%)",
+      "small": "Small (90%)",
+      "tiny": "Tiny (80%)"
+    },
     "heatmap_type": {
       "default": "Normal",
       "osm": "OpenStreetMap"
@@ -293,7 +301,8 @@
     "tv_view_mode": "TV View",
     "unit_settings": "Configurar unidades",
     "users": "Usuarios",
-    "view": "Vista"
+    "view": "Vista",
+    "waste_heat": "Waste heat"
   },
   "message": {
     "anomaly": {
@@ -406,6 +415,8 @@
         "properties": {
           "": "_description",
           "_description": "_description",
+          "aggregate_values": "Aggregate values",
+          "aggregate_values_description": "Aggregate values related with all assigned measurements ",
           "background": "Tile's wrapper background",
           "background_description": "Tile's default background, 'none'(inherits from panel) if not defined ",
           "background_mask": "Tile's background mask",
@@ -442,6 +453,10 @@
           "measurement_list_description": "Set measurements list visibility e.g. in knob tile or doughnut tiles",
           "qrcode_content": "QR code text content",
           "qrcode_content_description": "Text which will be encoded into QR code graphics",
+          "tag_key": "Measurement tag's key",
+          "tag_key_description": "Filter dynamic measurements with provided tag",
+          "tag_value": "Measurement tag's key",
+          "tag_value_description": "Filter dynamic measurements with provided tag",
           "template": "Tile's template",
           "template_description": "Use tile's text predefined template to present the value",
           "title_color": "Tile's title color",
@@ -577,6 +592,8 @@
         "wasteheat_default_pipeline": "Wasteheat default pipeline",
         "wasteheat_pipeline": "Wasteheat Pipeline"
       },
+      "simulation_index": "Simulation: {0}",
+      "simulation_label": "Simulation label",
       "update_date": "Update date",
       "version": "Version",
       "visibility": "Visibility",
@@ -593,6 +610,8 @@
     "workflowrun": {
       "end_time": "End time",
       "init_time": "Init time",
+      "label": "Label",
+      "name": "Name",
       "parameters": "Parameters",
       "pipeline": "Pipeline",
       "run_id": "Run id",
@@ -740,6 +759,8 @@
     },
     "enabled": "Enabled",
     "feedback": "Feedback",
+    "font_scale": "Font scale",
+    "font_scale_description": "Adjust dashboard's font",
     "hidden": "Hidden",
     "home_page_items": "Home page items visibility",
     "home_panel": "Default panel on the homepage",
@@ -810,6 +831,8 @@
     "panel_qr_code_size_description": "Size of the QR code picture in pixels",
     "panel_reload_time_ms": "Data reload interval [ms]",
     "panel_reload_time_ms_description": "Data reload interval [ms]",
+    "panel_tag_key": "Tag key",
+    "panel_tag_value": "Tag value",
     "prediction_interval": "Prediction interval",
     "recommendations": "Recommendations",
     "relative_values": "Use relatives values",
@@ -955,11 +978,13 @@
       "show_available_tile_icons": "Show all icons",
       "show_available_tile_properties": "Show available properties",
       "show_details": "Mostrar detalles",
+      "show_previous_results": "Show previous results",
       "sign_in": "Iniciar sesión",
       "start": "Start",
       "start_new_task": "Start new task",
       "stop": "Stop",
       "submit": "Enviar",
+      "top": "Top",
       "view_data": "Ver datos",
       "yes": "Sí"
     },
@@ -1037,6 +1062,7 @@
     "home_settings": "Configuración de inicio",
     "ignore_measurements_ids": "Ignore measurement IDs and infer them",
     "infer_measurements": "Inferir IDs de medidas",
+    "inferred_measurements": "Inferred measurements",
     "information_panel_form": "Formulario de panel de información",
     "information_panel_list": "Lista de paneles de información",
     "information_panel_props": "Information panel's properties",
@@ -1139,6 +1165,7 @@
     "rules_threshold_label": "Threshold",
     "rules_to_label": "To",
     "rules_true_label": "True",
+    "run_log": "List of all runs",
     "save_asset_rules": "Guardar reglas de activo",
     "search": "Buscar",
     "select_asset_type": "Seleccionar tipo de activo",
@@ -1164,6 +1191,8 @@
     "set_default_hdr_pipeline": "Set default hdr pipeline",
     "show": "Mostrar",
     "show_details": "Mostrar detalles",
+    "simulation_params": "Simulation parameters",
+    "simulation_settings": "Simulation configuration",
     "start": "Start",
     "start_run_confirm": "Start run",
     "start_run_confirm_body": "Do you want to start task {label}?",

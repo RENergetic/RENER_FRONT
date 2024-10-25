@@ -7,14 +7,27 @@
         <ren-input v-model="endTime" :text-label="'model.workflowrun.end_time'" :read-only="true" :disabled="endTime == null" />
         <ren-input v-model="state" :text-label="'model.workflowrun.state'" :read-only="true" :disabled="state == null" />
         <h3 v-if="mModel.parameters && Object.keys(mModel.parameters).length > 0">{{ $t("model.workflowrun.parameters") }}:</h3>
-        <ren-input
-          v-for="key in Object.keys(mModel.parameters)"
-          :key="key"
-          v-model="mModel.parameters[key]"
-          :text-label="$t('view.workflowrun_param_format', { parameter: key })"
-          :read-only="true"
-        />
-
+        <div v-if="!mModel.parameters.simulations_parameters">
+          <ren-input
+            v-for="key in Object.keys(mModel.parameters)"
+            :key="key"
+            v-model="mModel.parameters[key]"
+            :text-label="$t('view.workflowrun_param_format', { parameter: key })"
+            :read-only="true"
+          />
+        </div>
+        <div v-else>
+          <div v-for="(item, idx) in mModel.parameters.simulations_parameters" :key="`simulation_${idx}`">
+            <h3>{{ $t("model.workflow.simulation_index", [idx]) }}</h3>
+            <ren-input
+              v-for="key in Object.keys(item)"
+              :key="key"
+              v-model="mModel.parameters[key]"
+              :text-label="$t('view.workflowrun_param_format', { parameter: key })"
+              :read-only="true"
+            />
+          </div>
+        </div>
         <ren-input-wrapper v-if="workflowRun.start_time > 0 && !workflowRun.end_time">
           <template #content>
             <Button v-tooltip="$t('view.stop')" class="ren" icon="pi pi-stop" :label="$t('view.button.stop')" @click="stopConfirm" />

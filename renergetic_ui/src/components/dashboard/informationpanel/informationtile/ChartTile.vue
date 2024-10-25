@@ -45,7 +45,6 @@ export default {
   data() {
     return {
       mSettings: this.settings,
-      datasets: [],
       mStyle: "max-width: 100rem;max-height:60rem; margin: auto;height:100%;width:100%",
       width: this.settings.panel.cellWidth * this.tile.layout.w * 0.95,
       height: this.settings.panel.cellHeight * this.tile.layout.h * 0.75,

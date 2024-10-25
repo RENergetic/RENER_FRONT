@@ -11,6 +11,9 @@
                 {{ slotProps.data.pipeline.pipeline_id }}
               </template>
             </Column>
+
+            <Column field="name" :header="$t('model.workflowrun.name')" />
+
             <Column field="start_time" :header="$t('model.workflowrun.start_time')">
               <template #body="slotProps">
                 {{ $ren.utils.dateString(slotProps.data.start_time) }}

@@ -17,6 +17,8 @@
     "wasteheat_default_pipeline": "Wasteheat default pipeline",
     "wasteheat_pipeline": "Wasteheat Pipeline"
   },
+  "simulation_index": "Simulation: {0}",
+  "simulation_label": "Simulation label",
   "update_date": "Update date",
   "version": "Version",
   "visibility": "Visibility",

@@ -122,6 +122,20 @@ var panelSchema = function () {
       defaultValue: 200,
     },
     {
+      label: $t("settings.panel_tag_key"),
+      description: $t("settings.panel_tag_key_description"),
+      type: String,
+      key: "tag_key",
+      defaultValue: null,
+    },
+    {
+      label: $t("settings.panel_tag_value"),
+      description: $t("settings.panel_tag_value_description"),
+      type: String,
+      key: "tag_value",
+      defaultValue: null,
+    },
+    {
       label: $t(`settings.compare_interval_type`),
       description: $t(`settings.compare_interval_type_description`),
       type: Array,
@@ -139,6 +153,26 @@ var panelSchema = function () {
       },
       key: "compare_interval_type",
       default: "none",
+    },
+
+    {
+      label: $t(`settings.font_scale`),
+      description: $t(`settings.font_scale_description`),
+      type: Array,
+      ext: {
+        options: [
+          { value: 0.8, label: $t("enums.font_scale.tiny") },
+          { value: 0.9, label: $t("enums.font_scale.small") },
+          { value: 1.0, label: $t("enums.font_scale.normal") },
+          { value: 1.25, label: $t("enums.font_scale.big") },
+          { value: 1.5, label: $t("enums.font_scale.huge") },
+          { value: 2.0, label: $t("enums.font_scale.enourmous") },
+        ],
+        optionLabel: "label",
+        optionValue: "value",
+      },
+      key: "font_scale",
+      default: "normal",
     },
   ];
 };

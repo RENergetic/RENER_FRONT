@@ -2,11 +2,11 @@
   <!-- workflows: {{ workflowList }} -->
   <RenSpinner ref="spinner_temp" :lock="true" style="width: 100%">
     <template #content>
+      <!-- v-model:selection="selectedWorkflow"
+        :selection-mode="'single'" -->
       <DataTable
         v-if="workflowList"
         v-model:expandedRows="expanded"
-        v-model:selection="selectedWorkflow"
-        :selection-mode="'single'"
         :filters="mFilters"
         :lazy="true"
         data-key="pipeline_id"

@@ -1,6 +1,8 @@
 {
   "end_time": "Czas zakończenia",
   "init_time": "Czas utworzenia",
+  "label": "Etykieta",
+  "name": "Nazwa",
   "parameters": "Parametry",
   "pipeline": "Pipeline",
   "run_id": "Id startu",

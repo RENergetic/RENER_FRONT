@@ -1,5 +1,5 @@
 <template>
-  <div v-if="mPanel && mPanelData && loaded" id="panel-grid-stack" :key="reload" class="grid-stack">
+  <div v-if="mPanel && mPanelData && loaded" id="panel-grid-stack" :key="reload" class="grid-stack" :style="mStyle">
     <InformationTileGridWrapper
       v-for="(tile, index) in tiles"
       :key="tile.id"
@@ -112,6 +112,12 @@ export default {
     };
   },
   computed: {
+    mStyle: function () {
+      if (this.mSettings && this.mSettings["font_scale"]) {
+        return `font-size: ${this.mSettings["font_scale"]}em`;
+      }
+      return "";
+    },
     tiles: function () {
       // return this.panel != null ? this.panel.tiles : [];
       return this.mPanel != null ? this.mPanel.tiles : [];
@@ -170,9 +176,19 @@ export default {
   },
   methods: {
     editTile(tile, index) {
-      this.selectedTile = tile;
-      this.selectedTileIndex = index;
-      this.tileEditDialog = true;
+      if (this.mPanel._tiles && this.mPanel._tiles[index] && tile.id == this.mPanel._tiles[index].id) {
+        //dont update inferred measurements
+        let t = JSON.parse(JSON.stringify(tile));
+
+        t.measurements = this.mPanel._tiles[index].measurements; //replace with original templates/queries
+        t._measurements = tile.measurements; //inferred measurements
+        this.selectedTile = t;
+        this.selectedTileIndex = index;
+        this.tileEditDialog = true;
+      } else {
+        console.error("panel tile order has changed: " + JSON.stringify(tile) + " " + index);
+        console.debug(this.mPanel);
+      }
     },
     onTileEdit(tile) {
       this.selectedTile = tile;

@@ -1,7 +1,7 @@
 {
   "add": "Dodaj",
-  "add_area": "Add area",
-  "add_category_connection": "Add category connection",
+  "add_area": null,
+  "add_category_connection": null,
   "add_connection": "Add connection",
   "add_measurement": "Add measurement",
   "add_measurement_template": "Zdefiniuj dane dynamiczne",
@@ -36,11 +36,13 @@
   "show_available_tile_icons": "Dostępne ikony",
   "show_available_tile_properties": "Dostępne własciwości",
   "show_details": "Show details",
+  "show_previous_results": "Pokaż poprzednie rezultaty",
   "sign_in": "Sign In",
   "start": "Start",
   "start_new_task": "Zacznij nowe zadanie",
   "stop": "Stop",
   "submit": "Wyślij",
+  "top": "Do góry",
   "view_data": "View data",
   "yes": "Tak"
 }

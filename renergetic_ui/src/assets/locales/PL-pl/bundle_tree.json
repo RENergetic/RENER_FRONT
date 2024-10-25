@@ -38,6 +38,14 @@
       "heat": "Ciepło",
       "none": "Inne"
     },
+    "font_scale": {
+      "big": "Big (130%)",
+      "enourmous": "Enourmous (200%)",
+      "huge": "Huge  (150%)",
+      "normal": "Normal (100%)",
+      "small": "Small (90%)",
+      "tiny": "Tiny (80%)"
+    },
     "heatmap_type": {
       "default": "Normal",
       "osm": "OpenStreeMap"
@@ -293,7 +301,8 @@
     "tv_view_mode": "Widok prezentacji",
     "unit_settings": "Ustawienia jednostek",
     "users": "Użytkownicy",
-    "view": "Widok"
+    "view": "Widok",
+    "waste_heat": "Odzysk ciepła odpadowego"
   },
   "message": {
     "anomaly": {
@@ -321,7 +330,7 @@
         "no_assets_found": "No assets found for this category."
       },
       "child": "Sub assets",
-      "child_description": "Assets which belong to the current one",
+      "child_description": "Obiekt podrzędny",
       "connection_type": "Connection type",
       "description": "Description",
       "geo_location": "Geo location",
@@ -331,7 +340,7 @@
       "name": "Name",
       "owner": "Owner",
       "parent": "Parent",
-      "parent_description": "Asset to which current asset belongs to",
+      "parent_description": "Obiekt nadrzędny",
       "type": {
         "id": "Id",
         "label": "Etykieta",
@@ -390,14 +399,14 @@
       "recommendations": "Recommendations"
     },
     "information_panel": {
-      "featured": "Visibility",
+      "featured": "Widowczność",
       "id": "Id",
-      "is_template": "Is template",
+      "is_template": "Szablon",
       "is_template_new_panel": "Is panel a template for private dashboards view (Can't be changed later)",
       "label": "Etykieta",
       "name": "Nazwa",
       "priority": "Priorytet",
-      "structure": "Structure",
+      "structure": "Struktura",
       "tile": {
         "h": "h",
         "id": "Id",
@@ -406,6 +415,8 @@
         "properties": {
           "": "_description",
           "_description": "_description",
+          "aggregate_values": "Agreguj wartości",
+          "aggregate_values_description": "Agreguj wartości",
           "background": "Tile's wrapper background",
           "background_description": "Tile's default background, 'none'(inherits from panel) if not defined ",
           "background_mask": "Tile's background mask",
@@ -442,6 +453,10 @@
           "measurement_list_description": "Set measurements list visibility e.g. in knob tile or doughnut tiles",
           "qrcode_content": "QR code text content",
           "qrcode_content_description": "Text which will be encoded into QR code graphics",
+          "tag_key": "Measurement tag's key",
+          "tag_key_description": "Filter dynamic measurements with provided tag",
+          "tag_value": "Measurement tag's key",
+          "tag_value_description": "Filter dynamic measurements with provided tag",
           "template": "Tile's template",
           "template_description": "Use tile's text predefined template to present the value",
           "title_color": "Tile's title color",
@@ -577,6 +592,8 @@
         "wasteheat_default_pipeline": "Zadanie WasteHeat",
         "wasteheat_pipeline": "Domyślne zadanie WasteHeat"
       },
+      "simulation_index": "Symulacja: {0}",
+      "simulation_label": "Nazwa symulacji",
       "update_date": "Data ostatniej aktualizacji",
       "version": "Wersja",
       "visibility": "Widoczność",
@@ -593,6 +610,8 @@
     "workflowrun": {
       "end_time": "Czas zakończenia",
       "init_time": "Czas utworzenia",
+      "label": "Etykieta",
+      "name": "Nazwa",
       "parameters": "Parametry",
       "pipeline": "Pipeline",
       "run_id": "Id startu",
@@ -740,6 +759,8 @@
     },
     "enabled": "Włączony",
     "feedback": "Opinia",
+    "font_scale": "Font scale",
+    "font_scale_description": "Adjust dashboard's font",
     "hidden": "Ukryty",
     "home_page_items": "Widoczność elementów na stronie domowej",
     "home_panel": "Domyślny panel na stronei domowej",
@@ -810,6 +831,8 @@
     "panel_qr_code_size_description": "Rozmiar kodu QR w pixelach",
     "panel_reload_time_ms": "Czas na odświeżenie [ms]",
     "panel_reload_time_ms_description": "Czas oczekiwania na odświeżenie widoku [ms]",
+    "panel_tag_key": "Nazwa tagu",
+    "panel_tag_value": "Wartość tagu",
     "prediction_interval": "Okres przewidywania",
     "recommendations": "Rekomendacje",
     "relative_values": "Pokazuj wartości względne",
@@ -880,8 +903,8 @@
     "url": "'{model}' is not valid url."
   },
   "view": {
-    "abstract_meter_administration": "Abstract meter administration",
-    "abstract_meter_list": "Abstract meter list",
+    "abstract_meter_administration": "Zarządzanie licznikami wirtualnymi",
+    "abstract_meter_list": "Lista liczników wirtualnych",
     "activated_condition": "Activated condition",
     "add_asset": "Dodaj obiekt",
     "add_asset_connection": "Połącz obiekty",
@@ -905,7 +928,7 @@
     "asset_has_subassets": "Obiekt zawiera w sobie inne obiekty",
     "asset_list": "Lista obiektów",
     "asset_measurement_assign": "Przypisz szereg czasowy do obiektu",
-    "asset_measurement_assign_confirm": "Do you want to assign measurement to the asset {label}",
+    "asset_measurement_assign_confirm": "Czy chcesz przypisać szereg do obiektu: {label}",
     "asset_measurement_revoke": "Revoke measurement from the asset",
     "asset_measurement_revoke_confirm": "Do you want to revoke measurement from asset {label}",
     "asset_not_selected": "Obiekt nie został wybrany",
@@ -955,11 +978,13 @@
       "show_available_tile_icons": "Dostępne ikony",
       "show_available_tile_properties": "Dostępne własciwości",
       "show_details": "Show details",
+      "show_previous_results": "Pokaż poprzednie rezultaty",
       "sign_in": "Sign In",
       "start": "Start",
       "start_new_task": "Zacznij nowe zadanie",
       "stop": "Stop",
       "submit": "Wyślij",
+      "top": "Do góry",
       "view_data": "View data",
       "yes": "Tak"
     },
@@ -1037,6 +1062,7 @@
     "home_settings": "Ustawienia strony domowej",
     "ignore_measurements_ids": "Uzupełnij identyfikatory szeregów czasowych",
     "infer_measurements": "Uzupełnij brakujące identyfikatory szeregów czasowych",
+    "inferred_measurements": "Lista prszeregów czaowych",
     "information_panel_form": "Definicja widoku",
     "information_panel_list": "Lista widoków",
     "information_panel_props": "Własciwości widoku",
@@ -1139,6 +1165,7 @@
     "rules_threshold_label": "Threshold",
     "rules_to_label": "To",
     "rules_true_label": "True",
+    "run_log": "Historia zadań",
     "save_asset_rules": "Save asset rules",
     "search": "Search",
     "select_asset_type": "Select asset type",
@@ -1164,6 +1191,8 @@
     "set_default_hdr_pipeline": "Ustaw domyślne zadanie ",
     "show": "Show",
     "show_details": "Show details",
+    "simulation_params": "Paramtry symulacji",
+    "simulation_settings": "Ustawienia symulacji",
     "start": "Start",
     "start_run_confirm": "Start eksperymentu",
     "start_run_confirm_body": "Czy chcesz rozpocząć eksperyment: {label}?",
@@ -1185,8 +1214,8 @@
     "user_role_add_confirm": "Do you want do add role {role} to {username}?",
     "user_role_revoke": "Revoke role",
     "user_role_revoke_confirm": "Do you want do revoke role {role} from {username}?",
-    "value_decreased_by": "Wartość zmniejszyła się o",
-    "value_increased_by": "Wartość wzrodła o",
+    "value_decreased_by": "Wartość zmniejszyła się o {value}",
+    "value_increased_by": "Wartość wzrosła o {value}",
     "value_not_changed": "Wartość nie zmieniła się",
     "view_asset_children": "Show sub assets",
     "view_asset_measurements": "Pokaż dostępne dane",

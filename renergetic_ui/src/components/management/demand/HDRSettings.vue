@@ -117,6 +117,28 @@ export default {
       await this.loadMeasurements(asset);
     },
     async setDefaultHDRPipeline(pipeline) {
+      let defaultPipeline = null;
+      let isTaskRunning = false;
+      await this.$refs.spinner.run(async () => {
+        defaultPipeline = await this.$ren.kubeflowApi.getDefaultHDRPipeline();
+      });
+      if (defaultPipeline) {
+        await this.$refs.spinner.run(async () => {
+          isTaskRunning = await this.$ren.kubeflowApi.getWorkflowRun(defaultPipeline.pipeline_id).then(async (wokflowRun) => {
+            return this.$ren.utils.workflow.isTaskRunning(wokflowRun);
+          });
+        });
+      }
+      if (!isTaskRunning)
+        await this.$refs.spinner.run(async () => {
+          isTaskRunning = await this.$ren.kubeflowApi.getWorkflowRun(pipeline.pipeline_id).then(async (wokflowRun) => {
+            return this.$ren.utils.workflow.isTaskRunning(wokflowRun);
+          });
+        });
+      if (isTaskRunning) {
+        this.$emitter.emit("error", { message: this.$t("error.hdr_task_is_running") });
+        return;
+      }
       // var hdrEnabled =
       //   pipeline.properties && pipeline.properties[this.HDR_KUBEFLOW_PIPELINE] && pipeline.properties[this.HDR_KUBEFLOW_PIPELINE].value == "true";
       // if (!hdrEnabled) {

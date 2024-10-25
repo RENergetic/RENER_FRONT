@@ -62,6 +62,20 @@ body {
   color: $ren-primary-font-color;
   min-height: 2.5rem;
 }
+.p-selectbutton .p-button { 
+  background-color: $ren-secondary-color;
+  background:$ren-secondary-bg;
+  color: $ren-secondary-font-color;
+  border-color: $ren-secondary-border-color-tr; 
+}
+.p-selectbutton .p-button:hover {  
+ opacity: 0.7;
+}
+.ren .ren-inputwrapper .p-selectbutton.p-button-group , 
+ .p-selectbutton.p-button-group 
+{
+  width: fit-content;
+}
 
 .grid {
   margin-left: 0.25rem;
@@ -78,7 +92,15 @@ body {
 
 .p-selectbutton.p-buttonset.p-component {
   background: none;
+
   /*remove background for empty space*/
+}
+.p-selectbutton.p-button-group.p-component {
+  display: flex;
+  flex-wrap: wrap;
+}
+.p-selectbutton > .p-button {
+  flex-basis: fit-content;
 }
 
 .p-button:hover {
@@ -86,7 +108,8 @@ body {
 }
 
 .p-button.p-button-text {
-  color: $ren-primary-color;
+  // color: $ren-primary-color;
+  color:$ren-primary-font-color
 }
 
 .ren-pointer {
@@ -213,7 +236,10 @@ body {
     background-color: $ren-state-color-error;
   }
 
-  label.state.error {   color: $ren-state-color-error;  background-color: inherit}
+  label.state.error {
+    color: $ren-state-color-error;
+    background-color: inherit
+  }
 
   .state.warning,
   .cell.warning,
@@ -240,6 +266,16 @@ body {
     .p-panelmenu-header-content {
       background-color: $ren-primary-color-tr;
     }
+  }
+
+  .p-stepper-header.p-highlight {
+    background-color: $ren-primary-color-tr;
+
+  }
+
+  .p-stepper .p-stepper-header button {
+    background: none; 
+    width: 100%;
   }
 
   .state.unknown,
@@ -363,6 +399,9 @@ body {
   }
 
   .sticky-header {
+    .p-datatable-wrapper {
+      overflow: initial !important;
+    }
     .p-datatable-header {
       position: sticky;
       top: 0;
@@ -371,7 +410,7 @@ body {
 
     .p-datatable-header~.p-datatable-wrapper .p-datatable-thead {
       position: sticky;
-      top: 4rem;
+      top: 1rem;
       z-index: 4000;
     }
   }
@@ -615,11 +654,14 @@ body {
   }
 }
 
-.bottom { 
+.bottom {
   bottom: 0;
 }
-.top { 
+
+.top {
   top: 0;
 }
+
+ 
 
 @import "./ren-components.scss";

@@ -2,6 +2,7 @@
   <!-- {{ paneldata }} -->
   <!-- {{ $store.getters["view/panelAsset"](panel.id, assetId) }} -->
   <!-- ff{{ filter }}dd -->
+
   <RenSpinner ref="spinner" :lock="true" style="width: 100%; min-height: 15rem">
     <template #content>
       <InformationPanel
@@ -175,7 +176,25 @@ export default {
   },
   methods: {
     onTileUpdate(ev) {
-      this.$emit("update:tile", ev);
+      var idx = ev.index;
+      if (this.mPanel._tiles && ev.tile.id == this.mPanel._tiles[idx].id) {
+        // alert(ev.tile.id == this.mPanel._tiles[idx].id);
+        //dont update inferred measurements
+        let t = JSON.parse(JSON.stringify(ev.tile));
+        t.measurements = this.mPanel._tiles[idx].measurements; //replace with original templates/queries
+        for (var m of ev.tile.measurements) {
+          if (m._inferred == false) {
+            t.measurements.push(m);
+          }
+        }
+        ev.tile = t;
+        // console.error(ev);
+        this.$emit("update:tile", ev);
+      } else {
+        console.error("panel tile order has changed: " + JSON.stringify(ev));
+        console.debug(this.mPanel);
+      }
+      // this.$emit("update:tile", ev);
     },
     onTimeseriesUpdate(evt) {
       console.error("onTimeseriesUpdate TODO:");
@@ -194,8 +213,15 @@ export default {
           console.info("wait for panel data: " + this.panel.id + " " + this.panel.is_template);
           await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, this.mFilter).then(async (resp) => {
             console.debug(resp);
-            var panelData = resp.data ? resp.data : {};
-            this.mPanel = this.panel.is_template ? resp.panel : this.panel;
+            var panelData = resp && resp.data ? resp.data : {};
+            if (resp.panel != null) {
+              // console.error(this.panel);
+              resp.panel._tiles = this.panel.tiles;
+              this.mPanel = resp.panel;
+              // this.mPanel = this.panel.is_template || resp.panel != null ? resp.panel : this.panel;
+            } else {
+              this.mPanel = this.panel;
+            }
 
             var chartDict = {};
             this.mPanel.tiles

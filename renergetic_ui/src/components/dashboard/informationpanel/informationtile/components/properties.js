@@ -223,6 +223,20 @@ const tileProperties = [
     type: "String",
     key: "qrcode_content",
   },
+  {
+    label: $t("model.information_panel.tile.properties.tag_key"),
+    description: $t("model.information_panel.tile.properties.tag_key_description"),
+    type: String,
+    key: "tag_key",
+    defaultValue: null,
+  },
+  {
+    label: $t("model.information_panel.tile.properties.tag_value"),
+    description: $t("model.information_panel.tile.properties.tag_value_description"),
+    type: String,
+    key: "tag_value",
+    defaultValue: null,
+  },
 ];
 console.debug(tileProperties.map((it) => it.key).join(","));
 export default tileProperties;
@@ -237,6 +251,8 @@ const chartProperties = new Set([
   "compare_with_previous",
   "compare_interval_type",
   "compare_interval_number",
+  "tag_key",
+  "tag_value",
   // "legend_label_color",
   // "chart_type",
 ]);
@@ -253,6 +269,8 @@ const knobProperties = new Set([
   "compare_with_previous",
   "compare_interval_type",
   "compare_interval_number",
+  "tag_key",
+  "tag_value",
 ]);
 const multiKnobProperties = new Set([
   "title_visibility",
@@ -266,6 +284,8 @@ const multiKnobProperties = new Set([
   "icon_visibility",
   "item_icon_visibility",
   "icon",
+  "tag_key",
+  "tag_value",
   // "compare_with_previous",
   // "compare_interval_type",
   // "compare_interval_number",
@@ -286,6 +306,8 @@ const doughnutProperties = new Set([
   "compare_with_previous",
   "compare_interval_type",
   "compare_interval_number",
+  "tag_key",
+  "tag_value",
 ]);
 const listProperties = new Set([
   "title_visibility",
@@ -301,6 +323,8 @@ const listProperties = new Set([
   "compare_with_previous",
   "compare_interval_type",
   "compare_interval_number",
+  "tag_key",
+  "tag_value",
 ]);
 const singleProperties = new Set([
   "title_visibility",
@@ -316,6 +340,8 @@ const singleProperties = new Set([
   "compare_interval_type",
   "compare_interval_number",
   "template",
+  "tag_key",
+  "tag_value",
 ]);
 const emptyProperties = new Set(["title_visibility", "title_color", "background", "background_mask", "icon_visibility", "icon", "template"]);
 const qrCodeProperties = new Set(["background", "qrcode_content"]);

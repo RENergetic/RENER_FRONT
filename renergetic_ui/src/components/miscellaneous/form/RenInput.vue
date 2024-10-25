@@ -59,7 +59,7 @@
       <i v-if="showClear && !disabled" v-tooltip="$t('view.clear')" class="pi pi-times" @click="clearInput" />
     </div>
     <div v-else-if="textLabel != null && readOnly" class="col-12 md:col-10">
-      <InputText :id="mId" v-model="mValue" :disabled="disabled" :style="inputStyle" />
+      <InputText :id="mId" v-model="mValue" :disabled="true" :style="inputStyle" />
       <i v-if="showClear && !disabled" v-tooltip="$t('view.clear')" class="pi pi-times" @click="clearInput" />
     </div>
     <div v-else class="col-12">
