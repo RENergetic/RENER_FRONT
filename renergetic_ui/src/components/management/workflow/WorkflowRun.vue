@@ -167,7 +167,8 @@ export default {
       let experimentId = this.workflow.pipeline_id;
       let parameters = this.runParameters;
       if (this.multiSteps && this.runParametersList.length > 1) {
-        parameters.simulations_parameters = this.runParametersList;
+        parameters.simulation_number = this.runParametersList.length;
+        parameters.simulation_definitions = this.runParametersList;
       }
       if (this.multiSteps && this.runParametersList.length == 1) {
         parameters = this.runParametersList[0];

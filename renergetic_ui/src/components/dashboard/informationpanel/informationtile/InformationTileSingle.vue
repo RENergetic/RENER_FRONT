@@ -137,7 +137,7 @@ export default {
   }
 
   #tileicon {
-    height: 90%;
+    height: max-content;
     // height: 4.5rem;
     width: 45%;
     max-width: 7rem;
