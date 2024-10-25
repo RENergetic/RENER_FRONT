@@ -173,6 +173,7 @@ export default {
       if (this.multiSteps && this.runParametersList.length == 1) {
         parameters = this.runParametersList[0];
       }
+      parameters.case = this.simulationName;
       // parameters.simulation_name = this.simulationName;
       let res = null;
       await this.$refs.runspinner.run(
