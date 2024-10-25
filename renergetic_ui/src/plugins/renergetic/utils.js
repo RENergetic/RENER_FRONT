@@ -218,9 +218,13 @@ class RenUtils {
   /**
    *
    * @param {*} flags  - e.g. RenRoles.REN_ADMIN | RenRoles.REN_TECHNICAL_MANAGER | RenRoles.REN_ADMIN
+   * @param {*} isUserSignedIn
    * @returns
    */
-  checkAccess(flags) {
+  checkAccess(flags, isUserSignedIn) {
+    if (!isUserSignedIn) {
+      return flags & (RenRoles.REN_GUEST != 0);
+    }
     return (flags & this.app.$store.getters["auth/renRole"]) != 0;
   }
   /**

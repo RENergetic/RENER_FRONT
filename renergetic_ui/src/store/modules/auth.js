@@ -104,7 +104,12 @@ export default {
     },
     tokenExpired: (state) => {
       if (state.data && state.data.token) {
-        return state.data.tokenExp < Date.now();
+        let isExpired = state.data.tokenExp < Date.now();
+        if (isExpired) {
+          console.warn("Access token is expired");
+          console.debug(state.data);
+        }
+        return isExpired;
       }
       console.warn("No token");
       return false;
