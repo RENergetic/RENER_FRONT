@@ -11,10 +11,9 @@
             <!-- {{ group.measurements }} -->
 
             <!-- :chart-type="chartType" -->
-
             <MeasurementChart
               :ref="`mChart_${index}`"
-              :p-data="{ timeseries: pData }"
+              :pdata="{ timeseries: pData }"
               :filter="filter"
               style="width: 100%"
               :width="1200"
@@ -115,8 +114,16 @@ export default {
   },
   methods: {
     measurementGroupKey(m) {
-      let assetId = m.asset ? m.asset.id : "";
-      return `${m.name}_${m.sensor_name}_${m.type.id}_${assetId}_${m.direction}_${m.domain}`;
+      let assetId = m.asset ? `_${m.asset.id}` : "";
+      let direction = "";
+      let domain = "";
+      if (m.direction) {
+        direction = `_${m.direction}`;
+      }
+      if (m.domain) {
+        domain = `_${m.domain}`;
+      }
+      return `${m.name}_${m.sensor_name}_${m.type.id}${assetId}${direction}${domain}`;
     },
     async loadCurrentMeasurements() {
       if (this.hdrRequest == null) {
@@ -208,8 +215,10 @@ export default {
         }
       }
       this.mGroups = Object.values(mGroups);
-      // console.info(measurements);
+      // console.debug(this.mGroups);
+      // console.debug(this.currentMeasurements);
       //todo: filter last 24h and 24h ahead
+      console.error("todo hdr recommendation setttings for: date_from and date_to");
       let nowTs = new Date().getTime();
       let from = new Date(nowTs - 24 * 3600 * 1000).getTime();
       let to = new Date(nowTs + 36 * 3600 * 1000).getTime();
@@ -218,7 +227,7 @@ export default {
       if (measurements.length > 0) {
         this.$refs.spinner.run(async () => {
           if (this.currentMeasurements != null) {
-            console.debug(this.currentMeasurements);
+            // console.debug(this.currentMeasurements);
             let curIds = this.currentMeasurements.map((it) => it.id);
             // let pDataCurrent = await this.$ren.dataApi.getMeasurementTimeseries(this.currentMeasurements, filterCurrent);
             // console.info(pDataCurrent);
@@ -232,7 +241,7 @@ export default {
             for (let mId in pData.current) {
               if (!curIds.includes(Number(mId))) {
                 //only recommendations
-                let recomemndationMeasurement = mDict[mId];
+                let recommendationMeasurement = mDict[mId];
                 let timeseries = pData.current[mId];
                 for (let i in timeseries) {
                   if (i < idx) {
@@ -242,8 +251,18 @@ export default {
                   }
                 }
                 //get the last point from the current timeseries
-                let currentMeasurement = mGroups[this.measurementGroupKey(recomemndationMeasurement)].current;
-
+                let currentMeasurement = mGroups[this.measurementGroupKey(recommendationMeasurement)].current;
+                if (!currentMeasurement) {
+                  console.error("Missing mdefault measurement: " + this.measurementGroupKey(recommendationMeasurement));
+                  console.debug(recommendationMeasurement);
+                  this.$emitter.emit("error", {
+                    message: this.$t("error.missing_hdr_default_measurement", [this.measurementGroupKey(recommendationMeasurement)]),
+                  });
+                  this.$emitter.emit("error", {
+                    message: this.measurementGroupKey(recommendationMeasurement),
+                  });
+                  return;
+                }
                 timeseries[idx - 1] = pData.current[currentMeasurement.id][idx - 1];
               }
             }

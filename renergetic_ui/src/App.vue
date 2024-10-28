@@ -7,13 +7,14 @@
       <!-- <div style="color: white; margin-top: 10rem">{{ $route.path }}  style="min-height: 95vh"</div>
     <div style="color: white">{{ $keycloak && $keycloak.isInitialized() }}</div> -->
       <!-- display: - initial !important; -->
+
       <div v-if="hasAccess" class="flex" style="margin-bottom: 0rem; flex-grow: 1; overflow: auto; flex-direction: column">
         <router-view :key="$route.path" :class="pageClass" />
         <!-- @update-menu="updateMenu()" -->
       </div>
       <div v-else :class="layout()">no access TODO:</div>
 
-      <div v-if="!$store.getters['auth/isAuthenticated'] || $store.getters['auth/tokenExpired']" class="grid flex flex-none" style="margin: 2rem 0">
+      <div v-if="!isUserSignedIn" class="grid flex flex-none" style="margin: 2rem 0">
         <div class="col"></div>
         <div class="col-fixed flex-none" style="width: 20rem; text-align: center">
           <!-- {{ $store.getters["auth/tokenExpired"] }} -->
@@ -58,9 +59,12 @@ export default {
     };
   },
   computed: {
+    isUserSignedIn() {
+      return this.$store.getters["auth/isAuthenticated"] && !this.$store.getters["auth/tokenExpired"];
+    },
     hasAccess() {
       if (this.$route.meta.roleFlag == null || this.$route.meta.roleFlag == undefined) return true;
-      return this.$ren.utils.checkAccess(this.$route.meta.roleFlag);
+      return this.$ren.utils.checkAccess(this.$route.meta.roleFlag, this.isUserSignedIn);
     },
     pageStyle() {
       if (this.tvMode) {
