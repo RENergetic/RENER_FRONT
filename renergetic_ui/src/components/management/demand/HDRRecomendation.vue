@@ -215,9 +215,10 @@ export default {
         }
       }
       this.mGroups = Object.values(mGroups);
-      console.debug(this.mGroups);
-      console.debug(this.currentMeasurements);
+      // console.debug(this.mGroups);
+      // console.debug(this.currentMeasurements);
       //todo: filter last 24h and 24h ahead
+      console.error("todo hdr recommendation setttings for: date_from and date_to");
       let nowTs = new Date().getTime();
       let from = new Date(nowTs - 24 * 3600 * 1000).getTime();
       let to = new Date(nowTs + 36 * 3600 * 1000).getTime();
@@ -226,7 +227,7 @@ export default {
       if (measurements.length > 0) {
         this.$refs.spinner.run(async () => {
           if (this.currentMeasurements != null) {
-            console.debug(this.currentMeasurements);
+            // console.debug(this.currentMeasurements);
             let curIds = this.currentMeasurements.map((it) => it.id);
             // let pDataCurrent = await this.$ren.dataApi.getMeasurementTimeseries(this.currentMeasurements, filterCurrent);
             // console.info(pDataCurrent);
