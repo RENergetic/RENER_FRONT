@@ -18,8 +18,7 @@
         <div class="col"></div>
         <div class="col-fixed flex-none" style="width: 20rem; text-align: center">
           <!-- {{ $store.getters["auth/tokenExpired"] }} -->
-          ffff
-          {{ isUserSignedIn }} {{ hasAccess }}
+
           <Button icon="pi pi-sign-in" style="width: 100%" :label="$t('view.button.sign_in')" @click="login" />
         </div>
         <div class="col"></div>
