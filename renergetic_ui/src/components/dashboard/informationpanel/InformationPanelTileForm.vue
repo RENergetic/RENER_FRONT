@@ -93,7 +93,7 @@
     <TabPanel :header="$t('view.measurements')">
       <div class="grid ren flex">
         <div class="col-12 flex flex-column">
-          <ul>
+          <ul class="boxed">
             <li v-for="(m, index) in mModel.measurements" :key="`${m.id}_${index}`">
               <div>
                 <ren-input v-if="m.id" :model-value="$t('model.measurement.id') + ': ' + m.id" disabled :read-only="true" />
@@ -191,12 +191,8 @@
       </template>
     </Card>
   </Dialog>
-  <Dialog v-model:visible="addMeasurementTemplateDialog" :style="{ width: '100vw', height: '100vh', maxHeight: '100%' }" :modal="true">
-    <Card class="ren-page-content">
-      <template #content>
-        <MeasurementTileForm @update="addMeasurementTemplate" @cancel="addMeasurementTemplateDialog = false" />
-      </template>
-    </Card>
+  <Dialog v-model:visible="addMeasurementTemplateDialog" :class="'narrow'" :modal="true">
+    <MeasurementTileForm @update="addMeasurementTemplate" @cancel="addMeasurementTemplateDialog = false" />
   </Dialog>
   <Dialog v-model:visible="iconsDialog" :dismissable-mask="true" :style="{ maxWidth: '80vw', maxHeight: '100%' }" :modal="true">
     <Card class="ren-page-content" style="width: max-content">

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="inline" class="field grid">
+  <div v-if="inline" class="field grid ren-input">
     <div v-if="!editMode" class="flex">
       <label :for="mId" class="flex flex-1">
         {{ modelValue }}
@@ -22,7 +22,7 @@
       </div>
     </div>
   </div>
-  <div v-else class="field grid">
+  <div v-else class="field grid ren-input">
     <label v-if="textLabel" :for="mId" class="col-12 mb-2 md:col-2 md:mb-0 ren-label">
       <div v-if="$te(textLabel)">
         {{ $t(textLabel) }}
