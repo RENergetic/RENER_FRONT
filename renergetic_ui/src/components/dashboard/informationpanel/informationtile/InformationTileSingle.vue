@@ -22,13 +22,13 @@
     >
       <span id="label" :style="color"> {{ mSettings.tile.label ? mSettings.tile.label : `${measurementlabel}: ` }} </span>
       <span id="value" :style="color">
-        <h2>{{ $ren.utils.roundValue(value) }} {{ unit }}<RenValueCompare :value-diff="prevDiff" /></h2>
+        <h2>{{ $ren.utils.roundValue(value) }} {{ unit }}<RenValueCompare v-if="prevDiff != null" :value-diff="prevDiff" /></h2>
       </span>
     </div>
     <div v-else :class="'flex flex-column align-items-center justify-content-center tilecontent' + tileOrientationClass">
       <span id="label" :style="color"> {{ mSettings.tile.label ? mSettings.tile.label : `${measurementlabel}: ` }} </span>
       <span id="value" :style="color">
-        <h2>{{ $ren.utils.roundValue(value) }} {{ unit }}<RenValueCompare :value-diff="prevDiff" /></h2>
+        <h2>{{ $ren.utils.roundValue(value) }} {{ unit }}<RenValueCompare v-if="prevDiff != null" :value-diff="prevDiff" /></h2>
       </span>
     </div>
   </div>
@@ -137,12 +137,14 @@ export default {
   }
 
   #tileicon {
-    height: max-content;
+    // height: max-content;
+    height: 90%;
     // height: 4.5rem;
-    width: 45%;
-    max-width: 7rem;
+    // width: 45%;
+    // max-width: 7rem;
     margin: auto;
-
+    flex-grow: 0.3 !important;
+    align-items: end !important;
     svg {
       max-width: 7rem;
       max-height: 7rem;
@@ -157,6 +159,9 @@ export default {
     float: left;
     width: 100%;
     text-align: center;
+  }
+  h2 {
+    justify-content: center;
   }
 
   #tilecontent {
