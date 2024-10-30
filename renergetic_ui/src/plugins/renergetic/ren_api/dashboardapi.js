@@ -76,8 +76,15 @@ export default class DashboardApi extends RestComponent {
       }
     });
   }
-  async inferMeasurements(panel) {
-    return this.post(`/api/informationPanel/infermeasurements`, panel);
+  async inferMeasurements(panel, infer = false) {
+    let args = this.parseArgs({ infer: infer });
+    return this.post(`/api/informationPanel/infermeasurements?${args}`, panel, null, null, (e) => {
+      if (e.response.status == 404) {
+        this.emitError(`Missing measurement or asset in the database`);
+        return true;
+      }
+      return false;
+    });
   }
 
   async updateInformationPanel(panel) {

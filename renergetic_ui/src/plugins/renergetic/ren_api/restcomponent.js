@@ -111,6 +111,7 @@ export default class RestComponent {
           return response.data;
         })
         .catch(function (error) {
+          // console.info(error.status);
           let defaultErrorHandler = (error) => _this.emitError(`POST: ${path}: ${error.message}`);
           if (onError == null || !onError(error)) {
             defaultErrorHandler(error);
