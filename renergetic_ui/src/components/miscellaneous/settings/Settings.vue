@@ -19,16 +19,20 @@
         off-icon="pi pi-times"
       /> -->
       <div class="col-12">
-        <SelectButton
-          v-if="s.type == Boolean || lowerCase(s.type) == 'boolean'"
-          :id="s.key"
-          v-model="mModel[`${s.key}`]"
-          v-tooltip="s.description"
-          :disabled="disabled"
-          option-label="name"
-          option-value="value"
-          :options="booleanOptions(s)"
-        />
+        <!-- :text-label="'model.dashboard.unit'" -->
+        <ren-input-wrapper v-if="s.type == Boolean || lowerCase(s.type) == 'boolean'">
+          <template #content>
+            <SelectButton
+              :id="s.key"
+              v-model="mModel[`${s.key}`]"
+              v-tooltip="s.description"
+              :disabled="disabled"
+              option-label="name"
+              option-value="value"
+              :options="booleanOptions(s)"
+            />
+          </template>
+        </ren-input-wrapper>
 
         <div v-else-if="s.type == Number && lowerCase(s.mode) == 'slider'">
           <Slider
@@ -216,7 +220,7 @@ export default {
       }
       // console.info(columns);
       // s.type == Number && s.mode == 'slider'
-      return `field grid col-${columns}`;
+      return `field grid col-${columns} ren-input`;
     },
     toggle(event) {
       this.$refs.menu.toggle(event);

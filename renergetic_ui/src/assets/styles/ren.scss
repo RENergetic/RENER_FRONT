@@ -62,18 +62,20 @@ body {
   color: $ren-primary-font-color;
   min-height: 2.5rem;
 }
-.p-selectbutton .p-button { 
+
+.p-selectbutton .p-button {
   background-color: $ren-secondary-color;
-  background:$ren-secondary-bg;
+  background: $ren-secondary-bg;
   color: $ren-secondary-font-color;
-  border-color: $ren-secondary-border-color-tr; 
+  border-color: $ren-secondary-border-color-tr;
 }
-.p-selectbutton .p-button:hover {  
- opacity: 0.7;
+
+.p-selectbutton .p-button:hover {
+  opacity: 0.7;
 }
-.ren .ren-inputwrapper .p-selectbutton.p-button-group , 
- .p-selectbutton.p-button-group 
-{
+
+.ren .ren-inputwrapper .p-selectbutton.p-button-group,
+.p-selectbutton.p-button-group {
   width: fit-content;
 }
 
@@ -95,12 +97,35 @@ body {
 
   /*remove background for empty space*/
 }
+
+.p-dialog.p-component {
+  max-height: 80vh;
+  width: fit-content;
+}
+
 .p-selectbutton.p-button-group.p-component {
   display: flex;
   flex-wrap: wrap;
 }
-.p-selectbutton > .p-button {
+
+.p-selectbutton>.p-button {
   flex-basis: fit-content;
+  flex-grow: 1;
+}
+
+.p-dialog.narrow {
+  .p-dialog-header {
+    align-items: end;
+    flex-direction: column;
+    padding: 0.5rem;
+
+    .p-icon {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+  }
+
+  .p-dialog-content {}
 }
 
 .p-button:hover {
@@ -109,7 +134,7 @@ body {
 
 .p-button.p-button-text {
   // color: $ren-primary-color;
-  color:$ren-primary-font-color
+  color: $ren-primary-font-color
 }
 
 .ren-pointer {
@@ -134,9 +159,18 @@ body {
 
 // .ren-page-content
 .ren {
-  li div {
+  .boxed li>div {
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 3px;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  li>div {
     display: flex;
     align-items: center;
+
   }
 
   .ren-label {
@@ -191,10 +225,12 @@ body {
     max-width: $maxInputwidth;
   }
 
+  .ren-input,
   .p-inputwrapper {
     width: $inputwidth !important;
     max-width: $maxInputwidth;
   }
+
 
   // .p-inputtextarea {
   //     max-width: initial;
@@ -274,7 +310,7 @@ body {
   }
 
   .p-stepper .p-stepper-header button {
-    background: none; 
+    background: none;
     width: 100%;
   }
 
@@ -402,6 +438,7 @@ body {
     .p-datatable-wrapper {
       overflow: initial !important;
     }
+
     .p-datatable-header {
       position: sticky;
       top: 0;
@@ -662,6 +699,6 @@ body {
   top: 0;
 }
 
- 
+
 
 @import "./ren-components.scss";

@@ -257,7 +257,7 @@ export default {
     },
 
     openAssetPanel() {
-      this.$ren.utils.openNewTab(`/asset/${this.selectedAsset.id}/panel/view/${this.selectedRow.id}`);
+      this.$ren.utils.openNewTab(`/asset/${this.selectedAsset.id}/panel/view/${this.selectedAsset.id}`);
     },
 
     async editPanel(o) {
@@ -337,6 +337,7 @@ export default {
       });
     },
     async onEdit(o) {
+      console.debug(o);
       await this.$ren.dashboardApi.updateInformationPanel(o).then((panel) => {
         this.$emitter.emit("information", { message: this.$t("information.panel_update", [panel.id]) });
         this.reload();

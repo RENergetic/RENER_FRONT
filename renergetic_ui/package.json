@@ -1,9 +1,9 @@
 {
   "name": "renergetic_ui",
-  "version": "0.18.4-0",
+  "version": "0.18.7-0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --port 8080",
     "build": "npm version prerelease && vue-cli-service build",
     "patch": "npm version prepatch",
     "feature": "npm version minor",

@@ -58,8 +58,6 @@
                 :label="$t('view.information_panel_submit_structure')"
                 @click="submitStructure"
               />
-
-              <!-- <span v-if="submittedPanelJSON">{{ $t("view.file_submitted") }}</span> -->
             </template>
           </ren-input-wrapper>
           <ren-input-wrapper v-if="modelValue" :text-label="null">
@@ -82,7 +80,7 @@
   <Dialog v-model:visible="importPanelDialog" :style="{ width: '60vw', height: '80vh' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <ren-input-wrapper :text-label="null">
       <template #content>
-        <Accordion :active-index="submitStructureIndex">
+        <Accordion v-model:activeIndex="submitStructureIndex">
           <AccordionTab :header="$t('view.new_panel_structure')">
             <!-- <ren-input-text v-if="submittedPanel" v-model="submittedPanel" :text-label="null" :cols="50" :maxlength="10000" /> -->
             <ren-input-wrapper v-if="submittedPanelJSON" :text-label="null">
@@ -115,7 +113,7 @@
                   <template #content>
                     <Textarea v-model="submittedPanelJSON" style="width: 100%" :maxlength="40000" rows="15" :cols="80"></Textarea>
                   </template>
-                </ren-input-wrapper> -->
+      </ren-input-wrapper> -->
                 <!-- <p v-if="!submittedPanelJSON">{{ $t("view.file_drag_drop") }}</p> -->
                 <p>{{ $t("view.file_drag_drop") }}</p>
               </template>
@@ -142,11 +140,12 @@
       v-if="!mModel.is_template"
       :key="inferMeasurements"
       v-model="inferMeasurements"
-      :text-label="'view.infer_measurements'"
+      :text-label="'view.import_infer_measurements_mode'"
       :options="[
-        { label: $t('view.infer_measurements'), value: 'refill' },
-        { label: $t('view.no_infer_measurements'), value: 'default' },
-        { label: $t('view.ignore_measurements_ids'), value: 'override' },
+        { label: $t('view.import_infer_measurements'), value: 'refill' },
+        { label: $t('view.import_no_infer_measurements'), value: 'default' },
+        { label: $t('view.import_ignore_ids'), value: 'override' },
+        { label: $t('view.import_keep_template'), value: 'template' },
       ]"
     />
     <ren-submit v-if="submittedPanelJSON != null" :cancel-button="true" @submit="fileSubmit" @cancel="onFileClear" />
@@ -188,6 +187,7 @@ import { maxLength, required, minLength, minValue, maxValue } from "@/plugins/va
 import InfoIcon from "../../miscellaneous/InfoIcon.vue";
 import Settings from "@/components/miscellaneous/settings/Settings.vue";
 import BasicFilterSettings from "@/components/miscellaneous/settings/BasicFilterSettings.vue";
+import { Exception } from "sass";
 
 const ASSET_TAG = "{asset}";
 export default {
@@ -202,7 +202,7 @@ export default {
   emits: ["update:modelValue", "cancel"],
   setup: () => ({ v$: useVuelidate() }),
   data() {
-    let mModel = this.modelValue ? this.modelValue : { tiles: [], props: {} };
+    let mModel = this.modelValue ? this.modelValue : { tiles: [], props: {}, is_template: false };
     mModel.props = mModel.props ? mModel.props : {};
     let panelStructure = getCleanPanelStructure(mModel, false);
     return {
@@ -237,7 +237,7 @@ export default {
   watch: {
     panelStructure: {
       handler: function (s) {
-        console.error(s);
+        // console.error(s);
         if (s != null) {
           this.mPanelStructureJSON = JSON.stringify(s, null, "\t");
         } else {
@@ -261,6 +261,7 @@ export default {
       } else if (this.labelWarning != null) {
         this.labelWarning = null;
       }
+      if (isTemplate) this.inferMeasurements = "default";
     },
     // mModel: {
     //   handler: function () {
@@ -302,16 +303,35 @@ export default {
     },
     async fileSubmit() {
       let submittedPanel = JSON.parse(this.submittedPanelJSON);
-      switch (this.inferMeasurements) {
-        case "override":
-          this.panelStructure = await this.infer(submittedPanel, true);
-          break;
-        case "refill":
-          this.panelStructure = await this.infer(submittedPanel, false);
-          break;
-        default:
-          this.panelStructure = getCleanPanelStructure(submittedPanel);
+      if (this.mModel.is_template) {
+        this.inferMeasurements = "default";
       }
+      if (this.inferMeasurements === "override" || this.inferMeasurements === "template") {
+        this.panelStructure = getCleanPanelStructure(submittedPanel, true);
+      } else {
+        this.panelStructure = getCleanPanelStructure(submittedPanel, false);
+      }
+      console.debug(this.panelStructure);
+      try {
+        switch (this.inferMeasurements) {
+          case "refill":
+          case "override":
+            this.panelStructure = await this.infer(this.panelStructure, true);
+            break;
+          case "default":
+          case "template":
+            this.panelStructure = await this.infer(this.panelStructure, false);
+            break;
+
+          default:
+            //do nothing
+            break;
+        }
+      } catch (err) {
+        console.error(err);
+        return;
+      }
+      console.debug(this.panelStructure);
       // if (this.inferMeasurements=='refill' ) {
       //   this.panelStructure = await this.infer(submittedPanel);
       // } else {
@@ -335,17 +355,18 @@ export default {
         this.updateModel(submittedPanel);
 
         this.submittedPanelJSON = JSON.stringify(submittedPanel, null, "\t");
+
         this.submitStructureIndex = 0;
       }
       // await this._submit(event.files);
     },
     onUpload() {},
 
-    async infer(panel, overrideMeasurements) {
+    async infer(panel, inferMeasurements) {
       if (!this.mModel.is_template) {
-        let mPanel = getCleanPanelStructure(panel, overrideMeasurements);
-        return await this.$ren.dashboardApi.inferMeasurements(mPanel).then((inferredPanel) => {
-          return getCleanPanelStructure(inferredPanel, false);
+        return await this.$ren.dashboardApi.inferMeasurements(panel, inferMeasurements).then((inferredPanel) => {
+          if (inferredPanel) return getCleanPanelStructure(inferredPanel, false);
+          else throw new Exception("inferring measurements failed");
         });
       }
       return getCleanPanelStructure(panel, false);
@@ -360,6 +381,7 @@ export default {
       this.panelStructure.id = this.mModel.id;
       this.panelStructure.label = this.mModel.label ? this.mModel.label : this.panelStructure.label;
       this.mModel = this.panelStructure;
+      console.debug(this.panelStructure);
       this.$emit("update:modelValue", this.mModel);
     },
     cancel() {
