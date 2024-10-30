@@ -784,8 +784,6 @@
 	"view.assigned_information_panel":  "Assigned panel {label}",
 	"view.base_recommendation":  "Base recommendation",
 	"view.button.add":  "Add",
-	"view.button.add_area":  "Add area",
-	"view.button.add_category_connection":  "Add category connection",
 	"view.button.add_connection":  "Add connection",
 	"view.button.add_measurement":  "Add measurement",
 	"view.button.add_measurement_template":  "Add dynamic measurement",
