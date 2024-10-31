@@ -498,6 +498,7 @@
 	"model.workflow.property.wasteheat_pipeline":  "Domyślne zadanie WasteHeat",
 	"model.workflow.simulation_index":  "Symulacja: {0}",
 	"model.workflow.simulation_label":  "Nazwa symulacji",
+	"model.workflow.simulation_number":  "Number of simulations",
 	"model.workflow.update_date":  "Data ostatniej aktualizacji",
 	"model.workflow.version":  "Wersja",
 	"model.workflow.visibility":  "Widoczność",

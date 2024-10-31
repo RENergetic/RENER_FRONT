@@ -594,6 +594,7 @@
       },
       "simulation_index": "Simulation: {0}",
       "simulation_label": "Simulation label",
+      "simulation_number": "Number of simulations",
       "update_date": "Update date",
       "version": "Version",
       "visibility": "Visibility",

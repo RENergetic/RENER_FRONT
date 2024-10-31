@@ -22,7 +22,15 @@
           <ren-switch v-model="mFilters.wasteheat_pipeline.value" :text-label="'model.workflow.property.wasteheat_pipeline'" />
         </template>
         <Column :expander="true" header-style="width: 3rem" />
-        <Column field="name" :header="$t('model.workflow.name')" :show-filter-menu="false" />
+        <Column field="name" :header="$t('model.workflow.name')" :show-filter-menu="false">
+          <template #body="slotProps">
+            <div v-if="slotProps.data.label">{{ slotProps.data.label }} ( {{ slotProps.data.name }})</div>
+
+            <div v-else>
+              {{ slotProps.data.name }}
+            </div>
+          </template>
+        </Column>
         <Column field="pipeline_id" :header="$t('model.workflow.pipeline_id')" :show-filter-menu="false" />
         <template #expansion="slotProps">
           <h3 v-if="Object.keys(slotProps.data.parameters).length === 0">{{ $t("model.workflow.no_parameters") }}</h3>

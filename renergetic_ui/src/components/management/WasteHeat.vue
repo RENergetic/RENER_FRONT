@@ -43,7 +43,14 @@
   <div v-if="informationPanel && !isTaskRunning" style="margin-left: 1rem; margin-top: 2rem">
     <ParsedDateFilter :key="parsedFilterRefresh" :filter="panelFilter" />
   </div>
-  <Dialog v-model:visible="workflowRunStartDialog" :style="{ width: '40rem' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+  <Dialog
+    v-model:visible="workflowRunStartDialog"
+    :style="{ width: '40rem' }"
+    :class="'narrow'"
+    :maximizable="true"
+    :modal="true"
+    :dismissable-mask="true"
+  >
     <WorkflowRun :workflow="workflow" :multi-steps="multiSteps" @on-start="onWorkflowStart" />
   </Dialog>
   <Dialog v-model:visible="workflowRunDetailsDialog" :style="{ width: '40rem' }" :maximizable="true" :modal="true" :dismissable-mask="true">
