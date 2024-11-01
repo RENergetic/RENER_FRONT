@@ -13,6 +13,11 @@
           :text-label="$t('view.workflowrun_param_format', { parameter: key })"
           :read-only="true"
         />
+        <ren-input-wrapper v-if="mModel.parameters['simulation_definitions']">
+          <template #content>
+            {{ mModel.parameters["simulation_definitions"] }}
+          </template>
+        </ren-input-wrapper>
 
         <ren-input-wrapper v-if="workflowRun.start_time > 0">
           <template #content>

@@ -15,6 +15,7 @@
           :style="mStyle"
           :chart-type="chartType"
           :tile="tile"
+          :size-scale="mSettings.panel.font_scale"
           :compare-previous="mSettings.tile.compare_with_previous"
           :asset-id="settings && settings.panel ? settings.panel.asset_id : null"
           :legend="legend"

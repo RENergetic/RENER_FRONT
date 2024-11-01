@@ -11,7 +11,7 @@
         :panel-data="panelData"
         :panel="mPanel"
         :locked="locked"
-        :settings="panelSettings"
+        :settings="mPanelSettings"
         :asset-id="assetId"
         :filter="mFilter"
         @timeseries-update="onTimeseriesUpdate"
@@ -102,6 +102,7 @@ export default {
       }),
       loopRunner: null,
       notificationContext: NotificationContext.TILE,
+      mPanelSettings: this.panelSettings,
     };
   },
   computed: {
@@ -125,7 +126,7 @@ export default {
         if (this.autoReload) {
           if (this.loopRunner != null) this.loopRunner.stop();
           // this.$store.getters["settings/panel"].refreshTime ? this.$store.getters["settings/panel"].refreshTime : 60000;
-          let refreshTime = Math.max(this.panelSettings.refreshTime ? this.panelSettings.refreshTime : 60000, 60000);
+          let refreshTime = Math.max(this.mPanelSettings.refreshTime ? this.mPanelSettings.refreshTime : 60000, 60000);
           this.loopRunner = LoopRunner.init(this.loadData, refreshTime);
           this.loopRunner.start();
         } else {
@@ -165,7 +166,7 @@ export default {
     };
     this.deferredFilter = new DeferredFunction(f, 1000);
     // this.$store.getters["settings/panel"].refreshTime ? this.$store.getters["settings/panel"].refreshTime : 60000;
-    let refreshTime = this.panelSettings.refreshTime;
+    let refreshTime = this.mPanelSettings.refreshTime;
 
     if (refreshTime > 0 && this.autoReload) {
       this.loopRunner = LoopRunner.init(this.loadData, refreshTime);
@@ -243,15 +244,15 @@ export default {
 
             for (let tile of this.mPanel.tiles) {
               //check if any tiles requires previous data
-              if (this.panelSettings.compare_interval_type == "none") {
+              if (this.mPanelSettings.compare_interval_type == "none") {
                 tile.props.compare_with_previous = false;
               } else if (tile.props.compare_with_previous) {
                 //feature? different intervals per tile? TODO:
                 let prevFilter = this.compareIntervalDateFilter(
                   this.mFilter,
-                  this.panelSettings.compare_interval_type ? this.panelSettings.compare_interval_type : "previous",
+                  this.mPanelSettings.compare_interval_type ? this.mPanelSettings.compare_interval_type : "previous",
                   //tODO: add compare_interval_number to the ui, currently its always null and cant be changed
-                  this.panelSettings.compare_interval_number ? this.panelSettings.compare_interval_number : 1,
+                  this.mPanelSettings.compare_interval_number ? this.mPanelSettings.compare_interval_number : 1,
                 );
                 tile.props.compare_with_previous_filter_obj = prevFilter;
                 getPrevData = true;
@@ -259,13 +260,13 @@ export default {
               }
             }
 
-            if (getPrevData && this.panelSettings.compare_interval_type != "none") {
+            if (getPrevData && this.mPanelSettings.compare_interval_type != "none") {
               console.info("Load Previous data ");
               var prevFilter = this.compareIntervalDateFilter(
                 this.mFilter,
-                this.panelSettings.compare_interval_type ? this.panelSettings.compare_interval_type : "previous",
+                this.mPanelSettings.compare_interval_type ? this.mPanelSettings.compare_interval_type : "previous",
                 //tODO: add compare_interval_number to the ui, currently its always null and cant be changed
-                this.panelSettings.compare_interval_number ? this.panelSettings.compare_interval_number : 1,
+                this.mPanelSettings.compare_interval_number ? this.mPanelSettings.compare_interval_number : 1,
               );
               await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, prevFilter).then(async (resp) => {
                 panelData.previous = resp.data;
