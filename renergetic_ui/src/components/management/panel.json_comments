@@ -2,7 +2,7 @@
   "data": {
     "current": {
       "last": {
-        "ppch_cop_1": 110, // to jest kazda komórka z tabeli w deliverable
+        "ppch_cop_1": 110, // to jest kazda komórka z tabeli w deliverable (np tabela z COP)
         "ppch_cop_2": 150, //ppch -> nazwa wriantu konsumpcji, cop , nazwa parametru, 2 -> indeks symulacji lub jakas inna nazwa
         "ppcw_cop_1": 110,
         "ppcw_cop_2": 150,
@@ -16,22 +16,22 @@
   },
   "panel": {
     "id": 10288,
-    "name": "simtest", //nazwa panelu
+    "name": "simtest", //nazwa panelu , nazwa która może być zdefiniowa w UI, ja cały szablon mogę przypisać do Obiektu 'PipelineRun' który odpowiada za trzymanie metadanych dotyczące jakiegos zadania w kubeflow 
     "label": "simtest", //nazwa panelu 
     "tiles": [
       {
-        "id": 10547,
+        "id": 10547, //unikalny id obiektu (w obrębie tego szablonu) typu tile  
         "name": "cop_sim1",  //nazwa kafelka
-        "label": "cop sim1",//nazwa kafelka
+        "label": "cop sim1",//nazwa (etykieta ) kafelka
         "type": "list", //
         "featured": null,
         "measurements": [
           {
-            "id": "ppch_cop_1",
+            "id": "ppch_cop_1", //obiekt measurement reprezentuje jedno pole w tabeli z wynikami (tabeli wynikowej która jest zdefiniowana w deliverable )
             "name": "ppch_cop_1",
             "label": "ppch_cop: sim 1",
-            "measurement_details": {
-              "color": "#dedede",
+            "measurement_details": { //metadane szeregu czasowego (w kontekście wasteheat - po prostu pojedyncza wartość)  
+              "color": "#dedede", //metadane mogą być zdefiniowane w UI, ale bedę musiał stworzyć obiekty measurements w bazie danych wczesniej , albo po prostu przypisać przypisać stały kolor do symulacji dc-worms - tutaj możemy nawet dać kontrolkę dla użytkownika
               "background": "#ffffff" 
             },
             "type": {
@@ -53,7 +53,7 @@
             "description": null,
             "sensor_name": "heat_power", 
             "tags": null,
-            "aggregation_function": "last"
+            "aggregation_function": "last" //ta funkcja musi być spójna z tym co jest w obiekcie 'data' w szablonie
           },
           {
             "id": "ppcw_cop_1",
@@ -83,13 +83,13 @@
           }
         ],
         "props": {
-          "tag_key": "scenario"
+          "tag_key": "scenario" // tag, w tym przypadku kiedy nie odnosimy się do influxdb chyba nie jest istotny - label służy do identyfikacji wyniku
         },
         "layout": {
-          "w": 4,
-          "x": 1,
-          "h": 4,
-          "y": 1
+          "w": 4, //szerokosc liczona w kolumnach,ekran podzielony jest na siatkę która ma 12 kolumn, i 12 wierszy (12 wierszy per rozmiar okna), ekran może się rozszerzać wertykalnie wiec wierszy może być więcej 
+          "x": 1, //pozycja na ekranie - kolumna, indeksowana od 0
+          "h": 4, //wysokosc liczona w wierszach
+          "y": 1 //pozycja wiersza 
         }
       },
       {
