@@ -46,7 +46,7 @@
         <AccordionTab :header="$t('model.information_panel.structure')">
           <ren-input-wrapper v-if="mPanelStructureJSON" :text-label="null">
             <template #content>
-              <Textarea v-model="mPanelStructureJSON" style="width: 100%; max-width: 100rem" :maxlength="40000" rows="15" :cols="80"></Textarea>
+              <Textarea v-model="mPanelStructureJSON" style="width: 100%; max-width: 100rem" :maxlength="100000" rows="15" :cols="100"></Textarea>
             </template>
           </ren-input-wrapper>
           <ren-input-wrapper v-if="modelValue" :text-label="null">
@@ -85,7 +85,7 @@
             <!-- <ren-input-text v-if="submittedPanel" v-model="submittedPanel" :text-label="null" :cols="50" :maxlength="10000" /> -->
             <ren-input-wrapper v-if="submittedPanelJSON" :text-label="null">
               <template #content>
-                <Textarea v-model="submittedPanelJSON" style="width: 100%" :maxlength="40000" rows="15" :cols="80"></Textarea>
+                <Textarea v-model="submittedPanelJSON" style="width: 100%" :maxlength="100000" rows="15" :cols="80"></Textarea>
               </template>
             </ren-input-wrapper>
             <div v-else>{{ $t("view.submit_structure") }}</div>
@@ -379,6 +379,7 @@ export default {
       this.panelStructure.is_template = this.mModel.is_template == null ? false : this.mModel.is_template;
       this.panelStructure.props = { ...this.panelStructure.props, ...this.mModel.props };
       this.panelStructure.id = this.mModel.id;
+      this.panelStructure.priority = this.mModel.priority;
       this.panelStructure.label = this.mModel.label ? this.mModel.label : this.panelStructure.label;
       this.mModel = this.panelStructure;
       console.debug(this.panelStructure);

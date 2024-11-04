@@ -151,7 +151,10 @@ export default {
 
     },
     dateFilterToString(f) {
-
+      if (!f) {
+        console.warn("Previous filter not defined")
+        return ""
+      }
       var filterArr = []
       if (f.from) {
         let d = new Date(f.from).toLocaleString();
