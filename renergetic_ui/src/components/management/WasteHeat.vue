@@ -25,6 +25,17 @@
     :filter="panelFilter"
     @update:tile="onTileUpdate"
   ></InformationPanelWrapper>
+
+  <!-- <InformationPanel
+    :edit="false"
+    :panel-data="panelWrapper.data"
+    :panel="panelWrapper.panel"
+    :locked="true"
+    :settings="mPanelSettings"
+    :filter="panelFilter"
+    @timeseries-update="onTimeseriesUpdate"
+    @update:tile="onTileUpdate"
+  /> -->
   <Card v-if="isTaskRunning" class="ren-page-content" style="width: 100%; overflow: unset">
     <template #title>
       {{ $t("menu.waste_heat") }}
@@ -34,6 +45,7 @@
         <div>
           {{ workflowRun.name ? `${workflowRun.name} (${workflowRun.run_id})` : workflowRun.run_id }}
         </div>
+
         <div class="disabled">
           {{ $t("model.workflowrun.start_time_formatted", { start_time: $ren.utils.dateString(workflowRun.start_time) }) }}
         </div>
@@ -43,7 +55,14 @@
   <div v-if="informationPanel && !isTaskRunning" style="margin-left: 1rem; margin-top: 2rem">
     <ParsedDateFilter :key="parsedFilterRefresh" :filter="panelFilter" />
   </div>
-  <Dialog v-model:visible="workflowRunStartDialog" :style="{ width: '40rem' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+  <Dialog
+    v-model:visible="workflowRunStartDialog"
+    :style="{ width: '40rem' }"
+    :class="'narrow'"
+    :maximizable="true"
+    :modal="true"
+    :dismissable-mask="true"
+  >
     <WorkflowRun :workflow="workflow" :multi-steps="multiSteps" @on-start="onWorkflowStart" />
   </Dialog>
   <Dialog v-model:visible="workflowRunDetailsDialog" :style="{ width: '40rem' }" :maximizable="true" :modal="true" :dismissable-mask="true">
@@ -60,11 +79,20 @@ import PipelineRunLog from "@/components/admin/PipelineRunLog.vue";
 // import PipelineRunLog from "./PipelineRunLog.vue";
 import WorkflowRun from "@/components/management/workflow/WorkflowRun.vue";
 import InformationPanelWrapper from "@/components/dashboard/informationpanel/InformationPanelWrapper.vue";
-import ParsedDateFilter from "@/components/miscellaneous/settings/ParsedDateFilter.vue";
 
+import ParsedDateFilter from "@/components/miscellaneous/settings/ParsedDateFilter.vue";
+// import InformationPanel from "@/components/dashboard/informationpanel/InformationPanel.vue";
+// import customPanel from "./panel.json";
 export default {
   name: "WasteHeat",
-  components: { WorkflowRun, WorkflowRunDetails, InformationPanelWrapper, ParsedDateFilter, PipelineRunLog },
+  components: {
+    // InformationPanel,
+    WorkflowRun,
+    WorkflowRunDetails,
+    InformationPanelWrapper,
+    ParsedDateFilter,
+    PipelineRunLog,
+  },
   props: {
     workflow: { type: Object, default: null },
     workflowRun: { type: Object, default: null },
@@ -75,6 +103,7 @@ export default {
   emits: ["reload", "update:filters", "select"],
   data() {
     return {
+      // panelWrapper: customPanel,
       showPrevious: false,
       runLogList: [],
       selectedWorkflowRunDetails: null,

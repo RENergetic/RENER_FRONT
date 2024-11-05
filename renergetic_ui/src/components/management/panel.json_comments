@@ -1,0 +1,317 @@
+{
+  "data": {
+    "current": {
+      "last": {
+        "ppch_cop_1": 110, // to jest kazda komórka z tabeli w deliverable (np tabela z COP)
+        "ppch_cop_2": 150, //ppch -> nazwa wriantu konsumpcji, cop , nazwa parametru, 2 -> indeks symulacji lub jakas inna nazwa
+        "ppcw_cop_1": 110,
+        "ppcw_cop_2": 150,
+        "ppch_pow_1": 46.11059014048671,
+        "ppch_pow_2": 77.64177042146011,
+        "ppcw_pow_1": 8099.46,
+        "ppcw_pow_2": 65.0217704214601
+      }
+    },
+    "prediction": {}
+  },
+  "panel": {
+    "id": 10288,
+    "name": "simtest", //nazwa panelu , nazwa która może być zdefiniowa w UI, ja cały szablon mogę przypisać do Obiektu 'PipelineRun' który odpowiada za trzymanie metadanych dotyczące jakiegos zadania w kubeflow 
+    "label": "simtest", //nazwa panelu 
+    "tiles": [
+      {
+        "id": 10547, //unikalny id obiektu (w obrębie tego szablonu) typu tile  
+        "name": "cop_sim1",  //nazwa kafelka
+        "label": "cop sim1",//nazwa (etykieta ) kafelka
+        "type": "list", //
+        "featured": null,
+        "measurements": [
+          {
+            "id": "ppch_cop_1", //obiekt measurement reprezentuje jedno pole w tabeli z wynikami (tabeli wynikowej która jest zdefiniowana w deliverable )
+            "name": "ppch_cop_1",
+            "label": "ppch_cop: sim 1",
+            "measurement_details": { //metadane szeregu czasowego (w kontekście wasteheat - po prostu pojedyncza wartość)  
+              "color": "#dedede", //metadane mogą być zdefiniowane w UI, ale bedę musiał stworzyć obiekty measurements w bazie danych wczesniej , albo po prostu przypisać przypisać stały kolor do symulacji dc-worms - tutaj możemy nawet dać kontrolkę dla użytkownika
+              "background": "#ffffff" 
+            },
+            "type": {
+              "id": 6,
+              "name": "percentage",
+              "label": "ratio [%]",
+              "unit": "%",
+              "factor": 100,
+              "color": "#E74C3C",
+              "physical_name": "ratio",
+              "base_unit": "ratio",
+              "description": null,
+              "dashboard_visibility": true
+            },
+            "domain": "heat",
+            "direction": "out",
+            "asset": null,
+            "category": null,
+            "description": null,
+            "sensor_name": "heat_power", 
+            "tags": null,
+            "aggregation_function": "last" //ta funkcja musi być spójna z tym co jest w obiekcie 'data' w szablonie
+          },
+          {
+            "id": "ppcw_cop_1",
+            "name": "ppcw_cop_1",
+            "label": "ppcw_cop: sim 1",
+            "type": {
+              "id": 6,
+              "name": "percentage",
+              "label": "ratio [%]",
+              "unit": "%",
+              "factor": 100,
+              "color": "#E74C3C",
+              "physical_name": "ratio",
+              "base_unit": "ratio",
+              "description": null,
+              "dashboard_visibility": true
+            },
+            "domain": "heat",
+            "direction": "out",
+            "asset": null,
+            "category": null,
+            "description": null,
+            "sensor_name": "heat_power",
+            "measurement_details": {},
+            "tags": null,
+            "aggregation_function": "last"
+          }
+        ],
+        "props": {
+          "tag_key": "scenario" // tag, w tym przypadku kiedy nie odnosimy się do influxdb chyba nie jest istotny - label służy do identyfikacji wyniku
+        },
+        "layout": {
+          "w": 4, //szerokosc liczona w kolumnach,ekran podzielony jest na siatkę która ma 12 kolumn, i 12 wierszy (12 wierszy per rozmiar okna), ekran może się rozszerzać wertykalnie wiec wierszy może być więcej 
+          "x": 1, //pozycja na ekranie - kolumna, indeksowana od 0
+          "h": 4, //wysokosc liczona w wierszach
+          "y": 1 //pozycja wiersza 
+        }
+      },
+      {
+        "id": 10548,
+        "name": "cop_sim2",
+        "label": "cop sim2",
+        "type": "list",
+        "featured": null,
+        "measurements": [
+          {
+            "id": "ppch_cop_2",
+            "name": "ppch_cop_2",
+            "label": "ppch_cop: sim 2",
+            "type": {
+              "id": 6,
+              "name": "percentage",
+              "label": "ratio [%]",
+              "unit": "%",
+              "factor": 100,
+              "color": "#E74C3C",
+              "physical_name": "ratio",
+              "base_unit": "ratio",
+              "description": null,
+              "dashboard_visibility": true
+            },
+            "domain": "heat",
+            "direction": "out",
+            "asset": null,
+            "category": null,
+            "description": null,
+            "sensor_name": "heat_power",
+            "measurement_details": {},
+            "tags": null,
+            "aggregation_function": "last"
+          },
+          {
+            "id": "ppcw_cop_2",
+            "name": "ppcw_cop_2",
+            "label": "ppcw_cop: sim 2",
+            "type": {
+              "id": 6,
+              "name": "percentage",
+              "label": "ratio [%]",
+              "unit": "%",
+              "factor": 100,
+              "color": "#E74C3C",
+              "physical_name": "ratio",
+              "base_unit": "ratio",
+              "description": null,
+              "dashboard_visibility": true
+            },
+            "domain": "heat",
+            "direction": "out",
+            "asset": null,
+            "category": null,
+            "description": null,
+            "sensor_name": "heat_power",
+            "measurement_details": {},
+            "tags": null,
+            "aggregation_function": "last"
+          }
+        ],
+        "props": {
+          "tag_key": "scenario"
+        },
+        "layout": {
+          "w": 4,
+          "x": 5,
+          "h": 4,
+          "y": 1
+        }
+      },
+      {
+        "id": 10549,
+        "name": "pow_sim1",
+        "label": "pow sim1",
+        "type": "list",
+        "featured": null,
+        "measurements": [
+          {
+            "id": "ppch_pow_1",
+            "name": "ppch_pow_1",
+            "label": "ppch_pow: sim 1",
+            "type": {
+              "id": 6,
+              "name": "power",
+              "label": "Power [kW]",
+              "unit": "kW",
+              "factor": 1000,
+              "color": "#E74C3C",
+              "physical_name": "power",
+              "base_unit": "W",
+              "description": null,
+              "dashboard_visibility": true
+            },
+            "domain": "heat",
+            "direction": "out",
+            "asset": null,
+            "category": null,
+            "description": null,
+            "sensor_name": "heat_power",
+            "measurement_details": {},
+            "tags": null,
+            "aggregation_function": "last"
+          },
+          {
+            "id": "ppcw_pow_1",
+            "name": "ppcw_pow_1",
+            "label": "ppcw_pow: sim 1",
+            "type": {
+              "id": 6,
+              "name": "power",
+              "label": "Power [kW]",
+              "unit": "kW",
+              "factor": 1000,
+              "color": "#E74C3C",
+              "physical_name": "power",
+              "base_unit": "W",
+              "description": null,
+              "dashboard_visibility": true
+            },
+            "domain": "heat",
+            "direction": "out",
+            "asset": null,
+            "category": null,
+            "description": null,
+            "sensor_name": "heat_power",
+            "measurement_details": {},
+            "tags": null,
+            "aggregation_function": "last"
+          }
+        ],
+        "props": {
+          "tag_key": "scenario"
+        },
+        "layout": {
+          "w": 4,
+          "x": 1,
+          "h": 4,
+          "y": 1
+        }
+      },
+      {
+        "id": 10550,
+        "name": "pow_sim2",
+        "label": "pow sim2",
+        "type": "list",
+        "featured": null,
+        "measurements": [
+          {
+            "id": "ppch_pow_2",
+            "name": "ppch_pow_2",
+            "label": "ppch_pow: sim 2",
+            "type": {
+              "id": 6,
+              "name": "power",
+              "label": "Power [kW]",
+              "unit": "kW",
+              "factor": 1000,
+              "color": "#E74C3C",
+              "physical_name": "power",
+              "base_unit": "W",
+              "description": null,
+              "dashboard_visibility": true
+            },
+            "domain": "heat",
+            "direction": "out",
+            "asset": null,
+            "category": null,
+            "description": null,
+            "sensor_name": "heat_power",
+            "measurement_details": {},
+            "tags": null,
+            "aggregation_function": "last"
+          },
+          {
+            "id": "ppcw_pow_2",
+            "name": "ppcw_pow_2",
+            "label": "ppcw_pow: sim 2",
+            "type": {
+              "id": 6,
+              "name": "power",
+              "label": "Power [kW]",
+              "unit": "kW",
+              "factor": 1000,
+              "color": "#E74C3C",
+              "physical_name": "power",
+              "base_unit": "W",
+              "description": null,
+              "dashboard_visibility": true
+            },
+            "domain": "heat",
+            "direction": "out",
+            "asset": null,
+            "category": null,
+            "description": null,
+            "sensor_name": "heat_power",
+            "measurement_details": {},
+            "tags": null,
+            "aggregation_function": "last"
+          }
+        ],
+        "props": {
+          "tag_key": "scenario"
+        },
+        "layout": {
+          "w": 4,
+          "x": 5,
+          "h": 4,
+          "y": 1
+        }
+      }
+    ],
+    "is_template": false,
+    "featured": true,
+    "priority": null,
+    "props": {
+      "tag_Value": "case1",
+      "tag_value": "case1",
+      "qrcodeSize": 200,
+      "tag_key": "case",
+      "qrcodePosition": "top_right"
+    }
+  }
+}

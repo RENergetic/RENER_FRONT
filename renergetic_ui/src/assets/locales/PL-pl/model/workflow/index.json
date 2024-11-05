@@ -19,6 +19,7 @@
   },
   "simulation_index": "Symulacja: {0}",
   "simulation_label": "Nazwa symulacji",
+  "simulation_number": null,
   "update_date": "Data ostatniej aktualizacji",
   "version": "Wersja",
   "visibility": "Widoczność",

@@ -133,6 +133,7 @@ function validateTileSettings(tile, panelSettings, ctx) {
         measurement_background: tile.props.measurement_background != null ? tile.props.measurement_background : false,
         // title_color: tile.props.title_color != null ? tile.props.title_color : null,
         fontSize: panelSettings.fontSize,
+
         background_mask: tile.props.background_mask ? tile.props.background_mask : tile.props.mask,
         // background: tile.props.background,
         // template: tile.props.template,

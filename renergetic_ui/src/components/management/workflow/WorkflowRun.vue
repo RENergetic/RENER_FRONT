@@ -126,8 +126,12 @@ export default {
   },
   computed: {
     workflowLabel: function () {
-      if (this.workflow == null) return null;
-      return this.workflow.name ? this.workflow.name : this.workflow.pipeline_id;
+      let name = this.workflow.name ? `${this.workflow.name}, id: ${this.workflow.pipeline_id}` : this.workflow.pipeline_id;
+
+      if (this.workflow.label) {
+        return `${this.workflow.label} (${name})`;
+      }
+      return name;
     },
   },
   watch: {

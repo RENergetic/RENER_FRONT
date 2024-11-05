@@ -54,6 +54,7 @@ export default {
     titleVisible: { type: Boolean, default: false },
     title: { type: String, default: null },
     comparePrevious: { type: Boolean, default: null },
+    sizeScale: { type: Number, default: 1.0 },
     // loadData: { type: Boolean, default: true },
     annotations: {
       type: [Object, Array],
@@ -286,6 +287,7 @@ export default {
           borderColor: color + "FF",
           showLine: true,
           fill: fill,
+          pointRadius: data[m.id].length > 533330 ? 0 : 1,
         });
         console.debug(this.mPrevious);
         console.debug(data);
@@ -300,6 +302,8 @@ export default {
             backgroundColor: color + "00",
             borderColor: color + "AA",
             showLine: true,
+            borderDash: [5, 5],
+            pointRadius: 0,
             fill: fill,
           });
       }

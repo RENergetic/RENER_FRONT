@@ -6,13 +6,13 @@
   <i style="display: flex; justify-content: center; align-items: center">
     <i
       v-if="mValue != null && mValue > 0"
-      v-tooltip="$t('view.value_increased_by', { value: valueDiff })"
+      v-tooltip="$t('view.value_increased_by', { value: mValue })"
       class="pi pi-arrow-circle-up"
       style="font-size: 0.5em"
     />
     <i
       v-else-if="mValue != null && mValue < 0"
-      v-tooltip="$t('view.value_decreased_by', { value: -valueDiff })"
+      v-tooltip="$t('view.value_decreased_by', { value: -mValue })"
       class="pi pi-arrow-circle-down"
       style="font-size: 0.5em"
     />
