@@ -128,7 +128,7 @@ function validateTileSettings(tile, panelSettings, ctx) {
             ? tile.props.title_visibility
             : panelSettings.title_visibility != null
             ? panelSettings.title_visibility
-            : false),
+            : true),
         measurement_list: tile.props.measurement_list != null ? tile.props.measurement_list : true,
         measurement_background: tile.props.measurement_background != null ? tile.props.measurement_background : false,
         // title_color: tile.props.title_color != null ? tile.props.title_color : null,

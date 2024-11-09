@@ -26,7 +26,9 @@
       </span>
     </div>
     <div v-else :class="'flex flex-column align-items-center justify-content-center tilecontent' + tileOrientationClass">
-      <span id="label" :style="color"> {{ mSettings.tile.label ? mSettings.tile.label : `${measurementlabel}: ` }} </span>
+      <span v-if="mSettings.tile.title_visibility" id="label" :style="color">
+        {{ mSettings.tile.label ? mSettings.tile.label : `${measurementlabel}: ` }}
+      </span>
       <span id="value" :style="color">
         <h2>{{ $ren.utils.roundValue(value) }} {{ unit }}<RenValueCompare v-if="prevDiff != null" :value-diff="prevDiff" /></h2>
       </span>
