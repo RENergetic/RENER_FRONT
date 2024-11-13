@@ -1,20 +1,29 @@
 <template>
-  <div :class="'flex justify-content-center ' + tileOrientationClass">
-    <div
-      v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
-      class="flex flex-none flex-column align-items-center justify-content-center tileicon"
-    >
-      <font-awesome-icon :icon="mSettings.tile.icon" />
+  <div class="flex flex-column justify-content-start">
+    <!-- <span v-if="mSettings.tile.title_visibility" id="label" :style="color">
+      {{ mSettings.tile.label ? mSettings.tile.label : `${measurementlabel}: ` }}
+    </span> -->
+    <div v-if="mSettings.tile.title_visibility" class="flex flex-none flex-column justify-content-center">
+      <h3 :style="`text-align: center;color:${tileTitleColor}`" :v-tooltip="mSettings.tile.description">{{ mSettings.tile.label }}</h3>
+      <!-- v-if="legend"-->
     </div>
-    <div class="flex flex-column align-items-center justify-content-center tilecontent" style="padding: 0 0.5rem">
-      <InformationTileMeasurementList
-        v-if="mData != null"
-        :tile="mTile"
-        :pdata="pdata"
-        :settings="mSettings"
-        :conversion-settings="conversionSettings"
-        @select="onMeasurementSelect"
-      />
+    <div :class="'flex justify-content-center ' + tileOrientationClass">
+      <div
+        v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
+        class="flex flex-none flex-column align-items-center justify-content-center tileicon"
+      >
+        <font-awesome-icon :icon="mSettings.tile.icon" />
+      </div>
+      <div class="flex flex-column align-items-center justify-content-center tilecontent" style="padding: 0 0.5rem">
+        <InformationTileMeasurementList
+          v-if="mData != null"
+          :tile="mTile"
+          :pdata="pdata"
+          :settings="mSettings"
+          :conversion-settings="conversionSettings"
+          @select="onMeasurementSelect"
+        />
+      </div>
     </div>
   </div>
 </template>

@@ -116,6 +116,7 @@ function validateTileSettings(tile, panelSettings, ctx) {
       ...tile.props,
       ...{
         label: ctx.$te(`enums.measurement_name.${tile.name}`) ? ctx.$t(`enums.measurement_name.${tile.name}`) : tile.label,
+        description: tile.description,
         icon: icons[tile.props.icon],
         icon_visibility: tile.props.icon_visibility != null ? tile.props.icon_visibility : true,
         item_icon_visibility: tile.props.item_icon_visibility != null ? tile.props.item_icon_visibility : true,

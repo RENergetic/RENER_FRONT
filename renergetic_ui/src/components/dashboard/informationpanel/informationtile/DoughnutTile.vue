@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-column justify-content-center" style="height: 100%">
     <div class="flex flex-none flex-column align-items-center justify-content-center">
-      <h3 :style="`text-align: center;color:${tileTitleColor}`">{{ mSettings.tile.label }}</h3>
+      <h3 :style="`text-align: center;color:${tileTitleColor}`" :v-tooltip="mSettings.tile.description">{{ mSettings.tile.label }}</h3>
       <!-- v-if="legend"-->
     </div>
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->

@@ -174,6 +174,8 @@ export default {
       //get new unit
       let mt = state.measurementTypes[currentMeasurementType.physical_name].find((mt) => mt.unit == newUnit);
 
+      // console.error(currentMeasurementType);
+      // console.error(mt);
       return (value * currentMeasurementType.factor) / mt.factor;
       // return (value / currentMeasurementType.factor) * mt.factor;
     },

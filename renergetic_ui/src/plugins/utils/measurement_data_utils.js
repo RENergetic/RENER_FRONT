@@ -1,8 +1,9 @@
 // import { TileTypes } from "@/plugins/model/Enums.js";
 export default {
   aggKey(measurement, settings) {
-    let key = `${measurement.type.base_unit}_${measurement.aggregation_function}`;
-    // console.debug(measurement.id + " " + measurement.type.base_unit);
+    //either base unit or physical name should be defined - both are corelated with each other
+    let baseUnit = measurement.type.base_unit ? measurement.type.base_unit : measurement.type.physical_name;
+    let key = `${baseUnit}_${measurement.aggregation_function}`;
     if (!settings.groupByDirection) {
       key += `_${measurement.direction}`;
     }
@@ -109,8 +110,6 @@ export default {
     if (!pdata.timeseries) return pdata;
     var timeseries = pdata["timeseries"]["current"];
     var chartDict = {};
-    // panel.tiles.filter((tile) => tile.type == TileTypes.chart).forEach((tile) => tile.measurements.forEach((m) => (chartDict[m.id] = m)));
-
     panel.tiles.forEach((tile) => tile.measurements.filter((m) => m.id in timeseries).forEach((m) => (chartDict[m.id] = m)));
 
     let chartMeasurements = Object.values(chartDict);
@@ -131,22 +130,19 @@ export default {
   },
   calcPanelRelativeValues(panel, pData, settings) {
     var accuDict = {};
-    // var aggDict = { current: { last: {} }, predictions: pData.predictions };
-    //TODO: aggregate also predictions - not only current values
-    //TODO: include min values
     var mDict = {};
-    //TODO: initialize this dictionary in the vuex store
     if (panel && panel.tiles) {
       for (let tile of panel.tiles) {
         if (tile.props && !tile.props.ignore_grouping) {
           for (let m of tile.measurements) {
             //TODO: ignore percentage type ?
-            if (m.id != null && m.type.base_unit != "%") mDict[`${m.id}_${m.aggregation_function}`] = m;
+            let baseUnit = m.type.base_unit ? m.type.base_unit : m.type.physical_name;
+            if (m.id != null && baseUnit != "%") mDict[`${m.id}_${m.aggregation_function}`] = m;
           }
         }
       }
     }
-    console.debug(mDict);
+    // console.debug(mDict);
     console.info(settings);
     for (let mId in mDict) {
       let m = mDict[mId];
@@ -155,39 +151,33 @@ export default {
       // console.error(key);
       let factor = m.type.factor;
       let value = pData.current[m.aggregation_function][m.id] * factor; //todo: raise exception if value not found
-      accuDict = this.valueAccu(key, value, m.type.base_unit, accuDict);
+      let baseUnit = m.type.base_unit ? m.type.base_unit : m.type.physical_name;
+      accuDict = this.valueAccu(key, value, baseUnit, m.type.unit, accuDict);
     }
+    // console.debug(accuDict);
     pData.max = {};
     for (let mId in mDict) {
       let m = mDict[mId];
-      // let key = `${m.name}_${m.direction}_${m.domain}_${m.type.base_unit}`;
       let key = this.aggKey(m, settings);
-      // let factor = m.type.factor;
-      // let value = pData.current.last[m.id] * factor;
-      // let aggValue = this.valueAgg(key, value, m.type.base_unit, accuDict);
-      // pData.current.last[m.id] = aggValue;
       if (!pData.current.min) {
         pData.current.min = {};
       }
       pData.current.min[m.id] = 0;
-      // if (!pData.current.max) {
-      //   pData.current.max = {};
-      // }
-      // pData.current.max[m.id] = accuDict[key].accu * factor;
       if (!pData.max[m.aggregation_function]) {
         pData.max[m.aggregation_function] = {};
       }
-      // if (!pData.max[m.aggregation_function][m.id]) {
-      //   pData.max[m.aggregation_function][m.id] = {};
-      // }
       pData.max[m.aggregation_function][m.id] = accuDict[key].accu;
     }
-    console.info(accuDict);
+    console.debug(accuDict);
     return pData;
   },
-  valueAccu(key, value, baseUnit, dict) {
-    if (baseUnit == "0-1") {
+  valueAccu(key, value, baseUnit, unit, dict) {
+    if (baseUnit == "0-1" || unit == "0-1") {
       dict[key] = { accu: 1.0, counter: 1 };
+      return dict;
+    }
+    if (unit == "%") {
+      dict[key] = { accu: 100.0, counter: 1 };
       return dict;
     }
     if (dict[key] == null) {
@@ -202,9 +192,9 @@ export default {
       case "ratio":
         dict[key].accu += value;
         break;
-      case "0-1":
-        dict[key].accu = 1.0;
-        break;
+      // case "0-1":
+      //   dict[key].accu = 1.0;
+      //   break;
       default:
         console.error(`measurement type accu not defined for ${baseUnit}, ${key}`);
         break;
@@ -269,11 +259,36 @@ export default {
     // if ( "group_by_asset",
     //   "group_by_domain",)
   },
+  getMaxValue(measurement, data, tileSettings, conversionSettings) {
+    if (measurement == null) {
+      return 1.0;
+    }
+    let unit = this.getUnit(measurement, tileSettings.panel, conversionSettings);
+    switch (unit) {
+      case "%":
+        return 100.0;
+      case "0-1":
+        return 1.0;
+      case "ratio":
+      case "any":
+        return tileSettings.panel.relativeValues ? 100.0 : 1.0;
+
+      default:
+        break;
+    }
+    try {
+      return data.max[measurement.aggregation_function][measurement.id];
+    } catch (e) {
+      console.error(`Max value failed   for ${measurement.id} `);
+      console.debug(data);
+      return 1.0;
+    }
+  },
 
   getConvertedValue(measurement, data, tileSettings) {
     //TODO: make it comfigurable in tile / args prediction & aggregation func
     try {
-      if (tileSettings.panel.relativeValues && measurement.type.unit != "%") {
+      if (tileSettings.panel.relativeValues && measurement.type.unit != "%" && measurement.type.unit != "ratio" && measurement.type.unit != "0-1") {
         return (data.current[measurement.aggregation_function][measurement.id] / data.max[measurement.aggregation_function][measurement.id]) * 100.0;
       }
       return data.current[measurement.aggregation_function][measurement.id];
@@ -291,14 +306,3 @@ export default {
     }
   },
 };
-// valueAgg(key, value, baseUnit, dict) {
-//   switch (baseUnit) {
-//     case "W":
-//     case "Wh":
-//       return dict[key].accu != 0 ? (value / dict[key].accu) * 100.0 : 0.0;
-//     default:
-//       console.error(`measurement type agreggation not defined for ${baseUnit}, ${key}`);
-//       break;
-//   }
-//   return dict;
-// }};

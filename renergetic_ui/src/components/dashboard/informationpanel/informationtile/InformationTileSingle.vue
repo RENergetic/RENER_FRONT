@@ -26,7 +26,7 @@
       </span>
     </div>
     <div v-else :class="'flex flex-column align-items-center justify-content-center tilecontent' + tileOrientationClass">
-      <span v-if="mSettings.tile.title_visibility" id="label" :style="color">
+      <span v-if="mSettings.tile.title_visibility" id="label" :style="color" :v-tooltip="mSettings.tile.description">
         {{ mSettings.tile.label ? mSettings.tile.label : `${measurementlabel}: ` }}
       </span>
       <span id="value" :style="color">

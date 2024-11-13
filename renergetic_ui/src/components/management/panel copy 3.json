@@ -2,51 +2,51 @@
   "data": {
       "current": {
           "last": {
-              "sim_0_0_0": 1.4227109032033398,
-              "sim_0_0_1": 4.040826227101631,
-              "sim_0_0_2": 3.774525613633221,
-              "sim_0_1_0": 1.5499219312505366,
-              "sim_0_1_1": 4.178675651829669,
-              "sim_0_1_2": 1.239684172526311,
-              "sim_0_2_0": 3.177735267357832,
-              "sim_0_2_1": 5.430268700615692,
-              "sim_0_2_2": 2.645141355528226,
-              "sim_1_0_0": 510,
-              "sim_1_0_1": 1028,
-              "sim_1_0_2": 847,
-              "sim_1_1_0": 832,
-              "sim_1_1_1": 1267,
-              "sim_1_1_2": 536,
-              "sim_1_2_0": 895,
-              "sim_1_2_1": 531,
-              "sim_1_2_2": 1254,
-              "sim_2_0_0": 0.4270438203921213,
-              "sim_2_0_1": 0.39585049623104673,
-              "sim_2_0_2": 0.23749889658880763,
-              "sim_2_1_0": 0.12057916239916677,
-              "sim_2_1_1": 0.6630383235519288,
-              "sim_2_1_2": 0.024548577239469793,
-              "sim_2_2_0": 0.6117432158457969,
-              "sim_2_2_1": 0.17474221052490901,
-              "sim_2_2_2": 0.04029668515251916,
-              "sim_3_0_0": 1285,
-              "sim_3_0_1": 1024,
-              "sim_3_0_2": 566,
-              "sim_3_1_0": 1423,
-              "sim_3_1_1": 664,
-              "sim_3_1_2": 558,
-              "sim_3_2_0": 1428,
-              "sim_3_2_1": 963,
-              "sim_3_2_2": 1198,
-              "sim_4_0_0": 893,
-              "sim_4_0_1": 1433,
-              "sim_4_0_2": 1179,
-              "sim_4_1_0": 571,
-              "sim_4_1_1": 1419,
-              "sim_4_1_2": 1495,
-              "sim_4_2_0": 1100,
-              "sim_4_2_1": 1467,
-              "sim_4_2_2": 1442
+              "sim_0_0_0": 4.459279642394661,
+              "sim_0_0_1": 1.6296534916510859,
+              "sim_0_0_2": 4.048895222067341,
+              "sim_0_1_0": 5.418473239116911,
+              "sim_0_1_1": 1.659559745633096,
+              "sim_0_1_2": 2.1441153749856285,
+              "sim_0_2_0": 2.5502499715214224,
+              "sim_0_2_1": 2.3593633313316578,
+              "sim_0_2_2": 2.2747692420053953,
+              "sim_1_0_0": 852,
+              "sim_1_0_1": 1026,
+              "sim_1_0_2": 896,
+              "sim_1_1_0": 1181,
+              "sim_1_1_1": 759,
+              "sim_1_1_2": 515,
+              "sim_1_2_0": 666,
+              "sim_1_2_1": 1084,
+              "sim_1_2_2": 1348,
+              "sim_2_0_0": 0.3729677540263573,
+              "sim_2_0_1": 0.7051073789196592,
+              "sim_2_0_2": 0.7801186286363317,
+              "sim_2_1_0": 0.06258974425101727,
+              "sim_2_1_1": 0.9143816651073337,
+              "sim_2_1_2": 0.7398357761439429,
+              "sim_2_2_0": 0.3059520317607052,
+              "sim_2_2_1": 0.8063533035415678,
+              "sim_2_2_2": 0.2259054513697738,
+              "sim_3_0_0": 571,
+              "sim_3_0_1": 600,
+              "sim_3_0_2": 716,
+              "sim_3_1_0": 629,
+              "sim_3_1_1": 1040,
+              "sim_3_1_2": 1033,
+              "sim_3_2_0": 1000,
+              "sim_3_2_1": 710,
+              "sim_3_2_2": 776,
+              "sim_4_0_0": 595,
+              "sim_4_0_1": 756,
+              "sim_4_0_2": 1128,
+              "sim_4_1_0": 836,
+              "sim_4_1_1": 574,
+              "sim_4_1_2": 1238,
+              "sim_4_2_0": 1405,
+              "sim_4_2_1": 788,
+              "sim_4_2_2": 1476
           }
       }
   },
@@ -54,14 +54,12 @@
       "label": "Label",
       "name": "name",
       "props": {
-          "font_scale": 0.8,
-          "qrcodePosition": "top_right",
-          "qrcodeSize": 200
+          "font_scale": 0.8
       },
       "tiles": [
           {
               "id": 10000,
-              "label": "COP tesst comparison (Simulation: 1)",
+              "label": "COP comparison (Simulation: 1)",
               "layout": {
                   "h": 4,
                   "w": 3,
@@ -71,9 +69,6 @@
               "measurements": [
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "none",
                       "domain": "heat",
                       "id": "sim_0_0_0",
@@ -83,16 +78,8 @@
                           "color": "#1ABC9C"
                       },
                       "name": "COP_simulation_sim_0_0_0",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "ratio",
-                          "color": null,
-                          "dashboard_visibility": null,
-                          "description": null,
-                          "factor": 1.0,
                           "id": 18,
-                          "label": "Ratio",
                           "name": "ratio",
                           "physical_name": "ratio",
                           "unit": "ratio"
@@ -100,9 +87,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "none",
                       "domain": "heat",
                       "id": "sim_0_0_1",
@@ -112,16 +96,8 @@
                           "color": "#E67E22"
                       },
                       "name": "COP_simulation_sim_0_0_1",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "ratio",
-                          "color": null,
-                          "dashboard_visibility": null,
-                          "description": null,
-                          "factor": 1.0,
                           "id": 18,
-                          "label": "Ratio",
                           "name": "ratio",
                           "physical_name": "ratio",
                           "unit": "ratio"
@@ -129,9 +105,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "none",
                       "domain": "heat",
                       "id": "sim_0_0_2",
@@ -141,16 +114,8 @@
                           "color": "#2ECC71"
                       },
                       "name": "COP_simulation_sim_0_0_2",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "ratio",
-                          "color": null,
-                          "dashboard_visibility": null,
-                          "description": null,
-                          "factor": 1.0,
                           "id": 18,
-                          "label": "Ratio",
                           "name": "ratio",
                           "physical_name": "ratio",
                           "unit": "ratio"
@@ -166,7 +131,7 @@
           },
           {
               "id": 10100,
-              "label": "COP tesst comparison (Simulation: 2)",
+              "label": "COP comparison (Simulation: 2)",
               "layout": {
                   "h": 4,
                   "w": 3,
@@ -176,9 +141,6 @@
               "measurements": [
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "none",
                       "domain": "heat",
                       "id": "sim_0_1_0",
@@ -188,16 +150,8 @@
                           "color": "#1ABC9C"
                       },
                       "name": "COP_simulation_sim_0_1_0",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "ratio",
-                          "color": null,
-                          "dashboard_visibility": null,
-                          "description": null,
-                          "factor": 1.0,
                           "id": 18,
-                          "label": "Ratio",
                           "name": "ratio",
                           "physical_name": "ratio",
                           "unit": "ratio"
@@ -205,9 +159,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "none",
                       "domain": "heat",
                       "id": "sim_0_1_1",
@@ -217,16 +168,8 @@
                           "color": "#E67E22"
                       },
                       "name": "COP_simulation_sim_0_1_1",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "ratio",
-                          "color": null,
-                          "dashboard_visibility": null,
-                          "description": null,
-                          "factor": 1.0,
                           "id": 18,
-                          "label": "Ratio",
                           "name": "ratio",
                           "physical_name": "ratio",
                           "unit": "ratio"
@@ -234,9 +177,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "none",
                       "domain": "heat",
                       "id": "sim_0_1_2",
@@ -246,16 +186,8 @@
                           "color": "#2ECC71"
                       },
                       "name": "COP_simulation_sim_0_1_2",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "ratio",
-                          "color": null,
-                          "dashboard_visibility": null,
-                          "description": null,
-                          "factor": 1.0,
                           "id": 18,
-                          "label": "Ratio",
                           "name": "ratio",
                           "physical_name": "ratio",
                           "unit": "ratio"
@@ -271,7 +203,7 @@
           },
           {
               "id": 10200,
-              "label": "COP tesst comparison (Simulation: 3)",
+              "label": "COP comparison (Simulation: 3)",
               "layout": {
                   "h": 4,
                   "w": 3,
@@ -281,9 +213,6 @@
               "measurements": [
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "none",
                       "domain": "heat",
                       "id": "sim_0_2_0",
@@ -293,16 +222,8 @@
                           "color": "#1ABC9C"
                       },
                       "name": "COP_simulation_sim_0_2_0",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "ratio",
-                          "color": null,
-                          "dashboard_visibility": null,
-                          "description": null,
-                          "factor": 1.0,
                           "id": 18,
-                          "label": "Ratio",
                           "name": "ratio",
                           "physical_name": "ratio",
                           "unit": "ratio"
@@ -310,9 +231,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "none",
                       "domain": "heat",
                       "id": "sim_0_2_1",
@@ -322,16 +240,8 @@
                           "color": "#E67E22"
                       },
                       "name": "COP_simulation_sim_0_2_1",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "ratio",
-                          "color": null,
-                          "dashboard_visibility": null,
-                          "description": null,
-                          "factor": 1.0,
                           "id": 18,
-                          "label": "Ratio",
                           "name": "ratio",
                           "physical_name": "ratio",
                           "unit": "ratio"
@@ -339,9 +249,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "none",
                       "domain": "heat",
                       "id": "sim_0_2_2",
@@ -351,16 +258,8 @@
                           "color": "#2ECC71"
                       },
                       "name": "COP_simulation_sim_0_2_2",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "ratio",
-                          "color": null,
-                          "dashboard_visibility": null,
-                          "description": null,
-                          "factor": 1.0,
                           "id": 18,
-                          "label": "Ratio",
                           "name": "ratio",
                           "physical_name": "ratio",
                           "unit": "ratio"
@@ -386,9 +285,6 @@
               "measurements": [
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "out",
                       "domain": "heat",
                       "id": "sim_1_0_0",
@@ -398,16 +294,8 @@
                           "color": "#1ABC9C"
                       },
                       "name": "peak_heatsim_1_0_0",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000.0,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -415,9 +303,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "out",
                       "domain": "heat",
                       "id": "sim_1_0_1",
@@ -427,16 +312,8 @@
                           "color": "#E67E22"
                       },
                       "name": "peak_heatsim_1_0_1",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000.0,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -444,9 +321,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "out",
                       "domain": "heat",
                       "id": "sim_1_0_2",
@@ -456,16 +330,8 @@
                           "color": "#2ECC71"
                       },
                       "name": "peak_heatsim_1_0_2",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000.0,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -490,9 +356,6 @@
               "measurements": [
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "out",
                       "domain": "heat",
                       "id": "sim_1_1_0",
@@ -502,16 +365,8 @@
                           "color": "#1ABC9C"
                       },
                       "name": "peak_heatsim_1_1_0",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000.0,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -519,9 +374,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "out",
                       "domain": "heat",
                       "id": "sim_1_1_1",
@@ -531,16 +383,8 @@
                           "color": "#E67E22"
                       },
                       "name": "peak_heatsim_1_1_1",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000.0,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -548,9 +392,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "out",
                       "domain": "heat",
                       "id": "sim_1_1_2",
@@ -560,16 +401,8 @@
                           "color": "#2ECC71"
                       },
                       "name": "peak_heatsim_1_1_2",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000.0,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -594,9 +427,6 @@
               "measurements": [
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "out",
                       "domain": "heat",
                       "id": "sim_1_2_0",
@@ -606,16 +436,8 @@
                           "color": "#1ABC9C"
                       },
                       "name": "peak_heatsim_1_2_0",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000.0,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -623,9 +445,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "out",
                       "domain": "heat",
                       "id": "sim_1_2_1",
@@ -635,16 +454,8 @@
                           "color": "#E67E22"
                       },
                       "name": "peak_heatsim_1_2_1",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000.0,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -652,9 +463,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "out",
                       "domain": "heat",
                       "id": "sim_1_2_2",
@@ -664,16 +472,8 @@
                           "color": "#2ECC71"
                       },
                       "name": "peak_heatsim_1_2_2",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000.0,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -698,9 +498,6 @@
               "measurements": [
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "none",
                       "domain": "heat",
                       "id": "sim_2_0_0",
@@ -711,15 +508,8 @@
                       },
                       "name": "heat_util_sim_2_0_0",
                       "sensor_name": "energy_utilization",
-                      "tags": null,
                       "type": {
-                          "base_unit": "ratio",
-                          "color": null,
-                          "dashboard_visibility": null,
-                          "description": null,
-                          "factor": 1.0,
                           "id": 19,
-                          "label": "Normalized ratio",
                           "name": "ratio_norm",
                           "physical_name": "ratio",
                           "unit": "0-1"
@@ -727,9 +517,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "none",
                       "domain": "heat",
                       "id": "sim_2_0_1",
@@ -740,15 +527,8 @@
                       },
                       "name": "heat_util_sim_2_0_1",
                       "sensor_name": "energy_utilization",
-                      "tags": null,
                       "type": {
-                          "base_unit": "ratio",
-                          "color": null,
-                          "dashboard_visibility": null,
-                          "description": null,
-                          "factor": 1.0,
                           "id": 19,
-                          "label": "Normalized ratio",
                           "name": "ratio_norm",
                           "physical_name": "ratio",
                           "unit": "0-1"
@@ -756,9 +536,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "none",
                       "domain": "heat",
                       "id": "sim_2_0_2",
@@ -769,15 +546,8 @@
                       },
                       "name": "heat_util_sim_2_0_2",
                       "sensor_name": "energy_utilization",
-                      "tags": null,
                       "type": {
-                          "base_unit": "ratio",
-                          "color": null,
-                          "dashboard_visibility": null,
-                          "description": null,
-                          "factor": 1.0,
                           "id": 19,
-                          "label": "Normalized ratio",
                           "name": "ratio_norm",
                           "physical_name": "ratio",
                           "unit": "0-1"
@@ -803,9 +573,6 @@
               "measurements": [
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "none",
                       "domain": "heat",
                       "id": "sim_2_1_0",
@@ -816,15 +583,8 @@
                       },
                       "name": "heat_util_sim_2_1_0",
                       "sensor_name": "energy_utilization",
-                      "tags": null,
                       "type": {
-                          "base_unit": "ratio",
-                          "color": null,
-                          "dashboard_visibility": null,
-                          "description": null,
-                          "factor": 1.0,
                           "id": 19,
-                          "label": "Normalized ratio",
                           "name": "ratio_norm",
                           "physical_name": "ratio",
                           "unit": "0-1"
@@ -832,9 +592,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "none",
                       "domain": "heat",
                       "id": "sim_2_1_1",
@@ -845,15 +602,8 @@
                       },
                       "name": "heat_util_sim_2_1_1",
                       "sensor_name": "energy_utilization",
-                      "tags": null,
                       "type": {
-                          "base_unit": "ratio",
-                          "color": null,
-                          "dashboard_visibility": null,
-                          "description": null,
-                          "factor": 1.0,
                           "id": 19,
-                          "label": "Normalized ratio",
                           "name": "ratio_norm",
                           "physical_name": "ratio",
                           "unit": "0-1"
@@ -861,9 +611,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "none",
                       "domain": "heat",
                       "id": "sim_2_1_2",
@@ -874,15 +621,8 @@
                       },
                       "name": "heat_util_sim_2_1_2",
                       "sensor_name": "energy_utilization",
-                      "tags": null,
                       "type": {
-                          "base_unit": "ratio",
-                          "color": null,
-                          "dashboard_visibility": null,
-                          "description": null,
-                          "factor": 1.0,
                           "id": 19,
-                          "label": "Normalized ratio",
                           "name": "ratio_norm",
                           "physical_name": "ratio",
                           "unit": "0-1"
@@ -908,9 +648,6 @@
               "measurements": [
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "none",
                       "domain": "heat",
                       "id": "sim_2_2_0",
@@ -921,15 +658,8 @@
                       },
                       "name": "heat_util_sim_2_2_0",
                       "sensor_name": "energy_utilization",
-                      "tags": null,
                       "type": {
-                          "base_unit": "ratio",
-                          "color": null,
-                          "dashboard_visibility": null,
-                          "description": null,
-                          "factor": 1.0,
                           "id": 19,
-                          "label": "Normalized ratio",
                           "name": "ratio_norm",
                           "physical_name": "ratio",
                           "unit": "0-1"
@@ -937,9 +667,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "none",
                       "domain": "heat",
                       "id": "sim_2_2_1",
@@ -950,15 +677,8 @@
                       },
                       "name": "heat_util_sim_2_2_1",
                       "sensor_name": "energy_utilization",
-                      "tags": null,
                       "type": {
-                          "base_unit": "ratio",
-                          "color": null,
-                          "dashboard_visibility": null,
-                          "description": null,
-                          "factor": 1.0,
                           "id": 19,
-                          "label": "Normalized ratio",
                           "name": "ratio_norm",
                           "physical_name": "ratio",
                           "unit": "0-1"
@@ -966,9 +686,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "none",
                       "domain": "heat",
                       "id": "sim_2_2_2",
@@ -979,15 +696,8 @@
                       },
                       "name": "heat_util_sim_2_2_2",
                       "sensor_name": "energy_utilization",
-                      "tags": null,
                       "type": {
-                          "base_unit": "ratio",
-                          "color": null,
-                          "dashboard_visibility": null,
-                          "description": null,
-                          "factor": 1.0,
                           "id": 19,
-                          "label": "Normalized ratio",
                           "name": "ratio_norm",
                           "physical_name": "ratio",
                           "unit": "0-1"
@@ -1013,9 +723,6 @@
               "measurements": [
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "in",
                       "domain": "electricity",
                       "id": "sim_3_0_0",
@@ -1025,16 +732,8 @@
                           "color": "#1ABC9C"
                       },
                       "name": "peak_pow_sim_3_0_0",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000.0,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -1042,9 +741,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "in",
                       "domain": "electricity",
                       "id": "sim_3_0_1",
@@ -1054,16 +750,8 @@
                           "color": "#E67E22"
                       },
                       "name": "peak_pow_sim_3_0_1",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000.0,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -1071,9 +759,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "in",
                       "domain": "electricity",
                       "id": "sim_3_0_2",
@@ -1083,16 +768,8 @@
                           "color": "#2ECC71"
                       },
                       "name": "peak_pow_sim_3_0_2",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000.0,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -1117,9 +794,6 @@
               "measurements": [
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "in",
                       "domain": "electricity",
                       "id": "sim_3_1_0",
@@ -1129,16 +803,8 @@
                           "color": "#1ABC9C"
                       },
                       "name": "peak_pow_sim_3_1_0",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000.0,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -1146,9 +812,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "in",
                       "domain": "electricity",
                       "id": "sim_3_1_1",
@@ -1158,16 +821,8 @@
                           "color": "#E67E22"
                       },
                       "name": "peak_pow_sim_3_1_1",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000.0,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -1175,9 +830,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "in",
                       "domain": "electricity",
                       "id": "sim_3_1_2",
@@ -1187,16 +839,8 @@
                           "color": "#2ECC71"
                       },
                       "name": "peak_pow_sim_3_1_2",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000.0,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -1221,9 +865,6 @@
               "measurements": [
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "in",
                       "domain": "electricity",
                       "id": "sim_3_2_0",
@@ -1233,16 +874,8 @@
                           "color": "#1ABC9C"
                       },
                       "name": "peak_pow_sim_3_2_0",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000.0,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -1250,9 +883,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "in",
                       "domain": "electricity",
                       "id": "sim_3_2_1",
@@ -1262,16 +892,8 @@
                           "color": "#E67E22"
                       },
                       "name": "peak_pow_sim_3_2_1",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000.0,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -1279,9 +901,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "in",
                       "domain": "electricity",
                       "id": "sim_3_2_2",
@@ -1291,16 +910,8 @@
                           "color": "#2ECC71"
                       },
                       "name": "peak_pow_sim_3_2_2",
-                      "sensor_name": null,
-                      "tags": null,
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000.0,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -1325,9 +936,6 @@
               "measurements": [
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "in",
                       "domain": "heat",
                       "id": "sim_4_0_0",
@@ -1337,16 +945,9 @@
                           "color": "#1ABC9C"
                       },
                       "name": "peak_pow_sim_4_0_0",
-                      "sensor_name": null,
-                      "tags": null,
+                      "tempId": 1737258088113,
                       "type": {
-                          "base_unit": "Wh",
-                          "color": "#1ABC9C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000000.0,
                           "id": 9,
-                          "label": "Power [MWh]",
                           "name": "energy_mwh",
                           "physical_name": "energy",
                           "unit": "MWh"
@@ -1354,9 +955,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "in",
                       "domain": "heat",
                       "id": "sim_4_0_1",
@@ -1366,16 +964,9 @@
                           "color": "#E67E22"
                       },
                       "name": "peak_pow_sim_4_0_1",
-                      "sensor_name": null,
-                      "tags": null,
+                      "tempId": 1737258088113,
                       "type": {
-                          "base_unit": "Wh",
-                          "color": "#1ABC9C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000000.0,
                           "id": 9,
-                          "label": "Power [MWh]",
                           "name": "energy_mwh",
                           "physical_name": "energy",
                           "unit": "MWh"
@@ -1383,9 +974,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "in",
                       "domain": "heat",
                       "id": "sim_4_0_2",
@@ -1395,16 +983,9 @@
                           "color": "#2ECC71"
                       },
                       "name": "peak_pow_sim_4_0_2",
-                      "sensor_name": null,
-                      "tags": null,
+                      "tempId": 1737258088113,
                       "type": {
-                          "base_unit": "Wh",
-                          "color": "#1ABC9C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000000.0,
                           "id": 9,
-                          "label": "Power [MWh]",
                           "name": "energy_mwh",
                           "physical_name": "energy",
                           "unit": "MWh"
@@ -1429,9 +1010,6 @@
               "measurements": [
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "in",
                       "domain": "heat",
                       "id": "sim_4_1_0",
@@ -1441,16 +1019,9 @@
                           "color": "#1ABC9C"
                       },
                       "name": "peak_pow_sim_4_1_0",
-                      "sensor_name": null,
-                      "tags": null,
+                      "tempId": 1737258088113,
                       "type": {
-                          "base_unit": "Wh",
-                          "color": "#1ABC9C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000000.0,
                           "id": 9,
-                          "label": "Power [MWh]",
                           "name": "energy_mwh",
                           "physical_name": "energy",
                           "unit": "MWh"
@@ -1458,9 +1029,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "in",
                       "domain": "heat",
                       "id": "sim_4_1_1",
@@ -1470,16 +1038,9 @@
                           "color": "#E67E22"
                       },
                       "name": "peak_pow_sim_4_1_1",
-                      "sensor_name": null,
-                      "tags": null,
+                      "tempId": 1737258088113,
                       "type": {
-                          "base_unit": "Wh",
-                          "color": "#1ABC9C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000000.0,
                           "id": 9,
-                          "label": "Power [MWh]",
                           "name": "energy_mwh",
                           "physical_name": "energy",
                           "unit": "MWh"
@@ -1487,9 +1048,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "in",
                       "domain": "heat",
                       "id": "sim_4_1_2",
@@ -1499,16 +1057,9 @@
                           "color": "#2ECC71"
                       },
                       "name": "peak_pow_sim_4_1_2",
-                      "sensor_name": null,
-                      "tags": null,
+                      "tempId": 1737258088113,
                       "type": {
-                          "base_unit": "Wh",
-                          "color": "#1ABC9C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000000.0,
                           "id": 9,
-                          "label": "Power [MWh]",
                           "name": "energy_mwh",
                           "physical_name": "energy",
                           "unit": "MWh"
@@ -1533,9 +1084,6 @@
               "measurements": [
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "in",
                       "domain": "heat",
                       "id": "sim_4_2_0",
@@ -1545,16 +1093,9 @@
                           "color": "#1ABC9C"
                       },
                       "name": "peak_pow_sim_4_2_0",
-                      "sensor_name": null,
-                      "tags": null,
+                      "tempId": 1737258088113,
                       "type": {
-                          "base_unit": "Wh",
-                          "color": "#1ABC9C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000000.0,
                           "id": 9,
-                          "label": "Power [MWh]",
                           "name": "energy_mwh",
                           "physical_name": "energy",
                           "unit": "MWh"
@@ -1562,9 +1103,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "in",
                       "domain": "heat",
                       "id": "sim_4_2_1",
@@ -1574,16 +1112,9 @@
                           "color": "#E67E22"
                       },
                       "name": "peak_pow_sim_4_2_1",
-                      "sensor_name": null,
-                      "tags": null,
+                      "tempId": 1737258088113,
                       "type": {
-                          "base_unit": "Wh",
-                          "color": "#1ABC9C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000000.0,
                           "id": 9,
-                          "label": "Power [MWh]",
                           "name": "energy_mwh",
                           "physical_name": "energy",
                           "unit": "MWh"
@@ -1591,9 +1122,6 @@
                   },
                   {
                       "aggregation_function": "last",
-                      "asset": null,
-                      "category": null,
-                      "description": null,
                       "direction": "in",
                       "domain": "heat",
                       "id": "sim_4_2_2",
@@ -1603,16 +1131,9 @@
                           "color": "#2ECC71"
                       },
                       "name": "peak_pow_sim_4_2_2",
-                      "sensor_name": null,
-                      "tags": null,
+                      "tempId": 1737258088113,
                       "type": {
-                          "base_unit": "Wh",
-                          "color": "#1ABC9C",
-                          "dashboard_visibility": true,
-                          "description": null,
-                          "factor": 1000000.0,
                           "id": 9,
-                          "label": "Power [MWh]",
                           "name": "energy_mwh",
                           "physical_name": "energy",
                           "unit": "MWh"
