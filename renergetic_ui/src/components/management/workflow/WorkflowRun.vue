@@ -111,7 +111,7 @@ export default {
     Stepper,
     StepperPanel,
   },
-  props: { workflow: { type: Object, default: () => ({}) }, multiSteps: { type: Boolean, default: false } },
+  props: { workflow: { type: Object, default: () => ({}) }, ext: { type: Object, default: () => {} }, multiSteps: { type: Boolean, default: false } },
   emits: ["update", "onStart"],
   data() {
     return {
@@ -182,7 +182,7 @@ export default {
       let res = null;
       await this.$refs.runspinner.run(
         async () => {
-          res = await this.$ren.kubeflowApi.startExperiment(experimentId, this.simulationName, parameters);
+          res = await this.$ren.kubeflowApi.startExperiment(experimentId, this.simulationName, parameters, this.ext);
         },
         500,
         5000,

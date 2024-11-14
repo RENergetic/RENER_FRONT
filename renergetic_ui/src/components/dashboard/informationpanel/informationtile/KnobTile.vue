@@ -1,13 +1,15 @@
 <template>
   <div v-if="measurement" class="flex flex-column justify-content-center" :style="tileStyle">
     <div v-if="mSettings.tile.template" class="flex flex-none flex-column align-items-center justify-content-center">
-      <h3 id="value" :style="`color:${tileTitleColor}`">
+      <h3 id="value" :style="`color:${tileTitleColor}`" :v-tooltip="mSettings.tile.description">
         {{ $t(`tile_templates.${tile.name}`, { value: `${$ren.utils.roundValue(value)} ${unit} ` }) }}
       </h3>
     </div>
     <div v-else class="flex flex-none flex-column align-items-center justify-content-center">
       <span>
-        <h3 id="label" :style="`color:${tileTitleColor}`">{{ mSettings.tile.label ? mSettings.tile.label : mlabel }} {{ unitLabel }}</h3>
+        <h3 id="label" :style="`color:${tileTitleColor}`" :v-tooltip="mSettings.tile.description">
+          {{ mSettings.tile.label ? mSettings.tile.label : mlabel }} {{ unitLabel }}
+        </h3>
       </span>
     </div>
     <Knob

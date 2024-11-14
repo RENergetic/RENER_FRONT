@@ -92,6 +92,13 @@ var panelSchema = function () {
       key: "overrideMode",
     },
     {
+      label: $t("settings.tile_measurement_preview"),
+      description: $t("settings.tile_measurement_preview_description"),
+      type: Boolean,
+      key: "tile_preview",
+      defaultValue: true,
+    },
+    {
       label: $t("settings.panel_qr_code"),
       description: $t("settings.panel_qr_code_description"),
       type: String,
