@@ -46,6 +46,7 @@
   "connection_type": "Connection Type",
   "conversion_settings": "Ustawienia jednostek",
   "copy": "Kopiuj",
+  "copy_clipboard": null,
   "copy_clipboard_ext": null,
   "correctly_added": "Values added correctly",
   "current_page": "Aktualna strona: {page}",

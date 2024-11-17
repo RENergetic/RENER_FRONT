@@ -20,7 +20,6 @@
           :pdata="pdata"
           :settings="mSettings"
           :conversion-settings="conversionSettings"
-          @select="onMeasurementSelect"
         />
       </div>
     </div>

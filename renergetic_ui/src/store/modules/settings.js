@@ -155,7 +155,7 @@ export default {
       return state.locales;
     },
     home: (state /* getters*/) => {
-      console.error(state.home);
+      // console.debug(state.home);
       return state.home;
     },
     // homeLayout: (state /* getters*/) => {

@@ -121,7 +121,6 @@ export default {
     panel: function (newValue) {
       if (newValue != null) {
         // console.info("panel change");
-        console.debug(newValue);
 
         if (this.autoReload) {
           if (this.loopRunner != null) this.loopRunner.stop();
@@ -209,25 +208,26 @@ export default {
     },
     async loadData() {
       if (this.panel.id != null && this.$refs.spinner) {
+        let mPanel = this.panel;
         // console.info("panel load data: " + this.panel.id);
         this.$refs.spinner.run(async () => {
           console.info("wait for panel data: " + this.panel.id + " " + this.panel.is_template);
           await this.$ren.dataApi.getPanelData(this.panel.id, this.assetId, this.mFilter).then(async (resp) => {
-            console.debug(resp);
+            // console.debug(resp);
             var panelData = resp && resp.data ? resp.data : {};
             if (resp.panel != null) {
               // console.error(this.panel);
               resp.panel._tiles = this.panel.tiles;
-              this.mPanel = resp.panel;
+
+              mPanel = resp.panel;
+              // this.mPanel = resp.panel;
               // this.mPanel = this.panel.is_template || resp.panel != null ? resp.panel : this.panel;
             } else {
-              this.mPanel = this.panel;
+              mPanel = this.panel;
             }
 
             var chartDict = {};
-            this.mPanel.tiles
-              .filter((tile) => tile.type == TileTypes.chart)
-              .forEach((tile) => tile.measurements.forEach((m) => (chartDict[m.id] = m)));
+            mPanel.tiles.filter((tile) => tile.type == TileTypes.chart).forEach((tile) => tile.measurements.forEach((m) => (chartDict[m.id] = m)));
             // for (let tile of this.mPanel.tiles) {
             //   if (tile.type == TileTypes.chart) {
             //     for (let m of tile.measurements) {
@@ -242,7 +242,7 @@ export default {
             let getPrevData = false;
             //TODO: add possibility to add multiple/different time ranges in the one dashboard
 
-            for (let tile of this.mPanel.tiles) {
+            for (let tile of mPanel.tiles) {
               //check if any tiles requires previous data
               if (this.mPanelSettings.compare_interval_type == "none") {
                 tile.props.compare_with_previous = false;
@@ -261,7 +261,7 @@ export default {
             }
 
             if (getPrevData && this.mPanelSettings.compare_interval_type != "none") {
-              console.info("Load Previous data ");
+              console.debug("Load Previous data ");
               var prevFilter = this.compareIntervalDateFilter(
                 this.mFilter,
                 this.mPanelSettings.compare_interval_type ? this.mPanelSettings.compare_interval_type : "previous",
@@ -274,7 +274,7 @@ export default {
               });
 
               chartDict = {};
-              this.mPanel.tiles
+              mPanel.tiles
                 .filter((tile) => tile.type == TileTypes.chart && tile.props.compare_with_previous)
                 .forEach((tile) => tile.measurements.forEach((m) => (chartDict[m.id] = m)));
               let chartMeasurements = Object.values(chartDict);
@@ -282,6 +282,7 @@ export default {
             }
 
             this.panelData = panelData;
+            this.mPanel = mPanel;
             // timeseriesData = await this.$ren.dataApi.getTimeseries(null, this.tile.id, this.assetId, this.filter);
             console.info("Panel data loaded");
             console.debug(panelData);

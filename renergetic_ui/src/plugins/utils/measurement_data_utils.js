@@ -129,6 +129,7 @@ export default {
     // console.info(m.type.physical_name + " " + newUnit);
   },
   calcPanelRelativeValues(panel, pData, settings) {
+    console.debug("calcPanelRelativeValues");
     var accuDict = {};
     var mDict = {};
     if (panel && panel.tiles) {
@@ -143,7 +144,7 @@ export default {
       }
     }
     // console.debug(mDict);
-    console.info(settings);
+    // console.info(settings);
     for (let mId in mDict) {
       let m = mDict[mId];
       let key = this.aggKey(m, settings);
@@ -275,6 +276,9 @@ export default {
 
       default:
         break;
+    }
+    if (!data.max) {
+      return 1.0;
     }
     try {
       return data.max[measurement.aggregation_function][measurement.id];

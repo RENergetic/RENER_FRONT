@@ -86,7 +86,9 @@ export default {
      * @returns
      */
     isAuthenticated: (state /* getters*/) => {
-      return state.data.authenticated;
+      let isAuthenticated = localStorage.getItem("authenticated") != null ? localStorage.getItem("authenticated") : false;
+
+      return state.data.authenticated && isAuthenticated;
     },
 
     /**

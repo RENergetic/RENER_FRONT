@@ -161,6 +161,12 @@ export default {
     font-size: 2.5rem;
     margin-left: 0.75rem;
   }
+  .tile-bar i {
+    font-size: initial;
+  }
+  .tile-bar i:hover {
+    font-size: 1.5rem;
+  }
   .description {
     font-size: 1rem;
     font-style: italic;

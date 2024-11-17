@@ -46,6 +46,7 @@
   "connection_type": null,
   "conversion_settings": null,
   "copy": null,
+  "copy_clipboard": null,
   "copy_clipboard_ext": null,
   "correctly_added": null,
   "current_page": null,

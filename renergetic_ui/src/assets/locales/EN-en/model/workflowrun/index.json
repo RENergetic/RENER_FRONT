@@ -1,12 +1,13 @@
 {
   "end_time": "End time",
-  "ext": "Run extension",
+  "ext": "Extension",
   "init_time": "Init time",
   "label": "Label",
   "name": "Name",
+  "no_results": "No results",
   "parameters": "Parameters",
   "pipeline": "Pipeline",
-  "result": "Result",
+  "results": "Results",
   "run_id": "Run id",
   "run_state": {
     "error": "Error",

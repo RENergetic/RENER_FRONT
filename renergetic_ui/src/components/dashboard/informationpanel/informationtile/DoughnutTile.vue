@@ -72,9 +72,9 @@ export default {
         data = Object.values(groupedValues).map((g) => g.value);
         labels = Object.values(groupedValues).map((g) => g.label);
         backgroundColors = Object.values(groupedValues).map((g) => g.color);
-        console.warn("TODO: set local labels and colors");
+        console.warn("TODO: set   labels and colors for grouped measurements");
         console.warn(labels);
-        console.warn(backgroundColors);
+        // console.warn(backgroundColors);
       } else {
         data = this.tile.measurements.map((m) => pdata.current[m.aggregation_function][m.id]);
         labels = this.tile.measurements.map((m) => this.measurementLabel(m));
@@ -122,7 +122,7 @@ export default {
   },
   mounted() {
     let minD = this.tileContentSize1D();
-    console.debug(this.tile.id + ": minD=" + minD);
+    // console.debug(this.tile.id + ": minD=" + minD);
     this.mStyle = `max-width: 25rem; margin: auto;width:${minD * 0.65}px`;
     this.loaded = true;
   },

@@ -1,7 +1,7 @@
 <template>
   <div>
     <DotMenu v-if="panel" :model="menuModel" />
-    <RenSpinner ref="spinner" :lock="true" style="width: 100%; overflow: auto">
+    <RenSpinner ref="spinner" :lock="true" style="width: 100%">
       <template #content>
         <WasteHeat
           v-if="workflow"

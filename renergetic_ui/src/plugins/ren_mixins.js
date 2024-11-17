@@ -133,7 +133,9 @@ export default {
   },
 
   methods: {
-    async toClipboard(objStr, labelStr = null) {
+    async toClipboard(objStr, labelStr = null, raw = false) {
+      if (typeof (objStr) !== "string" && !raw)
+        objStr = JSON.stringify(objStr)
       if (labelStr) {
         await navigator.clipboard
           .writeText(objStr)

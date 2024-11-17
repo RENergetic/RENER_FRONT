@@ -262,9 +262,9 @@ export default {
           this.$emit("timeseries-update", timeseriesData);
         }
       }
-      console.info(this.mPrevious);
-      console.info(getPrevious);
-      console.info(data);
+      // console.info(this.mPrevious);
+      // console.info(getPrevious);
+      // console.info(data);
       return data;
     },
     setDataset(data) {
@@ -289,9 +289,9 @@ export default {
           fill: fill,
           pointRadius: data[m.id].length > 533330 ? 0 : 1,
         });
-        console.debug(this.mPrevious);
-        console.debug(data);
-        console.debug(this.pdata);
+        // console.debug(this.mPrevious);
+        // console.debug(data);
+        // console.debug(this.pdata);
         if (this.mPrevious)
           datasets.push({
             xAxisID: "x_prev",
@@ -316,7 +316,7 @@ export default {
       await run(async () => {
         // await new Promise((r) => setTimeout(r, 250));
         var pdata = await this.loadTimeseriesData();
-        console.debug(pdata);
+        // console.debug(pdata);
         this.setDataset(pdata);
         this.loaded = true;
         this.refreshDate = new Date();
@@ -324,11 +324,7 @@ export default {
     },
     async setLocalData() {
       var pdata = await this.localData();
-      //TODO:
-
       if (pdata !== null) {
-        //temporary
-
         this.setDataset(pdata);
         this.loaded = true;
         this.refreshDate = null;

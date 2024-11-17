@@ -68,6 +68,7 @@ export default {
       return this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings);
     },
     color: function () {
+      console.warn("TODO: set   labels and colors for grouped measurements");
       let color = this.measurementColor; //this.$ren.utils.measurementColor(this.measurement, this.value);
       return `color:${color.color}`;
     },

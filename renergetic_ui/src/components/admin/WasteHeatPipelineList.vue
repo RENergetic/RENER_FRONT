@@ -107,7 +107,7 @@
   <Dialog v-model:visible="workflowRunDetailsDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <WorkflowRunDetails :workflow-run="selectedWorkflow" @on-stop="onWorkflowStop" />
   </Dialog>
-  <Dialog v-model:visible="runlogDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
+  <Dialog v-model:visible="runlogDialog" :style="{ width: '95vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
     <PipelineRunLog :workflow="selectedWorkflow" />
   </Dialog>
 </template>

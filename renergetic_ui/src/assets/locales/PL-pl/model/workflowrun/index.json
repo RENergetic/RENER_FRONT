@@ -4,9 +4,10 @@
   "init_time": "Czas utworzenia",
   "label": "Etykieta",
   "name": "Nazwa",
+  "no_results": null,
   "parameters": "Parametry",
   "pipeline": "Pipeline",
-  "result": null,
+  "results": null,
   "run_id": "Id startu",
   "run_state": {
     "error": "Błąd",

@@ -185,13 +185,10 @@ export default {
       console.info(ctx);
     },
     getDataset(value, index) {
-      // console.info(this.mSettings.panel.relativeValues);
       let m = this.tile.measurements[index];
       let maxV = this.$ren.utils.getMaxValue(m, this.pdata, this.mSettings, this.conversionSettings);
       let state = m.visible == null ? true : m.visible;
-
       console.debug(`${m.id}=>mname:${m.name}, max: ${maxV}, value:${value}`);
-
       return {
         data: [value, maxV > value ? maxV - value : 0],
         backgroundColor: this.getColor(index),

@@ -61,7 +61,7 @@ export default {
   },
   computed: {
     isUserSignedIn() {
-      return this.$store.getters["auth/isAuthenticated"] && !this.$store.getters["auth/tokenExpired"];
+      return this.$store.getters["auth/isAuthenticated"] && !this.$store.getters["auth/tokenExpired"] && localStorage.getItem("authenticated");
     },
     hasAccess() {
       if (this.$route.meta.roleFlag == null || this.$route.meta.roleFlag == undefined) return true;

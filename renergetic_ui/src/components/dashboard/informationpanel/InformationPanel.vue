@@ -98,6 +98,7 @@ export default {
   data() {
     return {
       loaded: false,
+      // dataCalculated:true,
       grid: null,
       mSettings: this.computePanelSettings(this.settings, this.panel),
       reload: false,
