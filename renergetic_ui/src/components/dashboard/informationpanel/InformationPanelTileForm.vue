@@ -39,7 +39,7 @@
               <Button style="width: max-content" :label="$t('view.button.show_available_tile_icons')" @click="iconsDialog = true" />
               <Button :label="$t('view.button.show_available_tile_properties')" @click="propertiesDialog = true" />
             </template>
-          </InfoIcon> -->
+</InfoIcon> -->
 
           <div class="flex flex-row">
             <ren-input v-model="propsJSON" :invalid="!validJSON" style="flex-grow: 1" />
@@ -257,7 +257,7 @@ export function cleanTileStructure(mTile, clearIDs = false) {
         };
         if (!clearIDs) obj.id = m.id;
         if (m.type) {
-          obj.type = { physical_name: m.type.physical_name, name: m.type.name, unit: m.type.unit };
+          obj.type = { physical_name: m.type.physical_name, name: m.type.name, unit: m.type.unit, base_unit: m.type.base_unit };
           if (!clearIDs) obj.type.id = m.type.id;
         }
         if (m.asset) {

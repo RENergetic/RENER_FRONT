@@ -2,7 +2,7 @@
   <Card>
     <template #header>
       <h3>
-        {{ $t("view.workflowrun_preview", { label: workflowLabel }) }}
+        {{ $t("view.workflowrun_init", { label: workflowLabel }) }}
       </h3>
     </template>
     <template #content>
