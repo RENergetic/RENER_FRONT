@@ -157,7 +157,7 @@ export default {
     var m = null;
     var mUnits = null;
     if (this.modelValue != null) {
-      m = this.modelValue;
+      m = { ...this.modelValue };
       m.physical_type = m.value_type != null ? m.value_type.physical_name : null;
       m.unit = m.value_type != null ? m.value_type.unit : null;
       if (m.physical_type) mUnits = this.$store.getters["view/measurementTypes"][m.physical_type];

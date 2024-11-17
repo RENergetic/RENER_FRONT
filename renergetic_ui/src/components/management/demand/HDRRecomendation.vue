@@ -6,11 +6,6 @@
       <div v-if="pData && pData.timestamps && pData.timestamps.length > 0" :key="pData.timestamps.length" style="width: 100%">
         <TabView>
           <TabPanel v-for="(group, index) in mGroups" :key="index" :header="group.header">
-            <!-- :style="'margin:auto;max-width: 90%;'" -->
-            <!-- :immediate="false" -->
-            <!-- {{ group.measurements }} -->
-
-            <!-- :chart-type="chartType" -->
             <MeasurementChart
               :ref="`mChart_${index}`"
               :pdata="{ timeseries: pData }"
@@ -126,12 +121,12 @@ export default {
       return `${m.name}_${m.sensor_name}_${m.type.id}${assetId}${direction}${domain}`;
     },
     async loadCurrentMeasurements() {
-      if (this.hdrRequest == null) {
-        return;
-      }
+      // if (this.hdrRequest == null) {
+      //   return;
+      // }
       let r = this.recommendation;
       // if (this.tagKey != r.tag.key)
-      this.currentMeasurements = await this.$ren.hdrApi.getMeasurements(this.hdrRequest.timestamp, r.tag.key, "no_tag");
+      this.currentMeasurements = await this.$ren.hdrApi.getMeasurements(this.hdrRequest ? this.hdrRequest.timestamp : null, r.tag.key, "no_tag");
       for (let m of this.currentMeasurements) {
         m.recommendation = null; //this.recommendation.tag.value;
         m._current = true;
@@ -151,7 +146,7 @@ export default {
         // this.recommendationMeasurements = await this.$ren.hdrApi.getRecommendationsMeasurements(this.recommendation.id);
 
         this.recommendationMeasurements = await this.$ren.hdrApi.getMeasurements(
-          this.hdrRequest.timestamp,
+          this.hdrRequest ? this.hdrRequest.timestamp : null,
           this.recommendation.tag.key,
           this.recommendation.tag.value,
         );
@@ -171,7 +166,7 @@ export default {
       if (this.comparewith) {
         // this.recommendationCompareMeasurements = await this.$ren.hdrApi.getRecommendationsMeasurements(this.comparewith.id);
         this.recommendationCompareMeasurements = await this.$ren.hdrApi.getMeasurements(
-          this.hdrRequest.timestamp,
+          this.hdrRequest ? this.hdrRequest.timestamp : null,
           this.comparewith.tag.key,
           this.comparewith.tag.value,
         );
@@ -272,7 +267,6 @@ export default {
           }
 
           // this.annotations = this.getAnnotations();
-          // console.info(this.annotations);
           this.reloadChart = !this.reloadChart;
         });
       }
@@ -298,8 +292,6 @@ export default {
       // console.info(this.currentMeasurements[index]);
       // console.info(this.hdrRequest.value_type);
       if (cur.domain == "heat" && cur.type.physical_name == this.hdrRequest.value_type.physical_name) {
-        // console.info(this.hdrRequest.value_type);
-        // console.error(this.pData.current[cur.id]);
         console.error("todo: convert hdr request and current measurement units");
         if (this.hdrRequest.max_value != null) {
           let requestLine = this._getAnnotationY(this.hdrRequest.max_value);
