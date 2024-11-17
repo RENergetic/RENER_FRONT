@@ -6,6 +6,8 @@
   "agg_by_measurement": "Agreguj po nazwie parametru",
   "agg_by_measurement_description": "Agreguj po nazwie parametru, np: current_power, energy, inlet_temperature, air_temperature",
   "chart": "Wykres",
+  "compare_interval_number": null,
+  "compare_interval_number_description": null,
   "compare_interval_type": "Długość okresu",
   "compare_interval_type_description": "Długość okresu porównawczego",
   "date_from": "Od",
@@ -59,6 +61,8 @@
   "submit": "Wyślij",
   "tile_legend_visibility": "Legenda",
   "tile_legend_visibility_description": "Widok legendy na wykresie",
+  "tile_measurement_preview": null,
+  "tile_measurement_preview_description": null,
   "time_filter": "Filtr czasu",
   "visible": "Widoczny",
   "yes": "Tak"

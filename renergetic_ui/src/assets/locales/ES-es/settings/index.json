@@ -6,6 +6,8 @@
   "agg_by_measurement": "Aggregate by measurement name",
   "agg_by_measurement_description": "Aggregate by measurement name, for instance: current_power, energy, inlet_temperature, air_temperature",
   "chart": "Chart",
+  "compare_interval_number": null,
+  "compare_interval_number_description": null,
   "compare_interval_type": null,
   "compare_interval_type_description": null,
   "date_from": null,
@@ -59,6 +61,8 @@
   "submit": "Submit",
   "tile_legend_visibility": "Tile's legend",
   "tile_legend_visibility_description": "Toggle on/off the legend in the tile charts (override tiles properties)",
+  "tile_measurement_preview": null,
+  "tile_measurement_preview_description": null,
   "time_filter": "Time filter",
   "visible": "Visible",
   "yes": null

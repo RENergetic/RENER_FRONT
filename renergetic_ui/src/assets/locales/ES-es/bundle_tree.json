@@ -610,11 +610,13 @@
     },
     "workflowrun": {
       "end_time": "End time",
+      "ext": "Run extension",
       "init_time": "Init time",
       "label": "Label",
       "name": "Name",
       "parameters": "Parameters",
       "pipeline": "Pipeline",
+      "result": "Result",
       "run_id": "Run id",
       "run_state": {
         "error": "Error",
@@ -748,6 +750,8 @@
     "agg_by_measurement": "Aggregate by measurement name",
     "agg_by_measurement_description": "Aggregate by measurement name, for instance: current_power, energy, inlet_temperature, air_temperature",
     "chart": "Chart",
+    "compare_interval_number": "Interval backward steps",
+    "compare_interval_number_description": "Determine how many intervals backward should the data returned from. Set interval type 'month' and counter = 2 to get interval starting 2 month ago.  ",
     "compare_interval_type": "Compare with interval length.",
     "compare_interval_type_description": "Compare current period with period which happened in the past (date subtracted by chosen setting).",
     "date_from": "From",
@@ -851,6 +855,8 @@
     },
     "tile_legend_visibility": "Tile's legend",
     "tile_legend_visibility_description": "Toggle on/off the legend in the tile charts (override tiles properties)",
+    "tile_measurement_preview": "Timeseries Preview",
+    "tile_measurement_preview_description": "Enable timeseries(measurement) preview icon in each tile",
     "time_filter": "Time filter",
     "time_filters": {
       "current_day": "Current day",
@@ -999,6 +1005,7 @@
     "connection_type": "Tipo de conexión",
     "conversion_settings": "Configuraciones de conversión de unidades mostradas",
     "copy": "Copiar",
+    "copy_clipboard_ext": "Copy run extenstions to clipboard",
     "correctly_added": "Valores añadidos correctamente",
     "current_page": "Página actual {page}",
     "current_request": "Solicitud actual",
@@ -1225,6 +1232,7 @@
     "view_data": "Ver datos",
     "view_json": "View json",
     "wasteheat_workflow_undefined": "Wasteheat task is not configured",
+    "workflowrun_init": "Create new task: {label}",
     "workflowrun_param_format": "Parameter: {parameter}",
     "workflowrun_preview": "Run preview for {label}"
   }

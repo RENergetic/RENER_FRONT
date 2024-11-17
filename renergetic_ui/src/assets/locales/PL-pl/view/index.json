@@ -46,6 +46,7 @@
   "connection_type": "Connection Type",
   "conversion_settings": "Ustawienia jednostek",
   "copy": "Kopiuj",
+  "copy_clipboard_ext": null,
   "correctly_added": "Values added correctly",
   "current_page": "Aktualna strona: {page}",
   "current_request": "Aktualne żądanie",
@@ -272,6 +273,7 @@
   "view_data": "View data",
   "view_json": "Podejrzyj strukturę JSON",
   "wasteheat_workflow_undefined": "Moduł Wasteheat nie został skonfigurowany",
+  "workflowrun_init": "Nowe zadanie: {label}",
   "workflowrun_param_format": "Parametr: {parameter}",
   "workflowrun_preview": "Widok {label}"
 }

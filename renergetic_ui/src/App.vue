@@ -10,6 +10,7 @@
 
       <div v-if="hasAccess" class="flex" style="margin-bottom: 0rem; flex-grow: 1; overflow: auto; flex-direction: column">
         <router-view :key="$route.path" :class="pageClass" />
+
         <!-- @update-menu="updateMenu()" -->
       </div>
       <div v-else :class="layout()">no access TODO:</div>

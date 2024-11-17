@@ -46,6 +46,7 @@
   "connection_type": null,
   "conversion_settings": null,
   "copy": null,
+  "copy_clipboard_ext": null,
   "correctly_added": null,
   "current_page": null,
   "current_request": null,
@@ -272,6 +273,7 @@
   "view_data": null,
   "view_json": null,
   "wasteheat_workflow_undefined": null,
+  "workflowrun_init": null,
   "workflowrun_param_format": null,
   "workflowrun_preview": null
 }

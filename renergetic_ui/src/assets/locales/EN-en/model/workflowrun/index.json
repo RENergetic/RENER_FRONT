@@ -1,10 +1,12 @@
 {
   "end_time": "End time",
+  "ext": "Run extension",
   "init_time": "Init time",
   "label": "Label",
   "name": "Name",
   "parameters": "Parameters",
   "pipeline": "Pipeline",
+  "result": "Result",
   "run_id": "Run id",
   "run_state": {
     "error": "Error",

@@ -29,6 +29,17 @@
                 {{ slotProps.data.state }}
               </template>
             </Column>
+            <Column field="ext" :header="$t('model.workflowrun.ext')">
+              <template #body="slotProps">
+                <Button
+                  :disabled="!slotProps.data.ext"
+                  :label="$t('view.copy_clipboard_ext')"
+                  icon="pi pi-list"
+                  @click="() => navigator.clipboard.writeText(slotProps.data.ext)"
+                />
+              </template>
+            </Column>
+            <Column field="result" :header="$t('model.workflowrun.result')" />
             <Column>
               <template #body="slotProps">
                 <i class="pi pi-chevron-circle-right" @click="showRunDetails(slotProps.data)" />

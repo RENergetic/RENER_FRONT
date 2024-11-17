@@ -176,6 +176,7 @@ export default {
 
       // console.error(currentMeasurementType);
       // console.error(mt);
+
       return (value * currentMeasurementType.factor) / mt.factor;
       // return (value / currentMeasurementType.factor) * mt.factor;
     },
