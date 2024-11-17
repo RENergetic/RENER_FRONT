@@ -3,15 +3,14 @@
     <!-- <span v-if="mSettings.tile.title_visibility" id="label" :style="color">
       {{ mSettings.tile.label ? mSettings.tile.label : `${measurementlabel}: ` }}
     </span> -->
-    <div v-if="mSettings.tile.title_visibility" class="flex flex-none flex-column justify-content-center">
+    <!-- flex-none  -->
+    <div v-if="mSettings.tile.title_visibility" class="flex flex-column justify-content-center">
       <h3 :style="`text-align: center;color:${tileTitleColor}`" :v-tooltip="mSettings.tile.description">{{ mSettings.tile.label }}</h3>
       <!-- v-if="legend"-->
     </div>
     <div :class="'flex justify-content-center ' + tileOrientationClass">
-      <div
-        v-if="mSettings.tile.icon_visibility && mSettings.tile.icon"
-        class="flex flex-none flex-column align-items-center justify-content-center tileicon"
-      >
+      <div v-if="mSettings.tile.icon_visibility && mSettings.tile.icon" class="flex flex-column align-items-center justify-content-center tileicon">
+        <!-- flex-none -->
         <font-awesome-icon :icon="mSettings.tile.icon" />
       </div>
       <div class="flex flex-column align-items-center justify-content-center tilecontent" style="padding: 0 0.5rem">
@@ -103,15 +102,18 @@ export default {
   }
 
   .tileicon {
-    height: 90%;
+    // height: 90%;
+    height: fit-content;
+    flex-grow: 0.25;
     // height: 4.5rem;
-    width: 45%;
-    max-width: 7rem;
+    // width: 45%;
+    max-width: 8rem;
     margin: auto;
+    min-width: 4rem;
 
     svg {
-      max-width: 7rem;
-      max-height: 7rem;
+      max-width: 8rem;
+      max-height: 8rem;
     }
   }
 }
@@ -136,11 +138,11 @@ export default {
     width: 100%;
     // height: 4.5rem;
     height: 45%;
-    max-height: 7rem;
+    max-height: 8rem;
 
     svg {
-      max-width: 7rem;
-      max-height: 7rem;
+      max-width: 8rem;
+      max-height: 8rem;
     }
   }
 }
