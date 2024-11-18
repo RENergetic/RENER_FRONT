@@ -243,6 +243,8 @@
   "set_default_hdr_pipeline": "Ustaw domyślne zadanie ",
   "show": "Show",
   "show_details": "Show details",
+  "show_results": null,
+  "show_run_details": null,
   "simulation_params": "Paramtry symulacji",
   "simulation_settings": "Ustawienia symulacji",
   "start": "Start",

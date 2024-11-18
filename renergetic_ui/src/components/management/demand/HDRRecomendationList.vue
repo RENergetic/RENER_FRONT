@@ -71,7 +71,7 @@
 <script>
 import HDRRequestForm from "@/components/management/demand/HDRRequestForm.vue";
 import HDRSettings from "@/components/management/demand/HDRSettings.vue";
-import WorkflowRunDetails from "@/components/management/workflow/WorkflowRunDetails.vue";
+import WorkflowRunDetails from "@/components/admin/workflow/WorkflowRunDetails.vue";
 import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 export default {
   name: "HDRRecomendationList",

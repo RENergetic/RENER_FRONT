@@ -37,14 +37,17 @@
                 <Button :disabled="!slotProps.data.ext" :label="$t('view.copy_clipboard')" @click="toClipboard(slotProps.data.ext)" />
               </template>
             </Column>
+
+            <Column :header="$t('model.workflowrun.details')">
+              <Button v-if="slotProps.data.results" :label="$t('view.show_run_details')" @click="showResults(slotProps.data)" />
+
+              <template #body="slotProps"> <i class="pi pi-chevron-circle-right" @click="showRunDetails(slotProps.data)" /> </template>
+            </Column>
             <Column field="results" :header="$t('model.workflowrun.results')">
               <template #body="slotProps">
-                <Button v-if="slotProps.data.results" :label="$t('view.copy_clipboard')" @click="toClipboard(slotProps.data.results)" />
+                <Button v-if="slotProps.data.results" :label="$t('view.show_results')" @click="showResults(slotProps.data)" />
                 <span v-else>{{ $t("model.workflowrun.no_results") }}</span>
               </template>
-            </Column>
-            <Column>
-              <template #body="slotProps"> <i class="pi pi-chevron-circle-right" @click="showRunDetails(slotProps.data)" /> </template>
             </Column>
           </DataTable>
         </template>
@@ -57,14 +60,14 @@
 </template>
 
 <script>
-import WorkflowRunDetails from "./WorkflowRunDetails.vue";
+import WorkflowRunDetails from "@/components/admin/workflow/WorkflowRunDetails.vue";
 export default {
   name: "PipelineRunLog",
   components: { WorkflowRunDetails },
   props: {
     workflow: { type: Object, default: null },
   },
-  emits: ["onStop"],
+  emits: ["onStop", "select"],
   data() {
     return {
       runLogList: null,
@@ -87,6 +90,9 @@ export default {
     showRunDetails(workflowRun) {
       this.selectedWorkflowRunDetails = workflowRun;
       this.workflowRunDetailsDialog = true;
+    },
+    showResults(workflowRun) {
+      this.$ren.utils.openNewTab(`/management/wasteheat/result/${workflowRun.run_id}`);
     },
     async loaddata(workflow) {
       var last30days = this.$ren.utils.currentTimestamp() - 1000 * 3600 * 24 * 30;

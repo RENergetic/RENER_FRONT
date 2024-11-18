@@ -73,6 +73,11 @@ export default class KubeflowApi extends RestComponent {
     return this.post(`${this.BASE_URL}/admin/pipeline/${pipelineId}/property?${args}`, prop);
   }
 
+  getPipeline(pipelineId) {
+    // let value = "true";
+    return this.get(`${this.BASE_URL}/pipeline/${pipelineId}`);
+  }
+
   getPipelineByProperty(property, value) {
     // let value = "true";
     return this.get(`${this.BASE_URL}/pipeline/property/${property}/value/${value}`);
@@ -82,7 +87,7 @@ export default class KubeflowApi extends RestComponent {
     // let value = "true";
     return this.get(`${this.BASE_URL}/admin/pipeline/property/${property}/value/${value}`);
   }
-
+  //get current run
   getWorkflowRun(pipelineId) {
     return this.get(`${this.BASE_URL}/pipeline/${pipelineId}/run`);
   }
@@ -108,6 +113,9 @@ export default class KubeflowApi extends RestComponent {
     return this.delete(`${this.BASE_URL}/pipeline/${pipelineId}/run`);
   }
 
+  getRun(runId) {
+    return this.get(`${this.BASE_URL}/run/${runId}`);
+  }
   // setCurrentRequest(request) {
   //   return this.post(`/api/hdr/requests`, request);
   // }

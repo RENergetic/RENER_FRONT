@@ -111,7 +111,7 @@
 <script>
 // import InfoIcon from "@/components/miscellaneous/InfoIcon.vue";
 import { DeferredFunction } from "@/plugins/renergetic/utils.js";
-import WorkflowRunDetails from "./WorkflowRunDetails.vue";
+import WorkflowRunDetails from "@/components/admin/workflow/WorkflowRunDetails.vue";
 import WorkflowRun from "./WorkflowRun.vue";
 
 export default {
