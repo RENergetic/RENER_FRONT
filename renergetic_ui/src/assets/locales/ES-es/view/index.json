@@ -46,6 +46,8 @@
   "connection_type": "Tipo de conexión",
   "conversion_settings": "Configuraciones de conversión de unidades mostradas",
   "copy": "Copiar",
+  "copy_clipboard": null,
+  "copy_clipboard_ext": null,
   "correctly_added": "Valores añadidos correctamente",
   "current_page": "Página actual {page}",
   "current_request": "Solicitud actual",
@@ -272,6 +274,7 @@
   "view_data": "Ver datos",
   "view_json": null,
   "wasteheat_workflow_undefined": null,
+  "workflowrun_init": null,
   "workflowrun_param_format": null,
   "workflowrun_preview": null
 }

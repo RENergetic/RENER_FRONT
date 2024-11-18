@@ -46,6 +46,8 @@
   "connection_type": "Connection Type",
   "conversion_settings": "Displayed unit conversion settings",
   "copy": "Copy",
+  "copy_clipboard": "Copy to clipboard",
+  "copy_clipboard_ext": "Copy run extensions to clipboard",
   "correctly_added": "Values added correctly",
   "current_page": "Current Page {page}",
   "current_request": "Current request",
@@ -272,6 +274,7 @@
   "view_data": "View data",
   "view_json": "View json",
   "wasteheat_workflow_undefined": "Wasteheat task is not configured",
+  "workflowrun_init": "Create new task: {label}",
   "workflowrun_param_format": "Parameter: {parameter}",
   "workflowrun_preview": "Run preview for {label}"
 }

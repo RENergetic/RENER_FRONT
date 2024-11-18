@@ -610,11 +610,14 @@
     },
     "workflowrun": {
       "end_time": "Czas zakończenia",
+      "ext": "Run extension",
       "init_time": "Czas utworzenia",
       "label": "Etykieta",
       "name": "Nazwa",
+      "no_results": "No results",
       "parameters": "Parametry",
       "pipeline": "Pipeline",
+      "results": "Results",
       "run_id": "Id startu",
       "run_state": {
         "error": "Błąd",
@@ -748,6 +751,8 @@
     "agg_by_measurement": "Agreguj po nazwie parametru",
     "agg_by_measurement_description": "Agreguj po nazwie parametru, np: current_power, energy, inlet_temperature, air_temperature",
     "chart": "Wykres",
+    "compare_interval_number": "Interval backward steps",
+    "compare_interval_number_description": "Determine how many intervals backward should the data returned from. Set interval type 'month' and counter = 2 to get interval starting 2 month ago.  ",
     "compare_interval_type": "Długość okresu",
     "compare_interval_type_description": "Długość okresu porównawczego",
     "date_from": "Od",
@@ -851,6 +856,8 @@
     },
     "tile_legend_visibility": "Legenda",
     "tile_legend_visibility_description": "Widok legendy na wykresie",
+    "tile_measurement_preview": "Timeseries Preview",
+    "tile_measurement_preview_description": "Enable timeseries(measurement) preview icon in each tile",
     "time_filter": "Filtr czasu",
     "time_filters": {
       "current_day": "Aktualny dzień",
@@ -999,6 +1006,8 @@
     "connection_type": "Connection Type",
     "conversion_settings": "Ustawienia jednostek",
     "copy": "Kopiuj",
+    "copy_clipboard": "Copy to clipboard",
+    "copy_clipboard_ext": "Copy run extensions to clipboard",
     "correctly_added": "Values added correctly",
     "current_page": "Aktualna strona: {page}",
     "current_request": "Aktualne żądanie",
@@ -1225,6 +1234,7 @@
     "view_data": "View data",
     "view_json": "Podejrzyj strukturę JSON",
     "wasteheat_workflow_undefined": "Moduł Wasteheat nie został skonfigurowany",
+    "workflowrun_init": "Nowe zadanie: {label}",
     "workflowrun_param_format": "Parametr: {parameter}",
     "workflowrun_preview": "Widok {label}"
   }

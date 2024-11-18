@@ -10,6 +10,7 @@
 
       <div v-if="hasAccess" class="flex" style="margin-bottom: 0rem; flex-grow: 1; overflow: auto; flex-direction: column">
         <router-view :key="$route.path" :class="pageClass" />
+
         <!-- @update-menu="updateMenu()" -->
       </div>
       <div v-else :class="layout()">no access TODO:</div>
@@ -60,7 +61,7 @@ export default {
   },
   computed: {
     isUserSignedIn() {
-      return this.$store.getters["auth/isAuthenticated"] && !this.$store.getters["auth/tokenExpired"];
+      return this.$store.getters["auth/isAuthenticated"] && !this.$store.getters["auth/tokenExpired"] && localStorage.getItem("authenticated");
     },
     hasAccess() {
       if (this.$route.meta.roleFlag == null || this.$route.meta.roleFlag == undefined) return true;

@@ -22,6 +22,9 @@ export default class HDRAPI extends RestComponent {
     return this.delete(`/api/hdr/requests?t=${requestTimestamp}`);
   }
   getMeasurements(requestTimestamp, tagKey, tagValue) {
+    if (requestTimestamp == null) {
+      return this.get(`/api/hdr/measurement/key/${tagKey}/value/${tagValue}`);
+    }
     return this.get(`/api/hdr/measurement/key/${tagKey}/value/${tagValue}?t=${requestTimestamp}`);
   }
 }

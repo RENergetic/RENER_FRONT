@@ -52,14 +52,6 @@ export default {
     };
   },
   watch: {
-    // selectedRecommendation: {
-    //   handler: async function (r) {
-    //     if (r != null) {
-    //       if (this.tagKey != r.tag.key) this.currentMeasurements = await this.$ren.managementApi.listTagMeasurements(r.tag.key, "no_tag");
-    //     }
-    //   },
-    //   deep: true,
-    // },
     hdrRequest: {
       handler: async function (r) {
         if (r != null) this.reloadRecommendation = !this.reloadRecommendation;

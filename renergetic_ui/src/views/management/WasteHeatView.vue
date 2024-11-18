@@ -1,77 +1,77 @@
 <template>
-  <!-- Admin workflows -->
-
-  <DotMenu v-if="panel" :model="menuModel" />
-  <RenSpinner ref="spinner" :lock="true" style="width: 100%; overflow: auto">
-    <template #content>
-      <WasteHeat
-        v-if="workflow"
-        :key="parsedFilterRefresh"
-        :workflow="workflow"
-        :workflow-run="workflowRun"
-        :panel-settings="settings"
-        :information-panel="panel"
-        :panel-filter="effectiveFilterSettings"
-        @reload="reload"
-      />
-      <div v-else>{{ $t("view.wasteheat_workflow_undefined") }}</div>
-    </template>
-  </RenSpinner>
-  <RenSettingsDialog ref="settingsDialog">
-    <template #settings>
-      <Card class="ren-settings">
-        <template #title>
-          <span> {{ $t("view.panel_effective_settings") }}:</span>
-        </template>
-        <template #content>
-          <Settings :schema="schema" :settings="computePanelSettings(settings, panel)" :disabled="true" />
-        </template>
-      </Card>
-      <Card class="ren-settings">
-        <template #title>
-          <span> {{ $t("view.panel_settings") }}:</span>
-        </template>
-        <template #content>
-          <Settings :schema="schema" :settings="panel.props" :disabled="true" />
-        </template>
-      </Card>
-      <Card class="ren-settings">
-        <template #title>
-          <span> {{ $t("view.panel_user_settings") }}:</span>
-        </template>
-        <template #content>
-          <PanelSettings @update="reloadSettings()"> </PanelSettings>
-        </template>
-      </Card>
-    </template>
-  </RenSettingsDialog>
-  <RenSettingsDialog ref="conversionSettingsDialog">
-    <template #settings>
-      <ConversionSettings @update="reloadSettings()"></ConversionSettings>
-    </template>
-  </RenSettingsDialog>
-  <RenSettingsDialog ref="filterSettingsDialog" :save="false">
-    <template #settings>
-      <Panel v-if="panel" toggleable class="ren-settings">
-        <template #header>
-          <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
-        </template>
-        <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
-      </Panel>
-      <Panel v-if="panel" toggleable class="ren-settings">
-        <template #header>
-          <span> {{ $t("view.panel_filter_settings") }}:</span>
-        </template>
-        <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
-      </Panel>
-      <Panel v-if="panel" toggleable class="ren-settings">
-        <template #header>
-          <span> {{ $t("view.user_filter_settings") }}:</span>
-        </template>
-        <BasicFilterSettings :setting-key="'public'" @update="updateFilter()" />
-      </Panel>
-    </template>
-  </RenSettingsDialog>
+  <div>
+    <DotMenu v-if="panel" :model="menuModel" />
+    <RenSpinner ref="spinner" :lock="true" style="width: 100%">
+      <template #content>
+        <WasteHeat
+          v-if="workflow"
+          :key="parsedFilterRefresh"
+          :workflow="workflow"
+          :workflow-run="workflowRun"
+          :panel-settings="settings"
+          :information-panel="panel"
+          :panel-filter="effectiveFilterSettings"
+          @reload="reload"
+        />
+        <div v-else>{{ $t("view.wasteheat_workflow_undefined") }}</div>
+      </template>
+    </RenSpinner>
+    <RenSettingsDialog ref="settingsDialog">
+      <template #settings>
+        <Card class="ren-settings">
+          <template #title>
+            <span> {{ $t("view.panel_effective_settings") }}:</span>
+          </template>
+          <template #content>
+            <Settings :schema="schema" :settings="computePanelSettings(settings, panel)" :disabled="true" />
+          </template>
+        </Card>
+        <Card class="ren-settings">
+          <template #title>
+            <span> {{ $t("view.panel_settings") }}:</span>
+          </template>
+          <template #content>
+            <Settings :schema="schema" :settings="panel.props" :disabled="true" />
+          </template>
+        </Card>
+        <Card class="ren-settings">
+          <template #title>
+            <span> {{ $t("view.panel_user_settings") }}:</span>
+          </template>
+          <template #content>
+            <PanelSettings @update="reloadSettings()"> </PanelSettings>
+          </template>
+        </Card>
+      </template>
+    </RenSettingsDialog>
+    <RenSettingsDialog ref="conversionSettingsDialog">
+      <template #settings>
+        <ConversionSettings @update="reloadSettings()"></ConversionSettings>
+      </template>
+    </RenSettingsDialog>
+    <RenSettingsDialog ref="filterSettingsDialog" :save="false">
+      <template #settings>
+        <Panel v-if="panel" toggleable class="ren-settings">
+          <template #header>
+            <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
+          </template>
+          <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
+        </Panel>
+        <Panel v-if="panel" toggleable class="ren-settings">
+          <template #header>
+            <span> {{ $t("view.panel_filter_settings") }}:</span>
+          </template>
+          <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
+        </Panel>
+        <Panel v-if="panel" toggleable class="ren-settings">
+          <template #header>
+            <span> {{ $t("view.user_filter_settings") }}:</span>
+          </template>
+          <BasicFilterSettings :setting-key="'public'" @update="updateFilter()" />
+        </Panel>
+      </template>
+    </RenSettingsDialog>
+  </div>
 </template>
 <script>
 import WasteHeat from "@/components/management/WasteHeat.vue";

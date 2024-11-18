@@ -1,7 +1,7 @@
 <template>
-  <div v-if="loaded" class="flex flex-column justify-content-center" style="height: 100%; width: 100%">
+  <div v-if="loaded" class="flex flex-column justify-content-start" style="height: 100%; width: 100%">
     <div class="flex flex-none flex-column justify-content-center">
-      <h3 :style="`text-align: center;color:${tileTitleColor}`">{{ mSettings.tile.label }}</h3>
+      <h3 :style="`text-align: center;color:${tileTitleColor}`" :v-tooltip="mSettings.tile.description">{{ mSettings.tile.label }}</h3>
       <!-- v-if="legend"-->
     </div>
     <!-- {{ chartData }} -->
@@ -65,12 +65,21 @@ export default {
         responsive: true,
         plugins: {
           tooltip: {
+            titleFont: {
+              size: 10,
+            },
+            bodyFont: {
+              size: 10,
+            },
             callbacks: {
               label: function (context) {
                 const labelIndex = context.datasetIndex * 2 + context.dataIndex;
-                if (_this.tile.measurements[context.datasetIndex] === undefined) {
+                let measurement = _this.tile.measurements[context.datasetIndex];
+                if (measurement === undefined) {
                   return "";
                 }
+                let unit = _this.$ren.utils.getUnit(measurement, _this.mSettings.panel, _this.conversionSettings);
+
                 var id = _this.tile.measurements[context.datasetIndex].id;
                 var aggregation_function = _this.tile.measurements[context.datasetIndex].aggregation_function;
                 var value;
@@ -88,7 +97,7 @@ export default {
                 // console.error(_this.pdata.current[aggregation_function][id]);
                 if (context.chart.data.labels[labelIndex]) return context.chart.data.labels[labelIndex] + ": " + value;
                 try {
-                  return context.chart.data.labels[labelIndex - 1] + ": " + value;
+                  return [context.chart.data.labels[labelIndex - 1] + ": ", `${value} [${unit}]`];
                 } catch {
                   return value;
                 }
@@ -116,11 +125,12 @@ export default {
       }
       let data = null;
       data = this.tile.measurements.map((m) => {
-        let maxV =
-          pdata.max && pdata.max[m.aggregation_function][m.id]
-            ? pdata.max[m.aggregation_function][m.id]
-            : pdata.current[m.aggregation_function][m.id];
-        return m.type.base_unit != "%" ? pdata.current[m.aggregation_function][m.id] / maxV : pdata.current[m.aggregation_function][m.id];
+        // let maxV =
+        //   pdata.max && pdata.max[m.aggregation_function][m.id]
+        //     ? pdata.max[m.aggregation_function][m.id]
+        //     : pdata.current[m.aggregation_function][m.id];
+        // return m.type.base_unit != "%" ? pdata.current[m.aggregation_function][m.id] / maxV : pdata.current[m.aggregation_function][m.id];
+        return this.$ren.utils.getConvertedValue(m, pdata, this.mSettings);
       });
       let labels = []; // this.tile.measurements.map((m) => m.label);
       //todo remove labels ?
@@ -175,9 +185,12 @@ export default {
       console.info(ctx);
     },
     getDataset(value, index) {
-      let state = this.tile.measurements[index].visible == null ? true : this.tile.measurements[index].visible;
+      let m = this.tile.measurements[index];
+      let maxV = this.$ren.utils.getMaxValue(m, this.pdata, this.mSettings, this.conversionSettings);
+      let state = m.visible == null ? true : m.visible;
+      console.debug(`${m.id}=>mname:${m.name}, max: ${maxV}, value:${value}`);
       return {
-        data: [value, 1.0 - value],
+        data: [value, maxV > value ? maxV - value : 0],
         backgroundColor: this.getColor(index),
         hidden: !state,
       };

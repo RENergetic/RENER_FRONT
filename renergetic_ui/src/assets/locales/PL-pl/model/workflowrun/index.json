@@ -1,10 +1,13 @@
 {
   "end_time": "Czas zakończenia",
+  "ext": null,
   "init_time": "Czas utworzenia",
   "label": "Etykieta",
   "name": "Nazwa",
+  "no_results": null,
   "parameters": "Parametry",
   "pipeline": "Pipeline",
+  "results": null,
   "run_id": "Id startu",
   "run_state": {
     "error": "Błąd",

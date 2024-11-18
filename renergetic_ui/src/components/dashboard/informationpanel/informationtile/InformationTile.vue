@@ -19,7 +19,8 @@
       :pdata="pdata"
       :settings="mSettings"
       :conversion-settings="conversionSettings"
-    ></KnobTile>
+    >
+    </KnobTile>
     <ImageTile
       v-else-if="tile.type == 'image'"
       :style="'width:100%'"
@@ -54,7 +55,8 @@
       :pdata="pdata"
       :settings="mSettings"
       :conversion-settings="conversionSettings"
-    ></DoughnutTile>
+    >
+    </DoughnutTile>
     <!-- <MultiDoughnutTile
         v-else-if="tile.type == 'multi_doughnut'"
         :tile="tile"
@@ -116,6 +118,7 @@ function validateTileSettings(tile, panelSettings, ctx) {
       ...tile.props,
       ...{
         label: ctx.$te(`enums.measurement_name.${tile.name}`) ? ctx.$t(`enums.measurement_name.${tile.name}`) : tile.label,
+        description: tile.description,
         icon: icons[tile.props.icon],
         icon_visibility: tile.props.icon_visibility != null ? tile.props.icon_visibility : true,
         item_icon_visibility: tile.props.item_icon_visibility != null ? tile.props.item_icon_visibility : true,
@@ -128,12 +131,12 @@ function validateTileSettings(tile, panelSettings, ctx) {
             ? tile.props.title_visibility
             : panelSettings.title_visibility != null
             ? panelSettings.title_visibility
-            : false),
+            : true),
         measurement_list: tile.props.measurement_list != null ? tile.props.measurement_list : true,
         measurement_background: tile.props.measurement_background != null ? tile.props.measurement_background : false,
         // title_color: tile.props.title_color != null ? tile.props.title_color : null,
         fontSize: panelSettings.fontSize,
-
+        tile_preview: panelSettings.tile_preview === undefined ? true : panelSettings.tile_preview,
         background_mask: tile.props.background_mask ? tile.props.background_mask : tile.props.mask,
         // background: tile.props.background,
         // template: tile.props.template,
@@ -200,7 +203,9 @@ export default {
     },
     tileDataPreview: function () {
       try {
-        return this.tilePreview && this.tile.measurements.length > 0;
+        // return this.tilePreview && panelSettings.tile_preview && this.tile.measurements.length > 0;
+
+        return this.mSettings.tile.tile_preview && this.tile.measurements.length > 0;
       } catch {
         return false;
       }
@@ -259,6 +264,7 @@ export default {
   height: 100%;
   position: absolute;
 }
+
 .tile_wrapper_center {
   display: flex;
   align-content: center;
@@ -271,25 +277,30 @@ export default {
     padding: 0.5rem;
   }
 }
+
 .tile_wrapper #tileicon path,
 .tile_wrapper .tileicon path {
   stroke: $ren-primary-border-color;
   stroke-width: 10;
   stroke-linejoin: round;
 }
+
 .data-preview {
   // font-size: 1.5rem;
   // position: absolute;
   // top: 0.5rem;
   // right: 0.5rem;
 }
+
 .tile-icon {
   margin-left: 0.25rem;
 }
+
 .tile-bar {
   i {
     font-size: 0.75rem;
   }
+
   font-size: 0.75rem;
   min-width: 5rem;
   position: absolute;
@@ -305,13 +316,16 @@ export default {
   i {
     font-size: 1.5rem;
   }
+
   // background: red;
   opacity: 1;
   z-index: 4444444;
 }
+
 .presentation-view .tile-bar {
   display: none;
 }
+
 .presentation-view .data-preview {
   display: none;
 }

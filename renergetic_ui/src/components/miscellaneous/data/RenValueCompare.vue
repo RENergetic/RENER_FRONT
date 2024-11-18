@@ -8,15 +8,15 @@
       v-if="mValue != null && mValue > 0"
       v-tooltip="$t('view.value_increased_by', { value: mValue })"
       class="pi pi-arrow-circle-up"
-      style="font-size: 0.5em"
+      style="font-size: 0.75em"
     />
     <i
       v-else-if="mValue != null && mValue < 0"
       v-tooltip="$t('view.value_decreased_by', { value: -mValue })"
       class="pi pi-arrow-circle-down"
-      style="font-size: 0.5em"
+      style="font-size: 0.75em"
     />
-    <i v-else-if="mValue != null" v-tooltip="$t('view.value_not_changed')" class="pi pi-circle" style="font-size: 0.5em" />
+    <i v-else-if="mValue != null" v-tooltip="$t('view.value_not_changed')" class="pi pi-circle" style="font-size: 0.75em" />
   </i>
 </template>
 
@@ -52,6 +52,6 @@ export default {
 <style scoped>
 i {
   margin: 0.12em;
-  font-size: max(0.5em, 1.5rem);
+  font-size: max(0.75em, 1.5rem) !important;
 }
 </style>

@@ -70,8 +70,8 @@ export default {
       // console.debug(state.informationPanels);
       state.informationPanels.push(panel);
       state.informationPanelsMap[panel.id] = state.informationPanels.length - 1;
-      console.debug(state.informationPanels);
-      console.debug(state.informationPanelsMap);
+      // console.debug(state.informationPanels);
+      // console.debug(state.informationPanelsMap);
     },
     wrapper(state, payload) {
       if (!payload) {
@@ -94,7 +94,8 @@ export default {
       state.measurementTypeList = getF("measurement_types", []);
       state.assetPanels = getF("asset_panels", []);
       state.assetPanelsMap = mapAssetPanelId(state.assetPanels);
-      console.info(state.assetPanelsMap);
+      console.debug("Assetpanels/private dashboards: ");
+      console.debug(state.assetPanelsMap);
       state.dashboards = getF("dashboards", []);
       state.dashboardMap = mapPanelId(state.dashboards);
       state.demands = getF("demands", []);
@@ -173,6 +174,9 @@ export default {
       }
       //get new unit
       let mt = state.measurementTypes[currentMeasurementType.physical_name].find((mt) => mt.unit == newUnit);
+
+      // console.error(currentMeasurementType);
+      // console.error(mt);
 
       return (value * currentMeasurementType.factor) / mt.factor;
       // return (value / currentMeasurementType.factor) * mt.factor;

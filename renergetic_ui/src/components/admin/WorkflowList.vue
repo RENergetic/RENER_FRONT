@@ -197,7 +197,9 @@
     <PipelineRunLog :workflow="selectedWorkflow" />
   </Dialog>
   <Dialog v-model:visible="panelSelectDialog" :style="{ width: '75vw' }" :maximizable="true" :modal="true" :dismissable-mask="true">
-    <ren-submit :disabled="!selectedPanel" @submit="assignPanel(selectedWorkflow, selectedPanel)" />
+    <div class="ren-sticky" style="width: fit-content; z-index: 1015; top: 0">
+      <ren-submit :disabled="!selectedPanel" @submit="assignPanel(selectedWorkflow, selectedPanel)" />
+    </div>
     <InformationPanelList :panel-list="panelList" :basic="true" @reload="loadData" @select="(panel) => (selectedPanel = panel)" />
   </Dialog>
 </template>

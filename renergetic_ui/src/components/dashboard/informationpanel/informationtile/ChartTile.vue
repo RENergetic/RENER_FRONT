@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-column justify-content-center" style="height: 100%">
     <div class="flex flex-none flex-column justify-content-center">
-      <h3 :style="`text-align: center;color:${tileTitleColor}`">{{ settings.tile.label }}</h3>
+      <h3 :style="`text-align: center;color:${tileTitleColor}`" :v-tooltip="mSettings.tile.description">{{ settings.tile.label }}</h3>
     </div>
     <!-- <div style="position: relative; display: inline-block; width: 100%; flex-grow: 1"> -->
     <div class="flex flex-grow-1 flex-column align-items-center justify-content-center" style="position: relative; height: 100%">

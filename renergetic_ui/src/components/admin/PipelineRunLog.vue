@@ -4,11 +4,14 @@
       <RenSpinner ref="renspinner" :lock="true" style="width: 100%">
         <template #content>
           <DataTable v-if="runLogList" :lazy="true" data-key="run_id" :value="runLogList" class="sticky-header">
-            <Column field="run_id" :header="$t('model.workflowrun.run_id')" />
+            <!-- <Column field="run_id" :header="$t('model.workflowrun.run_id')" /> -->
 
-            <Column field="pipeline" :header="$t('model.workflowrun.pipeline')">
+            <Column field="run" :header="$t('model.workflowrun.run_id')">
               <template #body="slotProps">
-                {{ slotProps.data.pipeline.pipeline_id }}
+                <div>
+                  <h4>{{ slotProps.data.run_id }}</h4>
+                </div>
+                <div class="disabled">({{ slotProps.data.pipeline.pipeline_id }})</div>
               </template>
             </Column>
 
@@ -29,10 +32,19 @@
                 {{ slotProps.data.state }}
               </template>
             </Column>
-            <Column>
+            <Column field="ext" :header="$t('model.workflowrun.ext')">
               <template #body="slotProps">
-                <i class="pi pi-chevron-circle-right" @click="showRunDetails(slotProps.data)" />
+                <Button :disabled="!slotProps.data.ext" :label="$t('view.copy_clipboard')" @click="toClipboard(slotProps.data.ext)" />
               </template>
+            </Column>
+            <Column field="results" :header="$t('model.workflowrun.results')">
+              <template #body="slotProps">
+                <Button v-if="slotProps.data.results" :label="$t('view.copy_clipboard')" @click="toClipboard(slotProps.data.results)" />
+                <span v-else>{{ $t("model.workflowrun.no_results") }}</span>
+              </template>
+            </Column>
+            <Column>
+              <template #body="slotProps"> <i class="pi pi-chevron-circle-right" @click="showRunDetails(slotProps.data)" /> </template>
             </Column>
           </DataTable>
         </template>

@@ -7,8 +7,8 @@
         <ren-input v-model="endTime" :text-label="'model.workflowrun.end_time'" :read-only="true" :disabled="endTime == null" />
         <ren-input v-model="state" :text-label="'model.workflowrun.state'" :read-only="true" :disabled="state == null" />
         <h3 v-if="mModel.parameters && Object.keys(mModel.parameters).length > 0">{{ $t("model.workflowrun.parameters") }}:</h3>
-
-        <div v-if="!mModel.parameters.simulation_definitions">
+        {{ mModel.parameters.simulation_number }}
+        <div v-if="!mModel.parameters.simulation_definitions && len(mModel.parameters.simulation_definitions) > 1">
           <ren-input
             v-for="key in Object.keys(mModel.parameters)"
             :key="key"
@@ -29,6 +29,7 @@
               :read-only="true"
             />
           </div>
+
           <!-- <ren-input-wrapper v-if="mModel.parameters['simulation_definitions']">
             <template #content>
               

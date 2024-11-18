@@ -133,7 +133,9 @@ export default {
   },
 
   methods: {
-    async toClipboard(objStr, labelStr = null) {
+    async toClipboard(objStr, labelStr = null, raw = false) {
+      if (typeof (objStr) !== "string" && !raw)
+        objStr = JSON.stringify(objStr)
       if (labelStr) {
         await navigator.clipboard
           .writeText(objStr)
@@ -350,7 +352,7 @@ export default {
       let d = this.tileContentSize2D()
       let minD = Math.min(d.w, d.h);
       console.debug("cell height: " + this.settings.panel.cellHeight + ":  " + d.w + "," + d.h)
-      console.debug(this.settings.panel)
+      // console.debug(this.settings.panel)
       return minD
     },
     tileContentSize2D() {

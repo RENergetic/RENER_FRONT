@@ -140,7 +140,7 @@ export default {
       let res = null;
       await this.$refs.requestSpinner.run(
         async () => {
-          res = await this.$ren.kubeflowApi.startExperiment(experimentId, null, parameters);
+          res = await this.$ren.kubeflowApi.startExperiment(experimentId, null, parameters, {});
         },
         500,
         5000,
@@ -191,15 +191,11 @@ export default {
       this.$emit("update:modelValue", v);
     },
     async onHDR(hdr) {
-      //todo:
-      // await this.$refs.spinner.run(async () => {
       await this.$ren.hdrApi.setCurrentRequest(hdr).then(async () => {
         this.hdrRequestDialog = false;
         this.currentRequest = await this.getRequest();
         this.$emit("update:hdrRequest", this.currentRequest);
       });
-      // });
-      // console.error(hdr);
     },
 
     async getRequest() {

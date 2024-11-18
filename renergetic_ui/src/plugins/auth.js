@@ -36,11 +36,12 @@ export default function (Vue) {
       checkLoginIframe: false,
     })
     .then(async (_authenticated) => {
-      // Vue.config.globalProperties.authenticated = _authenticated;
       keycloak.authenticated = _authenticated ? true : false;
+
       console.info(`keycloak authenticated: ${keycloak.authenticated}`);
       // initialized = true;
       if (_authenticated) {
+        localStorage.setItem("authenticated", 1);
         var accountRoles = null;
         var realmRoles = null;
         if (keycloak.resourceAccess && keycloak.resourceAccess.account) {
@@ -85,7 +86,7 @@ export default function (Vue) {
       localStorage.setItem("data", null);
       sessionStorage.clear();
       localStorage.clear();
-
+      //propagate
       keycloak.logout({ redirectUri: window.location.origin });
     },
     // instance: keycloak,

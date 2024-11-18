@@ -2,51 +2,51 @@
   "data": {
       "current": {
           "last": {
-              "sim_0_DHN_0": 3.8,
-              "sim_0_DHN_1": 3.9,
-              "sim_0_DHN_2": 3.8,
-              "sim_0_WC_c_2hc_0": 3.8,
-              "sim_0_WC_c_2hc_1": 3.8,
-              "sim_0_WC_c_2hc_2": 3.7,
-              "sim_0_WC_l_2hc_0": 3.6,
-              "sim_0_WC_l_2hc_1": 3.6,
-              "sim_0_WC_l_2hc_2": 3.5,
-              "sim_1_DHN_0": 4405,
-              "sim_1_DHN_1": 4405,
-              "sim_1_DHN_2": 4405,
-              "sim_1_WC_c_2hc_0": 4366,
-              "sim_1_WC_c_2hc_1": 4366,
-              "sim_1_WC_c_2hc_2": 4323,
-              "sim_1_WC_l_2hc_0": 4323,
-              "sim_1_WC_l_2hc_1": 4323,
-              "sim_1_WC_l_2hc_2": 4366,
-              "sim_2_DHN_0": 0.82,
-              "sim_2_DHN_1": 0.71,
-              "sim_2_DHN_2": 0.47,
-              "sim_2_WC_c_2hc_0": 0.83,
-              "sim_2_WC_c_2hc_1": 0.71,
-              "sim_2_WC_c_2hc_2": 0.44,
-              "sim_2_WC_l_2hc_0": 0.91,
-              "sim_2_WC_l_2hc_1": 0.67,
-              "sim_2_WC_l_2hc_2": 0.69,
-              "sim_3_DHN_0": 55,
-              "sim_3_DHN_1": 89,
-              "sim_3_DHN_2": 220,
-              "sim_3_WC_c_2hc_0": 56,
-              "sim_3_WC_c_2hc_1": 93,
-              "sim_3_WC_c_2hc_2": 228,
-              "sim_3_WC_l_2hc_0": 64,
-              "sim_3_WC_l_2hc_1": 106,
-              "sim_3_WC_l_2hc_2": 256,
-              "sim_4_DHN_0": 7176,
-              "sim_4_DHN_1": 7176,
-              "sim_4_DHN_2": 7176,
-              "sim_4_WC_c_2hc_0": 5910,
-              "sim_4_WC_c_2hc_1": 6084,
-              "sim_4_WC_c_2hc_2": 4320,
-              "sim_4_WC_l_2hc_0": 5774,
-              "sim_4_WC_l_2hc_1": 6161,
-              "sim_4_WC_l_2hc_2": 3228
+              "sim_0_0_0": 4.459279642394661,
+              "sim_0_0_1": 1.6296534916510859,
+              "sim_0_0_2": 4.048895222067341,
+              "sim_0_1_0": 5.418473239116911,
+              "sim_0_1_1": 1.659559745633096,
+              "sim_0_1_2": 2.1441153749856285,
+              "sim_0_2_0": 2.5502499715214224,
+              "sim_0_2_1": 2.3593633313316578,
+              "sim_0_2_2": 2.2747692420053953,
+              "sim_1_0_0": 852,
+              "sim_1_0_1": 1026,
+              "sim_1_0_2": 896,
+              "sim_1_1_0": 1181,
+              "sim_1_1_1": 759,
+              "sim_1_1_2": 515,
+              "sim_1_2_0": 666,
+              "sim_1_2_1": 1084,
+              "sim_1_2_2": 1348,
+              "sim_2_0_0": 0.3729677540263573,
+              "sim_2_0_1": 0.7051073789196592,
+              "sim_2_0_2": 0.7801186286363317,
+              "sim_2_1_0": 0.06258974425101727,
+              "sim_2_1_1": 0.9143816651073337,
+              "sim_2_1_2": 0.7398357761439429,
+              "sim_2_2_0": 0.3059520317607052,
+              "sim_2_2_1": 0.8063533035415678,
+              "sim_2_2_2": 0.2259054513697738,
+              "sim_3_0_0": 571,
+              "sim_3_0_1": 600,
+              "sim_3_0_2": 716,
+              "sim_3_1_0": 629,
+              "sim_3_1_1": 1040,
+              "sim_3_1_2": 1033,
+              "sim_3_2_0": 1000,
+              "sim_3_2_1": 710,
+              "sim_3_2_2": 776,
+              "sim_4_0_0": 595,
+              "sim_4_0_1": 756,
+              "sim_4_0_2": 1128,
+              "sim_4_1_0": 836,
+              "sim_4_1_1": 574,
+              "sim_4_1_2": 1238,
+              "sim_4_2_0": 1405,
+              "sim_4_2_1": 788,
+              "sim_4_2_2": 1476
           }
       }
   },
@@ -54,15 +54,12 @@
       "label": "Label",
       "name": "name",
       "props": {
-          "font_scale": 0.8,
-          "qrcodePosition": "top_right",
-          "qrcodeSize": 200,
-          "tile_preview": false
+          "font_scale": 0.8
       },
       "tiles": [
           {
               "id": 10000,
-              "label": "COP comparison (DHN dump)",
+              "label": "COP comparison (Simulation: 1)",
               "layout": {
                   "h": 4,
                   "w": 3,
@@ -74,18 +71,15 @@
                       "aggregation_function": "last",
                       "direction": "none",
                       "domain": "heat",
-                      "id": "sim_0_DHN_0",
+                      "id": "sim_0_0_0",
                       "label": "DCWorms simulation 0",
                       "measurement_details": {
                           "background": "#1ABC9C",
                           "color": "#1ABC9C"
                       },
-                      "name": "COP_simulation_sim_0_DHN_0",
+                      "name": "COP_simulation_sim_0_0_0",
                       "type": {
-                          "base_unit": "ratio",
-                          "factor": 1,
                           "id": 18,
-                          "label": "Ratio",
                           "name": "ratio",
                           "physical_name": "ratio",
                           "unit": "ratio"
@@ -95,18 +89,15 @@
                       "aggregation_function": "last",
                       "direction": "none",
                       "domain": "heat",
-                      "id": "sim_0_DHN_1",
+                      "id": "sim_0_0_1",
                       "label": "DCWorms simulation 1",
                       "measurement_details": {
                           "background": "#E67E22",
                           "color": "#E67E22"
                       },
-                      "name": "COP_simulation_sim_0_DHN_1",
+                      "name": "COP_simulation_sim_0_0_1",
                       "type": {
-                          "base_unit": "ratio",
-                          "factor": 1,
                           "id": 18,
-                          "label": "Ratio",
                           "name": "ratio",
                           "physical_name": "ratio",
                           "unit": "ratio"
@@ -116,18 +107,15 @@
                       "aggregation_function": "last",
                       "direction": "none",
                       "domain": "heat",
-                      "id": "sim_0_DHN_2",
+                      "id": "sim_0_0_2",
                       "label": "DCWorms simulation 2",
                       "measurement_details": {
                           "background": "#2ECC71",
                           "color": "#2ECC71"
                       },
-                      "name": "COP_simulation_sim_0_DHN_2",
+                      "name": "COP_simulation_sim_0_0_2",
                       "type": {
-                          "base_unit": "ratio",
-                          "factor": 1,
                           "id": 18,
-                          "label": "Ratio",
                           "name": "ratio",
                           "physical_name": "ratio",
                           "unit": "ratio"
@@ -143,7 +131,7 @@
           },
           {
               "id": 10100,
-              "label": "COP comparison (Local heat reuse with central heatpump )",
+              "label": "COP comparison (Simulation: 2)",
               "layout": {
                   "h": 4,
                   "w": 3,
@@ -155,18 +143,15 @@
                       "aggregation_function": "last",
                       "direction": "none",
                       "domain": "heat",
-                      "id": "sim_0_WC_c_2hc_0",
+                      "id": "sim_0_1_0",
                       "label": "DCWorms simulation 0",
                       "measurement_details": {
                           "background": "#1ABC9C",
                           "color": "#1ABC9C"
                       },
-                      "name": "COP_simulation_sim_0_WC_c_2hc_0",
+                      "name": "COP_simulation_sim_0_1_0",
                       "type": {
-                          "base_unit": "ratio",
-                          "factor": 1,
                           "id": 18,
-                          "label": "Ratio",
                           "name": "ratio",
                           "physical_name": "ratio",
                           "unit": "ratio"
@@ -176,18 +161,15 @@
                       "aggregation_function": "last",
                       "direction": "none",
                       "domain": "heat",
-                      "id": "sim_0_WC_c_2hc_1",
+                      "id": "sim_0_1_1",
                       "label": "DCWorms simulation 1",
                       "measurement_details": {
                           "background": "#E67E22",
                           "color": "#E67E22"
                       },
-                      "name": "COP_simulation_sim_0_WC_c_2hc_1",
+                      "name": "COP_simulation_sim_0_1_1",
                       "type": {
-                          "base_unit": "ratio",
-                          "factor": 1,
                           "id": 18,
-                          "label": "Ratio",
                           "name": "ratio",
                           "physical_name": "ratio",
                           "unit": "ratio"
@@ -197,18 +179,15 @@
                       "aggregation_function": "last",
                       "direction": "none",
                       "domain": "heat",
-                      "id": "sim_0_WC_c_2hc_2",
+                      "id": "sim_0_1_2",
                       "label": "DCWorms simulation 2",
                       "measurement_details": {
                           "background": "#2ECC71",
                           "color": "#2ECC71"
                       },
-                      "name": "COP_simulation_sim_0_WC_c_2hc_2",
+                      "name": "COP_simulation_sim_0_1_2",
                       "type": {
-                          "base_unit": "ratio",
-                          "factor": 1,
                           "id": 18,
-                          "label": "Ratio",
                           "name": "ratio",
                           "physical_name": "ratio",
                           "unit": "ratio"
@@ -224,7 +203,7 @@
           },
           {
               "id": 10200,
-              "label": "COP comparison (Local heat reuse with separated heatpumps.)",
+              "label": "COP comparison (Simulation: 3)",
               "layout": {
                   "h": 4,
                   "w": 3,
@@ -236,18 +215,15 @@
                       "aggregation_function": "last",
                       "direction": "none",
                       "domain": "heat",
-                      "id": "sim_0_WC_l_2hc_0",
+                      "id": "sim_0_2_0",
                       "label": "DCWorms simulation 0",
                       "measurement_details": {
                           "background": "#1ABC9C",
                           "color": "#1ABC9C"
                       },
-                      "name": "COP_simulation_sim_0_WC_l_2hc_0",
+                      "name": "COP_simulation_sim_0_2_0",
                       "type": {
-                          "base_unit": "ratio",
-                          "factor": 1,
                           "id": 18,
-                          "label": "Ratio",
                           "name": "ratio",
                           "physical_name": "ratio",
                           "unit": "ratio"
@@ -257,18 +233,15 @@
                       "aggregation_function": "last",
                       "direction": "none",
                       "domain": "heat",
-                      "id": "sim_0_WC_l_2hc_1",
+                      "id": "sim_0_2_1",
                       "label": "DCWorms simulation 1",
                       "measurement_details": {
                           "background": "#E67E22",
                           "color": "#E67E22"
                       },
-                      "name": "COP_simulation_sim_0_WC_l_2hc_1",
+                      "name": "COP_simulation_sim_0_2_1",
                       "type": {
-                          "base_unit": "ratio",
-                          "factor": 1,
                           "id": 18,
-                          "label": "Ratio",
                           "name": "ratio",
                           "physical_name": "ratio",
                           "unit": "ratio"
@@ -278,18 +251,15 @@
                       "aggregation_function": "last",
                       "direction": "none",
                       "domain": "heat",
-                      "id": "sim_0_WC_l_2hc_2",
+                      "id": "sim_0_2_2",
                       "label": "DCWorms simulation 2",
                       "measurement_details": {
                           "background": "#2ECC71",
                           "color": "#2ECC71"
                       },
-                      "name": "COP_simulation_sim_0_WC_l_2hc_2",
+                      "name": "COP_simulation_sim_0_2_2",
                       "type": {
-                          "base_unit": "ratio",
-                          "factor": 1,
                           "id": 18,
-                          "label": "Ratio",
                           "name": "ratio",
                           "physical_name": "ratio",
                           "unit": "ratio"
@@ -305,7 +275,7 @@
           },
           {
               "id": 10001,
-              "label": "Peak Heating Power(DHN dump)",
+              "label": "Peak Heating Power(Simulation: 1)",
               "layout": {
                   "h": 4,
                   "w": 3,
@@ -317,20 +287,15 @@
                       "aggregation_function": "last",
                       "direction": "out",
                       "domain": "heat",
-                      "id": "sim_1_DHN_0",
+                      "id": "sim_1_0_0",
                       "label": "DCWorms simulation 0",
                       "measurement_details": {
                           "background": "#1ABC9C",
                           "color": "#1ABC9C"
                       },
-                      "name": "peak_heatsim_1_DHN_0",
+                      "name": "peak_heatsim_1_0_0",
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "factor": 1000,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -340,20 +305,15 @@
                       "aggregation_function": "last",
                       "direction": "out",
                       "domain": "heat",
-                      "id": "sim_1_DHN_1",
+                      "id": "sim_1_0_1",
                       "label": "DCWorms simulation 1",
                       "measurement_details": {
                           "background": "#E67E22",
                           "color": "#E67E22"
                       },
-                      "name": "peak_heatsim_1_DHN_1",
+                      "name": "peak_heatsim_1_0_1",
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "factor": 1000,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -363,20 +323,15 @@
                       "aggregation_function": "last",
                       "direction": "out",
                       "domain": "heat",
-                      "id": "sim_1_DHN_2",
+                      "id": "sim_1_0_2",
                       "label": "DCWorms simulation 2",
                       "measurement_details": {
                           "background": "#2ECC71",
                           "color": "#2ECC71"
                       },
-                      "name": "peak_heatsim_1_DHN_2",
+                      "name": "peak_heatsim_1_0_2",
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "factor": 1000,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -385,14 +340,13 @@
               ],
               "name": "peak_heat0",
               "props": {
-                  "background": "#ffffffFF",
-                  "icon": "heat"
+                  "background": "#ffffffFF"
               },
               "type": "list"
           },
           {
               "id": 10101,
-              "label": "Peak Heating Power(Local heat reuse with central heatpump )",
+              "label": "Peak Heating Power(Simulation: 2)",
               "layout": {
                   "h": 4,
                   "w": 3,
@@ -404,20 +358,15 @@
                       "aggregation_function": "last",
                       "direction": "out",
                       "domain": "heat",
-                      "id": "sim_1_WC_c_2hc_0",
+                      "id": "sim_1_1_0",
                       "label": "DCWorms simulation 0",
                       "measurement_details": {
                           "background": "#1ABC9C",
                           "color": "#1ABC9C"
                       },
-                      "name": "peak_heatsim_1_WC_c_2hc_0",
+                      "name": "peak_heatsim_1_1_0",
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "factor": 1000,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -427,20 +376,15 @@
                       "aggregation_function": "last",
                       "direction": "out",
                       "domain": "heat",
-                      "id": "sim_1_WC_c_2hc_1",
+                      "id": "sim_1_1_1",
                       "label": "DCWorms simulation 1",
                       "measurement_details": {
                           "background": "#E67E22",
                           "color": "#E67E22"
                       },
-                      "name": "peak_heatsim_1_WC_c_2hc_1",
+                      "name": "peak_heatsim_1_1_1",
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "factor": 1000,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -450,20 +394,15 @@
                       "aggregation_function": "last",
                       "direction": "out",
                       "domain": "heat",
-                      "id": "sim_1_WC_c_2hc_2",
+                      "id": "sim_1_1_2",
                       "label": "DCWorms simulation 2",
                       "measurement_details": {
                           "background": "#2ECC71",
                           "color": "#2ECC71"
                       },
-                      "name": "peak_heatsim_1_WC_c_2hc_2",
+                      "name": "peak_heatsim_1_1_2",
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "factor": 1000,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -472,14 +411,13 @@
               ],
               "name": "peak_heat1",
               "props": {
-                  "background": "#ffffffFF",
-                  "icon": "heat"
+                  "background": "#ffffffFF"
               },
               "type": "list"
           },
           {
               "id": 10201,
-              "label": "Peak Heating Power(Local heat reuse with separated heatpumps.)",
+              "label": "Peak Heating Power(Simulation: 3)",
               "layout": {
                   "h": 4,
                   "w": 3,
@@ -491,20 +429,15 @@
                       "aggregation_function": "last",
                       "direction": "out",
                       "domain": "heat",
-                      "id": "sim_1_WC_l_2hc_0",
+                      "id": "sim_1_2_0",
                       "label": "DCWorms simulation 0",
                       "measurement_details": {
                           "background": "#1ABC9C",
                           "color": "#1ABC9C"
                       },
-                      "name": "peak_heatsim_1_WC_l_2hc_0",
+                      "name": "peak_heatsim_1_2_0",
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "factor": 1000,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -514,20 +447,15 @@
                       "aggregation_function": "last",
                       "direction": "out",
                       "domain": "heat",
-                      "id": "sim_1_WC_l_2hc_1",
+                      "id": "sim_1_2_1",
                       "label": "DCWorms simulation 1",
                       "measurement_details": {
                           "background": "#E67E22",
                           "color": "#E67E22"
                       },
-                      "name": "peak_heatsim_1_WC_l_2hc_1",
+                      "name": "peak_heatsim_1_2_1",
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "factor": 1000,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -537,20 +465,15 @@
                       "aggregation_function": "last",
                       "direction": "out",
                       "domain": "heat",
-                      "id": "sim_1_WC_l_2hc_2",
+                      "id": "sim_1_2_2",
                       "label": "DCWorms simulation 2",
                       "measurement_details": {
                           "background": "#2ECC71",
                           "color": "#2ECC71"
                       },
-                      "name": "peak_heatsim_1_WC_l_2hc_2",
+                      "name": "peak_heatsim_1_2_2",
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "factor": 1000,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -559,14 +482,13 @@
               ],
               "name": "peak_heat2",
               "props": {
-                  "background": "#ffffffFF",
-                  "icon": "heat"
+                  "background": "#ffffffFF"
               },
               "type": "list"
           },
           {
               "id": 10002,
-              "label": "Heat utilization (DHN dump)",
+              "label": "Heat utilization (Simulation: 1)",
               "layout": {
                   "h": 4,
                   "w": 3,
@@ -578,19 +500,16 @@
                       "aggregation_function": "last",
                       "direction": "none",
                       "domain": "heat",
-                      "id": "sim_2_DHN_0",
+                      "id": "sim_2_0_0",
                       "label": "DCWorms simulation 0",
                       "measurement_details": {
                           "background": "#1ABC9C",
                           "color": "#1ABC9C"
                       },
-                      "name": "heat_util_sim_2_DHN_0",
+                      "name": "heat_util_sim_2_0_0",
                       "sensor_name": "energy_utilization",
                       "type": {
-                          "base_unit": "ratio",
-                          "factor": 1,
                           "id": 19,
-                          "label": "Normalized ratio",
                           "name": "ratio_norm",
                           "physical_name": "ratio",
                           "unit": "0-1"
@@ -600,19 +519,16 @@
                       "aggregation_function": "last",
                       "direction": "none",
                       "domain": "heat",
-                      "id": "sim_2_DHN_1",
+                      "id": "sim_2_0_1",
                       "label": "DCWorms simulation 1",
                       "measurement_details": {
                           "background": "#E67E22",
                           "color": "#E67E22"
                       },
-                      "name": "heat_util_sim_2_DHN_1",
+                      "name": "heat_util_sim_2_0_1",
                       "sensor_name": "energy_utilization",
                       "type": {
-                          "base_unit": "ratio",
-                          "factor": 1,
                           "id": 19,
-                          "label": "Normalized ratio",
                           "name": "ratio_norm",
                           "physical_name": "ratio",
                           "unit": "0-1"
@@ -622,19 +538,16 @@
                       "aggregation_function": "last",
                       "direction": "none",
                       "domain": "heat",
-                      "id": "sim_2_DHN_2",
+                      "id": "sim_2_0_2",
                       "label": "DCWorms simulation 2",
                       "measurement_details": {
                           "background": "#2ECC71",
                           "color": "#2ECC71"
                       },
-                      "name": "heat_util_sim_2_DHN_2",
+                      "name": "heat_util_sim_2_0_2",
                       "sensor_name": "energy_utilization",
                       "type": {
-                          "base_unit": "ratio",
-                          "factor": 1,
                           "id": 19,
-                          "label": "Normalized ratio",
                           "name": "ratio_norm",
                           "physical_name": "ratio",
                           "unit": "0-1"
@@ -644,14 +557,13 @@
               "name": "heat_util_0",
               "props": {
                   "background": "#ffffffFF",
-                  "icon": "renewables",
                   "measurement_list": false
               },
               "type": "multi_knob"
           },
           {
               "id": 10102,
-              "label": "Heat utilization (Local heat reuse with central heatpump )",
+              "label": "Heat utilization (Simulation: 2)",
               "layout": {
                   "h": 4,
                   "w": 3,
@@ -663,19 +575,16 @@
                       "aggregation_function": "last",
                       "direction": "none",
                       "domain": "heat",
-                      "id": "sim_2_WC_c_2hc_0",
+                      "id": "sim_2_1_0",
                       "label": "DCWorms simulation 0",
                       "measurement_details": {
                           "background": "#1ABC9C",
                           "color": "#1ABC9C"
                       },
-                      "name": "heat_util_sim_2_WC_c_2hc_0",
+                      "name": "heat_util_sim_2_1_0",
                       "sensor_name": "energy_utilization",
                       "type": {
-                          "base_unit": "ratio",
-                          "factor": 1,
                           "id": 19,
-                          "label": "Normalized ratio",
                           "name": "ratio_norm",
                           "physical_name": "ratio",
                           "unit": "0-1"
@@ -685,19 +594,16 @@
                       "aggregation_function": "last",
                       "direction": "none",
                       "domain": "heat",
-                      "id": "sim_2_WC_c_2hc_1",
+                      "id": "sim_2_1_1",
                       "label": "DCWorms simulation 1",
                       "measurement_details": {
                           "background": "#E67E22",
                           "color": "#E67E22"
                       },
-                      "name": "heat_util_sim_2_WC_c_2hc_1",
+                      "name": "heat_util_sim_2_1_1",
                       "sensor_name": "energy_utilization",
                       "type": {
-                          "base_unit": "ratio",
-                          "factor": 1,
                           "id": 19,
-                          "label": "Normalized ratio",
                           "name": "ratio_norm",
                           "physical_name": "ratio",
                           "unit": "0-1"
@@ -707,19 +613,16 @@
                       "aggregation_function": "last",
                       "direction": "none",
                       "domain": "heat",
-                      "id": "sim_2_WC_c_2hc_2",
+                      "id": "sim_2_1_2",
                       "label": "DCWorms simulation 2",
                       "measurement_details": {
                           "background": "#2ECC71",
                           "color": "#2ECC71"
                       },
-                      "name": "heat_util_sim_2_WC_c_2hc_2",
+                      "name": "heat_util_sim_2_1_2",
                       "sensor_name": "energy_utilization",
                       "type": {
-                          "base_unit": "ratio",
-                          "factor": 1,
                           "id": 19,
-                          "label": "Normalized ratio",
                           "name": "ratio_norm",
                           "physical_name": "ratio",
                           "unit": "0-1"
@@ -729,14 +632,13 @@
               "name": "heat_util_1",
               "props": {
                   "background": "#ffffffFF",
-                  "icon": "renewables",
                   "measurement_list": false
               },
               "type": "multi_knob"
           },
           {
               "id": 10202,
-              "label": "Heat utilization (Local heat reuse with separated heatpumps.)",
+              "label": "Heat utilization (Simulation: 3)",
               "layout": {
                   "h": 4,
                   "w": 3,
@@ -748,19 +650,16 @@
                       "aggregation_function": "last",
                       "direction": "none",
                       "domain": "heat",
-                      "id": "sim_2_WC_l_2hc_0",
+                      "id": "sim_2_2_0",
                       "label": "DCWorms simulation 0",
                       "measurement_details": {
                           "background": "#1ABC9C",
                           "color": "#1ABC9C"
                       },
-                      "name": "heat_util_sim_2_WC_l_2hc_0",
+                      "name": "heat_util_sim_2_2_0",
                       "sensor_name": "energy_utilization",
                       "type": {
-                          "base_unit": "ratio",
-                          "factor": 1,
                           "id": 19,
-                          "label": "Normalized ratio",
                           "name": "ratio_norm",
                           "physical_name": "ratio",
                           "unit": "0-1"
@@ -770,19 +669,16 @@
                       "aggregation_function": "last",
                       "direction": "none",
                       "domain": "heat",
-                      "id": "sim_2_WC_l_2hc_1",
+                      "id": "sim_2_2_1",
                       "label": "DCWorms simulation 1",
                       "measurement_details": {
                           "background": "#E67E22",
                           "color": "#E67E22"
                       },
-                      "name": "heat_util_sim_2_WC_l_2hc_1",
+                      "name": "heat_util_sim_2_2_1",
                       "sensor_name": "energy_utilization",
                       "type": {
-                          "base_unit": "ratio",
-                          "factor": 1,
                           "id": 19,
-                          "label": "Normalized ratio",
                           "name": "ratio_norm",
                           "physical_name": "ratio",
                           "unit": "0-1"
@@ -792,19 +688,16 @@
                       "aggregation_function": "last",
                       "direction": "none",
                       "domain": "heat",
-                      "id": "sim_2_WC_l_2hc_2",
+                      "id": "sim_2_2_2",
                       "label": "DCWorms simulation 2",
                       "measurement_details": {
                           "background": "#2ECC71",
                           "color": "#2ECC71"
                       },
-                      "name": "heat_util_sim_2_WC_l_2hc_2",
+                      "name": "heat_util_sim_2_2_2",
                       "sensor_name": "energy_utilization",
                       "type": {
-                          "base_unit": "ratio",
-                          "factor": 1,
                           "id": 19,
-                          "label": "Normalized ratio",
                           "name": "ratio_norm",
                           "physical_name": "ratio",
                           "unit": "0-1"
@@ -814,14 +707,13 @@
               "name": "heat_util_2",
               "props": {
                   "background": "#ffffffFF",
-                  "icon": "renewables",
                   "measurement_list": false
               },
               "type": "multi_knob"
           },
           {
               "id": 10003,
-              "label": "Peak electricity demand (DHN dump)",
+              "label": "Peak electricity demand (Simulation: 1)",
               "layout": {
                   "h": 4,
                   "w": 3,
@@ -833,20 +725,15 @@
                       "aggregation_function": "last",
                       "direction": "in",
                       "domain": "electricity",
-                      "id": "sim_3_DHN_0",
+                      "id": "sim_3_0_0",
                       "label": "DCWorms simulation 0",
                       "measurement_details": {
                           "background": "#1ABC9C",
                           "color": "#1ABC9C"
                       },
-                      "name": "peak_pow_sim_3_DHN_0",
+                      "name": "peak_pow_sim_3_0_0",
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "factor": 1000,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -856,20 +743,15 @@
                       "aggregation_function": "last",
                       "direction": "in",
                       "domain": "electricity",
-                      "id": "sim_3_DHN_1",
+                      "id": "sim_3_0_1",
                       "label": "DCWorms simulation 1",
                       "measurement_details": {
                           "background": "#E67E22",
                           "color": "#E67E22"
                       },
-                      "name": "peak_pow_sim_3_DHN_1",
+                      "name": "peak_pow_sim_3_0_1",
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "factor": 1000,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -879,20 +761,15 @@
                       "aggregation_function": "last",
                       "direction": "in",
                       "domain": "electricity",
-                      "id": "sim_3_DHN_2",
+                      "id": "sim_3_0_2",
                       "label": "DCWorms simulation 2",
                       "measurement_details": {
                           "background": "#2ECC71",
                           "color": "#2ECC71"
                       },
-                      "name": "peak_pow_sim_3_DHN_2",
+                      "name": "peak_pow_sim_3_0_2",
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "factor": 1000,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -901,14 +778,13 @@
               ],
               "name": "peak_pow_0",
               "props": {
-                  "background": "#ffffffFF",
-                  "icon": "electricity"
+                  "background": "#ffffffFF"
               },
               "type": "list"
           },
           {
               "id": 10103,
-              "label": "Peak electricity demand (Local heat reuse with central heatpump )",
+              "label": "Peak electricity demand (Simulation: 2)",
               "layout": {
                   "h": 4,
                   "w": 3,
@@ -920,20 +796,15 @@
                       "aggregation_function": "last",
                       "direction": "in",
                       "domain": "electricity",
-                      "id": "sim_3_WC_c_2hc_0",
+                      "id": "sim_3_1_0",
                       "label": "DCWorms simulation 0",
                       "measurement_details": {
                           "background": "#1ABC9C",
                           "color": "#1ABC9C"
                       },
-                      "name": "peak_pow_sim_3_WC_c_2hc_0",
+                      "name": "peak_pow_sim_3_1_0",
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "factor": 1000,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -943,20 +814,15 @@
                       "aggregation_function": "last",
                       "direction": "in",
                       "domain": "electricity",
-                      "id": "sim_3_WC_c_2hc_1",
+                      "id": "sim_3_1_1",
                       "label": "DCWorms simulation 1",
                       "measurement_details": {
                           "background": "#E67E22",
                           "color": "#E67E22"
                       },
-                      "name": "peak_pow_sim_3_WC_c_2hc_1",
+                      "name": "peak_pow_sim_3_1_1",
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "factor": 1000,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -966,20 +832,15 @@
                       "aggregation_function": "last",
                       "direction": "in",
                       "domain": "electricity",
-                      "id": "sim_3_WC_c_2hc_2",
+                      "id": "sim_3_1_2",
                       "label": "DCWorms simulation 2",
                       "measurement_details": {
                           "background": "#2ECC71",
                           "color": "#2ECC71"
                       },
-                      "name": "peak_pow_sim_3_WC_c_2hc_2",
+                      "name": "peak_pow_sim_3_1_2",
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "factor": 1000,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -988,14 +849,13 @@
               ],
               "name": "peak_pow_1",
               "props": {
-                  "background": "#ffffffFF",
-                  "icon": "electricity"
+                  "background": "#ffffffFF"
               },
               "type": "list"
           },
           {
               "id": 10203,
-              "label": "Peak electricity demand (Local heat reuse with separated heatpumps.)",
+              "label": "Peak electricity demand (Simulation: 3)",
               "layout": {
                   "h": 4,
                   "w": 3,
@@ -1007,20 +867,15 @@
                       "aggregation_function": "last",
                       "direction": "in",
                       "domain": "electricity",
-                      "id": "sim_3_WC_l_2hc_0",
+                      "id": "sim_3_2_0",
                       "label": "DCWorms simulation 0",
                       "measurement_details": {
                           "background": "#1ABC9C",
                           "color": "#1ABC9C"
                       },
-                      "name": "peak_pow_sim_3_WC_l_2hc_0",
+                      "name": "peak_pow_sim_3_2_0",
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "factor": 1000,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -1030,20 +885,15 @@
                       "aggregation_function": "last",
                       "direction": "in",
                       "domain": "electricity",
-                      "id": "sim_3_WC_l_2hc_1",
+                      "id": "sim_3_2_1",
                       "label": "DCWorms simulation 1",
                       "measurement_details": {
                           "background": "#E67E22",
                           "color": "#E67E22"
                       },
-                      "name": "peak_pow_sim_3_WC_l_2hc_1",
+                      "name": "peak_pow_sim_3_2_1",
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "factor": 1000,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -1053,20 +903,15 @@
                       "aggregation_function": "last",
                       "direction": "in",
                       "domain": "electricity",
-                      "id": "sim_3_WC_l_2hc_2",
+                      "id": "sim_3_2_2",
                       "label": "DCWorms simulation 2",
                       "measurement_details": {
                           "background": "#2ECC71",
                           "color": "#2ECC71"
                       },
-                      "name": "peak_pow_sim_3_WC_l_2hc_2",
+                      "name": "peak_pow_sim_3_2_2",
                       "type": {
-                          "base_unit": "W",
-                          "color": "#E74C3C",
-                          "dashboard_visibility": true,
-                          "factor": 1000,
                           "id": 6,
-                          "label": "Power [kW]",
                           "name": "power_kw",
                           "physical_name": "power",
                           "unit": "kW"
@@ -1075,14 +920,13 @@
               ],
               "name": "peak_pow_2",
               "props": {
-                  "background": "#ffffffFF",
-                  "icon": "electricity"
+                  "background": "#ffffffFF"
               },
               "type": "list"
           },
           {
               "id": 10004,
-              "label": "Heat Import (DHN dump)",
+              "label": "Peak electricity demand (Simulation: 1)",
               "layout": {
                   "h": 4,
                   "w": 3,
@@ -1094,20 +938,16 @@
                       "aggregation_function": "last",
                       "direction": "in",
                       "domain": "heat",
-                      "id": "sim_4_DHN_0",
+                      "id": "sim_4_0_0",
                       "label": "DCWorms simulation 0",
                       "measurement_details": {
                           "background": "#1ABC9C",
                           "color": "#1ABC9C"
                       },
-                      "name": "heat_import_sim_4_DHN_0",
+                      "name": "peak_pow_sim_4_0_0",
+                      "tempId": 1737258088113,
                       "type": {
-                          "base_unit": "Wh",
-                          "color": "#1ABC9C",
-                          "dashboard_visibility": true,
-                          "factor": 1000000,
                           "id": 9,
-                          "label": "Power [MWh]",
                           "name": "energy_mwh",
                           "physical_name": "energy",
                           "unit": "MWh"
@@ -1117,20 +957,16 @@
                       "aggregation_function": "last",
                       "direction": "in",
                       "domain": "heat",
-                      "id": "sim_4_DHN_1",
+                      "id": "sim_4_0_1",
                       "label": "DCWorms simulation 1",
                       "measurement_details": {
                           "background": "#E67E22",
                           "color": "#E67E22"
                       },
-                      "name": "heat_import_sim_4_DHN_1",
+                      "name": "peak_pow_sim_4_0_1",
+                      "tempId": 1737258088113,
                       "type": {
-                          "base_unit": "Wh",
-                          "color": "#1ABC9C",
-                          "dashboard_visibility": true,
-                          "factor": 1000000,
                           "id": 9,
-                          "label": "Power [MWh]",
                           "name": "energy_mwh",
                           "physical_name": "energy",
                           "unit": "MWh"
@@ -1140,36 +976,31 @@
                       "aggregation_function": "last",
                       "direction": "in",
                       "domain": "heat",
-                      "id": "sim_4_DHN_2",
+                      "id": "sim_4_0_2",
                       "label": "DCWorms simulation 2",
                       "measurement_details": {
                           "background": "#2ECC71",
                           "color": "#2ECC71"
                       },
-                      "name": "heat_import_sim_4_DHN_2",
+                      "name": "peak_pow_sim_4_0_2",
+                      "tempId": 1737258088113,
                       "type": {
-                          "base_unit": "Wh",
-                          "color": "#1ABC9C",
-                          "dashboard_visibility": true,
-                          "factor": 1000000,
                           "id": 9,
-                          "label": "Power [MWh]",
                           "name": "energy_mwh",
                           "physical_name": "energy",
                           "unit": "MWh"
                       }
                   }
               ],
-              "name": "heat_import_0",
+              "name": "peak_pow_0",
               "props": {
-                  "background": "#ffffffFF",
-                  "icon": "import"
+                  "background": "#ffffffFF"
               },
               "type": "list"
           },
           {
               "id": 10104,
-              "label": "Heat Import (Local heat reuse with central heatpump )",
+              "label": "Peak electricity demand (Simulation: 2)",
               "layout": {
                   "h": 4,
                   "w": 3,
@@ -1181,20 +1012,16 @@
                       "aggregation_function": "last",
                       "direction": "in",
                       "domain": "heat",
-                      "id": "sim_4_WC_c_2hc_0",
+                      "id": "sim_4_1_0",
                       "label": "DCWorms simulation 0",
                       "measurement_details": {
                           "background": "#1ABC9C",
                           "color": "#1ABC9C"
                       },
-                      "name": "heat_import_sim_4_WC_c_2hc_0",
+                      "name": "peak_pow_sim_4_1_0",
+                      "tempId": 1737258088113,
                       "type": {
-                          "base_unit": "Wh",
-                          "color": "#1ABC9C",
-                          "dashboard_visibility": true,
-                          "factor": 1000000,
                           "id": 9,
-                          "label": "Power [MWh]",
                           "name": "energy_mwh",
                           "physical_name": "energy",
                           "unit": "MWh"
@@ -1204,20 +1031,16 @@
                       "aggregation_function": "last",
                       "direction": "in",
                       "domain": "heat",
-                      "id": "sim_4_WC_c_2hc_1",
+                      "id": "sim_4_1_1",
                       "label": "DCWorms simulation 1",
                       "measurement_details": {
                           "background": "#E67E22",
                           "color": "#E67E22"
                       },
-                      "name": "heat_import_sim_4_WC_c_2hc_1",
+                      "name": "peak_pow_sim_4_1_1",
+                      "tempId": 1737258088113,
                       "type": {
-                          "base_unit": "Wh",
-                          "color": "#1ABC9C",
-                          "dashboard_visibility": true,
-                          "factor": 1000000,
                           "id": 9,
-                          "label": "Power [MWh]",
                           "name": "energy_mwh",
                           "physical_name": "energy",
                           "unit": "MWh"
@@ -1227,36 +1050,31 @@
                       "aggregation_function": "last",
                       "direction": "in",
                       "domain": "heat",
-                      "id": "sim_4_WC_c_2hc_2",
+                      "id": "sim_4_1_2",
                       "label": "DCWorms simulation 2",
                       "measurement_details": {
                           "background": "#2ECC71",
                           "color": "#2ECC71"
                       },
-                      "name": "heat_import_sim_4_WC_c_2hc_2",
+                      "name": "peak_pow_sim_4_1_2",
+                      "tempId": 1737258088113,
                       "type": {
-                          "base_unit": "Wh",
-                          "color": "#1ABC9C",
-                          "dashboard_visibility": true,
-                          "factor": 1000000,
                           "id": 9,
-                          "label": "Power [MWh]",
                           "name": "energy_mwh",
                           "physical_name": "energy",
                           "unit": "MWh"
                       }
                   }
               ],
-              "name": "heat_import_1",
+              "name": "peak_pow_1",
               "props": {
-                  "background": "#ffffffFF",
-                  "icon": "import"
+                  "background": "#ffffffFF"
               },
               "type": "list"
           },
           {
               "id": 10204,
-              "label": "Heat Import (Local heat reuse with separated heatpumps.)",
+              "label": "Peak electricity demand (Simulation: 3)",
               "layout": {
                   "h": 4,
                   "w": 3,
@@ -1268,20 +1086,16 @@
                       "aggregation_function": "last",
                       "direction": "in",
                       "domain": "heat",
-                      "id": "sim_4_WC_l_2hc_0",
+                      "id": "sim_4_2_0",
                       "label": "DCWorms simulation 0",
                       "measurement_details": {
                           "background": "#1ABC9C",
                           "color": "#1ABC9C"
                       },
-                      "name": "heat_import_sim_4_WC_l_2hc_0",
+                      "name": "peak_pow_sim_4_2_0",
+                      "tempId": 1737258088113,
                       "type": {
-                          "base_unit": "Wh",
-                          "color": "#1ABC9C",
-                          "dashboard_visibility": true,
-                          "factor": 1000000,
                           "id": 9,
-                          "label": "Power [MWh]",
                           "name": "energy_mwh",
                           "physical_name": "energy",
                           "unit": "MWh"
@@ -1291,20 +1105,16 @@
                       "aggregation_function": "last",
                       "direction": "in",
                       "domain": "heat",
-                      "id": "sim_4_WC_l_2hc_1",
+                      "id": "sim_4_2_1",
                       "label": "DCWorms simulation 1",
                       "measurement_details": {
                           "background": "#E67E22",
                           "color": "#E67E22"
                       },
-                      "name": "heat_import_sim_4_WC_l_2hc_1",
+                      "name": "peak_pow_sim_4_2_1",
+                      "tempId": 1737258088113,
                       "type": {
-                          "base_unit": "Wh",
-                          "color": "#1ABC9C",
-                          "dashboard_visibility": true,
-                          "factor": 1000000,
                           "id": 9,
-                          "label": "Power [MWh]",
                           "name": "energy_mwh",
                           "physical_name": "energy",
                           "unit": "MWh"
@@ -1314,30 +1124,25 @@
                       "aggregation_function": "last",
                       "direction": "in",
                       "domain": "heat",
-                      "id": "sim_4_WC_l_2hc_2",
+                      "id": "sim_4_2_2",
                       "label": "DCWorms simulation 2",
                       "measurement_details": {
                           "background": "#2ECC71",
                           "color": "#2ECC71"
                       },
-                      "name": "heat_import_sim_4_WC_l_2hc_2",
+                      "name": "peak_pow_sim_4_2_2",
+                      "tempId": 1737258088113,
                       "type": {
-                          "base_unit": "Wh",
-                          "color": "#1ABC9C",
-                          "dashboard_visibility": true,
-                          "factor": 1000000,
                           "id": 9,
-                          "label": "Power [MWh]",
                           "name": "energy_mwh",
                           "physical_name": "energy",
                           "unit": "MWh"
                       }
                   }
               ],
-              "name": "heat_import_2",
+              "name": "peak_pow_2",
               "props": {
-                  "background": "#ffffffFF",
-                  "icon": "import"
+                  "background": "#ffffffFF"
               },
               "type": "list"
           }

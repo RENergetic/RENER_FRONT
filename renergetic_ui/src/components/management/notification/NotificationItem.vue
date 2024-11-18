@@ -3,10 +3,6 @@
   <Card class="notification-box">
     <template #content>
       <div class="flex">
-        <!-- <div class="flex align-items-center justify-content-center"></div> -->
-        <!-- {{ notification }}  -->
-        <!-- {{ notification.measurement }} -->
-
         <div class="flex-grow-1 flex flex-column justify-content-center flex-wrap">
           <span v-if="$te('notifications.' + notification.message, 'en')">
             {{ $t("notifications." + notification.message, messageParams) }} {{ updateTime }}

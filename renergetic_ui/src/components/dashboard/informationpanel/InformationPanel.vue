@@ -98,6 +98,7 @@ export default {
   data() {
     return {
       loaded: false,
+      // dataCalculated:true,
       grid: null,
       mSettings: this.computePanelSettings(this.settings, this.panel),
       reload: false,
@@ -212,6 +213,11 @@ export default {
     },
     recalculateData(panelData) {
       if (panelData) {
+        for (let tile of this.mPanel.tiles) {
+          for (let m of tile.measurements) {
+            m.type = this.$store.getters["view/measurementTypes"][m.type.physical_name].find((it) => it.id == m.type.id);
+          }
+        }
         console.debug(panelData);
         let mPanelData = JSON.parse(JSON.stringify(panelData));
         mPanelData = this.$ren.utils.calcPanelRelativeValues(this.mPanel, mPanelData, this.settings);

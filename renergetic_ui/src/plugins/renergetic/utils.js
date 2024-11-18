@@ -185,6 +185,10 @@ class RenUtils {
         this.app.$store.commit("view/setPanel", informationPanel);
       }
     }
+    if (informationPanel == null) {
+      console.warn("no panels");
+      return null;
+    }
     if (assetId == null) {
       for (let tile of informationPanel.tiles) {
         if (tile.measurements) {

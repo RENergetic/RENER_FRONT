@@ -1,49 +1,50 @@
 <template>
-  <DotMenu v-if="loggedIn" :model="menuModel" :fixed="true" />
-  <!-- {{ effectiveFilterSettings }} -->
-  <div v-if="homeSettings.panelVisibility" style="position: relative">
-    <!-- {{ $store.getters["view/featuredPanels"] }}  -->
-    <!-- {{ panelSettings }} -->
-    <InformationPanelWrapper
-      v-if="panel"
-      ref="panel"
-      :key="panel.id"
-      :asset-id="assetId"
-      :locked="locked"
-      :edit-mode="false"
-      :panel="panel"
-      :filter="effectiveFilterSettings"
-      :auto-reload="autoReload"
-      :panel-settings="panelSettings"
-    ></InformationPanelWrapper>
+  <div>
+    <DotMenu v-if="loggedIn" :model="menuModel" :fixed="true" />
+    <!-- {{ effectiveFilterSettings }} -->
+    <div v-if="homeSettings.panelVisibility" style="position: relative">
+      <!-- {{ $store.getters["view/featuredPanels"] }}  -->
+      <!-- {{ panelSettings }} -->
+      <InformationPanelWrapper
+        v-if="panel"
+        ref="panel"
+        :key="panel.id"
+        :asset-id="assetId"
+        :locked="locked"
+        :edit-mode="false"
+        :panel="panel"
+        :filter="effectiveFilterSettings"
+        :auto-reload="autoReload"
+        :panel-settings="panelSettings"
+      ></InformationPanelWrapper>
 
-    <div v-else style="width: 50rem; max-width: 95vw; margin: auto; padding-top: 5rem">
-      <h4 style="width: 100%; margin: auto">{{ $t("view.empty_home_dashboard") }}</h4>
+      <div v-else style="width: 50rem; max-width: 95vw; margin: auto; padding-top: 5rem">
+        <h4 style="width: 100%; margin: auto">{{ $t("view.empty_home_dashboard") }}</h4>
+      </div>
+      <div style="margin-left: 1rem; margin-top: 2rem">
+        <ParsedDateFilter :key="parsedFilterRefresh" :filter="effectiveFilterSettings" />
+      </div>
     </div>
-    <div style="margin-left: 1rem; margin-top: 2rem">
-      <ParsedDateFilter :key="parsedFilterRefresh" :filter="effectiveFilterSettings" />
+    <div v-if="homeSettings.demandVisibility && loggedIn"><DemandList id="demand-list" /></div>
+    <div v-if="homeSettings.notificationVisibility && loggedIn">
+      <UserNotificationList id="notification-list" />
     </div>
-  </div>
-  <div v-if="homeSettings.demandVisibility && loggedIn"><DemandList id="demand-list" /></div>
-  <div v-if="homeSettings.notificationVisibility && loggedIn">
-    <UserNotificationList id="notification-list" />
-  </div>
-  <RoleMatrix v-if="false" />
-  <RenSettingsDialog ref="homeSettingsDialog">
-    <template #settings>
-      <HomeSettings @update="reloadHomeSettings()"></HomeSettings>
-    </template>
-  </RenSettingsDialog>
-  <RenSettingsDialog ref="panelSettingsDialog">
-    <template #settings>
-      <Panel toggleable class="ren-settings">
-        <template #header>
-          <span> {{ $t("view.panel_effective_settings") }}:</span>
-        </template>
-        <Settings :schema="schema" :settings="effectivePanelSettings" :disabled="true" />
-      </Panel>
+    <RoleMatrix v-if="false" />
+    <RenSettingsDialog ref="homeSettingsDialog">
+      <template #settings>
+        <HomeSettings @update="reloadHomeSettings()"></HomeSettings>
+      </template>
+    </RenSettingsDialog>
+    <RenSettingsDialog ref="panelSettingsDialog">
+      <template #settings>
+        <Panel toggleable class="ren-settings">
+          <template #header>
+            <span> {{ $t("view.panel_effective_settings") }}:</span>
+          </template>
+          <Settings :schema="schema" :settings="effectivePanelSettings" :disabled="true" />
+        </Panel>
 
-      <!-- <Card class="ren-settings">
+        <!-- <Card class="ren-settings">
         <template #title>
           <span> {{ $t("view.panel_effective_settings") }}:</span>
         </template>
@@ -51,7 +52,7 @@
           <Settings :schema="schema" :settings="effectivePanelSettings" :disabled="true" />
         </template>
       </Card> -->
-      <!-- <Card class="ren-settings">
+        <!-- <Card class="ren-settings">
         <template #title>
           <span> {{ $t("view.panel_settings") }}:</span>
         </template>
@@ -59,19 +60,19 @@
           <Settings :schema="schema" :settings="panel.props" :disabled="true" />
         </template>
       </Card> -->
-      <Panel toggleable class="ren-settings">
-        <template #header>
-          <span> {{ $t("view.panel_settings") }}:</span>
-        </template>
-        <Settings :schema="schema" :settings="panel.props" :disabled="true" />
-      </Panel>
-      <Panel toggleable class="ren-settings">
-        <template #header>
-          <span> {{ $t("view.panel_user_settings") }}:</span>
-        </template>
-        <PanelSettings @update="reloadPanelSettings()"> </PanelSettings>
-      </Panel>
-      <!-- <Card class="ren-settings">
+        <Panel toggleable class="ren-settings">
+          <template #header>
+            <span> {{ $t("view.panel_settings") }}:</span>
+          </template>
+          <Settings :schema="schema" :settings="panel.props" :disabled="true" />
+        </Panel>
+        <Panel toggleable class="ren-settings">
+          <template #header>
+            <span> {{ $t("view.panel_user_settings") }}:</span>
+          </template>
+          <PanelSettings @update="reloadPanelSettings()"> </PanelSettings>
+        </Panel>
+        <!-- <Card class="ren-settings">
         <template #title>
           <span> {{ $t("view.panel_user_settings") }}:</span>
         </template>
@@ -79,37 +80,37 @@
           <PanelSettings @update="reloadPanelSettings()"> </PanelSettings>
         </template>
       </Card> -->
-    </template>
-  </RenSettingsDialog>
-  <!-- <RenSettingsDialog ref="panelSettingsDialog">
+      </template>
+    </RenSettingsDialog>
+    <!-- <RenSettingsDialog ref="panelSettingsDialog">
     <template #settings><PanelSettings @update="reloadPanelSettings()"></PanelSettings></template>
   </RenSettingsDialog> -->
-  <RenSettingsDialog ref="conversionSettingsDialog">
-    <template #settings>
-      <ConversionSettings @update="reloadPanelSettings()"></ConversionSettings>
-    </template>
-  </RenSettingsDialog>
-  <RenSettingsDialog ref="filterSettingsDialog" :save="false">
-    <template #settings>
-      <Panel v-if="panel" toggleable class="ren-settings">
-        <template #header>
-          <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
-        </template>
-        <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
-      </Panel>
-      <Panel v-if="panel" toggleable class="ren-settings">
-        <template #header>
-          <span> {{ $t("view.panel_filter_settings") }}:</span>
-        </template>
-        <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
-      </Panel>
-      <Panel v-if="panel" toggleable class="ren-settings">
-        <template #header>
-          <span> {{ $t("view.user_filter_settings") }}:</span>
-        </template>
-        <BasicFilterSettings @update="updateFilter()" />
-      </Panel>
-      <!-- <Card v-if="panel" class="ren-settings">
+    <RenSettingsDialog ref="conversionSettingsDialog">
+      <template #settings>
+        <ConversionSettings @update="reloadPanelSettings()"></ConversionSettings>
+      </template>
+    </RenSettingsDialog>
+    <RenSettingsDialog ref="filterSettingsDialog" :save="false">
+      <template #settings>
+        <Panel v-if="panel" toggleable class="ren-settings">
+          <template #header>
+            <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
+          </template>
+          <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
+        </Panel>
+        <Panel v-if="panel" toggleable class="ren-settings">
+          <template #header>
+            <span> {{ $t("view.panel_filter_settings") }}:</span>
+          </template>
+          <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" />
+        </Panel>
+        <Panel v-if="panel" toggleable class="ren-settings">
+          <template #header>
+            <span> {{ $t("view.user_filter_settings") }}:</span>
+          </template>
+          <BasicFilterSettings @update="updateFilter()" />
+        </Panel>
+        <!-- <Card v-if="panel" class="ren-settings">
         <template #title>
           <span> {{ $t("view.panel_effective_filter_settings") }}:</span>
         </template>
@@ -117,7 +118,7 @@
           <BasicFilterSettings :settings="effectiveFilterSettings" :submit-button="false" :disabled="true" />
            </template>
       </Card> -->
-      <!-- <Card v-if="panel" class="ren-settings">
+        <!-- <Card v-if="panel" class="ren-settings">
         <template #title>
           <span> {{ $t("view.panel_filter_settings") }}:</span>
         </template>
@@ -125,7 +126,7 @@
           <BasicFilterSettings :settings="panel.props" :submit-button="false" :disabled="true" /> 
         </template>
       </Card> -->
-      <!-- <Card class="ren-settings">
+        <!-- <Card class="ren-settings">
         <template #title>
           <span> {{ $t("view.user_filter_settings") }}:</span>
         </template>
@@ -133,9 +134,10 @@
           <BasicFilterSettings @update="updateFilter()" />
         </template>
       </Card> -->
-    </template>
-  </RenSettingsDialog>
-  <div v-if="$refs.panelSettingsDialog">{{ $refs.panelSettingsDialog.settingsDialog }}</div>
+      </template>
+    </RenSettingsDialog>
+    <div v-if="$refs.panelSettingsDialog">{{ $refs.panelSettingsDialog.settingsDialog }}</div>
+  </div>
 </template>
 <script>
 import DotMenu from "@/components/miscellaneous/DotMenu.vue";
