@@ -81,7 +81,7 @@ export default {
         r2 = this.comparewith.label ? `${this.comparewith.label}(${this.comparewith.tag.value})` : this.comparewith.tag.value;
       }
       if (r1 && r2) {
-        return `${r1}-${r2}`;
+        return [r1, r2];
       }
       return `${r1}${r2}`;
     },

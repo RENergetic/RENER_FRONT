@@ -46,6 +46,7 @@
             <Column field="results" :header="$t('model.workflowrun.results')">
               <template #body="slotProps">
                 <Button v-if="slotProps.data.results" :label="$t('view.show_results')" @click="showResults(slotProps.data)" />
+                <Button v-else-if="panelId != null" :label="$t('view.go_to_panel')" @click="openDashboard()" />
                 <span v-else>{{ $t("model.workflowrun.no_results") }}</span>
               </template>
             </Column>
@@ -75,7 +76,15 @@ export default {
       workflowRunDetailsDialog: false,
     };
   },
-  computed: {},
+  computed: {
+    panelId: function () {
+      try {
+        return this.workflow.information_panel.id;
+      } catch {
+        return null;
+      }
+    },
+  },
   watch: {
     workflow: function (v) {
       this.loaddata(v);
@@ -93,6 +102,9 @@ export default {
     },
     showResults(workflowRun) {
       this.$ren.utils.openNewTab(`/management/wasteheat/result/${workflowRun.run_id}`);
+    },
+    openDashboard() {
+      this.$ren.utils.openNewTab(`/panel/view/${this.panelId}`);
     },
     async loaddata(workflow) {
       var last30days = this.$ren.utils.currentTimestamp() - 1000 * 3600 * 24 * 30;
