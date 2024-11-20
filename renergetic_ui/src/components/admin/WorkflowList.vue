@@ -210,7 +210,7 @@ import { DeferredFunction } from "@/plugins/renergetic/utils.js";
 import WorkflowParameterForm from "./WorkflowParameterForm.vue";
 
 import PipelineRunLog from "./PipelineRunLog.vue";
-import WorkflowRunDetails from "./WorkflowRunDetails.vue";
+import WorkflowRunDetails from "@/components/admin/workflow/WorkflowRunDetails.vue";
 export default {
   name: "AdminWorkflowList",
   components: { WorkflowParameterForm, WorkflowRunDetails, PipelineRunLog, InformationPanelList },

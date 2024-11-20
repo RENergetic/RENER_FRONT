@@ -44,47 +44,20 @@
           <Settings :schema="schema" :settings="effectivePanelSettings" :disabled="true" />
         </Panel>
 
-        <!-- <Card class="ren-settings">
-        <template #title>
-          <span> {{ $t("view.panel_effective_settings") }}:</span>
-        </template>
-        <template #content>
-          <Settings :schema="schema" :settings="effectivePanelSettings" :disabled="true" />
-        </template>
-      </Card> -->
-        <!-- <Card class="ren-settings">
-        <template #title>
-          <span> {{ $t("view.panel_settings") }}:</span>
-        </template>
-        <template #content>
-          <Settings :schema="schema" :settings="panel.props" :disabled="true" />
-        </template>
-      </Card> -->
-        <Panel toggleable class="ren-settings">
+        <Panel v-if="panel" toggleable class="ren-settings">
           <template #header>
             <span> {{ $t("view.panel_settings") }}:</span>
           </template>
           <Settings :schema="schema" :settings="panel.props" :disabled="true" />
         </Panel>
-        <Panel toggleable class="ren-settings">
+        <Panel v-if="panel" toggleable class="ren-settings">
           <template #header>
             <span> {{ $t("view.panel_user_settings") }}:</span>
           </template>
           <PanelSettings @update="reloadPanelSettings()"> </PanelSettings>
         </Panel>
-        <!-- <Card class="ren-settings">
-        <template #title>
-          <span> {{ $t("view.panel_user_settings") }}:</span>
-        </template>
-        <template #content>
-          <PanelSettings @update="reloadPanelSettings()"> </PanelSettings>
-        </template>
-      </Card> -->
       </template>
     </RenSettingsDialog>
-    <!-- <RenSettingsDialog ref="panelSettingsDialog">
-    <template #settings><PanelSettings @update="reloadPanelSettings()"></PanelSettings></template>
-  </RenSettingsDialog> -->
     <RenSettingsDialog ref="conversionSettingsDialog">
       <template #settings>
         <ConversionSettings @update="reloadPanelSettings()"></ConversionSettings>

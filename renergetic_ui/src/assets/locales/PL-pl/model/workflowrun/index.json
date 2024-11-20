@@ -1,13 +1,14 @@
 {
+  "details": "Szczegóły",
   "end_time": "Czas zakończenia",
-  "ext": null,
+  "ext": "Rozszerzenie",
   "init_time": "Czas utworzenia",
   "label": "Etykieta",
   "name": "Nazwa",
-  "no_results": null,
+  "no_results": "Brak wyników",
   "parameters": "Parametry",
   "pipeline": "Pipeline",
-  "results": null,
+  "results": "Wyniki",
   "run_id": "Id startu",
   "run_state": {
     "error": "Błąd",

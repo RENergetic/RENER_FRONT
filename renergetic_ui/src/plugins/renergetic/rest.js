@@ -54,7 +54,7 @@ export default function createRest(vueInstance) {
   // };
   return {
     axiosApi: new AxiosAPI(
-      [axiosInstanceBase, axiosInstanceData, axiosInstanceUser, axiosInstanceWrapper, axiosInstanceKubeflow, axiosInstanceHdr],
+      [axiosInstanceBase, axiosInstanceData, axiosInstanceUser, axiosInstanceWrapper, axiosInstanceKubeflow, axiosInstanceHdr, axiosInstanceKpi],
       vueInstance,
       this.auth,
     ),

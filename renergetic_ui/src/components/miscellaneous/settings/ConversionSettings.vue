@@ -87,22 +87,7 @@ export default {
           }
         }
       }
-      //         Power
-      // Energy
-      // Voltage
-      // CO2 eq
-      // var schema = [
-      //   {
-      //     label: this.$t("settings.notification"),
-      //     ext: {
-      //       true: this.$t("settings.visible"),
-      //       false: this.$t("settings.hidden"),
-      //     },
-      //     type: Boolean,
-      //     key: "notificationVisibility",
-      //   },
 
-      // ];
       if (this.submit) {
         schema.push(this.submitButton());
       }

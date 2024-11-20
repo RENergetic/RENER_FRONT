@@ -14,8 +14,13 @@
         :width="width"
       />
       <!-- :key="chartData" -->
-      <div v-if="titleVisible" class="flex flex-none flex-column justify-content-center" style="max-width: 75%">
+      <div v-if="titleVisible && typeof mTitle === 'string'" class="flex flex-none flex-column justify-content-center" style="max-width: 75%">
         <h3>{{ mTitle }}</h3>
+      </div>
+      <div v-else-if="titleVisible" class="flex flex-none flex-column justify-content-center" style="max-width: 75%">
+        <h3>
+          <div v-for="t in mTitle" :key="t">{{ t }}</div>
+        </h3>
       </div>
       <div
         v-if="titleVisible"
@@ -52,7 +57,7 @@ export default {
     assetId: { type: String, default: null },
     immediate: { type: Boolean, default: true }, //immediately reload data if not present locally
     titleVisible: { type: Boolean, default: false },
-    title: { type: String, default: null },
+    title: { type: [String, Array], default: null },
     comparePrevious: { type: Boolean, default: null },
     sizeScale: { type: Number, default: 1.0 },
     // loadData: { type: Boolean, default: true },

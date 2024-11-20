@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import WorkflowRunDetails from "@/components/management/workflow/WorkflowRunDetails.vue";
+import WorkflowRunDetails from "@/components/admin/workflow/WorkflowRunDetails.vue";
 import PipelineRunLog from "@/components/admin/PipelineRunLog.vue";
 // import PipelineRunLog from "./PipelineRunLog.vue";
 import WorkflowRun from "@/components/management/workflow/WorkflowRun.vue";

@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <Card v-if="mModel">
     <template #content>
       <div class="ren">
@@ -82,4 +82,4 @@ export default {
   },
 };
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss"></style> -->
