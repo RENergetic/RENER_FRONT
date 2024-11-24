@@ -215,19 +215,25 @@ export default {
       return { from: from, to: to, predictionIntervalms: filter.predictionIntervalms, timeIntervalType: f.timeIntervalType }
     },
     compareIntervalDateFilter: function (currentFilter, intervalType = "previous", intervalNumber = 1, initialDate = null) {
-      let f = currentFilter ? currentFilter : {};
+      let f = currentFilter ? currentFilter : {}; 
       intervalNumber = Math.max(1, intervalNumber);
       let from = f.date_from ? f.date_from : f.from;
       let to = f.date_to ? f.date_to : f.to;
-      if (!to) {
+      // console.error(to)
+      // console.error(f)
+      if (!to) {  
         to = new Date().getTime();
       }
+      // console.error(intervalType)
       var curDate = initialDate == null ? new Date() : initialDate;
       let diff;
       if (intervalType != "previous") {
-        f = this.parseDateFilter(f, curDate);
+        // console.error(f)
+        // f = this.parseDateFilter(f, curDate);
         var getPreviousDate = (ts) => {
-          var dt = new Date(ts);
+          var dt = new Date(ts); 
+          // console.error(ts);
+          // console.error(intervalType);
           switch (intervalType) {
             case "none": return null;
             case "year": return dt.setFullYear(dt.getFullYear() - intervalNumber);
