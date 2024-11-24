@@ -1,8 +1,6 @@
 <template>
   <!-- {{ schema }} -->
   <Settings v-if="schema" :schema="schema" :settings="mModel"></Settings>
-  <!-- {{ mModel }}
-  {{ model }} -->
 </template>
 
 <script>
@@ -63,12 +61,12 @@ export default {
     },
     getSetting(key) {
       let mt = this.getType(key);
-      console.error(this.mModel);
+      // console.error(this.mModel);
       if (!this.mModel[key]) {
         this.mModel[key] = null;
       }
       if (mt == Boolean) {
-        this.mModel[key] = this.mModel[key] || this.mModel[key] === "true" ? true : false;
+        this.mModel[key] = this.mModel[key] === true || this.mModel[key] === "true" ? true : false;
       }
       var ext = {};
       if (mt == Boolean) {
