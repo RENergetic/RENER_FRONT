@@ -61,7 +61,7 @@ import ConversionSettings from "@/components/miscellaneous/settings/ConversionSe
 import Settings from "@/components/miscellaneous/settings/Settings.vue";
 import PanelSettings from "@/components/miscellaneous/settings/PanelSettings.vue";
 export default {
-  name: "WasteHeatView",
+  name: "WasteHeatResultView",
   components: { PanelSettings, WasteHeatResult, DotMenu, ConversionSettings, Settings, PipelineRunLog },
   data() {
     return {
@@ -108,7 +108,6 @@ export default {
   },
   methods: {
     reloadSettings() {
-      alert("");
       this.settings = this.$store.getters["settings/panel"];
       this.conversionSettings = this.$store.getters["settings/conversion"];
       this.settingsRefresh = !this.settingsRefresh;
