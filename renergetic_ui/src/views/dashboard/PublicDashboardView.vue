@@ -136,6 +136,7 @@ export default {
       let userFilter = this.$store.getters["settings/filters"]("public");
       let overrideMode = this.effectiveOverrideMode(this.settings, this.panel.props);
       let settings = this.mergeSettings(userFilter, this.panel.props, overrideMode);
+
       return this.parseDateFilter(settings);
     },
     settingsButton: function () {

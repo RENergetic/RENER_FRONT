@@ -59,9 +59,6 @@
       </div>
     </template>
   </Card>
-  <!-- <div v-if="informationPanel && !isTaskRunning" style="margin-left: 1rem; margin-top: 2rem">
-    <ParsedDateFilter :key="parsedFilterRefresh" :filter="panelFilter" />
-  </div> -->
   <Dialog
     v-model:visible="workflowRunStartDialog"
     :style="{ width: '40rem' }"

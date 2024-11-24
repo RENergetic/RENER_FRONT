@@ -35,8 +35,8 @@ export default {
 
     return {
       //https://vueschool.io/lessons/dynamic-vuex-getters
-      mSettings: settings,
-      settingsObj: settings,
+      mSettings: { ...settings, date_to: settings.to, date_from: settings.from },
+      settingsObj: { ...settings, date_to: settings.to, date_from: settings.from },
       refresh: false,
       timeIntervalType: settings.timeIntervalType,
       schema: {},

@@ -229,7 +229,7 @@
       :model="mMeasurement.measurement_details"
       @update="onMeasurementDetailsUpdate"
     />
-    <!--  -->
+    <!--   -->
   </Dialog>
 </template>
 
@@ -302,21 +302,17 @@ export default {
     let tileStructure = JSON.parse(JSON.stringify(this.modelValue));
     cleanTileStructure(tileStructure);
     return {
-      // jsonMesurementDialog: false,
-      // selectedMesurement: null,
       measurementDetailsDialog: false,
       mMeasurement: null,
       mActiveTab: this.activeTab,
       icons: icons,
       propertiesDialog: false,
-      // tilePropertiesSchema: tilePropertiesSchema,
       tileProperties: tileStructure.props,
       aggregations: MeasurementAggregation.keys(),
       addMeasurementDialog: false,
       addMeasurementTemplateDialog: false,
       iconsDialog: false,
       mModel: tileStructure,
-      // mPanelStructure: null,
       measurementsJSON: this.$ren.utils.toJSON(tileStructure.measurements, true),
       propsJSON: tileStructure.props != null ? this.$ren.utils.toJSON(tileStructure.props) : "{}",
       validJSON: true,
