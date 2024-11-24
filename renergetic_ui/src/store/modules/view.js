@@ -61,9 +61,8 @@ export default {
       state.locationList = ["en-EN"];
     },
     setPanel(state, panel) {
-      console.debug("Set Panel");
       if (!panel || !panel.id) return;
-      if (state.informationPanels.filter((it) => (it.id = panel.id)).length != 0) {
+      if (state.informationPanels.filter((it) => it.id == panel.id).length != 0) {
         return;
       }
       panel.label = panel.label ? panel.label : panel.name;
@@ -83,7 +82,6 @@ export default {
       state.informationPanels.forEach((it) => {
         it.label = it.label ? it.label : it.name;
       });
-
       state.featuredPanels = state.informationPanels.filter((it) => it.featured);
       state.informationPanelsMap = mapPanelId(state.informationPanels);
       state.assets = getF("assets", []);
@@ -175,9 +173,6 @@ export default {
       //get new unit
       let mt = state.measurementTypes[currentMeasurementType.physical_name].find((mt) => mt.unit == newUnit);
 
-      // console.error(currentMeasurementType);
-      // console.error(mt);
-
       return (value * currentMeasurementType.factor) / mt.factor;
       // return (value / currentMeasurementType.factor) * mt.factor;
     },
@@ -266,11 +261,6 @@ export default {
     },
   },
 };
-
-// assetPanels(state, payload) {
-//   state.assetPanels = payload;
-//   state.assetPanelsMap = mapAssetPanelId(state.assetPanels);
-// },
 
 // dashboards(state, payload) {
 //   state.dashboards = payload;
