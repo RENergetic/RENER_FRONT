@@ -4,10 +4,10 @@
       <!-- <h3>{{ $t("view.abstract_meter") }}:</h3> -->
       <div class="ren">
         <!-- {{ meterMeasurements }}  -->
-
         <ren-input-wrapper :text-label="'view.abstract_meter_list'">
           <template #content>
             <Dropdown
+              :key="abstractMeterType"
               v-model="abstractMeterType"
               :option-label="(it) => `${it.description} (${it.label ? it.label : it.name})`"
               :options="abstractMeterTypes"
@@ -148,10 +148,17 @@ export default {
     },
   },
   data() {
+    let domain = this.$route.query.domain ? this.$route.query.domain : "";
+    let meter = this.$route.query.meter ? this.$route.query.meter.toLocaleLowerCase() : "";
+    let abstractMeterType = this.abstractMeterTypes.find((it) => {
+      return it.meter.toLocaleLowerCase() === meter || it.name.toLocaleLowerCase() === meter;
+    });
+    let abstractMeterDomain = ["heat", "electricity", "none"].includes(domain.toLocaleLowerCase()) ? this.$route.query.domain : null;
+
     return {
       measurementDialog: false,
-      abstractMeterType: null,
-      abstractMeterDomain: null,
+      abstractMeterType: abstractMeterType,
+      abstractMeterDomain: abstractMeterDomain,
       measurementFilter: null,
       abstractMeter: null,
       dropdownDomain: ["heat", "electricity", "none"],
@@ -186,6 +193,13 @@ export default {
         await this.setAbstractMeter(name, this.abstractMeterDomain);
       }
     },
+    abstractMeterTypes: async function (newValue) {
+      let meter = this.$route.query.meter ? this.$route.query.meter.toLocaleLowerCase() : "";
+      this.abstractMeterType = newValue.find((it) => {
+        return it.meter.toLocaleLowerCase() === meter || it.name.toLocaleLowerCase() === meter;
+      });
+    },
+
     abstractMeterDomain: async function (newValue) {
       if (newValue == null) {
         this.abstractMeter == null;
@@ -223,6 +237,12 @@ export default {
     meterMeasurements: function (newVal) {
       this.loadMeasurements(newVal);
     },
+  },
+  mounted() {
+    let meter = this.$route.query.meter ? this.$route.query.meter.toLocaleLowerCase() : "";
+    this.abstractMeterType = this.abstractMeterTypes.find((it) => {
+      return it.meter.toLocaleLowerCase() === meter || it.name.toLocaleLowerCase() === meter;
+    });
   },
   methods: {
     async setAbstractMeter(name, domain) {

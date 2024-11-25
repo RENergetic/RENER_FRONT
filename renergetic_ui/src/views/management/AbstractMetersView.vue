@@ -32,7 +32,7 @@
 import AbstractMeterList from "@/components/management/infrastructure/AbstractMeterList.vue";
 
 export default {
-  name: "AbstracMetersView",
+  name: "AbstractMetersView",
   components: {
     AbstractMeterList,
   },

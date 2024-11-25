@@ -306,6 +306,7 @@ const doughnutProperties = new Set([
   "compare_with_previous",
   "compare_interval_type",
   "compare_interval_number",
+  "measurement_list",
   "tag_key",
   "tag_value",
 ]);

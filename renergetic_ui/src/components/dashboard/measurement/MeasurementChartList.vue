@@ -1,6 +1,8 @@
 <template>
   <div v-for="m in measurements" :key="m.id" class="col-12 md:col-10 xl:col-6" style="max-height: 50vh; max-width: 40vw">
     <!-- :style="'margin:auto;max-width: 90%;'" -->
+    <span v-if="m.sensor_name === 'abstract_meter'" @click="openMeter(m)"> {{ $t("view.open_abstract_meter") }}</span>
+
     <MeasurementChart
       :ref="`mChart_${m.id}`"
       :immediate="false"
@@ -54,6 +56,10 @@ export default {
     }
   },
   methods: {
+    openMeter(m) {
+      this.$ren.utils.openNewTab(`/management/abstract?domain=${m.domain}&meter=${m.name}`);
+    },
+
     async reload() {
       //TODO: filter
       console.info(this.loaded);

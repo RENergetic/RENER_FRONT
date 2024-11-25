@@ -18,14 +18,26 @@
         <Chart :style="mStyle" type="doughnut" :data="chartData" :options="options" />
       </div>
     </div>
+    <div class="flex flex-column flex-grow-1 knob-component" style="position: relative; width: 100%; padding: 0rem 0.5rem">
+      <InformationTileMeasurementList
+        v-if="mSettings.tile.measurement_list"
+        :tile="tile"
+        :pdata="pdata"
+        :settings="mSettings"
+        :conversion-settings="conversionSettings"
+        @select="onMeasurementSelect"
+      />
+    </div>
   </div>
 </template>
 <script>
 import Chart from "primevue/chart";
+import InformationTileMeasurementList from "./components/InformationTileMeasurementList.vue";
 export default {
   name: "DoughnutTile",
-  components: { Chart },
+  components: { Chart, InformationTileMeasurementList },
   props: {
+    conversionSettings: { type: Object, default: () => ({}) },
     settings: { type: Object, default: () => ({}) },
     pdata: { type: Object, default: () => ({}) },
     tile: {
@@ -77,7 +89,9 @@ export default {
         // console.warn(backgroundColors);
       } else {
         data = this.tile.measurements.map((m) => pdata.current[m.aggregation_function][m.id]);
-        labels = this.tile.measurements.map((m) => this.measurementLabel(m));
+        labels = this.tile.measurements.map(
+          (m) => this.measurementLabel(m) + " " + this.$ren.utils.unitLabel(m, this.settings.panel, this.conversionSettings),
+        );
         backgroundColors = this.tile.measurements.map((m) => this.$ren.utils.measurementColor(m).color);
       }
       // console.error(data);
