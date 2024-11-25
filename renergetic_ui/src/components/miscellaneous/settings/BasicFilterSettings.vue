@@ -49,7 +49,6 @@ export default {
         // console.debug("refresh");
         let mSettings = this.copyDateObj(newVal);
         var modified = validateDateInterval(mSettings);
-
         if (newVal["timeIntervalType"] != this.timeIntervalType) {
           this.timeIntervalType = newVal["timeIntervalType"];
           this.schema = this.getSchema();
@@ -60,14 +59,17 @@ export default {
           newVal.date_from = mSettings.date_from;
           newVal.date_to = mSettings.date_to;
         }
-        if (this.submitButton) return;
+
         mSettings["predictionIntervalms"] = mSettings.predictionInterval * 3600;
         if (mSettings.date_from && mSettings.date_from instanceof Date) mSettings.date_from = mSettings.date_from.getTime();
         if (mSettings.date_to && mSettings.date_to instanceof Date) mSettings.date_to = mSettings.date_to.getTime();
         this.parseDateFilter(mSettings);
+        this.mSettings = mSettings;
+        if (this.submitButton) return;
         if (this.settings) {
           this.$emit("update:settings", mSettings);
         } else {
+          // this.mSettings = this.settingsObj;
           this.$store.commit("settings/filters", { payload: mSettings, key: this.settingKey });
           this.$emit("update");
         }
@@ -109,7 +111,7 @@ export default {
       }
     },
     getTimeIntervalSchema() {
-      var isCustomInterval = this.mSettings && this.mSettings["timeIntervalType"] == "custom_interval";
+      var isCustomInterval = this.timeIntervalType == "custom_interval"; // this.mSettings && this.mSettings["timeIntervalType"] == "custom_interval";
       if (!isCustomInterval) return [];
       else {
         return [

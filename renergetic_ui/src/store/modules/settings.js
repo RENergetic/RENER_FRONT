@@ -133,8 +133,6 @@ export default {
       state.conversion = payload;
     },
     filter(state, payload) {
-      console.debug(payload);
-
       state.filter = payload;
     },
     filters(state, { payload, key }) {
@@ -201,6 +199,7 @@ export default {
         console.error(filterKey + ": filter not found");
         filter = { predictionInterval: 0, timeIntervalType: "current_day" };
       }
+      console.error(filter);
       return filter;
     },
 
