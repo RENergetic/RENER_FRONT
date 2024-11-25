@@ -167,6 +167,7 @@ class RenUtils {
       _this.app.$emitter.emit("information", { message: _this.app.$t("information.settings_saved") });
       return settings;
     });
+    console.error(settings);
     // console.info(settings);
     this.app.$store.commit("settings", settings);
   }
