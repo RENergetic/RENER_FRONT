@@ -69,6 +69,7 @@ const TileTypes = Object.freeze({
   single: "single",
   image: "image",
   qrcode: "qrcode",
+  formula: "formula",
 });
 
 const NotificationContext = Object.freeze({

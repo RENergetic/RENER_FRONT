@@ -28,6 +28,7 @@
           { label: $t('enums.tile_type.knob'), value: 'knob' },
           { label: $t('enums.tile_type.image'), value: 'image' },
           { label: $t('enums.tile_type.qrcode'), value: 'qrcode' },
+          { label: $t('enums.tile_type.formula'), value: 'formula' },
         ]"
         :invalid="v$.mModel.type.$invalid"
         :errors="v$.mModel.type.$silentErrors"

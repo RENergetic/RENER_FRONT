@@ -1,5 +1,5 @@
 <template>
-  <div v-for="m in measurements" :key="m.id" class="col-12 md:col-10 xl:col-6" style="max-height: 50vh; max-width: 40vw">
+  <div v-for="m in measurements" :key="m.id" class="col-12 md:col-10 xl:col-6" style="height: fit-content">
     <!-- :style="'margin:auto;max-width: 90%;'" -->
     <span v-if="m.sensor_name === 'abstract_meter'" @click="openMeter(m)"> {{ $t("view.open_abstract_meter") }}</span>
 

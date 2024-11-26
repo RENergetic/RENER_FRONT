@@ -28,6 +28,13 @@ const tileProperties = [
     },
     key: "aggregate_values",
   },
+  {
+    label: $t(`model.information_panel.tile.properties.aggregation_formula`),
+    description: $t(`model.information_panel.tile.properties.aggregation_formula_description`),
+    type: "String",
+    //TODO: type formula
+    key: "aggregation_formula",
+  },
 
   {
     label: $t(`model.information_panel.tile.properties.icon_visibility`),
@@ -343,7 +350,28 @@ const singleProperties = new Set([
   "template",
   "tag_key",
   "tag_value",
+  "aggregation_formula",
 ]);
+const formulaProperties = new Set([
+  "title_visibility",
+  "title_color",
+  "background",
+  "background_mask",
+  "icon_visibility",
+  "measurement_background",
+  "measurement_color",
+  "icon",
+  "aggregation_formula",
+  // "unit" todo:
+  "aggregate_values",
+  "compare_with_previous",
+  "compare_interval_type",
+  "compare_interval_number",
+  "template",
+  "tag_key",
+  "tag_value",
+]);
+
 const emptyProperties = new Set(["title_visibility", "title_color", "background", "background_mask", "icon_visibility", "icon", "template"]);
 const qrCodeProperties = new Set(["background", "qrcode_content"]);
 //"title_visibility", "title_color",
@@ -375,6 +403,9 @@ export function getTileProperties(tileType) {
       break;
     case "qrcode":
       propertiesWhiteFilter = qrCodeProperties;
+      break;
+    case "formula":
+      propertiesWhiteFilter = formulaProperties;
       break;
     case "empty":
       propertiesWhiteFilter = emptyProperties;

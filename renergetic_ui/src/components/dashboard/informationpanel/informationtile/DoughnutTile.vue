@@ -47,8 +47,7 @@ export default {
   },
   data() {
     return {
-      // width: this.settings.panel.cellWidth * this.tile.layout.w * 0.95,
-      // height: this.settings.panel.cellHeight * this.tile.layout.h * 0.75,
+      measurementFilter: [],
       loaded: false,
       mSettings: this.settings,
       mStyle: "max-width: 25rem; margin: auto",
@@ -77,9 +76,9 @@ export default {
       let data;
       let labels;
       let backgroundColors;
-
+      var measurements = this.tile.measurements.filter((it) => !this.measurementFilter.includes(it.id));
       if (this.mSettings.tile.group_by_asset || this.mSettings.tile.group_by_domain || this.mSettings.tile.group_by_direction) {
-        let groupedValues = this.$ren.utils.groupValues(this.tile.measurements, pdata, this.mSettings);
+        let groupedValues = this.$ren.utils.groupValues(measurements, pdata, this.mSettings);
         console.debug(groupedValues);
         data = Object.values(groupedValues).map((g) => g.value);
         labels = Object.values(groupedValues).map((g) => g.label);
@@ -88,11 +87,9 @@ export default {
         console.warn(labels);
         // console.warn(backgroundColors);
       } else {
-        data = this.tile.measurements.map((m) => pdata.current[m.aggregation_function][m.id]);
-        labels = this.tile.measurements.map(
-          (m) => this.measurementLabel(m) + " " + this.$ren.utils.unitLabel(m, this.settings.panel, this.conversionSettings),
-        );
-        backgroundColors = this.tile.measurements.map((m) => this.$ren.utils.measurementColor(m).color);
+        data = measurements.map((m) => pdata.current[m.aggregation_function][m.id]);
+        labels = measurements.map((m) => this.measurementLabel(m) + " " + this.$ren.utils.unitLabel(m, this.settings.panel, this.conversionSettings));
+        backgroundColors = measurements.map((m) => this.$ren.utils.measurementColor(m).color);
       }
       // console.error(data);
       // if (!this.mSettings.panel.relativeValues) {
@@ -140,7 +137,16 @@ export default {
     this.mStyle = `max-width: 25rem; margin: auto;width:${minD * 0.65}px`;
     this.loaded = true;
   },
-  methods: {},
+  methods: {
+    onMeasurementSelect(m) {
+      let idx = this.measurementFilter.indexOf(m.item.id);
+      if (idx >= 0 && m.item.visible === true) {
+        this.measurementFilter.splice(idx, 1);
+      } else if (m.item.visible === false) {
+        this.measurementFilter.push(m.item.id);
+      }
+    },
+  },
 };
 </script>
 

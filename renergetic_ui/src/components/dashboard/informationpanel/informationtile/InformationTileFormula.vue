@@ -81,9 +81,7 @@ export default {
     },
     value: function () {
       if (this.mSettings.tile.aggregation_formula) {
-        var f = this.extractMeasurements(this.mSettings.tile.aggregation_formula);
-
-        return this.$math.evaluate(f);
+        this.extractMeasurements(this.mSettings.tile.aggregation_formula);
       }
       if (this.mSettings.tile.aggregate_values) {
         let accu = 0.0;
@@ -115,16 +113,11 @@ export default {
   methods: {
     extractMeasurements(strFormula) {
       const pattern = /\[(.*?)\]/g;
-      let _this = this;
-      var parsedF = strFormula.replace(pattern, function (match, capture) {
-        let m = _this.tile.measurements.find((it) => {
-          return it.id + "" === capture;
-        });
-        let v = _this.$ren.utils.getConvertedValue(m, _this.pdata, _this.mSettings);
-
-        return v;
+      strFormula.replace(pattern, function (match, capture) {
+        console.error(match);
+        console.error(capture);
+        return "gold " + capture + "|" + match;
       });
-      return parsedF;
     },
   },
 };
