@@ -37,6 +37,14 @@ const tileProperties = [
   },
 
   {
+    label: $t(`model.information_panel.tile.properties.aggregation_formula_unit`),
+    description: $t(`model.information_panel.tile.properties.aggregation_formula_unit_description`),
+    type: "String",
+    //TODO: type formula
+    key: "aggregation_formula_unit",
+  },
+
+  {
     label: $t(`model.information_panel.tile.properties.icon_visibility`),
     description: $t(`model.information_panel.tile.properties.icon_visibility_description`),
     type: "Boolean",
@@ -351,6 +359,7 @@ const singleProperties = new Set([
   "tag_key",
   "tag_value",
   "aggregation_formula",
+  "aggregation_formula_unit",
 ]);
 const formulaProperties = new Set([
   "title_visibility",
@@ -362,6 +371,7 @@ const formulaProperties = new Set([
   "measurement_color",
   "icon",
   "aggregation_formula",
+  "aggregation_formula_unit",
   // "unit" todo:
   "aggregate_values",
   "compare_with_previous",

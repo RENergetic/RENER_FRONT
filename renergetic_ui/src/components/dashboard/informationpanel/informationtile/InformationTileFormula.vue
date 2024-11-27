@@ -64,6 +64,9 @@ export default {
   },
   computed: {
     unit: function () {
+      if (this.mSettings.tile.aggregation_formula && this.mSettings.tile.aggregation_formula_unit) {
+        return `${this.mSettings.tile.aggregation_formula_unit}`;
+      }
       if (this.measurement == null) return "";
       return this.$ren.utils.getUnit(this.measurement, this.settings.panel, this.conversionSettings);
     },
