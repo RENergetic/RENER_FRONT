@@ -67,6 +67,7 @@ export default {
     async loadData() {
       await this.$refs.spinner.run(async () => {
         this.recommendationList = await this.$ren.hdrApi.getCurrentRecommendations();
+        this.recommendationList.sort((a, b) => b.rank - a.rank);
       });
     },
   },
