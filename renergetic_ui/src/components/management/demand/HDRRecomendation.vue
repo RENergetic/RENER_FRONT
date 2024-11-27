@@ -23,9 +23,12 @@
             <div v-if="pData && pData.statistics">
               <div v-for="(measurement, mIdx) in group.measurements.filter((it) => it.recommendation != null && pData.statistics[it.id])" :key="mIdx">
                 <h3>
-                  {{ measurement.recommendation }}: avg= {{ $ren.utils.roundValue(pData.statistics[measurement.id].avg) }}[{{
-                    measurement.type.unit
-                  }}], peak = {{ $ren.utils.roundValue(pData.statistics[measurement.id].peak) }}[{{ measurement.type.unit }}]
+                  <div>
+                    {{ measurement.recommendation }}: avg= {{ $ren.utils.roundValue(pData.statistics[measurement.id].avg) }}[{{
+                      measurement.type.unit
+                    }}], peak = {{ $ren.utils.roundValue(pData.statistics[measurement.id].peak) }}[{{ measurement.type.unit }}]
+                  </div>
+                  <div v-if="measurement._recommendation">Recommendation: {{ measurement._recommendation.label }}</div>
                 </h3>
               </div>
             </div>
@@ -161,6 +164,7 @@ export default {
         );
         for (let m of this.recommendationMeasurements) {
           m.recommendation = this.recommendation.tag.value;
+          m._recommendation = this.recommendation;
           m.label = `${m.recommendation}:${m.label ? m.label : m.name}`;
           if (m.measurement_details) {
             m.measurement_details.color = "#03fc90";
@@ -181,6 +185,7 @@ export default {
         );
         for (let m of this.recommendationCompareMeasurements) {
           m.recommendation = this.comparewith.tag.value;
+          m._recommendation = this.comparewith;
           m.label = `${m.recommendation}:${m.label ? m.label : m.name}`;
           if (m.measurement_details) {
             m.measurement_details.color = "#0044ff";
