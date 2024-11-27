@@ -85,6 +85,7 @@ export default {
     value: function () {
       if (this.mSettings.tile.aggregation_formula) {
         var f = this.extractMeasurements(this.mSettings.tile.aggregation_formula);
+        console.debug(f);
         try {
           return this.$math.evaluate(f);
         } catch (ex) {
@@ -124,9 +125,13 @@ export default {
       const pattern = /\[(.*?)\]/g;
       let _this = this;
       var parsedF = strFormula.replace(pattern, function (match, capture) {
+        console.debug(parsedF);
         let m = _this.tile.measurements.find((it) => {
           return it.id + "" === capture;
         });
+        console.debug(m);
+        console.debug(_this.mSettings);
+        console.debug(_this.pdata);
         let v = _this.$ren.utils.getConvertedValue(m, _this.pdata, _this.mSettings);
 
         return v;
