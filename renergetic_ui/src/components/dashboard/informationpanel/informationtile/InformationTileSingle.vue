@@ -82,8 +82,12 @@ export default {
     value: function () {
       if (this.mSettings.tile.aggregation_formula) {
         var f = this.extractMeasurements(this.mSettings.tile.aggregation_formula);
-
-        return this.$math.evaluate(f);
+        try {
+          return this.$math.evaluate(f);
+        } catch (ex) {
+          console.error(ex);
+          return "Calc err";
+        }
       }
       if (this.mSettings.tile.aggregate_values) {
         let accu = 0.0;

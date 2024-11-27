@@ -303,16 +303,16 @@ class RenUtils {
   }
   roundValue(value) {
     if (value >= 4.0) {
-      return Math.round(value);
+      return Math.round(value * 10.0) / 10.0;
     }
     if (value >= 0.4) {
-      return Math.round(value * 10.0) / 10.0;
+      return Math.round(value * 100.0) / 100.0;
     }
 
     if (value >= 0.04) {
-      return Math.round(value * 100.0) / 100.0;
+      return Math.round(value * 1000.0) / 1000.0;
     }
-    return Math.round(value * 1000.0) / 1000.0;
+    return Math.round(value * 10000.0) / 10000.0;
   }
 }
 Object.assign(RenUtils.prototype, MeasurementUtils.prototype);

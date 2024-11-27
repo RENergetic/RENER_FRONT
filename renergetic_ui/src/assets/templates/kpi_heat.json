@@ -64,9 +64,11 @@
           "sensor_name": "kpi",
           "aggregation_function": "last",
           "type": {
-            "physical_name": "value",
-            "name": "value",
-            "unit": "any"
+           
+            "physical_name": "ratio",
+            "name": "ratio_norm",
+            "unit": "0-1",
+            "base_unit": "0-1" 
           }
         },
         {
@@ -75,9 +77,10 @@
           "sensor_name": "kpi",
           "aggregation_function": "last",
           "type": {
-            "physical_name": "value",
-            "name": "value",
-            "unit": "any"
+            "physical_name": "ratio",
+            "name": "ratio_norm",
+            "unit": "0-1",
+            "base_unit": "0-1" 
           }
         },
         {
@@ -86,9 +89,10 @@
           "sensor_name": "kpi",
           "aggregation_function": "last",
           "type": {
-            "physical_name": "value",
-            "name": "value",
-            "unit": "any"
+            "physical_name": "ratio",
+            "name": "ratio_norm",
+            "unit": "0-1",
+            "base_unit": "0-1"   
           }
         },
         {
@@ -97,9 +101,10 @@
           "sensor_name": "kpi",
           "aggregation_function": "last",
           "type": {
-            "physical_name": "value",
-            "name": "value",
-            "unit": "any"
+            "physical_name": "ratio",
+            "name": "ratio",
+            "unit": "ratio",
+            "base_unit": "ratio"       
           }
         },
         {
@@ -108,31 +113,23 @@
           "sensor_name": "kpi",
           "aggregation_function": "last",
           "type": {
-            "physical_name": "value",
-            "name": "value",
-            "unit": "any"
+            "physical_name": "ratio",
+            "name": "ratio",
+            "unit": "ratio",
+            "base_unit": "ratio"    
           }
         },
-        {
-          "name": "ep",
-          "domain": "heat",
-          "sensor_name": "kpi",
-          "aggregation_function": "last",
-          "type": {
-            "physical_name": "value",
-            "name": "value",
-            "unit": "any"
-          }
-        },
+        
         {
           "name": "ee",
           "domain": "heat",
           "sensor_name": "kpi",
           "aggregation_function": "last",
           "type": {
-            "physical_name": "value",
-            "name": "value",
-            "unit": "any"
+            "physical_name": "ratio",
+            "name": "ratio_norm",
+            "unit": "0-1",
+            "base_unit": "0-1"    
           }
         },
         {
@@ -141,9 +138,10 @@
           "sensor_name": "kpi",
           "aggregation_function": "last",
           "type": {
-            "physical_name": "value",
-            "name": "value",
-            "unit": "any"
+            "physical_name": "ratio",
+            "name": "ratio",
+            "unit": "ratio",
+            "base_unit": "ratio"    
           }
         }
       ],
@@ -167,23 +165,13 @@
           "name": "lrs",
           "domain": "heat",
           "sensor_name": "abstract_meter",
-          "aggregation_function": "last",
-          "type": {
-            "physical_name": "value",
-            "name": "value",
-            "unit": "any"
-          }
+          "aggregation_function": "last"
         },
         {
           "name": "lns",
           "domain": "heat",
           "sensor_name": "abstract_meter",
-          "aggregation_function": "last",
-          "type": {
-            "physical_name": "value",
-            "name": "value",
-            "unit": "any"
-          }
+          "aggregation_function": "last" 
         },
         {
           "name": "co2",
@@ -191,9 +179,10 @@
           "sensor_name": "kpi",
           "aggregation_function": "last",
           "type": {
-            "physical_name": "value",
-            "name": "value",
-            "unit": "any"
+            "physical_name": "ratio",
+            "name": "ratio",
+            "unit": "ratio",
+            "base_unit": "ratio"    
           }
         }
       ],
@@ -220,9 +209,10 @@
           "sensor_name": "kpi",
           "aggregation_function": "last",
           "type": {
-            "physical_name": "value",
-            "name": "value",
-            "unit": "any"
+            "physical_name": "ratio",
+            "name": "ratio_norm",
+            "unit": "0-1",
+            "base_unit": "0-1"      
           }
         }
       ],
@@ -248,9 +238,10 @@
           "sensor_name": "kpi",
           "aggregation_function": "last",
           "type": {
-            "physical_name": "value",
-            "name": "value",
-            "unit": "any"
+            "physical_name": "ratio",
+            "name": "ratio_norm",
+            "unit": "0-1",
+            "base_unit": "0-1"      
           }
         },
         {
@@ -259,9 +250,10 @@
           "sensor_name": "kpi",
           "aggregation_function": "last",
           "type": {
-            "physical_name": "value",
-            "name": "value",
-            "unit": "any"
+            "physical_name": "ratio",
+            "name": "ratio_norm",
+            "unit": "0-1",
+            "base_unit": "0-1"      
           }
         }
       ],
@@ -287,9 +279,10 @@
           "sensor_name": "kpi",
           "aggregation_function": "last",
           "type": {
-            "physical_name": "value",
-            "name": "value",
-            "unit": "any"
+            "physical_name": "ratio",
+            "name": "ratio",
+            "unit": "ratio",
+            "base_unit": "ratio"     
           }
         }
       ],
@@ -313,12 +306,8 @@
           "name": "peak",
           "domain": "heat",
           "sensor_name": "kpi",
-          "aggregation_function": "max",
-          "type": {
-            "physical_name": "value",
-            "name": "value",
-            "unit": "any"
-          }
+          "aggregation_function": "max"
+         
         }
       ],
       "props": {
@@ -341,23 +330,13 @@
           "name": "losses",
           "domain": "heat",
           "sensor_name": "abstract_meter",
-          "aggregation_function": "last",
-          "type": {
-            "physical_name": "value",
-            "name": "value",
-            "unit": "any"
-          }
+          "aggregation_function": "last"
         },
         {
           "name": "load",
           "domain": "heat",
           "sensor_name": "abstract_meter",
-          "aggregation_function": "last",
-          "type": {
-            "physical_name": "value",
-            "name": "value",
-            "unit": "any"
-          }
+          "aggregation_function": "last"
         }
       ],
       "props": {
@@ -382,9 +361,10 @@
           "sensor_name": "kpi",
           "aggregation_function": "last",
           "type": {
-            "physical_name": "value",
-            "name": "value",
-            "unit": "any"
+            "physical_name": "ratio",
+            "name": "ratio",
+            "unit": "ratio",
+            "base_unit": "ratio"   
           }
         }
       ],

@@ -20,6 +20,15 @@
               :annotations="getAnnotations(group)"
               :immediate="false"
             />
+            <div v-if="pData && pData.statistics">
+              <div v-for="(measurement, mIdx) in group.measurements.filter((it) => it.recommendation != null && pData.statistics[it.id])" :key="mIdx">
+                <h3>
+                  {{ measurement.recommendation }}: avg= {{ $ren.utils.roundValue(pData.statistics[measurement.id].avg) }}[{{
+                    measurement.type.unit
+                  }}], peak = {{ $ren.utils.roundValue(pData.statistics[measurement.id].peak) }}[{{ measurement.type.unit }}]
+                </h3>
+              </div>
+            </div>
           </TabPanel>
         </TabView>
       </div>
@@ -222,10 +231,7 @@ export default {
       if (measurements.length > 0) {
         this.$refs.spinner.run(async () => {
           if (this.currentMeasurements != null) {
-            // console.debug(this.currentMeasurements);
             let curIds = this.currentMeasurements.map((it) => it.id);
-            // let pDataCurrent = await this.$ren.dataApi.getMeasurementTimeseries(this.currentMeasurements, filterCurrent);
-            // console.info(pDataCurrent);
 
             let pData = await this.$ren.dataApi.getMeasurementTimeseries(measurements, filterCurrent);
             let idx = pData.timestamps.findIndex((ts) => ts >= nowTs); //border  between past and future data
@@ -233,11 +239,13 @@ export default {
               this.pData = pData;
               return;
             }
+
+            pData.statistics = {};
             for (let mId in pData.current) {
               if (!curIds.includes(Number(mId))) {
                 //only recommendations
-                let recommendationMeasurement = mDict[mId];
                 let timeseries = pData.current[mId];
+                let recommendationMeasurement = mDict[mId];
                 for (let i in timeseries) {
                   if (i < idx) {
                     timeseries[i] = null;
@@ -245,6 +253,9 @@ export default {
                     break;
                   }
                 }
+                var avg = timeseries.reduce((partialSum, a) => partialSum + (a === null ? 0 : a), 0) / (timeseries.length - idx);
+
+                pData.statistics[mId] = { avg: avg, peak: Math.max(...timeseries) };
                 //get the last point from the current timeseries
                 let currentMeasurement = mGroups[this.measurementGroupKey(recommendationMeasurement)].current;
                 if (!currentMeasurement) {
@@ -265,7 +276,7 @@ export default {
           } else {
             this.pData = await this.$ren.dataApi.getMeasurementTimeseries(measurements, filterCurrent);
           }
-
+          this.pData.timestamps.findIndex((it) => it > nowTs);
           // this.annotations = this.getAnnotations();
           this.reloadChart = !this.reloadChart;
         });
@@ -277,6 +288,9 @@ export default {
     },
     getAnnotations(group) {
       let annotations = [];
+      var now = new Date().getTime();
+      let currentLine = this._getAnnotationX(now);
+      annotations.push(currentLine);
       if (this.hdrRequest == null) {
         return annotations;
       }
@@ -285,13 +299,9 @@ export default {
       // let annotationMin = this._getAnnotation(this.pData["timestamps"][minIdx]);
       // let annotationMax = this._getAnnotation(this.pData["timestamps"][maxIdx]);
       // let annotationBox = this._getBoxAnnotation(this.pData["timestamps"][minIdx], this.pData["timestamps"][maxIdx]);
-      let currentLine = this._getAnnotationX(new Date().getTime());
-      annotations.push(currentLine);
+
       let cur = group.current;
-      // console.info(cur.type);
-      // console.info(this.currentMeasurements[index]);
-      // console.info(this.hdrRequest.value_type);
-      if (cur.domain == "heat" && cur.type.physical_name == this.hdrRequest.value_type.physical_name) {
+      if (cur.domain === "heat" && cur.type.physical_name == this.hdrRequest.value_type.physical_name) {
         console.error("todo: convert hdr request and current measurement units");
         if (this.hdrRequest.max_value != null) {
           let requestLine = this._getAnnotationY(this.hdrRequest.max_value);
