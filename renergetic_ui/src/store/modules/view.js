@@ -172,6 +172,10 @@ export default {
       }
       //get new unit
       let mt = state.measurementTypes[currentMeasurementType.physical_name].find((mt) => mt.unit == newUnit);
+      if (currentMeasurementType.factor === undefined || currentMeasurementType.factor == null) {
+        let cmt = state.measurementTypes[currentMeasurementType.physical_name].find((mt) => mt.unit == currentMeasurementType.unit);
+        if (cmt) currentMeasurementType.factor = cmt.factor;
+      }
 
       return (value * currentMeasurementType.factor) / mt.factor;
       // return (value / currentMeasurementType.factor) * mt.factor;

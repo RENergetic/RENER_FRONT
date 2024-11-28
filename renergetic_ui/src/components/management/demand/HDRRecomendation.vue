@@ -29,6 +29,7 @@
                     }}], peak = {{ $ren.utils.roundValue(pData.statistics[measurement.id].peak) }}[{{ measurement.type.unit }}]
                   </div>
                   <div v-if="measurement._recommendation">Recommendation: {{ measurement._recommendation.label }}</div>
+                  <div v-if="pData.statistics[measurement.id].demand_stats">{{ pData.statistics[measurement.id].demand_stats }}</div>
                 </h3>
               </div>
             </div>
@@ -43,6 +44,7 @@
 </template>
 <script>
 import MeasurementChart from "@/components/dashboard/measurement/MeasurementChart.vue";
+
 export default {
   name: "HDRRecomendation",
   components: { MeasurementChart },
@@ -53,6 +55,10 @@ export default {
       default: null,
     },
     comparewith: {
+      type: Object,
+      default: null,
+    },
+    baseRecommendation: {
       type: Object,
       default: null,
     },
@@ -73,6 +79,7 @@ export default {
       reloadChart: false,
       annotations: null,
       currentMeasurements: [],
+      baseMeasurement: null,
       tagKey: null,
     };
   },
@@ -153,6 +160,7 @@ export default {
     },
     async loadMeasurements() {
       if (this.recommendation) {
+        await this.loadBaseMeasurement();
         await this.loadCurrentMeasurements();
         // alert(JSON.stringify(this.recommendation));
         // this.recommendationMeasurements = await this.$ren.hdrApi.getRecommendationsMeasurements(this.recommendation.id);
@@ -172,6 +180,29 @@ export default {
           } else {
             m.measurement_details = { fill_chart: false, color: "#03fc90" };
           }
+        }
+      }
+    },
+    async loadBaseMeasurement() {
+      if (this.baseRecommendation) {
+        //TODO compare it.type.physical_name === "power" with ther reuqest type
+        this.baseMeasurement = await this.$ren.hdrApi.getMeasurements(
+          this.hdrRequest ? this.hdrRequest.timestamp : null,
+          this.baseRecommendation.tag.key,
+          this.baseRecommendation.tag.value,
+        );
+        this.baseMeasurement = this.baseMeasurement.find((it) => it.type.physical_name === "power"); //|| it.type.physical_name === "energy");
+
+        this.baseMeasurement.recommendation = this.recommendation.tag.value;
+        this.baseMeasurement._recommendation = this.recommendation;
+        this.baseMeasurement.label = `${this.baseMeasurement.recommendation}:${
+          this.baseMeasurement.label ? this.baseMeasurement.label : this.baseMeasurement.name
+        }`;
+        if (this.baseMeasurement.measurement_details) {
+          this.baseMeasurement.measurement_details.color = "#03fc90";
+          this.baseMeasurement.measurement_details["fill_chart"] = false;
+        } else {
+          this.baseMeasurement.measurement_details = { fill_chart: false, color: "#03fc90" };
         }
       }
     },
@@ -211,6 +242,9 @@ export default {
         for (let m of this.currentMeasurements) {
           mDict[m.id] = m;
         }
+      if (this.baseMeasurement) {
+        mDict[this.baseMeasurement.id] = this.baseMeasurement;
+      }
       this.mDict = mDict;
       let measurements = Object.values(mDict);
       for (let m of measurements) {
@@ -240,6 +274,7 @@ export default {
 
             let pData = await this.$ren.dataApi.getMeasurementTimeseries(measurements, filterCurrent);
             let idx = pData.timestamps.findIndex((ts) => ts >= nowTs); //border  between past and future data
+
             if (idx < 1) {
               this.pData = pData;
               return;
@@ -258,9 +293,10 @@ export default {
                     break;
                   }
                 }
+                let demand_stats = this.calcEnergyStats(nowTs, pData, recommendationMeasurement);
                 var avg = timeseries.reduce((partialSum, a) => partialSum + (a === null ? 0 : a), 0) / (timeseries.length - idx);
 
-                pData.statistics[mId] = { avg: avg, peak: Math.max(...timeseries) };
+                pData.statistics[mId] = { avg: avg, peak: Math.max(...timeseries), demand_stats: demand_stats };
                 //get the last point from the current timeseries
                 let currentMeasurement = mGroups[this.measurementGroupKey(recommendationMeasurement)].current;
                 if (!currentMeasurement) {
@@ -290,6 +326,79 @@ export default {
 
     reload() {
       this.$emit("reload");
+    },
+    calcValueChange(from_idx, to_idx, tdf, pData) {
+      if (this.baseRecommendation == null) {
+        return;
+      }
+      var timeseries = pData.current[this.baseMeasurement.id].slice(from_idx, to_idx + 1);
+      var avg = timeseries.reduce((partialSum, a) => partialSum + (a === null ? 0 : a), 0) / timeseries.length;
+
+      var avgPow = this.$store.getters["view/convertValue"](this.baseMeasurement.type, avg, "W");
+      console.debug(this.baseMeasurement);
+      console.debug("basepow");
+      console.debug(avgPow);
+
+      if (this.hdrRequest.value_type.physical_name === "energy") {
+        //todo: change to relative value
+
+        let valueChange = this.$store.getters["view/convertValue"](this.hdrRequest.value_type, this.hdrRequest.value_change, "Wh");
+        var energy = (avgPow * (tdf / 1000.0)) / 3600;
+        return energy + valueChange;
+      } else if (this.hdrRequest.value_type.physical_name === "power" || 1 == 1) {
+        //todo: change to relative value
+        let valueChange = this.$store.getters["view/convertValue"](this.hdrRequest.value_type, this.hdrRequest.max_value, "W");
+        return avgPow + valueChange;
+      }
+      //
+      return avg;
+      // this.baseRecommendation.
+      // var avg = timeseries.reduce((partialSum, a) => partialSum + (a === null ? 0 : a), 0) / (timeseries.length - idx);
+    },
+
+    calcEnergyStats(nowTs, pData, recommendationMeasurement) {
+      if (this.hdrRequest == null) return;
+      var tdf = Math.max(nowTs, this.hdrRequest.date_to) - Math.max(nowTs, this.hdrRequest.date_from);
+      var from_idx = pData.timestamps.findIndex((ts) => ts >= Math.max(nowTs, this.hdrRequest.date_from));
+      var to_idx = pData.timestamps.findIndex((ts) => ts >= Math.max(nowTs, this.hdrRequest.date_to));
+      if (to_idx <= from_idx) {
+        return;
+      }
+
+      if (recommendationMeasurement.type.physical_name === "power") {
+        console.debug("calc stats");
+        console.debug(recommendationMeasurement);
+        var timeseries = pData.current[recommendationMeasurement.id].slice(from_idx, to_idx + 1);
+        var avg = timeseries.reduce((partialSum, a) => partialSum + (a === null ? 0 : a), 0) / timeseries.length;
+
+        var avgPow = this.$store.getters["view/convertValue"](recommendationMeasurement.type, avg, "W");
+        if (this.hdrRequest.value_change != null) {
+          var v = this.calcValueChange(from_idx, to_idx, tdf, pData);
+        }
+        if (this.hdrRequest.value_type.physical_name === "energy") {
+          var energy = (avgPow * (tdf / 1000.0)) / 3600;
+
+          // console.error(avgPow);
+          // console.error(energy);
+          // console.error(v);
+          // console.error(this.hdrRequest.value_change > 0 ? energy > v : energy < v);
+          let res = {
+            result: this.hdrRequest.max_value || this.hdrRequest.value_change < 0 ? energy < v : energy > v,
+            demand: this.$store.getters["view/convertSIValue"]("energy", v, this.hdrRequest.value_type.unit),
+            predicted: this.$store.getters["view/convertSIValue"]("energy", energy, this.hdrRequest.value_type.unit),
+          };
+          console.info(res);
+          return res;
+        } else if (this.hdrRequest.value_type.physical_name === "power" || 1 == 1) {
+          let res = {
+            result: this.hdrRequest.max_value || this.hdrRequest.value_change < 0 ? avgPow < v : avgPow > v,
+            demand: this.$store.getters["view/convertSIValue"]("power", v, this.hdrRequest.value_type.unit),
+            predicted: this.$store.getters["view/convertSIValue"]("power", avgPow, this.hdrRequest.value_type.unit),
+          };
+          return res;
+        }
+      }
+      return {};
     },
     getAnnotations(group) {
       let annotations = [];

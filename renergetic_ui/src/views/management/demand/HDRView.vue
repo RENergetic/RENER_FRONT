@@ -10,6 +10,7 @@
             :key="reloadRecommendation"
             :hdr-request="hdrRequest"
             :recommendation="selectedRecommendation"
+            :base-recommendation="baseRecommendation"
             :comparewith="compareWith"
           />
           <h2 v-else>{{ $t("view.select_recommendation") }}</h2>
@@ -49,6 +50,7 @@ export default {
       selectedRecommendation: null,
       compareWith: null,
       reloadRecommendation: false,
+      baseRecommendation: null,
     };
   },
   watch: {
@@ -68,6 +70,7 @@ export default {
       await this.$refs.spinner.run(async () => {
         this.recommendationList = await this.$ren.hdrApi.getCurrentRecommendations();
         this.recommendationList.sort((a, b) => b.rank - a.rank);
+        this.baseRecommendation = this.recommendationList.find((it) => it.tag.value === "recommendation_0");
       });
     },
   },

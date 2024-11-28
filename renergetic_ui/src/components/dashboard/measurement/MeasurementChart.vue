@@ -214,7 +214,7 @@ export default {
         this.labels = this.pdata["timeseries"]["timestamps"];
 
         let mData = this.pdata["timeseries"]["current"];
-        console.error("TODO: load previous data - check if everything is available ");
+        console.warn("TODO: load previous data - check if everything is available ");
         if (this.mPrevious) {
           mData.previous = this.pdata.previous["timeseries"]["current"];
           mData.previousLabels = this.pdata.previous["timeseries"]["timestamps"];
@@ -233,7 +233,7 @@ export default {
       var getPrevious = false;
       if (data == null) {
         //if previous ==null
-        console.error("TODO: load previous data - check if everything is available ");
+        console.warn("TODO: load previous data - check if everything is available ");
 
         let timeseriesData;
 
