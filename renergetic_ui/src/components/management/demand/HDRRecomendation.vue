@@ -21,15 +21,20 @@
               :immediate="false"
             />
             <div v-if="pData && pData.statistics">
+              <!-- {{ baseMeasurement }} -->
               <div v-for="(measurement, mIdx) in group.measurements.filter((it) => it.recommendation != null && pData.statistics[it.id])" :key="mIdx">
                 <h3>
                   <div>
+                    <!-- {{ measurement }} -->
                     {{ measurement.recommendation }}: avg= {{ $ren.utils.roundValue(pData.statistics[measurement.id].avg) }}[{{
                       measurement.type.unit
                     }}], peak = {{ $ren.utils.roundValue(pData.statistics[measurement.id].peak) }}[{{ measurement.type.unit }}]
                   </div>
                   <div v-if="measurement._recommendation">Recommendation: {{ measurement._recommendation.label }}</div>
-                  <div v-if="pData.statistics[measurement.id].demand_stats">{{ pData.statistics[measurement.id].demand_stats }}</div>
+                  <div v-if="pData.statistics[measurement.id].demand_stats">
+                    demand: {{ pData.statistics[measurement.id].demand_stats.demand }}[{{ pData.statistics[measurement.id].demand_stats.unit }}],
+                    predicted: {{ pData.statistics[measurement.id].demand_stats.predicted }}[{{ pData.statistics[measurement.id].demand_stats.unit }}]
+                  </div>
                 </h3>
               </div>
             </div>
@@ -189,12 +194,12 @@ export default {
         this.baseMeasurement = await this.$ren.hdrApi.getMeasurements(
           this.hdrRequest ? this.hdrRequest.timestamp : null,
           this.baseRecommendation.tag.key,
-          this.baseRecommendation.tag.value,
+          "recommendation_0",
         );
         this.baseMeasurement = this.baseMeasurement.find((it) => it.type.physical_name === "power"); //|| it.type.physical_name === "energy");
 
-        this.baseMeasurement.recommendation = this.recommendation.tag.value;
-        this.baseMeasurement._recommendation = this.recommendation;
+        this.baseMeasurement.recommendation = this.baseRecommendation.tag.value;
+        this.baseMeasurement._recommendation = this.baseRecommendation;
         this.baseMeasurement.label = `${this.baseMeasurement.recommendation}:${
           this.baseMeasurement.label ? this.baseMeasurement.label : this.baseMeasurement.name
         }`;
@@ -386,6 +391,7 @@ export default {
             result: this.hdrRequest.max_value || this.hdrRequest.value_change < 0 ? energy < v : energy > v,
             demand: this.$store.getters["view/convertSIValue"]("energy", v, this.hdrRequest.value_type.unit),
             predicted: this.$store.getters["view/convertSIValue"]("energy", energy, this.hdrRequest.value_type.unit),
+            unit: this.hdrRequest.value_type.unit,
           };
           console.info(res);
           return res;
@@ -394,11 +400,12 @@ export default {
             result: this.hdrRequest.max_value || this.hdrRequest.value_change < 0 ? avgPow < v : avgPow > v,
             demand: this.$store.getters["view/convertSIValue"]("power", v, this.hdrRequest.value_type.unit),
             predicted: this.$store.getters["view/convertSIValue"]("power", avgPow, this.hdrRequest.value_type.unit),
+            unit: this.hdrRequest.value_type.unit,
           };
           return res;
         }
       }
-      return {};
+      return null;
     },
     getAnnotations(group) {
       let annotations = [];
