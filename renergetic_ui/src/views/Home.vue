@@ -21,7 +21,7 @@
       <div v-else style="width: 50rem; max-width: 95vw; margin: auto; padding-top: 5rem">
         <h4 style="width: 100%; margin: auto">{{ $t("view.empty_home_dashboard") }}</h4>
       </div>
-      <div style="margin-left: 1rem; margin-top: 2rem">
+      <div v-if="panel" style="margin-left: 1rem; margin-top: 2rem">
         <ParsedDateFilter :key="parsedFilterRefresh" :filter="effectiveFilterSettings" />
       </div>
     </div>
@@ -168,11 +168,13 @@ export default {
       return this.computePanelSettings(this.panelSettings, this.panel);
     },
     effectiveFilterSettings: function () {
-      if (!this.panel) {
-        return {};
-      }
+      // if (!this.panel) {
+
+      //   return {};
+      // }
       let userFilter = this.$store.getters["settings/filters"]();
-      let overrideMode = this.panel.props && this.panel.props.overrideMode ? this.panel.props.overrideMode : null;
+      // let overrideMode = this.panel.props && this.panel.props.overrideMode ? this.panel.props.overrideMode : null;
+      let overrideMode = this.effectiveOverrideMode(this.panelSettings, this.panel.props);
       let settings = this.mergeSettings(userFilter, this.panel.props, overrideMode);
       return this.parseDateFilter(settings);
     },
