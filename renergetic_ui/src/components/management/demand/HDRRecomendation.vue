@@ -32,8 +32,11 @@
                   </div>
                   <div v-if="measurement._recommendation">Recommendation: {{ measurement._recommendation.label }}</div>
                   <div v-if="pData.statistics[measurement.id].demand_stats">
-                    demand: {{ pData.statistics[measurement.id].demand_stats.demand }}[{{ pData.statistics[measurement.id].demand_stats.unit }}],
-                    predicted: {{ pData.statistics[measurement.id].demand_stats.predicted }}[{{ pData.statistics[measurement.id].demand_stats.unit }}]
+                    demand: {{ $ren.utils.roundValue(pData.statistics[measurement.id].demand_stats.demand) }}[{{
+                      pData.statistics[measurement.id].demand_stats.unit
+                    }}], predicted: {{ $ren.utils.roundValue(pData.statistics[measurement.id].demand_stats.predicted) }}[{{
+                      pData.statistics[measurement.id].demand_stats.unit
+                    }}]
                   </div>
                 </h3>
               </div>

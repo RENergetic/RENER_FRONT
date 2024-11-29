@@ -4,6 +4,7 @@ import { RenRoles } from "../model/Enums";
 import MeasurementUtils from "../utils/measurement_utils";
 import MeasurementDataUtils from "../utils/measurement_data_utils";
 import WorkflowUtils from "../utils/workflow_utils";
+
 class DeferredFunction {
   timeoutInstance = null;
   timeout = null;
@@ -302,6 +303,9 @@ class RenUtils {
     return parsed;
   }
   roundValue(value) {
+    if (!value) {
+      return value;
+    }
     if (value >= 4.0) {
       return Math.round(value * 10.0) / 10.0;
     }

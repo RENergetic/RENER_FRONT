@@ -25,7 +25,7 @@ import PanelMenu from "primevue/panelmenu";
 import Sidebar from "primevue/sidebar";
 import Dialogs from "./MenuDialogs.vue";
 import Logo from "./Logo.vue";
-
+import { setLocale } from "@/plugins/locales.js";
 export default {
   name: "SideMenu",
   components: { PanelMenu, Sidebar, Dialogs, Logo },
@@ -98,7 +98,7 @@ export default {
       this.menuModel = this.initMenu();
     },
     async reload() {
-      this.$ren.utils
+      await this.$ren.utils
         .reloadStore()
         .then(async () => {
           this.dashboards = this.$store.getters["view/dashboards"];
@@ -112,6 +112,14 @@ export default {
             console.error(error);
           }
         });
+      var selectedLocale = this.$store.getters["settings/locales"].selectedLocale;
+      var currentLocalocaleCode = localStorage.getItem("i18n");
+      console.debug(`${selectedLocale} - ${currentLocalocaleCode}`);
+      if (selectedLocale && selectedLocale !== currentLocalocaleCode) {
+        console.info("Changing locale to: " + selectedLocale);
+        await setLocale(selectedLocale);
+        this.$emitter.emit("localeSwitch", selectedLocale);
+      }
     },
 
     featuredPanels() {

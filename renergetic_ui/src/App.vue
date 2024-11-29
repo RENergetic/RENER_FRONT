@@ -88,6 +88,7 @@ export default {
   },
   created() {
     this.$emitter.on("refresh", () => {
+      console.debug("on refresh");
       this.onRefresh();
     });
     this.$emitter.on("menu-update", () => {
@@ -128,14 +129,27 @@ export default {
   },
   async mounted() {
     await this.$keycloak.get();
+    console.info(this.$keycloak.isInitialized());
     if (this.$keycloak.isInitialized()) {
       this.keycloakState = 1;
       let currentLocale = this.$store.getters["settings/locales"].selectedLocale;
       console.info(`User's language  ${currentLocale}`);
+
+      var selectedLocale = this.$store.getters["settings/locales"].selectedLocale;
       if (currentLocale) {
-        setLocale(currentLocale);
-        this.refresh = !this.refresh;
+        var hasChanged = await setLocale(selectedLocale);
+        if (hasChanged) {
+          console.debug("locale changed");
+          await setLocale(selectedLocale);
+          this.refresh = !this.refresh;
+        }
+      } else {
+        console.info("locale not set");
       }
+      // if (currentLocale) {
+      //   setLocale(currentLocale);
+      //   this.refresh = !this.refresh;
+      // }
     } else this.keycloakState = 0;
   },
   methods: {

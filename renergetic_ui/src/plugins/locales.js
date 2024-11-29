@@ -27,12 +27,16 @@ const getNavigatorLanguage = () => {
   }
 };
 var localeCode = getNavigatorLanguage();
-console.debug(`detected language: ${localeCode}`);
+if (localStorage.getItem("i18n")) {
+  localeCode = localStorage.getItem("i18n");
+  console.debug(`Stored locale: ${localeCode}`);
+} else console.debug(`detected language: ${localeCode}`);
 // const messages = { pl: pl, en: en };
 if (!(localeCode in allowedLocales)) {
   console.warn(`Locale not supported ${localeCode}`);
   localeCode = process.env.VUE_APP_I18N_LOCALE || "en";
 }
+
 // localeCode = "pl";
 
 const i18n = createI18n({
@@ -55,26 +59,31 @@ i18n.global.te = (key, locale = null) => {
   return Object.hasOwn(messages, key);
 };
 export async function setLocale(localeCode) {
+  if (localeCode == null) {
+    i18n.global.locale = "en";
+    return false;
+  }
+  var cur = i18n.global.locale;
   if (loadedLocales.has(localeCode)) {
     i18n.global.locale = localeCode;
     console.info(`locale changed to: ${i18n.global.locale}`);
-    return;
-  }
-  if (localeCode == null) {
-    i18n.global.locale = "en";
+    localStorage.setItem("i18n", localeCode);
+    return cur !== localeCode; //has changed
   } else {
-    if (!loadedLocales.has(localeCode)) {
-      try {
-        let localeResource = await import(`@/assets/locales/${allowedLocales[localeCode]}`);
-        i18n.global.setLocaleMessage(localeCode, localeResource.default);
-        loadedLocales.add(localeCode);
-        i18n.global.locale = localeCode;
-        console.info(`locale loaded and changed to: ${i18n.global.locale}`);
-      } catch (error) {
-        console.error(`Locale not found ${localeCode}:${allowedLocales[localeCode]}. ${error}`);
-      }
+    try {
+      let localeResource = await import(`@/assets/locales/${allowedLocales[localeCode]}`);
+      i18n.global.setLocaleMessage(localeCode, localeResource.default);
+      loadedLocales.add(localeCode);
+      i18n.global.locale = localeCode;
+      console.info(`locale loaded and changed to: ${i18n.global.locale}`);
+      localStorage.setItem("i18n", localeCode);
+      return cur !== localeCode;
+    } catch (error) {
+      console.error(`Locale not found ${localeCode}:${allowedLocales[localeCode]}. ${error}`);
+      return false;
     }
   }
+  // }
 }
 await setLocale(localeCode);
 export default i18n;
