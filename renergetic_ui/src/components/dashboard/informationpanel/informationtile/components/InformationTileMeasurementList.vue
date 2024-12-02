@@ -39,6 +39,14 @@ export default {
       return (this.mSettings && this.mSettings.tile ? this.mSettings.tile.icon_visibility : true) && this.mSettings.tile.icon;
     },
     onItemClick(ctx) {
+      this.mSettings.tile.href;
+      // ss;
+      if (this.mSettings.tile.href) {
+        this.$ren.utils.openNewTab(this.mSettings.tile.href);
+      }
+
+      // emit click with openpanl command in new dialog
+      // api - panel by name
       if (this.mTile.measurements[ctx.index].visible == null) {
         this.mTile.measurements[ctx.index].visible = false;
       } else this.mTile.measurements[ctx.index].visible = !this.mTile.measurements[ctx.index].visible;
