@@ -38,11 +38,10 @@ export default {
     iconVisibility: function () {
       return (this.mSettings && this.mSettings.tile ? this.mSettings.tile.icon_visibility : true) && this.mSettings.tile.icon;
     },
+
     onItemClick(ctx) {
-      this.mSettings.tile.href;
-      // ss;
-      if (this.mSettings.tile.href) {
-        this.$ren.utils.openNewTab(this.mSettings.tile.href);
+      if (ctx.item.measurement_details.href) {
+        this.$ren.utils.openNewTab(ctx.item.measurement_details.href);
       }
 
       // emit click with openpanl command in new dialog
