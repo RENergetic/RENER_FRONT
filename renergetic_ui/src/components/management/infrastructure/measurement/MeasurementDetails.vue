@@ -65,7 +65,7 @@ export default {
       if (!this.mModel[key]) {
         this.mModel[key] = null;
       }
-      if (mt == Boolean) {
+      if (mt == Boolean && this.mModel[key] !== null && this.mModel[key] !== undefined) {
         this.mModel[key] = this.mModel[key] === true || this.mModel[key] === "true" ? true : false;
       }
       var ext = {};
