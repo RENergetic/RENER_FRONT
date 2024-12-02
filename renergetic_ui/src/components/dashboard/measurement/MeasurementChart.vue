@@ -273,6 +273,9 @@ export default {
       return data;
     },
     setDataset(data) {
+      if (data && Object.keys(data).length == 0) {
+        return;
+      }
       let datasets = [];
       for (let idx in this.mMeasurements) {
         let m = this.mMeasurements[idx];
@@ -283,34 +286,36 @@ export default {
         let label = this.measurementLabel(m);
         let mfill = m.measurement_details && m.measurement_details["fill_chart"] != null ? m.measurement_details["fill_chart"] : "true";
         let fill = mfill?.toLowerCase?.() === "true";
-        datasets.push({
-          xAxisID: "x",
-          data: data[m.id],
-          label: `${label}(${aggFunc})${unitLabel}`,
-          // label: `${label}(${m.id}) ${unitLabel}`,
-          backgroundColor: color + "30",
-          borderColor: color + "FF",
-          showLine: true,
-          fill: fill,
-          pointRadius: data[m.id].length > 533330 ? 0 : 1,
-        });
-        // console.debug(this.mPrevious);
-        // console.debug(data);
-        // console.debug(this.pdata);
-        if (this.mPrevious)
+        if (data[m.id]) {
           datasets.push({
-            xAxisID: "x_prev",
-            data: data.previous[m.id],
-            label: `${label}(${aggFunc})${unitLabel} -  ${this.dateFilterToString(this.tile.props.compare_with_previous_filter_obj)}`,
-            labels: data.previousLabels,
+            xAxisID: "x",
+            data: data[m.id],
+            label: `${label}(${aggFunc})${unitLabel}`,
             // label: `${label}(${m.id}) ${unitLabel}`,
-            backgroundColor: color + "00",
-            borderColor: color + "AA",
+            backgroundColor: color + "30",
+            borderColor: color + "FF",
             showLine: true,
-            borderDash: [5, 5],
-            pointRadius: 0,
             fill: fill,
+            pointRadius: data[m.id].length > 533330 ? 0 : 1,
           });
+          // console.debug(this.mPrevious);
+          // console.debug(data);
+          // console.debug(this.pdata);
+          if (this.mPrevious)
+            datasets.push({
+              xAxisID: "x_prev",
+              data: data.previous[m.id],
+              label: `${label}(${aggFunc})${unitLabel} -  ${this.dateFilterToString(this.tile.props.compare_with_previous_filter_obj)}`,
+              labels: data.previousLabels,
+              // label: `${label}(${m.id}) ${unitLabel}`,
+              backgroundColor: color + "00",
+              borderColor: color + "AA",
+              showLine: true,
+              borderDash: [5, 5],
+              pointRadius: 0,
+              fill: fill,
+            });
+        }
       }
       // console.error(datasets);
       this.datasets = datasets;
