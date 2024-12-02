@@ -8,7 +8,10 @@
     <div class="flex flex-grow-1 flex-column justify-content-center" style="font-size: 0.9em; padding: 0.33rem">
       <div class="flex flex-grow-1 align-items-center justify-content-center flex-row">
         <!-- .align-items-start -->
-        <div v-tooltip="labelTooltip" class="flex-grow-1">{{ label }}</div>
+        <div v-tooltip="labelTooltip" class="flex-grow-1">
+          {{ label }}
+          <i v-if="measurement.measurement_details.href" class="pi pi-chevron-circle-right" style="fontsize: 2rem" @click.stop="openLink" />
+        </div>
         <!-- .align-items-end -->
         <div class="flex">
           <span class="flex-grow-1"> {{ $ren.utils.roundValue(value) }} {{ unit }}</span> <RenValueCompare :value-diff="prevDiff" />
@@ -131,7 +134,12 @@ export default {
     },
   },
   mounted() {},
-  methods: {},
+  methods: {
+    openLink(e) {
+      e.preventDefault();
+      this.$ren.utils.openNewTab(this.measurement.measurement_details.href);
+    },
+  },
 };
 </script>
 

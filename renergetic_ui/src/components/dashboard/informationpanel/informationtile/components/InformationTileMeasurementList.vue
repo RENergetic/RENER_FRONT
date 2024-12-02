@@ -40,9 +40,9 @@ export default {
     },
 
     onItemClick(ctx) {
-      if (ctx.item.measurement_details.href) {
-        this.$ren.utils.openNewTab(ctx.item.measurement_details.href);
-      }
+      // if (ctx.item.measurement_details.href) {
+      //   this.$ren.utils.openNewTab(ctx.item.measurement_details.href);
+      // }
 
       // emit click with openpanl command in new dialog
       // api - panel by name

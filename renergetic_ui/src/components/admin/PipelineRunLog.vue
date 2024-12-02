@@ -45,8 +45,12 @@
             </Column>
             <Column field="results" :header="$t('model.workflowrun.results')">
               <template #body="slotProps">
-                <Button v-if="slotProps.data.results" :label="$t('view.show_results')" @click="showResults(slotProps.data)" />
-                <Button v-else-if="panelId != null" :label="$t('view.go_to_panel')" @click="openDashboard()" />
+                <Button
+                  v-if="slotProps.data.state == 'Succeeded' && slotProps.data.results"
+                  :label="$t('view.show_results')"
+                  @click="showResults(slotProps.data)"
+                />
+                <Button v-else-if="slotProps.data.state == 'Succeeded' && panelId != null" :label="$t('view.go_to_panel')" @click="openDashboard()" />
                 <span v-else>{{ $t("model.workflowrun.no_results") }}</span>
               </template>
             </Column>

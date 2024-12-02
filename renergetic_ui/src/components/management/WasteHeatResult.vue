@@ -35,7 +35,7 @@
 import WorkflowRunDetails from "@/components/admin/workflow/WorkflowRunDetails.vue";
 import InformationPanel from "@/components/dashboard/informationpanel/InformationPanel.vue";
 export default {
-  name: "WasteHeat",
+  name: "WasteHeatResult",
   components: {
     InformationPanel,
     WorkflowRunDetails,
