@@ -37,7 +37,7 @@
             </template>
           </ren-input-wrapper> -->
         </div>
-        <ren-input-wrapper v-if="workflowRun.start_time > 0 && !workflowRun.end_time">
+        <ren-input-wrapper v-if="workflowRun.start_time > 0 && !workflowRun.end_time && workflowRun.state !== 'error'">
           <template #content>
             <Button v-tooltip="$t('view.stop')" class="ren" icon="pi pi-stop" :label="$t('view.button.stop')" @click="stopConfirm" />
           </template>
@@ -72,7 +72,7 @@ export default {
   },
   async mounted() {
     if (!this.mModel.endTime) {
-      this.mModel = await this.$ren.kubeflowApi.getWorkflowRun(this.workflowRun.pipeline.pipeline_id);
+      this.mModel = await this.$ren.kubeflowApi.getRun(this.mModel.run_id);
 
       this.state = this.mModel.state
         ? this.$t("model.workflowrun.run_state." + this.mModel.state.toLowerCase())

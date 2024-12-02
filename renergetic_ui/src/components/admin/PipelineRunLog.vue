@@ -39,7 +39,7 @@
             </Column>
 
             <Column :header="$t('model.workflowrun.details')">
-              <Button v-if="slotProps.data.results" :label="$t('view.show_run_details')" @click="showResults(slotProps.data)" />
+              <!-- <Button v-if="slotProps.data.results" :label="$t('view.show_run_details')" @click="showResults(slotProps.data)" /> -->
 
               <template #body="slotProps"> <i class="pi pi-chevron-circle-right" @click="showRunDetails(slotProps.data)" /> </template>
             </Column>
